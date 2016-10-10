@@ -119,5 +119,13 @@ namespace ReClassNET
 			}
 			return -1;
 		}
+
+		public static void ForEach<T>(this IEnumerable<T> items, Action<T> func)
+		{
+			foreach (var item in items)
+			{
+				func(item);
+			}
+		}
 	}
 }

@@ -86,6 +86,11 @@ namespace ReClassNET.Nodes
 			}
 		}
 
+		internal void ToggleLevelOpen(int level)
+		{
+			levelsOpen[level] = !levelsOpen[level];
+		}
+
 		protected void AddClickableArea(ViewInfo view, Rectangle spot, string text, int id, HotSpotType type)
 		{
 			if (spot.Top > view.ClientArea.Bottom || spot.Bottom < 0)
@@ -156,11 +161,6 @@ namespace ReClassNET.Nodes
 			return x;
 		}
 
-		internal void ToggleLevelOpen(int level)
-		{
-			levelsOpen[level] = !levelsOpen[level];
-		}
-
 		protected void AddSelection(ViewInfo view, int x, int y, int height)
 		{
 			if (y > view.ClientArea.Bottom || y + height < 0)
@@ -173,7 +173,7 @@ namespace ReClassNET.Nodes
 				view.Context.FillRectangle(new SolidBrush(view.Settings.Selected), 0, y, view.ClientArea.Right, height);
 			}
 
-			AddClickableArea(view, new Rectangle(0, y, 1024, height), null,-1, HotSpotType.Select);
+			AddClickableArea(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), null,-1, HotSpotType.Select);
 		}
 
 		protected int AddIcon(ViewInfo view, int x, int y, Image icon, int id, HotSpotType type)
@@ -214,7 +214,7 @@ namespace ReClassNET.Nodes
 
 			if (IsSelected)
 			{
-				AddIcon(view, view.ClientArea.Right - 16, y, Icons.Delete, -1, HotSpotType.Delete);
+				AddIcon(view, view.ClientArea.Right - 16, y, Icons.Delete, 0, HotSpotType.Delete);
 			}
 		}
 

@@ -109,8 +109,6 @@ namespace ReClassNET
 
 		protected override void OnMouseClick(MouseEventArgs e)
 		{
-			base.OnMouseClick(e);
-
 			editBox.Visible = false;
 
 			foreach (var hotSpot in hotSpots)
@@ -189,7 +187,7 @@ namespace ReClassNET
 									selected.ForEach(s => s.Node.ClearSelection());
 									selected.Clear();
 
-									foreach (var spot in classNode.Nodes.Skip(idx1).Take(idx2 - idx1)
+									foreach (var spot in classNode.Nodes.Skip(idx1).Take(idx2 - idx1 + 1)
 										.Select(n => new HotSpot { Address = classNode.Offset.Add(n.Offset), Node = n }))
 									{
 										spot.Node.IsSelected = true;
@@ -216,22 +214,9 @@ namespace ReClassNET
 					}
 					else if (hotSpot.Type == HotSpotType.Delete)
 					{
-						foreach (var selectedSpot in selected)
-						{
-							var classNode = selectedSpot.Node.ParentNode as ClassNode;
-							if (classNode != null)
-							{
-								var i = FindNodeIndex(selectedSpot.Node);
-								if (i != -1)
-								{
-									//classNode.Nodes.RemoveAt(i);
-								}
-							}
-						}
-
+						selected.ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
+						
 						selected.Clear();
-
-						//theApp.CalcAllOffsets();
 					}
 					else if (hotSpot.Type == HotSpotType.ChangeA || hotSpot.Type == HotSpotType.ChangeX)
 					{
@@ -241,6 +226,8 @@ namespace ReClassNET
 					Invalidate();
 				}
 			}
+
+			base.OnMouseClick(e);
 		}
 
 		protected override void OnMouseDoubleClick(MouseEventArgs e)

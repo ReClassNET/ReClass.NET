@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace ReClassNET.Nodes
@@ -188,6 +189,16 @@ namespace ReClassNET.Nodes
 			}
 
 			NotifyMemorySizeChanged();
+		}
+
+		public void RemoveNode(BaseNode node)
+		{
+			Contract.Requires(node != null);
+
+			if (nodes.Remove(node))
+			{
+				NotifyMemorySizeChanged();
+			}
 		}
 	}
 }
