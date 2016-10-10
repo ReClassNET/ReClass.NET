@@ -1,0 +1,487 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BFB8917D-E9B4-463F-A6E8-612C35728C78}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ReClassNET</RootNamespace>
+    <AssemblyName>ReClass.NET</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WIN32</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;WIN32</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\x64\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WIN64</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\x64\</OutputPath>
+    <DefineConstants>TRACE;WIN64</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Windows.Forms.Ribbon35">
+      <HintPath>..\System.Windows.Forms.Ribbon35.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Gui\ClassNodeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\ClassNodeView.Designer.cs">
+      <DependentUpon>ClassNodeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\CustomToolStripItems.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\MemoryViewControl.Designer.cs">
+      <DependentUpon>MemoryViewControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\CustomToolStripProfessionalRenderer.cs" />
+    <Compile Include="GrowingList.cs" />
+    <Compile Include="HotSpot.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="FontEx.cs" />
+    <Compile Include="Gui\HotSpotTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Icons.cs" />
+    <Compile Include="Gui\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Memory.cs" />
+    <Compile Include="Gui\MemoryViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NativeHelper.cs" />
+    <Compile Include="Natives.cs" />
+    <Compile Include="Nodes\BaseHexCommentNode.cs" />
+    <Compile Include="Nodes\BaseHexNode.cs" />
+    <Compile Include="Nodes\BaseNode.cs" />
+    <Compile Include="Nodes\BaseReferenceNode.cs" />
+    <Compile Include="Nodes\BaseTextNode.cs" />
+    <Compile Include="Nodes\BaseTextPtrNode.cs" />
+    <Compile Include="Nodes\BaseVecNode.cs" />
+    <Compile Include="Nodes\ClassInstanceNode.cs" />
+    <Compile Include="Nodes\DoubleNode.cs" />
+    <Compile Include="Nodes\FloatNode.cs" />
+    <Compile Include="Nodes\FunctionPtrNode.cs" />
+    <Compile Include="Nodes\Int16Node.cs" />
+    <Compile Include="Nodes\Int32Node.cs" />
+    <Compile Include="Nodes\Int64Node.cs" />
+    <Compile Include="Nodes\Int8Node.cs" />
+    <Compile Include="Nodes\Matrix3x3Node.cs" />
+    <Compile Include="Nodes\Matrix3x4Node.cs" />
+    <Compile Include="Nodes\Matrix4x4Node.cs" />
+    <Compile Include="Nodes\NumericNode.cs" />
+    <Compile Include="Nodes\ClassPtrNode.cs" />
+    <Compile Include="Nodes\UTF16TextNode.cs" />
+    <Compile Include="Nodes\UTF16TextPtrNode.cs" />
+    <Compile Include="Nodes\UTF32TextNode.cs" />
+    <Compile Include="Nodes\UTF32TextPtrNode.cs" />
+    <Compile Include="Nodes\UTF8TextNode.cs" />
+    <Compile Include="Nodes\UInt32Node.cs" />
+    <Compile Include="Nodes\UInt64Node.cs" />
+    <Compile Include="Nodes\UInt8Node.cs" />
+    <Compile Include="Nodes\ClassNode.cs" />
+    <Compile Include="Nodes\ArrayNode.cs" />
+    <Compile Include="Nodes\Hex16Node.cs" />
+    <Compile Include="Nodes\Hex32Node.cs" />
+    <Compile Include="Nodes\Hex64Node.cs" />
+    <Compile Include="Nodes\Hex8Node.cs" />
+    <Compile Include="Nodes\UInt16Node.cs" />
+    <Compile Include="Nodes\UTF8TextPtrNode.cs" />
+    <Compile Include="Nodes\Vector2Node.cs" />
+    <Compile Include="Nodes\Vector3Node.cs" />
+    <Compile Include="Nodes\Vector4Node.cs" />
+    <Compile Include="Gui\ProcessBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ProcessBrowser.Designer.cs">
+      <DependentUpon>ProcessBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ProcessMemoryViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ProcessMemoryViewer.Designer.cs">
+      <DependentUpon>ProcessMemoryViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Nodes\VTableNode.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RemoteProcess.cs" />
+    <Compile Include="Gui\ScrollableCustomControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="ShellIcon.cs" />
+    <Compile Include="ViewInfo.cs" />
+    <EmbeddedResource Include="Gui\ClassNodeView.resx">
+      <DependentUpon>ClassNodeView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MemoryViewControl.resx">
+      <DependentUpon>MemoryViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ProcessBrowser.resx">
+      <DependentUpon>ProcessBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ProcessMemoryViewer.resx">
+      <DependentUpon>ProcessMemoryViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\application.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_add_bytes_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_add_bytes_8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_add_bytes_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_add_bytes_256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_add_bytes_1024.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_add_bytes_2048.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_add_bytes_4096.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_add_bytes_x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_array.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_class_inst.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_class_ptr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_class_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_double.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_float.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_fn_ptr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_hex_8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_hex_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_hex_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_hex_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_insert_bytes_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_insert_bytes_8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_insert_bytes_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_insert_bytes_256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_insert_bytes_1024.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_insert_bytes_2048.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_insert_bytes_4096.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_insert_bytes_x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_int_8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_int_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_int_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_int_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_mat_33.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_mat_34.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_mat_44.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_text_ptr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_uint_8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_uint_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_uint_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_uint_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_utext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_utext_ptr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_vec_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_vec_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_vec_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_vtable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\textfield_rename.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\accept.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow_refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\chart_organisation_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\page_code.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\page_code_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pdb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\plugin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_class_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_as.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\table_gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\text_list_bullets.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\array_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow_down_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\class_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\closed_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\custom_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\double_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\enum_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exchange_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\float_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\left_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\matrix_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\open_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pointer_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\right_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\signed_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\text_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\unsigned_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vector_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\page_copy.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
