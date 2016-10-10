@@ -422,6 +422,7 @@ namespace ReClassNET
 		private void ClearSelection()
 		{
 			selected.ForEach(h => h.Node.ClearSelection());
+
 			selected.Clear();
 		}
 

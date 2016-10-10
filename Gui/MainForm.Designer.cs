@@ -213,6 +213,7 @@
 			this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
 			this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
 			this.openProjectToolStripMenuItem.Text = "Open Project...";
+			this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 

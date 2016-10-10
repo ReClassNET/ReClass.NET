@@ -1,4 +1,5 @@
-﻿using ReClassNET.Gui;
+﻿using ReClassNET.DataExchange;
+using ReClassNET.Gui;
 using ReClassNET.Nodes;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -57,6 +59,8 @@ namespace ReClassNET
 
 			memoryViewControl.Settings = settings;
 			memoryViewControl.Memory = memory;
+
+			newClassToolStripButton_Click(null, null);
 		}
 
 		private void selectProcessToolStripMenuItem_Click(object sender, EventArgs e)
@@ -126,6 +130,50 @@ namespace ReClassNET
 			node.AddBytes(64);
 
 			classesView.SelectedClass = node;
+		}
+
+		private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (var ofd = new OpenFileDialog())
+			{
+				ofd.CheckFileExists = true;
+				ofd.Filter = $"{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}|"
+					+ $"{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}";
+
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					IReClassImport import = null;
+					switch (Path.GetExtension(ofd.SafeFileName))
+					{
+						case ReClassNetFile.FileExtension:
+							import = new ReClassNetFile();
+							break;
+						case ReClassQtFile.FileExtension:
+							import = new ReClassQtFile();
+							break;
+					}
+					if (import != null)
+					{
+						var sb = new StringBuilder();
+
+						var schema = import.Load(ofd.FileName, s => sb.AppendLine(s));
+
+						if (sb.Length != 0)
+						{
+							MessageBox.Show("Errors occurred during import:\n\n" + sb.ToString(), "Error");
+						}
+
+						if (schema != null)
+						{
+							classesView.Clear();
+
+							var classes = schema.BuildNodes();
+							classes.ForEach(c => classesView.Add(c));
+							memoryViewControl.ClassNode = classes.FirstOrDefault();
+						}
+					}
+				}
+			}
 		}
 	}
 }

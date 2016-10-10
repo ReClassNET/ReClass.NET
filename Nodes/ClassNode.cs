@@ -16,6 +16,12 @@ namespace ReClassNET.Nodes
 		public IEnumerable<BaseNode> Nodes => nodes;
 
 		public ClassNode()
+			: this(true)
+		{
+
+		}
+
+		public ClassNode(bool notifiy)
 		{
 #if WIN64
 			Offset = (IntPtr)0x140000000;
@@ -23,7 +29,10 @@ namespace ReClassNET.Nodes
 			Offset = (IntPtr)0x400000;
 #endif
 
-			NewClassCreated?.Invoke(this);
+			if (notifiy)
+			{
+				NewClassCreated?.Invoke(this);
+			}
 		}
 
 		public override void Intialize()
@@ -41,7 +50,7 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		public void UpdateChildrenOffsets()
+		public void UpdateOffsets()
 		{
 			var offset = IntPtr.Zero;
 			foreach (var node in Nodes)
@@ -59,7 +68,7 @@ namespace ReClassNET.Nodes
 			var tx = x;
 
 			x = AddIcon(view, x, y, Icons.Class, -1, HotSpotType.None);
-			x = AddText(view, x, y, view.Settings.Offset, 0, $"{Offset:X}") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.Offset, 0, $"{Offset.ToInt64():X}") + view.Font.Width;
 
 			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, "Class ");
 			x = AddText(view, x, y, view.Settings.Name, HotSpot.NameId, Name) + view.Font.Width;
@@ -98,6 +107,15 @@ namespace ReClassNET.Nodes
 		internal void NotifyMemorySizeChanged()
 		{
 			OnPropertyChanged(nameof(Nodes));
+		}
+
+		public void AddNode(BaseNode node)
+		{
+			Contract.Requires(node != null);
+
+			node.ParentNode = this;
+
+			nodes.Add(node);
 		}
 
 		public void ReplaceChildNode(int index, BaseNode node)

@@ -57,6 +57,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Windows.Forms.Ribbon35">
       <HintPath>..\System.Windows.Forms.Ribbon35.dll</HintPath>
     </Reference>
@@ -71,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataExchange\IReClassExport.cs" />
     <Compile Include="Gui\ClassNodeView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -98,6 +100,10 @@
     <Compile Include="Gui\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataExchange\IReClassImport.cs" />
+    <Compile Include="DataExchange\ReClassNetFile.cs" />
+    <Compile Include="DataExchange\ReClassQtFile.cs" />
+    <Compile Include="DataExchange\SchemaBuilder.cs" />
     <Compile Include="Memory.cs" />
     <Compile Include="Gui\MemoryViewControl.cs">
       <SubType>UserControl</SubType>

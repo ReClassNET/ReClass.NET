@@ -49,6 +49,14 @@ namespace ReClassNET
 			classesTreeView.Nodes.Add(root);
 		}
 
+		public void Clear()
+		{
+			classes.Clear();
+			root.Nodes.Clear();
+
+			ClassSelected?.Invoke(this, null);
+		}
+
 		public void Add(ClassNode node)
 		{
 			if (!classes.Contains(node))
@@ -129,7 +137,7 @@ namespace ReClassNET
 					break;
 				case nameof(ClassNode.Nodes):
 					// Child nodes have changed, update all offsets
-					classes.ForEach(c => c.UpdateChildrenOffsets());
+					classes.ForEach(c => c.UpdateOffsets());
 					break;
 			}
 		}
