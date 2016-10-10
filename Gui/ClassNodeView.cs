@@ -22,6 +22,7 @@ namespace ReClassNET
 		public delegate void ClassSelectedEvent(object sender, ClassNode node);
 		public event ClassSelectedEvent ClassSelected;
 
+		[Browsable(false)]
 		public ClassNode SelectedClass
 		{
 			get { return classesTreeView.SelectedNode.Tag as ClassNode; }

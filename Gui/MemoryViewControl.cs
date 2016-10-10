@@ -131,8 +131,7 @@ namespace ReClassNET
 						{
 							if (ModifierKeys == Keys.None)
 							{
-								selected.ForEach(s => s.Node.ClearSelection());
-								selected.Clear();
+								ClearSelection();
 
 								hitObject.IsSelected = true;
 
@@ -184,8 +183,7 @@ namespace ReClassNET
 										idx2 = temp;
 									}
 
-									selected.ForEach(s => s.Node.ClearSelection());
-									selected.Clear();
+									ClearSelection();
 
 									foreach (var spot in classNode.Nodes.Skip(idx1).Take(idx2 - idx1 + 1)
 										.Select(n => new HotSpot { Address = classNode.Offset.Add(n.Offset), Node = n }))
@@ -198,12 +196,11 @@ namespace ReClassNET
 						}
 						else if (e.Button == MouseButtons.Right)
 						{
-							selected.ForEach(s => s.Node.ClearSelection());
-							selected.Clear();
+							/*ClearSelection();
 
 							hitObject.IsSelected = true;
 
-							selected.Add(hotSpot);
+							selected.Add(hotSpot);*/
 
 							selectedNodeContextMenuStrip.Show(this, e.Location);
 						}
@@ -214,9 +211,7 @@ namespace ReClassNET
 					}
 					else if (hotSpot.Type == HotSpotType.Delete)
 					{
-						selected.ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
-						
-						selected.Clear();
+						RemoveSelectedNodes();
 					}
 					else if (hotSpot.Type == HotSpotType.ChangeA || hotSpot.Type == HotSpotType.ChangeX)
 					{
@@ -422,6 +417,24 @@ namespace ReClassNET
 			}
 
 			ReplaceSelectedNodesWithType(item.Value);
+		}
+
+		private void ClearSelection()
+		{
+			selected.ForEach(h => h.Node.ClearSelection());
+			selected.Clear();
+		}
+
+		private void RemoveSelectedNodes()
+		{
+			selected.ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
+
+			selected.Clear();
+		}
+
+		private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			RemoveSelectedNodes();
 		}
 	}
 }
