@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReClassNET.Nodes
 {
@@ -20,9 +17,9 @@ namespace ReClassNET.Nodes
 		public ClassNode()
 		{
 #if WIN64
-			Offset = 0x140000000;
+			Offset = (IntPtr)0x140000000;
 #else
-			Offset = 0x400000;
+			Offset = (IntPtr)0x400000;
 #endif
 
 			NewClassCreated?.Invoke(this);
@@ -45,7 +42,7 @@ namespace ReClassNET.Nodes
 
 		public void UpdateChildrenOffsets()
 		{
-			var offset = 0;
+			var offset = IntPtr.Zero;
 			foreach (var node in Nodes)
 			{
 				node.Offset = offset;
@@ -95,11 +92,6 @@ namespace ReClassNET.Nodes
 			{
 				//RequestPosition = _tcstol(Spot.Text.GetString(), NULL, 10); // RequestPosition = ConvertStrToAddress( Spot.Text );
 			}
-		}
-
-		public void AddNode(BaseNode node)
-		{
-			nodes.Add(node);
 		}
 
 		internal void NotifyMemorySizeChanged()
@@ -154,7 +146,7 @@ namespace ReClassNET.Nodes
 				return;
 			}
 
-			var offset = 0;
+			var offset = IntPtr.Zero;
 			if (index > 0)
 			{
 				var node = nodes[index - 1];

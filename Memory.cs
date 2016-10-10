@@ -133,9 +133,19 @@ namespace ReClassNET
 			Process.ReadMemoryIntoBuffer(address, ref data);
 		}
 
+		public byte ReadByte(IntPtr offset)
+		{
+			return ReadByte(offset.ToInt32());
+		}
+
 		public byte ReadByte(int offset)
 		{
 			return data[Offset + offset];
+		}
+
+		public T ReadObject<T>(IntPtr offset)
+		{
+			return ReadObject<T>(offset.ToInt32());
 		}
 
 		public T ReadObject<T>(int offset)
@@ -145,6 +155,11 @@ namespace ReClassNET
 			handle.Free();
 
 			return obj;
+		}
+
+		public string ReadPrintableASCIIString(IntPtr offset, int length)
+		{
+			return ReadPrintableASCIIString(offset.ToInt32(), length);
 		}
 
 		public string ReadPrintableASCIIString(int offset, int length)
@@ -178,12 +193,14 @@ namespace ReClassNET
 			return sb.ToString();
 		}
 
-		public string ReadUTF8String(int offset, int length)
+		public string ReadUTF8String(IntPtr offset, int length)
 		{
+			//TODO
+
 			var sb = new StringBuilder();
 			for (var i = 0; i < length; ++i)
 			{
-				var c = (char)data[offset + i];
+				var c = (char)data[Offset + offset.ToInt32() + i];
 				//(((c)>=32 && (c)<=126) || ((c)>=161 && (c)<=254))
 				if (!char.IsLetterOrDigit(c))
 				{
@@ -196,14 +213,14 @@ namespace ReClassNET
 			//return ReadString(Encoding.ASCII, offset, length);
 		}
 
-		public string ReadUTF16String(int offset, int length)
+		public string ReadUTF16String(IntPtr offset, int length)
 		{
-			return ReadString(Encoding.Unicode, offset, length);
+			return ReadString(Encoding.Unicode, offset.ToInt32(), length);
 		}
 
-		public string ReadUTF32String(int offset, int length)
+		public string ReadUTF32String(IntPtr offset, int length)
 		{
-			return ReadString(Encoding.UTF32, offset, length);
+			return ReadString(Encoding.UTF32, offset.ToInt32(), length);
 		}
 
 		public string GetModuleName(IntPtr address)

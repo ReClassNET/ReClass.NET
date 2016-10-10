@@ -73,13 +73,13 @@ namespace ReClassNET
 			}
 
 			Memory.Size = ClassNode.MemorySize;
-			Memory.Update(new IntPtr(ClassNode.Offset));
+			Memory.Update(ClassNode.Offset);
 
 			var view = new ViewInfo
 			{
 				Context = e.Graphics,
 				Font = font,
-				Address = new IntPtr(ClassNode.Offset),
+				Address = ClassNode.Offset,
 				ClientArea = ClientRectangle,
 				Level = 0,
 				Memory = Memory,
@@ -190,7 +190,7 @@ namespace ReClassNET
 									selected.Clear();
 
 									foreach (var spot in classNode.Nodes.Skip(idx1).Take(idx2 - idx1)
-										.Select(n => new HotSpot { Address = (IntPtr)classNode.Offset + n.Offset, Node = n }))
+										.Select(n => new HotSpot { Address = classNode.Offset.Add(n.Offset), Node = n }))
 									{
 										spot.Node.IsSelected = true;
 										selected.Add(spot);
@@ -396,7 +396,7 @@ namespace ReClassNET
 
 				selected.Add(new HotSpot
 				{
-					Address = (IntPtr)sel.ParentNode.Offset + sel.Offset,
+					Address = sel.ParentNode.Offset.Add(sel.Offset),
 					Node = sel
 				});
 			}

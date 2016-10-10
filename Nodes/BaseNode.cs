@@ -15,7 +15,7 @@ namespace ReClassNET.Nodes
 
 		private string name;
 		public string Name { get { return name; } set { if (name != value) { name = value; OnPropertyChanged(nameof(Name)); } } }
-		public int Offset { get; set; }
+		public IntPtr Offset { get; set; }
 		public string Comment { get; set; }
 
 		public ClassNode ParentNode { get; set; }
@@ -147,9 +147,9 @@ namespace ReClassNET.Nodes
 			if (view.Settings.ShowAddress)
 			{
 #if WIN32
-				x = AddText(view, x, y, view.Settings.Address, HotSpot.AddressId, $"{(view.Address + Offset).ToInt32():X08}") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.Address, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt32():X08}") + view.Font.Width;
 #else
-				x = AddText(view, x, y, view.Settings.Address, ClickArea.AddressId, $"{(view.Address + Offset).ToInt64():X016}") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.Address, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt64():X016}") + view.Font.Width;
 #endif
 			}
 

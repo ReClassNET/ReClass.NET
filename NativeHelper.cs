@@ -67,8 +67,8 @@ namespace ReClassNET
 		private delegate void EnumerateProcessesDelegate(EnumerateProcessCallback callbackProcess);
 		private EnumerateProcessesDelegate enumerateProcessesDelegate;
 
-		public delegate void EnumerateRemoteSectionCallback(IntPtr baseAddress, uint regionSize, [MarshalAs(UnmanagedType.LPStr)]string name, Natives.StateEnum state, Natives.AllocationProtectEnum protection, Natives.TypeEnum type, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
-		public delegate void EnumerateRemoteModuleCallback(IntPtr baseAddress, uint regionSize, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
+		public delegate void EnumerateRemoteSectionCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPStr)]string name, Natives.StateEnum state, Natives.AllocationProtectEnum protection, Natives.TypeEnum type, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
+		public delegate void EnumerateRemoteModuleCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate void EnumerateRemoteSectionsAndModulesDelegate(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule);
 		private EnumerateRemoteSectionsAndModulesDelegate enumerateRemoteSectionsAndModulesDelegate;

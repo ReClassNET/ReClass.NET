@@ -40,9 +40,9 @@
 			if (levelsOpen[view.Level])
 			{
 				var v = view.Clone();
-				v.Address = view.Address + Offset;
+				v.Address = view.Address.Add(Offset);
 				v.Memory = view.Memory.Clone();
-				v.Memory.Offset = Offset;
+				v.Memory.Offset = Offset.ToInt32();
 
 				y = InnerNode.Draw(v, tx, y);
 			}

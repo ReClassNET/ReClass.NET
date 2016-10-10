@@ -187,8 +187,8 @@ EXTERN_DLL_EXPORT VOID __stdcall EnumerateProcesses(EnumerateProcessCallback cal
 	lastError = GetLastError();
 }
 
-typedef VOID(__stdcall EnumerateRemoteSectionsCallback)(LPVOID baseAddress, DWORD regionSize, BYTE name[IMAGE_SIZEOF_SHORT_NAME + 2], DWORD state, DWORD protection, DWORD type, WCHAR modulePath[PATH_MAXIMUM_LENGTH]);
-typedef VOID(__stdcall EnumerateRemoteModulesCallback)(LPVOID baseAddress, DWORD regionSize, WCHAR modulePath[PATH_MAXIMUM_LENGTH]);
+typedef VOID(__stdcall EnumerateRemoteSectionsCallback)(LPVOID baseAddress, SIZE_T regionSize, BYTE name[IMAGE_SIZEOF_SHORT_NAME + 2], DWORD state, DWORD protection, DWORD type, WCHAR modulePath[PATH_MAXIMUM_LENGTH]);
+typedef VOID(__stdcall EnumerateRemoteModulesCallback)(LPVOID baseAddress, SIZE_T regionSize, WCHAR modulePath[PATH_MAXIMUM_LENGTH]);
 
 EXTERN_DLL_EXPORT VOID __stdcall EnumerateRemoteSectionsAndModules(HANDLE process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
 {
@@ -200,7 +200,7 @@ EXTERN_DLL_EXPORT VOID __stdcall EnumerateRemoteSectionsAndModules(HANDLE proces
 	struct SectionInfo
 	{
 		LPVOID BaseAddress;
-		DWORD RegionSize;
+		SIZE_T RegionSize;
 		BYTE Name[IMAGE_SIZEOF_SHORT_NAME + 2];
 		DWORD State;
 		DWORD Protection;

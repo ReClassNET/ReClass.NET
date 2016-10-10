@@ -18,8 +18,6 @@ namespace ReClassNET
 	{
 		private readonly NativeHelper nativeHelper;
 
-		ClassNode classNode;
-
 		RemoteProcess remoteProcess;
 		Memory memory = new Memory();
 		Settings settings = new Settings();
@@ -57,131 +55,8 @@ namespace ReClassNET
 
 			Graphics graphics = this.CreateGraphics();
 
-			classNode = new ClassNode();
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 0,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex16Node()
-			{
-				Offset = 4,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex8Node()
-			{
-				Offset = 6,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex8Node()
-			{
-				Offset = 7,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 8,
-				ParentNode = classNode
-			});
-
-			classNode.AddNode(new Nodes.Matrix3x3Node()
-			{
-				Offset = 12,
-				ParentNode = classNode
-			});
-
-			var oldClass = classNode;
-
-			classNode = new ClassNode();
-			classNode.Offset = 0x1234566;
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 0,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex16Node()
-			{
-				Offset = 4,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex8Node()
-			{
-				Offset = 6,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex8Node()
-			{
-				Offset = 7,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 8,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.ClassInstanceNode()
-			{
-				Offset = 12,
-				ParentNode = classNode,
-				InnerNode = oldClass
-			});
-
-			classNode = new ClassNode();
-			classNode.Offset = 0x1234566;
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 0,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 4,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 8,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 12,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 16,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 20,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 24,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 28,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 32,
-				ParentNode = classNode
-			});
-			classNode.AddNode(new Nodes.Hex32Node()
-			{
-				Offset = 36,
-				ParentNode = classNode
-			});
-
 			memoryViewControl.Settings = settings;
 			memoryViewControl.Memory = memory;
-			memoryViewControl.ClassNode = classNode;
 		}
 
 		private void selectProcessToolStripMenuItem_Click(object sender, EventArgs e)

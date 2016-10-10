@@ -59,7 +59,7 @@ namespace ReClassNET.Nodes
 			if (levelsOpen[view.Level])
 			{
 				var v = view.Clone();
-				v.Address = view.Address + Offset + InnerNode.MemorySize * CurrentIndex;
+				v.Address = view.Address.Add(Offset) + InnerNode.MemorySize * CurrentIndex;
 				//TODO
 
 				y = InnerNode.Draw(v, tx, y);

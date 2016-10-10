@@ -32,18 +32,18 @@ namespace ReClassNET
 			{
 				DataTable dt = new DataTable();
 				dt.Columns.Add("address", typeof(long));
-				dt.Columns.Add("size", typeof(uint));
+				dt.Columns.Add("size", typeof(long));
 				dt.Columns.Add("name", typeof(string));
 				dt.Columns.Add("protection", typeof(string));
 				dt.Columns.Add("state", typeof(string));
 				dt.Columns.Add("type", typeof(string));
 				dt.Columns.Add("module", typeof(string));
 
-				nativeHelper.EnumerateRemoteSectionsAndModules(process.Handle, delegate (IntPtr baseAddress, uint regionSize, string name, Natives.StateEnum state, Natives.AllocationProtectEnum protection, Natives.TypeEnum type, string modulePath)
+				nativeHelper.EnumerateRemoteSectionsAndModules(process.Handle, delegate (IntPtr baseAddress, IntPtr regionSize, string name, Natives.StateEnum state, Natives.AllocationProtectEnum protection, Natives.TypeEnum type, string modulePath)
 				{
 					var row = dt.NewRow();
 					row["address"] = baseAddress.ToInt64();
-					row["size"] = regionSize;
+					row["size"] = regionSize.ToInt64();
 					row["name"] = name;
 					row["protection"] = protection.ToString();
 					row["state"] = state.ToString();
