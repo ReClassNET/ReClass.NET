@@ -35,7 +35,7 @@ namespace ReClassNET.Nodes
 			x = AddIcon(view, x, y, Icons.Vector, HotSpot.NoneId, HotSpotType.None);
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, "Vec3 ");
+			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, "Vec4 ");
 			x = AddText(view, x, y, view.Settings.Name, HotSpot.NameId, Name);
 			x = AddOpenClose(view, x, y);
 

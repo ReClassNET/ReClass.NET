@@ -14,7 +14,7 @@ namespace ReClassNET.Nodes
 		private static int NodeIndex = 0;
 
 		private string name;
-		public string Name { get { return name; } set { if (name != value) { name = value; OnPropertyChanged(nameof(Name)); } } }
+		public string Name { get { return name; } set { if (value != null && name != value) { name = value; OnPropertyChanged(nameof(Name)); } } }
 		public IntPtr Offset { get; set; }
 		public string Comment { get; set; }
 
