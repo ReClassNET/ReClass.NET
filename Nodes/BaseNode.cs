@@ -141,7 +141,7 @@ namespace ReClassNET.Nodes
 		{
 			if (view.Settings.ShowOffset)
 			{
-				x = AddText(view, x, y, view.Settings.Offset, HotSpot.NoneId, $"{Offset:X04}") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.Offset, HotSpot.NoneId, $"{Offset.ToInt32():X04}") + view.Font.Width;
 			}
 
 			if (view.Settings.ShowAddress)
