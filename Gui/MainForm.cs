@@ -138,7 +138,8 @@ namespace ReClassNET
 			{
 				ofd.CheckFileExists = true;
 				ofd.Filter = $"{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}|"
-					+ $"{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}";
+					+ $"{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}|"
+					+ $"{ReClassFile.FormatName} (*{ReClassFile.FileExtension})|*{ReClassFile.FileExtension}";
 
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
@@ -150,6 +151,9 @@ namespace ReClassNET
 							break;
 						case ReClassQtFile.FileExtension:
 							import = new ReClassQtFile();
+							break;
+						case ReClassFile.FileExtension:
+							import = new ReClassFile();
 							break;
 					}
 					if (import != null)

@@ -12,6 +12,7 @@ namespace ReClassNET.DataExchange
 	{
 		None,
 		Array,
+		ClassPtrArray,
 		ClassInstance,
 		Class,
 		ClassPtr,
@@ -42,7 +43,9 @@ namespace ReClassNET.DataExchange
 		Vector2,
 		Vector3,
 		Vector4,
-		VTable
+		VTable,
+		Custom,
+		BitMap
 	}
 
 	class SchemaNode
@@ -50,6 +53,7 @@ namespace ReClassNET.DataExchange
 		public SchemaType Type { get; }
 		public string Name { get; set; }
 		public string Comment { get; set; }
+		public int Count { get; set; } = -1;
 
 		public SchemaNode(SchemaType type)
 		{
@@ -65,6 +69,17 @@ namespace ReClassNET.DataExchange
 			: base(type)
 		{
 			InnerNode = inner;
+		}
+	}
+
+	class SchemaVTableNode : SchemaNode
+	{
+		public List<SchemaNode> Nodes { get; } = new List<SchemaNode>();
+
+		public SchemaVTableNode()
+			: base(SchemaType.VTable)
+		{
+
 		}
 	}
 
@@ -90,6 +105,7 @@ namespace ReClassNET.DataExchange
 			[SchemaType.ClassInstance] = typeof(ClassInstanceNode),
 			[SchemaType.Class] = typeof(ClassNode),
 			[SchemaType.ClassPtr] = typeof(ClassPtrNode),
+			[SchemaType.ClassPtrArray] = typeof(ClassPtrArrayNode),
 			[SchemaType.Double] = typeof(DoubleNode),
 			[SchemaType.Float] = typeof(FloatNode),
 			[SchemaType.FunctionPtr] = typeof(FunctionPtrNode),
@@ -200,17 +216,54 @@ namespace ReClassNET.DataExchange
 				var cn = classes[sc];
 				foreach (var sn in sc.Nodes)
 				{
-					var node = Activator.CreateInstance(SchemaTypeToNodeTypeMap[sn.Type]) as BaseNode;
-					node.Name = sn.Name;
-					node.Comment = sn.Comment;
-
-					var referenceNode = node as BaseReferenceNode;
-					if (referenceNode != null)
+					// Special case Custom type
+					if (sn.Type == SchemaType.Custom)
 					{
-						referenceNode.InnerNode = classes[(sn as SchemaReferenceNode).InnerNode];
-					}
+						var size = sn.Count;
+						while (size != 0)
+						{
+							BaseNode node = null;
+#if WIN64
+							if (size >= 8)
+							{
+								node = new Hex64Node();
+							}
+							else 
+#endif
+							if (size >= 4)
+							{
+								node = new Hex32Node();
+							}
+							else if (size >= 2)
+							{
+								node = new Hex16Node();
+							}
+							else
+							{
+								node = new Hex8Node();
+							}
 
-					cn.AddNode(node);
+							node.Comment = sn.Comment;
+
+							size -= node.MemorySize;
+
+							cn.AddNode(node);
+						}
+					}
+					else
+					{
+						var node = Activator.CreateInstance(SchemaTypeToNodeTypeMap[sn.Type]) as BaseNode;
+						node.Name = sn.Name;
+						node.Comment = sn.Comment;
+
+						var referenceNode = node as BaseReferenceNode;
+						if (referenceNode != null)
+						{
+							referenceNode.InnerNode = classes[(sn as SchemaReferenceNode).InnerNode];
+						}
+
+						cn.AddNode(node);
+					}
 				}
 			}
 

@@ -159,6 +159,7 @@ namespace ReClassNET.DataExchange
 			Contract.Requires(schema != null);
 
 			var document = new XDocument(
+				new XComment("ReClass.NET by KN4CK3R"),
 				new XElement(XmlRootElement, new XAttribute(XmlVersionAttribute, "1"),
 					new XElement(XmlClassesElement, schema.BuildSchema().Select(c => WriteNode(c)))
 				)
