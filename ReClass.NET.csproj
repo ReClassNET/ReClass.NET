@@ -73,6 +73,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataExchange\IReClassExport.cs" />
+    <Compile Include="DataExchange\ReClassFile.cs" />
+    <Compile Include="DataExchange\ReClass2007File.cs" />
     <Compile Include="Gui\ClassNodeView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -110,6 +112,8 @@
     </Compile>
     <Compile Include="NativeHelper.cs" />
     <Compile Include="Natives.cs" />
+    <Compile Include="Nodes\ArrayNode.cs" />
+    <Compile Include="Nodes\BaseArrayNode.cs" />
     <Compile Include="Nodes\BaseHexCommentNode.cs" />
     <Compile Include="Nodes\BaseHexNode.cs" />
     <Compile Include="Nodes\BaseNode.cs" />
@@ -130,6 +134,7 @@
     <Compile Include="Nodes\Matrix4x4Node.cs" />
     <Compile Include="Nodes\NumericNode.cs" />
     <Compile Include="Nodes\ClassPtrNode.cs" />
+    <Compile Include="Nodes\ClassPtrArrayNode.cs" />
     <Compile Include="Nodes\UTF16TextNode.cs" />
     <Compile Include="Nodes\UTF16TextPtrNode.cs" />
     <Compile Include="Nodes\UTF32TextNode.cs" />
@@ -139,7 +144,6 @@
     <Compile Include="Nodes\UInt64Node.cs" />
     <Compile Include="Nodes\UInt8Node.cs" />
     <Compile Include="Nodes\ClassNode.cs" />
-    <Compile Include="Nodes\ArrayNode.cs" />
     <Compile Include="Nodes\Hex16Node.cs" />
     <Compile Include="Nodes\Hex32Node.cs" />
     <Compile Include="Nodes\Hex64Node.cs" />
