@@ -1,8 +1,6 @@
-﻿using System.Windows.Forms;
-
-namespace ReClassNET.Gui
+﻿namespace ReClassNET.Gui
 {
-	public partial class SettingsDialog : Form
+	partial class SettingsDialog : IconForm
 	{
 		public SettingsDialog(Settings settings)
 		{

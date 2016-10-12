@@ -47,6 +47,7 @@
 			this.ClientSize = new System.Drawing.Size(343, 505);
 			this.Controls.Add(this.propertyGrid);
 			this.Name = "SettingsDialog";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "SettingsDialog";
 			this.ResumeLayout(false);
 

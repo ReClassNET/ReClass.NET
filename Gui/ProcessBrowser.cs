@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ReClassNET.Gui;
+using System;
 using System.Data;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ReClassNET
 {
-	partial class ProcessBrowser : Form
+	partial class ProcessBrowser : IconForm
 	{
 		private const string NoPreviousProcess = "No previous process";
 

@@ -55,6 +55,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Icon\icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -82,6 +85,9 @@
     </Compile>
     <Compile Include="Gui\CustomToolStripItems.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\IconForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Gui\MemoryViewControl.Designer.cs">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
@@ -502,6 +508,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\interface_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon\icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

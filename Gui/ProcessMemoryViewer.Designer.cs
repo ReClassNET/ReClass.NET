@@ -194,6 +194,7 @@
 			this.ClientSize = new System.Drawing.Size(1014, 511);
 			this.Controls.Add(this.regionsGroupBox);
 			this.Name = "ProcessMemoryViewer";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "ProcessMemoryViewer";
 			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).EndInit();
 			this.contextMenuStrip.ResumeLayout(false);

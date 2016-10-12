@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ReClassNET
 {
-	partial class MainForm : Form
+	partial class MainForm : IconForm
 	{
 		private readonly NativeHelper nativeHelper;
 		private readonly Settings settings;
