@@ -137,9 +137,10 @@ namespace ReClassNET
 			using (var ofd = new OpenFileDialog())
 			{
 				ofd.CheckFileExists = true;
-				ofd.Filter = $"{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}|"
-					+ $"{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}|"
-					+ $"{ReClassFile.FormatName} (*{ReClassFile.FileExtension})|*{ReClassFile.FileExtension}";
+				ofd.Filter = $"{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}"
+					+ $"|{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}"
+					+ $"|{ReClassFile.FormatName} (*{ReClassFile.FileExtension})|*{ReClassFile.FileExtension}"
+					/*+ $"|{ReClass2007File.FormatName} (*{ReClass2007File.FileExtension})|*{ReClass2007File.FileExtension}"*/;
 
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
@@ -155,6 +156,9 @@ namespace ReClassNET
 						case ReClassFile.FileExtension:
 							import = new ReClassFile();
 							break;
+						/*case ReClass2007File.FileExtension:
+							import = new ReClass2007File();
+							break;*/
 					}
 					if (import != null)
 					{
@@ -178,6 +182,11 @@ namespace ReClassNET
 					}
 				}
 			}
+		}
+
+		private void memoryViewerToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			new ProcessMemoryViewer(nativeHelper, remoteProcess.Process).Show();
 		}
 	}
 }

@@ -119,6 +119,7 @@
 			this.classPtrToolStripButton = new ReClassNET.Gui.TypeToolStripButton();
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.arrayToolStripButton = new ReClassNET.Gui.TypeToolStripButton();
+			this.ptrArrayToolStripButton = new ReClassNET.Gui.TypeToolStripButton();
 			this.vtableToolStripButton = new ReClassNET.Gui.TypeToolStripButton();
 			this.fnPtrToolStripButton = new ReClassNET.Gui.TypeToolStripButton();
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
@@ -283,6 +284,7 @@
 			this.memoryViewerToolStripMenuItem.Name = "memoryViewerToolStripMenuItem";
 			this.memoryViewerToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
 			this.memoryViewerToolStripMenuItem.Text = "Memory Viewer";
+			this.memoryViewerToolStripMenuItem.Click += new System.EventHandler(this.memoryViewerToolStripMenuItem_Click);
 			// 
 			// loadSymbolsToolStripMenuItem
 			// 
@@ -394,6 +396,7 @@
             this.classPtrToolStripButton,
             this.toolStripSeparator15,
             this.arrayToolStripButton,
+            this.ptrArrayToolStripButton,
             this.vtableToolStripButton,
             this.fnPtrToolStripButton});
 			this.toolStrip.Location = new System.Drawing.Point(0, 24);
@@ -976,9 +979,20 @@
 			this.arrayToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.arrayToolStripButton.Name = "arrayToolStripButton";
 			this.arrayToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.arrayToolStripButton.ToolTipText = "Array";
+			this.arrayToolStripButton.ToolTipText = "Array of Classes";
 			this.arrayToolStripButton.Value = typeof(ReClassNET.Nodes.ArrayNode);
 			this.arrayToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
+			// 
+			// ptrArrayToolStripButton
+			// 
+			this.ptrArrayToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.ptrArrayToolStripButton.Image = global::ReClassNET.Properties.Resources.button_ptrarray;
+			this.ptrArrayToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.ptrArrayToolStripButton.Name = "ptrArrayToolStripButton";
+			this.ptrArrayToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.ptrArrayToolStripButton.ToolTipText = "Array of Pointers";
+			this.ptrArrayToolStripButton.Value = typeof(ReClassNET.Nodes.ClassPtrArrayNode);
+			this.ptrArrayToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
 			// 
 			// vtableToolStripButton
 			// 
@@ -1167,6 +1181,7 @@
 		private ClassNodeView classesView;
 		private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem cleanUnusedClassesToolStripMenuItem;
+		private Gui.TypeToolStripButton ptrArrayToolStripButton;
 	}
 }
 

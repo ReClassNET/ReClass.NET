@@ -98,9 +98,7 @@ namespace ReClassNET.DataExchange
 		private SchemaNode ReadNode(XElement node, ReportError report)
 		{
 			var type = SchemaType.None;
-
-			SchemaType typeVal;
-			if (!Enum.TryParse(node.Attribute(XmlTypeAttribute)?.Value, out typeVal))
+			if (!Enum.TryParse(node.Attribute(XmlTypeAttribute)?.Value, out type))
 			{
 				report?.Invoke($"Node has unknown type: " + node.ToString());
 
