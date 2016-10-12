@@ -17,7 +17,8 @@ namespace ReClassNET
 			ReadRemoteMemory,
 			WriteRemoteMemory,
 			EnumerateProcesses,
-			EnumerateRemoteSectionsAndModules
+			EnumerateRemoteSectionsAndModules,
+			DisassembleRemoteCode
 		}
 
 		private IntPtr nativeHelperHandle;
@@ -37,6 +38,7 @@ namespace ReClassNET
 		private IntPtr fnWriteRemoteMemory;
 		private IntPtr fnEnumerateProcesses;
 		private IntPtr fnEnumerateRemoteSectionsAndModules;
+		private IntPtr fnDisassembleRemoteCode;
 
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate int GetLastErrorDelegate();
@@ -72,6 +74,11 @@ namespace ReClassNET
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate void EnumerateRemoteSectionsAndModulesDelegate(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule);
 		private EnumerateRemoteSectionsAndModulesDelegate enumerateRemoteSectionsAndModulesDelegate;
+
+		public delegate void DisassembleRemoteCodeCallback(IntPtr address, int length, [MarshalAs(UnmanagedType.LPStr)]string instruction);
+		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
+		private delegate void DisassembleRemoteCodeDelegate(IntPtr process, IntPtr address, int length, DisassembleRemoteCodeCallback callbackDisassembledCode);
+		private DisassembleRemoteCodeDelegate disassembleRemoteCodeDelegate;
 
 		private bool disposedValue = false;
 
@@ -126,6 +133,9 @@ namespace ReClassNET
 
 			fnEnumerateRemoteSectionsAndModules = Natives.GetProcAddress(nativeHelperHandle, "_EnumerateRemoteSectionsAndModules@12");
 			enumerateRemoteSectionsAndModulesDelegate = Marshal.GetDelegateForFunctionPointer<EnumerateRemoteSectionsAndModulesDelegate>(fnEnumerateRemoteSectionsAndModules);
+
+			fnDisassembleRemoteCode = Natives.GetProcAddress(nativeHelperHandle, "_DisassembleRemoteCode@8");
+			disassembleRemoteCodeDelegate = Marshal.GetDelegateForFunctionPointer<DisassembleRemoteCodeDelegate>(fnDisassembleRemoteCode);
 		}
 
 		#region IDisposable Support
@@ -182,6 +192,8 @@ namespace ReClassNET
 					return fnEnumerateProcesses;
 				case RequestFunction.EnumerateRemoteSectionsAndModules:
 					return fnEnumerateRemoteSectionsAndModules;
+				case RequestFunction.DisassembleRemoteCode:
+					return fnDisassembleRemoteCode;
 			}
 
 			return IntPtr.Zero;
@@ -219,6 +231,11 @@ namespace ReClassNET
 		public void EnumerateRemoteSectionsAndModules(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule)
 		{
 			enumerateRemoteSectionsAndModulesDelegate(process, callbackSection, callbackModule);
+		}
+
+		public void DisassembleRemoteCode(IntPtr process, IntPtr address, int length, DisassembleRemoteCodeCallback remoteCodeCallback)
+		{
+			disassembleRemoteCodeDelegate(process, address, size, remoteCodeCallback);
 		}
 	}
 }

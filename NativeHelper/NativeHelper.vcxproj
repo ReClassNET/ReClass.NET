@@ -73,21 +73,25 @@
     <LinkIncremental>true</LinkIncremental>
     <TargetName>$(ProjectName)_x86d</TargetName>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IncludePath>.\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>$(ProjectName)_x64d</TargetName>
     <OutDir>$(SolutionDir)\bin\$(Configuration)\x64\</OutDir>
+    <IncludePath>.\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)_x86</TargetName>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IncludePath>.\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)_x64</TargetName>
     <OutDir>$(SolutionDir)bin\$(Configuration)\x64\</OutDir>
+    <IncludePath>.\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -150,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="beaengine\src\BeaEngine.c" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

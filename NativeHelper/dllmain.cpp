@@ -6,6 +6,8 @@
 #include <vector>
 #include <algorithm>
 
+#include <beaengine/BeaEngine.h>
+
 const int PATH_MAXIMUM_LENGTH = 260;
 
 enum class RequestFunction
@@ -304,4 +306,56 @@ EXTERN_DLL_EXPORT VOID __stdcall EnumerateRemoteSectionsAndModules(HANDLE proces
 	}
 
 	lastError = GetLastError();
+}
+
+typedef VOID(__stdcall DisassembleRemoteCodeCallback)(LPVOID address, DWORD length, CHAR instruction[64]);
+
+EXTERN_DLL_EXPORT VOID __stdcall DisassembleRemoteCode(HANDLE process, LPVOID address, int length, DisassembleRemoteCodeCallback callbackDisassembledCode)
+{
+	if (callbackDisassembledCode == nullptr)
+	{
+		return;
+	}
+
+	UIntPtr start = (UIntPtr)address;
+	UIntPtr end = start + length;
+	if (end <= start)
+	{
+		return;
+	}
+
+	DISASM disasm;
+	std::memset(&disasm, 0, sizeof(DISASM));
+	disasm.Options = NasmSyntax + PrefixedNumeral;
+#ifdef _WIN64
+	disasm.Archi = 64;
+#endif
+
+	auto readRemoteMemory = reinterpret_cast<decltype(ReadRemoteMemory)*>(requestFunction(RequestFunction::ReadRemoteMemory));
+
+	std::vector<uint8_t> buffer(length);
+	readRemoteMemory(process, address, buffer.data(), buffer.size());
+
+	disasm.EIP = (UIntPtr)buffer.data();
+	disasm.VirtualAddr = start;
+
+	while (true)
+	{
+		disasm.SecurityBlock = ((UIntPtr)buffer.data() + buffer.size()) - disasm.EIP;
+
+		auto disamLength = Disasm(&disasm);
+		if (disamLength == OUT_OF_BLOCK || disamLength == UNKNOWN_OPCODE)
+		{
+			break;
+		}
+
+		callbackDisassembledCode((LPVOID)disasm.VirtualAddr, disamLength, disasm.CompleteInstr);
+
+		disasm.EIP += disamLength;
+		if (disasm.EIP >= end)
+		{
+			break;
+		}
+		disasm.VirtualAddr += disamLength;
+	}
 }

@@ -28,7 +28,7 @@ namespace ReClassNET
 
 			sectionsDataGridView.AutoGenerateColumns = false;
 
-			if (nativeHelper.IsProcessValid(process.Handle))
+			if (process != null && nativeHelper.IsProcessValid(process.Handle))
 			{
 				DataTable dt = new DataTable();
 				dt.Columns.Add("address", typeof(long));
