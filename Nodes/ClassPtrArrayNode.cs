@@ -16,7 +16,7 @@ namespace ReClassNET.Nodes
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			return Draw(view, x, y, "PtrArray ");
+			return Draw(view, x, y, "PtrArray", HotSpotType.ChangeAll);
 		}
 
 		protected override int DrawChild(ViewInfo view, int x, int y)

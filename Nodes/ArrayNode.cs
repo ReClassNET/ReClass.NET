@@ -12,7 +12,7 @@
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			return Draw(view, x, y, "Array ");
+			return Draw(view, x, y, "Array", HotSpotType.ChangeSkipParent);
 		}
 
 		protected override int DrawChild(ViewInfo view, int x, int y)

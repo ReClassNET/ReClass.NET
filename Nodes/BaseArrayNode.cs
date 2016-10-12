@@ -5,7 +5,7 @@
 		public int CurrentIndex { get; set; }
 		public int Count { get; set; } = 1;
 
-		public int Draw(ViewInfo view, int x, int y, string name)
+		public int Draw(ViewInfo view, int x, int y, string type, HotSpotType exchange)
 		{
 			if (IsHidden)
 			{
@@ -22,7 +22,7 @@
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, name);
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
 			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "[");
 			x = AddText(view, x, y, view.Settings.IndexColor, 0, Count.ToString());
@@ -35,7 +35,7 @@
 			x = AddIcon(view, x, y, Icons.RightBracket, 3, HotSpotType.Click);
 
 			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name} Size={MemorySize}>");
-			x = AddIcon(view, x + 2, y, Icons.Change, 4, HotSpotType.ChangeX);
+			x = AddIcon(view, x + 2, y, Icons.Change, 4, exchange);
 
 			x += view.Font.Width;
 			x = AddComment(view, x, y);

@@ -227,9 +227,45 @@ namespace ReClassNET
 					{
 						RemoveSelectedNodes();
 					}
-					else if (hotSpot.Type == HotSpotType.ChangeA || hotSpot.Type == HotSpotType.ChangeX)
+					else if (hotSpot.Type == HotSpotType.ChangeAll || hotSpot.Type == HotSpotType.ChangeSkipParent)
 					{
-						//exchange
+						var refNode = hitObject as BaseReferenceNode;
+						if (refNode != null)
+						{
+							EventHandler changeInnerType = (sender2, e2) =>
+							{
+								var item = sender2 as TypeToolStripMenuItem;
+								if (item == null)
+								{
+									return;
+								}
+								var classNode = item.Tag as ClassNode;
+								if (classNode == null)
+								{
+									return;
+								}
+
+								refNode.InnerNode = classNode;
+							};
+
+							var menu = new ContextMenuStrip();
+							menu.Items.AddRange(
+								ClassNode.Classes
+								.Where(c => hotSpot.Type == HotSpotType.ChangeSkipParent ? hitObject.ParentNode != c : true)
+								.Select(c =>
+								{
+									var b = new TypeToolStripMenuItem
+									{
+										Text = c.Name,
+										Tag = c
+									};
+									b.Click += changeInnerType;
+									return b;
+								})
+								.ToArray()
+							);
+							menu.Show(this, e.Location);
+						}
 					}
 
 					Invalidate();
@@ -319,23 +355,6 @@ namespace ReClassNET
 			}
 
 			return classNode.Nodes.FindIndex(n => n == node);
-		}
-
-		void ReplaceNode(int idx, BaseNode pNewNode)
-		{
-
-		}
-		void RemoveNodes(int idx, int length)
-		{
-
-		}
-		void FillNodes(int idx, int Length)
-		{
-
-		}
-		void ResizeNode(int idx, int before, int After)
-		{
-
 		}
 
 		public void AddBytes(int length)

@@ -10,6 +10,8 @@ namespace ReClassNET.Nodes
 		public delegate void NewClassCreatedEvent(ClassNode sender);
 		public static event NewClassCreatedEvent NewClassCreated;
 
+		public static List<ClassNode> Classes = new List<ClassNode>();
+
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
 
 		private readonly List<BaseNode> nodes = new List<BaseNode>();
@@ -28,6 +30,8 @@ namespace ReClassNET.Nodes
 #else
 			Offset = (IntPtr)0x400000;
 #endif
+
+			Classes.Add(this);
 
 			if (notifiy)
 			{
