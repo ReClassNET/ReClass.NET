@@ -252,6 +252,7 @@ namespace ReClassNET
 							menu.Items.AddRange(
 								ClassNode.Classes
 								.Where(c => hotSpot.Type == HotSpotType.ChangeSkipParent ? hitObject.ParentNode != c : true)
+								.OrderBy(c => c.Name)
 								.Select(c =>
 								{
 									var b = new TypeToolStripMenuItem
