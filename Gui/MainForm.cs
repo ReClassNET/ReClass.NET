@@ -186,7 +186,7 @@ namespace ReClassNET
 
 		private void memoryViewerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			new ProcessMemoryViewer(nativeHelper, remoteProcess.Process).Show();
+			new ProcessMemoryViewer(remoteProcess, classesView).Show();
 		}
 	}
 }

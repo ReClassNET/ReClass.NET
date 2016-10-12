@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReClassNET.Nodes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,19 +17,20 @@ namespace ReClassNET
 {
 	partial class ProcessMemoryViewer : Form
 	{
-		private readonly NativeHelper nativeHelper;
+		private readonly ClassNodeView classesView;
 
-		public ProcessMemoryViewer(NativeHelper nativeHelper, ProcessInfo process)
+		public ProcessMemoryViewer(RemoteProcess process, ClassNodeView classesView)
 		{
-			Contract.Requires(nativeHelper != null);
-
-			this.nativeHelper = nativeHelper;
+			Contract.Requires(process != null);
+			Contract.Requires(classesView != null);
 
 			InitializeComponent();
 
+			this.classesView = classesView;
+
 			sectionsDataGridView.AutoGenerateColumns = false;
 
-			if (process != null && nativeHelper.IsProcessValid(process.Handle))
+			if (process.IsValid)
 			{
 				DataTable dt = new DataTable();
 				dt.Columns.Add("address", typeof(long));
@@ -39,7 +41,7 @@ namespace ReClassNET
 				dt.Columns.Add("type", typeof(string));
 				dt.Columns.Add("module", typeof(string));
 
-				nativeHelper.EnumerateRemoteSectionsAndModules(process.Handle, delegate (IntPtr baseAddress, IntPtr regionSize, string name, Natives.StateEnum state, Natives.AllocationProtectEnum protection, Natives.TypeEnum type, string modulePath)
+				process.NativeHelper.EnumerateRemoteSectionsAndModules(process.Process.Handle, delegate (IntPtr baseAddress, IntPtr regionSize, string name, Natives.StateEnum state, Natives.AllocationProtectEnum protection, Natives.TypeEnum type, string modulePath)
 				{
 					var row = dt.NewRow();
 					row["address"] = baseAddress.ToInt64();
@@ -55,6 +57,61 @@ namespace ReClassNET
 
 				sectionsDataGridView.DataSource = dt;
 			}
+		}
+
+		private void sectionsDataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				int rowSelected = e.RowIndex;
+				if (e.RowIndex != -1)
+				{
+					sectionsDataGridView.Rows[rowSelected].Selected = true;
+				}
+			}
+		}
+
+		private IntPtr GetSelectedRegionAddress()
+		{
+			var row = sectionsDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView;
+			if (row != null)
+			{
+				return (IntPtr)(long)row["address"];
+			}
+			return IntPtr.Zero;
+		}
+
+		private void setCurrentClassAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var address = GetSelectedRegionAddress();
+			if (address != IntPtr.Zero)
+			{
+				var node = classesView.SelectedClass;
+				if (node != null)
+				{
+					node.Offset = address;
+				}
+			}
+		}
+
+		private void createClassAtAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var address = GetSelectedRegionAddress();
+			if (address != IntPtr.Zero)
+			{
+				var node = new ClassNode
+				{
+					Offset = address
+				};
+				node.AddBytes(64);
+
+				classesView.SelectedClass = node;
+			}
+		}
+
+		private void sectionsDataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+		{
+			setCurrentClassAddressToolStripMenuItem_Click(sender, e);
 		}
 	}
 }
