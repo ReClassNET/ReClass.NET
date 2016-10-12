@@ -27,10 +27,10 @@ namespace ReClassNET.Nodes
 
 			if (view.Settings.ShowText)
 			{
-				x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, text);
+				x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text);
 			}
 
-			var color = view.Settings.HighlightChangedValues && highlightUntil > CurrentHighlightTime ? view.Settings.HighlightColor : view.Settings.Hex;
+			var color = view.Settings.HighlightChangedValues && highlightUntil > CurrentHighlightTime ? view.Settings.HighlightColor : view.Settings.HexColor;
 			var changed = false;
 			for (var i = 0; i < length; ++i)
 			{

@@ -35,6 +35,11 @@ namespace ReClassNET
 #endif
 		}
 
+		public static int ToRgb(this Color color)
+		{
+			return 0xFFFFFF & color.ToArgb();
+		}
+
 		public static Point OffsetEx(this Point p, int x, int y)
 		{
 			var temp = p;

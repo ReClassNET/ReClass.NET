@@ -43,39 +43,39 @@ namespace ReClassNET.Nodes
 
 				y += view.Font.Height;
 				x = defaultX;
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
-				x = AddText(view, x, y, view.Settings.Value, 0, $"{value._11,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.Value, 1, $"{value._12,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.Value, 2, $"{value._13,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.Value, 3, $"{value._14,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.ValueColor, 0, $"{value._11,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 1, $"{value._12,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 2, $"{value._13,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 3, $"{value._14,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
 				x = defaultX;
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
-				x = AddText(view, x, y, view.Settings.Value, 4, $"{value._21,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.Value, 5, $"{value._22,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.Value, 6, $"{value._23,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.Value, 7, $"{value._24,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.ValueColor, 4, $"{value._21,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 5, $"{value._22,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 6, $"{value._23,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 7, $"{value._24,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
 				x = defaultX;
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
-				x = AddText(view, x, y, view.Settings.Value, 8, $"{value._31,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.Value, 9, $"{value._32,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.Value, 10, $"{value._33,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.Value, 11, $"{value._34,14:0.000}");
-				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.ValueColor, 8, $"{value._31,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 9, $"{value._32,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 10, $"{value._33,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 11, $"{value._34,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 			});
 		}
 

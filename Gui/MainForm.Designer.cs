@@ -33,7 +33,6 @@
 			this.processToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.newClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.selectProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -164,7 +163,6 @@
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newClassToolStripMenuItem,
             this.selectProcessToolStripMenuItem,
             this.toolStripSeparator1,
             this.newProjectToolStripMenuItem,
@@ -180,13 +178,6 @@
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
-			// 
-			// newClassToolStripMenuItem
-			// 
-			this.newClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_class_add;
-			this.newClassToolStripMenuItem.Name = "newClassToolStripMenuItem";
-			this.newClassToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-			this.newClassToolStripMenuItem.Text = "New Class...";
 			// 
 			// selectProcessToolStripMenuItem
 			// 
@@ -246,6 +237,7 @@
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
 			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
 			this.settingsToolStripMenuItem.Text = "Settings";
+			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 			// 
 			// pluginsToolStripMenuItem
 			// 
@@ -1090,7 +1082,6 @@
 		private System.Windows.Forms.StatusStrip statusStrip;
 		private System.Windows.Forms.MenuStrip mainMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem newClassToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem selectProcessToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem newProjectToolStripMenuItem;

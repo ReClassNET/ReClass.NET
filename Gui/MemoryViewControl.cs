@@ -65,7 +65,7 @@ namespace ReClassNET
 
 			hotSpots.Clear();
 
-			e.Graphics.FillRectangle(new SolidBrush(Settings.Background), ClientRectangle);
+			e.Graphics.FillRectangle(new SolidBrush(Settings.BackgroundColor), ClientRectangle);
 
 			if (ClassNode == null)
 			{
@@ -245,7 +245,7 @@ namespace ReClassNET
 			{
 				if (hotSpot.Rect.Contains(e.Location))
 				{
-					editBox.BackColor = Settings.Selected;
+					editBox.BackColor = Settings.SelectedColor;
 					editBox.HotSpot = hotSpot;
 					editBox.Visible = true;
 

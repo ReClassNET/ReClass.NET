@@ -33,15 +33,15 @@
 			x = AddIcon(view, x, y, Icons.Text, HotSpot.NoneId, HotSpotType.None);
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, type);
-			x = AddText(view, x, y, view.Settings.Name, HotSpot.NameId, Name);
-			x = AddText(view, x, y, view.Settings.Index, HotSpot.NoneId, "[");
-			x = AddText(view, x, y, view.Settings.Index, 0, length.ToString());
-			x = AddText(view, x, y, view.Settings.Index, HotSpot.NoneId, "]") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type);
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "[");
+			x = AddText(view, x, y, view.Settings.IndexColor, 0, length.ToString());
+			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "]") + view.Font.Width;
 
-			x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, "= '");
-			x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, text.LimitLength(150));
-			x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, "'") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "= '");
+			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text.LimitLength(150));
+			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
 
 			x = AddComment(view, x, y);
 

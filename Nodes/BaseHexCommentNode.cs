@@ -9,17 +9,17 @@ namespace ReClassNET.Nodes
 		{
 			if (view.Settings.ShowFloat)
 			{
-				x = AddText(view, x, y, view.Settings.Value, HotSpot.NoneId, $"({(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000})");
+				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"({(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000})");
 			}
 			if (view.Settings.ShowInteger)
 			{
 				if (ivalue == IntPtr.Zero)
 				{
-					x = AddText(view, x, y, view.Settings.Value, HotSpot.NoneId, "(0)");
+					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, "(0)");
 				}
 				else
 				{
-					x = AddText(view, x, y, view.Settings.Value, HotSpot.NoneId, $"({ivalue.ToInt64()}|0x{uvalue.ToUInt64():X})");
+					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"({ivalue.ToInt64()}|0x{uvalue.ToUInt64():X})");
 				}
 			}
 
@@ -28,7 +28,7 @@ namespace ReClassNET.Nodes
 			{
 				if (view.Settings.ShowPointer)
 				{
-					x = AddText(view, x, y, view.Settings.Offset, HotSpot.NoneId, $"*->{namedAddress} ");
+					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"*->{namedAddress} ");
 
 					if (view.Settings.ShowRTTI)
 					{
@@ -46,7 +46,7 @@ namespace ReClassNET.Nodes
 								var symbol = symbols.GetSymbolStringWithVA(ivalue);
 								if (!string.IsNullOrEmpty(symbol))
 								{
-									x = AddText(view, x, y, view.Settings.Offset, HotSpot.NoneId, symbol + " ");
+									x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, symbol + " ");
 								}
 							}
 						}
@@ -60,7 +60,7 @@ namespace ReClassNET.Nodes
 					{
 						if (txt.Take(8).Where(c => !char.IsControl(c)).Any())
 						{
-							x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, $"'{txt}'");
+							x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, $"'{txt}'");
 						}
 					}
 				}

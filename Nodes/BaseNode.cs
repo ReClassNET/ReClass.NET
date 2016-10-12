@@ -147,13 +147,13 @@ namespace ReClassNET.Nodes
 		{
 			if (view.Settings.ShowOffset)
 			{
-				x = AddText(view, x, y, view.Settings.Offset, HotSpot.NoneId, $"{Offset.ToInt32():X04}") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"{Offset.ToInt32():X04}") + view.Font.Width;
 			}
 
 			if (view.Settings.ShowAddress)
 			{
 #if WIN32
-				x = AddText(view, x, y, view.Settings.Address, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt32():X08}") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt32():X08}") + view.Font.Width;
 #else
 				x = AddText(view, x, y, view.Settings.Address, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt64():X016}") + view.Font.Width;
 #endif
@@ -171,7 +171,7 @@ namespace ReClassNET.Nodes
 
 			if (IsSelected)
 			{
-				view.Context.FillRectangle(new SolidBrush(view.Settings.Selected), 0, y, view.ClientArea.Right, height);
+				view.Context.FillRectangle(new SolidBrush(view.Settings.SelectedColor), 0, y, view.ClientArea.Right, height);
 			}
 
 			AddClickableArea(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), null,-1, HotSpotType.Select);
@@ -239,15 +239,15 @@ namespace ReClassNET.Nodes
 
 		protected virtual int AddComment(ViewInfo view, int x, int y)
 		{
-			x = AddText(view, x, y, view.Settings.Comment, HotSpot.NoneId, "//");
-			x = AddText(view, x, y, view.Settings.Comment, HotSpot.CommentId, Comment + " ");
+			x = AddText(view, x, y, view.Settings.CommentColor, HotSpot.NoneId, "//");
+			x = AddText(view, x, y, view.Settings.CommentColor, HotSpot.CommentId, Comment + " ");
 
 			return x;
 		}
 
 		protected int DrawHidden(ViewInfo view, int x, int y)
 		{
-			view.Context.FillRectangle(new SolidBrush(IsSelected ? view.Settings.Selected : view.Settings.Hidden), 0, y, view.ClientArea.Right, 1);
+			view.Context.FillRectangle(new SolidBrush(IsSelected ? view.Settings.SelectedColor : view.Settings.HiddenColor), 0, y, view.ClientArea.Right, 1);
 
 			return y + 1;
 		}

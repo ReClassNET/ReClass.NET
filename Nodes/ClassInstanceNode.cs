@@ -27,9 +27,9 @@
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, "Instance ");
-			x = AddText(view, x, y, view.Settings.Name, HotSpot.NameId, Name);
-			x = AddText(view, x, y, view.Settings.Value, HotSpot.NoneId, $"<{InnerNode.Name}>");
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Instance ");
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name}>");
 			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeX);
 
 			x += view.Font.Width;

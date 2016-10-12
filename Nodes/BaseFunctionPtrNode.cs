@@ -37,8 +37,8 @@ namespace ReClassNET.Nodes
 
 			var tx = x;
 
-			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.Name, HotSpot.NameId, name) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, name) + view.Font.Width;
 
 			x = AddOpenClose(view, x, y) + view.Font.Width;
 
@@ -54,7 +54,7 @@ namespace ReClassNET.Nodes
 				{
 					y += view.Font.Height;
 
-					AddText(view, tx, y, view.Settings.Name, -1, line);
+					AddText(view, tx, y, view.Settings.NameColor, -1, line);
 				}
 			}
 

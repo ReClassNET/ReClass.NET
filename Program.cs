@@ -1,29 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Globalization;
-using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace ReClassNET
 {
 	static class Program
 	{
-		/// <summary>
-		/// Der Haupteinstiegspunkt für die Anwendung.
-		/// </summary>
+		private const string SettingsFile = "settings.xml";
+
 		[STAThread]
 		static void Main()
 		{
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-			using (var nativeHelper = new NativeHelper())
+			try
 			{
-				Application.EnableVisualStyles();
-				Application.SetCompatibleTextRenderingDefault(false);
-				Application.Run(new MainForm(nativeHelper));
+				var settings = Settings.Load(SettingsFile);
+
+				using (var nativeHelper = new NativeHelper())
+				{
+					Application.EnableVisualStyles();
+					Application.SetCompatibleTextRenderingDefault(false);
+					Application.Run(new MainForm(nativeHelper, settings));
+				}
+
+				Settings.Save(settings, SettingsFile);
+			}
+			catch (Exception ex)
+			{
+
 			}
 		}
 	}

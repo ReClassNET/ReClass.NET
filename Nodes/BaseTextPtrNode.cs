@@ -21,12 +21,12 @@ namespace ReClassNET.Nodes
 			x = AddIcon(view, x, y, Icons.Text, HotSpot.NoneId, HotSpotType.None);
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, type);
-			x = AddText(view, x, y, view.Settings.Name, HotSpot.NameId, Name);
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type);
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
 
-			x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, " = '");
-			x = AddText(view, x, y, view.Settings.Text, 1, text);
-			x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, "' ") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, " = '");
+			x = AddText(view, x, y, view.Settings.TextColor, 1, text);
+			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "' ") + view.Font.Width;
 
 			x = AddComment(view, x, y);
 

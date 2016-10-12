@@ -22,19 +22,19 @@
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, name);
-			x = AddText(view, x, y, view.Settings.Name, HotSpot.NameId, Name);
-			x = AddText(view, x, y, view.Settings.Index, HotSpot.NoneId, "[");
-			x = AddText(view, x, y, view.Settings.Index, 0, Count.ToString());
-			x = AddText(view, x, y, view.Settings.Index, HotSpot.NoneId, "]");
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, name);
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "[");
+			x = AddText(view, x, y, view.Settings.IndexColor, 0, Count.ToString());
+			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "]");
 
 			x = AddIcon(view, x, y, Icons.LeftBracket, 2, HotSpotType.Click);
-			x = AddText(view, x, y, view.Settings.Index, HotSpot.NoneId, "(");
-			x = AddText(view, x, y, view.Settings.Index, 1, CurrentIndex.ToString());
-			x = AddText(view, x, y, view.Settings.Index, HotSpot.NoneId, ")");
+			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "(");
+			x = AddText(view, x, y, view.Settings.IndexColor, 1, CurrentIndex.ToString());
+			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, ")");
 			x = AddIcon(view, x, y, Icons.RightBracket, 3, HotSpotType.Click);
 
-			x = AddText(view, x, y, view.Settings.Value, HotSpot.NoneId, $"<{InnerNode.Name} Size={MemorySize}>");
+			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name} Size={MemorySize}>");
 			x = AddIcon(view, x + 2, y, Icons.Change, 4, HotSpotType.ChangeX);
 
 			x += view.Font.Width;

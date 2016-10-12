@@ -2,16 +2,10 @@
 using ReClassNET.Gui;
 using ReClassNET.Nodes;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ReClassNET
@@ -19,16 +13,18 @@ namespace ReClassNET
 	partial class MainForm : Form
 	{
 		private readonly NativeHelper nativeHelper;
+		private readonly Settings settings;
 
-		RemoteProcess remoteProcess;
-		Memory memory = new Memory();
-		Settings settings = new Settings();
+		private readonly RemoteProcess remoteProcess;
+		private readonly Memory memory;
 
-		public MainForm(NativeHelper nativeHelper)
+		public MainForm(NativeHelper nativeHelper, Settings settings)
 		{
 			Contract.Requires(nativeHelper != null);
+			Contract.Requires(settings != null);
 
 			this.nativeHelper = nativeHelper;
+			this.settings = settings;
 
 			InitializeComponent();
 
@@ -48,14 +44,15 @@ namespace ReClassNET
 				}
 			};
 
-			memory.Process = remoteProcess;
+			memory = new Memory
+			{
+				Process = remoteProcess
+			};
 
 			ClassNode.NewClassCreated += delegate (ClassNode node)
 			{
 				classesView.Add(node);
 			};
-
-			Graphics graphics = this.CreateGraphics();
 
 			memoryViewControl.Settings = settings;
 			memoryViewControl.Memory = memory;
@@ -65,7 +62,7 @@ namespace ReClassNET
 
 		private void selectProcessToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var pb = new ProcessBrowser(nativeHelper, "notepad++.exe"))
+			using (var pb = new ProcessBrowser(nativeHelper, settings.LastProcess))
 			{
 				if (pb.ShowDialog() == DialogResult.OK)
 				{
@@ -75,6 +72,8 @@ namespace ReClassNET
 					}
 
 					remoteProcess.Process = pb.SelectedProcess;
+
+					settings.LastProcess = remoteProcess.Process.Name;
 				}
 			}
 		}
@@ -187,6 +186,19 @@ namespace ReClassNET
 		private void memoryViewerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			new ProcessMemoryViewer(remoteProcess, classesView).Show();
+		}
+
+		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (var sd = new SettingsDialog(settings))
+			{
+				sd.ShowDialog();
+			}
+		}
+
+		private void newClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 }
