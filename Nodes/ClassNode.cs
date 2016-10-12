@@ -95,12 +95,11 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id == 0)
 			{
-				//m_strOffset.SetString(Spot.Text.GetString());
-				//m_Offset = ConvertStrToAddress(m_strOffset);
-			}
-			else if (spot.Id == 1)
-			{
-				//RequestPosition = _tcstol(Spot.Text.GetString(), NULL, 10); // RequestPosition = ConvertStrToAddress( Spot.Text );
+				var address = spot.Memory.Process?.ParseAddress(spot.Text) ?? IntPtr.Zero;
+				if (!address.IsNull())
+				{
+					Offset = address;
+				}
 			}
 		}
 

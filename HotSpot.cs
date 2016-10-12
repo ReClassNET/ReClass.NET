@@ -42,5 +42,7 @@ namespace ReClassNET
 		public Rectangle Rect { get; set; }
 
 		public IntPtr Address { get; set; }
+
+		public Memory Memory { get; set; }
 	}
 }

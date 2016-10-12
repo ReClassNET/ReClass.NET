@@ -66,6 +66,7 @@
 			this.classPointerToolStripMenuItem = new ReClassNET.Gui.TypeToolStripMenuItem();
 			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.arrayToolStripMenuItem = new ReClassNET.Gui.TypeToolStripMenuItem();
+			this.arrayOfPointersToolStripMenuItem = new ReClassNET.Gui.TypeToolStripMenuItem();
 			this.vTablePointerToolStripMenuItem = new ReClassNET.Gui.TypeToolStripMenuItem();
 			this.functionPointerToolStripMenuItem = new ReClassNET.Gui.TypeToolStripMenuItem();
 			this.addBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -105,7 +106,7 @@
             this.toolStripSeparator2,
             this.removeToolStripMenuItem});
 			this.selectedNodeContextMenuStrip.Name = "selectedNodeContextMenuStrip";
-			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(153, 148);
+			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(148, 126);
 			// 
 			// changeTypeToolStripMenuItem
 			// 
@@ -145,11 +146,12 @@
             this.classPointerToolStripMenuItem,
             this.toolStripSeparator10,
             this.arrayToolStripMenuItem,
+            this.arrayOfPointersToolStripMenuItem,
             this.vTablePointerToolStripMenuItem,
             this.functionPointerToolStripMenuItem});
 			this.changeTypeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.exchange_icon;
 			this.changeTypeToolStripMenuItem.Name = "changeTypeToolStripMenuItem";
-			this.changeTypeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.changeTypeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.changeTypeToolStripMenuItem.Text = "Change Type";
 			// 
 			// hex64ToolStripMenuItem
@@ -431,9 +433,18 @@
 			this.arrayToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_array;
 			this.arrayToolStripMenuItem.Name = "arrayToolStripMenuItem";
 			this.arrayToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-			this.arrayToolStripMenuItem.Text = "Array";
+			this.arrayToolStripMenuItem.Text = "Array of Classes";
 			this.arrayToolStripMenuItem.Value = typeof(ReClassNET.Nodes.ArrayNode);
 			this.arrayToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
+			// 
+			// arrayOfPointersToolStripMenuItem
+			// 
+			this.arrayOfPointersToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_ptrarray;
+			this.arrayOfPointersToolStripMenuItem.Name = "arrayOfPointersToolStripMenuItem";
+			this.arrayOfPointersToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+			this.arrayOfPointersToolStripMenuItem.Text = "Array of Pointers";
+			this.arrayOfPointersToolStripMenuItem.Value = typeof(ReClassNET.Nodes.ClassPtrArrayNode);
+			this.arrayOfPointersToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
 			// 
 			// vTablePointerToolStripMenuItem
 			// 
@@ -465,7 +476,7 @@
             this.add4096BytesToolStripMenuItem});
 			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_x;
 			this.addBytesToolStripMenuItem.Name = "addBytesToolStripMenuItem";
-			this.addBytesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.addBytesToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.addBytesToolStripMenuItem.Text = "Add Bytes";
 			// 
 			// add4BytesToolStripMenuItem
@@ -543,7 +554,7 @@
             this.insert4096BytesToolStripMenuItem});
 			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_x;
 			this.insertBytesToolStripMenuItem.Name = "insertBytesToolStripMenuItem";
-			this.insertBytesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.insertBytesToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.insertBytesToolStripMenuItem.Text = "Insert Bytes";
 			// 
 			// insert4BytesToolStripMenuItem
@@ -612,25 +623,25 @@
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(144, 6);
 			// 
 			// copyAddressToolStripMenuItem
 			// 
 			this.copyAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.page_copy;
 			this.copyAddressToolStripMenuItem.Name = "copyAddressToolStripMenuItem";
-			this.copyAddressToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.copyAddressToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.copyAddressToolStripMenuItem.Text = "Copy Address";
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(144, 6);
 			// 
 			// removeToolStripMenuItem
 			// 
 			this.removeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.cross;
 			this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-			this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.removeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.removeToolStripMenuItem.Text = "Remove";
 			this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
 			// 
@@ -660,7 +671,7 @@
 			// 
 			this.Controls.Add(this.editBox);
 			this.Name = "MemoryViewControl";
-			this.Size = new System.Drawing.Size(150, 168);
+			this.Size = new System.Drawing.Size(150, 129);
 			this.selectedNodeContextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -731,5 +742,6 @@
 		private Gui.TypeToolStripMenuItem arrayToolStripMenuItem;
 		private Gui.TypeToolStripMenuItem vTablePointerToolStripMenuItem;
 		private Gui.TypeToolStripMenuItem functionPointerToolStripMenuItem;
+		private Gui.TypeToolStripMenuItem arrayOfPointersToolStripMenuItem;
 	}
 }

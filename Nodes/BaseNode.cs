@@ -106,7 +106,8 @@ namespace ReClassNET.Nodes
 				Id = id,
 				Type = type,
 				Node = this,
-				Level = view.Level
+				Level = view.Level,
+				Memory = view.Memory
 			});
 		}
 

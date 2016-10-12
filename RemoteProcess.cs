@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,6 +84,23 @@ namespace ReClassNET
 		public string ReadUTF32String(IntPtr address, int length)
 		{
 			return ReadString(Encoding.UTF32, address, length);
+		}
+
+		public IntPtr ParseAddress(string addressStr)
+		{
+
+
+			long address;
+			if (long.TryParse(addressStr, NumberStyles.HexNumber, null, out address))
+			{
+#if WIN32
+				return unchecked((IntPtr)(int)address);
+#else
+				return unchecked((IntPtr)address);
+#endif
+			}
+
+			return IntPtr.Zero;
 		}
 	}
 }
