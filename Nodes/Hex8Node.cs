@@ -4,6 +4,11 @@
 	{
 		public override int MemorySize => 1;
 
+		public Hex8Node()
+		{
+			buffer = new byte[1];
+		}
+
 		public override string GetToolTipText(HotSpot spot, Memory memory, Settings settings)
 		{
 			var b = memory.ReadByte(Offset);

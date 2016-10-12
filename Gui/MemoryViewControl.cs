@@ -92,9 +92,11 @@ namespace ReClassNET
 			int maxY = 0;
 			try
 			{
+				BaseHexNode.CurrentHighlightTime = DateTime.Now;
+
 				maxY = ClassNode.Draw(view, 0, -scrollY) + scrollY;
 			}
-			catch (Exception ex)
+			catch
 			{
 				return;
 			}

@@ -5,6 +5,11 @@ namespace ReClassNET.Nodes
 {
 	abstract class BaseHexNode : BaseNode
 	{
+		protected byte[] buffer;
+		private DateTime highlightUntil;
+
+		public static DateTime CurrentHighlightTime;
+
 		public int Draw(ViewInfo view, int x, int y, string text, int length)
 		{
 			if (IsHidden)
@@ -24,9 +29,17 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, text);
 			}
 
+			var color = view.Settings.HighlightChangedValues && highlightUntil > CurrentHighlightTime ? view.Settings.HighlightColor : view.Settings.Hex;
 			for (var i = 0; i < length; ++i)
 			{
-				x = AddText(view, x, y, view.Settings.Hex, i, $"{view.Memory.ReadByte(Offset + i):X02}") + view.Font.Width;
+				var b = view.Memory.ReadByte(Offset + i);
+				if (buffer[i] != b)
+				{
+					highlightUntil = CurrentHighlightTime.AddSeconds(1);
+					buffer[i] = b;
+				}
+
+				x = AddText(view, x, y, color, i, $"{b:X02}") + view.Font.Width;
 			}
 
 			x = AddComment(view, x, y);

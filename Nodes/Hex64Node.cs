@@ -4,6 +4,11 @@
 	{
 		public override int MemorySize => 8;
 
+		public Hex64Node()
+		{
+			buffer = new byte[8];
+		}
+
 		public override string GetToolTipText(HotSpot spot, Memory memory, Settings settings)
 		{
 			var value = memory.ReadObject<UInt64FloatDoubleData>(Offset);

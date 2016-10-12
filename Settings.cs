@@ -27,10 +27,18 @@ namespace ReClassNET
 		public Color Function { get; set; } = Color.FromArgb(255, 0, 255);
 		public Color Custom { get; set; } = Color.FromArgb(64, 128, 64);
 
+		private static Random random = new Random();
+		private static Color[] highlightColors = new Color[]
+		{
+			Color.Aqua, Color.Aquamarine, Color.Blue, Color.BlueViolet, Color.Chartreuse, Color.Crimson, Color.LawnGreen, Color.Magenta
+		};
+		public Color HighlightColor => highlightColors[random.Next(highlightColors.Length)];
+
 		[Category("Display")]
 		public bool ShowAddress { get; set; } = true;
 		public bool ShowOffset { get; set; } = true;
 		public bool ShowText { get; set; } = true;
+		public bool HighlightChangedValues { get; set; } = true;
 
 		[Category("Comment")]
 		public bool ShowFloat { get; set; } = true;

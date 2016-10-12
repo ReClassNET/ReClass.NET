@@ -10,6 +10,11 @@ namespace ReClassNET.Nodes
 	{
 		public override int MemorySize => 2;
 
+		public Hex16Node()
+		{
+			buffer = new byte[2];
+		}
+
 		public override string GetToolTipText(HotSpot spot, Memory memory, Settings settings)
 		{
 			var value = memory.ReadObject<UInt16Data>(Offset);

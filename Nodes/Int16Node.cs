@@ -18,7 +18,7 @@
 				short val;
 				if (short.TryParse(spot.Text, out val))
 				{
-					//WriteMemory()
+					spot.Memory.Process.WriteRemoteMemory(spot.Address, val);
 				}
 			}
 		}
