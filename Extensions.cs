@@ -40,6 +40,11 @@ namespace ReClassNET
 			return 0xFFFFFF & color.ToArgb();
 		}
 
+		public static bool IsPrintable(this char c)
+		{
+			return ' ' <= c && c <= '~';
+		}
+
 		public static Point OffsetEx(this Point p, int x, int y)
 		{
 			var temp = p;

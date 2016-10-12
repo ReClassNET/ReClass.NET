@@ -68,7 +68,12 @@ namespace ReClassNET
 			var sb = new StringBuilder(encoding.GetString(data));
 			for (var i = 0; i < sb.Length; ++i)
 			{
-				if (char.IsControl(sb[i]))
+				if (sb[i] == 0)
+				{
+					sb.Length = i;
+					break;
+				}
+				if (!sb[i].IsPrintable())
 				{
 					sb[i] = '.';
 				}

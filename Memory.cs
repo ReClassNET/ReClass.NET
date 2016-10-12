@@ -164,15 +164,8 @@ namespace ReClassNET
 			var sb = new StringBuilder(length);
 			for (var i = 0; i < length; ++i)
 			{
-				var b = data[offset + i];
-				if ((b >= ' ' && b <= '~'))
-				{
-					sb.Append((char)b);
-				}
-				else
-				{
-					sb.Append('.');
-				}
+				var c = (char)data[offset + i];
+				sb.Append(c.IsPrintable() ? c : '.');
 			}
 			return sb.ToString();
 		}
@@ -182,7 +175,7 @@ namespace ReClassNET
 			var sb = new StringBuilder(encoding.GetString(data, offset, length));
 			for (var i = 0; i < sb.Length; ++i)
 			{
-				if (!char.IsLetterOrDigit(sb[i]))
+				if (!sb[i].IsPrintable())
 				{
 					sb[i] = '.';
 				}
