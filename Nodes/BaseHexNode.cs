@@ -9,6 +9,7 @@ namespace ReClassNET.Nodes
 		private DateTime highlightUntil;
 
 		public static DateTime CurrentHighlightTime;
+		public static TimeSpan HightlightDuration = TimeSpan.FromSeconds(1);
 
 		public int Draw(ViewInfo view, int x, int y, string text, int length)
 		{
@@ -30,16 +31,23 @@ namespace ReClassNET.Nodes
 			}
 
 			var color = view.Settings.HighlightChangedValues && highlightUntil > CurrentHighlightTime ? view.Settings.HighlightColor : view.Settings.Hex;
+			var changed = false;
 			for (var i = 0; i < length; ++i)
 			{
 				var b = view.Memory.ReadByte(Offset + i);
 				if (buffer[i] != b)
 				{
-					highlightUntil = CurrentHighlightTime.AddSeconds(1);
+					changed = true;
+
 					buffer[i] = b;
 				}
 
 				x = AddText(view, x, y, color, i, $"{b:X02}") + view.Font.Width;
+			}
+
+			if (changed)
+			{
+				highlightUntil = CurrentHighlightTime.Add(HightlightDuration);
 			}
 
 			x = AddComment(view, x, y);
