@@ -54,7 +54,7 @@ namespace ReClassNET.Nodes
 				{
 					y += view.Font.Height;
 
-					AddText(view, tx, y, view.Settings.Type, -1, line);
+					AddText(view, tx, y, view.Settings.Name, -1, line);
 				}
 			}
 

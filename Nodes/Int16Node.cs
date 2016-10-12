@@ -6,7 +6,7 @@
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			return DrawNumeric(view, x, y, Icons.Signed, "Int16 ", view.Memory.ReadObject<short>(Offset).ToString());
+			return DrawNumeric(view, x, y, Icons.Signed, "Int16", view.Memory.ReadObject<short>(Offset).ToString());
 		}
 
 		public override void Update(HotSpot spot)

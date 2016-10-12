@@ -19,47 +19,20 @@ namespace ReClassNET
 
 		public static IntPtr Add(this IntPtr lhs, IntPtr rhs)
 		{
+#if WIN64
 			return new IntPtr(lhs.ToInt64() + rhs.ToInt64());
+#else
+			return new IntPtr(lhs.ToInt32() + rhs.ToInt32());
+#endif
 		}
 
 		public static IntPtr Add(this IntPtr lhs, long rhs)
 		{
+#if WIN64
 			return new IntPtr(lhs.ToInt64() + rhs);
-		}
-
-		public static IntPtr Add(this IntPtr lhs, ulong rhs)
-		{
-			return new IntPtr(lhs.ToInt64() + (long)rhs);
-		}
-
-		public static IntPtr Sub(this IntPtr lhs, IntPtr rhs)
-		{
-			return new IntPtr(lhs.ToInt64() - rhs.ToInt64());
-		}
-
-		public static bool IsNull(this UIntPtr ptr)
-		{
-			return ptr == UIntPtr.Zero;
-		}
-
-		public static UIntPtr Add(this UIntPtr lhs, UIntPtr rhs)
-		{
-			return new UIntPtr(lhs.ToUInt64() + rhs.ToUInt64());
-		}
-
-		public static UIntPtr Add(this UIntPtr lhs, long rhs)
-		{
-			return new UIntPtr(lhs.ToUInt64() + (ulong)rhs);
-		}
-
-		public static UIntPtr Add(this UIntPtr lhs, ulong rhs)
-		{
-			return new UIntPtr(lhs.ToUInt64() + rhs);
-		}
-
-		public static UIntPtr Sub(this UIntPtr lhs, UIntPtr rhs)
-		{
-			return new UIntPtr(lhs.ToUInt64() - rhs.ToUInt64());
+#else
+			return new IntPtr((int)(lhs.ToInt32() + rhs));
+#endif
 		}
 
 		public static Point OffsetEx(this Point p, int x, int y)

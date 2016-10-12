@@ -6,7 +6,7 @@
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			return DrawNumeric(view, x, y, Icons.Unsigned, "BYTE  ", view.Memory.ReadByte(Offset).ToString());
+			return DrawNumeric(view, x, y, Icons.Unsigned, "UInt8", view.Memory.ReadByte(Offset).ToString());
 		}
 
 		public override void Update(HotSpot spot)
@@ -18,7 +18,7 @@
 				byte val;
 				if (byte.TryParse(spot.Text, out val))
 				{
-					//WriteMemory()
+					spot.Memory.Process.WriteRemoteMemory(spot.Address, val);
 				}
 			}
 		}

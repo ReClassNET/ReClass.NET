@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,6 +33,8 @@ namespace ReClassNET
 
 			this.nativeHelper = nativeHelper;
 		}
+
+		#region ReadMemory
 
 		public void ReadMemoryIntoBuffer(IntPtr address, ref byte[] data)
 		{
@@ -87,6 +90,33 @@ namespace ReClassNET
 		{
 			return ReadString(Encoding.UTF32, address, length);
 		}
+
+		#endregion
+
+		#region WriteMemory
+
+		public bool WriteRemoteMemory(IntPtr address, byte[] data)
+		{
+			if (!IsValid)
+			{
+				return false;
+			}
+
+			return nativeHelper.WriteRemoteMemory(Process.Handle, address, data, (uint)data.Length);
+		}
+
+		public bool WriteRemoteMemory<T>(IntPtr address, T value) where T : struct
+		{
+			var data = new byte[Marshal.SizeOf<T>()];
+
+			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+			Marshal.StructureToPtr(value, handle.AddrOfPinnedObject(), false);
+			handle.Free();
+
+			return WriteRemoteMemory(address, data);
+		}
+
+		#endregion
 
 		public IntPtr ParseAddress(string addressStr)
 		{

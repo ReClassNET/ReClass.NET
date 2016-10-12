@@ -43,7 +43,7 @@ namespace ReClassNET.Nodes
 				byte val;
 				if (byte.TryParse(spot.Text, NumberStyles.HexNumber, null, out val))
 				{
-					//WriteMemory()
+					spot.Memory.Process.WriteRemoteMemory(spot.Address + spot.Id, val);
 				}
 			}
 		}

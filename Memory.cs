@@ -147,7 +147,7 @@ namespace ReClassNET
 
 		public T ReadObject<T>(int offset)
 		{
-			GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
 			var obj = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject().Add(offset), typeof(T));
 			handle.Free();
 

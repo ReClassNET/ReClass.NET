@@ -19,27 +19,9 @@ namespace ReClassNET.Nodes
 
 		public override int MemorySize => 4 * 4;
 
-		public override int Draw(ViewInfo view, int x, int y)
+		public override int Draw(ViewInfo view, int x2, int y2)
 		{
-			if (IsHidden)
-			{
-				return DrawHidden(view, x, y);
-			}
-
-			AddSelection(view, x, y, view.Font.Height);
-			AddDelete(view, x, y);
-			AddTypeDrop(view, x, y);
-
-			x += TXOFFSET;
-
-			x = AddIcon(view, x, y, Icons.Vector, HotSpot.NoneId, HotSpotType.None);
-			x = AddAddressOffset(view, x, y);
-
-			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, "Vec4 ");
-			x = AddText(view, x, y, view.Settings.Name, HotSpot.NameId, Name);
-			x = AddOpenClose(view, x, y);
-
-			if (levelsOpen[view.Level])
+			return DrawVectorType(view, x2, y2, "Vector4", (x, y) =>
 			{
 				var value = view.Memory.ReadObject<Vector4Data>(Offset);
 
@@ -52,13 +34,9 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.Value, 3, $"{value.W:0.000}");
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ")");
-			}
 
-			x += view.Font.Width;
-
-			x = AddComment(view, x, y);
-
-			return y + view.Font.Height;
+				return x;
+			});
 		}
 
 		public override void Update(HotSpot spot)

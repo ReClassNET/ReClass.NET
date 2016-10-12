@@ -223,6 +223,15 @@ namespace ReClassNET
 			return result;
 		}
 
+		public bool WriteRemoteMemory(IntPtr process, IntPtr address, byte[] buffer, uint size)
+		{
+			GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+			var result = writeRemoteMemoryDelegate(process, address, handle.AddrOfPinnedObject(), size);
+			handle.Free();
+
+			return result;
+		}
+
 		public void EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 		{
 			enumerateProcessesDelegate(callbackProcess);

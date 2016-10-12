@@ -48,7 +48,7 @@ namespace ReClassNET.Nodes
 
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, "Matrix ");
+			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, "Matrix") + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.Name, HotSpot.NameId, Name);
 			x = AddOpenClose(view, x, y);
 

@@ -89,7 +89,15 @@ namespace ReClassNET
 			};
 
 			var scrollY = VerticalScroll.Value * font.Height;
-			var maxY = ClassNode.Draw(view, 0, -scrollY) + scrollY;
+			int maxY = 0;
+			try
+			{
+				maxY = ClassNode.Draw(view, 0, -scrollY) + scrollY;
+			}
+			catch (Exception ex)
+			{
+				return;
+			}
 
 			/*foreach (var spot in hotSpots.Where(h => h.Type == HotSpotType.Select))
 			{

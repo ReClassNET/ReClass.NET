@@ -6,13 +6,11 @@
 
 		public override int MemorySize => memorySize;
 
+		public abstract int CharacterSize { get; }
+
 		public BaseTextNode()
 		{
-#if WIN32
-			memorySize = 4;
-#else
-			memorySize = 8;
-#endif
+
 		}
 
 		public override void CopyFromNode(BaseNode node)
@@ -39,11 +37,11 @@
 			x = AddText(view, x, y, view.Settings.Name, HotSpot.NameId, Name);
 			x = AddText(view, x, y, view.Settings.Index, HotSpot.NoneId, "[");
 			x = AddText(view, x, y, view.Settings.Index, 0, length.ToString());
-			x = AddText(view, x, y, view.Settings.Index, HotSpot.NoneId, "]");
+			x = AddText(view, x, y, view.Settings.Index, HotSpot.NoneId, "]") + view.Font.Width;
 
-			x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, " = '");
-			x = AddText(view, x, y, view.Settings.Text, 1, text.LimitLength(150));
-			x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, "' ") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, "= '");
+			x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, text.LimitLength(150));
+			x = AddText(view, x, y, view.Settings.Text, HotSpot.NoneId, "'") + view.Font.Width;
 
 			x = AddComment(view, x, y);
 
@@ -59,7 +57,9 @@
 				int val;
 				if (int.TryParse(spot.Text, out val))
 				{
-					memorySize = val;
+					memorySize = val * CharacterSize;
+
+					ParentNode.NotifyMemorySizeChanged();
 				}
 			}
 		}
