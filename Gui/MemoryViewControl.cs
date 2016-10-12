@@ -108,12 +108,16 @@ namespace ReClassNET
 
 			if (maxY > ClientSize.Height)
 			{
+				VerticalScroll.Enabled = true;
+
 				VerticalScroll.LargeChange = ClientSize.Height / font.Height;
 				VerticalScroll.Maximum = (maxY - ClientSize.Height) / font.Height + VerticalScroll.LargeChange;
 			}
 			else
 			{
-				
+				VerticalScroll.Enabled = false;
+
+				VerticalScroll.Value = 0;
 			}
 		}
 
