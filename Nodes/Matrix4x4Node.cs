@@ -2,7 +2,7 @@
 
 namespace ReClassNET.Nodes
 {
-	class Matrix4x4Node : BaseVecNode
+	class Matrix4x4Node : BaseMatrixNode
 	{
 		[StructLayout(LayoutKind.Explicit)]
 		struct Matrix4x4Data
@@ -43,39 +43,14 @@ namespace ReClassNET.Nodes
 
 		public override int MemorySize => 16 * 4;
 
-		public override int Draw(ViewInfo view, int x, int y)
+		public override int Draw(ViewInfo view, int x2, int y2)
 		{
-			if (IsHidden)
-			{
-				return DrawHidden(view, x, y);
-			}
-
-			AddSelection(view, x, y, view.Font.Height);
-			AddDelete(view, x, y);
-			AddTypeDrop(view, x, y);
-
-			x = x + TXOFFSET;
-
-			x = AddIcon(view, x, y, Icons.Matrix, HotSpot.NoneId, HotSpotType.None);
-
-			var tx = x;
-
-			x = AddAddressOffset(view, x, y);
-
-			x = AddText(view, x, y, view.Settings.Type, HotSpot.NoneId, "Matrix ");
-			x = AddText(view, x, y, view.Settings.Name, HotSpot.NameId, Name);
-			x = AddOpenClose(view, x, y);
-
-			x += view.Font.Width;
-
-			x = AddComment(view, x, y);
-
-			if (levelsOpen[view.Level])
+			return DrawMatrixType(view, x2, y2, "Matrix (4x4)", (ref int x, ref int y, int defaultX) =>
 			{
 				var value = view.Memory.ReadObject<Matrix4x4Data>(Offset);
 
 				y += view.Font.Height;
-				x = tx;
+				x = defaultX;
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
 				x = AddText(view, x, y, view.Settings.Value, 0, $"{value._11,14:0.000}");
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
@@ -87,7 +62,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
-				x = tx;
+				x = defaultX;
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
 				x = AddText(view, x, y, view.Settings.Value, 4, $"{value._21,14:0.000}");
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
@@ -99,7 +74,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
-				x = tx;
+				x = defaultX;
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
 				x = AddText(view, x, y, view.Settings.Value, 8, $"{value._31,14:0.000}");
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
@@ -111,7 +86,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
-				x = tx;
+				x = defaultX;
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
 				x = AddText(view, x, y, view.Settings.Value, 12, $"{value._41,14:0.000}");
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
@@ -121,9 +96,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.Value, 15, $"{value._44,14:0.000}");
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, "|");
-			}
-
-			return y + view.Font.Height;
+			});
 		}
 
 		public override void Update(HotSpot spot)

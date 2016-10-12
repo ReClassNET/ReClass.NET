@@ -120,7 +120,7 @@
     <Compile Include="Nodes\BaseReferenceNode.cs" />
     <Compile Include="Nodes\BaseTextNode.cs" />
     <Compile Include="Nodes\BaseTextPtrNode.cs" />
-    <Compile Include="Nodes\BaseVecNode.cs" />
+    <Compile Include="Nodes\BaseMatrixNode.cs" />
     <Compile Include="Nodes\ClassInstanceNode.cs" />
     <Compile Include="Nodes\ClassPtrArrayNode.cs" />
     <Compile Include="Nodes\DoubleNode.cs" />

@@ -2,7 +2,7 @@
 
 namespace ReClassNET.Nodes
 {
-	class Vector3Node : BaseVecNode
+	class Vector3Node : BaseMatrixNode
 	{
 		[StructLayout(LayoutKind.Explicit)]
 		struct Vector3Data
@@ -19,7 +19,7 @@ namespace ReClassNET.Nodes
 
 		public override int Draw(ViewInfo view, int x2, int y2)
 		{
-			return DrawVectorType(view, x2, y2, "Vector3", (x, y) =>
+			return DrawVectorType(view, x2, y2, "Vector3", (ref int x, ref int y) =>
 			{
 				var value = view.Memory.ReadObject<Vector3Data>(Offset);
 
@@ -30,8 +30,6 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.Value, 2, $"{value.Z:0.000}");
 				x = AddText(view, x, y, view.Settings.Name, HotSpot.NoneId, ")");
-
-				return x;
 			});
 		}
 
