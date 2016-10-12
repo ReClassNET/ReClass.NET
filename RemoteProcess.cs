@@ -12,6 +12,7 @@ namespace ReClassNET
 	class RemoteProcess
 	{
 		private readonly NativeHelper nativeHelper;
+		public NativeHelper NativeHelper => nativeHelper;
 
 		private ProcessInfo process;
 		public ProcessInfo Process
@@ -21,8 +22,9 @@ namespace ReClassNET
 		}
 
 		public delegate void RemoteProcessChangedEvent(RemoteProcess sender);
-
 		public event RemoteProcessChangedEvent ProcessChanged;
+
+		public bool IsValid => process != null && nativeHelper.IsProcessValid(process.Handle);
 
 		public RemoteProcess(NativeHelper nativeHelper)
 		{
@@ -33,7 +35,7 @@ namespace ReClassNET
 
 		public void ReadMemoryIntoBuffer(IntPtr address, ref byte[] data)
 		{
-			if (Process == null || !nativeHelper.IsProcessValid(Process.Handle))
+			if (!IsValid)
 			{
 				Process = null;
 

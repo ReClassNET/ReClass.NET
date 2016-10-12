@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -58,9 +60,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
     <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Windows.Forms.Ribbon35">
-      <HintPath>..\System.Windows.Forms.Ribbon35.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -114,6 +113,7 @@
     <Compile Include="Natives.cs" />
     <Compile Include="Nodes\ArrayNode.cs" />
     <Compile Include="Nodes\BaseArrayNode.cs" />
+    <Compile Include="Nodes\BaseFunctionPtrNode.cs" />
     <Compile Include="Nodes\BaseHexCommentNode.cs" />
     <Compile Include="Nodes\BaseHexNode.cs" />
     <Compile Include="Nodes\BaseNode.cs" />
@@ -122,6 +122,7 @@
     <Compile Include="Nodes\BaseTextPtrNode.cs" />
     <Compile Include="Nodes\BaseVecNode.cs" />
     <Compile Include="Nodes\ClassInstanceNode.cs" />
+    <Compile Include="Nodes\ClassPtrArrayNode.cs" />
     <Compile Include="Nodes\DoubleNode.cs" />
     <Compile Include="Nodes\FloatNode.cs" />
     <Compile Include="Nodes\FunctionPtrNode.cs" />
@@ -134,7 +135,6 @@
     <Compile Include="Nodes\Matrix4x4Node.cs" />
     <Compile Include="Nodes\NumericNode.cs" />
     <Compile Include="Nodes\ClassPtrNode.cs" />
-    <Compile Include="Nodes\ClassPtrArrayNode.cs" />
     <Compile Include="Nodes\UTF16TextNode.cs" />
     <Compile Include="Nodes\UTF16TextPtrNode.cs" />
     <Compile Include="Nodes\UTF32TextNode.cs" />
@@ -485,7 +485,15 @@
   <ItemGroup>
     <None Include="Resources\page_copy.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\button_ptrarray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\function_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\interface_icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

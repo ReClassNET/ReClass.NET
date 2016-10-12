@@ -26,5 +26,7 @@ namespace ReClassNET
 		public static Image Matrix => Properties.Resources.matrix_icon;
 		public static Image Text => Properties.Resources.text_icon;
 		public static Image Pointer => Properties.Resources.pointer_icon;
+		public static Image Function => Properties.Resources.function_icon;
+		public static Image VTable => Properties.Resources.interface_icon;
 	}
 }

@@ -134,7 +134,7 @@ namespace ReClassNET
 			fnEnumerateRemoteSectionsAndModules = Natives.GetProcAddress(nativeHelperHandle, "_EnumerateRemoteSectionsAndModules@12");
 			enumerateRemoteSectionsAndModulesDelegate = Marshal.GetDelegateForFunctionPointer<EnumerateRemoteSectionsAndModulesDelegate>(fnEnumerateRemoteSectionsAndModules);
 
-			fnDisassembleRemoteCode = Natives.GetProcAddress(nativeHelperHandle, "_DisassembleRemoteCode@8");
+			fnDisassembleRemoteCode = Natives.GetProcAddress(nativeHelperHandle, "_DisassembleRemoteCode@16");
 			disassembleRemoteCodeDelegate = Marshal.GetDelegateForFunctionPointer<DisassembleRemoteCodeDelegate>(fnDisassembleRemoteCode);
 		}
 
@@ -235,7 +235,7 @@ namespace ReClassNET
 
 		public void DisassembleRemoteCode(IntPtr process, IntPtr address, int length, DisassembleRemoteCodeCallback remoteCodeCallback)
 		{
-			disassembleRemoteCodeDelegate(process, address, size, remoteCodeCallback);
+			disassembleRemoteCodeDelegate(process, address, length, remoteCodeCallback);
 		}
 	}
 }
