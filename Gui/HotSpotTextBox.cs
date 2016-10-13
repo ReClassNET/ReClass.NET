@@ -1,9 +1,4 @@
-﻿using ReClassNET.Nodes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
 
 namespace ReClassNET
@@ -74,15 +69,7 @@ namespace ReClassNET
 			{
 				hotSpot.Text = Text.Trim();
 
-				var oldSize = hotSpot.Node.MemorySize;
 				hotSpot.Node.Update(hotSpot);
-				var newSize = hotSpot.Node.MemorySize;
-
-				if (oldSize != newSize)
-				{
-					var classNode = hotSpot.Node as ClassNode;
-					//classNode.ResizeTo(newSize);
-				}
 
 				Parent.Invalidate();
 
