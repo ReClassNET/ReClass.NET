@@ -2,6 +2,7 @@
 using ReClassNET.Nodes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
@@ -13,10 +14,13 @@ namespace ReClassNET
 {
 	partial class MemoryViewControl : ScrollableCustomControl
 	{
+		[Browsable(false)]
 		public ClassNode ClassNode { get; set; }
 
+		[Browsable(false)]
 		public Memory Memory { get; set; }
 
+		[Browsable(false)]
 		public Settings Settings { get; set; }
 
 		private List<HotSpot> hotSpots;
@@ -463,7 +467,7 @@ namespace ReClassNET
 
 		private void RemoveSelectedNodes()
 		{
-			selected.ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
+			selected.Where(h => !(h.Node is ClassNode)).ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
 
 			selected.Clear();
 		}
