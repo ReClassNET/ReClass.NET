@@ -23,12 +23,12 @@ namespace ReClassNET.Nodes
 				}
 			}
 
-			var namedAddress = view.Memory.GetNamedAddress(ivalue);
+			var namedAddress = view.Memory.Process.GetNamedAddress(ivalue);
 			if (!string.IsNullOrEmpty(namedAddress))
 			{
 				if (view.Settings.ShowPointer)
 				{
-					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"*->{namedAddress} ");
+					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"*->{namedAddress}") + view.Font.Width;
 
 					if (view.Settings.ShowRTTI)
 					{
@@ -37,10 +37,10 @@ namespace ReClassNET.Nodes
 
 					if (view.Settings.ShowSymbols)
 					{
-						var moduleName = view.Memory.GetModuleName(ivalue);
-						if (!string.IsNullOrEmpty(moduleName))
+						var module = view.Memory.Process.Modules.Where(m => ivalue.InRange(m.Start, m.End)).FirstOrDefault();
+						if (module != null)
 						{
-							var symbols = view.Memory.GetSymbolsForModule(moduleName);
+							var symbols = view.Memory.GetSymbolsForModule(null);
 							if (symbols != null)
 							{
 								var symbol = symbols.GetSymbolStringWithVA(ivalue);
@@ -55,10 +55,10 @@ namespace ReClassNET.Nodes
 
 				if (view.Settings.ShowStrings)
 				{
-					var txt = view.Memory.Process.ReadUTF8String(ivalue, 64);
+					var txt = view.Memory.Process.ReadRawUTF8String(ivalue, 64);
 					if (txt != null)
 					{
-						if (txt.Take(8).Where(c => !char.IsControl(c)).Any())
+						if (!txt.Take(4).Where(c => !c.IsPrintable()).Any())
 						{
 							x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, $"'{txt}'");
 						}

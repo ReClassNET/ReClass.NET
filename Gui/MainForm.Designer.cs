@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.processToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -54,6 +55,9 @@
 			this.killToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cleanUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
+			this.generateCCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.generateCCodeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
@@ -124,9 +128,7 @@
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
 			this.classesView = new ReClassNET.ClassNodeView();
 			this.memoryViewControl = new ReClassNET.MemoryViewControl();
-			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
-			this.generateCCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.generateCCodeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.processUpdateTimer = new System.Windows.Forms.Timer(this.components);
 			this.statusStrip.SuspendLayout();
 			this.mainMenuStrip.SuspendLayout();
 			this.toolStrip.SuspendLayout();
@@ -338,6 +340,25 @@
 			this.cleanUnusedClassesToolStripMenuItem.Text = "Remove unused classes";
 			this.cleanUnusedClassesToolStripMenuItem.Click += new System.EventHandler(this.cleanUnusedClassesToolStripMenuItem_Click);
 			// 
+			// toolStripSeparator16
+			// 
+			this.toolStripSeparator16.Name = "toolStripSeparator16";
+			this.toolStripSeparator16.Size = new System.Drawing.Size(195, 6);
+			// 
+			// generateCCodeToolStripMenuItem
+			// 
+			this.generateCCodeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.page_white_cplusplus;
+			this.generateCCodeToolStripMenuItem.Name = "generateCCodeToolStripMenuItem";
+			this.generateCCodeToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+			this.generateCCodeToolStripMenuItem.Text = "Generate C++ Code";
+			// 
+			// generateCCodeToolStripMenuItem1
+			// 
+			this.generateCCodeToolStripMenuItem1.Image = global::ReClassNET.Properties.Resources.page_white_csharp;
+			this.generateCCodeToolStripMenuItem1.Name = "generateCCodeToolStripMenuItem1";
+			this.generateCCodeToolStripMenuItem1.Size = new System.Drawing.Size(198, 22);
+			this.generateCCodeToolStripMenuItem1.Text = "Generate C# Code";
+			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -350,7 +371,7 @@
 			// 
 			this.aboutToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.information;
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.aboutToolStripMenuItem.Text = "About...";
 			// 
 			// toolStrip
@@ -1060,24 +1081,11 @@
 			this.memoryViewControl.Size = new System.Drawing.Size(936, 524);
 			this.memoryViewControl.TabIndex = 0;
 			// 
-			// toolStripSeparator16
+			// processUpdateTimer
 			// 
-			this.toolStripSeparator16.Name = "toolStripSeparator16";
-			this.toolStripSeparator16.Size = new System.Drawing.Size(195, 6);
-			// 
-			// generateCCodeToolStripMenuItem
-			// 
-			this.generateCCodeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.page_white_cplusplus;
-			this.generateCCodeToolStripMenuItem.Name = "generateCCodeToolStripMenuItem";
-			this.generateCCodeToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-			this.generateCCodeToolStripMenuItem.Text = "Generate C++ Code";
-			// 
-			// generateCCodeToolStripMenuItem1
-			// 
-			this.generateCCodeToolStripMenuItem1.Image = global::ReClassNET.Properties.Resources.page_white_csharp;
-			this.generateCCodeToolStripMenuItem1.Name = "generateCCodeToolStripMenuItem1";
-			this.generateCCodeToolStripMenuItem1.Size = new System.Drawing.Size(198, 22);
-			this.generateCCodeToolStripMenuItem1.Text = "Generate C# Code";
+			this.processUpdateTimer.Enabled = true;
+			this.processUpdateTimer.Interval = 5000;
+			this.processUpdateTimer.Tick += new System.EventHandler(this.processUpdateTimer_Tick);
 			// 
 			// MainForm
 			// 
@@ -1207,6 +1215,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
 		private System.Windows.Forms.ToolStripMenuItem generateCCodeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem generateCCodeToolStripMenuItem1;
+		private System.Windows.Forms.Timer processUpdateTimer;
 	}
 }
 

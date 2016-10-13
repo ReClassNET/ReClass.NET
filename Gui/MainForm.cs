@@ -74,6 +74,7 @@ namespace ReClassNET
 					}
 
 					remoteProcess.Process = pb.SelectedProcess;
+					remoteProcess.UpdateProcessInformations();
 
 					settings.LastProcess = remoteProcess.Process.Name;
 				}
@@ -250,6 +251,11 @@ namespace ReClassNET
 		private void quitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Close();
+		}
+
+		private void processUpdateTimer_Tick(object sender, EventArgs e)
+		{
+			remoteProcess.UpdateProcessInformations();
 		}
 	}
 }

@@ -198,17 +198,7 @@ namespace ReClassNET
 			return ReadString(Encoding.UTF32, offset.ToInt32(), length);
 		}
 
-		public string GetModuleName(IntPtr address)
-		{
-			return null;
-		}
-
 		public Symbols GetSymbolsForModule(string name)
-		{
-			return null;
-		}
-
-		public string GetNamedAddress(IntPtr address)
 		{
 			return null;
 		}

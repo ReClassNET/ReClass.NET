@@ -35,6 +35,17 @@ namespace ReClassNET
 #endif
 		}
 
+		public static bool InRange(this IntPtr address, IntPtr start, IntPtr end)
+		{
+#if WIN64
+			var val = address.ToInt64();
+			return start.ToInt64() <= val && val <= end.ToInt64();
+#else
+			var val = address.ToInt32();
+			return start.ToInt32() <= val && val <= end.ToInt32();
+#endif
+		}
+
 		public static int ToRgb(this Color color)
 		{
 			return 0xFFFFFF & color.ToArgb();
