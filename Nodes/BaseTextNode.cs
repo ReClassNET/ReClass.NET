@@ -2,9 +2,9 @@
 {
 	abstract class BaseTextNode : BaseNode
 	{
-		private int memorySize;
+		public int CharacterCount { get; set; }
 
-		public override int MemorySize => memorySize;
+		public override int MemorySize => CharacterCount * CharacterSize;
 
 		public abstract int CharacterSize { get; }
 
@@ -15,7 +15,7 @@
 
 		public override void CopyFromNode(BaseNode node)
 		{
-			memorySize = node.MemorySize;
+			CharacterCount = node.MemorySize / CharacterSize;
 		}
 
 		public int DrawText(ViewInfo view, int x, int y, string type, int length, string text)
@@ -55,9 +55,9 @@
 			if (spot.Id == 0)
 			{
 				int val;
-				if (int.TryParse(spot.Text, out val))
+				if (int.TryParse(spot.Text, out val) && val > 0)
 				{
-					memorySize = val * CharacterSize;
+					CharacterCount = val;
 
 					ParentNode.NotifyMemorySizeChanged();
 				}

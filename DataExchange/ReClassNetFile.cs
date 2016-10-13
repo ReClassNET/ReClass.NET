@@ -26,6 +26,7 @@ namespace ReClassNET.DataExchange
 		private const string XmlAddressAttribute = "address";
 		private const string XmlTypeAttribute = "type";
 		private const string XmlReferenceAttribute = "reference";
+		private const string XmlSizeAttribute = "size";
 
 		#region Load
 
@@ -107,7 +108,7 @@ namespace ReClassNET.DataExchange
 
 			SchemaNode sn = null;
 
-			if (type == SchemaType.Array || type == SchemaType.ClassInstance || type == SchemaType.ClassPtr)
+			if (type == SchemaType.Array || type == SchemaType.ClassPtrArray || type == SchemaType.ClassInstance || type == SchemaType.ClassPtr)
 			{
 				var reference = node.Attribute(XmlReferenceAttribute)?.Value;
 				if (reference == null || !classes.ContainsKey(reference))
@@ -126,6 +127,25 @@ namespace ReClassNET.DataExchange
 
 			sn.Name = node.Attribute(XmlNameAttribute)?.Value;
 			sn.Comment = node.Attribute(XmlCommentAttribute)?.Value;
+
+			var sizeAttr = node.Attribute(XmlSizeAttribute);
+			if (sizeAttr != null)
+			{
+				int size;
+				int.TryParse(sizeAttr.Value, out size);
+
+				switch (type)
+				{
+					case SchemaType.Array:
+					case SchemaType.ClassPtrArray:
+					case SchemaType.UTF8Text:
+					case SchemaType.UTF16Text:
+					case SchemaType.UTF32Text:
+						sn.Count = size;
+						break;
+				}
+			}
+			
 
 			return sn;
 		}
@@ -193,6 +213,11 @@ namespace ReClassNET.DataExchange
 			if (node is SchemaReferenceNode)
 			{
 				element.SetAttributeValue(XmlReferenceAttribute, (node as SchemaReferenceNode).InnerNode.Name);
+			}
+
+			if (node.Count > 0)
+			{
+				element.SetAttributeValue(XmlSizeAttribute, node.Count);
 			}
 
 			return element;

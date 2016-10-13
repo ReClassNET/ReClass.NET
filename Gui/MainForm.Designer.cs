@@ -35,8 +35,8 @@
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.selectProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.clearProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -165,8 +165,8 @@
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectProcessToolStripMenuItem,
             this.toolStripSeparator1,
-            this.newProjectToolStripMenuItem,
             this.openProjectToolStripMenuItem,
+            this.clearProjectToolStripMenuItem,
             this.toolStripSeparator2,
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
@@ -192,13 +192,6 @@
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(154, 6);
 			// 
-			// newProjectToolStripMenuItem
-			// 
-			this.newProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.page_code_add;
-			this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-			this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-			this.newProjectToolStripMenuItem.Text = "New Project...";
-			// 
 			// openProjectToolStripMenuItem
 			// 
 			this.openProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.folder;
@@ -206,6 +199,14 @@
 			this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
 			this.openProjectToolStripMenuItem.Text = "Open Project...";
 			this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
+			// 
+			// clearProjectToolStripMenuItem
+			// 
+			this.clearProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.arrow_refresh;
+			this.clearProjectToolStripMenuItem.Name = "clearProjectToolStripMenuItem";
+			this.clearProjectToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+			this.clearProjectToolStripMenuItem.Text = "Clear Project";
+			this.clearProjectToolStripMenuItem.Click += new System.EventHandler(this.clearProjectToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 
@@ -218,6 +219,7 @@
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
 			this.saveToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
 			this.saveToolStripMenuItem.Text = "Save";
+			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
 			// saveAsToolStripMenuItem
 			// 
@@ -225,6 +227,7 @@
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
 			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
 			this.saveAsToolStripMenuItem.Text = "Save as...";
+			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -253,9 +256,11 @@
 			// 
 			// quitToolStripMenuItem
 			// 
+			this.quitToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.cancel;
 			this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
 			this.quitToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
 			this.quitToolStripMenuItem.Text = "Quit";
+			this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
 			// 
 			// processToolStripMenuItem
 			// 
@@ -428,6 +433,7 @@
 			this.saveToolStripButton.Name = "saveToolStripButton";
 			this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.saveToolStripButton.ToolTipText = "Save Project";
+			this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator7
 			// 
@@ -1084,7 +1090,7 @@
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem selectProcessToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem newProjectToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem clearProjectToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem openProjectToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;

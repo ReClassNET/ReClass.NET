@@ -18,6 +18,8 @@ namespace ReClassNET
 		private readonly RemoteProcess remoteProcess;
 		private readonly Memory memory;
 
+		private string projectPath;
+
 		public MainForm(NativeHelper nativeHelper, Settings settings)
 		{
 			Contract.Requires(nativeHelper != null);
@@ -161,6 +163,8 @@ namespace ReClassNET
 					}
 					if (import != null)
 					{
+						projectPath = ofd.FileName;
+
 						var sb = new StringBuilder();
 
 						var schema = import.Load(ofd.FileName, s => sb.AppendLine(s));
@@ -172,6 +176,7 @@ namespace ReClassNET
 
 						if (schema != null)
 						{
+							ClassNode.Classes.Clear();
 							classesView.Clear();
 
 							var classes = schema.BuildNodes();
@@ -179,6 +184,45 @@ namespace ReClassNET
 							memoryViewControl.ClassNode = classes.FirstOrDefault();
 						}
 					}
+				}
+			}
+		}
+
+		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (!ClassNode.Classes.Any())
+			{
+				return;
+			}
+
+			if (string.IsNullOrEmpty(projectPath))
+			{
+				saveAsToolStripMenuItem_Click(sender, e);
+
+				return;
+			}
+
+			var file = new ReClassNetFile();
+			file.Save(projectPath, SchemaBuilder.FromNodes(ClassNode.Classes));
+		}
+
+		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (!ClassNode.Classes.Any())
+			{
+				return;
+			}
+
+			using (var sfd = new SaveFileDialog())
+			{
+				sfd.DefaultExt = ReClassNetFile.FileExtension;
+				sfd.Filter = $"{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}";
+
+				if (sfd.ShowDialog() == DialogResult.OK)
+				{
+					projectPath = sfd.FileName;
+
+					saveToolStripMenuItem_Click(sender, e);
 				}
 			}
 		}
@@ -196,9 +240,16 @@ namespace ReClassNET
 			}
 		}
 
-		private void newClassToolStripMenuItem_Click(object sender, EventArgs e)
+		private void clearProjectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			classesView.Clear();
+			ClassNode.Classes.Clear();
+			memoryViewControl.ClassNode = null;
+		}
 
+		private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Close();
 		}
 	}
 }

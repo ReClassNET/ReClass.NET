@@ -187,6 +187,17 @@ namespace ReClassNET.DataExchange
 					node.Name = n.Name;
 					node.Comment = n.Comment;
 
+					var arrayNode = n as BaseArrayNode;
+					if (arrayNode != null)
+					{
+						node.Count = arrayNode.Count;
+					}
+					var textNode = n as BaseTextNode;
+					if (textNode != null)
+					{
+						node.Count = textNode.CharacterCount;
+					}
+
 					sc.Nodes.Add(node);
 				}
 			}
@@ -259,7 +270,21 @@ namespace ReClassNET.DataExchange
 						var referenceNode = node as BaseReferenceNode;
 						if (referenceNode != null)
 						{
-							referenceNode.InnerNode = classes[(sn as SchemaReferenceNode).InnerNode];
+							var srn = sn as SchemaReferenceNode;
+							referenceNode.InnerNode = classes[srn.InnerNode];
+						}
+						if (sn.Count > 0)
+						{
+							var arrayNode = node as BaseArrayNode;
+							if (arrayNode != null)
+							{
+								arrayNode.Count = sn.Count;
+							}
+							var textNode = node as BaseTextNode;
+							if (textNode != null)
+							{
+								textNode.CharacterCount = sn.Count;
+							}
 						}
 
 						cn.AddNode(node);
