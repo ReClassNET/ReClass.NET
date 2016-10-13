@@ -25,7 +25,7 @@ namespace ReClassNET
 		{
 			get
 			{
-				var row = (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault().DataBoundItem as DataRowView)?.Row;
+				var row = (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)?.Row;
 				if (row != null)
 				{
 					return new ProcessInfo

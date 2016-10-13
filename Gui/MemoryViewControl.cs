@@ -393,15 +393,16 @@ namespace ReClassNET
 
 			foreach (var sel in selected)
 			{
-				//if (sel.Node.IsValid())
+				if (!(sel.Node is ClassNode))
+				{
+					var node = Activator.CreateInstance(type) as BaseNode;
 
-				var node = Activator.CreateInstance(type) as BaseNode;
+					node.Intialize();
 
-				node.Intialize();
+					sel.Node.ParentNode.ReplaceChildNode(FindNodeIndex(sel.Node), node);
 
-				sel.Node.ParentNode.ReplaceChildNode(FindNodeIndex(sel.Node), node);
-
-				newSelected.Add(node);
+					newSelected.Add(node);
+				}
 			}
 
 			selected.Clear();
