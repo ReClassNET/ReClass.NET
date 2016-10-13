@@ -127,7 +127,7 @@ namespace ReClassNET
 
 		public void Update(IntPtr address)
 		{
-			Process.ReadMemoryIntoBuffer(address, ref data);
+			Process.ReadRemoteMemoryIntoBuffer(address, ref data);
 		}
 
 		public byte ReadByte(IntPtr offset)

@@ -98,11 +98,22 @@ namespace ReClassNET
 		[DllImport("User32.dll")]
 		public static extern int DestroyIcon(IntPtr hIcon);
 
+		[DllImport("dbghelp.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+		static extern int UnDecorateSymbolName(string DecoratedName, StringBuilder UnDecoratedName, int UndecoratedLength, int Flags);
+
 		#endregion
 
 		#region Helper
 
-		
+		public static string UnDecorateSymbolName(string decoratedName)
+		{
+			var sb = new StringBuilder(255);
+			if (UnDecorateSymbolName(decoratedName, sb, sb.Capacity, /*UNDNAME_NAME_ONLY*/0x1000) != 0)
+			{
+				return sb.ToString();
+			}
+			return decoratedName;
+		}
 
 		#endregion
 	}

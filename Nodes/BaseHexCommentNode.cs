@@ -28,11 +28,15 @@ namespace ReClassNET.Nodes
 			{
 				if (view.Settings.ShowPointer)
 				{
-					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"*->{namedAddress}") + view.Font.Width;
+					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"-> {namedAddress}") + view.Font.Width;
 
 					if (view.Settings.ShowRTTI)
 					{
-						x = AddRTTI(view, x, y);
+						var rtti = view.Memory.Process.ReadRemoteRuntimeTypeInformation(ivalue);
+						if (!string.IsNullOrEmpty(rtti))
+						{
+							x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, rtti);
+						}
 					}
 
 					if (view.Settings.ShowSymbols)
@@ -55,7 +59,7 @@ namespace ReClassNET.Nodes
 
 				if (view.Settings.ShowStrings)
 				{
-					var txt = view.Memory.Process.ReadRawUTF8String(ivalue, 64);
+					var txt = view.Memory.Process.ReadRemoteRawUTF8String(ivalue, 64);
 					if (txt != null)
 					{
 						if (!txt.Take(4).Where(c => !c.IsPrintable()).Any())

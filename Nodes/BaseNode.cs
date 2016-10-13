@@ -232,11 +232,6 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		protected int AddRTTI(ViewInfo view, int x, int y)
-		{
-			return x;
-		}
-
 		protected virtual int AddComment(ViewInfo view, int x, int y)
 		{
 			x = AddText(view, x, y, view.Settings.CommentColor, HotSpot.NoneId, "//");

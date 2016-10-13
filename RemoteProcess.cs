@@ -43,6 +43,7 @@ namespace ReClassNET
 			public Natives.StateEnum State;
 			public Natives.AllocationProtectEnum Protection;
 			public Natives.TypeEnum Type;
+			public string ModuleName;
 			public string ModulePath;
 		}
 
@@ -63,7 +64,7 @@ namespace ReClassNET
 
 		#region ReadMemory
 
-		public void ReadMemoryIntoBuffer(IntPtr address, ref byte[] data)
+		public void ReadRemoteMemoryIntoBuffer(IntPtr address, ref byte[] data)
 		{
 			if (!IsValid)
 			{
@@ -77,16 +78,27 @@ namespace ReClassNET
 			nativeHelper.ReadRemoteMemory(Process.Handle, address, data, (uint)data.Length);
 		}
 
-		public byte[] ReadMemory(IntPtr address, int size)
+		public byte[] ReadRemoteMemory(IntPtr address, int size)
 		{
 			var data = new byte[size];
-			ReadMemoryIntoBuffer(address, ref data);
+			ReadRemoteMemoryIntoBuffer(address, ref data);
 			return data;
 		}
 
-		private string ReadString(Encoding encoding, IntPtr address, int length)
+		public T ReadRemoteObject<T>(IntPtr address)
 		{
-			var data = ReadMemory(address, length);
+			var data = ReadRemoteMemory(address, Marshal.SizeOf<T>());
+
+			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+			var obj = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+			handle.Free();
+
+			return obj;
+		}
+
+		public string ReadRemoteString(Encoding encoding, IntPtr address, int length)
+		{
+			var data = ReadRemoteMemory(address, length);
 			if (data == null)
 			{
 				return null;
@@ -108,34 +120,159 @@ namespace ReClassNET
 			return sb.ToString();
 		}
 
-		public string ReadRawUTF8String(IntPtr address, int length)
+		public string ReadRemoteRawUTF8String(IntPtr address, int length)
 		{
-			var data = ReadMemory(address, length);
+			var data = ReadRemoteMemory(address, length);
 			if (data == null)
 			{
 				return null;
 			}
-			return Encoding.UTF8.GetString(data);
+
+			int index = -1;
+			for (index = 0; index < data.Length; ++index)
+			{
+				if (data[index] == 0)
+				{
+					break;
+				}
+			}
+
+			return Encoding.UTF8.GetString(data, 0, Math.Min(index, data.Length));
 		}
 
-		public string ReadUTF8String(IntPtr address, int length)
+		public string ReadRemoteRuntimeTypeInformation(IntPtr address)
 		{
-			return ReadString(Encoding.UTF8, address, length);
+			if (address.MayBeValid())
+			{
+				var objectLocatorPtr = ReadRemoteObject<IntPtr>(address - IntPtr.Size);
+				if (objectLocatorPtr.MayBeValid())
+				{
+#if WIN64
+					return ReadRemoteRuntimeTypeInformation64(objectLocatorPtr);
+#else
+					return ReadRemoteRuntimeTypeInformation32(objectLocatorPtr);
+#endif
+				}
+			}
+
+			return null;
 		}
 
-		public string ReadUTF16String(IntPtr address, int length)
+		private string ReadRemoteRuntimeTypeInformation32(IntPtr address)
 		{
-			return ReadString(Encoding.Unicode, address, length);
+			var classHierarchyDescriptorPtr = ReadRemoteObject<IntPtr>(address + 0x10);
+			if (classHierarchyDescriptorPtr.MayBeValid())
+			{
+				var baseClassCount = ReadRemoteObject<int>(classHierarchyDescriptorPtr + 8);
+				if (baseClassCount > 0 && baseClassCount < 25)
+				{
+					var baseClassArrayPtr = ReadRemoteObject<IntPtr>(classHierarchyDescriptorPtr + 0xC);
+					if (baseClassArrayPtr.MayBeValid())
+					{
+						var sb = new StringBuilder();
+						for (var i = 0; i < baseClassCount; ++i)
+						{
+							var baseClassDescriptorPtr = ReadRemoteObject<IntPtr>(baseClassArrayPtr + (4 * i));
+							if (baseClassDescriptorPtr.MayBeValid())
+							{
+								var typeDescriptorPtr = ReadRemoteObject<IntPtr>(baseClassDescriptorPtr);
+								if (typeDescriptorPtr.MayBeValid())
+								{
+									var name = ReadRemoteRawUTF8String(typeDescriptorPtr + 9, 60);
+									if (name.EndsWith("@@"))
+									{
+										name = Natives.UnDecorateSymbolName(name);
+									}
+
+									sb.Append(name);
+									sb.Append(" : ");
+
+									continue;
+								}
+							}
+
+							break;
+						}
+
+						if (sb.Length != 0)
+						{
+							sb.Length -= 3;
+
+							return sb.ToString();
+						}
+					}
+				}
+			}
+
+			return null;
 		}
 
-		public string ReadUTF32String(IntPtr address, int length)
+		private string ReadRemoteRuntimeTypeInformation64(IntPtr address)
 		{
-			return ReadString(Encoding.UTF32, address, length);
+			int baseOffset = ReadRemoteObject<int>(address + 0x14);
+			if (baseOffset != 0)
+			{
+				var baseAddress = address - baseOffset;
+
+				var classHierarchyDescriptorOffset = ReadRemoteObject<int>(address + 0x10);
+				if (classHierarchyDescriptorOffset != 0)
+				{
+					var classHierarchyDescriptorPtr = baseAddress + classHierarchyDescriptorOffset;
+
+					var baseClassCount = ReadRemoteObject<int>(classHierarchyDescriptorPtr + 0x08);
+					if (baseClassCount > 0 && baseClassCount < 25)
+					{
+						var baseClassArrayOffset = ReadRemoteObject<int>(classHierarchyDescriptorPtr + 0x0C);
+						if (baseClassArrayOffset != 0)
+						{
+							var baseClassArrayPtr = baseAddress + baseClassArrayOffset;
+
+							var sb = new StringBuilder();
+							for (var i = 0; i < baseClassCount; ++i)
+							{
+								var baseClassDescriptorOffset = ReadRemoteObject<int>(baseClassArrayPtr + (4 * i));
+								if (baseClassDescriptorOffset != 0)
+								{
+									var baseClassDescriptorPtr = baseAddress + baseClassDescriptorOffset;
+
+									var typeDescriptorOffset = ReadRemoteObject<int>(baseClassDescriptorPtr);
+									if (typeDescriptorOffset != 0)
+									{
+										var typeDescriptorPtr = baseAddress + typeDescriptorOffset;
+
+										var name = ReadRemoteRawUTF8String(typeDescriptorPtr + 11, 60);
+										if (name.EndsWith("@@"))
+										{
+											name = Natives.UnDecorateSymbolName(name);
+										}
+
+										sb.Append(name);
+										sb.Append(" : ");
+
+										continue;
+									}
+								}
+
+								break;
+							}
+
+							if (sb.Length != 0)
+							{
+								sb.Length -= 3;
+
+								return sb.ToString();
+							}
+						}
+					}
+				}
+			}
+
+			return null;
 		}
 
-		#endregion
+#endregion
 
-		#region WriteMemory
+#region WriteMemory
 
 		public bool WriteRemoteMemory(IntPtr address, byte[] data)
 		{
@@ -158,14 +295,14 @@ namespace ReClassNET
 			return WriteRemoteMemory(address, data);
 		}
 
-		#endregion
+#endregion
 
 		public string GetNamedAddress(IntPtr address)
 		{
 			var section = sections.Where(s => s.Category != null).Where(s => address.InRange(s.Start, s.End)).FirstOrDefault();
 			if (section != null)
 			{
-				return $"<{section.Category}>{section.Name}.{address.ToString("X")}";
+				return $"<{section.Category}>{section.ModuleName}.{address.ToString("X")}";
 			}
 			var module = modules.Where(m => address.InRange(m.Start, m.End)).FirstOrDefault();
 			if (module != null)
@@ -198,6 +335,7 @@ namespace ReClassNET
 						Protection = protection,
 						Type = type,
 						ModulePath = modulePath,
+						ModuleName = Path.GetFileName(modulePath)
 					};
 					switch (section.Name)
 					{

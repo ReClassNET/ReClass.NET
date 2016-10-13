@@ -17,6 +17,15 @@ namespace ReClassNET
 			return ptr == IntPtr.Zero;
 		}
 
+		public static bool MayBeValid(this IntPtr ptr)
+		{
+#if WIN64
+			return ptr.InRange((IntPtr)0x10000, (IntPtr)unchecked((long)0x000F000000000000));
+#else
+			return ptr.InRange((IntPtr)0x10000, (IntPtr)unchecked((int)0xFFF00000));
+#endif
+		}
+
 		public static IntPtr Add(this IntPtr lhs, IntPtr rhs)
 		{
 #if WIN64
@@ -29,20 +38,20 @@ namespace ReClassNET
 		public static IntPtr Add(this IntPtr lhs, long rhs)
 		{
 #if WIN64
-			return new IntPtr(lhs.ToInt64() + rhs);
+			return new IntPtr(unchecked(lhs.ToInt64() + rhs));
 #else
-			return new IntPtr((int)(lhs.ToInt32() + rhs));
+			return new IntPtr(unchecked((int)(lhs.ToInt32() + rhs)));
 #endif
 		}
 
 		public static bool InRange(this IntPtr address, IntPtr start, IntPtr end)
 		{
 #if WIN64
-			var val = address.ToInt64();
-			return start.ToInt64() <= val && val <= end.ToInt64();
+			var val = (ulong)address.ToInt64();
+			return (ulong)start.ToInt64() <= val && val <= (ulong)end.ToInt64();
 #else
-			var val = address.ToInt32();
-			return start.ToInt32() <= val && val <= end.ToInt32();
+			var val = (uint)address.ToInt32();
+			return (uint)start.ToInt32() <= val && val <= (uint)end.ToInt32();
 #endif
 		}
 
