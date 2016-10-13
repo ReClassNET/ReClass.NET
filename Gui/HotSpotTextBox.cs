@@ -88,7 +88,8 @@ namespace ReClassNET
 
 				Visible = false;
 
-				return;
+				e.Handled = true;
+				e.SuppressKeyPress = true;
 			}
 
 			base.OnKeyDown(e);
