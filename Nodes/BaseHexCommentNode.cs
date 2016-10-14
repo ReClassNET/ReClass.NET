@@ -26,32 +26,34 @@ namespace ReClassNET.Nodes
 			var namedAddress = view.Memory.Process.GetNamedAddress(ivalue);
 			if (!string.IsNullOrEmpty(namedAddress))
 			{
+				x += view.Font.Width;
+
 				if (view.Settings.ShowPointer)
 				{
 					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"-> {namedAddress}") + view.Font.Width;
+				}
 
-					if (view.Settings.ShowRTTI)
+				if (view.Settings.ShowRTTI)
+				{
+					var rtti = view.Memory.Process.ReadRemoteRuntimeTypeInformation(ivalue);
+					if (!string.IsNullOrEmpty(rtti))
 					{
-						var rtti = view.Memory.Process.ReadRemoteRuntimeTypeInformation(ivalue);
-						if (!string.IsNullOrEmpty(rtti))
-						{
-							x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, rtti);
-						}
+						x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, rtti);
 					}
+				}
 
-					if (view.Settings.ShowSymbols)
+				if (view.Settings.ShowSymbols)
+				{
+					var module = view.Memory.Process.Modules.Where(m => ivalue.InRange(m.Start, m.End)).FirstOrDefault();
+					if (module != null)
 					{
-						var module = view.Memory.Process.Modules.Where(m => ivalue.InRange(m.Start, m.End)).FirstOrDefault();
-						if (module != null)
+						var symbols = view.Memory.GetSymbolsForModule(null);
+						if (symbols != null)
 						{
-							var symbols = view.Memory.GetSymbolsForModule(null);
-							if (symbols != null)
+							var symbol = symbols.GetSymbolStringWithVA(ivalue);
+							if (!string.IsNullOrEmpty(symbol))
 							{
-								var symbol = symbols.GetSymbolStringWithVA(ivalue);
-								if (!string.IsNullOrEmpty(symbol))
-								{
-									x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, symbol + " ");
-								}
+								x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, symbol + " ");
 							}
 						}
 					}

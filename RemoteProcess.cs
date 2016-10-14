@@ -21,11 +21,13 @@ namespace ReClassNET
 		public ProcessInfo Process
 		{
 			get { return process; }
-			set { if (process != value) { process = value; ProcessChanged?.Invoke(this); } }
+			set { if (process != value) { process = value; rttiCache.Clear(); ProcessChanged?.Invoke(this); } }
 		}
 
 		public delegate void RemoteProcessChangedEvent(RemoteProcess sender);
 		public event RemoteProcessChangedEvent ProcessChanged;
+
+		private Dictionary<IntPtr, string> rttiCache = new Dictionary<IntPtr, string>();
 
 		public class Module
 		{
@@ -145,15 +147,23 @@ namespace ReClassNET
 		{
 			if (address.MayBeValid())
 			{
-				var objectLocatorPtr = ReadRemoteObject<IntPtr>(address - IntPtr.Size);
-				if (objectLocatorPtr.MayBeValid())
+				string rtti;
+				if (!rttiCache.TryGetValue(address, out rtti))
 				{
+					var objectLocatorPtr = ReadRemoteObject<IntPtr>(address - IntPtr.Size);
+					if (objectLocatorPtr.MayBeValid())
+					{
+					
 #if WIN64
-					return ReadRemoteRuntimeTypeInformation64(objectLocatorPtr);
+						rtti = ReadRemoteRuntimeTypeInformation64(objectLocatorPtr);
 #else
-					return ReadRemoteRuntimeTypeInformation32(objectLocatorPtr);
+						rtti = ReadRemoteRuntimeTypeInformation32(objectLocatorPtr);
 #endif
+
+						rttiCache[address] = rtti;
+					}
 				}
+				return rtti;
 			}
 
 			return null;
