@@ -27,7 +27,7 @@ namespace ReClassNET.AddressParser
 					return module.Start;
 				}
 
-				throw new Exception($"The module '{module.Name}' can not be found.");
+				throw new Exception($"The module '{((ModuleOffsetOperation)operation).Name}' can not be found.");
 			}
 			else if (operation is AdditionOperation)
 			{
