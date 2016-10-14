@@ -1,4 +1,4 @@
-#define EXTERN_DLL_EXPORT extern "C" __declspec(dllexport)
+#define EXTERN_DLL_EXPORT 
 
 #include <windows.h>
 #include <Psapi.h>

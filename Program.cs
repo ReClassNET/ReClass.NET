@@ -13,23 +13,16 @@ namespace ReClassNET
 		{
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-			try
+			var settings = Settings.Load(SettingsFile);
+
+			using (var nativeHelper = new NativeHelper())
 			{
-				var settings = Settings.Load(SettingsFile);
-
-				using (var nativeHelper = new NativeHelper())
-				{
-					Application.EnableVisualStyles();
-					Application.SetCompatibleTextRenderingDefault(false);
-					Application.Run(new MainForm(nativeHelper, settings));
-				}
-
-				Settings.Save(settings, SettingsFile);
+				Application.EnableVisualStyles();
+				Application.SetCompatibleTextRenderingDefault(false);
+				Application.Run(new MainForm(nativeHelper, settings));
 			}
-			catch (Exception ex)
-			{
 
-			}
+			Settings.Save(settings, SettingsFile);
 		}
 	}
 }

@@ -106,35 +106,35 @@ namespace ReClassNET
 				throw new Exception();
 			}
 
-			var fnInitialize = Natives.GetProcAddress(nativeHelperHandle, "_Initialize@4");
+            var fnInitialize = Natives.GetProcAddress(nativeHelperHandle, "Initialize");
 			var initializeDelegate = Marshal.GetDelegateForFunctionPointer<InitializeDelegate>(fnInitialize);
 			initializeDelegate(RequestFunctionPtrReference);
 
-			fnGetLastError = Natives.GetProcAddress(nativeHelperHandle, "_GetLastErrorCode@0");
+			fnGetLastError = Natives.GetProcAddress(nativeHelperHandle, "GetLastErrorCode");
 			getLastErrorDelegate = Marshal.GetDelegateForFunctionPointer<GetLastErrorDelegate>(fnGetLastError);
 
-			fnIsProcessValid = Natives.GetProcAddress(nativeHelperHandle, "_IsProcessValid@4");
+			fnIsProcessValid = Natives.GetProcAddress(nativeHelperHandle, "IsProcessValid");
 			isProcessValidDelegate = Marshal.GetDelegateForFunctionPointer<IsProcessValidDelegate>(fnIsProcessValid);
 
-			fnOpenRemoteProcess = Natives.GetProcAddress(nativeHelperHandle, "_OpenRemoteProcess@8");
+			fnOpenRemoteProcess = Natives.GetProcAddress(nativeHelperHandle, "OpenRemoteProcess");
 			openRemoteProcessDelegate = Marshal.GetDelegateForFunctionPointer<OpenRemoteProcessDelegate>(fnOpenRemoteProcess);
 
-			fnCloseRemoteProcess = Natives.GetProcAddress(nativeHelperHandle, "_CloseRemoteProcess@4");
+			fnCloseRemoteProcess = Natives.GetProcAddress(nativeHelperHandle, "CloseRemoteProcess");
 			closeRemoteProcessDelegate = Marshal.GetDelegateForFunctionPointer<CloseRemoteProcessDelegate>(fnCloseRemoteProcess);
 
-			fnReadRemoteMemory = Natives.GetProcAddress(nativeHelperHandle, "_ReadRemoteMemory@16");
+			fnReadRemoteMemory = Natives.GetProcAddress(nativeHelperHandle, "ReadRemoteMemory");
 			readRemoteMemoryDelegate = Marshal.GetDelegateForFunctionPointer<ReadRemoteMemoryDelegate>(fnReadRemoteMemory);
 
-			fnWriteRemoteMemory = Natives.GetProcAddress(nativeHelperHandle, "_WriteRemoteMemory@16");
+			fnWriteRemoteMemory = Natives.GetProcAddress(nativeHelperHandle, "WriteRemoteMemory");
 			writeRemoteMemoryDelegate = Marshal.GetDelegateForFunctionPointer<WriteRemoteMemoryDelegate>(fnWriteRemoteMemory);
 
-			fnEnumerateProcesses = Natives.GetProcAddress(nativeHelperHandle, "_EnumerateProcesses@4");
+			fnEnumerateProcesses = Natives.GetProcAddress(nativeHelperHandle, "EnumerateProcesses");
 			enumerateProcessesDelegate = Marshal.GetDelegateForFunctionPointer<EnumerateProcessesDelegate>(fnEnumerateProcesses);
 
-			fnEnumerateRemoteSectionsAndModules = Natives.GetProcAddress(nativeHelperHandle, "_EnumerateRemoteSectionsAndModules@12");
+			fnEnumerateRemoteSectionsAndModules = Natives.GetProcAddress(nativeHelperHandle, "EnumerateRemoteSectionsAndModules");
 			enumerateRemoteSectionsAndModulesDelegate = Marshal.GetDelegateForFunctionPointer<EnumerateRemoteSectionsAndModulesDelegate>(fnEnumerateRemoteSectionsAndModules);
 
-			fnDisassembleRemoteCode = Natives.GetProcAddress(nativeHelperHandle, "_DisassembleRemoteCode@16");
+			fnDisassembleRemoteCode = Natives.GetProcAddress(nativeHelperHandle, "DisassembleRemoteCode");
 			disassembleRemoteCodeDelegate = Marshal.GetDelegateForFunctionPointer<DisassembleRemoteCodeDelegate>(fnDisassembleRemoteCode);
 		}
 
