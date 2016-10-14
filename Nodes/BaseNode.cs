@@ -155,7 +155,7 @@ namespace ReClassNET.Nodes
 #if WIN32
 				x = AddText(view, x, y, view.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt32():X08}") + view.Font.Width;
 #else
-				x = AddText(view, x, y, view.Settings.Address, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt64():X016}") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt64():X016}") + view.Font.Width;
 #endif
 			}
 

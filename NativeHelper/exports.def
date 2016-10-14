@@ -1,0 +1,12 @@
+LIBRARY
+EXPORTS
+	Initialize
+	GetLastErrorCode
+	IsProcessValid
+	OpenRemoteProcess
+	CloseRemoteProcess
+	ReadRemoteMemory
+	WriteRemoteMemory
+	EnumerateProcesses
+	EnumerateRemoteSectionsAndModules
+	DisassembleRemoteCode
