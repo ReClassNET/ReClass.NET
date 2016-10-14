@@ -1,4 +1,5 @@
-﻿using ReClassNET.Nodes;
+﻿using Microsoft.SqlServer.MessageBox;
+using ReClassNET.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -147,6 +148,17 @@ namespace ReClassNET
 			{
 				func(item);
 			}
+		}
+
+		public static void ShowDialog(this Exception ex)
+		{
+			// This doesn't look good...
+			ex.HelpLink = "https://github.com/KN4CK3R/ReClass.NET/issues";
+
+			var msg = new ExceptionMessageBox(ex);
+			msg.ShowToolBar = true;
+			msg.Symbol = ExceptionMessageBoxSymbol.Error;
+			msg.Show(null);
 		}
 	}
 }

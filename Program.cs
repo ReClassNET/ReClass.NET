@@ -11,18 +11,29 @@ namespace ReClassNET
 		[STAThread]
 		static void Main()
 		{
-			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-
-			var settings = Settings.Load(SettingsFile);
-
-			using (var nativeHelper = new NativeHelper())
+#if RELEASE
+			try
 			{
-				Application.EnableVisualStyles();
-				Application.SetCompatibleTextRenderingDefault(false);
-				Application.Run(new MainForm(nativeHelper, settings));
-			}
+#endif
+				CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-			Settings.Save(settings, SettingsFile);
+				var settings = Settings.Load(SettingsFile);
+
+				using (var nativeHelper = new NativeHelper())
+				{
+					Application.EnableVisualStyles();
+					Application.SetCompatibleTextRenderingDefault(false);
+					Application.Run(new MainForm(nativeHelper, settings));
+				}
+
+				Settings.Save(settings, SettingsFile);
+#if RELEASE
+			}
+			catch (Exception ex)
+			{
+				ex.ShowDialog();
+			}
+#endif
 		}
 	}
 }

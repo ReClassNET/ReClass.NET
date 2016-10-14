@@ -109,7 +109,7 @@ namespace ReClassNET.Nodes
 				}
 				catch (Exception ex)
 				{
-					//TODO: Report error.
+					ex.ShowDialog();
 				}
 			}
 		}
