@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReClassNET.AddressParser;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -272,7 +273,7 @@ namespace ReClassNET
 
 #endregion
 
-#region WriteMemory
+		#region WriteMemory
 
 		public bool WriteRemoteMemory(IntPtr address, byte[] data)
 		{
@@ -295,7 +296,7 @@ namespace ReClassNET
 			return WriteRemoteMemory(address, data);
 		}
 
-#endregion
+		#endregion
 
 		public string GetNamedAddress(IntPtr address)
 		{
@@ -367,24 +368,14 @@ namespace ReClassNET
 
 		public IntPtr ParseAddress(string addressStr)
 		{
-			IntPtr finalAddress = IntPtr.Zero;
+			var reader = new TokenReader();
+			var tokens = reader.Read(addressStr);
 
-			if (addressStr.StartsWith("0x"))
-			{
-				addressStr = addressStr.Substring(2);
-			}
+			var astBuilder = new AstBuilder();
+			var operation = astBuilder.Build(tokens);
 
-			long address;
-			if (long.TryParse(addressStr, NumberStyles.HexNumber, null, out address))
-			{
-#if WIN32
-				return unchecked((IntPtr)(int)address);
-#else
-				return unchecked((IntPtr)address);
-#endif
-			}
-
-			return finalAddress;
+			var interpreter = new Interpreter();
+			return interpreter.Execute(operation, this);
 		}
 	}
 }

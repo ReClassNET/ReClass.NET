@@ -99,10 +99,17 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id == 0)
 			{
-				var address = spot.Memory.Process?.ParseAddress(spot.Text) ?? IntPtr.Zero;
-				if (!address.IsNull())
+				try
 				{
-					Offset = address;
+					var address = spot.Memory.Process.ParseAddress(spot.Text);
+					if (!address.IsNull())
+					{
+						Offset = address;
+					}
+				}
+				catch (Exception ex)
+				{
+					//TODO: Report error.
 				}
 			}
 		}

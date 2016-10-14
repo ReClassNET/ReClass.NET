@@ -74,6 +74,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressParser\AstBuilder.cs" />
+    <Compile Include="AddressParser\Interpreter.cs" />
+    <Compile Include="AddressParser\Operations.cs" />
+    <Compile Include="AddressParser\ParseException.cs" />
+    <Compile Include="AddressParser\Token.cs" />
+    <Compile Include="AddressParser\TokenReader.cs" />
     <Compile Include="DataExchange\IReClassExport.cs" />
     <Compile Include="DataExchange\ReClassFile.cs" />
     <Compile Include="DataExchange\ReClass2007File.cs" />

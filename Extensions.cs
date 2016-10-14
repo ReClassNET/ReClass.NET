@@ -35,12 +35,30 @@ namespace ReClassNET
 #endif
 		}
 
-		public static IntPtr Add(this IntPtr lhs, long rhs)
+		public static IntPtr Sub(this IntPtr lhs, IntPtr rhs)
 		{
 #if WIN64
-			return new IntPtr(unchecked(lhs.ToInt64() + rhs));
+			return new IntPtr(lhs.ToInt64() - rhs.ToInt64());
 #else
-			return new IntPtr(unchecked((int)(lhs.ToInt32() + rhs)));
+			return new IntPtr(lhs.ToInt32() - rhs.ToInt32());
+#endif
+		}
+
+		public static IntPtr Mul(this IntPtr lhs, IntPtr rhs)
+		{
+#if WIN64
+			return new IntPtr(lhs.ToInt64() * rhs.ToInt64());
+#else
+			return new IntPtr(lhs.ToInt32() * rhs.ToInt32());
+#endif
+		}
+
+		public static IntPtr Div(this IntPtr lhs, IntPtr rhs)
+		{
+#if WIN64
+			return new IntPtr(lhs.ToInt64() / rhs.ToInt64());
+#else
+			return new IntPtr(lhs.ToInt32() / rhs.ToInt32());
 #endif
 		}
 
