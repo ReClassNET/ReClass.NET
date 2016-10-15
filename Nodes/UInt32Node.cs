@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET.Nodes
 {
-	class UInt32Node : NumericNode
+	class UInt32Node : BaseNumericNode
 	{
 		public override int MemorySize => 4;
 

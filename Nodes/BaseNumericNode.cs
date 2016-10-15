@@ -2,7 +2,7 @@
 
 namespace ReClassNET.Nodes
 {
-	abstract class NumericNode : BaseNode
+	abstract class BaseNumericNode : BaseNode
 	{
 		public int DrawNumeric(ViewInfo view, int x, int y, Image icon, string type, string value)
 		{

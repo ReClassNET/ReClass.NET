@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET.Nodes
 {
-	class Int8Node : NumericNode
+	class Int8Node : BaseNumericNode
 	{
 		public override int MemorySize => 1;
 
