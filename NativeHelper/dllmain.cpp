@@ -277,7 +277,7 @@ EXTERN_DLL_EXPORT VOID __stdcall EnumerateRemoteSectionsAndModules(HANDLE proces
 						auto sectionAddress = (size_t)me32.modBaseAddr + section.VirtualAddress;
 						for (auto j = it; j != std::end(sections); ++j)
 						{
-							if (sectionAddress >= (size_t)j->BaseAddress && sectionAddress <= (size_t)j->BaseAddress + (size_t)j->RegionSize)
+							if (sectionAddress >= (size_t)j->BaseAddress && sectionAddress < (size_t)j->BaseAddress + (size_t)j->RegionSize)
 							{
 								std::memcpy(j->Name, section.Name, IMAGE_SIZEOF_SHORT_NAME);
 								std::memcpy(j->ModulePath, me32.szExePath, sizeof(SectionInfo::ModulePath));
