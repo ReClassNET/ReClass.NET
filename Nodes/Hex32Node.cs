@@ -1,7 +1,30 @@
-﻿namespace ReClassNET.Nodes
+﻿using System;
+using System.Runtime.InteropServices;
+
+namespace ReClassNET.Nodes
 {
 	class Hex32Node : BaseHexCommentNode
 	{
+		[StructLayout(LayoutKind.Explicit)]
+		struct UInt32FloatData
+		{
+			/*[FieldOffset(0)]
+			public fixed byte ByteValue[4];*/
+
+			[FieldOffset(0)]
+			public float FloatValue;
+
+			[FieldOffset(0)]
+			public int IntValue;
+
+			public IntPtr IntPtr => unchecked((IntPtr)IntValue);
+
+			[FieldOffset(0)]
+			public uint UIntValue;
+
+			public UIntPtr UIntPtr => unchecked((UIntPtr)UIntValue);
+		}
+
 		public override int MemorySize => 4;
 
 		public Hex32Node()

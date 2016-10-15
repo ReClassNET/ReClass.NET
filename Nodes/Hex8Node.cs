@@ -1,7 +1,19 @@
-﻿namespace ReClassNET.Nodes
+﻿using System.Runtime.InteropServices;
+
+namespace ReClassNET.Nodes
 {
 	class Hex8Node : BaseHexNode
 	{
+		[StructLayout(LayoutKind.Explicit)]
+		struct UInt8Data
+		{
+			[FieldOffset(0)]
+			public sbyte SByteValue;
+
+			[FieldOffset(0)]
+			public byte ByteValue;
+		}
+
 		public override int MemorySize => 1;
 
 		public Hex8Node()

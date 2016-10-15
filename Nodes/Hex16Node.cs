@@ -1,13 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 
 namespace ReClassNET.Nodes
 {
 	class Hex16Node : BaseHexNode
 	{
+		[StructLayout(LayoutKind.Explicit)]
+		struct UInt16Data
+		{
+			/*[FieldOffset(0)]
+			public fixed byte ByteValue[2];*/
+
+			[FieldOffset(0)]
+			public short ShortValue;
+
+			[FieldOffset(0)]
+			public ushort UShortValue;
+		}
+
 		public override int MemorySize => 2;
 
 		public Hex16Node()
