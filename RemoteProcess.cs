@@ -1,4 +1,5 @@
 ﻿using ReClassNET.AddressParser;
+using ReClassNET.SymbolReader;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -55,6 +56,9 @@ namespace ReClassNET
 
 		private readonly List<Section> sections = new List<Section>();
 		public IEnumerable<Section> Sections => sections;
+
+		private readonly Symbols symbols = new Symbols();
+		public Symbols Symbols => symbols;
 
 		public bool IsValid => process != null && nativeHelper.IsProcessValid(process.Handle);
 
@@ -386,6 +390,21 @@ namespace ReClassNET
 
 			var interpreter = new Interpreter();
 			return interpreter.Execute(operation, this);
+		}
+
+		public void LoadAllSymbols()
+		{
+			foreach (var module in Modules)
+			{
+				try
+				{
+					Symbols.LoadSymbolsForModule(module);
+				}
+				catch
+				{
+					//ignore
+				}
+			}
 		}
 	}
 }

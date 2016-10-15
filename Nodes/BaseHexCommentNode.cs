@@ -47,13 +47,13 @@ namespace ReClassNET.Nodes
 					var module = view.Memory.Process.Modules.Where(m => ivalue.InRange(m.Start, m.End)).FirstOrDefault();
 					if (module != null)
 					{
-						var symbols = view.Memory.GetSymbolsForModule(null);
+						var symbols = view.Memory.Process.Symbols.GetSymbolsForModule(module);
 						if (symbols != null)
 						{
 							var symbol = symbols.GetSymbolStringWithVA(ivalue);
 							if (!string.IsNullOrEmpty(symbol))
 							{
-								x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, symbol + " ");
+								x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, symbol) + view.Font.Width;
 							}
 						}
 					}

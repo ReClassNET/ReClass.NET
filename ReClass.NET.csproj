@@ -59,6 +59,10 @@
     <ApplicationIcon>Resources\Icon\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dia2Lib">
+      <HintPath>.\Dia2Lib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.ExceptionMessageBox">
       <HintPath>.\Microsoft.ExceptionMessageBox.dll</HintPath>
     </Reference>
@@ -200,6 +204,9 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="ShellIcon.cs" />
+    <Compile Include="SymbolReader\ComDisposableWrapper.cs" />
+    <Compile Include="SymbolReader\SymbolReader.cs" />
+    <Compile Include="SymbolReader\Symbols.cs" />
     <Compile Include="ViewInfo.cs" />
     <EmbeddedResource Include="Gui\ClassNodeView.resx">
       <DependentUpon>ClassNodeView.cs</DependentUpon>

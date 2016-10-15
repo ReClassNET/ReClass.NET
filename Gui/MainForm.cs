@@ -75,6 +75,10 @@ namespace ReClassNET
 
 					remoteProcess.Process = pb.SelectedProcess;
 					remoteProcess.UpdateProcessInformations();
+					if (pb.LoadSymbols)
+					{
+						remoteProcess.LoadAllSymbols();
+					}
 
 					settings.LastProcess = remoteProcess.Process.Name;
 				}
