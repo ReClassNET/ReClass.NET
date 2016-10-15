@@ -17,6 +17,8 @@ namespace ReClassNET.Nodes
 		private readonly List<BaseNode> nodes = new List<BaseNode>();
 		public IEnumerable<BaseNode> Nodes => nodes;
 
+		public string AddressStr { get; set; }
+
 		public ClassNode()
 			: this(true)
 		{
@@ -105,6 +107,7 @@ namespace ReClassNET.Nodes
 					if (!address.IsNull())
 					{
 						Offset = address;
+						AddressStr = spot.Text;
 					}
 				}
 				catch (Exception ex)
