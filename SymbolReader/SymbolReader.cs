@@ -55,7 +55,10 @@ namespace ReClassNET.SymbolReader
 		{
 			Contract.Requires(module != null);
 
-			var reader = new SymbolReader(searchPath);
+			var reader = new SymbolReader(searchPath)
+			{
+				moduleBase = module.Start
+			};
 			reader.LoadDataForModule(module.Path);
 			return reader;
 		}
