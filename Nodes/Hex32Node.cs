@@ -8,12 +8,6 @@ namespace ReClassNET.Nodes
 		[StructLayout(LayoutKind.Explicit)]
 		struct UInt32FloatData
 		{
-			/*[FieldOffset(0)]
-			public fixed byte ByteValue[4];*/
-
-			[FieldOffset(0)]
-			public float FloatValue;
-
 			[FieldOffset(0)]
 			public int IntValue;
 
@@ -23,6 +17,9 @@ namespace ReClassNET.Nodes
 			public uint UIntValue;
 
 			public UIntPtr UIntPtr => unchecked((UIntPtr)UIntValue);
+
+			[FieldOffset(0)]
+			public float FloatValue;
 		}
 
 		public override int MemorySize => 4;

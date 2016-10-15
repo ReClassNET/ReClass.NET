@@ -8,15 +8,6 @@ namespace ReClassNET.Nodes
 		[StructLayout(LayoutKind.Explicit)]
 		struct UInt64FloatDoubleData
 		{
-			/*[FieldOffset(0)]
-			public fixed byte ByteValue[8];*/
-
-			[FieldOffset(0)]
-			public float FloatValue;
-
-			[FieldOffset(0)]
-			public double DoubleValue;
-
 			[FieldOffset(0)]
 			public long LongValue;
 
@@ -36,6 +27,12 @@ namespace ReClassNET.Nodes
 #else
 			unchecked((UIntPtr)ULongValue);
 #endif
+
+			[FieldOffset(0)]
+			public float FloatValue;
+
+			[FieldOffset(0)]
+			public double DoubleValue;
 		}
 
 		public override int MemorySize => 8;

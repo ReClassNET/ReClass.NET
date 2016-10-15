@@ -7,9 +7,6 @@ namespace ReClassNET.Nodes
 		[StructLayout(LayoutKind.Explicit)]
 		struct UInt16Data
 		{
-			/*[FieldOffset(0)]
-			public fixed byte ByteValue[2];*/
-
 			[FieldOffset(0)]
 			public short ShortValue;
 
