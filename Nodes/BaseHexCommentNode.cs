@@ -38,7 +38,7 @@ namespace ReClassNET.Nodes
 					var rtti = view.Memory.Process.ReadRemoteRuntimeTypeInformation(ivalue);
 					if (!string.IsNullOrEmpty(rtti))
 					{
-						x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, rtti);
+						x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, rtti) + view.Font.Width;
 					}
 				}
 
@@ -50,7 +50,7 @@ namespace ReClassNET.Nodes
 						var symbols = view.Memory.Process.Symbols.GetSymbolsForModule(module);
 						if (symbols != null)
 						{
-							var symbol = symbols.GetSymbolStringWithVA(ivalue);
+							var symbol = symbols.GetSymbolString(ivalue, module);
 							if (!string.IsNullOrEmpty(symbol))
 							{
 								x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, symbol) + view.Font.Width;

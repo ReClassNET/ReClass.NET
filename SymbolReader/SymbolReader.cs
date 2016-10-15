@@ -1,11 +1,7 @@
 ﻿using Dia2Lib;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ReClassNET.SymbolReader
 {
@@ -15,8 +11,6 @@ namespace ReClassNET.SymbolReader
 		private ComDisposableWrapper<IDiaSession> diaSession;
 
 		private string searchPath;
-
-		private IntPtr moduleBase;
 
 		public SymbolReader(string searchPath)
 		{
@@ -55,42 +49,33 @@ namespace ReClassNET.SymbolReader
 		{
 			Contract.Requires(module != null);
 
-			var reader = new SymbolReader(searchPath)
-			{
-				moduleBase = module.Start
-			};
-			reader.LoadDataForModule(module.Path);
+			var reader = new SymbolReader(searchPath);
+			reader.diaSource.Interface.loadDataForExe(module.Path, searchPath, null);
+			reader.CreateSession();
 			return reader;
 		}
 
-		private void LoadDataForModule(string path)
+		public static SymbolReader FromDatabase(string path)
 		{
-			diaSource.Interface.loadDataForExe(path, searchPath, null);
-			var error = diaSource.Interface.lastError;
+			Contract.Requires(!string.IsNullOrEmpty(path));
 
+			var reader = new SymbolReader(null);
+			reader.diaSource.Interface.loadDataFromPdb(path);
+			reader.CreateSession();
+			return reader;
+		}
+
+		private void CreateSession()
+		{
 			IDiaSession session;
 			diaSource.Interface.openSession(out session);
 
 			diaSession = new ComDisposableWrapper<IDiaSession>(session);
 		}
 
-		public bool LoadSymbolData(string path)
+		public string GetSymbolString(IntPtr address, RemoteProcess.Module module)
 		{
-			if (Path.GetExtension(path).ToLower() == ".pdb")
-			{
-				diaSource.Interface.loadDataFromPdb(path);
-			}
-			else
-			{
-				diaSource.Interface.loadDataForExe(path, null, null);
-			}
-
-			return false;
-		}
-
-		public string GetSymbolStringWithVA(IntPtr address)
-		{
-			var rva = address.Sub(moduleBase);
+			var rva = address.Sub(module.Start);
 
 			IDiaSymbol diaSymbol;
 			diaSession.Interface.findSymbolByRVA((uint)rva.ToInt32(), SymTagEnum.SymTagNull, out diaSymbol);
@@ -108,9 +93,7 @@ namespace ReClassNET.SymbolReader
 
 		private void ReadSymbol(IDiaSymbol symbol, StringBuilder sb)
 		{
-			var result = string.Empty;
-
-			switch ((SymTagEnum)symbol.symTag)
+			/*switch ((SymTagEnum)symbol.symTag)
 			{
 				case SymTagEnum.SymTagData:
 					ReadData(symbol, sb);
@@ -125,94 +108,8 @@ namespace ReClassNET.SymbolReader
 					break;
 			}
 
-			ReadSymbolType(symbol, sb);
+			ReadSymbolType(symbol, sb);*/
 			ReadName(symbol, sb);
-
-			/*
-
-	case SymTagLabel:
-		ReadLocation(pSymbol, outString);
-		//outString += _T(", ");
-		//wprintf(L", ");
-		ReadName(pSymbol, outString);
-		break;
-
-	case SymTagEnum:
-	case SymTagTypedef:
-	case SymTagUDT:
-	case SymTagBaseClass:
-		ReadUDT(pSymbol, outString);
-		break;
-
-	case SymTagFuncDebugStart:
-	case SymTagFuncDebugEnd:
-		//ReadLocation(pSymbol, outString);
-		break;
-
-	case SymTagFunctionArgType:
-	case SymTagFunctionType:
-	case SymTagPointerType:
-	case SymTagArrayType:
-	case SymTagBaseType:
-		if (pSymbol->get_type(&pType) == S_OK) 
-		{
-			ReadType(pType, outString);
-			pType->Release();
-		}
-		//putwchar(L'\n');
-		break;
-
-	case SymTagThunk:
-		//PrintThunk(pSymbol);
-		break;
-
-	case SymTagCallSite:
-		//PrintCallSiteInfo(pSymbol);
-		break;
-
-	case SymTagHeapAllocationSite:
-		//PrintHeapAllocSite(pSymbol);
-		break;
-
-	case SymTagCoffGroup:
-		//PrintCoffGroup(pSymbol);
-		break;
-
-	default:
-		ReadSymbolType(pSymbol, outString);
-		ReadName(pSymbol, outString);
-
-		//if (pSymbol->get_type(&pType) == S_OK)
-		//{
-		//	outString += _T(" type ");
-		//	//wprintf(L" has type ");
-		//	ReadType(pType, outString);
-		//	pType->Release();
-		//}
-	}
-
-	if ((dwSymTag == SymTagUDT) || (dwSymTag == SymTagAnnotation))
-	{
-		IDiaEnumSymbols *pEnumChildren;
-
-		//putwchar(L'\n');
-
-		if (SUCCEEDED(pSymbol->findChildren(SymTagNull, NULL, nsNone, &pEnumChildren))) 
-		{
-			IDiaSymbol *pChild;
-			ULONG celt = 0;
-
-			while (SUCCEEDED(pEnumChildren->Next(1, &pChild, &celt)) && (celt == 1)) 
-			{
-				ReadSymbol(pChild, outString);
-				pChild->Release();
-			}
-
-			pEnumChildren->Release();
-		}
-	}
-	//putwchar(L'\n');
-}*/
 		}
 
 		private void ReadSymbolType(IDiaSymbol symbol, StringBuilder sb)
@@ -228,7 +125,7 @@ namespace ReClassNET.SymbolReader
 
 		private void ReadType(IDiaSymbol symbole, StringBuilder sb)
 		{
-			return;
+			throw new NotImplementedException();
 		}
 
 		private void ReadName(IDiaSymbol symbol, StringBuilder sb)
@@ -240,13 +137,28 @@ namespace ReClassNET.SymbolReader
 
 			if (!string.IsNullOrEmpty(symbol.undecoratedName))
 			{
-				if (symbol.name != symbol.undecoratedName)
+				// If symbol.name equals symbol.undecoratedName there is some extra stuff which can't get undecorated. Try to fix it.
+				if (symbol.name == symbol.undecoratedName)
 				{
-					sb.AppendFormat("{0} ({1})", symbol.undecoratedName, symbol.name);
+					if (symbol.name.StartsWith("@ILT+"))
+					{
+						var start = symbol.name.IndexOf('(');
+						if (start != -1)
+						{
+							var name = symbol.name.Substring(start + 1, symbol.name.Length - 1 - start - 1);
+							sb.Append(Natives.UnDecorateSymbolName(name));
+						}
+					}
+				}
+				else
+				{
+					sb.Append(symbol.undecoratedName);
 				}
 			}
-
-			sb.Append(symbol.name);
+			else
+			{
+				sb.Append(symbol.name);
+			}
 		}
 
 		private void ReadData(IDiaSymbol symbol, StringBuilder sb)

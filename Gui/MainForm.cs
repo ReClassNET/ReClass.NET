@@ -261,5 +261,25 @@ namespace ReClassNET
 		{
 			remoteProcess.UpdateProcessInformations();
 		}
+
+		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (var ofd = new OpenFileDialog())
+			{
+				ofd.Filter = "Program Debug Database (*.pdb)|*.pdb|All Files (*.*)|*.*";
+
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					try
+					{
+						remoteProcess.Symbols.LoadSymbolsFromPDB(ofd.FileName);
+					}
+					catch (Exception ex)
+					{
+						ex.ShowDialog();
+					}
+				}
+			}
+		}
 	}
 }

@@ -95,13 +95,26 @@ namespace ReClassNET.SymbolReader
 		public void LoadSymbolsForModule(RemoteProcess.Module module)
 		{
 			var reader = SymbolReader.FromModule(module, SymbolSearchPath);
-			symbolReaders[module.Name] = reader;
+			symbolReaders[module.Name.ToLower()] = reader;
+		}
+
+		public void LoadSymbolsFromPDB(string path)
+		{
+			var reader = SymbolReader.FromDatabase(path);
+			symbolReaders[Path.GetFileName(path).ToLower()] = reader;
 		}
 
 		public SymbolReader GetSymbolsForModule(RemoteProcess.Module module)
 		{
+			var name = module.Name.ToLower();
+
 			SymbolReader reader;
-			symbolReaders.TryGetValue(module.Name, out reader);
+			if (!symbolReaders.TryGetValue(name, out reader))
+			{
+				name = Path.ChangeExtension(name, ".pdb");
+
+				symbolReaders.TryGetValue(name, out reader);
+			}
 			return reader;
 		}
 	}
