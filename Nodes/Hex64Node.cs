@@ -46,7 +46,7 @@ namespace ReClassNET.Nodes
 		{
 			var value = memory.ReadObject<UInt64FloatDoubleData>(Offset);
 
-			return $"Int64: {value.LongValue}\nDWORD: 0x{value.ULongValue:X016}\nFloat: {value.FloatValue:0.000}\nDouble: {value.DoubleValue:0.000}";
+			return $"Int64: {value.LongValue}\nUInt64: 0x{value.ULongValue:X016}\nFloat: {value.FloatValue:0.000}\nDouble: {value.DoubleValue:0.000}";
 		}
 
 		public override int Draw(ViewInfo view, int x, int y)

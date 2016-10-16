@@ -33,7 +33,7 @@ namespace ReClassNET.Nodes
 		{
 			var value = memory.ReadObject<UInt32FloatData>(Offset);
 
-			return $"Int32: {value.IntValue}\nDWORD: 0x{value.UIntValue:X08}\nFloat: {value.FloatValue:0.000}";
+			return $"Int32: {value.IntValue}\nUInt32: 0x{value.UIntValue:X08}\nFloat: {value.FloatValue:0.000}";
 		}
 
 		public override int Draw(ViewInfo view, int x, int y)

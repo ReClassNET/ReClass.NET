@@ -25,7 +25,7 @@ namespace ReClassNET.Nodes
 		{
 			var b = memory.ReadByte(Offset);
 
-			return $"Int8: {(int)b}\nByte: 0x{b:X02}";
+			return $"Int8: {(int)b}\nUInt8: 0x{b:X02}";
 		}
 
 		public override int Draw(ViewInfo view, int x, int y)

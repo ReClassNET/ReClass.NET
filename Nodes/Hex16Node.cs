@@ -25,7 +25,7 @@ namespace ReClassNET.Nodes
 		{
 			var value = memory.ReadObject<UInt16Data>(Offset);
 
-			return $"Int16: {value.ShortValue}\nWORD: 0x{value.UShortValue:X04}";
+			return $"Int16: {value.ShortValue}\nUInt16: 0x{value.UShortValue:X04}";
 		}
 
 		public override int Draw(ViewInfo view, int x, int y)
