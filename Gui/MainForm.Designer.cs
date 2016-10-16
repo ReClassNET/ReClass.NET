@@ -131,6 +131,7 @@
 			this.classesView = new ReClassNET.ClassNodeView();
 			this.memoryViewControl = new ReClassNET.MemoryViewControl();
 			this.processUpdateTimer = new System.Windows.Forms.Timer(this.components);
+			this.openProjectToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.statusStrip.SuspendLayout();
 			this.mainMenuStrip.SuspendLayout();
 			this.toolStrip.SuspendLayout();
@@ -401,6 +402,7 @@
             this.selectProcessToolStripButton,
             this.pluginsToolStripButton,
             this.toolStripSeparator6,
+            this.openProjectToolStripButton,
             this.saveToolStripButton,
             this.toolStripSeparator7,
             this.newClassToolStripButton,
@@ -1086,6 +1088,7 @@
 			this.classesView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.classesView.Location = new System.Drawing.Point(0, 0);
 			this.classesView.Name = "classesView";
+			this.classesView.SelectedClass = null;
 			this.classesView.Size = new System.Drawing.Size(201, 524);
 			this.classesView.TabIndex = 0;
 			this.classesView.ClassSelected += new ReClassNET.ClassNodeView.ClassSelectedEvent(this.classesView_ClassSelected);
@@ -1107,6 +1110,16 @@
 			this.processUpdateTimer.Enabled = true;
 			this.processUpdateTimer.Interval = 5000;
 			this.processUpdateTimer.Tick += new System.EventHandler(this.processUpdateTimer_Tick);
+			// 
+			// openProjectToolStripButton
+			// 
+			this.openProjectToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.openProjectToolStripButton.Image = global::ReClassNET.Properties.Resources.folder;
+			this.openProjectToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.openProjectToolStripButton.Name = "openProjectToolStripButton";
+			this.openProjectToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.openProjectToolStripButton.ToolTipText = "Open Project...";
+			this.openProjectToolStripButton.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -1239,6 +1252,7 @@
 		private System.Windows.Forms.Timer processUpdateTimer;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
 		private System.Windows.Forms.ToolStripMenuItem loadSymbolToolStripMenuItem;
+		private System.Windows.Forms.ToolStripButton openProjectToolStripButton;
 	}
 }
 
