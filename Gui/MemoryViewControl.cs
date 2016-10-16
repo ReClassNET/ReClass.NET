@@ -178,8 +178,8 @@ namespace ReClassNET
 										continue;
 									}
 
-									var classNode = selectedNode.ParentNode as ClassNode;
-									if (ClassNode == null)
+									var containerNode = selectedNode.ParentNode as BaseContainerNode;
+									if (containerNode == null)
 									{
 										continue;
 									}
@@ -203,8 +203,8 @@ namespace ReClassNET
 
 									ClearSelection();
 
-									foreach (var spot in classNode.Nodes.Skip(idx1).Take(idx2 - idx1 + 1)
-										.Select(n => new HotSpot { Address = classNode.Offset.Add(n.Offset), Node = n }))
+									foreach (var spot in containerNode.Nodes.Skip(idx1).Take(idx2 - idx1 + 1)
+										.Select(n => new HotSpot { Address = containerNode.Offset.Add(n.Offset), Node = n }))
 									{
 										spot.Node.IsSelected = true;
 										selected.Add(spot);
@@ -353,13 +353,13 @@ namespace ReClassNET
 
 		private int FindNodeIndex(BaseNode node)
 		{
-			var classNode = node.ParentNode as ClassNode;
-			if (classNode == null)
+			var containerNode = node.ParentNode as BaseContainerNode;
+			if (containerNode == null)
 			{
 				return -1;
 			}
 
-			return classNode.Nodes.FindIndex(n => n == node);
+			return containerNode.Nodes.FindIndex(n => n == node);
 		}
 
 		public void AddBytes(int length)
@@ -403,23 +403,27 @@ namespace ReClassNET
 
 					node.Intialize();
 
-					sel.Node.ParentNode.ReplaceChildNode(FindNodeIndex(sel.Node), node);
-
-					newSelected.Add(node);
+					if (sel.Node.ParentNode.ReplaceChildNode(FindNodeIndex(sel.Node), node))
+					{
+						newSelected.Add(node);
+					}
 				}
 			}
 
-			selected.Clear();
-
-			foreach (var sel in newSelected)
+			if (newSelected.Count > 0)
 			{
-				sel.IsSelected = true;
+				selected.Clear();
 
-				selected.Add(new HotSpot
+				foreach (var sel in newSelected)
 				{
-					Address = sel.ParentNode.Offset.Add(sel.Offset),
-					Node = sel
-				});
+					sel.IsSelected = true;
+
+					selected.Add(new HotSpot
+					{
+						Address = sel.ParentNode.Offset.Add(sel.Offset),
+						Node = sel
+					});
+				}
 			}
 
 			Invalidate();

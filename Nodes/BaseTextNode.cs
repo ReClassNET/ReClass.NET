@@ -59,7 +59,7 @@
 				{
 					CharacterCount = val;
 
-					ParentNode.NotifyMemorySizeChanged();
+					(ParentNode as ClassNode)?.NotifyMemorySizeChanged();
 				}
 			}
 		}

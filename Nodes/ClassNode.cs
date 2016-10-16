@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ReClassNET.Nodes
 {
-	class ClassNode : BaseNode
+	class ClassNode : BaseContainerNode
 	{
 		public delegate void NewClassCreatedEvent(ClassNode sender);
 		public static event NewClassCreatedEvent NewClassCreated;
@@ -13,9 +13,6 @@ namespace ReClassNET.Nodes
 		public static List<ClassNode> Classes = new List<ClassNode>();
 
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
-
-		private readonly List<BaseNode> nodes = new List<BaseNode>();
-		public IEnumerable<BaseNode> Nodes => nodes;
 
 		public string AddressStr { get; set; }
 
@@ -53,16 +50,6 @@ namespace ReClassNET.Nodes
 			foreach (var node in Nodes)
 			{
 				node.ClearSelection();
-			}
-		}
-
-		public void UpdateOffsets()
-		{
-			var offset = IntPtr.Zero;
-			foreach (var node in Nodes)
-			{
-				node.Offset = offset;
-				offset += node.MemorySize;
 			}
 		}
 
@@ -131,105 +118,23 @@ namespace ReClassNET.Nodes
 			nodes.Add(node);
 		}
 
-		public void ReplaceChildNode(int index, BaseNode node)
+		public override void InsertBytes(int index, int size)
 		{
-			if (node == null)
-			{
-				return;
-			}
-			if (index < 0 || index >= nodes.Count)
-			{
-				return;
-			}
-
-			var oldNode = nodes[index];
-
-			node.CopyFromNode(oldNode);
-			
-			node.ParentNode = this;
-			node.ClearSelection();
-
-			nodes[index] = node;
-
-			OnPropertyChanged(nameof(Nodes));
-
-			var oldSize = oldNode.MemorySize;
-			var newSize = node.MemorySize;
-
-			if (newSize < oldSize)
-			{
-				InsertBytes(index + 1, oldSize - newSize);
-			}
-			else if (newSize > oldSize)
-			{
-				//RemoveNodes(index + 1, newSize - oldSize);
-			}
-		}
-
-		public void AddBytes(int size)
-		{
-			InsertBytes(nodes.Count, size);
-		}
-
-		public void InsertBytes(int index, int size)
-		{
-			if (index < 0 || index > nodes.Count || size == 0)
-			{
-				return;
-			}
-
-			var offset = IntPtr.Zero;
-			if (index > 0)
-			{
-				var node = nodes[index - 1];
-				offset = node.Offset + node.MemorySize;
-			}
-
-			while (size != 0)
-			{
-				BaseNode node = null;
-#if WIN64
-				if (size >= 8)
-				{
-					node = new Hex64Node();
-				}
-				else 
-#endif
-				if (size >= 4)
-				{
-					node = new Hex32Node();
-				}
-				else if (size >= 2)
-				{
-					node = new Hex16Node();
-				}
-				else
-				{
-					node = new Hex8Node();
-				}
-
-				node.ParentNode = this;
-				node.Offset = offset;
-
-				nodes.Insert(index, node);
-
-				offset += node.MemorySize;
-				size -= node.MemorySize;
-
-				index++;
-			}
+			base.InsertBytes(index, size);
 
 			NotifyMemorySizeChanged();
 		}
 
-		public void RemoveNode(BaseNode node)
+		public override bool RemoveNode(BaseNode node)
 		{
-			Contract.Requires(node != null);
-
-			if (nodes.Remove(node))
+			var removed = base.RemoveNode(node);
+			if (removed)
 			{
+				UpdateOffsets();
+
 				NotifyMemorySizeChanged();
 			}
+			return removed;
 		}
 	}
 }

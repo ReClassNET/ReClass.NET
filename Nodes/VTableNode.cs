@@ -2,7 +2,7 @@
 
 namespace ReClassNET.Nodes
 {
-	class VTableNode : BaseNode
+	class VTableNode : BaseContainerNode
 	{
 		private Memory memory = new Memory();
 
@@ -10,7 +10,17 @@ namespace ReClassNET.Nodes
 
 		public override void Intialize()
 		{
-			//fill
+			InsertBytes(0, 10 * IntPtr.Size);
+		}
+
+		public override void ClearSelection()
+		{
+			base.ClearSelection();
+
+			foreach (var node in nodes)
+			{
+				node.ClearSelection();
+			}
 		}
 
 		public override int Draw(ViewInfo view, int x, int y)
@@ -25,17 +35,14 @@ namespace ReClassNET.Nodes
 			AddTypeDrop(view, x, y);
 
 			x = AddOpenClose(view, x, y);
-			x = AddIcon(view, x, y, Icons.Pointer, -1, HotSpotType.None);
+			x = AddIcon(view, x, y, Icons.VTable, -1, HotSpotType.None);
 
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Ptr ");
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
-			//x = AddText(view, x, y, view.Settings.Value, HotSpot.NoneId, $" <{InnerNode.Name}>");
-			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeAll);
+			x = AddText(view, x, y, view.Settings.VTableColor, HotSpot.NoneId, $"VTable[{nodes.Count}]") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 
-			x += view.Font.Width;
 			x = AddComment(view, x, y);
 
 			y += view.Font.Height;
@@ -44,7 +51,7 @@ namespace ReClassNET.Nodes
 			{
 				var ptr = view.Memory.ReadObject<IntPtr>(Offset);
 
-				//memory.Size = InnerNode.MemorySize;
+				memory.Size = nodes.Count * IntPtr.Size;
 				memory.Process = view.Memory.Process;
 				memory.Update(ptr);
 
@@ -52,10 +59,61 @@ namespace ReClassNET.Nodes
 				v.Address = ptr;
 				v.Memory = memory;
 
-				//y = InnerNode.Draw(v, tx, y);
+				foreach (var node in nodes)
+				{
+					y = node.Draw(v, tx, y);
+				}
 			}
 
 			return y;
+		}
+
+		public override bool ReplaceChildNode(int index, BaseNode node)
+		{
+			return false;
+		}
+
+		public override void InsertBytes(int index, int size)
+		{
+			if (index < 0 || index > nodes.Count || size == 0)
+			{
+				return;
+			}
+
+			var offset = IntPtr.Zero;
+			if (index > 0)
+			{
+				var node = nodes[index - 1];
+				offset = node.Offset + node.MemorySize;
+			}
+
+			while (size > 0)
+			{
+				var node = new VirtualFunctionPtrNode
+				{
+					Offset = offset,
+					ParentNode = this
+				};
+
+				nodes.Insert(index, node);
+
+				offset += node.MemorySize;
+				size -= node.MemorySize;
+
+				index++;
+			}
+
+			UpdateOffsets();
+		}
+
+		public override bool RemoveNode(BaseNode node)
+		{
+			var removed = base.RemoveNode(node);
+			if (removed)
+			{
+				UpdateOffsets();
+			}
+			return removed;
 		}
 	}
 }

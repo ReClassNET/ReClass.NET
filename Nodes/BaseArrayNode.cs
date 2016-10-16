@@ -67,7 +67,7 @@
 						{
 							Count = value;
 
-							ParentNode.NotifyMemorySizeChanged();
+							(ParentNode as ClassNode)?.NotifyMemorySizeChanged();
 						}
 					}
 					else

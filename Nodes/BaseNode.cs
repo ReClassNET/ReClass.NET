@@ -18,7 +18,7 @@ namespace ReClassNET.Nodes
 		public IntPtr Offset { get; set; }
 		public string Comment { get; set; }
 
-		public ClassNode ParentNode { get; set; }
+		public BaseContainerNode ParentNode { get; set; }
 
 		public bool IsHidden { get; protected set; }
 		public bool IsSelected { get; set; }

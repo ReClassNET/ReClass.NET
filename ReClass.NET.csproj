@@ -87,6 +87,9 @@
     <Compile Include="AddressParser\ParseException.cs" />
     <Compile Include="AddressParser\Token.cs" />
     <Compile Include="AddressParser\TokenReader.cs" />
+    <Compile Include="CodeGenerator\CppCodeGenerator.cs" />
+    <Compile Include="CodeGenerator\CSharpCodeGenerator.cs" />
+    <Compile Include="CodeGenerator\ICodeGenerator.cs" />
     <Compile Include="DataExchange\IReClassExport.cs" />
     <Compile Include="DataExchange\ReClassFile.cs" />
     <Compile Include="DataExchange\ReClass2007File.cs" />
@@ -138,6 +141,7 @@
     <Compile Include="Natives.cs" />
     <Compile Include="Nodes\ArrayNode.cs" />
     <Compile Include="Nodes\BaseArrayNode.cs" />
+    <Compile Include="Nodes\BaseContainerNode.cs" />
     <Compile Include="Nodes\BaseFunctionPtrNode.cs" />
     <Compile Include="Nodes\BaseHexCommentNode.cs" />
     <Compile Include="Nodes\BaseHexNode.cs" />
@@ -158,7 +162,7 @@
     <Compile Include="Nodes\Matrix3x3Node.cs" />
     <Compile Include="Nodes\Matrix3x4Node.cs" />
     <Compile Include="Nodes\Matrix4x4Node.cs" />
-    <Compile Include="Nodes\NumericNode.cs" />
+    <Compile Include="Nodes\BaseNumericNode.cs" />
     <Compile Include="Nodes\ClassPtrNode.cs" />
     <Compile Include="Nodes\UTF16TextNode.cs" />
     <Compile Include="Nodes\UTF16TextPtrNode.cs" />
@@ -190,6 +194,7 @@
     <Compile Include="Gui\ProcessMemoryViewer.Designer.cs">
       <DependentUpon>ProcessMemoryViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Nodes\VirtualFunctionPtrNode.cs" />
     <Compile Include="Nodes\VTableNode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

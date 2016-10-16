@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ReClassNET.Nodes
+﻿namespace ReClassNET.Nodes
 {
 	class FunctionPtrNode : BaseFunctionPtrNode
 	{

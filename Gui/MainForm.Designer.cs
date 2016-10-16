@@ -48,6 +48,8 @@
 			this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.memoryViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
+			this.loadSymbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.loadSymbolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.resumeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -129,8 +131,6 @@
 			this.classesView = new ReClassNET.ClassNodeView();
 			this.memoryViewControl = new ReClassNET.MemoryViewControl();
 			this.processUpdateTimer = new System.Windows.Forms.Timer(this.components);
-			this.loadSymbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
 			this.statusStrip.SuspendLayout();
 			this.mainMenuStrip.SuspendLayout();
 			this.toolStrip.SuspendLayout();
@@ -295,6 +295,19 @@
 			this.memoryViewerToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
 			this.memoryViewerToolStripMenuItem.Text = "Memory Viewer";
 			this.memoryViewerToolStripMenuItem.Click += new System.EventHandler(this.memoryViewerToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator17
+			// 
+			this.toolStripSeparator17.Name = "toolStripSeparator17";
+			this.toolStripSeparator17.Size = new System.Drawing.Size(160, 6);
+			// 
+			// loadSymbolToolStripMenuItem
+			// 
+			this.loadSymbolToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.pdb;
+			this.loadSymbolToolStripMenuItem.Name = "loadSymbolToolStripMenuItem";
+			this.loadSymbolToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.loadSymbolToolStripMenuItem.Text = "Load Symbol...";
+			this.loadSymbolToolStripMenuItem.Click += new System.EventHandler(this.loadSymbolToolStripMenuItem_Click);
 			// 
 			// loadSymbolsToolStripMenuItem
 			// 
@@ -1094,19 +1107,6 @@
 			this.processUpdateTimer.Enabled = true;
 			this.processUpdateTimer.Interval = 5000;
 			this.processUpdateTimer.Tick += new System.EventHandler(this.processUpdateTimer_Tick);
-			// 
-			// loadSymbolToolStripMenuItem
-			// 
-			this.loadSymbolToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.pdb;
-			this.loadSymbolToolStripMenuItem.Name = "loadSymbolToolStripMenuItem";
-			this.loadSymbolToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-			this.loadSymbolToolStripMenuItem.Text = "Load Symbol...";
-			this.loadSymbolToolStripMenuItem.Click += new System.EventHandler(this.loadSymbolToolStripMenuItem_Click);
-			// 
-			// toolStripSeparator17
-			// 
-			this.toolStripSeparator17.Name = "toolStripSeparator17";
-			this.toolStripSeparator17.Size = new System.Drawing.Size(160, 6);
 			// 
 			// MainForm
 			// 
