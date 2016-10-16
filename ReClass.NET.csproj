@@ -194,7 +194,7 @@
     <Compile Include="Gui\ProcessMemoryViewer.Designer.cs">
       <DependentUpon>ProcessMemoryViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Nodes\VirtualFunctionPtrNode.cs" />
+    <Compile Include="Nodes\VMethodNode.cs" />
     <Compile Include="Nodes\VTableNode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

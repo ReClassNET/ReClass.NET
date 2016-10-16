@@ -20,6 +20,7 @@ namespace ReClassNET.DataExchange
 		private const string XmlClassesElement = "classes";
 		private const string XmlClassElement = "class";
 		private const string XmlNodeElement = "node";
+		private const string XmlMethodElement = "method";
 		private const string XmlVersionAttribute = "version";
 		private const string XmlNameAttribute = "name";
 		private const string XmlCommentAttribute = "comment";
@@ -106,7 +107,7 @@ namespace ReClassNET.DataExchange
 				return null;
 			}
 
-			SchemaNode sn = null;
+			SchemaNode sn;
 
 			if (type == SchemaType.Array || type == SchemaType.ClassPtrArray || type == SchemaType.ClassInstance || type == SchemaType.ClassPtr)
 			{
@@ -119,6 +120,18 @@ namespace ReClassNET.DataExchange
 				}
 
 				sn = new SchemaReferenceNode(type, classes[reference]);
+			}
+			else if (type == SchemaType.VTable)
+			{
+				var vtableNode = new SchemaVTableNode();
+
+				vtableNode.Nodes.AddRange(node.Elements(XmlMethodElement).Select(e => new SchemaNode(SchemaType.VMethod)
+				{
+					Name = e.Attribute(XmlNameAttribute)?.Value,
+					Comment = e.Attribute(XmlCommentAttribute)?.Value
+				}));
+
+				sn = vtableNode;
 			}
 			else
 			{
@@ -213,6 +226,14 @@ namespace ReClassNET.DataExchange
 			if (node is SchemaReferenceNode)
 			{
 				element.SetAttributeValue(XmlReferenceAttribute, (node as SchemaReferenceNode).InnerNode.Name);
+			}
+			if (node is SchemaVTableNode)
+			{
+				element.Add(((SchemaVTableNode)node).Nodes.Select(n => new XElement(
+					XmlMethodElement,
+					new XAttribute(XmlNameAttribute, n.Name ?? string.Empty),
+					new XAttribute(XmlCommentAttribute, n.Comment ?? string.Empty)
+				)));
 			}
 
 			if (node.Count > 0)

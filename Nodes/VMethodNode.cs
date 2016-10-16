@@ -2,9 +2,9 @@
 
 namespace ReClassNET.Nodes
 {
-	class VirtualFunctionPtrNode : BaseFunctionPtrNode
+	class VMethodNode : BaseFunctionPtrNode
 	{
-		public VirtualFunctionPtrNode()
+		public VMethodNode()
 		{
 			Name = string.Empty;
 		}

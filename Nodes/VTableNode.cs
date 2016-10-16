@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Nodes
 {
@@ -68,6 +69,17 @@ namespace ReClassNET.Nodes
 			return y;
 		}
 
+		public void AddNode(VMethodNode node)
+		{
+			Contract.Requires(node != null);
+
+			node.ParentNode = this;
+
+			nodes.Add(node);
+
+			UpdateOffsets();
+		}
+
 		public override bool ReplaceChildNode(int index, BaseNode node)
 		{
 			return false;
@@ -89,7 +101,7 @@ namespace ReClassNET.Nodes
 
 			while (size > 0)
 			{
-				var node = new VirtualFunctionPtrNode
+				var node = new VMethodNode
 				{
 					Offset = offset,
 					ParentNode = this

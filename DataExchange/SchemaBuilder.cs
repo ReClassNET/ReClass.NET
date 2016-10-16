@@ -44,6 +44,7 @@ namespace ReClassNET.DataExchange
 		Vector3,
 		Vector4,
 		VTable,
+		VMethod,
 		Custom,
 		BitMap
 	}
@@ -178,6 +179,18 @@ namespace ReClassNET.DataExchange
 							sclasses[(n as BaseReferenceNode).InnerNode as ClassNode]
 						);
 					}
+					else if (n is VTableNode)
+					{
+						var vtableNode = new SchemaVTableNode();
+
+						vtableNode.Nodes.AddRange(((VTableNode)n).Nodes.Select(m => new SchemaNode(SchemaType.None)
+						{
+							Name = m.Name,
+							Comment = m.Comment
+						}));
+
+						node = vtableNode;
+					}
 					else
 					{
 						node = new SchemaNode(
@@ -273,6 +286,17 @@ namespace ReClassNET.DataExchange
 							var srn = sn as SchemaReferenceNode;
 							referenceNode.InnerNode = classes[srn.InnerNode];
 						}
+
+						var vtableNode = node as VTableNode;
+						if (vtableNode != null)
+						{
+							(sn as SchemaVTableNode).Nodes.Select(n => new VMethodNode()
+							{
+								Name = n.Name,
+								Comment = n.Comment
+							}).ForEach(n => vtableNode.AddNode(n));
+						}
+
 						if (sn.Count > 0)
 						{
 							var arrayNode = node as BaseArrayNode;

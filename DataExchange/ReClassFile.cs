@@ -121,7 +121,7 @@ namespace ReClassNET.DataExchange
 			else if (type == SchemaType.VTable)
 			{
 				var vtableNode = new SchemaVTableNode();
-				vtableNode.Nodes.AddRange(node.Elements("Function").Select(f => new SchemaNode(SchemaType.FunctionPtr)
+				vtableNode.Nodes.AddRange(node.Elements("Function").Select(f => new SchemaNode(SchemaType.VMethod)
 				{
 					Name = f.Attribute("Name")?.Value,
 					Comment = f.Attribute("Comment")?.Value
