@@ -154,6 +154,7 @@ namespace ReClassNET.DataExchange
 					case SchemaType.UTF8Text:
 					case SchemaType.UTF16Text:
 					case SchemaType.UTF32Text:
+					case SchemaType.BitField:
 						sn.Count = size;
 						break;
 				}

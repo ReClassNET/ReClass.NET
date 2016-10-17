@@ -150,6 +150,7 @@
     <Compile Include="Nodes\BaseTextNode.cs" />
     <Compile Include="Nodes\BaseTextPtrNode.cs" />
     <Compile Include="Nodes\BaseMatrixNode.cs" />
+    <Compile Include="Nodes\BitFieldNode.cs" />
     <Compile Include="Nodes\ClassInstanceNode.cs" />
     <Compile Include="Nodes\ClassPtrArrayNode.cs" />
     <Compile Include="Nodes\DoubleNode.cs" />
@@ -538,6 +539,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\page_white_csharp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_bits.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

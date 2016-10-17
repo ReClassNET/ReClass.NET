@@ -46,7 +46,7 @@ namespace ReClassNET.DataExchange
 		VTable,
 		VMethod,
 		Custom,
-		BitMap
+		BitField
 	}
 
 	class SchemaNode
@@ -135,7 +135,7 @@ namespace ReClassNET.DataExchange
 			[SchemaType.Vector3] = typeof(Vector3Node),
 			[SchemaType.Vector4] = typeof(Vector4Node),
 			[SchemaType.VTable] = typeof(VTableNode),
-			[SchemaType.BitMap] = typeof(Hex8Node)
+			[SchemaType.BitField] = typeof(BitFieldNode)
 		};
 		private static Dictionary<Type, SchemaType> NodeTypeToSchemaTypeMap = SchemaTypeToNodeTypeMap.ToDictionary(kp => kp.Value, kp => kp.Key);
 
@@ -210,6 +210,11 @@ namespace ReClassNET.DataExchange
 					if (textNode != null)
 					{
 						node.Count = textNode.CharacterCount;
+					}
+					var bitFieldNode = n as BitFieldNode;
+					if (bitFieldNode != null)
+					{
+						node.Count = bitFieldNode.Bits;
 					}
 
 					sc.Nodes.Add(node);
@@ -309,6 +314,11 @@ namespace ReClassNET.DataExchange
 							if (textNode != null)
 							{
 								textNode.CharacterCount = sn.Count;
+							}
+							var bitFieldNode = node as BitFieldNode;
+							if (bitFieldNode != null)
+							{
+								bitFieldNode.Bits = sn.Count;
 							}
 						}
 

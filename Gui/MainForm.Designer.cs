@@ -66,6 +66,7 @@
 			this.selectProcessToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.pluginsToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+			this.openProjectToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.newClassToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -105,6 +106,8 @@
 			this.uint16ToolStripButton = new ReClassNET.Gui.TypeToolStripButton();
 			this.uint8ToolStripButton = new ReClassNET.Gui.TypeToolStripButton();
 			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+			this.bitFieldToolStripButton = new ReClassNET.Gui.TypeToolStripButton();
+			this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
 			this.floatToolStripButton = new ReClassNET.Gui.TypeToolStripButton();
 			this.doubleToolStripButton = new ReClassNET.Gui.TypeToolStripButton();
 			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
@@ -131,7 +134,6 @@
 			this.classesView = new ReClassNET.ClassNodeView();
 			this.memoryViewControl = new ReClassNET.MemoryViewControl();
 			this.processUpdateTimer = new System.Windows.Forms.Timer(this.components);
-			this.openProjectToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.statusStrip.SuspendLayout();
 			this.mainMenuStrip.SuspendLayout();
 			this.toolStrip.SuspendLayout();
@@ -424,6 +426,8 @@
             this.uint16ToolStripButton,
             this.uint8ToolStripButton,
             this.toolStripSeparator11,
+            this.bitFieldToolStripButton,
+            this.toolStripSeparator18,
             this.floatToolStripButton,
             this.doubleToolStripButton,
             this.toolStripSeparator12,
@@ -474,6 +478,16 @@
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
 			this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+			// 
+			// openProjectToolStripButton
+			// 
+			this.openProjectToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.openProjectToolStripButton.Image = global::ReClassNET.Properties.Resources.folder;
+			this.openProjectToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.openProjectToolStripButton.Name = "openProjectToolStripButton";
+			this.openProjectToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.openProjectToolStripButton.ToolTipText = "Open Project...";
+			this.openProjectToolStripButton.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
 			// 
 			// saveToolStripButton
 			// 
@@ -846,6 +860,22 @@
 			this.toolStripSeparator11.Name = "toolStripSeparator11";
 			this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
 			// 
+			// bitsToolStripButton
+			// 
+			this.bitFieldToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.bitFieldToolStripButton.Image = global::ReClassNET.Properties.Resources.button_bits;
+			this.bitFieldToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.bitFieldToolStripButton.Name = "bitFieldToolStripButton";
+			this.bitFieldToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.bitFieldToolStripButton.ToolTipText = "Bit Field";
+			this.bitFieldToolStripButton.Value = typeof(ReClassNET.Nodes.BitFieldNode);
+			this.bitFieldToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
+			// 
+			// toolStripSeparator18
+			// 
+			this.toolStripSeparator18.Name = "toolStripSeparator18";
+			this.toolStripSeparator18.Size = new System.Drawing.Size(6, 25);
+			// 
 			// floatToolStripButton
 			// 
 			this.floatToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1111,16 +1141,6 @@
 			this.processUpdateTimer.Interval = 5000;
 			this.processUpdateTimer.Tick += new System.EventHandler(this.processUpdateTimer_Tick);
 			// 
-			// openProjectToolStripButton
-			// 
-			this.openProjectToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.openProjectToolStripButton.Image = global::ReClassNET.Properties.Resources.folder;
-			this.openProjectToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.openProjectToolStripButton.Name = "openProjectToolStripButton";
-			this.openProjectToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.openProjectToolStripButton.ToolTipText = "Open Project...";
-			this.openProjectToolStripButton.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1253,6 +1273,8 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
 		private System.Windows.Forms.ToolStripMenuItem loadSymbolToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton openProjectToolStripButton;
+		private Gui.TypeToolStripButton bitFieldToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
 	}
 }
 

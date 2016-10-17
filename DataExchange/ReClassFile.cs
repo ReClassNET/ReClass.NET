@@ -136,28 +136,29 @@ namespace ReClassNET.DataExchange
 			sn.Name = node.Attribute("Name")?.Value;
 			sn.Comment = node.Attribute("Comment")?.Value;
 
+			int count;
 			switch (type)
 			{
 				case SchemaType.Array:
-					int count;
 					int.TryParse(node.Attribute("Total")?.Value, out count);
 					sn.Count = count;
 					break;
 				case SchemaType.ClassPtrArray:
-					int size;
-					int.TryParse(node.Attribute("Size")?.Value, out size);
-					sn.Count = size / IntPtr.Size;
+					int.TryParse(node.Attribute("Size")?.Value, out count);
+					sn.Count = count / IntPtr.Size;
 					break;
 				case SchemaType.UTF8Text:
 				case SchemaType.UTF16Text:
-					int length;
-					int.TryParse(node.Attribute("Size")?.Value, out length);
-					sn.Count = type == SchemaType.UTF8Text ? length : length / 2;
+					int.TryParse(node.Attribute("Size")?.Value, out count);
+					sn.Count = type == SchemaType.UTF8Text ? count : count / 2;
 					break;
 				case SchemaType.Custom:
-					int size2;
-					int.TryParse(node.Attribute("Size")?.Value, out size2);
-					sn.Count = size2;
+					int.TryParse(node.Attribute("Size")?.Value, out count);
+					sn.Count = count;
+					break;
+				case SchemaType.BitField:
+					int.TryParse(node.Attribute("Size")?.Value, out count);
+					sn.Count = count * 8;
 					break;
 			}
 
@@ -238,7 +239,7 @@ namespace ReClassNET.DataExchange
 			SchemaType.Class,
 			SchemaType.UTF8TextPtr,
 			SchemaType.UTF16TextPtr,
-			SchemaType.BitMap,
+			SchemaType.BitField,
 			SchemaType.UInt64
 		};
 
