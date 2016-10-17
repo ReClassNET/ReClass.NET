@@ -134,7 +134,8 @@ namespace ReClassNET.DataExchange
 			[SchemaType.Vector2] = typeof(Vector2Node),
 			[SchemaType.Vector3] = typeof(Vector3Node),
 			[SchemaType.Vector4] = typeof(Vector4Node),
-			[SchemaType.VTable] = typeof(VTableNode)
+			[SchemaType.VTable] = typeof(VTableNode),
+			[SchemaType.BitMap] = typeof(Hex8Node)
 		};
 		private static Dictionary<Type, SchemaType> NodeTypeToSchemaTypeMap = SchemaTypeToNodeTypeMap.ToDictionary(kp => kp.Value, kp => kp.Key);
 

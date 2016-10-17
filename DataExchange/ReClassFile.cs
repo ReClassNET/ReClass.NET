@@ -23,13 +23,13 @@ namespace ReClassNET.DataExchange
 				var versionComment = document.Root.FirstNode as XComment;
 				if (versionComment != null)
 				{
-					switch (versionComment.Value.Substring(0, 12))
+					switch (versionComment.Value.Substring(0, 12).ToLower())
 					{
-						case "ReClass 2011":
-						case "ReClass 2013":
+						case "reclass 2011":
+						case "reclass 2013":
 							break;
-						case "ReClass 2015":
-						case "ReClass 2016":
+						case "reclass 2015":
+						case "reclass 2016":
 							typeMap = TypeMap2016;
 							break;
 					}
