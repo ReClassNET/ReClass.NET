@@ -168,8 +168,6 @@ namespace ReClassNET
 					}
 					if (import != null)
 					{
-						projectPath = ofd.FileName;
-
 						var sb = new StringBuilder();
 
 						var schema = import.Load(ofd.FileName, s => sb.AppendLine(s));
@@ -181,6 +179,12 @@ namespace ReClassNET
 
 						if (schema != null)
 						{
+							// If we have our filetype save to path to skip the Save As dialog.
+							if (import is ReClassNetFile)
+							{
+								projectPath = ofd.FileName;
+							}
+
 							ClassNode.Classes.Clear();
 							classesView.Clear();
 
