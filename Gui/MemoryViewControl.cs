@@ -366,7 +366,7 @@ namespace ReClassNET
 			var hotspot = selected.FirstOrDefault();
 			if (hotspot != null)
 			{
-				hotspot.Node.ParentNode.AddBytes(length);
+				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode).AddBytes(length);
 			}
 
 			Invalidate();
@@ -379,7 +379,7 @@ namespace ReClassNET
 			var hotspot = selected.FirstOrDefault();
 			if (hotspot != null)
 			{
-				hotspot.Node.ParentNode.InsertBytes(FindNodeIndex(hotspot.Node), length);
+				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode).InsertBytes(FindNodeIndex(hotspot.Node), length);
 
 				Invalidate();
 			}
