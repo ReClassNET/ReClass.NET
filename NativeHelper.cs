@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ReClassNET
 {
-	class NativeHelper : IDisposable
+	public class NativeHelper : IDisposable
 	{
 		public enum RequestFunction
 		{
@@ -106,7 +106,7 @@ namespace ReClassNET
 				throw new Exception();
 			}
 
-            var fnInitialize = Natives.GetProcAddress(nativeHelperHandle, "Initialize");
+			var fnInitialize = Natives.GetProcAddress(nativeHelperHandle, "Initialize");
 			var initializeDelegate = Marshal.GetDelegateForFunctionPointer<InitializeDelegate>(fnInitialize);
 			initializeDelegate(RequestFunctionPtrReference);
 

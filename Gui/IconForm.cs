@@ -2,7 +2,7 @@
 
 namespace ReClassNET.Gui
 {
-	class IconForm : Form
+	public class IconForm : Form
 	{
 		public IconForm()
 		{

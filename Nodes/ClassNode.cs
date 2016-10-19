@@ -113,9 +113,16 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(node != null);
 
+			InsertNode(nodes.Count, node);
+		}
+
+		public void InsertNode(int index, BaseNode node)
+		{
+			Contract.Requires(node != null);
+
 			node.ParentNode = this;
 
-			nodes.Add(node);
+			nodes.Insert(index, node);
 		}
 
 		public override void InsertBytes(int index, int size)
