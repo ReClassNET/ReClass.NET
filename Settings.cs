@@ -137,8 +137,45 @@ namespace ReClassNET
 		[Category("Comment")]
 		public bool ShowStrings { get; set; } = true;
 
+		[Category("Code Generation")]
+		[TypeConverter(typeof(ExpandableObjectConverter))]
+		public CppTypedef Typedef { get; set; } = new CppTypedef();
+
 		[Browsable(false)]
 		public string LastProcess { get; set; } = string.Empty;
+	}
+
+	public class CppTypedef
+	{
+		public string Int8 { get; set; } = "int8_t";
+		public string Int16 { get; set; } = "int16_t";
+		public string Int32 { get; set; } = "int32_t";
+		public string Int64 { get; set; } = "int64_t";
+
+		public string UInt8 { get; set; } = "uint8_t";
+		public string UInt16 { get; set; } = "uint16_t";
+		public string UInt32 { get; set; } = "uint32_t";
+		public string UInt64 { get; set; } = "uint64_t";
+
+		public string Float { get; set; } = "float";
+		public string Double { get; set; } = "double";
+
+		public string Vector4 { get; set; } = "Vector4";
+		public string Vector3 { get; set; } = "Vector3";
+		public string Vector2 { get; set; } = "Vector2";
+
+		public string Matrix4x4 { get; set; } = "Matrix4x4";
+		public string Matrix3x4 { get; set; } = "Matrix3x4";
+		public string Matrix3x3 { get; set; } = "Matrix3x3";
+
+		public string UTF8Text { get; set; } = "char";
+		public string UTF8PtrText { get; set; } = "char*";
+		public string UTF16Text { get; set; } = "wchar_t"; // Should be char16_t, but this type isn't well supported at the moment.
+		public string UTF16PtrText { get; set; } = "wchar_t*";
+		public string UTF32Text { get; set; } = "char32_t";
+		public string UTF32PtrText { get; set; } = "char32_t*";
+
+		public override string ToString() => string.Empty;
 	}
 
 	public class XmlColorWrapper : IXmlSerializable
