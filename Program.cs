@@ -8,9 +8,19 @@ namespace ReClassNET
 	{
 		private const string SettingsFile = "settings.xml";
 
+		private static bool designMode = true;
+
+		public static bool DesignMode => designMode;
+
 		[STAThread]
 		static void Main()
 		{
+			designMode = false; // The designer doesn't call Main()
+
+			DpiUtil.ConfigureProcess();
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+
 #if RELEASE
 			try
 			{
@@ -21,8 +31,6 @@ namespace ReClassNET
 
 				using (var nativeHelper = new NativeHelper())
 				{
-					Application.EnableVisualStyles();
-					Application.SetCompatibleTextRenderingDefault(false);
 					Application.Run(new MainForm(nativeHelper, settings));
 				}
 

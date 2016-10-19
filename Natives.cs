@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ReClassNET
 {
-	internal static class Natives
+	public static class Natives
 	{
 		#region Constants
 
@@ -63,6 +58,13 @@ namespace ReClassNET
 		public const uint SHGFI_LARGEICON = 0x0;
 		public const uint SHGFI_SMALLICON = 0x1;
 
+		internal enum ProcessDpiAwareness : uint
+		{
+			Unaware = 0,
+			SystemAware = 1,
+			PerMonitorAware = 2
+		}
+
 		#endregion
 
 		#region Structures
@@ -100,6 +102,13 @@ namespace ReClassNET
 
 		[DllImport("dbghelp.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 		static extern int UnDecorateSymbolName(string DecoratedName, StringBuilder UnDecoratedName, int UndecoratedLength, int Flags);
+
+		[DllImport("User32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool SetProcessDPIAware();
+
+		[DllImport("ShCore.dll")]
+		internal static extern int SetProcessDpiAwareness([MarshalAs(UnmanagedType.U4)] ProcessDpiAwareness a);
 
 		#endregion
 

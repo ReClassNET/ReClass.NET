@@ -39,8 +39,8 @@ namespace ReClassNET
 
 			font = new FontEx
 			{
-				Font = new Font("Courier New", 13, GraphicsUnit.Pixel),
-				CharSize = new Size(8, 16)
+				Font = new Font("Courier New", DpiUtil.ScaleIntX(13), GraphicsUnit.Pixel),
+				CharSize = new Size(DpiUtil.ScaleIntX(8), DpiUtil.ScaleIntY(16))
 			};
 
 			editBox.Font = font;

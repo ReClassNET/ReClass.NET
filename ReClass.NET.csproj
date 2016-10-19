@@ -93,6 +93,7 @@
     <Compile Include="DataExchange\IReClassExport.cs" />
     <Compile Include="DataExchange\ReClassFile.cs" />
     <Compile Include="DataExchange\ReClass2007File.cs" />
+    <Compile Include="DpiUtil.cs" />
     <Compile Include="Gui\ClassNodeView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -197,6 +198,11 @@
     </Compile>
     <Compile Include="Nodes\VMethodNode.cs" />
     <Compile Include="Nodes\VTableNode.cs" />
+    <Compile Include="Plugins\DefaultPluginHost.cs" />
+    <Compile Include="Plugins\IPluginHost.cs" />
+    <Compile Include="Plugins\Plugin.cs" />
+    <Compile Include="Plugins\PluginInfo.cs" />
+    <Compile Include="Plugins\PluginManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -214,6 +220,7 @@
     <Compile Include="SymbolReader\SymbolReader.cs" />
     <Compile Include="SymbolReader\Symbols.cs" />
     <Compile Include="ViewInfo.cs" />
+    <Compile Include="WinUtil.cs" />
     <EmbeddedResource Include="Gui\ClassNodeView.resx">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
       <SubType>Designer</SubType>
