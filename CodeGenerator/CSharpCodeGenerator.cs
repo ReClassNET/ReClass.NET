@@ -30,7 +30,7 @@ namespace ReClassNET.CodeGenerator
 			public UIntPtr UIntPtr => unchecked((UIntPtr)UIntValue);
 		}
 
-		public string GetCodeFromClasses(IList<ClassNode> classes)
+		public string GetCodeFromClasses(IEnumerable<ClassNode> classes)
 		{
 			var sb = new StringBuilder();
 			sb.AppendLine("// Created with ReClass.NET");

@@ -253,7 +253,7 @@
 			this.settingsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.text_list_bullets;
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
 			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
-			this.settingsToolStripMenuItem.Text = "Settings";
+			this.settingsToolStripMenuItem.Text = "Settings...";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 			// 
 			// pluginsToolStripMenuItem
@@ -379,9 +379,11 @@
 			this.generateCCodeToolStripMenuItem.Name = "generateCCodeToolStripMenuItem";
 			this.generateCCodeToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
 			this.generateCCodeToolStripMenuItem.Text = "Generate C++ Code";
+			this.generateCCodeToolStripMenuItem.Click += new System.EventHandler(this.generateCCodeToolStripMenuItem_Click);
 			// 
 			// generateCCodeToolStripMenuItem1
 			// 
+			this.generateCCodeToolStripMenuItem1.Enabled = false;
 			this.generateCCodeToolStripMenuItem1.Image = global::ReClassNET.Properties.Resources.page_white_csharp;
 			this.generateCCodeToolStripMenuItem1.Name = "generateCCodeToolStripMenuItem1";
 			this.generateCCodeToolStripMenuItem1.Size = new System.Drawing.Size(198, 22);
@@ -1063,7 +1065,7 @@
 			this.arrayToolStripButton.Name = "arrayToolStripButton";
 			this.arrayToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.arrayToolStripButton.ToolTipText = "Array of Classes";
-			this.arrayToolStripButton.Value = typeof(ReClassNET.Nodes.ArrayNode);
+			this.arrayToolStripButton.Value = typeof(ReClassNET.Nodes.ClassInstanceArrayNode);
 			this.arrayToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
 			// 
 			// ptrArrayToolStripButton
@@ -1123,7 +1125,6 @@
 			this.classesView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.classesView.Location = new System.Drawing.Point(0, 0);
 			this.classesView.Name = "classesView";
-			this.classesView.SelectedClass = null;
 			this.classesView.Size = new System.Drawing.Size(201, 524);
 			this.classesView.TabIndex = 0;
 			this.classesView.ClassSelected += new ReClassNET.ClassNodeView.ClassSelectedEvent(this.classesView_ClassSelected);

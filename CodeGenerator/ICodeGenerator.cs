@@ -5,7 +5,6 @@ namespace ReClassNET.CodeGenerator
 {
 	interface ICodeGenerator
 	{
-
-		string GetCodeFromClasses(IList<ClassNode> classes);
+		string GetCodeFromClasses(IEnumerable<ClassNode> classes);
 	}
 }

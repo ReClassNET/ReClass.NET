@@ -434,7 +434,7 @@
 			this.arrayToolStripMenuItem.Name = "arrayToolStripMenuItem";
 			this.arrayToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.arrayToolStripMenuItem.Text = "Array of Classes";
-			this.arrayToolStripMenuItem.Value = typeof(ReClassNET.Nodes.ArrayNode);
+			this.arrayToolStripMenuItem.Value = typeof(ReClassNET.Nodes.ClassInstanceArrayNode);
 			this.arrayToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
 			// 
 			// arrayOfPointersToolStripMenuItem

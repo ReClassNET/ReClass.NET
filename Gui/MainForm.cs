@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ReClassNET.CodeGenerator;
 using ReClassNET.DataExchange;
 using ReClassNET.Gui;
 using ReClassNET.Nodes;
@@ -331,6 +332,19 @@ namespace ReClassNET
 			}
 
 			nativeHelper.ControlRemoteProcess(remoteProcess.Process.Handle, action);
+		}
+
+		private void generateCCodeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ShowCodeForm(new CppCodeGenerator());
+		}
+
+		private void ShowCodeForm(ICodeGenerator generator)
+		{
+			using (var cf = new CodeForm(generator, ClassNode.Classes))
+			{
+				cf.ShowDialog();
+			}
 		}
 	}
 }

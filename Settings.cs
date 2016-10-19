@@ -147,6 +147,8 @@ namespace ReClassNET
 
 	public class CppTypedef
 	{
+		public string Hex { get; set; } = "char";
+
 		public string Int8 { get; set; } = "int8_t";
 		public string Int16 { get; set; } = "int16_t";
 		public string Int32 { get; set; } = "int32_t";
@@ -174,6 +176,8 @@ namespace ReClassNET
 		public string UTF16PtrText { get; set; } = "wchar_t*";
 		public string UTF32Text { get; set; } = "char32_t";
 		public string UTF32PtrText { get; set; } = "char32_t*";
+
+		public string FunctionPtr { get; set; } = "void*";
 
 		public override string ToString() => string.Empty;
 	}

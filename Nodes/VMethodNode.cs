@@ -4,6 +4,8 @@ namespace ReClassNET.Nodes
 {
 	class VMethodNode : BaseFunctionPtrNode
 	{
+		public string MethodName => string.IsNullOrEmpty(Name) ? $"Function{Offset.ToInt32() / IntPtr.Size}" : Name;
+
 		public VMethodNode()
 		{
 			Name = string.Empty;
@@ -11,9 +13,7 @@ namespace ReClassNET.Nodes
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			var index = Offset.ToInt32() / IntPtr.Size;
-
-			return Draw(view, x, y, $"({index})", string.IsNullOrEmpty(Name) ? $"Function{index}" : Name);
+			return Draw(view, x, y, $"({Offset.ToInt32() / IntPtr.Size})", MethodName);
 		}
 	}
 }

@@ -100,7 +100,7 @@ namespace ReClassNET.DataExchange
 
 		private static Dictionary<SchemaType, Type> SchemaTypeToNodeTypeMap = new Dictionary<SchemaType, Type>
 		{
-			[SchemaType.Array] = typeof(ArrayNode),
+			[SchemaType.Array] = typeof(ClassInstanceArrayNode),
 			[SchemaType.ClassInstance] = typeof(ClassInstanceNode),
 			[SchemaType.Class] = typeof(ClassNode),
 			[SchemaType.ClassPtr] = typeof(ClassPtrNode),

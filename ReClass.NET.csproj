@@ -100,6 +100,12 @@
     <Compile Include="Gui\ClassNodeView.Designer.cs">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\CodeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\CodeForm.Designer.cs">
+      <DependentUpon>CodeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\CustomToolStripItems.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -146,7 +152,7 @@
     </Compile>
     <Compile Include="NativeHelper.cs" />
     <Compile Include="Natives.cs" />
-    <Compile Include="Nodes\ArrayNode.cs" />
+    <Compile Include="Nodes\ClassInstanceArrayNode.cs" />
     <Compile Include="Nodes\BaseArrayNode.cs" />
     <Compile Include="Nodes\BaseContainerNode.cs" />
     <Compile Include="Nodes\BaseFunctionPtrNode.cs" />

@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET.Nodes
 {
-	class ArrayNode : BaseArrayNode
+	class ClassInstanceArrayNode : BaseArrayNode
 	{
 		public override int MemorySize => InnerNode.MemorySize * Count;
 
