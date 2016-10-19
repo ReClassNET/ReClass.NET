@@ -17,13 +17,15 @@ namespace ReClassNET
 			WriteRemoteMemory,
 			EnumerateProcesses,
 			EnumerateRemoteSectionsAndModules,
-			DisassembleRemoteCode
+			DisassembleRemoteCode,
+			ControlRemoteProcess
 		}
 
 		public class MethodInfo
 		{
-			public string Provider;
-			public IntPtr FunctionPtr;
+			public RequestFunction Method { get; set; }
+			public string Provider { get; set; }
+			public IntPtr FunctionPtr { get; set; }
 
 			public T GetDelegate<T>()
 			{
@@ -35,43 +37,42 @@ namespace ReClassNET
 
 		private readonly Dictionary<RequestFunction, List<MethodInfo>> methodRegistry = new Dictionary<RequestFunction, List<MethodInfo>>();
 
+		public IReadOnlyDictionary<RequestFunction, List<MethodInfo>> MethodRegistry => methodRegistry;
+
 		#region Delegates
 
 		public delegate IntPtr RequestFunctionPtrCallback(RequestFunction request);
-		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate void InitializeDelegate(RequestFunctionPtrCallback requestCallback);
 
-		/*[UnmanagedFunctionPointer(CallingConvention.StdCall)]
-		private delegate int GetLastErrorDelegate();
-		private GetLastErrorDelegate getLastErrorDelegate;*/
+		//private delegate int GetLastErrorDelegate();
 
-		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate bool IsProcessValidDelegate(IntPtr process);
 
-		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate IntPtr OpenRemoteProcessDelegate(int pid, int desiredAccess);
 
-		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate void CloseRemoteProcessDelegate(IntPtr process);
 
-		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate bool ReadRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, uint size);
 
-		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate bool WriteRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, uint size);
 
 		public delegate void EnumerateProcessCallback(uint pid, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
-		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate void EnumerateProcessesDelegate(EnumerateProcessCallback callbackProcess);
 
 		public delegate void EnumerateRemoteSectionCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPStr)]string name, Natives.StateEnum state, Natives.AllocationProtectEnum protection, Natives.TypeEnum type, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
 		public delegate void EnumerateRemoteModuleCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
-		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate void EnumerateRemoteSectionsAndModulesDelegate(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule);
 
 		public delegate void DisassembleRemoteCodeCallback(IntPtr address, int length, [MarshalAs(UnmanagedType.LPStr)]string instruction);
-		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate void DisassembleRemoteCodeDelegate(IntPtr process, IntPtr address, int length, DisassembleRemoteCodeCallback callbackDisassembledCode);
+
+		public enum ControlRemoteProcessAction
+		{
+			Suspend,
+			Resume,
+			Terminate
+		}
+		private delegate void ControlRemoteProcessDelegate(IntPtr process, ControlRemoteProcessAction action);
 
 		#endregion
 
@@ -91,6 +92,8 @@ namespace ReClassNET
 		private EnumerateRemoteSectionsAndModulesDelegate enumerateRemoteSectionsAndModulesDelegate;
 		private IntPtr fnDisassembleRemoteCode;
 		private DisassembleRemoteCodeDelegate disassembleRemoteCodeDelegate;
+		private IntPtr fnControlRemoteProcess;
+		private ControlRemoteProcessDelegate controlRemoteProcessDelegate;
 
 		private RequestFunctionPtrCallback requestFunctionPtrReference;
 
@@ -124,14 +127,15 @@ namespace ReClassNET
 
 			RegisterProvidedNativeMethods(nativeHelperHandle, "Default");
 
-			SetActiveNativeMethod(RequestFunction.IsProcessValid, methodRegistry[RequestFunction.IsProcessValid].First());
-			SetActiveNativeMethod(RequestFunction.OpenRemoteProcess, methodRegistry[RequestFunction.OpenRemoteProcess].First());
-			SetActiveNativeMethod(RequestFunction.CloseRemoteProcess, methodRegistry[RequestFunction.CloseRemoteProcess].First());
-			SetActiveNativeMethod(RequestFunction.ReadRemoteMemory, methodRegistry[RequestFunction.ReadRemoteMemory].First());
-			SetActiveNativeMethod(RequestFunction.WriteRemoteMemory, methodRegistry[RequestFunction.WriteRemoteMemory].First());
-			SetActiveNativeMethod(RequestFunction.EnumerateProcesses, methodRegistry[RequestFunction.EnumerateProcesses].First());
-			SetActiveNativeMethod(RequestFunction.EnumerateRemoteSectionsAndModules, methodRegistry[RequestFunction.EnumerateRemoteSectionsAndModules].First());
-			SetActiveNativeMethod(RequestFunction.DisassembleRemoteCode, methodRegistry[RequestFunction.DisassembleRemoteCode].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.IsProcessValid].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.OpenRemoteProcess].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.CloseRemoteProcess].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.ReadRemoteMemory].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.WriteRemoteMemory].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.EnumerateProcesses].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.EnumerateRemoteSectionsAndModules].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.DisassembleRemoteCode].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.ControlRemoteProcess].First());
 		}
 
 		#region IDisposable Support
@@ -184,9 +188,11 @@ namespace ReClassNET
 			initializeDelegate(requestFunctionPtrReference);
 		}
 
+		#region Registry
+
 		public void RegisterProvidedNativeMethods(IntPtr module, string provider)
 		{
-			foreach (var function in new RequestFunction[]
+			foreach (var method in new RequestFunction[]
 			{
 				RequestFunction.IsProcessValid,
 				RequestFunction.OpenRemoteProcess,
@@ -195,13 +201,14 @@ namespace ReClassNET
 				RequestFunction.WriteRemoteMemory,
 				RequestFunction.EnumerateProcesses,
 				RequestFunction.EnumerateRemoteSectionsAndModules,
-				RequestFunction.DisassembleRemoteCode
+				RequestFunction.DisassembleRemoteCode,
+				RequestFunction.ControlRemoteProcess
 			})
 			{
-				var functionPtr = Natives.GetProcAddress(module, function.ToString());
+				var functionPtr = Natives.GetProcAddress(module, method.ToString());
 				if (!functionPtr.IsNull())
 				{
-					RegisterMethod(function, new MethodInfo { Provider = provider, FunctionPtr = functionPtr });
+					RegisterMethod(method, new MethodInfo { Method = method, Provider = provider, FunctionPtr = functionPtr });
 				}
 			}
 		}
@@ -221,9 +228,9 @@ namespace ReClassNET
 			infos.Add(methodInfo);
 		}
 
-		public void SetActiveNativeMethod(RequestFunction method, MethodInfo methodInfo)
+		public void SetActiveNativeMethod(MethodInfo methodInfo)
 		{
-			switch (method)
+			switch (methodInfo.Method)
 			{
 				case RequestFunction.EnumerateProcesses:
 					fnEnumerateProcesses = methodInfo.FunctionPtr;
@@ -257,8 +264,14 @@ namespace ReClassNET
 					fnDisassembleRemoteCode = methodInfo.FunctionPtr;
 					disassembleRemoteCodeDelegate = Marshal.GetDelegateForFunctionPointer<DisassembleRemoteCodeDelegate>(fnDisassembleRemoteCode);
 					break;
+				case RequestFunction.ControlRemoteProcess:
+					fnControlRemoteProcess = methodInfo.FunctionPtr;
+					controlRemoteProcessDelegate = Marshal.GetDelegateForFunctionPointer<ControlRemoteProcessDelegate>(fnControlRemoteProcess);
+					break;
 			}
 		}
+
+		#endregion
 
 		public IntPtr RequestFunctionPtr(RequestFunction request)
 		{
@@ -280,10 +293,14 @@ namespace ReClassNET
 					return fnEnumerateRemoteSectionsAndModules;
 				case RequestFunction.DisassembleRemoteCode:
 					return fnDisassembleRemoteCode;
+				case RequestFunction.ControlRemoteProcess:
+					return fnControlRemoteProcess;
 			}
 
-			return IntPtr.Zero;
+			throw new ArgumentException(nameof(request));
 		}
+
+		#region Delegate Wrapper
 
 		public bool IsProcessValid(IntPtr process)
 		{
@@ -332,5 +349,12 @@ namespace ReClassNET
 		{
 			disassembleRemoteCodeDelegate(process, address, length, remoteCodeCallback);
 		}
+
+		public void ControlRemoteProcess(IntPtr process, ControlRemoteProcessAction action)
+		{
+			controlRemoteProcessDelegate(process, action);
+		}
+
+		#endregion
 	}
 }

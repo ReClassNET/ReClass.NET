@@ -307,10 +307,30 @@ namespace ReClassNET
 
 		private void pluginsToolStripButton_Click(object sender, EventArgs e)
 		{
-			using (var pf = new PluginForm(pluginManager))
+			using (var pf = new PluginForm(pluginManager, nativeHelper))
 			{
 				pf.ShowDialog();
 			}
+		}
+
+		private void ControlRemoteProcessToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (!remoteProcess.IsValid)
+			{
+				return;
+			}
+
+			var action = NativeHelper.ControlRemoteProcessAction.Terminate;
+			if (sender == resumeProcessToolStripMenuItem)
+			{
+				action = NativeHelper.ControlRemoteProcessAction.Resume;
+			}
+			else if (sender == suspendProcessToolStripMenuItem)
+			{
+				action = NativeHelper.ControlRemoteProcessAction.Suspend;
+			}
+
+			nativeHelper.ControlRemoteProcess(remoteProcess.Process.Handle, action);
 		}
 	}
 }

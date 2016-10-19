@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.Plugins;
 
@@ -15,6 +11,7 @@ namespace ReClassNET.Gui
 	partial class PluginForm : IconForm
 	{
 		private readonly PluginManager pluginManager;
+		private readonly NativeHelper nativeHelper;
 
 		class PluginInfoRow
 		{
@@ -34,18 +31,43 @@ namespace ReClassNET.Gui
 			}
 		}
 
-		public PluginForm(PluginManager pluginManager)
+		public PluginForm(PluginManager pluginManager, NativeHelper nativeHelper)
 		{
 			Contract.Requires(pluginManager != null);
+			Contract.Requires(nativeHelper != null);
 
 			InitializeComponent();
 
 			this.pluginManager = pluginManager;
+			this.nativeHelper = nativeHelper;
+
+			// Plugins Tab
 
 			pluginsDataGridView.AutoGenerateColumns = false;
 			pluginsDataGridView.DataSource = pluginManager.Select(p => new PluginInfoRow(p)).ToList();
 
 			UpdatePluginDescription();
+
+			// Native Methods Tab
+
+			FillComboBox(enumerateProcessesComboBox, NativeHelper.RequestFunction.EnumerateProcesses);
+			FillComboBox(enumerateRemoteSectionsAndModulesComboBox, NativeHelper.RequestFunction.EnumerateRemoteSectionsAndModules);
+			FillComboBox(isProcessValidComboBox, NativeHelper.RequestFunction.IsProcessValid);
+			FillComboBox(openRemoteProcessComboBox, NativeHelper.RequestFunction.OpenRemoteProcess);
+			FillComboBox(closeRemoteProcessComboBox, NativeHelper.RequestFunction.CloseRemoteProcess);
+			FillComboBox(readRemoteMemoryComboBox, NativeHelper.RequestFunction.ReadRemoteMemory);
+			FillComboBox(writeRemoteMemoryComboBox, NativeHelper.RequestFunction.WriteRemoteMemory);
+			FillComboBox(disassembleRemoteCodeComboBox, NativeHelper.RequestFunction.DisassembleRemoteCode);
+			FillComboBox(controlRemoteProcessComboBox, NativeHelper.RequestFunction.ControlRemoteProcess);
+		}
+
+		private void FillComboBox(ComboBox cb, NativeHelper.RequestFunction method)
+		{
+			var methods = nativeHelper.MethodRegistry[method];
+
+			cb.DisplayMember = nameof(NativeHelper.MethodInfo.Provider);
+			cb.DataSource = methods;
+			cb.SelectedIndex = methods.FindIndex(m => m.FunctionPtr == nativeHelper.RequestFunctionPtr(method));
 		}
 
 		private void pluginsDataGridView_SelectionChanged(object sender, EventArgs e)
@@ -69,6 +91,21 @@ namespace ReClassNET.Gui
 			{
 				descriptionGroupBox.Text = plugin.Name;
 				descriptionLabel.Text = plugin.Description;
+			}
+		}
+
+		private void NativeMethodComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			var cb = sender as ComboBox;
+			if (cb == null)
+			{
+				return;
+			}
+
+			var methodInfo = cb.SelectedItem as NativeHelper.MethodInfo;
+			if (methodInfo != null)
+			{
+				nativeHelper.SetActiveNativeMethod(methodInfo);
 			}
 		}
 	}

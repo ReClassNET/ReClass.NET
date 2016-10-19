@@ -18,7 +18,9 @@ enum class RequestFunction
 	ReadRemoteMemory,
 	WriteRemoteMemory,
 	EnumerateProcesses,
-	EnumerateRemoteSectionsAndModules
+	EnumerateRemoteSectionsAndModules,
+	DisassembleRemoteCode,
+	ControlRemoteProcess
 };
 
 typedef LPVOID(__stdcall *RequestFunctionPtrCallback)(RequestFunction request);
@@ -357,5 +359,51 @@ EXTERN_DLL_EXPORT VOID __stdcall DisassembleRemoteCode(HANDLE process, LPVOID ad
 			break;
 		}
 		disasm.VirtualAddr += disamLength;
+	}
+}
+
+enum class ControlRemoteProcessAction
+{
+	Suspend,
+	Resume,
+	Terminate
+};
+
+EXTERN_DLL_EXPORT VOID __stdcall ControlRemoteProcess(HANDLE process, ControlRemoteProcessAction action)
+{
+	if (action == ControlRemoteProcessAction::Suspend || action == ControlRemoteProcessAction::Resume)
+	{
+		auto processId = GetProcessId(process);
+
+		auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+		if (handle != INVALID_HANDLE_VALUE)
+		{
+			auto fn = action == ControlRemoteProcessAction::Suspend ? SuspendThread : ResumeThread;
+
+			THREADENTRY32 te32 = {};
+			te32.dwSize = sizeof(THREADENTRY32);
+			if (Thread32First(handle, &te32))
+			{
+				do
+				{
+					if (te32.th32OwnerProcessID == processId)
+					{
+						auto threadHandle = OpenThread(THREAD_SUSPEND_RESUME, FALSE, te32.th32ThreadID);
+						if (threadHandle)
+						{
+							fn(threadHandle);
+
+							CloseHandle(threadHandle);
+						}
+					}
+				} while (Thread32Next(handle, &te32));
+			}
+
+			CloseHandle(handle);
+		}
+	}
+	else if (action == ControlRemoteProcessAction::Terminate)
+	{
+		TerminateProcess(process, 0);
 	}
 }

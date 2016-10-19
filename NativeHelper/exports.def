@@ -10,3 +10,4 @@ EXPORTS
 	EnumerateProcesses
 	EnumerateRemoteSectionsAndModules
 	DisassembleRemoteCode
+	ControlRemoteProcess

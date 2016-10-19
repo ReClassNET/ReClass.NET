@@ -52,9 +52,9 @@
 			this.loadSymbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.loadSymbolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.resumeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.suspendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.killToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.resumeProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.suspendProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.terminateProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cleanUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
@@ -285,9 +285,9 @@
             this.loadSymbolToolStripMenuItem,
             this.loadSymbolsToolStripMenuItem,
             this.toolStripSeparator4,
-            this.resumeToolStripMenuItem,
-            this.suspendToolStripMenuItem,
-            this.killToolStripMenuItem});
+            this.resumeProcessToolStripMenuItem,
+            this.suspendProcessToolStripMenuItem,
+            this.terminateProcessToolStripMenuItem});
 			this.processToolStripMenuItem.Name = "processToolStripMenuItem";
 			this.processToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
 			this.processToolStripMenuItem.Text = "Process";
@@ -325,26 +325,29 @@
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
 			this.toolStripSeparator4.Size = new System.Drawing.Size(160, 6);
 			// 
-			// resumeToolStripMenuItem
+			// resumeProcessToolStripMenuItem
 			// 
-			this.resumeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.control_play;
-			this.resumeToolStripMenuItem.Name = "resumeToolStripMenuItem";
-			this.resumeToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-			this.resumeToolStripMenuItem.Text = "Resume";
+			this.resumeProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.control_play;
+			this.resumeProcessToolStripMenuItem.Name = "resumeProcessToolStripMenuItem";
+			this.resumeProcessToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.resumeProcessToolStripMenuItem.Text = "Resume";
+			this.resumeProcessToolStripMenuItem.Click += new System.EventHandler(this.ControlRemoteProcessToolStripMenuItem_Click);
 			// 
-			// suspendToolStripMenuItem
+			// suspendProcessToolStripMenuItem
 			// 
-			this.suspendToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.control_pause;
-			this.suspendToolStripMenuItem.Name = "suspendToolStripMenuItem";
-			this.suspendToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-			this.suspendToolStripMenuItem.Text = "Suspend";
+			this.suspendProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.control_pause;
+			this.suspendProcessToolStripMenuItem.Name = "suspendProcessToolStripMenuItem";
+			this.suspendProcessToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.suspendProcessToolStripMenuItem.Text = "Suspend";
+			this.suspendProcessToolStripMenuItem.Click += new System.EventHandler(this.ControlRemoteProcessToolStripMenuItem_Click);
 			// 
-			// killToolStripMenuItem
+			// terminateProcessToolStripMenuItem
 			// 
-			this.killToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.control_stop;
-			this.killToolStripMenuItem.Name = "killToolStripMenuItem";
-			this.killToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-			this.killToolStripMenuItem.Text = "Kill";
+			this.terminateProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.control_stop;
+			this.terminateProcessToolStripMenuItem.Name = "terminateProcessToolStripMenuItem";
+			this.terminateProcessToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.terminateProcessToolStripMenuItem.Text = "Kill";
+			this.terminateProcessToolStripMenuItem.Click += new System.EventHandler(this.ControlRemoteProcessToolStripMenuItem_Click);
 			// 
 			// projectToolStripMenuItem
 			// 
@@ -1189,9 +1192,9 @@
 		private System.Windows.Forms.ToolStripMenuItem processToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem memoryViewerToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem resumeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem suspendToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem killToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem resumeProcessToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem suspendProcessToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem terminateProcessToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
