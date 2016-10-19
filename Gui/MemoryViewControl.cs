@@ -1,14 +1,12 @@
-﻿using ReClassNET.Gui;
-using ReClassNET.Nodes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using ReClassNET.Gui;
+using ReClassNET.Nodes;
 
 namespace ReClassNET
 {
@@ -87,7 +85,6 @@ namespace ReClassNET
 				ClientArea = ClientRectangle,
 				Level = 0,
 				Memory = Memory,
-				Settings = Settings,
 				MultiSelected = selected.Count > 1,
 				HotSpots = hotSpots
 			};

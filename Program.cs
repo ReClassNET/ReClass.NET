@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Forms;
-using ReClassNET.Plugins;
 
 namespace ReClassNET
 {

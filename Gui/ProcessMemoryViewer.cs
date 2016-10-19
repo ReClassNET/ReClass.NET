@@ -1,11 +1,11 @@
-﻿using ReClassNET.Gui;
-using ReClassNET.Nodes;
-using System;
+﻿using System;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using ReClassNET.Gui;
+using ReClassNET.Nodes;
 
 namespace ReClassNET
 {

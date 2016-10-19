@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReClassNET.Nodes
 {
@@ -120,7 +116,7 @@ namespace ReClassNET.Nodes
 
 			var width = text.Length * view.Font.Width;
 
-			if ((y >= -view.Font.Height) && (y + view.Font.Height <= view.ClientArea.Bottom + view.Font.Height))
+			if (y >= -view.Font.Height && y + view.Font.Height <= view.ClientArea.Bottom + view.Font.Height)
 			{
 				if (hitId != HotSpot.NoneId)
 				{
@@ -137,7 +133,10 @@ namespace ReClassNET.Nodes
 					AddClickableArea(view, rect, text, hitId, HotSpotType.Edit);
 				}
 
-				view.Context.DrawString(text, view.Font.Font, new SolidBrush(color), x, y);
+				using (var brush = new SolidBrush(color))
+				{
+					view.Context.DrawString(text, view.Font.Font, brush, x, y);
+				}
 			}
 
 			return x + width;
@@ -145,17 +144,17 @@ namespace ReClassNET.Nodes
 
 		protected int AddAddressOffset(ViewInfo view, int x, int y)
 		{
-			if (view.Settings.ShowOffset)
+			if (Program.Settings.ShowOffset)
 			{
-				x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"{Offset.ToInt32():X04}") + view.Font.Width;
+				x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, $"{Offset.ToInt32():X04}") + view.Font.Width;
 			}
 
-			if (view.Settings.ShowAddress)
+			if (Program.Settings.ShowAddress)
 			{
 #if WIN32
-				x = AddText(view, x, y, view.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt32():X08}") + view.Font.Width;
+				x = AddText(view, x, y, Program.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt32():X08}") + view.Font.Width;
 #else
-				x = AddText(view, x, y, view.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt64():X016}") + view.Font.Width;
+				x = AddText(view, x, y, Program.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt64():X016}") + view.Font.Width;
 #endif
 			}
 
@@ -171,7 +170,10 @@ namespace ReClassNET.Nodes
 
 			if (IsSelected)
 			{
-				view.Context.FillRectangle(new SolidBrush(view.Settings.SelectedColor), 0, y, view.ClientArea.Right, height);
+				using (var brush = new SolidBrush(Program.Settings.SelectedColor))
+				{
+					view.Context.FillRectangle(brush, 0, y, view.ClientArea.Right, height);
+				}
 			}
 
 			AddClickableArea(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), null,-1, HotSpotType.Select);
@@ -234,15 +236,15 @@ namespace ReClassNET.Nodes
 
 		protected virtual int AddComment(ViewInfo view, int x, int y)
 		{
-			x = AddText(view, x, y, view.Settings.CommentColor, HotSpot.NoneId, "//");
-			x = AddText(view, x, y, view.Settings.CommentColor, HotSpot.CommentId, Comment + " ");
+			x = AddText(view, x, y, Program.Settings.CommentColor, HotSpot.NoneId, "//");
+			x = AddText(view, x, y, Program.Settings.CommentColor, HotSpot.CommentId, Comment + " ");
 
 			return x;
 		}
 
 		protected int DrawHidden(ViewInfo view, int x, int y)
 		{
-			view.Context.FillRectangle(new SolidBrush(IsSelected ? view.Settings.SelectedColor : view.Settings.HiddenColor), 0, y, view.ClientArea.Right, 1);
+			view.Context.FillRectangle(new SolidBrush(IsSelected ? Program.Settings.SelectedColor : Program.Settings.HiddenColor), 0, y, view.ClientArea.Right, 1);
 
 			return y + 1;
 		}

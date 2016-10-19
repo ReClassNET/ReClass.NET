@@ -61,11 +61,11 @@ namespace ReClassNET.Nodes
 			var tx = x;
 
 			x = AddIcon(view, x, y, Icons.Class, -1, HotSpotType.None);
-			x = AddText(view, x, y, view.Settings.OffsetColor, 0, $"{Offset.ToInt64():X}") + view.Font.Width;
+			x = AddText(view, x, y, Program.Settings.OffsetColor, 0, $"{Offset.ToInt64():X}") + view.Font.Width;
 
-			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Class ");
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"[{MemorySize}]") + view.Font.Width;
+			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, "Class") + view.Font.Width;
+			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, $"[{MemorySize}]") + view.Font.Width;
 			x = AddComment(view, x, y);
 
 			y += view.Font.Height;

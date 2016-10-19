@@ -25,12 +25,12 @@ namespace ReClassNET.Nodes
 			x += TXOFFSET + 16;
 			x = AddAddressOffset(view, x, y);
 
-			if (view.Settings.ShowText)
+			if (Program.Settings.ShowText)
 			{
-				x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text);
+				x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, text);
 			}
 
-			var color = view.Settings.HighlightChangedValues && highlightUntil > CurrentHighlightTime ? view.Settings.HighlightColor : view.Settings.HexColor;
+			var color = Program.Settings.HighlightChangedValues && highlightUntil > CurrentHighlightTime ? Program.Settings.HighlightColor : Program.Settings.HexColor;
 			var changed = false;
 			for (var i = 0; i < length; ++i)
 			{

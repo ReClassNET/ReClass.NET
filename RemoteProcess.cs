@@ -1,15 +1,12 @@
-﻿using ReClassNET.AddressParser;
-using ReClassNET.SymbolReader;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
+using ReClassNET.AddressParser;
+using ReClassNET.SymbolReader;
 
 namespace ReClassNET
 {

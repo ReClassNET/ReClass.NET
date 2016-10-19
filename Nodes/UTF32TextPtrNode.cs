@@ -10,7 +10,7 @@ namespace ReClassNET.Nodes
 			var ptr = view.Memory.ReadObject<IntPtr>(Offset);
 			var str = view.Memory.Process.ReadRemoteString(Encoding.UTF32, ptr, 256);
 
-			return DrawText(view, x, y, "Text32Ptr ", MemorySize, str);
+			return DrawText(view, x, y, "Text32Ptr", MemorySize, str);
 		}
 	}
 }

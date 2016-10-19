@@ -1,5 +1,5 @@
-﻿using ReClassNET.Nodes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
 {

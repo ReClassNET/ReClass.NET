@@ -7,19 +7,19 @@ namespace ReClassNET.Nodes
 	{
 		protected int AddComment(ViewInfo view, int x, int y, float fvalue, IntPtr ivalue, UIntPtr uvalue)
 		{
-			if (view.Settings.ShowFloat)
+			if (Program.Settings.ShowFloat)
 			{
-				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"({(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000})");
+				x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, $"({(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000})");
 			}
-			if (view.Settings.ShowInteger)
+			if (Program.Settings.ShowInteger)
 			{
 				if (ivalue == IntPtr.Zero)
 				{
-					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, "(0)");
+					x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, "(0)");
 				}
 				else
 				{
-					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"({ivalue.ToInt64()}|0x{uvalue.ToUInt64():X})");
+					x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, $"({ivalue.ToInt64()}|0x{uvalue.ToUInt64():X})");
 				}
 			}
 
@@ -28,21 +28,21 @@ namespace ReClassNET.Nodes
 			{
 				x += view.Font.Width;
 
-				if (view.Settings.ShowPointer)
+				if (Program.Settings.ShowPointer)
 				{
-					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"-> {namedAddress}") + view.Font.Width;
+					x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, $"-> {namedAddress}") + view.Font.Width;
 				}
 
-				if (view.Settings.ShowRTTI)
+				if (Program.Settings.ShowRTTI)
 				{
 					var rtti = view.Memory.Process.ReadRemoteRuntimeTypeInformation(ivalue);
 					if (!string.IsNullOrEmpty(rtti))
 					{
-						x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, rtti) + view.Font.Width;
+						x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, rtti) + view.Font.Width;
 					}
 				}
 
-				if (view.Settings.ShowSymbols)
+				if (Program.Settings.ShowSymbols)
 				{
 					var module = view.Memory.Process.Modules.Where(m => ivalue.InRange(m.Start, m.End)).FirstOrDefault();
 					if (module != null)
@@ -53,20 +53,20 @@ namespace ReClassNET.Nodes
 							var symbol = symbols.GetSymbolString(ivalue, module);
 							if (!string.IsNullOrEmpty(symbol))
 							{
-								x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, symbol) + view.Font.Width;
+								x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, symbol) + view.Font.Width;
 							}
 						}
 					}
 				}
 
-				if (view.Settings.ShowStrings)
+				if (Program.Settings.ShowStrings)
 				{
 					var txt = view.Memory.Process.ReadRemoteRawUTF8String(ivalue, 64);
 					if (txt != null)
 					{
 						if (!txt.Take(4).Where(c => !c.IsPrintable()).Any())
 						{
-							x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, $"'{txt}'");
+							x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, $"'{txt}'");
 						}
 					}
 				}

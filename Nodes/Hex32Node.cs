@@ -38,7 +38,7 @@ namespace ReClassNET.Nodes
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			return Draw(view, x, y, view.Settings.ShowText ? view.Memory.ReadPrintableASCIIString(Offset, 4) + "     " : null, 4);
+			return Draw(view, x, y, Program.Settings.ShowText ? view.Memory.ReadPrintableASCIIString(Offset, 4) + "     " : null, 4);
 		}
 
 		public override void Update(HotSpot spot)
