@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ReClassNET
 {
-	class RemoteProcess
+	public class RemoteProcess
 	{
 		private readonly NativeHelper nativeHelper;
 		public NativeHelper NativeHelper => nativeHelper;

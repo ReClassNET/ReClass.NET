@@ -99,14 +99,13 @@ namespace ReClassNET
 		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color CustomColor { get; set; } = Color.FromArgb(64, 128, 64);
 
-		private static Random random = new Random();
 		private static Color[] highlightColors = new Color[]
 		{
 			Color.Aqua, Color.Aquamarine, Color.Blue, Color.BlueViolet, Color.Chartreuse, Color.Crimson, Color.LawnGreen, Color.Magenta
 		};
 		[XmlIgnore]
 		[Browsable(false)]
-		public Color HighlightColor => highlightColors[random.Next(highlightColors.Length)];
+		public Color HighlightColor => highlightColors[Program.GlobalRandom.Next(highlightColors.Length)];
 
 		[Category("Display")]
 		public bool ShowAddress { get; set; } = true;

@@ -9,11 +9,16 @@ namespace ReClassNET.Plugins
 
 		public ResourceManager Resources => Properties.Resources.ResourceManager;
 
-		public DefaultPluginHost(MainForm form)
+		public RemoteProcess Process { get; }
+
+		public DefaultPluginHost(MainForm form, RemoteProcess process)
 		{
 			Contract.Requires(form != null);
+			Contract.Requires(process != null);
 
 			MainWindow = form;
+
+			Process = process;
 		}
 	}
 }

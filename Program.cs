@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Forms;
+using ReClassNET.Plugins;
 
 namespace ReClassNET
 {
@@ -8,7 +9,13 @@ namespace ReClassNET
 	{
 		private const string SettingsFile = "settings.xml";
 
+		private static Settings settings;
+		private static Random random = new Random();
 		private static bool designMode = true;
+
+		public static Settings Settings => settings;
+
+		public static Random GlobalRandom => random;
 
 		public static bool DesignMode => designMode;
 
@@ -18,8 +25,11 @@ namespace ReClassNET
 			designMode = false; // The designer doesn't call Main()
 
 			DpiUtil.ConfigureProcess();
+
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+
+			Application.DoEvents();
 
 #if RELEASE
 			try
@@ -27,11 +37,13 @@ namespace ReClassNET
 #endif
 				CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-				var settings = Settings.Load(SettingsFile);
+				settings = Settings.Load(SettingsFile);
 
 				using (var nativeHelper = new NativeHelper())
 				{
-					Application.Run(new MainForm(nativeHelper, settings));
+					var form = new MainForm(nativeHelper, settings);
+
+					Application.Run(form);
 				}
 
 				Settings.Save(settings, SettingsFile);

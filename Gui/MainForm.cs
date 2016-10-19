@@ -1,12 +1,13 @@
-﻿using ReClassNET.DataExchange;
-using ReClassNET.Gui;
-using ReClassNET.Nodes;
-using System;
+﻿using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ReClassNET.DataExchange;
+using ReClassNET.Gui;
+using ReClassNET.Nodes;
+using ReClassNET.Plugins;
 
 namespace ReClassNET
 {
@@ -17,6 +18,8 @@ namespace ReClassNET
 
 		private readonly RemoteProcess remoteProcess;
 		private readonly Memory memory;
+
+		private readonly PluginManager pluginManager;
 
 		private string projectPath;
 
@@ -51,6 +54,8 @@ namespace ReClassNET
 				Process = remoteProcess
 			};
 
+			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess), nativeHelper);
+
 			ClassNode.NewClassCreated += delegate (ClassNode node)
 			{
 				classesView.Add(node);
@@ -60,6 +65,20 @@ namespace ReClassNET
 			memoryViewControl.Memory = memory;
 
 			newClassToolStripButton_Click(null, null);
+		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, "Plugins"));
+		}
+
+		protected override void OnClosed(EventArgs e)
+		{
+			pluginManager.UnloadAllPlugins();
+
+			base.OnClosed(e);
 		}
 
 		private void selectProcessToolStripMenuItem_Click(object sender, EventArgs e)
@@ -283,6 +302,14 @@ namespace ReClassNET
 						ex.ShowDialog();
 					}
 				}
+			}
+		}
+
+		private void pluginsToolStripButton_Click(object sender, EventArgs e)
+		{
+			using (var pf = new PluginForm(pluginManager))
+			{
+				pf.ShowDialog();
 			}
 		}
 	}

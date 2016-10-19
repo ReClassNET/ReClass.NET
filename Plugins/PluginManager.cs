@@ -13,12 +13,14 @@ namespace ReClassNET.Plugins
 		private readonly List<PluginInfo> plugins = new List<PluginInfo>();
 
 		private readonly IPluginHost host = null;
+		private readonly NativeHelper nativeHelper;
 
-		public PluginManager(IPluginHost host)
+		public PluginManager(IPluginHost host, NativeHelper nativeHelper)
 		{
 			Contract.Requires(host != null);
 
 			this.host = host;
+			this.nativeHelper = nativeHelper;
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
@@ -98,7 +100,12 @@ namespace ReClassNET.Plugins
 					}
 					else
 					{
-						//call native initialize
+						nativeHelper.InintializeNativeModule(pi.NativeHandle);
+					}
+
+					if (!pi.NativeHandle.IsNull())
+					{
+						nativeHelper.RegisterProvidedNativeMethods(pi.NativeHandle, pi.Name);
 					}
 
 					plugins.Add(pi);

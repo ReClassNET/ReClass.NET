@@ -1,18 +1,12 @@
-﻿using Dia2Lib;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using Dia2Lib;
+using Microsoft.Win32;
 
 namespace ReClassNET.SymbolReader
 {
-
-
 	class DiaUtil : IDisposable
 	{
 		public IDiaDataSource _IDiaDataSource;
@@ -50,7 +44,7 @@ namespace ReClassNET.SymbolReader
 		}
 	}
 
-	class Symbols
+	public class Symbols
 	{
 		public string SymbolCachePath { get; private set; } = "./SymbolsCache";
 

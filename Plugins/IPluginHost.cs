@@ -7,5 +7,7 @@ namespace ReClassNET.Plugins
 		MainForm MainWindow { get; }
 
 		ResourceManager Resources { get; }
+
+		RemoteProcess Process { get; }
 	}
 }

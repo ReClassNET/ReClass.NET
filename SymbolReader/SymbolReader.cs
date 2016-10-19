@@ -1,11 +1,11 @@
-﻿using Dia2Lib;
-using System;
+﻿using System;
 using System.Diagnostics.Contracts;
 using System.Text;
+using Dia2Lib;
 
 namespace ReClassNET.SymbolReader
 {
-	class SymbolReader : IDisposable
+	public class SymbolReader : IDisposable
 	{
 		private ComDisposableWrapper<DiaSource> diaSource;
 		private ComDisposableWrapper<IDiaSession> diaSession;

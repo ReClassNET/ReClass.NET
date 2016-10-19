@@ -111,6 +111,12 @@
     </Compile>
     <Compile Include="Gui\CustomToolStripProfessionalRenderer.cs" />
     <Compile Include="GrowingList.cs" />
+    <Compile Include="Gui\PluginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\PluginForm.Designer.cs">
+      <DependentUpon>PluginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\SettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -231,6 +237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MemoryViewControl.resx">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\PluginForm.resx">
+      <DependentUpon>PluginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ProcessBrowser.resx">
       <DependentUpon>ProcessBrowser.cs</DependentUpon>

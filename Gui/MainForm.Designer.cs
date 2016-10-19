@@ -262,6 +262,7 @@
 			this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
 			this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
 			this.pluginsToolStripMenuItem.Text = "Plugins...";
+			this.pluginsToolStripMenuItem.Click += new System.EventHandler(this.pluginsToolStripButton_Click);
 			// 
 			// toolStripSeparator5
 			// 
@@ -473,6 +474,7 @@
 			this.pluginsToolStripButton.Name = "pluginsToolStripButton";
 			this.pluginsToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.pluginsToolStripButton.ToolTipText = "Plugins...";
+			this.pluginsToolStripButton.Click += new System.EventHandler(this.pluginsToolStripButton_Click);
 			// 
 			// toolStripSeparator6
 			// 
@@ -860,7 +862,7 @@
 			this.toolStripSeparator11.Name = "toolStripSeparator11";
 			this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
 			// 
-			// bitsToolStripButton
+			// bitFieldToolStripButton
 			// 
 			this.bitFieldToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.bitFieldToolStripButton.Image = global::ReClassNET.Properties.Resources.button_bits;
