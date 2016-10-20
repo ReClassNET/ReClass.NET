@@ -1,9 +1,8 @@
-﻿// This class is removed to get rid of the SQLite dependency.
-
-/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using ReClassNET.Logger;
 
@@ -18,6 +17,9 @@ namespace ReClassNET.DataExchange
 
 		public SchemaBuilder Load(string filePath, ILogger logger)
 		{
+			Contract.Requires(filePath != null);
+			Contract.Requires(logger != null);
+
 			try
 			{
 				using (var connection = new SQLiteConnection($@"Data Source={filePath}"))
@@ -137,4 +139,3 @@ namespace ReClassNET.DataExchange
 		}
 	}
 }
-*/
