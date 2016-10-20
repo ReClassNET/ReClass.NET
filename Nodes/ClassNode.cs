@@ -14,6 +14,14 @@ namespace ReClassNET.Nodes
 
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
 
+		public IntPtr Address
+		{
+			set
+			{
+				AddressFormula = value.ToString("X");
+			}
+		}
+
 		public string AddressFormula { get; set; }
 
 		public ClassNode()

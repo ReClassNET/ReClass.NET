@@ -83,7 +83,7 @@ namespace ReClassNET
 				var node = classesView.SelectedClass;
 				if (node != null)
 				{
-					node.Offset = address;
+					node.Address = address;
 				}
 			}
 		}
@@ -95,7 +95,7 @@ namespace ReClassNET
 			{
 				var node = new ClassNode
 				{
-					Offset = address
+					Address = address
 				};
 				node.AddBytes(64);
 
