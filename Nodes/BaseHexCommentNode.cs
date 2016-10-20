@@ -73,6 +73,18 @@ namespace ReClassNET.Nodes
 						}
 					}
 				}
+
+				if (Program.Settings.ShowPluginInfo)
+				{
+					foreach (var getNodeInfo in GetNodeInfoCallbacks)
+					{
+						var info = getNodeInfo(this, ivalue, view.Memory);
+						if (info != null)
+						{
+							x = AddText(view, x, y, Program.Settings.PluginColor, HotSpot.NoneId, info);
+						}
+					}
+				}
 			}
 
 			return x;

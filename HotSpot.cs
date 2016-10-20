@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ReClassNET
 {
-	enum HotSpotType
+	public enum HotSpotType
 	{
 		None,
 		Edit,
@@ -21,7 +21,7 @@ namespace ReClassNET
 		Comment
 	}
 
-	class HotSpot
+	public class HotSpot
 	{
 		public const int NoneId = -1;
 		public const int AddressId = 100;

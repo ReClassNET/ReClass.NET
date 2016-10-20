@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
@@ -93,7 +92,7 @@ namespace ReClassNET
 
 		[Category("Colors")]
 		[XmlElement(Type = typeof(XmlColorWrapper))]
-		public Color FunctionColor { get; set; } = Color.FromArgb(255, 0, 255);
+		public Color PluginColor { get; set; } = Color.FromArgb(255, 0, 255);
 
 		[Category("Colors")]
 		[XmlElement(Type = typeof(XmlColorWrapper))]
@@ -115,6 +114,9 @@ namespace ReClassNET
 
 		[Category("Display")]
 		public bool ShowText { get; set; } = true;
+
+		[Category("Display")]
+		public bool ShowPluginInfo { get; set; } = true;
 
 		[Category("Display")]
 		public bool HighlightChangedValues { get; set; } = true;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ReClassNET
 {
-	class GrowingList<T>
+	public class GrowingList<T>
 	{
 		private List<T> list;
 

@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ReClassNET
 {
-	class ViewInfo
+	public class ViewInfo
 	{
 		public Graphics Context { get; set; }
 		public FontEx Font { get; set; }

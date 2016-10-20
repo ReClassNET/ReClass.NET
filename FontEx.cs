@@ -2,7 +2,7 @@
 
 namespace ReClassNET
 {
-	class FontEx
+	public class FontEx
 	{
 		public Font Font { get; set; }
 		public int Width { get; set; }

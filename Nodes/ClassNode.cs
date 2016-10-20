@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ReClassNET.Nodes
 {
-	class ClassNode : BaseContainerNode
+	public class ClassNode : BaseContainerNode
 	{
 		public delegate void NewClassCreatedEvent(ClassNode sender);
 		public static event NewClassCreatedEvent NewClassCreated;

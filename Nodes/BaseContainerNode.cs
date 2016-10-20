@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Nodes
 {
-	abstract class BaseContainerNode : BaseNode
+	public abstract class BaseContainerNode : BaseNode
 	{
 		protected readonly List<BaseNode> nodes = new List<BaseNode>();
 		public IEnumerable<BaseNode> Nodes => nodes;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ReClassNET
 {
-	class Memory
+	public class Memory
 	{
 		public RemoteProcess Process { get; set; }
 
