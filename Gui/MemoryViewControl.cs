@@ -338,7 +338,7 @@ namespace ReClassNET
 			}
 		}
 
-		private void updateTimer_Tick(object sender, EventArgs e)
+		private void repaintTimer_Tick(object sender, EventArgs e)
 		{
 			if (DesignMode)
 			{
@@ -346,6 +346,19 @@ namespace ReClassNET
 			}
 
 			Invalidate(false);
+		}
+
+		private void updateClassTimer_Tick(object sender, EventArgs e)
+		{
+			if (DesignMode)
+			{
+				return;
+			}
+
+			if (ClassNode != null)
+			{
+				ClassNode.UpdateAddress(Memory);
+			}
 		}
 
 		private int FindNodeIndex(BaseNode node)

@@ -84,7 +84,7 @@ namespace ReClassNET.DataExchange
 
 	class SchemaClassNode : SchemaNode
 	{
-		public IntPtr Offset { get; set; }
+		public string AddressString { get; set; }
 		public List<SchemaNode> Nodes { get; } = new List<SchemaNode>();
 
 		public SchemaClassNode()
@@ -234,7 +234,7 @@ namespace ReClassNET.DataExchange
 				sc => new ClassNode(false)
 				{
 					Name = sc.Name,
-					Offset = sc.Offset,
+					AddressStr = sc.AddressString,
 					Comment = sc.Comment
 				}
 			);

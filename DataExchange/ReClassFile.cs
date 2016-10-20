@@ -40,20 +40,10 @@ namespace ReClassNET.DataExchange
 					.Elements("Class")
 					.ToDictionary(
 						cls => cls.Attribute("Name")?.Value,
-						cls =>
+						cls => new SchemaClassNode
 						{
-							long address;
-							long.TryParse(cls.Attribute("Offset")?.Value, out address);
-							return new SchemaClassNode
-							{
-#if WIN32
-								Offset = unchecked((IntPtr)(int)address),
-#else
-								Offset = unchecked((IntPtr)address),
-#endif
-
-								Name = cls.Attribute("Name")?.Value
-							};
+							AddressString = cls.Attribute("strOffset")?.Value ?? string.Empty,
+							Name = cls.Attribute("Name")?.Value ?? string.Empty
 						}
 					);
 

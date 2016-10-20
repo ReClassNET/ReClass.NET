@@ -89,9 +89,10 @@
 			this.copyAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.updateTimer = new System.Windows.Forms.Timer(this.components);
+			this.repaintTimer = new System.Windows.Forms.Timer(this.components);
 			this.editBox = new ReClassNET.HotSpotTextBox();
 			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.updateClassTimer = new System.Windows.Forms.Timer(this.components);
 			this.selectedNodeContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -645,11 +646,11 @@
 			this.removeToolStripMenuItem.Text = "Remove";
 			this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
 			// 
-			// updateTimer
+			// repaintTimer
 			// 
-			this.updateTimer.Enabled = true;
-			this.updateTimer.Interval = 250;
-			this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+			this.repaintTimer.Enabled = true;
+			this.repaintTimer.Interval = 250;
+			this.repaintTimer.Tick += new System.EventHandler(this.repaintTimer_Tick);
 			// 
 			// editBox
 			// 
@@ -666,6 +667,12 @@
 			// toolTip
 			// 
 			this.toolTip.ShowAlways = true;
+			// 
+			// updateClassTimer
+			// 
+			this.updateClassTimer.Enabled = true;
+			this.updateClassTimer.Interval = 1000;
+			this.updateClassTimer.Tick += new System.EventHandler(this.updateClassTimer_Tick);
 			// 
 			// MemoryViewControl
 			// 
@@ -702,7 +709,7 @@
 		private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem copyAddressToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.Timer updateTimer;
+		private System.Windows.Forms.Timer repaintTimer;
 		private HotSpotTextBox editBox;
 		private System.Windows.Forms.ToolTip toolTip;
 		private Gui.TypeToolStripMenuItem hex64ToolStripMenuItem;
@@ -743,5 +750,6 @@
 		private Gui.TypeToolStripMenuItem vTablePointerToolStripMenuItem;
 		private Gui.TypeToolStripMenuItem functionPointerToolStripMenuItem;
 		private Gui.TypeToolStripMenuItem arrayOfPointersToolStripMenuItem;
+		private System.Windows.Forms.Timer updateClassTimer;
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using ReClassNET.Logger;
@@ -25,20 +24,10 @@ namespace ReClassNET.DataExchange
 					.SelectMany(ns => ns.Elements("Class"))
 					.ToDictionary(
 						cls => cls.Attribute("ClassId")?.Value,
-						cls =>
+						cls => new SchemaClassNode
 						{
-							long address;
-							long.TryParse(cls.Attribute("Address")?.Value, NumberStyles.HexNumber, null, out address);
-							return new SchemaClassNode
-							{
-#if WIN32
-								Offset = unchecked((IntPtr)(int)address),
-#else
-								Offset = unchecked((IntPtr)address),
-#endif
-
-								Name = cls.Attribute("Name")?.Value
-							};
+							AddressString = cls.Attribute("Address")?.Value ?? string.Empty,
+							Name = cls.Attribute("Name")?.Value ?? string.Empty
 						}
 					);
 

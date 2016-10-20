@@ -25,9 +25,9 @@ namespace ReClassNET.Nodes
 		public ClassNode(bool notifiy)
 		{
 #if WIN64
-			Offset = (IntPtr)0x140000000;
+			AddressStr = "0x140000000";
 #else
-			Offset = (IntPtr)0x400000;
+			AddressStr = "0x400000";
 #endif
 
 			Classes.Add(this);
@@ -61,7 +61,7 @@ namespace ReClassNET.Nodes
 			var tx = x;
 
 			x = AddIcon(view, x, y, Icons.Class, -1, HotSpotType.None);
-			x = AddText(view, x, y, Program.Settings.OffsetColor, 0, $"{Offset.ToInt64():X}") + view.Font.Width;
+			x = AddText(view, x, y, Program.Settings.OffsetColor, 0, AddressStr) + view.Font.Width;
 
 			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, "Class") + view.Font.Width;
 			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
@@ -90,18 +90,22 @@ namespace ReClassNET.Nodes
 			{
 				try
 				{
-					var address = spot.Memory.Process.ParseAddress(spot.Text);
-					if (!address.IsNull())
-					{
-						Offset = address;
-						AddressStr = spot.Text;
-					}
+					Offset = spot.Memory.Process.ParseAddress(spot.Text);
+
+					AddressStr = spot.Text;
 				}
 				catch (Exception ex)
 				{
 					ex.ShowDialog();
 				}
 			}
+		}
+
+		public void UpdateAddress(Memory memory)
+		{
+			Contract.Requires(memory != null);
+
+			Offset = memory.Process.ParseAddress(AddressStr);
 		}
 
 		internal void NotifyMemorySizeChanged()

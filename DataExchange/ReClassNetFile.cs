@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -68,20 +67,11 @@ namespace ReClassNET.DataExchange
 								.Elements(XmlClassElement)
 								.ToDictionary(
 									cls => cls.Attribute(XmlNameAttribute)?.Value,
-									cls =>
+									cls => new SchemaClassNode
 									{
-										long address;
-										long.TryParse(cls.Attribute(XmlAddressAttribute)?.Value, NumberStyles.HexNumber, null, out address);
-										return new SchemaClassNode
-										{
-#if WIN32
-											Offset = unchecked((IntPtr)(int)address),
-#else
-											Offset = unchecked((IntPtr)address),
-#endif
-											Name = cls.Attribute(XmlNameAttribute)?.Value,
-											Comment = cls.Attribute(XmlCommentAttribute)?.Value
-										};
+										AddressString = cls.Attribute(XmlAddressAttribute)?.Value ?? string.Empty,
+										Name = cls.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
+										Comment = cls.Attribute(XmlCommentAttribute)?.Value ?? string.Empty
 									}
 								);
 
@@ -226,8 +216,7 @@ namespace ReClassNET.DataExchange
 					XmlClassElement,
 					new XAttribute(XmlNameAttribute, node.Name ?? string.Empty),
 					new XAttribute(XmlCommentAttribute, node.Comment ?? string.Empty),
-					new XAttribute(XmlAddressAttribute, classNode.Offset.ToInt64().ToString("X")),
-					//new XAttribute(XmlAddressAttribute, classNode.AddressString ?? string.Empty),
+					new XAttribute(XmlAddressAttribute, classNode.AddressString ?? string.Empty),
 					classNode.Nodes.Select(n => WriteNode(n))
 				);
 			}
