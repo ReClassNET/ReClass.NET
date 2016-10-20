@@ -32,14 +32,19 @@ namespace ReClassNET.DataExchange
 							r => Convert.ToInt32(r["tbl_name"].ToString().Substring(5)),
 							r => new SchemaClassNode
 							{
-								Name = Query(connection, $"SELECT variable FROM {r["tbl_name"]} WHERE type = 2 LIMIT 1").AsEnumerable().First()["variable"].ToString()
+								Name = Query(connection, $"SELECT variable FROM {r["tbl_name"]} WHERE type = 2 LIMIT 1").First()["variable"].ToString(),
+#if WIN64
+								AddressFormula = "0x140000000"
+#else
+								AddressFormula = "0x400000"
+#endif
 							}
 						);
 
 					var schema = classes
 						.Select(kv =>
 						{
-							kv.Value.Nodes.AddRange(Query(connection, $"SELECT variable, comment, type, length, ref FROM class{kv.Key} WHERE type != 2").AsEnumerable().Select(r => ReadNode(r, logger)).Where(n => n != null));
+							kv.Value.Nodes.AddRange(Query(connection, $"SELECT variable, comment, type, length, ref FROM class{kv.Key} WHERE type != 2").Select(r => ReadNode(r, logger)).Where(n => n != null));
 							return kv.Value;
 						}).ToList();
 
@@ -77,6 +82,9 @@ namespace ReClassNET.DataExchange
 
 		private SchemaNode ReadNode(DataRow row, ILogger logger)
 		{
+			Contract.Requires(row != null);
+			Contract.Requires(logger != null);
+
 			var type = SchemaType.None;
 
 			int typeVal = Convert.ToInt32(row["type"]);
@@ -126,15 +134,18 @@ namespace ReClassNET.DataExchange
 			return sn;
 		}
 
-		private DataTable Query(SQLiteConnection connection, string query)
+		private IEnumerable<DataRow> Query(SQLiteConnection connection, string query)
 		{
+			Contract.Requires(connection != null);
+			Contract.Requires(query != null);
+
 			using (var adapter = new SQLiteDataAdapter(query, connection))
 			{
 				var ds = new DataSet();
 
 				adapter.Fill(ds);
 
-				return ds.Tables[0];
+				return ds.Tables[0].AsEnumerable();
 			}
 		}
 	}

@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<ReClass>
+    <!--ReClass 2015-->
+    <TypeDef tdHex="char" tdInt64="__int64" tdInt32="__int32" tdInt16="__int16" tdInt8="__int8" tdDWORD="DWORD" tdWORD="WORD" tdBYTE="unsigned char" tdFloat="float" tdDouble="double" tdVec2="Vector2" tdVec3="Vector3" tdQuat="Vector4" tdMatrix="matrix3x4_t" tdPChar="char*" />
+    <Header Text="" />
+    <Footer Text="" />
+    <Notes Text="" />
+    <Class Name="N00000000" Type="28" Comment="" Offset="4194304" strOffset="400000" Code="">
+        <Node Name="hex64" Type="5" Size="8" bHidden="0" Comment="" />
+        <Node Name="hex32" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="hex16" Type="6" Size="2" bHidden="0" Comment="" />
+        <Node Name="hex8" Type="7" Size="1" bHidden="0" Comment="" />
+        <Node Name="int64" Type="9" Size="8" bHidden="0" Comment="" />
+        <Node Name="int32" Type="10" Size="4" bHidden="0" Comment="" />
+        <Node Name="int16" Type="11" Size="2" bHidden="0" Comment="" />
+        <Node Name="int8" Type="12" Size="1" bHidden="0" Comment="" />
+        <Node Name="uint32" Type="15" Size="4" bHidden="0" Comment="" />
+        <Node Name="uint16" Type="16" Size="2" bHidden="0" Comment="" />
+        <Node Name="uint8" Type="17" Size="1" bHidden="0" Comment="" />
+        <Node Name="double" Type="14" Size="4" bHidden="0" Comment="" />
+        <Node Name="float" Type="13" Size="4" bHidden="0" Comment="" />
+        <Node Name="vec2" Type="22" Size="8" bHidden="0" Comment="" />
+        <Node Name="vec3" Type="23" Size="12" bHidden="0" Comment="" />
+        <Node Name="vec4" Type="24" Size="16" bHidden="0" Comment="" />
+        <Node Name="matrix4x4" Type="25" Size="64" bHidden="0" Comment="" />
+        <Node Name="clsarray" Type="27" Size="8" bHidden="0" Comment="" Total="2">
+            <Array Name="N00000052" Type="28" Size="4" Comment="" />
+        </Node>
+        <Node Name="instance" Type="1" Size="4" bHidden="0" Comment="" Instance="N00000055" />
+        <Node Name="fnptr" Type="20" Size="4" bHidden="0" Comment="" />
+        <Node Name="clsptr" Type="8" Size="4" bHidden="0" Comment="" Pointer="N00000059" />
+        <Node Name="text4" Type="18" Size="4" bHidden="0" Comment="" />
+        <Node Name="utext2" Type="19" Size="4" bHidden="0" Comment="" />
+        <Node Name="textptr" Type="29" Size="4" bHidden="0" Comment="" />
+        <Node Name="custom" Type="21" Size="4" bHidden="0" Comment="" />
+        <Node Name="N0000004A" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N0000004B" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N0000004C" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N0000004D" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N0000004E" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N0000004F" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N00000050" Type="4" Size="4" bHidden="0" Comment="" />
+    </Class>
+    <Class Name="N00000052" Type="28" Comment="" Offset="4194304" strOffset="400000" Code="">
+        <Node Name="N00000053" Type="4" Size="4" bHidden="0" Comment="" />
+    </Class>
+    <Class Name="N00000055" Type="28" Comment="" Offset="4194304" strOffset="400000" Code="">
+        <Node Name="N00000056" Type="4" Size="4" bHidden="0" Comment="" />
+    </Class>
+    <Class Name="N00000059" Type="28" Comment="" Offset="4194304" strOffset="400000" Code="">
+        <Node Name="N0000005A" Type="26" Size="4" bHidden="0" Comment="">
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+        </Node>
+    </Class>
+</ReClass>

@@ -1,0 +1,112 @@
+<?xml version="1.0" ?>
+<ReClass>
+    <!--ReClass 2013 Mod by CypherPresents-->
+    <TypeDef tdHex="char" tdInt32="__int32" tdInt16="__int16" tdInt8="__int8" tdDWORD="DWORD" tdWORD="WORD" tdBYTE="BYTE" tdVec2="D3DXVECTOR2" tdVec3="D3DXVECTOR3" tdVec4="" tdMatrix="D3DXMATRIX" />
+    <Header Text="" />
+    <Footer Text="" />
+    <Notes Text="" />
+    <Class Name="N02CF4E2D" Type="24" Comment="" Offset="4194304" strOffset="400000" Code="">
+        <Node Name="N02CF4E2E" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02CF4E2F" Type="5" Size="2" bHidden="0" Comment="" />
+        <Node Name="N02CF6B9E" Type="6" Size="1" bHidden="0" Comment="" />
+        <Node Name="N02CF70FD" Type="6" Size="1" bHidden="0" Comment="" />
+        <Node Name="int32" Type="8" Size="4" bHidden="0" Comment="" />
+        <Node Name="int16" Type="9" Size="2" bHidden="0" Comment="" />
+        <Node Name="int8" Type="10" Size="1" bHidden="0" Comment="" />
+        <Node Name="uint32" Type="12" Size="4" bHidden="0" Comment="" />
+        <Node Name="uint16" Type="13" Size="2" bHidden="0" Comment="" />
+        <Node Name="uint8" Type="14" Size="1" bHidden="0" Comment="" />
+        <Node Name="float" Type="11" Size="4" bHidden="0" Comment="" />
+        <Node Name="text2" Type="15" Size="2" bHidden="0" Comment="" />
+        <Node Name="vec2" Type="18" Size="8" bHidden="0" Comment="" />
+        <Node Name="vec3" Type="19" Size="12" bHidden="0" Comment="" />
+        <Node Name="vec4" Type="20" Size="16" bHidden="0" Comment="" />
+        <Node Name="matrix4x4" Type="21" Size="64" bHidden="0" Comment="" />
+        <Node Name="N02CFEF84" Type="1" Size="64" bHidden="0" Comment="" Instance="N02D00F35" />
+        <Node Name="classptr" Type="7" Size="4" bHidden="0" Comment="" Pointer="N02D02A95" />
+        <Node Name="array" Type="23" Size="128" bHidden="0" Comment="" Total="2">
+            <Array Name="N02D05F6C" Type="24" Size="64" Comment="" />
+        </Node>
+        <Node Name="funcptr" Type="16" Size="4" bHidden="0" Comment="" />
+        <Node Name="double" Type="28" Size="8" bHidden="0" Comment="" />
+        <Node Name="int64" Type="27" Size="8" bHidden="0" Comment="" />
+        <Node Name="utext2" Type="29" Size="4" bHidden="0" Comment="" />
+        <Node Name="ptrarray" Type="30" Size="8" bHidden="0" Comment="" />
+        <Node Name="N02D08E72" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D08E73" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D08E74" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D08E75" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D08E76" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D08E77" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D08E78" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D08E79" Type="4" Size="4" bHidden="0" Comment="" />
+    </Class>
+    <Class Name="N02D00F35" Type="24" Comment="" Offset="4194304" strOffset="400000" Code="">
+        <Node Name="N02D00F36" Type="22" Size="4" bHidden="0" Comment="">
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+            <Function Name="" Comment="" bHidden="0" />
+        </Node>
+        <Node Name="N02D00F37" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F38" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F39" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F3A" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F3B" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F3C" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F3D" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F3E" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F3F" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F40" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F41" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F42" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F43" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F44" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D00F45" Type="4" Size="4" bHidden="0" Comment="" />
+    </Class>
+    <Class Name="N02D02A95" Type="24" Comment="" Offset="4194304" strOffset="400000" Code="">
+        <Node Name="N02D02A96" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02A97" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02A98" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02A99" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02A9A" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02A9B" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02A9C" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02A9D" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02A9E" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02A9F" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02AA0" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02AA1" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02AA2" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02AA3" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02AA4" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D02AA5" Type="4" Size="4" bHidden="0" Comment="" />
+    </Class>
+    <Class Name="N02D05F6C" Type="24" Comment="" Offset="4194304" strOffset="400000" Code="">
+        <Node Name="N02D05F6D" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F6E" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F6F" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F70" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F71" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F72" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F73" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F74" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F75" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F76" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F77" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F78" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F79" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F7A" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F7B" Type="4" Size="4" bHidden="0" Comment="" />
+        <Node Name="N02D05F7C" Type="4" Size="4" bHidden="0" Comment="" />
+    </Class>
+    <Class Name="N02D33632" Type="24" Comment="" Offset="4194304" strOffset="400000" Code="">
+        <Node Name="N02D33633" Type="4" Size="4" bHidden="0" Comment="" />
+    </Class>
+</ReClass>
