@@ -2,15 +2,14 @@
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using ReClassNET.CodeGenerator;
 using ReClassNET.DataExchange;
-using ReClassNET.Gui;
+using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.Plugins;
 
-namespace ReClassNET
+namespace ReClassNET.Gui
 {
 	public partial class MainForm : IconForm
 	{
@@ -21,6 +20,8 @@ namespace ReClassNET
 		private readonly Memory memory;
 
 		private readonly PluginManager pluginManager;
+
+		private readonly ILogger logger;
 
 		private string projectPath;
 
@@ -65,6 +66,8 @@ namespace ReClassNET
 			memoryViewControl.Settings = settings;
 			memoryViewControl.Memory = memory;
 
+			logger = new GuiLogger();
+
 			newClassToolStripButton_Click(null, null);
 		}
 
@@ -72,7 +75,7 @@ namespace ReClassNET
 		{
 			base.OnLoad(e);
 
-			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, "Plugins"));
+			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, Constants.PluginsFolder));
 		}
 
 		protected override void OnClosed(EventArgs e)
@@ -188,18 +191,10 @@ namespace ReClassNET
 					}
 					if (import != null)
 					{
-						var sb = new StringBuilder();
-
-						var schema = import.Load(ofd.FileName, s => sb.AppendLine(s));
-
-						if (sb.Length != 0)
-						{
-							MessageBox.Show("Errors occurred during import:\n\n" + sb.ToString(), "Error");
-						}
-
+						var schema = import.Load(ofd.FileName, logger);
 						if (schema != null)
 						{
-							// If we have our filetype save to path to skip the Save As dialog.
+							// If we have our filetype save the path to skip the Save As dialog.
 							if (import is ReClassNetFile)
 							{
 								projectPath = ofd.FileName;

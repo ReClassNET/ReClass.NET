@@ -166,9 +166,6 @@
   <data name="button_mat_34" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_mat_34.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_int_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button_int_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="button_fn_ptr" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_fn_ptr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -211,14 +208,14 @@
   <data name="button_class_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_class_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_add_bytes_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button_add_bytes_8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="unsigned_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\unsigned_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="cog" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cog.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="closed_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\closed_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="chart_organisation_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\chart_organisation_delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="exchange_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\exchange_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -232,9 +229,6 @@
   <data name="button_add_bytes_1024" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_add_bytes_1024.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="left_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\left_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="control_pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\control_pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -247,8 +241,8 @@
   <data name="button_text" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_text.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="arrow_down_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\arrow_down_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="button_add_bytes_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_add_bytes_4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_utext" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_utext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -259,17 +253,20 @@
   <data name="interface_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\interface_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="page_code_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\page_code_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="button_mat_33" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_mat_33.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_insert_bytes_1024" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_insert_bytes_1024.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="arrow_refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="button_class_ptr" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_class_ptr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_hex_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_hex_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -286,11 +283,8 @@
   <data name="table_gear" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\table_gear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_insert_bytes_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button_insert_bytes_8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="button_uint_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button_uint_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="arrow_down_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_down_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -310,8 +304,8 @@
   <data name="button_insert_bytes_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_insert_bytes_4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="right_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\right_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="button_int_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_int_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_uint_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_uint_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -343,20 +337,23 @@
   <data name="page_white_cplusplus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\page_white_cplusplus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="closed_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\closed_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="page_code_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\page_code_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="right_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\right_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_hex_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_hex_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="button_bits" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_bits.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="class_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\class_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="delete1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="arrow_refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\arrow_refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="left_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\left_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="plugin" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\plugin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -370,8 +367,11 @@
   <data name="array_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\array_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_add_bytes_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button_add_bytes_4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="button_double" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_double.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_insert_bytes_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_insert_bytes_8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_int_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_int_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -379,23 +379,29 @@
   <data name="cross" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cross.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Icon\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="button_double" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button_double.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="button_uint_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_uint_8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_insert_bytes_2048" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button_insert_bytes_2048.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cog" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cog.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_add_bytes_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_add_bytes_8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="signed_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\signed_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="chart_organisation_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\chart_organisation_delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="button_uint_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_uint_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_insert_bytes_2048" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_insert_bytes_2048.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_uint_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_uint_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -403,7 +409,7 @@
   <data name="page_code" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\page_code.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_bits" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button_bits.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="note_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\note_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

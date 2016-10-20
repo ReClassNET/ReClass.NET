@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using ReClassNET.Logger;
 
 namespace ReClassNET.DataExchange
 {
@@ -12,7 +13,7 @@ namespace ReClassNET.DataExchange
 
 		private Dictionary<string, SchemaClassNode> classes;
 
-		public SchemaBuilder Load(string filePath, ReportError report)
+		public SchemaBuilder Load(string filePath, ILogger logger)
 		{
 			try
 			{
@@ -61,7 +62,7 @@ namespace ReClassNET.DataExchange
 					.Select(cls => new { Data = cls, Class = classes[cls.Attribute("Name")?.Value] })
 					.Select(x =>
 					{
-						x.Class.Nodes.AddRange(x.Data.Elements("Node").Select(n => ParseNode(n, typeMap, report)).Where(n => n != null));
+						x.Class.Nodes.AddRange(x.Data.Elements("Node").Select(n => ParseNode(n, typeMap, logger)).Where(n => n != null));
 						return x.Class;
 					});
 
@@ -69,13 +70,13 @@ namespace ReClassNET.DataExchange
 			}
 			catch (Exception ex)
 			{
-				report?.Invoke(ex.Message);
+				logger.Log(ex);
 
 				return null;
 			}
 		}
 
-		private SchemaNode ParseNode(XElement node, SchemaType[] typeMap, ReportError report)
+		private SchemaNode ParseNode(XElement node, SchemaType[] typeMap, ILogger logger)
 		{
 			var type = SchemaType.None;
 
@@ -90,7 +91,8 @@ namespace ReClassNET.DataExchange
 
 			if (type == SchemaType.None)
 			{
-				report?.Invoke($"Node has unknown type: " + node.ToString());
+				logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {node.Attribute("Type")?.Value}");
+				logger.Log(LogLevel.Warning, node.ToString());
 
 				return null;
 			}
@@ -111,7 +113,8 @@ namespace ReClassNET.DataExchange
 
 				if (reference == null || !classes.ContainsKey(reference))
 				{
-					report?.Invoke("Can't resolve referenced class: " + node.ToString());
+					logger.Log(LogLevel.Warning, $"Skipping node with unknown reference: {reference}");
+					logger.Log(LogLevel.Warning, node.ToString());
 
 					return null;
 				}

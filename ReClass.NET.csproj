@@ -90,6 +90,7 @@
     <Compile Include="CodeGenerator\CppCodeGenerator.cs" />
     <Compile Include="CodeGenerator\CSharpCodeGenerator.cs" />
     <Compile Include="CodeGenerator\ICodeGenerator.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="DataExchange\IReClassExport.cs" />
     <Compile Include="DataExchange\ReClassFile.cs" />
     <Compile Include="DataExchange\ReClass2007File.cs" />
@@ -111,6 +112,12 @@
     </Compile>
     <Compile Include="Gui\IconForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\LogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\LogForm.Designer.cs">
+      <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\MemoryViewControl.Designer.cs">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
@@ -146,6 +153,11 @@
     <Compile Include="DataExchange\ReClassNetFile.cs" />
     <Compile Include="DataExchange\ReClassQtFile.cs" />
     <Compile Include="DataExchange\SchemaBuilder.cs" />
+    <Compile Include="Logger\BaseLogger.cs" />
+    <Compile Include="Logger\GuiLogger.cs" />
+    <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Logger\LogLevel.cs" />
+    <Compile Include="Logger\NullLogger.cs" />
     <Compile Include="Memory.cs" />
     <Compile Include="Gui\MemoryViewControl.cs">
       <SubType>UserControl</SubType>
@@ -236,6 +248,9 @@
     <EmbeddedResource Include="Gui\ClassNodeView.resx">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\LogForm.resx">
+      <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -564,6 +579,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\button_bits.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\note_add.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

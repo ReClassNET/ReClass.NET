@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Xml.Linq;
+using ReClassNET.Logger;
 
 namespace ReClassNET.DataExchange
 {
@@ -33,8 +34,11 @@ namespace ReClassNET.DataExchange
 
 		private Dictionary<string, SchemaClassNode> classes;
 
-		public SchemaBuilder Load(string filePath, ReportError report)
+		public SchemaBuilder Load(string filePath, ILogger logger)
 		{
+			Contract.Requires(filePath != null);
+			Contract.Requires(logger != null);
+
 			try
 			{
 				using (var fs = new FileStream(filePath, FileMode.Open))
@@ -44,13 +48,20 @@ namespace ReClassNET.DataExchange
 						var classesEntry = archive.GetEntry(ClassFileName);
 						if (classesEntry == null)
 						{
-							report?.Invoke("File is corrupt.");
+							logger.Log(LogLevel.Error, $"The file '{filePath}' is corrupt.");
 
 							return null;
 						}
 						using (var reader = new StreamReader(classesEntry.Open()))
 						{
 							var document = XDocument.Load(reader);
+
+							var version = document.Root.Attribute(XmlVersionAttribute)?.Value;
+							var platform = document.Root.Attribute(XmlTypeAttribute)?.Value;
+							if (platform != Constants.Platform)
+							{
+								logger.Log(LogLevel.Warning, $"The platform of the file ('{platform}') doesn't match the program platform ('{Constants.Platform}').");
+							}
 
 							classes = document.Root
 								.Element(XmlClassesElement)
@@ -80,7 +91,7 @@ namespace ReClassNET.DataExchange
 								.Select(cls => new { Data = cls, Class = classes[cls.Attribute(XmlNameAttribute)?.Value] })
 								.Select(x =>
 								{
-									x.Class.Nodes.AddRange(x.Data.Elements(XmlNodeElement).Select(n => ReadNode(n, report)).Where(n => n != null));
+									x.Class.Nodes.AddRange(x.Data.Elements(XmlNodeElement).Select(n => ReadNode(n, logger)).Where(n => n != null));
 									return x.Class;
 								});
 
@@ -91,18 +102,19 @@ namespace ReClassNET.DataExchange
 			}
 			catch (Exception ex)
 			{
-				report?.Invoke(ex.Message);
+				logger.Log(ex);
 
 				return null;
 			}
 		}
 
-		private SchemaNode ReadNode(XElement node, ReportError report)
+		private SchemaNode ReadNode(XElement node, ILogger logger)
 		{
 			var type = SchemaType.None;
 			if (!Enum.TryParse(node.Attribute(XmlTypeAttribute)?.Value, out type))
 			{
-				report?.Invoke($"Node has unknown type: " + node.ToString());
+				logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {node.Attribute(XmlTypeAttribute)?.Value}");
+				logger.Log(LogLevel.Warning, node.ToString());
 
 				return null;
 			}
@@ -114,7 +126,8 @@ namespace ReClassNET.DataExchange
 				var reference = node.Attribute(XmlReferenceAttribute)?.Value;
 				if (reference == null || !classes.ContainsKey(reference))
 				{
-					report?.Invoke("Can't resolve referenced class: " + node.ToString());
+					logger.Log(LogLevel.Warning, $"Skipping node with unknown reference: {reference}");
+					logger.Log(LogLevel.Warning, node.ToString());
 
 					return null;
 				}
@@ -141,25 +154,23 @@ namespace ReClassNET.DataExchange
 			sn.Name = node.Attribute(XmlNameAttribute)?.Value;
 			sn.Comment = node.Attribute(XmlCommentAttribute)?.Value;
 
-			var sizeAttr = node.Attribute(XmlSizeAttribute);
-			if (sizeAttr != null)
+			switch (type)
 			{
-				int size;
-				int.TryParse(sizeAttr.Value, out size);
-
-				switch (type)
-				{
-					case SchemaType.Array:
-					case SchemaType.ClassPtrArray:
-					case SchemaType.UTF8Text:
-					case SchemaType.UTF16Text:
-					case SchemaType.UTF32Text:
-					case SchemaType.BitField:
-						sn.Count = size;
-						break;
-				}
+				case SchemaType.Array:
+				case SchemaType.ClassPtrArray:
+				case SchemaType.UTF8Text:
+				case SchemaType.UTF16Text:
+				case SchemaType.UTF32Text:
+				case SchemaType.BitField:
+					int size;
+					if (!int.TryParse(node.Attribute(XmlSizeAttribute)?.Value, out size))
+					{
+						logger.Log(LogLevel.Warning, "Node is missing the size attribute, defaulting to 0.");
+						logger.Log(LogLevel.Warning, node.ToString());
+					}
+					sn.Count = size;
+					break;
 			}
-			
 
 			return sn;
 		}
@@ -192,7 +203,10 @@ namespace ReClassNET.DataExchange
 
 			var document = new XDocument(
 				new XComment("ReClass.NET by KN4CK3R"),
-				new XElement(XmlRootElement, new XAttribute(XmlVersionAttribute, "1"),
+				new XElement(
+					XmlRootElement,
+					new XAttribute(XmlVersionAttribute, "1"),
+					new XAttribute(XmlTypeAttribute, Constants.Platform),
 					new XElement(XmlClassesElement, schema.BuildSchema().Select(c => WriteNode(c)))
 				)
 			);
@@ -213,6 +227,7 @@ namespace ReClassNET.DataExchange
 					new XAttribute(XmlNameAttribute, node.Name ?? string.Empty),
 					new XAttribute(XmlCommentAttribute, node.Comment ?? string.Empty),
 					new XAttribute(XmlAddressAttribute, classNode.Offset.ToInt64().ToString("X")),
+					//new XAttribute(XmlAddressAttribute, classNode.AddressString ?? string.Empty),
 					classNode.Nodes.Select(n => WriteNode(n))
 				);
 			}

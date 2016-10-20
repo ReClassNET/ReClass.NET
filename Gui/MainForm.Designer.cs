@@ -1,4 +1,4 @@
-﻿namespace ReClassNET
+﻿namespace ReClassNET.Gui
 {
 	partial class MainForm
 	{

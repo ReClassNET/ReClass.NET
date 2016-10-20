@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
+using ReClassNET.Logger;
 
 namespace ReClassNET.DataExchange
 {
@@ -15,7 +16,7 @@ namespace ReClassNET.DataExchange
 
 		private Dictionary<int, SchemaClassNode> classes;
 
-		public SchemaBuilder Load(string filePath, ReportError report)
+		public SchemaBuilder Load(string filePath, ILogger logger)
 		{
 			try
 			{
@@ -36,7 +37,7 @@ namespace ReClassNET.DataExchange
 					var schema = classes
 						.Select(kv =>
 						{
-							kv.Value.Nodes.AddRange(Query(connection, $"SELECT variable, comment, type, length, ref FROM class{kv.Key} WHERE type != 2").AsEnumerable().Select(r => ReadNode(r, null)).Where(n => n != null));
+							kv.Value.Nodes.AddRange(Query(connection, $"SELECT variable, comment, type, length, ref FROM class{kv.Key} WHERE type != 2").AsEnumerable().Select(r => ReadNode(r, logger)).Where(n => n != null));
 							return kv.Value;
 						}).ToList();
 
@@ -45,7 +46,7 @@ namespace ReClassNET.DataExchange
 			}
 			catch (Exception ex)
 			{
-				report?.Invoke(ex.Message);
+				logger.Log(ex);
 
 				return null;
 			}
@@ -72,7 +73,7 @@ namespace ReClassNET.DataExchange
 			SchemaType.FunctionPtr
 		};
 
-		private SchemaNode ReadNode(DataRow row, ReportError report)
+		private SchemaNode ReadNode(DataRow row, ILogger logger)
 		{
 			var type = SchemaType.None;
 
@@ -84,7 +85,8 @@ namespace ReClassNET.DataExchange
 
 			if (type == SchemaType.None)
 			{
-				report?.Invoke($"Node has unknown type: " + row.ToString());
+				logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {row["type"]}");
+				logger.Log(LogLevel.Warning, row.ToString());
 
 				return null;
 			}
@@ -96,7 +98,8 @@ namespace ReClassNET.DataExchange
 				var reference = Convert.ToInt32(row["ref"]);
 				if (!classes.ContainsKey(reference))
 				{
-					report?.Invoke("Can't resolve referenced class: " + row.ToString());
+					logger.Log(LogLevel.Warning, $"Skipping node with unknown reference: {row["ref"]}");
+					logger.Log(LogLevel.Warning, row.ToString());
 
 					return null;
 				}

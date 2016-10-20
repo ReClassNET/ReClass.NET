@@ -1,9 +1,9 @@
-﻿namespace ReClassNET.DataExchange
-{
-	delegate void ReportError(string message);
+﻿using ReClassNET.Logger;
 
+namespace ReClassNET.DataExchange
+{
 	interface IReClassImport
 	{
-		SchemaBuilder Load(string filePath, ReportError report);
+		SchemaBuilder Load(string filePath, ILogger logger);
 	}
 }

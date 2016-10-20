@@ -703,16 +703,6 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap delete1 {
-            get {
-                object obj = ResourceManager.GetObject("delete1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap double_icon {
             get {
                 object obj = ResourceManager.GetObject("double_icon", resourceCulture);
@@ -726,6 +716,16 @@ namespace ReClassNET.Properties {
         internal static System.Drawing.Bitmap enum_icon {
             get {
                 object obj = ResourceManager.GetObject("enum_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap error {
+            get {
+                object obj = ResourceManager.GetObject("error", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -826,6 +826,16 @@ namespace ReClassNET.Properties {
         internal static System.Drawing.Bitmap matrix_icon {
             get {
                 object obj = ResourceManager.GetObject("matrix_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap note_add {
+            get {
+                object obj = ResourceManager.GetObject("note_add", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1016,6 +1026,16 @@ namespace ReClassNET.Properties {
         internal static System.Drawing.Bitmap vector_icon {
             get {
                 object obj = ResourceManager.GetObject("vector_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap warning {
+            get {
+                object obj = ResourceManager.GetObject("warning", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

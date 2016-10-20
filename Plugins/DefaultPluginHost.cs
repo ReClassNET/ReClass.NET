@@ -1,5 +1,6 @@
 using System.Diagnostics.Contracts;
 using System.Resources;
+using ReClassNET.Gui;
 
 namespace ReClassNET.Plugins
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
+using ReClassNET.Logger;
 
 namespace ReClassNET.DataExchange
 {
@@ -13,7 +14,7 @@ namespace ReClassNET.DataExchange
 
 		private Dictionary<string, SchemaClassNode> classes;
 
-		public SchemaBuilder Load(string filePath, ReportError report)
+		public SchemaBuilder Load(string filePath, ILogger logger)
 		{
 			try
 			{
@@ -47,7 +48,7 @@ namespace ReClassNET.DataExchange
 					.Select(cls => new { Data = cls, Class = classes[cls.Attribute("ClassId")?.Value] })
 					.Select(x =>
 					{
-						x.Class.Nodes.AddRange(x.Data.Elements("Node").Select(n => ReadNode(n, report)).Where(n => n != null));
+						x.Class.Nodes.AddRange(x.Data.Elements("Node").Select(n => ReadNode(n, logger)).Where(n => n != null));
 						return x.Class;
 					});
 
@@ -55,7 +56,7 @@ namespace ReClassNET.DataExchange
 			}
 			catch (Exception ex)
 			{
-				report?.Invoke(ex.Message);
+				logger.Log(ex);
 
 				return null;
 			}
@@ -87,7 +88,7 @@ namespace ReClassNET.DataExchange
 			SchemaType.Vector2
 		};
 
-		private SchemaNode ReadNode(XElement node, ReportError report)
+		private SchemaNode ReadNode(XElement node, ILogger logger)
 		{
 			var type = SchemaType.None;
 
@@ -102,7 +103,8 @@ namespace ReClassNET.DataExchange
 
 			if (type == SchemaType.None)
 			{
-				report?.Invoke($"Node has unknown type: " + node.ToString());
+				logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {node.Attribute("Type")?.Value}");
+				logger.Log(LogLevel.Warning, node.ToString());
 
 				return null;
 			}
@@ -114,7 +116,8 @@ namespace ReClassNET.DataExchange
 				var pointToClassId = node.Attribute("PointToClass")?.Value;
 				if (pointToClassId == null || !classes.ContainsKey(pointToClassId))
 				{
-					report?.Invoke("Can't resolve referenced class: " + node.ToString());
+					logger.Log(LogLevel.Warning, $"Skipping node with unknown reference: {pointToClassId}");
+					logger.Log(LogLevel.Warning, node.ToString());
 
 					return null;
 				}
