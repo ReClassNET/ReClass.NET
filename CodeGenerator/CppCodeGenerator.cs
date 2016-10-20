@@ -38,6 +38,8 @@ namespace ReClassNET.CodeGenerator
 
 		public string GetCodeFromClasses(IEnumerable<ClassNode> classes)
 		{
+			Contract.Requires(classes != null);
+
 			var sb = new StringBuilder();
 			sb.AppendLine("// Created with ReClass.NET");
 			sb.AppendLine();
@@ -98,6 +100,8 @@ namespace ReClassNET.CodeGenerator
 
 		private IEnumerable<ClassNode> OrderByInheritance(IEnumerable<ClassNode> classes)
 		{
+			Contract.Requires(classes != null);
+
 			var alreadySeen = new HashSet<ClassNode>();
 
 			return classes.SelectMany(c => YieldReversedHierarchy(c, alreadySeen)).Distinct();
@@ -126,6 +130,8 @@ namespace ReClassNET.CodeGenerator
 
 		private IEnumerable<string> YieldMemberDefinitions(IEnumerable<BaseNode> members)
 		{
+			Contract.Requires(members != null);
+
 			int fill = 0;
 			int fillStart = 0;
 
@@ -211,11 +217,17 @@ namespace ReClassNET.CodeGenerator
 
 		private string BuildMemberDefinition(BaseNode member, string type)
 		{
+			Contract.Requires(member != null);
+			Contract.Requires(type != null);
+
 			return BuildMemberDefinition(member, type, 0);
 		}
 
 		private string BuildMemberDefinition(BaseNode member, string type, int count)
 		{
+			Contract.Requires(member != null);
+			Contract.Requires(type != null);
+
 			var comment = string.IsNullOrEmpty(member.Comment) ? string.Empty : " " + member.Comment;
 
 			return BuildMemberDefinition(type, count, member.Name, member.Offset.ToInt32(), comment);

@@ -28,7 +28,7 @@ namespace ReClassNET.Plugins
 
 		public PluginInfo(string filePath, FileVersionInfo versionInfo)
 		{
-			Contract.Requires(!string.IsNullOrEmpty(filePath));
+			Contract.Requires(filePath != null);
 			Contract.Requires(versionInfo != null);
 
 			FilePath = filePath;

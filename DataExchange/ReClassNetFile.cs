@@ -100,6 +100,9 @@ namespace ReClassNET.DataExchange
 
 		private SchemaNode ReadNode(XElement node, ILogger logger)
 		{
+			Contract.Requires(node != null);
+			Contract.Requires(logger != null);
+
 			var type = SchemaType.None;
 			if (!Enum.TryParse(node.Attribute(XmlTypeAttribute)?.Value, out type))
 			{

@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Nodes
+﻿using System.Diagnostics.Contracts;
+
+namespace ReClassNET.Nodes
 {
 	abstract class BaseTextNode : BaseNode
 	{
@@ -8,18 +10,19 @@
 
 		public abstract int CharacterSize { get; }
 
-		public BaseTextNode()
-		{
-
-		}
-
 		public override void CopyFromNode(BaseNode node)
 		{
+			Contract.Requires(node != null);
+
 			CharacterCount = node.MemorySize / CharacterSize;
 		}
 
 		public int DrawText(ViewInfo view, int x, int y, string type, int length, string text)
 		{
+			Contract.Requires(view != null);
+			Contract.Requires(type != null);
+			Contract.Requires(text != null);
+
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
@@ -50,6 +53,8 @@
 
 		public override void Update(HotSpot spot)
 		{
+			Contract.Requires(spot != null);
+
 			base.Update(spot);
 
 			if (spot.Id == 0)

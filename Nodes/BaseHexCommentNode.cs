@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace ReClassNET.Nodes
@@ -7,6 +8,8 @@ namespace ReClassNET.Nodes
 	{
 		protected int AddComment(ViewInfo view, int x, int y, float fvalue, IntPtr ivalue, UIntPtr uvalue)
 		{
+			Contract.Requires(view != null);
+
 			if (Program.Settings.ShowFloat)
 			{
 				x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, $"({(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000})");

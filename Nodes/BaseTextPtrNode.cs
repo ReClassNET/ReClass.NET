@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Nodes
 {
@@ -8,6 +9,10 @@ namespace ReClassNET.Nodes
 
 		public int DrawText(ViewInfo view, int x, int y, string type, int length, string text)
 		{
+			Contract.Requires(view != null);
+			Contract.Requires(type != null);
+			Contract.Requires(text != null);
+
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
@@ -25,24 +30,12 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 
 			x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, "= '");
-			x = AddText(view, x, y, Program.Settings.TextColor, 1, text);
+			x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, text);
 			x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
 
 			x = AddComment(view, x, y);
 
 			return y + view.Font.Height;
-		}
-
-		public override void Update(HotSpot spot)
-		{
-			base.Update(spot);
-
-			if (spot.Id == 0)
-			{
-				//change address
-				
-				//WriteMemory(spot.Address
-			}
 		}
 	}
 }

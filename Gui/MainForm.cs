@@ -169,7 +169,7 @@ namespace ReClassNET.Gui
 				ofd.Filter = $"{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}"
 					+ $"|{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}"
 					+ $"|{ReClassFile.FormatName} (*{ReClassFile.FileExtension})|*{ReClassFile.FileExtension}"
-					/*+ $"|{ReClass2007File.FormatName} (*{ReClass2007File.FileExtension})|*{ReClass2007File.FileExtension}"*/;
+					+ $"|{ReClass2007File.FormatName} (*{ReClass2007File.FileExtension})|*{ReClass2007File.FileExtension}";
 
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
@@ -185,9 +185,9 @@ namespace ReClassNET.Gui
 						case ReClassFile.FileExtension:
 							import = new ReClassFile();
 							break;
-						/*case ReClass2007File.FileExtension:
+						case ReClass2007File.FileExtension:
 							import = new ReClass2007File();
-							break;*/
+							break;
 					}
 					if (import != null)
 					{

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Nodes
 {
@@ -16,11 +17,15 @@ namespace ReClassNET.Nodes
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			return Draw(view, x, y, "PtrArray", HotSpotType.ChangeAll);
 		}
 
 		protected override int DrawChild(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			var ptr = view.Memory.ReadObject<IntPtr>(Offset + InnerNode.MemorySize * CurrentIndex);
 
 			memory.Size = InnerNode.MemorySize;

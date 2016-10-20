@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics.Contracts;
+using System.Runtime.InteropServices;
 
 namespace ReClassNET.Nodes
 {
@@ -21,6 +22,8 @@ namespace ReClassNET.Nodes
 
 		public override int Draw(ViewInfo view, int x2, int y2)
 		{
+			Contract.Requires(view != null);
+
 			return DrawVectorType(view, x2, y2, "Vector4", (ref int x, ref int y) =>
 			{
 				var value = view.Memory.ReadObject<Vector4Data>(Offset);
@@ -39,6 +42,8 @@ namespace ReClassNET.Nodes
 
 		public override void Update(HotSpot spot)
 		{
+			Contract.Requires(spot != null);
+
 			base.Update(spot);
 
 			Update(spot, 4);

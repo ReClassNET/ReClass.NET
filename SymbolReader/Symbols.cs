@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
 using Dia2Lib;
@@ -14,12 +15,14 @@ namespace ReClassNET.SymbolReader
 
 		public DiaUtil(string pdbName)
 		{
+			Contract.Requires(pdbName != null);
+
 			_IDiaDataSource = new DiaSource();
 			_IDiaDataSource.loadDataFromPdb(pdbName);
 			_IDiaDataSource.openSession(out _IDiaSession);
 		}
 
-		private bool disposedValue = false; // Dient zur Erkennung redundanter Aufrufe.
+		private bool disposedValue = false;
 
 		protected virtual void Dispose(bool disposing)
 		{
@@ -88,18 +91,24 @@ namespace ReClassNET.SymbolReader
 
 		public void LoadSymbolsForModule(RemoteProcess.Module module)
 		{
+			Contract.Requires(module != null);
+
 			var reader = SymbolReader.FromModule(module, SymbolSearchPath);
 			symbolReaders[module.Name.ToLower()] = reader;
 		}
 
 		public void LoadSymbolsFromPDB(string path)
 		{
+			Contract.Requires(path != null);
+
 			var reader = SymbolReader.FromDatabase(path);
 			symbolReaders[Path.GetFileName(path).ToLower()] = reader;
 		}
 
 		public SymbolReader GetSymbolsForModule(RemoteProcess.Module module)
 		{
+			Contract.Requires(module != null);
+
 			var name = module.Name.ToLower();
 
 			SymbolReader reader;

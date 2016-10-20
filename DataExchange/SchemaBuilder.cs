@@ -67,6 +67,8 @@ namespace ReClassNET.DataExchange
 		public SchemaReferenceNode(SchemaType type, SchemaClassNode inner)
 			: base(type)
 		{
+			Contract.Requires(inner != null);
+
 			InnerNode = inner;
 		}
 	}
@@ -233,9 +235,9 @@ namespace ReClassNET.DataExchange
 				sc => sc,
 				sc => new ClassNode(false)
 				{
-					Name = sc.Name,
-					AddressFormula = sc.AddressFormula,
-					Comment = sc.Comment
+					Name = sc.Name ?? string.Empty,
+					AddressFormula = sc.AddressFormula ?? string.Empty,
+					Comment = sc.Comment ?? string.Empty
 				}
 			);
 
@@ -271,7 +273,7 @@ namespace ReClassNET.DataExchange
 								node = new Hex8Node();
 							}
 
-							node.Comment = sn.Comment;
+							node.Comment = sn.Comment ?? string.Empty;
 
 							size -= node.MemorySize;
 
@@ -281,8 +283,8 @@ namespace ReClassNET.DataExchange
 					else
 					{
 						var node = Activator.CreateInstance(SchemaTypeToNodeTypeMap[sn.Type]) as BaseNode;
-						node.Name = sn.Name;
-						node.Comment = sn.Comment;
+						node.Name = sn.Name ?? string.Empty;
+						node.Comment = sn.Comment ?? string.Empty;
 
 						var referenceNode = node as BaseReferenceNode;
 						if (referenceNode != null)

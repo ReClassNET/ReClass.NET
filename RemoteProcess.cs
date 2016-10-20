@@ -288,6 +288,8 @@ namespace ReClassNET
 
 		public bool WriteRemoteMemory(IntPtr address, byte[] data)
 		{
+			Contract.Requires(data != null);
+
 			if (!IsValid)
 			{
 				return false;
@@ -377,13 +379,20 @@ namespace ReClassNET
 			);
 		}
 
-		public IntPtr ParseAddress(string addressStr)
+		public IntPtr ParseAddress(string addressFormula)
 		{
+			Contract.Requires(addressFormula != null);
+
 			var reader = new TokenReader();
-			var tokens = reader.Read(addressStr);
+			var tokens = reader.Read(addressFormula);
 
 			var astBuilder = new AstBuilder();
 			var operation = astBuilder.Build(tokens);
+
+			if (operation == null)
+			{
+				return IntPtr.Zero;
+			}
 
 			var interpreter = new Interpreter();
 			return interpreter.Execute(operation, this);

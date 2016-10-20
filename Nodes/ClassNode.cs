@@ -25,7 +25,7 @@ namespace ReClassNET.Nodes
 		public ClassNode(bool notifiy)
 		{
 #if WIN64
-			AddressStr = "0x140000000";
+			AddressFormula = "0x140000000";
 #else
 			AddressFormula = "0x400000";
 #endif
@@ -55,6 +55,8 @@ namespace ReClassNET.Nodes
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			AddSelection(view, 0, y, view.Font.Height);
 			x = AddOpenClose(view, x, y);
 
@@ -84,6 +86,8 @@ namespace ReClassNET.Nodes
 
 		public override void Update(HotSpot spot)
 		{
+			Contract.Requires(spot != null);
+
 			base.Update(spot);
 
 			if (spot.Id == 0)
@@ -131,6 +135,8 @@ namespace ReClassNET.Nodes
 
 		public override bool RemoveNode(BaseNode node)
 		{
+			Contract.Requires(node != null);
+
 			var removed = base.RemoveNode(node);
 			if (removed)
 			{

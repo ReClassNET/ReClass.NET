@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Nodes
 {
@@ -10,8 +11,11 @@ namespace ReClassNET.Nodes
 
 		public override int MemorySize => IntPtr.Size;
 
-		public override string GetToolTipText(HotSpot spot, Memory memory, Settings settings)
+		public override string GetToolTipText(HotSpot spot, Memory memory)
 		{
+			Contract.Requires(spot != null);
+			Contract.Requires(memory != null);
+
 			var ptr = memory.ReadObject<IntPtr>(Offset);
 
 			DisassembleRemoteCode(memory, ptr);
@@ -21,6 +25,10 @@ namespace ReClassNET.Nodes
 
 		public int Draw(ViewInfo view, int x, int y, string type, string name)
 		{
+			Contract.Requires(view != null);
+			Contract.Requires(type != null);
+			Contract.Requires(name != null);
+
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
@@ -63,6 +71,8 @@ namespace ReClassNET.Nodes
 
 		private void DisassembleRemoteCode(Memory memory, IntPtr address)
 		{
+			Contract.Requires(memory != null);
+
 			if (this.address != address)
 			{
 				assembledCode.Clear();

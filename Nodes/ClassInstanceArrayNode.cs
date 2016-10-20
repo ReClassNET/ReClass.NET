@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Nodes
+﻿using System.Diagnostics.Contracts;
+
+namespace ReClassNET.Nodes
 {
 	class ClassInstanceArrayNode : BaseArrayNode
 	{
@@ -12,11 +14,15 @@
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			return Draw(view, x, y, "Array", HotSpotType.ChangeSkipParent);
 		}
 
 		protected override int DrawChild(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			var v = view.Clone();
 			v.Address = view.Address.Add(Offset) + InnerNode.MemorySize * CurrentIndex;
 			v.Memory = view.Memory.Clone();

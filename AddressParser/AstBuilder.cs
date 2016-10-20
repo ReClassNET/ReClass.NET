@@ -81,7 +81,7 @@ namespace ReClassNET.AddressParser
 
 			VerifyResultStack();
 
-			return resultStack.First();
+			return resultStack.FirstOrDefault();
 		}
 
 		private void PopOperations(bool untillLeftBracket)
@@ -119,6 +119,8 @@ namespace ReClassNET.AddressParser
 
 		private Operation ConvertOperation(Token operationToken)
 		{
+			Contract.Requires(operationToken != null);
+
 			try
 			{
 				Operation argument1;

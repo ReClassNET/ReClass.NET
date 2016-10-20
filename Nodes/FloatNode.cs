@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Nodes
+﻿using System.Diagnostics.Contracts;
+
+namespace ReClassNET.Nodes
 {
 	class FloatNode : BaseNumericNode
 	{
@@ -6,11 +8,15 @@
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			return DrawNumeric(view, x, y, Icons.Float, "Float", view.Memory.ReadObject<float>(Offset).ToString("0.000"));
 		}
 
 		public override void Update(HotSpot spot)
 		{
+			Contract.Requires(spot != null);
+
 			base.Update(spot);
 
 			if (spot.Id == 0)

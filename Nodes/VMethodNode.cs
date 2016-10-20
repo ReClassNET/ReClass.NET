@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Nodes
 {
@@ -13,6 +14,8 @@ namespace ReClassNET.Nodes
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			return Draw(view, x, y, $"({Offset.ToInt32() / IntPtr.Size})", MethodName);
 		}
 	}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 
 namespace ReClassNET.Nodes
@@ -53,6 +54,8 @@ namespace ReClassNET.Nodes
 
 		public virtual void CopyFromNode(BaseNode node)
 		{
+			Contract.Requires(node != null);
+
 			Name = node.Name;
 			Comment = node.Comment;
 		}
@@ -64,14 +67,19 @@ namespace ReClassNET.Nodes
 
 		}
 
-		public virtual string GetToolTipText(HotSpot spot, Memory memory, Settings settings)
+		public virtual string GetToolTipText(HotSpot spot, Memory memory)
 		{
+			Contract.Requires(spot != null);
+			Contract.Requires(memory != null);
+
 			return null;
 		}
 
 		public abstract int Draw(ViewInfo view, int x, int y);
 		public virtual void Update(HotSpot spot)
 		{
+			Contract.Requires(spot != null);
+
 			if (spot.Id == HotSpot.NameId)
 			{
 				Name = spot.Text;
@@ -89,6 +97,9 @@ namespace ReClassNET.Nodes
 
 		protected void AddClickableArea(ViewInfo view, Rectangle spot, string text, int id, HotSpotType type)
 		{
+			Contract.Requires(view != null);
+			Contract.Requires(text != null);
+
 			if (spot.Top > view.ClientArea.Bottom || spot.Bottom < 0)
 			{
 				return;
@@ -109,27 +120,16 @@ namespace ReClassNET.Nodes
 
 		protected int AddText(ViewInfo view, int x, int y, Color color, int hitId, string text)
 		{
-			if (string.IsNullOrEmpty(text))
-			{
-				return x;
-			}
+			Contract.Requires(view != null);
+			Contract.Requires(text != null);
 
-			var width = text.Length * view.Font.Width;
+			var width = Math.Max(text.Length, hitId != HotSpot.NoneId ? 1 : 0) * view.Font.Width;
 
 			if (y >= -view.Font.Height && y + view.Font.Height <= view.ClientArea.Bottom + view.Font.Height)
 			{
 				if (hitId != HotSpot.NoneId)
 				{
-					var rect = new Rectangle(x, y, 0, view.Font.Height);
-					if (width >= view.Font.Width * 2)
-					{
-						rect.Width = width;
-					}
-					else
-					{
-						rect.Width = view.Font.Width * 2;
-					}
-
+					var rect = new Rectangle(x, y, width, view.Font.Height);
 					AddClickableArea(view, rect, text, hitId, HotSpotType.Edit);
 				}
 
@@ -144,6 +144,8 @@ namespace ReClassNET.Nodes
 
 		protected int AddAddressOffset(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			if (Program.Settings.ShowOffset)
 			{
 				x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, $"{Offset.ToInt32():X04}") + view.Font.Width;
@@ -163,6 +165,8 @@ namespace ReClassNET.Nodes
 
 		protected void AddSelection(ViewInfo view, int x, int y, int height)
 		{
+			Contract.Requires(view != null);
+
 			if (y > view.ClientArea.Bottom || y + height < 0)
 			{
 				return;
@@ -181,6 +185,9 @@ namespace ReClassNET.Nodes
 
 		protected int AddIcon(ViewInfo view, int x, int y, Image icon, int id, HotSpotType type)
 		{
+			Contract.Requires(view != null);
+			Contract.Requires(icon != null);
+
 			const int IconSize = 16;
 
 			if (y > view.ClientArea.Bottom || y + IconSize < 0)
@@ -200,6 +207,8 @@ namespace ReClassNET.Nodes
 
 		protected int AddOpenClose(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			if (y > view.ClientArea.Bottom || y + 16 < 0)
 			{
 				return x + 16;
@@ -210,6 +219,8 @@ namespace ReClassNET.Nodes
 
 		protected void AddDelete(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			if (y > view.ClientArea.Bottom || y + 16 < 0)
 			{
 				return;
@@ -223,6 +234,8 @@ namespace ReClassNET.Nodes
 
 		protected void AddTypeDrop(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			if (view.MultiSelected || (y > view.ClientArea.Bottom || y + 16 < 0))
 			{
 				return;
@@ -236,6 +249,8 @@ namespace ReClassNET.Nodes
 
 		protected virtual int AddComment(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			x = AddText(view, x, y, Program.Settings.CommentColor, HotSpot.NoneId, "//");
 			x = AddText(view, x, y, Program.Settings.CommentColor, HotSpot.CommentId, Comment + " ");
 
@@ -244,6 +259,8 @@ namespace ReClassNET.Nodes
 
 		protected int DrawHidden(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			view.Context.FillRectangle(new SolidBrush(IsSelected ? Program.Settings.SelectedColor : Program.Settings.HiddenColor), 0, y, view.ClientArea.Right, 1);
 
 			return y + 1;

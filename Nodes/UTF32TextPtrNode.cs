@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 
 namespace ReClassNET.Nodes
@@ -7,6 +8,8 @@ namespace ReClassNET.Nodes
 	{
 		public override int Draw(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			var ptr = view.Memory.ReadObject<IntPtr>(Offset);
 			var str = view.Memory.Process.ReadRemoteString(Encoding.UTF32, ptr, 256);
 

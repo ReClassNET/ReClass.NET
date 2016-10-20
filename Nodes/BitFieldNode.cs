@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 
 namespace ReClassNET.Nodes
@@ -43,11 +44,15 @@ namespace ReClassNET.Nodes
 
 		public override void CopyFromNode(BaseNode node)
 		{
+			Contract.Requires(node != null);
+
 			Bits = node.MemorySize * 8;
 		}
 
 		private string ConvertValueToBitString(Memory memory)
 		{
+			Contract.Requires(memory != null);
+
 			string str;
 			switch(bits)
 			{
@@ -69,6 +74,8 @@ namespace ReClassNET.Nodes
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);

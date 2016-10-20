@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Nodes
+﻿using System.Diagnostics.Contracts;
+
+namespace ReClassNET.Nodes
 {
 	abstract class BaseArrayNode : BaseReferenceNode
 	{
@@ -7,6 +9,9 @@
 
 		public int Draw(ViewInfo view, int x, int y, string type, HotSpotType exchange)
 		{
+			Contract.Requires(view != null);
+			Contract.Requires(type != null);
+
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
@@ -54,6 +59,8 @@
 
 		public override void Update(HotSpot spot)
 		{
+			Contract.Requires(spot != null);
+
 			base.Update(spot);
 
 			if (spot.Id == 0 || spot.Id == 1)

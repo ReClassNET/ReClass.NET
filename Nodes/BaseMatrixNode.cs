@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Nodes
+﻿using System.Diagnostics.Contracts;
+
+namespace ReClassNET.Nodes
 {
 	abstract class BaseMatrixNode : BaseNode
 	{
@@ -11,6 +13,10 @@
 
 		protected int DrawMatrixType(ViewInfo view, int x, int y, string type, DrawMatrixValues drawValues)
 		{
+			Contract.Requires(view != null);
+			Contract.Requires(type != null);
+			Contract.Requires(drawValues != null);
+
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
@@ -47,6 +53,10 @@
 		protected delegate void DrawVectorValues(ref int x, ref int y);
 		protected int DrawVectorType(ViewInfo view, int x, int y, string type, DrawVectorValues drawValues)
 		{
+			Contract.Requires(view != null);
+			Contract.Requires(type != null);
+			Contract.Requires(drawValues != null);
+
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
@@ -79,6 +89,8 @@
 
 		public void Update(HotSpot spot, int max)
 		{
+			Contract.Requires(spot != null);
+
 			base.Update(spot);
 
 			if (spot.Id >= 0 && spot.Id < max)

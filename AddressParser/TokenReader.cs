@@ -19,7 +19,7 @@ namespace ReClassNET.AddressParser
 		/// <returns>The list of tokens for the provided formula.</returns>
 		public List<Token> Read(string formula)
 		{
-			Contract.Requires(!string.IsNullOrEmpty(formula));
+			Contract.Requires(formula != null);
 
 			var tokens = new List<Token>();
 

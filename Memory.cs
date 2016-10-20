@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -34,6 +35,8 @@ namespace ReClassNET
 
 		public Memory(Memory other)
 		{
+			Contract.Requires(other != null);
+
 			data = other.data;
 		}
 
@@ -93,6 +96,8 @@ namespace ReClassNET
 
 		private string ReadString(Encoding encoding, int offset, int length)
 		{
+			Contract.Requires(encoding != null);
+
 			var sb = new StringBuilder(encoding.GetString(data, offset, length));
 			for (var i = 0; i < sb.Length; ++i)
 			{

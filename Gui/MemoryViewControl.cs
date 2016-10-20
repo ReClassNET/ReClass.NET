@@ -38,7 +38,8 @@ namespace ReClassNET
 			font = new FontEx
 			{
 				Font = new Font("Courier New", DpiUtil.ScaleIntX(13), GraphicsUnit.Pixel),
-				CharSize = new Size(DpiUtil.ScaleIntX(8), DpiUtil.ScaleIntY(16))
+				Width = DpiUtil.ScaleIntX(8),
+				Height = DpiUtil.ScaleIntY(16)
 			};
 
 			editBox.Font = font;
@@ -319,7 +320,7 @@ namespace ReClassNET
 				{
 					if (spot.Rect.Contains(toolTipPosition))
 					{
-						var text = spot.Node.GetToolTipText(spot, Memory, Settings);
+						var text = spot.Node.GetToolTipText(spot, Memory);
 						if (!string.IsNullOrEmpty(text))
 						{
 							toolTip.Show(text, this, toolTipPosition.OffsetEx(16, 16));

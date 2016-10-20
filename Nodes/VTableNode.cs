@@ -26,6 +26,8 @@ namespace ReClassNET.Nodes
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
@@ -82,6 +84,8 @@ namespace ReClassNET.Nodes
 
 		public override bool ReplaceChildNode(int index, BaseNode node)
 		{
+			Contract.Requires(node != null);
+
 			return false;
 		}
 
@@ -120,6 +124,8 @@ namespace ReClassNET.Nodes
 
 		public override bool RemoveNode(BaseNode node)
 		{
+			Contract.Requires(node != null);
+
 			var removed = base.RemoveNode(node);
 			if (removed)
 			{

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics.Contracts;
+using System.Drawing;
 
 namespace ReClassNET.Nodes
 {
@@ -6,6 +7,11 @@ namespace ReClassNET.Nodes
 	{
 		public int DrawNumeric(ViewInfo view, int x, int y, Image icon, string type, string value)
 		{
+			Contract.Requires(view != null);
+			Contract.Requires(icon != null);
+			Contract.Requires(type != null);
+			Contract.Requires(value != null);
+
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);

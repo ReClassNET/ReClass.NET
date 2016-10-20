@@ -10,13 +10,13 @@ namespace ReClassNET
 	{
 		private const int StdDpi = 96;
 
-		private static bool m_bInitialized = false;
+		private static bool initialized = false;
 
-		private static int m_nDpiX = StdDpi;
-		private static int m_nDpiY = StdDpi;
+		private static int dpiX = StdDpi;
+		private static int dpiY = StdDpi;
 
-		private static double m_dScaleX = 1.0;
-		private static double m_dScaleY = 1.0;
+		private static double scaleX = 1.0;
+		private static double scaleY = 1.0;
 
 		public static bool ScalingRequired
 		{
@@ -29,13 +29,13 @@ namespace ReClassNET
 
 				EnsureInitialized();
 
-				return m_nDpiX != StdDpi || m_nDpiY != StdDpi;
+				return dpiX != StdDpi || dpiY != StdDpi;
 			}
 		}
 
 		private static void EnsureInitialized()
 		{
-			if (m_bInitialized)
+			if (initialized)
 			{
 				return;
 			}
@@ -44,13 +44,13 @@ namespace ReClassNET
 			{
 				using (var g = Graphics.FromHwnd(IntPtr.Zero))
 				{
-					m_nDpiX = (int)g.DpiX;
-					m_nDpiY = (int)g.DpiY;
+					dpiX = (int)g.DpiX;
+					dpiY = (int)g.DpiY;
 
-					if (m_nDpiX <= 0 || m_nDpiY <= 0)
+					if (dpiX <= 0 || dpiY <= 0)
 					{
-						m_nDpiX = StdDpi;
-						m_nDpiY = StdDpi;
+						dpiX = StdDpi;
+						dpiY = StdDpi;
 					}
 				}
 			}
@@ -59,10 +59,10 @@ namespace ReClassNET
 
 			}
 
-			m_dScaleX = (double)m_nDpiX / (double)StdDpi;
-			m_dScaleY = (double)m_nDpiY / (double)StdDpi;
+			scaleX = (double)dpiX / (double)StdDpi;
+			scaleY = (double)dpiY / (double)StdDpi;
 
-			m_bInitialized = true;
+			initialized = true;
 		}
 
 		public static void ConfigureProcess()
@@ -88,14 +88,14 @@ namespace ReClassNET
 		{
 			EnsureInitialized();
 
-			return (int)Math.Round(i * m_dScaleX);
+			return (int)Math.Round(i * scaleX);
 		}
 
 		public static int ScaleIntY(int i)
 		{
 			EnsureInitialized();
 
-			return (int)Math.Round(i * m_dScaleY);
+			return (int)Math.Round(i * scaleY);
 		}
 
 		public static Image ScaleImage(Image img)

@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Diagnostics.Contracts;
+using System.Windows.Forms;
 using ReClassNET.Gui;
 
 namespace ReClassNET.Logger
@@ -26,6 +27,8 @@ namespace ReClassNET.Logger
 
 		private void OnNewLogEntry(LogLevel level, string message)
 		{
+			Contract.Requires(message != null);
+
 			if (level < Level)
 			{
 				return;

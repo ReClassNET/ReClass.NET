@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 
 namespace ReClassNET.Nodes
@@ -13,6 +14,9 @@ namespace ReClassNET.Nodes
 
 		public int Draw(ViewInfo view, int x, int y, string text, int length)
 		{
+			Contract.Requires(view != null);
+			Contract.Requires(text != null);
+
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
@@ -57,6 +61,8 @@ namespace ReClassNET.Nodes
 
 		public void Update(HotSpot spot, int length)
 		{
+			Contract.Requires(spot != null);
+
 			base.Update(spot);
 
 			if (spot.Id >= 0 && spot.Id < length)

@@ -57,7 +57,7 @@ namespace ReClassNET.SymbolReader
 
 		public static SymbolReader FromDatabase(string path)
 		{
-			Contract.Requires(!string.IsNullOrEmpty(path));
+			Contract.Requires(path != null);
 
 			var reader = new SymbolReader(null);
 			reader.diaSource.Interface.loadDataFromPdb(path);
@@ -75,6 +75,8 @@ namespace ReClassNET.SymbolReader
 
 		public string GetSymbolString(IntPtr address, RemoteProcess.Module module)
 		{
+			Contract.Requires(module != null);
+
 			var rva = address.Sub(module.Start);
 
 			IDiaSymbol diaSymbol;
@@ -93,6 +95,9 @@ namespace ReClassNET.SymbolReader
 
 		private void ReadSymbol(IDiaSymbol symbol, StringBuilder sb)
 		{
+			Contract.Requires(symbol != null);
+			Contract.Requires(sb != null);
+
 			/*switch ((SymTagEnum)symbol.symTag)
 			{
 				case SymTagEnum.SymTagData:
@@ -114,6 +119,9 @@ namespace ReClassNET.SymbolReader
 
 		private void ReadSymbolType(IDiaSymbol symbol, StringBuilder sb)
 		{
+			Contract.Requires(symbol != null);
+			Contract.Requires(sb != null);
+
 			if (symbol.type != null)
 			{
 				using (var type = new ComDisposableWrapper<IDiaSymbol>(symbol.type))
@@ -123,13 +131,19 @@ namespace ReClassNET.SymbolReader
 			}
 		}
 
-		private void ReadType(IDiaSymbol symbole, StringBuilder sb)
+		private void ReadType(IDiaSymbol symbol, StringBuilder sb)
 		{
+			Contract.Requires(symbol != null);
+			Contract.Requires(sb != null);
+
 			throw new NotImplementedException();
 		}
 
 		private void ReadName(IDiaSymbol symbol, StringBuilder sb)
 		{
+			Contract.Requires(symbol != null);
+			Contract.Requires(sb != null);
+
 			if (string.IsNullOrEmpty(symbol.name))
 			{
 				return;
@@ -163,6 +177,9 @@ namespace ReClassNET.SymbolReader
 
 		private void ReadData(IDiaSymbol symbol, StringBuilder sb)
 		{
+			Contract.Requires(symbol != null);
+			Contract.Requires(sb != null);
+
 			throw new NotImplementedException();
 		}
 	}

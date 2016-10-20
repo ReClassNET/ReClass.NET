@@ -192,6 +192,8 @@ namespace ReClassNET
 
 		public void RegisterProvidedNativeMethods(IntPtr module, string provider)
 		{
+			Contract.Requires(provider != null);
+
 			foreach (var method in new RequestFunction[]
 			{
 				RequestFunction.IsProcessValid,
@@ -319,6 +321,8 @@ namespace ReClassNET
 
 		public bool ReadRemoteMemory(IntPtr process, IntPtr address, byte[] buffer, uint size)
 		{
+			Contract.Requires(buffer != null);
+
 			GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 			var result = readRemoteMemoryDelegate(process, address, handle.AddrOfPinnedObject(), size);
 			handle.Free();
@@ -328,6 +332,8 @@ namespace ReClassNET
 
 		public bool WriteRemoteMemory(IntPtr process, IntPtr address, byte[] buffer, uint size)
 		{
+			Contract.Requires(buffer != null);
+
 			GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 			var result = writeRemoteMemoryDelegate(process, address, handle.AddrOfPinnedObject(), size);
 			handle.Free();

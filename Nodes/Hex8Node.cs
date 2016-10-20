@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics.Contracts;
+using System.Runtime.InteropServices;
 
 namespace ReClassNET.Nodes
 {
@@ -21,8 +22,11 @@ namespace ReClassNET.Nodes
 			buffer = new byte[1];
 		}
 
-		public override string GetToolTipText(HotSpot spot, Memory memory, Settings settings)
+		public override string GetToolTipText(HotSpot spot, Memory memory)
 		{
+			Contract.Requires(spot != null);
+			Contract.Requires(memory != null);
+
 			var b = memory.ReadByte(Offset);
 
 			return $"Int8: {(int)b}\nUInt8: 0x{b:X02}";
@@ -30,11 +34,15 @@ namespace ReClassNET.Nodes
 
 		public override int Draw(ViewInfo view, int x, int y)
 		{
+			Contract.Requires(view != null);
+
 			return Draw(view, x, y, Program.Settings.ShowText ? view.Memory.ReadPrintableASCIIString(Offset, 1) + "        " : null, 1);
 		}
 
 		public override void Update(HotSpot spot)
 		{
+			Contract.Requires(spot != null);
+
 			Update(spot, 1);
 		}
 	}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Xml.Linq;
 using ReClassNET.Logger;
@@ -15,6 +16,9 @@ namespace ReClassNET.DataExchange
 
 		public SchemaBuilder Load(string filePath, ILogger logger)
 		{
+			Contract.Requires(filePath != null);
+			Contract.Requires(logger != null);
+
 			try
 			{
 				var document = XDocument.Load(filePath);
