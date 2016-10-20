@@ -28,10 +28,21 @@ namespace ReClassNET.DataExchange
 					.SelectMany(ns => ns.Elements("Class"))
 					.ToDictionary(
 						cls => cls.Attribute("ClassId")?.Value,
-						cls => new SchemaClassNode
+						cls =>
 						{
-							AddressFormula = cls.Attribute("Address")?.Value ?? string.Empty,
-							Name = cls.Attribute("Name")?.Value ?? string.Empty
+							var c = new SchemaClassNode
+							{
+								AddressFormula = cls.Attribute("Address")?.Value ?? string.Empty,
+								Name = cls.Attribute("Name")?.Value ?? string.Empty
+							};
+							if (!string.IsNullOrEmpty(c.AddressFormula))
+							{
+								if (cls.Attribute("DerefTwice")?.Value == "1")
+								{
+									c.AddressFormula = $"[{c.AddressFormula}]";
+								}
+							}
+							return c;
 						}
 					);
 
