@@ -69,7 +69,7 @@ namespace ReClassNET.DataExchange
 									cls => cls.Attribute(XmlNameAttribute)?.Value,
 									cls => new SchemaClassNode
 									{
-										AddressString = cls.Attribute(XmlAddressAttribute)?.Value ?? string.Empty,
+										AddressFormula = cls.Attribute(XmlAddressAttribute)?.Value ?? string.Empty,
 										Name = cls.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
 										Comment = cls.Attribute(XmlCommentAttribute)?.Value ?? string.Empty
 									}
@@ -216,7 +216,7 @@ namespace ReClassNET.DataExchange
 					XmlClassElement,
 					new XAttribute(XmlNameAttribute, node.Name ?? string.Empty),
 					new XAttribute(XmlCommentAttribute, node.Comment ?? string.Empty),
-					new XAttribute(XmlAddressAttribute, classNode.AddressString ?? string.Empty),
+					new XAttribute(XmlAddressAttribute, classNode.AddressFormula ?? string.Empty),
 					classNode.Nodes.Select(n => WriteNode(n))
 				);
 			}

@@ -26,7 +26,7 @@ namespace ReClassNET.DataExchange
 						cls => cls.Attribute("ClassId")?.Value,
 						cls => new SchemaClassNode
 						{
-							AddressString = cls.Attribute("Address")?.Value ?? string.Empty,
+							AddressFormula = cls.Attribute("Address")?.Value ?? string.Empty,
 							Name = cls.Attribute("Name")?.Value ?? string.Empty
 						}
 					);

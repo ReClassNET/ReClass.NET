@@ -14,7 +14,7 @@ namespace ReClassNET.Nodes
 
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
 
-		public string AddressStr { get; set; }
+		public string AddressFormula { get; set; }
 
 		public ClassNode()
 			: this(true)
@@ -27,7 +27,7 @@ namespace ReClassNET.Nodes
 #if WIN64
 			AddressStr = "0x140000000";
 #else
-			AddressStr = "0x400000";
+			AddressFormula = "0x400000";
 #endif
 
 			Classes.Add(this);
@@ -61,7 +61,7 @@ namespace ReClassNET.Nodes
 			var tx = x;
 
 			x = AddIcon(view, x, y, Icons.Class, -1, HotSpotType.None);
-			x = AddText(view, x, y, Program.Settings.OffsetColor, 0, AddressStr) + view.Font.Width;
+			x = AddText(view, x, y, Program.Settings.OffsetColor, 0, AddressFormula) + view.Font.Width;
 
 			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, "Class") + view.Font.Width;
 			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
@@ -88,16 +88,9 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id == 0)
 			{
-				try
-				{
-					Offset = spot.Memory.Process.ParseAddress(spot.Text);
+				Offset = spot.Memory.Process.ParseAddress(spot.Text);
 
-					AddressStr = spot.Text;
-				}
-				catch (Exception ex)
-				{
-					ex.ShowDialog();
-				}
+				AddressFormula = spot.Text;
 			}
 		}
 
@@ -105,7 +98,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(memory != null);
 
-			Offset = memory.Process.ParseAddress(AddressStr);
+			Offset = memory.Process.ParseAddress(AddressFormula);
 		}
 
 		internal void NotifyMemorySizeChanged()

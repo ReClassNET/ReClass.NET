@@ -130,144 +130,151 @@ namespace ReClassNET
 			{
 				if (hotSpot.Rect.Contains(e.Location))
 				{
-					var hitObject = hotSpot.Node;
+					try
+					{
+						var hitObject = hotSpot.Node;
 
-					if (hotSpot.Type == HotSpotType.OpenClose)
-					{
-						hitObject.ToggleLevelOpen(hotSpot.Level);
-					}
-					else if (hotSpot.Type == HotSpotType.Click)
-					{
-						hitObject.Update(hotSpot);
-					}
-					else if (hotSpot.Type == HotSpotType.Select)
-					{
-						if (e.Button == MouseButtons.Left)
+						if (hotSpot.Type == HotSpotType.OpenClose)
 						{
-							if (ModifierKeys == Keys.None)
+							hitObject.ToggleLevelOpen(hotSpot.Level);
+						}
+						else if (hotSpot.Type == HotSpotType.Click)
+						{
+							hitObject.Update(hotSpot);
+						}
+						else if (hotSpot.Type == HotSpotType.Select)
+						{
+							if (e.Button == MouseButtons.Left)
 							{
-								ClearSelection();
+								if (ModifierKeys == Keys.None)
+								{
+									ClearSelection();
+
+									hitObject.IsSelected = true;
+
+									selected.Add(hotSpot);
+								}
+								else if (ModifierKeys == Keys.Control)
+								{
+									hitObject.IsSelected = !hitObject.IsSelected;
+
+									if (hitObject.IsSelected)
+									{
+										selected.Add(hotSpot);
+									}
+									else
+									{
+										selected.Remove(selected.Where(c => c.Node == hitObject).FirstOrDefault());
+									}
+								}
+								else if (ModifierKeys == Keys.Shift)
+								{
+									if (selected.Count > 0)
+									{
+										var selectedNode = selected[0].Node;
+										if (selectedNode.ParentNode != hitObject.ParentNode)
+										{
+											continue;
+										}
+
+										var containerNode = selectedNode.ParentNode as BaseContainerNode;
+										if (containerNode == null)
+										{
+											continue;
+										}
+
+										var idx1 = FindNodeIndex(selectedNode);
+										if (idx1 == -1)
+										{
+											continue;
+										}
+										var idx2 = FindNodeIndex(hitObject);
+										if (idx2 == -1)
+										{
+											continue;
+										}
+										if (idx2 < idx1)
+										{
+											var temp = idx1;
+											idx1 = idx2;
+											idx2 = temp;
+										}
+
+										ClearSelection();
+
+										foreach (var spot in containerNode.Nodes.Skip(idx1).Take(idx2 - idx1 + 1)
+											.Select(n => new HotSpot { Address = containerNode.Offset.Add(n.Offset), Node = n }))
+										{
+											spot.Node.IsSelected = true;
+											selected.Add(spot);
+										}
+									}
+								}
+							}
+							else if (e.Button == MouseButtons.Right)
+							{
+								/*ClearSelection();
 
 								hitObject.IsSelected = true;
 
-								selected.Add(hotSpot);
-							}
-							else if (ModifierKeys == Keys.Control)
-							{
-								hitObject.IsSelected = !hitObject.IsSelected;
+								selected.Add(hotSpot);*/
 
-								if (hitObject.IsSelected)
-								{
-									selected.Add(hotSpot);
-								}
-								else
-								{
-									selected.Remove(selected.Where(c => c.Node == hitObject).FirstOrDefault());
-								}
-							}
-							else if (ModifierKeys == Keys.Shift)
-							{
-								if (selected.Count > 0)
-								{
-									var selectedNode = selected[0].Node;
-									if (selectedNode.ParentNode != hitObject.ParentNode)
-									{
-										continue;
-									}
-
-									var containerNode = selectedNode.ParentNode as BaseContainerNode;
-									if (containerNode == null)
-									{
-										continue;
-									}
-
-									var idx1 = FindNodeIndex(selectedNode);
-									if (idx1 == -1)
-									{
-										continue;
-									}
-									var idx2 = FindNodeIndex(hitObject);
-									if (idx2 == -1)
-									{
-										continue;
-									}
-									if (idx2 < idx1)
-									{
-										var temp = idx1;
-										idx1 = idx2;
-										idx2 = temp;
-									}
-
-									ClearSelection();
-
-									foreach (var spot in containerNode.Nodes.Skip(idx1).Take(idx2 - idx1 + 1)
-										.Select(n => new HotSpot { Address = containerNode.Offset.Add(n.Offset), Node = n }))
-									{
-										spot.Node.IsSelected = true;
-										selected.Add(spot);
-									}
-								}
+								selectedNodeContextMenuStrip.Show(this, e.Location);
 							}
 						}
-						else if (e.Button == MouseButtons.Right)
+						else if (hotSpot.Type == HotSpotType.Drop)
 						{
-							/*ClearSelection();
-
-							hitObject.IsSelected = true;
-
-							selected.Add(hotSpot);*/
-
 							selectedNodeContextMenuStrip.Show(this, e.Location);
 						}
-					}
-					else if (hotSpot.Type == HotSpotType.Drop)
-					{
-						selectedNodeContextMenuStrip.Show(this, e.Location);
-					}
-					else if (hotSpot.Type == HotSpotType.Delete)
-					{
-						RemoveSelectedNodes();
-					}
-					else if (hotSpot.Type == HotSpotType.ChangeAll || hotSpot.Type == HotSpotType.ChangeSkipParent)
-					{
-						var refNode = hitObject as BaseReferenceNode;
-						if (refNode != null)
+						else if (hotSpot.Type == HotSpotType.Delete)
 						{
-							EventHandler changeInnerType = (sender2, e2) =>
-							{
-								var item = sender2 as TypeToolStripMenuItem;
-								if (item == null)
-								{
-									return;
-								}
-								var classNode = item.Tag as ClassNode;
-								if (classNode == null)
-								{
-									return;
-								}
-
-								refNode.InnerNode = classNode;
-							};
-
-							var menu = new ContextMenuStrip();
-							menu.Items.AddRange(
-								ClassNode.Classes
-								.Where(c => hotSpot.Type == HotSpotType.ChangeSkipParent ? hitObject.ParentNode != c : true)
-								.OrderBy(c => c.Name)
-								.Select(c =>
-								{
-									var b = new TypeToolStripMenuItem
-									{
-										Text = c.Name,
-										Tag = c
-									};
-									b.Click += changeInnerType;
-									return b;
-								})
-								.ToArray()
-							);
-							menu.Show(this, e.Location);
+							RemoveSelectedNodes();
 						}
+						else if (hotSpot.Type == HotSpotType.ChangeAll || hotSpot.Type == HotSpotType.ChangeSkipParent)
+						{
+							var refNode = hitObject as BaseReferenceNode;
+							if (refNode != null)
+							{
+								EventHandler changeInnerType = (sender2, e2) =>
+								{
+									var item = sender2 as TypeToolStripMenuItem;
+									if (item == null)
+									{
+										return;
+									}
+									var classNode = item.Tag as ClassNode;
+									if (classNode == null)
+									{
+										return;
+									}
+
+									refNode.InnerNode = classNode;
+								};
+
+								var menu = new ContextMenuStrip();
+								menu.Items.AddRange(
+									ClassNode.Classes
+									.Where(c => hotSpot.Type == HotSpotType.ChangeSkipParent ? hitObject.ParentNode != c : true)
+									.OrderBy(c => c.Name)
+									.Select(c =>
+									{
+										var b = new TypeToolStripMenuItem
+										{
+											Text = c.Name,
+											Tag = c
+										};
+										b.Click += changeInnerType;
+										return b;
+									})
+									.ToArray()
+								);
+								menu.Show(this, e.Location);
+							}
+						}
+					}
+					catch (Exception ex)
+					{
+						ex.ShowDialog();
 					}
 
 					Invalidate();

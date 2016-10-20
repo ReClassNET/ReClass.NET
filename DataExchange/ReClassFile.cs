@@ -42,7 +42,7 @@ namespace ReClassNET.DataExchange
 						cls => cls.Attribute("Name")?.Value,
 						cls => new SchemaClassNode
 						{
-							AddressString = cls.Attribute("strOffset")?.Value ?? string.Empty,
+							AddressFormula = cls.Attribute("strOffset")?.Value ?? string.Empty,
 							Name = cls.Attribute("Name")?.Value ?? string.Empty
 						}
 					);

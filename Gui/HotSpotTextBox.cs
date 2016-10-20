@@ -69,7 +69,14 @@ namespace ReClassNET
 			{
 				hotSpot.Text = Text.Trim();
 
-				hotSpot.Node.Update(hotSpot);
+				try
+				{
+					hotSpot.Node.Update(hotSpot);
+				}
+				catch (Exception ex)
+				{
+					ex.ShowDialog();
+				}
 
 				Parent.Invalidate();
 

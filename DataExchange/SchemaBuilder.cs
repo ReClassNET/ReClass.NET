@@ -84,7 +84,7 @@ namespace ReClassNET.DataExchange
 
 	class SchemaClassNode : SchemaNode
 	{
-		public string AddressString { get; set; }
+		public string AddressFormula { get; set; }
 		public List<SchemaNode> Nodes { get; } = new List<SchemaNode>();
 
 		public SchemaClassNode()
@@ -160,7 +160,7 @@ namespace ReClassNET.DataExchange
 				c => new SchemaClassNode
 				{
 					Name = c.Name,
-					Offset = c.Offset,
+					AddressFormula = c.AddressFormula,
 					Comment = c.Comment
 				}
 			);
@@ -234,7 +234,7 @@ namespace ReClassNET.DataExchange
 				sc => new ClassNode(false)
 				{
 					Name = sc.Name,
-					AddressStr = sc.AddressString,
+					AddressFormula = sc.AddressFormula,
 					Comment = sc.Comment
 				}
 			);
