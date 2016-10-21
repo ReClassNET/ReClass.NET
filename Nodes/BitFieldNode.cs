@@ -66,23 +66,10 @@ namespace ReClassNET.Nodes
 					str = Convert.ToString(memory.ReadObject<short>(Offset), 2);
 					break;
 				default:
-					str = Convert.ToString(memory.ReadObject<sbyte>(Offset), 2);
+					str = Convert.ToString(memory.ReadObject<byte>(Offset), 2);
 					break;
 			}
 			return str.PadLeft(bits, '0');
-		}
-
-		private void ToggleBit(Memory memory, IntPtr address, int bit)
-		{
-			Contract.Requires(memory != null);
-			Contract.Requires(bit >= 0);
-
-			var add = bits / bit;
-			bit = bits % bit;
-
-			var val = memory.ReadObject<sbyte>(Offset + add);
-			val ^= (sbyte)(1 << bit);
-			memory.Process.WriteRemoteMemory<sbyte>(address + add, val);
 		}
 
 		public override int Draw(ViewInfo view, int x, int y)
