@@ -160,7 +160,7 @@ namespace ReClassNET.SymbolReader
 						if (start != -1)
 						{
 							var name = symbol.name.Substring(start + 1, symbol.name.Length - 1 - start - 1);
-							sb.Append(Natives.UnDecorateSymbolName(name));
+							sb.Append(NativeMethods.UnDecorateSymbolName(name));
 						}
 					}
 				}

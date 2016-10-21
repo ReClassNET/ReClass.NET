@@ -59,7 +59,7 @@ namespace ReClassNET
 		public delegate void EnumerateProcessCallback(uint pid, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
 		private delegate void EnumerateProcessesDelegate(EnumerateProcessCallback callbackProcess);
 
-		public delegate void EnumerateRemoteSectionCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPStr)]string name, Natives.StateEnum state, Natives.AllocationProtectEnum protection, Natives.TypeEnum type, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
+		public delegate void EnumerateRemoteSectionCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPStr)]string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
 		public delegate void EnumerateRemoteModuleCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
 		private delegate void EnumerateRemoteSectionsAndModulesDelegate(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule);
 
@@ -117,7 +117,7 @@ namespace ReClassNET
 #endif
 #endif
 
-			nativeHelperHandle = Natives.LoadLibrary(NativeHelperDll);
+			nativeHelperHandle = NativeMethods.LoadLibrary(NativeHelperDll);
 			if (nativeHelperHandle.IsNull())
 			{
 				throw new Exception();
@@ -156,7 +156,7 @@ namespace ReClassNET
 
 				if (!nativeHelperHandle.IsNull())
 				{
-					Natives.FreeLibrary(nativeHelperHandle);
+					NativeMethods.FreeLibrary(nativeHelperHandle);
 
 					nativeHelperHandle = IntPtr.Zero;
 				}
@@ -178,7 +178,7 @@ namespace ReClassNET
 		{
 			Contract.Requires(!module.IsNull());
 
-			var fnInitialize = Natives.GetProcAddress(module, "Initialize");
+			var fnInitialize = NativeMethods.GetProcAddress(module, "Initialize");
 			if (fnInitialize.IsNull())
 			{
 				throw new Exception();
@@ -207,7 +207,7 @@ namespace ReClassNET
 				RequestFunction.ControlRemoteProcess
 			})
 			{
-				var functionPtr = Natives.GetProcAddress(module, method.ToString());
+				var functionPtr = NativeMethods.GetProcAddress(module, method.ToString());
 				if (!functionPtr.IsNull())
 				{
 					RegisterMethod(method, new MethodInfo { Method = method, Provider = provider, FunctionPtr = functionPtr });

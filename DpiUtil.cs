@@ -71,11 +71,11 @@ namespace ReClassNET
 			{
 				if (WinUtil.IsAtLeastWindows10)
 				{
-					Natives.SetProcessDpiAwareness(Natives.ProcessDpiAwareness.SystemAware);
+					NativeMethods.SetProcessDpiAwareness(NativeMethods.ProcessDpiAwareness.SystemAware);
 				}
 				else if (WinUtil.IsAtLeastWindowsVista)
 				{
-					Natives.SetProcessDPIAware();
+					NativeMethods.SetProcessDPIAware();
 				}
 			}
 			catch

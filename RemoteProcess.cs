@@ -41,9 +41,9 @@ namespace ReClassNET
 			public IntPtr End;
 			public string Name;
 			public string Category;
-			public Natives.StateEnum State;
-			public Natives.AllocationProtectEnum Protection;
-			public Natives.TypeEnum Type;
+			public NativeMethods.StateEnum State;
+			public NativeMethods.AllocationProtectEnum Protection;
+			public NativeMethods.TypeEnum Type;
 			public string ModuleName;
 			public string ModulePath;
 		}
@@ -193,7 +193,7 @@ namespace ReClassNET
 									var name = ReadRemoteRawUTF8String(typeDescriptorPtr + 9, 60);
 									if (name.EndsWith("@@"))
 									{
-										name = Natives.UnDecorateSymbolName(name);
+										name = NativeMethods.UnDecorateSymbolName(name);
 									}
 
 									sb.Append(name);
@@ -255,7 +255,7 @@ namespace ReClassNET
 										var name = ReadRemoteRawUTF8String(typeDescriptorPtr + 11, 60);
 										if (name.EndsWith("@@"))
 										{
-											name = Natives.UnDecorateSymbolName(name);
+											name = NativeMethods.UnDecorateSymbolName(name);
 										}
 
 										sb.Append(name);
@@ -338,7 +338,7 @@ namespace ReClassNET
 
 			nativeHelper.EnumerateRemoteSectionsAndModules(
 				process.Handle,
-				delegate (IntPtr baseAddress, IntPtr regionSize, string name, Natives.StateEnum state, Natives.AllocationProtectEnum protection, Natives.TypeEnum type, string modulePath)
+				delegate (IntPtr baseAddress, IntPtr regionSize, string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, string modulePath)
 				{
 					var section = new Section
 					{

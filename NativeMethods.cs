@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ReClassNET
 {
-	public static class Natives
+	public static class NativeMethods
 	{
 		#region Constants
 
@@ -109,6 +109,9 @@ namespace ReClassNET
 
 		[DllImport("ShCore.dll")]
 		internal static extern int SetProcessDpiAwareness([MarshalAs(UnmanagedType.U4)] ProcessDpiAwareness a);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern bool GetProcessTimes(IntPtr handle, out long creation, out long exit, out long kernel, out long user);
 
 		#endregion
 

@@ -134,7 +134,7 @@ namespace ReClassNET.Plugins
 				}
 				else if (!plugin.NativeHandle.IsNull())
 				{
-					Natives.FreeLibrary(plugin.NativeHandle);
+					NativeMethods.FreeLibrary(plugin.NativeHandle);
 				}
 			}
 
@@ -162,7 +162,7 @@ namespace ReClassNET.Plugins
 		{
 			Contract.Requires(filePath != null);
 
-			var handle = Natives.LoadLibrary(filePath);
+			var handle = NativeMethods.LoadLibrary(filePath);
 			if (handle.IsNull())
 			{
 				throw new FileLoadException();
