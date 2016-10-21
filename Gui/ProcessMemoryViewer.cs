@@ -35,7 +35,7 @@ namespace ReClassNET
 				dt.Columns.Add("type", typeof(string));
 				dt.Columns.Add("module", typeof(string));
 
-				process.NativeHelper.EnumerateRemoteSectionsAndModules(process.Process.Handle, delegate (IntPtr baseAddress, IntPtr regionSize, string name, Natives.StateEnum state, Natives.AllocationProtectEnum protection, Natives.TypeEnum type, string modulePath)
+				process.NativeHelper.EnumerateRemoteSectionsAndModules(process.Process.Handle, delegate (IntPtr baseAddress, IntPtr regionSize, string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, string modulePath)
 				{
 					var row = dt.NewRow();
 					row["address"] = baseAddress.ToInt64();

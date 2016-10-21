@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -13,32 +14,41 @@ namespace ReClassNET
 	{
 		private const string NoPreviousProcess = "No previous process";
 
-		private readonly NativeHelper nativeHelper;
-
-		private static string[] CommonProcesses = new string[]
+		private static readonly string[] CommonProcesses = new string[]
 		{
 			"[system process]", "system", "svchost.exe", "services.exe", "wininit.exe",
 			"smss.exe", "csrss.exe", "lsass.exe", "winlogon.exe", "wininit.exe", "dwm.exe"
 		};
 
-		public ProcessInfo SelectedProcess
+		private readonly NativeHelper nativeHelper;
+
+		private class ProcessDisplayInfo
 		{
-			get
+			public ProcessInfo Process { get; }
+
+			public int Id => Process.Id;
+			public string Name => Process.Name;
+			public string Path => Process.Path;
+
+			public Icon Icon { get; set; }
+			public DateTime CreateTime { get; set; }
+
+			public ProcessDisplayInfo(ProcessInfo process)
 			{
-				var row = (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)?.Row;
-				if (row != null)
-				{
-					return new ProcessInfo
-					{
-						Id = row.Field<int>("pid"),
-						Handle = nativeHelper.OpenRemoteProcess(row.Field<int>("pid"), Natives.PROCESS_ALL_ACCESS),
-						Name = row.Field<string>("name"),
-						Path = row.Field<string>("path")
-					};
-				}
-				return null;
+				Contract.Requires(process != null);
+
+				Process = process;
 			}
 		}
+
+		/// <summary>Gets the selected process.</summary>
+		public ProcessInfo SelectedProcess => 
+			(processDataGridView.SelectedRows.Cast<DataGridViewRow>()
+			.FirstOrDefault()
+			?.DataBoundItem as ProcessDisplayInfo)
+			?.Process;
+
+		/// <summary>Gets if symbols should get loaded.</summary>
 		public bool LoadSymbols => loadSymbolsCheckBox.Checked;
 
 		public ProcessBrowser(NativeHelper nativeHelper, string previousProcess)
@@ -71,29 +81,65 @@ namespace ReClassNET
 			DialogResult = DialogResult.OK;
 		}
 
+		/// <summary>Queries all processes and displays them.</summary>
 		private void RefreshProcessList()
 		{
-			var dt = new DataTable();
-			dt.Columns.Add("icon", typeof(Icon));
-			dt.Columns.Add("name", typeof(string));
-			dt.Columns.Add("pid", typeof(int));
-			dt.Columns.Add("path", typeof(string));
-
+			var processes = new List<ProcessDisplayInfo>();
 			nativeHelper.EnumerateProcesses((pid, path) =>
 			{
 				var moduleName = Path.GetFileName(path);
 				if (!filterCheckBox.Checked || !CommonProcesses.Contains(moduleName.ToLower()))
 				{
-					var row = dt.NewRow();
-					row["icon"] = ShellIcon.GetSmallIcon(path);
-					row["name"] = moduleName;
-					row["pid"] = pid;
-					row["path"] = path;
-					dt.Rows.Add(row);
+					processes.Add(new ProcessDisplayInfo(new ProcessInfo(nativeHelper, (int)pid, moduleName, path))
+					{
+						Icon = ShellIcon.GetSmallIcon(path),
+						CreateTime = GetProcessCreateTime((int)pid)
+					});
 				}
 			});
 
-			processDataGridView.DataSource = dt;
+			// Sorting doesn't work with the list as BindingSource, so we do it manually.
+			var source = new BindingSource();
+			foreach (var process in processes.OrderByDescending(p => p.CreateTime))
+			{
+				source.Add(process);
+			}
+
+			processDataGridView.DataSource = source;
+		}
+
+		/// <summary>Query the time the process was created.</summary>
+		/// <param name="pid">The process id.</param>
+		/// <returns>The time the process was created or <see cref="DateTime.MinValue"/> if an error occurs.</returns>
+		private DateTime GetProcessCreateTime(int pid)
+		{
+			IntPtr handle = IntPtr.Zero;
+			try
+			{
+				handle = nativeHelper.OpenRemoteProcess((int)pid, NativeMethods.PROCESS_QUERY_LIMITED_INFORMATION);
+				if (!handle.IsNull())
+				{
+					long dummy;
+					long create;
+					if (NativeMethods.GetProcessTimes(handle, out create, out dummy, out dummy, out dummy))
+					{
+						return DateTime.FromFileTime(create);
+					}
+				}
+			}
+			catch
+			{
+
+			}
+			finally
+			{
+				if (!handle.IsNull())
+				{
+					nativeHelper.CloseRemoteProcess(handle);
+				}
+			}
+
+			return DateTime.MinValue;
 		}
 
 		private void filterTextBox_TextChanged(object sender, EventArgs e)
@@ -115,13 +161,5 @@ namespace ReClassNET
 		{
 			openProcessButton_Click(sender, e);
 		}
-	}
-
-	public class ProcessInfo
-	{
-		public int Id;
-		public IntPtr Handle;
-		public string Name;
-		public string Path;
 	}
 }

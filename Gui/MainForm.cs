@@ -93,7 +93,7 @@ namespace ReClassNET.Gui
 				{
 					if (remoteProcess.Process != null)
 					{
-						nativeHelper.CloseRemoteProcess(remoteProcess.Process.Handle);
+						remoteProcess.Process.Close();
 					}
 
 					remoteProcess.Process = pb.SelectedProcess;
