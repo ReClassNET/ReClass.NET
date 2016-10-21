@@ -36,13 +36,13 @@ namespace ReClassNET.Nodes
 			public double DoubleValue;
 		}
 
+		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 8;
 
-		public Hex64Node()
-		{
-			buffer = new byte[8];
-		}
-
+		/// <summary>Gets informations about this node to show in a tool tip.</summary>
+		/// <param name="spot">The spot.</param>
+		/// <param name="memory">The process memory.</param>
+		/// <returns>The information to show in a tool tip.</returns>
 		public override string GetToolTipText(HotSpot spot, Memory memory)
 		{
 			Contract.Requires(spot != null);
@@ -53,6 +53,11 @@ namespace ReClassNET.Nodes
 			return $"Int64: {value.LongValue}\nUInt64: 0x{value.ULongValue:X016}\nFloat: {value.FloatValue:0.000}\nDouble: {value.DoubleValue:0.000}";
 		}
 
+		/// <summary>Draws this node.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);

@@ -6,6 +6,7 @@ namespace ReClassNET.Nodes
 	{
 		public int CharacterCount { get; set; }
 
+		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => CharacterCount * CharacterSize;
 
 		public abstract int CharacterSize { get; }

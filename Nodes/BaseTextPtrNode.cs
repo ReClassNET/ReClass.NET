@@ -5,8 +5,14 @@ namespace ReClassNET.Nodes
 {
 	abstract class BaseTextPtrNode : BaseNode
 	{
+		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
 
+		/// <summary>Draws this node.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <returns>The height the node occupies.</returns>
 		public int DrawText(ViewInfo view, int x, int y, string type, int length, string text)
 		{
 			Contract.Requires(view != null);

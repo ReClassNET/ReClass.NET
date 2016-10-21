@@ -14,8 +14,14 @@ namespace ReClassNET.Nodes
 			public float Y;
 		}
 
+		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 2 * 4;
 
+		/// <summary>Draws this node.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x2, int y2)
 		{
 			Contract.Requires(view != null);

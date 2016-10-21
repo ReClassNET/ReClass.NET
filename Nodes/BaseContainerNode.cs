@@ -7,8 +7,11 @@ namespace ReClassNET.Nodes
 	public abstract class BaseContainerNode : BaseNode
 	{
 		protected readonly List<BaseNode> nodes = new List<BaseNode>();
+
+		/// <summary>The child nodes of the node.</summary>
 		public IEnumerable<BaseNode> Nodes => nodes;
 
+		/// <summary>Calculates the offset of every child node.</summary>
 		public void UpdateOffsets()
 		{
 			var offset = IntPtr.Zero;
@@ -19,6 +22,10 @@ namespace ReClassNET.Nodes
 			}
 		}
 
+		/// <summary>Replaces the child at the specific position with the provided node.</summary>
+		/// <param name="index">Zero-based position.</param>
+		/// <param name="node">The node to add.</param>
+		/// <returns>True if it succeeds, false if it fails.</returns>
 		public virtual bool ReplaceChildNode(int index, BaseNode node)
 		{
 			if (node == null)
@@ -56,11 +63,16 @@ namespace ReClassNET.Nodes
 			return true;
 		}
 
+		/// <summary>Adds the specific amount of bytes at the end of the node.</summary>
+		/// <param name="size">The number of bytes to insert.</param>
 		public void AddBytes(int size)
 		{
 			InsertBytes(nodes.Count, size);
 		}
 
+		/// <summary>Inserts <paramref name="size"/> bytes at the specified position.</summary>
+		/// <param name="index">Zero-based position.</param>
+		/// <param name="size">The number of bytes to insert.</param>
 		public virtual void InsertBytes(int index, int size)
 		{
 			if (index < 0 || index > nodes.Count || size == 0)
@@ -110,6 +122,9 @@ namespace ReClassNET.Nodes
 			}
 		}
 
+		/// <summary>Removes the specified node.</summary>
+		/// <param name="node">The node to remove.</param>
+		/// <returns>True if it succeeds, false if it fails.</returns>
 		public virtual bool RemoveNode(BaseNode node)
 		{
 			Contract.Requires(node != null);

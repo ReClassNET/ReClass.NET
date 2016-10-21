@@ -5,8 +5,9 @@ namespace ReClassNET.Nodes
 {
 	class VTableNode : BaseContainerNode
 	{
-		private Memory memory = new Memory();
+		private readonly Memory memory = new Memory();
 
+		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
 
 		public override void Intialize()
@@ -24,6 +25,11 @@ namespace ReClassNET.Nodes
 			}
 		}
 
+		/// <summary>Draws this node.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);

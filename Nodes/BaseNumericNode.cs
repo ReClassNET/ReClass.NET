@@ -5,6 +5,14 @@ namespace ReClassNET.Nodes
 {
 	abstract class BaseNumericNode : BaseNode
 	{
+		/// <summary>Draws the node.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <param name="icon">The icon of the node.</param>
+		/// <param name="type">The type of the node.</param>
+		/// <param name="value">The value of the node.</param>
+		/// <returns>The height the node occupies.</returns>
 		public int DrawNumeric(ViewInfo view, int x, int y, Image icon, string type, string value)
 		{
 			Contract.Requires(view != null);

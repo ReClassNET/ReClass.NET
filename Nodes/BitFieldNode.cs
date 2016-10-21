@@ -9,6 +9,8 @@ namespace ReClassNET.Nodes
 		private int size;
 		private int bits;
 
+		/// <summary>Gets or sets the bit count.</summary>
+		/// <value>Possible values: 64, 32, 16, 8</value>
 		public int Bits
 		{
 			get { return bits; }
@@ -35,13 +37,17 @@ namespace ReClassNET.Nodes
 			}
 		}
 
+		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => size;
 
+		/// <summary>Default constructor.</summary>
 		public BitFieldNode()
 		{
 			Bits = IntPtr.Size * 8;
 		}
 
+		/// <summary>Initializes this object with a bit count which equals the other nodes memory size.</summary>
+		/// <param name="node">The node to copy from.</param>
 		public override void CopyFromNode(BaseNode node)
 		{
 			Contract.Requires(node != null);
@@ -49,6 +55,9 @@ namespace ReClassNET.Nodes
 			Bits = node.MemorySize * 8;
 		}
 
+		/// <summary>Converts the memory value to a bit string.</summary>
+		/// <param name="memory">The process memory.</param>
+		/// <returns>The value converted to a bit string.</returns>
 		private string ConvertValueToBitString(Memory memory)
 		{
 			Contract.Requires(memory != null);
@@ -72,6 +81,11 @@ namespace ReClassNET.Nodes
 			return str.PadLeft(bits, '0');
 		}
 
+		/// <summary>Draws this node.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
@@ -99,7 +113,7 @@ namespace ReClassNET.Nodes
 			for (var i = 0; i < bits; ++i)
 			{
 				var rect = new Rectangle(x + i * view.Font.Width, y, view.Font.Width, view.Font.Height);
-				AddClickableArea(view, rect, string.Empty, i, HotSpotType.Edit);
+				AddHotSpot(view, rect, string.Empty, i, HotSpotType.Edit);
 			}
 			x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, ConvertValueToBitString(view.Memory)) + view.Font.Width;
 
@@ -129,6 +143,8 @@ namespace ReClassNET.Nodes
 			return y + view.Font.Height;
 		}
 
+		/// <summary>Updates the node from the given spot. Sets the value of the selected bit.</summary>
+		/// <param name="spot">The spot.</param>
 		public override void Update(HotSpot spot)
 		{
 			Contract.Requires(spot != null);

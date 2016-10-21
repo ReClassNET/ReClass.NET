@@ -7,8 +7,9 @@ namespace ReClassNET.Nodes
 	abstract class BaseFunctionPtrNode : BaseNode
 	{
 		private IntPtr address = IntPtr.Zero;
-		private List<string> assembledCode = new List<string>();
+		private readonly List<string> assembledCode = new List<string>();
 
+		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
 
 		public override string GetToolTipText(HotSpot spot, Memory memory)

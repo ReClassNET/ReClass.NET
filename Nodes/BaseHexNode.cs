@@ -6,11 +6,16 @@ namespace ReClassNET.Nodes
 {
 	abstract class BaseHexNode : BaseNode
 	{
-		protected byte[] buffer;
+		private byte[] buffer;
 		private DateTime highlightUntil;
 
 		public static DateTime CurrentHighlightTime;
 		public static TimeSpan HightlightDuration = TimeSpan.FromSeconds(1);
+
+		public BaseHexNode()
+		{
+			buffer = new byte[MemorySize];
+		}
 
 		public int Draw(ViewInfo view, int x, int y, string text, int length)
 		{
@@ -59,6 +64,8 @@ namespace ReClassNET.Nodes
 			return y + view.Font.Height;
 		}
 
+		/// <summary>Updates the node from the given spot. Sets the value of the selected byte.</summary>
+		/// <param name="spot">The spot.</param>
 		public void Update(HotSpot spot, int length)
 		{
 			Contract.Requires(spot != null);

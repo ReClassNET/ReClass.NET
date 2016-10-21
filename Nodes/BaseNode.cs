@@ -16,13 +16,23 @@ namespace ReClassNET.Nodes
 		private static int NodeIndex = 0;
 
 		private string name;
+
+		/// <summary>Gets or sets the name of the node. If a new name was set the property changed event gets fired.</summary>
 		public string Name { get { return name; } set { if (value != null && name != value) { name = value; OnPropertyChanged(nameof(Name)); } } }
+
+		/// <summary>Gets or sets the offset of the node.</summary>
 		public IntPtr Offset { get; set; }
+
+		/// <summary>Gets or sets the comment of the node.</summary>
 		public string Comment { get; set; }
 
+		/// <summary>Gets or sets the parent node.</summary>
 		public BaseContainerNode ParentNode { get; set; }
 
+		/// <summary>Gets or sets a value indicating whether this object is hidden.</summary>
 		public bool IsHidden { get; protected set; }
+
+		/// <summary>Gets or sets a value indicating whether this object is selected.</summary>
 		public bool IsSelected { get; set; }
 
 		protected GrowingList<bool> levelsOpen = new GrowingList<bool>(false);
@@ -43,8 +53,11 @@ namespace ReClassNET.Nodes
 
 		#endregion
 
+		/// <summary>Size of the node in bytes.</summary>
 		public abstract int MemorySize { get; }
 
+
+		/// <summary>Constructor which sets a unique <see cref="Name"/>.</summary>
 		public BaseNode()
 		{
 			Name = $"N{NodeIndex++:X08}";
@@ -52,11 +65,15 @@ namespace ReClassNET.Nodes
 			levelsOpen[0] = true;
 		}
 
+
+		/// <summary>Clears the selection of the node.</summary>
 		public virtual void ClearSelection()
 		{
 			IsSelected = false;
 		}
 
+		/// <summary>Initializes this object from the given node. It copies the name and the comment.</summary>
+		/// <param name="node">The node to copy from.</param>
 		public virtual void CopyFromNode(BaseNode node)
 		{
 			Contract.Requires(node != null);
@@ -72,6 +89,10 @@ namespace ReClassNET.Nodes
 
 		}
 
+		/// <summary>Gets informations about this node to show in a tool tip.</summary>
+		/// <param name="spot">The spot.</param>
+		/// <param name="memory">The process memory.</param>
+		/// <returns>The information to show in a tool tip or null if no information should be shown.</returns>
 		public virtual string GetToolTipText(HotSpot spot, Memory memory)
 		{
 			Contract.Requires(spot != null);
@@ -80,7 +101,15 @@ namespace ReClassNET.Nodes
 			return null;
 		}
 
+		/// <summary>Draws the node.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <returns>The height the node occupies.</returns>
 		public abstract int Draw(ViewInfo view, int x, int y);
+
+		/// <summary>Updates the node from the given <paramref name="spot"/>. Sets the <see cref="Name"/> and <see cref="Comment"/> of the node.</summary>
+		/// <param name="spot">The spot.</param>
 		public virtual void Update(HotSpot spot)
 		{
 			Contract.Requires(spot != null);
@@ -95,12 +124,20 @@ namespace ReClassNET.Nodes
 			}
 		}
 
+		/// <summary>Toggles the specified level.</summary>
+		/// <param name="level">The level to toggle.</param>
 		internal void ToggleLevelOpen(int level)
 		{
 			levelsOpen[level] = !levelsOpen[level];
 		}
 
-		protected void AddClickableArea(ViewInfo view, Rectangle spot, string text, int id, HotSpotType type)
+		/// <summary>Adds a <see cref="HotSpot"/> the user can interact with.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="spot">The spot.</param>
+		/// <param name="text">The text to edit.</param>
+		/// <param name="id">The id of the spot.</param>
+		/// <param name="type">The type of the spot.</param>
+		protected void AddHotSpot(ViewInfo view, Rectangle spot, string text, int id, HotSpotType type)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(text != null);
@@ -123,6 +160,14 @@ namespace ReClassNET.Nodes
 			});
 		}
 
+		/// <summary>Draws the specific text and adds a <see cref="HotSpot"/> if <paramref name="hitId"/> is not <see cref="HotSpot.NoneId"/>.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <param name="color">The color of the text.</param>
+		/// <param name="hitId">Id for the clickable area.</param>
+		/// <param name="text">The text to draw.</param>
+		/// <returns>The new x coordinate after drawing the text.</returns>
 		protected int AddText(ViewInfo view, int x, int y, Color color, int hitId, string text)
 		{
 			Contract.Requires(view != null);
@@ -135,7 +180,7 @@ namespace ReClassNET.Nodes
 				if (hitId != HotSpot.NoneId)
 				{
 					var rect = new Rectangle(x, y, width, view.Font.Height);
-					AddClickableArea(view, rect, text, hitId, HotSpotType.Edit);
+					AddHotSpot(view, rect, text, hitId, HotSpotType.Edit);
 				}
 
 				using (var brush = new SolidBrush(color))
@@ -147,6 +192,11 @@ namespace ReClassNET.Nodes
 			return x + width;
 		}
 
+		/// <summary>Draws the address and <see cref="Offset"/> of the node.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <returns>The new x coordinate after drawing the text.</returns>
 		protected int AddAddressOffset(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
@@ -168,6 +218,11 @@ namespace ReClassNET.Nodes
 			return x;
 		}
 
+		/// <summary>Draws a bar which indicates the selection status of the node. A <see cref="HotSpot"/> for this area gets added too.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <param name="height">The height of the bar.</param>
 		protected void AddSelection(ViewInfo view, int x, int y, int height)
 		{
 			Contract.Requires(view != null);
@@ -185,9 +240,17 @@ namespace ReClassNET.Nodes
 				}
 			}
 
-			AddClickableArea(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), null,-1, HotSpotType.Select);
+			AddHotSpot(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), null,-1, HotSpotType.Select);
 		}
 
+		/// <summary>Draws an icon and adds a <see cref="HotSpot"/> if <paramref name="hitId"/> is not <see cref="HotSpot.NoneId"/>.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <param name="icon">The icon.</param>
+		/// <param name="id">The id of the spot.</param>
+		/// <param name="type">The type of the spot.</param>
+		/// <returns>The new x coordinate after drawing the icon.</returns>
 		protected int AddIcon(ViewInfo view, int x, int y, Image icon, int id, HotSpotType type)
 		{
 			Contract.Requires(view != null);
@@ -204,12 +267,17 @@ namespace ReClassNET.Nodes
 
 			if (id != -1)
 			{
-				AddClickableArea(view, new Rectangle(x, y, IconSize, IconSize), null, id, type);
+				AddHotSpot(view, new Rectangle(x, y, IconSize, IconSize), null, id, type);
 			}
 
 			return x + IconSize;
 		}
 
+		/// <summary>Adds a togglable Open/Close icon.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <returns>The new x coordinate after drawing the icon.</returns>
 		protected int AddOpenClose(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
@@ -222,6 +290,10 @@ namespace ReClassNET.Nodes
 			return AddIcon(view, x, y, levelsOpen[view.Level] ? Icons.OpenCloseOpen : Icons.OpenCloseClosed, 0, HotSpotType.OpenClose);
 		}
 
+		/// <summary>Draws a delete icon if the node is selected.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
 		protected void AddDelete(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
@@ -237,6 +309,10 @@ namespace ReClassNET.Nodes
 			}
 		}
 
+		/// <summary>Draws a type drop icon if the node is selected.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
 		protected void AddTypeDrop(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
@@ -252,6 +328,11 @@ namespace ReClassNET.Nodes
 			}
 		}
 
+		/// <summary>Draws the <see cref="Comment"/>.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <returns>The new x coordinate after drawing the comment.</returns>
 		protected virtual int AddComment(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
@@ -262,6 +343,11 @@ namespace ReClassNET.Nodes
 			return x;
 		}
 
+		/// <summary>Draws a vertical line to show the hidden state.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <returns>The new y coordinate after drawing the line.</returns>
 		protected int DrawHidden(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
