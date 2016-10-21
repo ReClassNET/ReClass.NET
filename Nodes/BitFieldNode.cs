@@ -72,6 +72,19 @@ namespace ReClassNET.Nodes
 			return str.PadLeft(bits, '0');
 		}
 
+		private void ToggleBit(Memory memory, IntPtr address, int bit)
+		{
+			Contract.Requires(memory != null);
+			Contract.Requires(bit >= 0);
+
+			var add = bits / bit;
+			bit = bits % bit;
+
+			var val = memory.ReadObject<sbyte>(Offset + add);
+			val ^= (sbyte)(1 << bit);
+			memory.Process.WriteRemoteMemory<sbyte>(address + add, val);
+		}
+
 		public override int Draw(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
@@ -96,6 +109,11 @@ namespace ReClassNET.Nodes
 
 			var tx = x - 3;
 
+			for (var i = 0; i < bits; ++i)
+			{
+				var rect = new Rectangle(x + i * view.Font.Width, y, view.Font.Width, view.Font.Height);
+				AddClickableArea(view, rect, string.Empty, i, HotSpotType.Edit);
+			}
 			x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, ConvertValueToBitString(view.Memory)) + view.Font.Width;
 
 			x += view.Font.Width;
@@ -122,6 +140,34 @@ namespace ReClassNET.Nodes
 			}
 
 			return y + view.Font.Height;
+		}
+
+		public override void Update(HotSpot spot)
+		{
+			Contract.Requires(spot != null);
+
+			base.Update(spot);
+
+			if (spot.Id >= 0 && spot.Id < bits)
+			{
+				if (spot.Text == "1" || spot.Text == "0")
+				{
+					var bit = (bits - 1) - spot.Id;
+					var add = bit / 8;
+					bit = bit % 8;
+
+					var val = spot.Memory.ReadObject<sbyte>(Offset + add);
+					if (spot.Text == "1")
+					{
+						val |= (sbyte)(1 << bit);
+					}
+					else
+					{
+						val &= (sbyte)~(1 << bit);
+					}
+					spot.Memory.Process.WriteRemoteMemory(spot.Address + add, val);
+				}
+			}
 		}
 	}
 }
