@@ -65,7 +65,7 @@ namespace ReClassNET.Nodes
 				if (Program.Settings.ShowStrings)
 				{
 					var txt = view.Memory.Process.ReadRemoteRawUTF8String(ivalue, 64);
-					if (txt != null)
+					if (!string.IsNullOrEmpty(txt))
 					{
 						if (!txt.Take(4).Where(c => !c.IsPrintable()).Any())
 						{
