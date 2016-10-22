@@ -149,7 +149,7 @@ namespace ReClassNET
 		{
 			if (address.MayBeValid())
 			{
-				string rtti;
+				string rtti = null;
 				if (!rttiCache.TryGetValue(address, out rtti))
 				{
 					var objectLocatorPtr = ReadRemoteObject<IntPtr>(address - IntPtr.Size);
@@ -191,10 +191,10 @@ namespace ReClassNET
 								var typeDescriptorPtr = ReadRemoteObject<IntPtr>(baseClassDescriptorPtr);
 								if (typeDescriptorPtr.MayBeValid())
 								{
-									var name = ReadRemoteRawUTF8String(typeDescriptorPtr + 9, 60);
+									var name = ReadRemoteRawUTF8String(typeDescriptorPtr + 0x0C, 60);
 									if (name.EndsWith("@@"))
 									{
-										name = NativeMethods.UnDecorateSymbolName(name);
+										name = NativeMethods.UnDecorateSymbolName("?" + name);
 									}
 
 									sb.Append(name);
@@ -253,10 +253,10 @@ namespace ReClassNET
 									{
 										var typeDescriptorPtr = baseAddress + typeDescriptorOffset;
 
-										var name = ReadRemoteRawUTF8String(typeDescriptorPtr + 11, 60);
+										var name = ReadRemoteRawUTF8String(typeDescriptorPtr + 0x14, 60);
 										if (name.EndsWith("@@"))
 										{
-											name = NativeMethods.UnDecorateSymbolName(name);
+											name = NativeMethods.UnDecorateSymbolName("?" + name);
 										}
 
 										sb.Append(name);
