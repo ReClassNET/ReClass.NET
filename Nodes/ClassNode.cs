@@ -34,9 +34,9 @@ namespace ReClassNET.Nodes
 		public ClassNode(bool notifiy)
 		{
 #if WIN64
-			AddressFormula = "0x140000000";
+			AddressFormula = "140000000";
 #else
-			AddressFormula = "0x400000";
+			AddressFormula = "400000";
 #endif
 
 			Classes.Add(this);
