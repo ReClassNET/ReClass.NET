@@ -42,11 +42,18 @@ namespace ReClassNET
 		}
 
 		/// <summary>Gets the selected process.</summary>
-		public ProcessInfo SelectedProcess => 
-			(processDataGridView.SelectedRows.Cast<DataGridViewRow>()
-			.FirstOrDefault()
-			?.DataBoundItem as ProcessDisplayInfo)
-			?.Process;
+		public ProcessInfo SelectedProcess
+		{
+			get
+			{
+				var row = (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)?.Row;
+				if (row != null)
+				{
+					return new ProcessInfo(nativeHelper, row.Field<int>("pid"), row.Field<string>("name"), row.Field<string>("path"));
+				}
+				return null;
+			}
+		}
 
 		/// <summary>Gets if symbols should get loaded.</summary>
 		public bool LoadSymbols => loadSymbolsCheckBox.Checked;
@@ -84,28 +91,33 @@ namespace ReClassNET
 		/// <summary>Queries all processes and displays them.</summary>
 		private void RefreshProcessList()
 		{
-			var processes = new List<ProcessDisplayInfo>();
+			var dt = new DataTable();
+			dt.Columns.Add("icon", typeof(Icon));
+			dt.Columns.Add("name", typeof(string));
+			dt.Columns.Add("pid", typeof(int));
+			dt.Columns.Add("path", typeof(string));
+			dt.Columns.Add("create", typeof(DateTime));
+
 			nativeHelper.EnumerateProcesses((pid, path) =>
 			{
 				var moduleName = Path.GetFileName(path);
 				if (!filterCheckBox.Checked || !CommonProcesses.Contains(moduleName.ToLower()))
 				{
-					processes.Add(new ProcessDisplayInfo(new ProcessInfo(nativeHelper, (int)pid, moduleName, path))
-					{
-						Icon = ShellIcon.GetSmallIcon(path),
-						CreateTime = GetProcessCreateTime((int)pid)
-					});
+					var row = dt.NewRow();
+					row["icon"] = ShellIcon.GetSmallIcon(path);
+					row["name"] = moduleName;
+					row["pid"] = pid;
+					row["path"] = path;
+					row["create"] = GetProcessCreateTime((int)pid);
+					dt.Rows.Add(row);
 				}
 			});
 
-			// Sorting doesn't work with the list as BindingSource, so we do it manually.
-			var source = new BindingSource();
-			foreach (var process in processes.OrderByDescending(p => p.CreateTime))
-			{
-				source.Add(process);
-			}
+			dt.DefaultView.Sort = "create DESC";
 
-			processDataGridView.DataSource = source;
+			processDataGridView.DataSource = dt;
+
+			ApplyFilter();
 		}
 
 		/// <summary>Query the time the process was created.</summary>
@@ -143,6 +155,11 @@ namespace ReClassNET
 		}
 
 		private void filterTextBox_TextChanged(object sender, EventArgs e)
+		{
+			ApplyFilter();
+		}
+
+		private void ApplyFilter()
 		{
 			var filter = filterTextBox.Text;
 			if (!string.IsNullOrEmpty(filter))
