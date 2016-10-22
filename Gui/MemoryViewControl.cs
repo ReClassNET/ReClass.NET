@@ -54,6 +54,7 @@ namespace ReClassNET
 
 			VerticalScroll.Enabled = true;
 			VerticalScroll.Visible = true;
+			VerticalScroll.SmallChange = 10;
 			HorizontalScroll.Enabled = false;
 			HorizontalScroll.Visible = false;
 		}
