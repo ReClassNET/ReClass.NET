@@ -52,6 +52,8 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(node != null);
 
+			base.CopyFromNode(node);
+
 			Bits = node.MemorySize * 8;
 		}
 
