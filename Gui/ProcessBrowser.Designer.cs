@@ -74,7 +74,7 @@
 			// 
 			// iconColumn
 			// 
-			this.iconColumn.DataPropertyName = "Icon";
+			this.iconColumn.DataPropertyName = "icon";
 			this.iconColumn.HeaderText = "";
 			this.iconColumn.MinimumWidth = 18;
 			this.iconColumn.Name = "iconColumn";
@@ -86,7 +86,7 @@
 			// processNameColumn
 			// 
 			this.processNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.processNameColumn.DataPropertyName = "Name";
+			this.processNameColumn.DataPropertyName = "name";
 			this.processNameColumn.HeaderText = "Process";
 			this.processNameColumn.Name = "processNameColumn";
 			this.processNameColumn.ReadOnly = true;
@@ -95,7 +95,7 @@
 			// pidColumn
 			// 
 			this.pidColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.pidColumn.DataPropertyName = "Id";
+			this.pidColumn.DataPropertyName = "id";
 			this.pidColumn.HeaderText = "PID";
 			this.pidColumn.Name = "pidColumn";
 			this.pidColumn.ReadOnly = true;
@@ -104,7 +104,7 @@
 			// pathColumn
 			// 
 			this.pathColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.pathColumn.DataPropertyName = "Path";
+			this.pathColumn.DataPropertyName = "path";
 			this.pathColumn.HeaderText = "Path";
 			this.pathColumn.Name = "pathColumn";
 			this.pathColumn.ReadOnly = true;

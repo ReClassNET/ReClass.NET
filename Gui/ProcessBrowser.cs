@@ -22,25 +22,6 @@ namespace ReClassNET
 
 		private readonly NativeHelper nativeHelper;
 
-		private class ProcessDisplayInfo
-		{
-			public ProcessInfo Process { get; }
-
-			public int Id => Process.Id;
-			public string Name => Process.Name;
-			public string Path => Process.Path;
-
-			public Icon Icon { get; set; }
-			public DateTime CreateTime { get; set; }
-
-			public ProcessDisplayInfo(ProcessInfo process)
-			{
-				Contract.Requires(process != null);
-
-				Process = process;
-			}
-		}
-
 		/// <summary>Gets the selected process.</summary>
 		public ProcessInfo SelectedProcess
 		{
@@ -49,7 +30,7 @@ namespace ReClassNET
 				var row = (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)?.Row;
 				if (row != null)
 				{
-					return new ProcessInfo(nativeHelper, row.Field<int>("pid"), row.Field<string>("name"), row.Field<string>("path"));
+					return new ProcessInfo(nativeHelper, row.Field<int>("id"), row.Field<string>("name"), row.Field<string>("path"));
 				}
 				return null;
 			}
@@ -71,6 +52,15 @@ namespace ReClassNET
 			previousProcessLinkLabel.Text = string.IsNullOrEmpty(previousProcess) ? NoPreviousProcess : previousProcess;
 
 			RefreshProcessList();
+
+			foreach (var row in processDataGridView.Rows.Cast<DataGridViewRow>())
+			{
+				if ((row.Cells[1].Value as string) == previousProcess)
+				{
+					processDataGridView.CurrentCell = row.Cells[1];
+					break;
+				}
+			}
 		}
 
 		private void filterCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -94,7 +84,7 @@ namespace ReClassNET
 			var dt = new DataTable();
 			dt.Columns.Add("icon", typeof(Icon));
 			dt.Columns.Add("name", typeof(string));
-			dt.Columns.Add("pid", typeof(int));
+			dt.Columns.Add("id", typeof(int));
 			dt.Columns.Add("path", typeof(string));
 			dt.Columns.Add("create", typeof(DateTime));
 
@@ -106,7 +96,7 @@ namespace ReClassNET
 					var row = dt.NewRow();
 					row["icon"] = ShellIcon.GetSmallIcon(path);
 					row["name"] = moduleName;
-					row["pid"] = pid;
+					row["id"] = pid;
 					row["path"] = path;
 					row["create"] = GetProcessCreateTime((int)pid);
 					dt.Rows.Add(row);
