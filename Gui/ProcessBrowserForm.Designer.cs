@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET
 {
-	partial class ProcessBrowser
+	partial class ProcessBrowserForm
 	{
 		/// <summary>
 		/// Required designer variable.

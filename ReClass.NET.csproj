@@ -99,10 +99,10 @@
     <Compile Include="DataExchange\ReClassFile.cs" />
     <Compile Include="DataExchange\ReClass2007File.cs" />
     <Compile Include="DpiUtil.cs" />
-    <Compile Include="Gui\ClassNodeView.cs">
+    <Compile Include="UI\ClassNodeView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\ClassNodeView.Designer.cs">
+    <Compile Include="UI\ClassNodeView.Designer.cs">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\CodeForm.cs">
@@ -111,7 +111,7 @@
     <Compile Include="Gui\CodeForm.Designer.cs">
       <DependentUpon>CodeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\CustomToolStripItems.cs">
+    <Compile Include="UI\CustomToolStripItems.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Gui\IconForm.cs">
@@ -123,10 +123,10 @@
     <Compile Include="Gui\LogForm.Designer.cs">
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\MemoryViewControl.Designer.cs">
+    <Compile Include="UI\MemoryViewControl.Designer.cs">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\CustomToolStripProfessionalRenderer.cs" />
+    <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
     <Compile Include="GrowingList.cs" />
     <Compile Include="Gui\PluginForm.cs">
       <SubType>Form</SubType>
@@ -134,16 +134,16 @@
     <Compile Include="Gui\PluginForm.Designer.cs">
       <DependentUpon>PluginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\SettingsDialog.cs">
+    <Compile Include="Gui\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\SettingsDialog.Designer.cs">
-      <DependentUpon>SettingsDialog.cs</DependentUpon>
+    <Compile Include="Gui\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="HotSpot.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FontEx.cs" />
-    <Compile Include="Gui\HotSpotTextBox.cs">
+    <Compile Include="UI\HotSpotTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Icons.cs" />
@@ -163,7 +163,7 @@
     <Compile Include="Logger\LogLevel.cs" />
     <Compile Include="Logger\NullLogger.cs" />
     <Compile Include="Memory.cs" />
-    <Compile Include="Gui\MemoryViewControl.cs">
+    <Compile Include="UI\MemoryViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="NativeHelper.cs" />
@@ -212,17 +212,17 @@
     <Compile Include="Nodes\Vector2Node.cs" />
     <Compile Include="Nodes\Vector3Node.cs" />
     <Compile Include="Nodes\Vector4Node.cs" />
-    <Compile Include="Gui\ProcessBrowser.cs">
+    <Compile Include="Gui\ProcessBrowserForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\ProcessBrowser.Designer.cs">
-      <DependentUpon>ProcessBrowser.cs</DependentUpon>
+    <Compile Include="Gui\ProcessBrowserForm.Designer.cs">
+      <DependentUpon>ProcessBrowserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ProcessMemoryViewer.cs">
+    <Compile Include="Gui\ProcessMemoryViewForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\ProcessMemoryViewer.Designer.cs">
-      <DependentUpon>ProcessMemoryViewer.cs</DependentUpon>
+    <Compile Include="Gui\ProcessMemoryViewForm.Designer.cs">
+      <DependentUpon>ProcessMemoryViewForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Nodes\VMethodNode.cs" />
     <Compile Include="Nodes\VTableNode.cs" />
@@ -240,7 +240,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RemoteProcess.cs" />
-    <Compile Include="Gui\ScrollableCustomControl.cs">
+    <Compile Include="UI\ScrollableCustomControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Settings.cs" />
@@ -248,9 +248,10 @@
     <Compile Include="SymbolReader\ComDisposableWrapper.cs" />
     <Compile Include="SymbolReader\SymbolReader.cs" />
     <Compile Include="SymbolReader\Symbols.cs" />
+    <Compile Include="UI\GlobalWindowManager.cs" />
     <Compile Include="ViewInfo.cs" />
     <Compile Include="WinUtil.cs" />
-    <EmbeddedResource Include="Gui\ClassNodeView.resx">
+    <EmbeddedResource Include="UI\ClassNodeView.resx">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -261,20 +262,20 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MemoryViewControl.resx">
+    <EmbeddedResource Include="UI\MemoryViewControl.resx">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\PluginForm.resx">
       <DependentUpon>PluginForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ProcessBrowser.resx">
-      <DependentUpon>ProcessBrowser.cs</DependentUpon>
+    <EmbeddedResource Include="Gui\ProcessBrowserForm.resx">
+      <DependentUpon>ProcessBrowserForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ProcessMemoryViewer.resx">
-      <DependentUpon>ProcessMemoryViewer.cs</DependentUpon>
+    <EmbeddedResource Include="Gui\ProcessMemoryViewForm.resx">
+      <DependentUpon>ProcessMemoryViewForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\SettingsDialog.resx">
-      <DependentUpon>SettingsDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Gui\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

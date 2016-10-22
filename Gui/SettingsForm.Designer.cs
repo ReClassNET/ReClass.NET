@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET.Gui
 {
-	partial class SettingsDialog
+	partial class SettingsForm
 	{
 		/// <summary>
 		/// Required designer variable.

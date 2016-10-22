@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Gui;
 using ReClassNET.Nodes;
+using ReClassNET.UI;
 
 namespace ReClassNET
 {
@@ -51,6 +52,20 @@ namespace ReClassNET
 
 				sectionsDataGridView.DataSource = dt;
 			}
+		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			GlobalWindowManager.AddWindow(this);
+		}
+
+		protected override void OnFormClosed(FormClosedEventArgs e)
+		{
+			base.OnFormClosed(e);
+
+			GlobalWindowManager.RemoveWindow(this);
 		}
 
 		private void sectionsDataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)

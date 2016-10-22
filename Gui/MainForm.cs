@@ -9,6 +9,7 @@ using ReClassNET.DataExchange;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.Plugins;
+using ReClassNET.UI;
 
 namespace ReClassNET.Gui
 {
@@ -78,19 +79,23 @@ namespace ReClassNET.Gui
 		{
 			base.OnLoad(e);
 
+			GlobalWindowManager.AddWindow(this);
+
 			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, Constants.PluginsFolder));
 		}
 
-		protected override void OnClosed(EventArgs e)
+		protected override void OnFormClosed(FormClosedEventArgs e)
 		{
 			pluginManager.UnloadAllPlugins();
+
+			GlobalWindowManager.RemoveWindow(this);
 
 			base.OnClosed(e);
 		}
 
 		private void selectProcessToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var pb = new ProcessBrowser(nativeHelper, settings.LastProcess))
+			using (var pb = new ProcessBrowserForm(nativeHelper, settings.LastProcess))
 			{
 				if (pb.ShowDialog() == DialogResult.OK)
 				{
@@ -275,7 +280,7 @@ namespace ReClassNET.Gui
 
 		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var sd = new SettingsDialog(settings))
+			using (var sd = new SettingsForm(settings))
 			{
 				sd.ShowDialog();
 			}

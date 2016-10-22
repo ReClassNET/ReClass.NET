@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Logger;
+using ReClassNET.UI;
 
 namespace ReClassNET.Gui
 {
@@ -26,6 +27,20 @@ namespace ReClassNET.Gui
 
 			entriesDataGridView.AutoGenerateColumns = false;
 			entriesDataGridView.DataSource = items;
+		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			GlobalWindowManager.AddWindow(this);
+		}
+
+		protected override void OnFormClosed(FormClosedEventArgs e)
+		{
+			base.OnFormClosed(e);
+
+			GlobalWindowManager.RemoveWindow(this);
 		}
 
 		public void Clear()

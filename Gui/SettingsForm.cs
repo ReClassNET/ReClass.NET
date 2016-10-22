@@ -1,23 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Windows.Forms;
-using ReClassNET.CodeGenerator;
-using ReClassNET.Nodes;
 using ReClassNET.UI;
 
 namespace ReClassNET.Gui
 {
-	partial class CodeForm : Form
+	partial class SettingsForm : IconForm
 	{
-		public CodeForm(ICodeGenerator generator, IList<ClassNode> classes)
+		public SettingsForm(Settings settings)
 		{
-			Contract.Requires(generator != null);
-			Contract.Requires(classes != null);
-
 			InitializeComponent();
 
-			var s = generator.GetCodeFromClasses(classes);
+			propertyGrid.SelectedObject = settings;
 		}
 
 		protected override void OnLoad(EventArgs e)

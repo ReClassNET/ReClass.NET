@@ -145,6 +145,7 @@ namespace ReClassNET
 
 		[Browsable(false)]
 		public string LastProcess { get; set; } = string.Empty;
+		public bool AlwaysOnTop { get; set; } = false;
 	}
 
 	public class CppTypedef

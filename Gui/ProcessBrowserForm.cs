@@ -7,10 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Gui;
+using ReClassNET.UI;
 
 namespace ReClassNET
 {
-	partial class ProcessBrowser : IconForm
+	partial class ProcessBrowserForm : IconForm
 	{
 		private const string NoPreviousProcess = "No previous process";
 
@@ -39,7 +40,7 @@ namespace ReClassNET
 		/// <summary>Gets if symbols should get loaded.</summary>
 		public bool LoadSymbols => loadSymbolsCheckBox.Checked;
 
-		public ProcessBrowser(NativeHelper nativeHelper, string previousProcess)
+		public ProcessBrowserForm(NativeHelper nativeHelper, string previousProcess)
 		{
 			Contract.Requires(nativeHelper != null);
 
@@ -61,6 +62,20 @@ namespace ReClassNET
 					break;
 				}
 			}
+		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			GlobalWindowManager.AddWindow(this);
+		}
+
+		protected override void OnFormClosed(FormClosedEventArgs e)
+		{
+			base.OnFormClosed(e);
+
+			GlobalWindowManager.RemoveWindow(this);
 		}
 
 		private void filterCheckBox_CheckedChanged(object sender, EventArgs e)
