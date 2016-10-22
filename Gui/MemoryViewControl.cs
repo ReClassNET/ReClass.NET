@@ -13,18 +13,21 @@ namespace ReClassNET
 	partial class MemoryViewControl : ScrollableCustomControl
 	{
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ClassNode ClassNode { get; set; }
 
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Memory Memory { get; set; }
 
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Settings Settings { get; set; }
 
-		private List<HotSpot> hotSpots;
-		private List<HotSpot> selected;
+		private readonly List<HotSpot> hotSpots;
+		private readonly List<HotSpot> selected;
 
-		private FontEx font;
+		private readonly FontEx font;
 
 		public MemoryViewControl()
 		{

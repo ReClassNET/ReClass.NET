@@ -20,6 +20,7 @@ namespace ReClassNET
 		public event ClassSelectedEvent ClassSelected;
 
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ClassNode SelectedClass
 		{
 			get { return classesTreeView.SelectedNode.Tag as ClassNode; }

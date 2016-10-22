@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace ReClassNET
@@ -6,6 +7,9 @@ namespace ReClassNET
 	class HotSpotTextBox : TextBox
 	{
 		private HotSpot hotSpot;
+
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public HotSpot HotSpot
 		{
 			get { return hotSpot; }
@@ -30,6 +34,9 @@ namespace ReClassNET
 		public int MinimumWidth { get; set; }
 
 		private FontEx font;
+
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new FontEx Font
 		{
 			get { return font; }
