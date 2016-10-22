@@ -1,4 +1,4 @@
-﻿namespace ReClassNET
+﻿namespace ReClassNET.UI
 {
 	partial class ClassNodeView
 	{

@@ -105,22 +105,22 @@
     <Compile Include="UI\ClassNodeView.Designer.cs">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\CodeForm.cs">
+    <Compile Include="Forms\CodeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\CodeForm.Designer.cs">
+    <Compile Include="Forms\CodeForm.Designer.cs">
       <DependentUpon>CodeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomToolStripItems.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Gui\IconForm.cs">
+    <Compile Include="Forms\IconForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\LogForm.cs">
+    <Compile Include="Forms\LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\LogForm.Designer.cs">
+    <Compile Include="Forms\LogForm.Designer.cs">
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MemoryViewControl.Designer.cs">
@@ -128,16 +128,16 @@
     </Compile>
     <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
     <Compile Include="GrowingList.cs" />
-    <Compile Include="Gui\PluginForm.cs">
+    <Compile Include="Forms\PluginForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\PluginForm.Designer.cs">
+    <Compile Include="Forms\PluginForm.Designer.cs">
       <DependentUpon>PluginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\SettingsForm.cs">
+    <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\SettingsForm.Designer.cs">
+    <Compile Include="Forms\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="HotSpot.cs" />
@@ -147,10 +147,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Icons.cs" />
-    <Compile Include="Gui\MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DataExchange\IReClassImport.cs" />
@@ -212,16 +212,16 @@
     <Compile Include="Nodes\Vector2Node.cs" />
     <Compile Include="Nodes\Vector3Node.cs" />
     <Compile Include="Nodes\Vector4Node.cs" />
-    <Compile Include="Gui\ProcessBrowserForm.cs">
+    <Compile Include="Forms\ProcessBrowserForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\ProcessBrowserForm.Designer.cs">
+    <Compile Include="Forms\ProcessBrowserForm.Designer.cs">
       <DependentUpon>ProcessBrowserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ProcessMemoryViewForm.cs">
+    <Compile Include="Forms\ProcessMemoryViewForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\ProcessMemoryViewForm.Designer.cs">
+    <Compile Include="Forms\ProcessMemoryViewForm.Designer.cs">
       <DependentUpon>ProcessMemoryViewForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Nodes\VMethodNode.cs" />
@@ -255,26 +255,26 @@
       <DependentUpon>ClassNodeView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\LogForm.resx">
+    <EmbeddedResource Include="Forms\LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MemoryViewControl.resx">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\PluginForm.resx">
+    <EmbeddedResource Include="Forms\PluginForm.resx">
       <DependentUpon>PluginForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ProcessBrowserForm.resx">
+    <EmbeddedResource Include="Forms\ProcessBrowserForm.resx">
       <DependentUpon>ProcessBrowserForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ProcessMemoryViewForm.resx">
+    <EmbeddedResource Include="Forms\ProcessMemoryViewForm.resx">
       <DependentUpon>ProcessMemoryViewForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\SettingsForm.resx">
+    <EmbeddedResource Include="Forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

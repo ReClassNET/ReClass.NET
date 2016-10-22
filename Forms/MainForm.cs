@@ -11,7 +11,7 @@ using ReClassNET.Nodes;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
 
-namespace ReClassNET.Gui
+namespace ReClassNET.Forms
 {
 	public partial class MainForm : IconForm
 	{

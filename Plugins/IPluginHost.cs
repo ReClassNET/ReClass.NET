@@ -1,5 +1,5 @@
 using System.Resources;
-using ReClassNET.Gui;
+using ReClassNET.Forms;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.Plugins

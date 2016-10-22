@@ -6,7 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.Gui;
+using ReClassNET.Forms;
 using ReClassNET.UI;
 
 namespace ReClassNET

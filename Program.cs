@@ -1,4 +1,4 @@
-﻿using ReClassNET.Gui;
+﻿using ReClassNET.Forms;
 using System;
 using System.Globalization;
 using System.Windows.Forms;

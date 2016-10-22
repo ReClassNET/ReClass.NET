@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace ReClassNET
+namespace ReClassNET.UI
 {
 	class HotSpotTextBox : TextBox
 	{

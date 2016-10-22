@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
 
-namespace ReClassNET.Gui
+namespace ReClassNET.Forms
 {
 	partial class PluginForm : IconForm
 	{

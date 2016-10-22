@@ -5,10 +5,10 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.Gui;
+using ReClassNET.Forms;
 using ReClassNET.Nodes;
 
-namespace ReClassNET
+namespace ReClassNET.UI
 {
 	partial class MemoryViewControl : ScrollableCustomControl
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ReClassNET
+namespace ReClassNET.UI
 {
 	public class ScrollableCustomControl : UserControl
 	{

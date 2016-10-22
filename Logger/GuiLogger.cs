@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Windows.Forms;
-using ReClassNET.Gui;
+using ReClassNET.Forms;
 
 namespace ReClassNET.Logger
 {

@@ -1,4 +1,4 @@
-﻿namespace ReClassNET.Gui
+﻿namespace ReClassNET.Forms
 {
 	partial class CodeForm
 	{

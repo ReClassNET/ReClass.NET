@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Nodes;
 
-namespace ReClassNET
+namespace ReClassNET.UI
 {
 	partial class ClassNodeView : UserControl
 	{

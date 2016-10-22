@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace ReClassNET
+namespace ReClassNET.UI
 {
 	class CustomToolStripProfessionalRenderer : ToolStripProfessionalRenderer
 	{

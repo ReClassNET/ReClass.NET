@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using ReClassNET.Logger;
 using ReClassNET.UI;
 
-namespace ReClassNET.Gui
+namespace ReClassNET.Forms
 {
 	partial class LogForm : IconForm
 	{

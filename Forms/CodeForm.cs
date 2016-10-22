@@ -6,7 +6,7 @@ using ReClassNET.CodeGenerator;
 using ReClassNET.Nodes;
 using ReClassNET.UI;
 
-namespace ReClassNET.Gui
+namespace ReClassNET.Forms
 {
 	partial class CodeForm : Form
 	{

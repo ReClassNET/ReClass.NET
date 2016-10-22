@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace ReClassNET.Gui
+namespace ReClassNET.Forms
 {
 	public class IconForm : Form
 	{
