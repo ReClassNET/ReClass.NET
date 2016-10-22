@@ -31,7 +31,8 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
-			this.processToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+			this.processInfoToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+			this.infoToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.selectProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -146,17 +147,25 @@
 			// statusStrip
 			// 
 			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.processToolStripStatusLabel});
+            this.processInfoToolStripStatusLabel,
+            this.infoToolStripStatusLabel});
 			this.statusStrip.Location = new System.Drawing.Point(0, 573);
 			this.statusStrip.Name = "statusStrip";
 			this.statusStrip.Size = new System.Drawing.Size(1141, 22);
 			this.statusStrip.TabIndex = 1;
 			// 
-			// processToolStripStatusLabel
+			// processInfoToolStripStatusLabel
 			// 
-			this.processToolStripStatusLabel.Name = "processToolStripStatusLabel";
-			this.processToolStripStatusLabel.Size = new System.Drawing.Size(112, 17);
-			this.processToolStripStatusLabel.Text = "No process selected";
+			this.processInfoToolStripStatusLabel.Name = "processInfoToolStripStatusLabel";
+			this.processInfoToolStripStatusLabel.Size = new System.Drawing.Size(112, 17);
+			this.processInfoToolStripStatusLabel.Text = "No process selected";
+			// 
+			// infoToolStripStatusLabel
+			// 
+			this.infoToolStripStatusLabel.Name = "infoToolStripStatusLabel";
+			this.infoToolStripStatusLabel.Size = new System.Drawing.Size(23, 17);
+			this.infoToolStripStatusLabel.Text = "<>";
+			this.infoToolStripStatusLabel.Visible = false;
 			// 
 			// mainMenuStrip
 			// 
@@ -1132,12 +1141,9 @@
 			// memoryViewControl
 			// 
 			this.memoryViewControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.memoryViewControl.ClassNode = null;
 			this.memoryViewControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.memoryViewControl.Location = new System.Drawing.Point(0, 0);
-			this.memoryViewControl.Memory = null;
 			this.memoryViewControl.Name = "memoryViewControl";
-			this.memoryViewControl.Settings = null;
 			this.memoryViewControl.Size = new System.Drawing.Size(936, 524);
 			this.memoryViewControl.TabIndex = 0;
 			// 
@@ -1159,6 +1165,7 @@
 			this.MainMenuStrip = this.mainMenuStrip;
 			this.Name = "MainForm";
 			this.Text = "ReClass.NET";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.statusStrip.ResumeLayout(false);
 			this.statusStrip.PerformLayout();
 			this.mainMenuStrip.ResumeLayout(false);
@@ -1206,7 +1213,7 @@
 		private System.Windows.Forms.ToolStripButton pluginsToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.SplitContainer splitContainer;
-		private System.Windows.Forms.ToolStripStatusLabel processToolStripStatusLabel;
+		private System.Windows.Forms.ToolStripStatusLabel processInfoToolStripStatusLabel;
 		private System.Windows.Forms.ToolStripMenuItem pluginsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton saveToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
@@ -1281,6 +1288,7 @@
 		private System.Windows.Forms.ToolStripButton openProjectToolStripButton;
 		private Gui.TypeToolStripButton bitFieldToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
+		private System.Windows.Forms.ToolStripStatusLabel infoToolStripStatusLabel;
 	}
 }
 

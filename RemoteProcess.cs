@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using ReClassNET.AddressParser;
 using ReClassNET.SymbolReader;
 
@@ -400,17 +401,30 @@ namespace ReClassNET
 
 		public void LoadAllSymbols()
 		{
-			foreach (var module in Modules)
+			LoadAllSymbolsAsync(null).Wait();
+		}
+
+		public delegate void LoadModuleSymbols(Module module);
+		public Task LoadAllSymbolsAsync(LoadModuleSymbols callback)
+		{
+			var copy = this.modules.ToList();
+
+			return Task.Run(() =>
 			{
-				try
+				foreach (var module in copy)
 				{
-					Symbols.LoadSymbolsForModule(module);
+					try
+					{
+						callback?.Invoke(module);
+
+						Symbols.LoadSymbolsForModule(module);
+					}
+					catch
+					{
+						//ignore
+					}
 				}
-				catch
-				{
-					//ignore
-				}
-			}
+			});
 		}
 	}
 }

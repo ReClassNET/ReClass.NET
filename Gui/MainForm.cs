@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.CodeGenerator;
 using ReClassNET.DataExchange;
@@ -25,6 +26,8 @@ namespace ReClassNET.Gui
 
 		private string projectPath;
 
+		private bool canCloseForm = true;
+
 		public MainForm(NativeHelper nativeHelper, Settings settings)
 		{
 			Contract.Requires(nativeHelper != null);
@@ -43,11 +46,11 @@ namespace ReClassNET.Gui
 			{
 				if (sender.Process == null)
 				{
-					processToolStripStatusLabel.Text = "No process selected";
+					processInfoToolStripStatusLabel.Text = "No process selected";
 				}
 				else
 				{
-					processToolStripStatusLabel.Text = $"{sender.Process.Name} (PID: {sender.Process.Id})";
+					processInfoToolStripStatusLabel.Text = $"{sender.Process.Name} (PID: {sender.Process.Id})";
 				}
 			};
 
@@ -100,7 +103,21 @@ namespace ReClassNET.Gui
 					remoteProcess.UpdateProcessInformations();
 					if (pb.LoadSymbols)
 					{
-						remoteProcess.LoadAllSymbols();
+						remoteProcess
+							.LoadAllSymbolsAsync(m =>
+							{
+								canCloseForm = false;
+
+								Invoke((MethodInvoker)delegate ()
+								{
+									infoToolStripStatusLabel.Visible = true;
+									infoToolStripStatusLabel.Text = $"Loading symbols for module: {m.Name}";
+								});
+							})
+							.ContinueWith(
+								t => { canCloseForm = true; infoToolStripStatusLabel.Visible = false; },
+								TaskScheduler.FromCurrentSynchronizationContext()
+							);
 					}
 
 					settings.LastProcess = remoteProcess.Process.Name;
@@ -339,6 +356,16 @@ namespace ReClassNET.Gui
 			using (var cf = new CodeForm(generator, ClassNode.Classes))
 			{
 				cf.ShowDialog();
+			}
+		}
+
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (!canCloseForm)
+			{
+				e.Cancel = true;
+
+				MessageBox.Show("You can't exit the application at the moment.\nYou need to wait until the task finishes.");
 			}
 		}
 	}
