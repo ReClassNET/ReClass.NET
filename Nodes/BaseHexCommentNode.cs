@@ -67,7 +67,7 @@ namespace ReClassNET.Nodes
 					var txt = view.Memory.Process.ReadRemoteRawUTF8String(ivalue, 64);
 					if (!string.IsNullOrEmpty(txt))
 					{
-						if (!txt.Take(4).Where(c => !c.IsPrintable()).Any())
+						if (!txt.Take(IntPtr.Size).Where(c => !c.IsPrintable()).Any())
 						{
 							x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, $"'{txt}'");
 						}
