@@ -8,7 +8,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
-	public partial class CodeForm : Form
+	public partial class CodeForm : IconForm
 	{
 		public CodeForm(ICodeGenerator generator, IList<ClassNode> classes)
 		{
@@ -17,7 +17,7 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
-			var s = generator.GetCodeFromClasses(classes);
+			codeRichTextBox.Text = generator.GetCodeFromClasses(classes);
 		}
 
 		protected override void OnLoad(EventArgs e)

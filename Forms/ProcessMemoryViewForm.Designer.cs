@@ -195,7 +195,7 @@
 			this.Controls.Add(this.regionsGroupBox);
 			this.Name = "ProcessMemoryViewer";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "ProcessMemoryViewer";
+			this.Text = "ReClass.NET - Memory Viewer";
 			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).EndInit();
 			this.contextMenuStrip.ResumeLayout(false);
 			this.regionsGroupBox.ResumeLayout(false);

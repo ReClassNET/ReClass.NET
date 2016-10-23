@@ -414,7 +414,7 @@
 			this.Name = "PluginForm";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Plugins";
+			this.Text = "ReClass.NET - Plugins";
 			this.tabControl.ResumeLayout(false);
 			this.pluginsTabPage.ResumeLayout(false);
 			this.descriptionGroupBox.ResumeLayout(false);

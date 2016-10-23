@@ -28,11 +28,34 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
+			this.codeRichTextBox = new System.Windows.Forms.RichTextBox();
+			this.SuspendLayout();
+			// 
+			// codeRichTextBox
+			// 
+			this.codeRichTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.codeRichTextBox.Location = new System.Drawing.Point(12, 12);
+			this.codeRichTextBox.Name = "codeRichTextBox";
+			this.codeRichTextBox.Size = new System.Drawing.Size(478, 406);
+			this.codeRichTextBox.TabIndex = 0;
+			this.codeRichTextBox.Text = "";
+			// 
+			// CodeForm
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Text = "CodeForm";
+			this.ClientSize = new System.Drawing.Size(502, 430);
+			this.Controls.Add(this.codeRichTextBox);
+			this.Name = "CodeForm";
+			this.Text = "ReClass.NET - Code";
+			this.ResumeLayout(false);
+
 		}
 
 		#endregion
+
+		private System.Windows.Forms.RichTextBox codeRichTextBox;
 	}
 }

@@ -265,6 +265,9 @@
     </Compile>
     <Compile Include="ViewInfo.cs" />
     <Compile Include="WinUtil.cs" />
+    <EmbeddedResource Include="Forms\CodeForm.resx">
+      <DependentUpon>CodeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\ClassNodeView.resx">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
       <SubType>Designer</SubType>

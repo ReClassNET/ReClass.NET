@@ -215,7 +215,7 @@
 			this.filterTextBox.TabIndex = 0;
 			this.filterTextBox.TextChanged += new System.EventHandler(this.filterTextBox_TextChanged);
 			// 
-			// ProcessBrowser
+			// ProcessBrowserForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -226,10 +226,10 @@
 			this.Controls.Add(this.processDataGridView);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "ProcessBrowser";
+			this.Name = "ProcessBrowserForm";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Select Process";
+			this.Text = "ReClass.NET - Select Process";
 			((System.ComponentModel.ISupportInitialize)(this.processDataGridView)).EndInit();
 			this.searchGroupBox.ResumeLayout(false);
 			this.searchGroupBox.PerformLayout();
