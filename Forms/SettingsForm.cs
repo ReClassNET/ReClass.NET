@@ -4,7 +4,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
-	partial class SettingsForm : IconForm
+	public partial class SettingsForm : IconForm
 	{
 		public SettingsForm(Settings settings)
 		{

@@ -8,7 +8,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
-	partial class CodeForm : Form
+	public partial class CodeForm : Form
 	{
 		public CodeForm(ICodeGenerator generator, IList<ClassNode> classes)
 		{

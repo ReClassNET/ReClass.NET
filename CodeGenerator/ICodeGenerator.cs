@@ -3,7 +3,7 @@ using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
 {
-	interface ICodeGenerator
+	public interface ICodeGenerator
 	{
 		string GetCodeFromClasses(IEnumerable<ClassNode> classes);
 	}

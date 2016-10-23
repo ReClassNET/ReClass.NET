@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Logger
 {
-	class NullLogger : ILogger
+	public class NullLogger : ILogger
 	{
 		public event NewLogEntryEventHandler NewLogEntry { add { throw new NotSupportedException(); } remove { } }
 

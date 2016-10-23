@@ -8,7 +8,7 @@ using ReClassNET.Nodes;
 
 namespace ReClassNET.UI
 {
-	partial class ClassNodeView : UserControl
+	public partial class ClassNodeView : UserControl
 	{
 		private readonly List<ClassNode> classes = new List<ClassNode>();
 

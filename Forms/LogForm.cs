@@ -10,7 +10,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
-	partial class LogForm : IconForm
+	public partial class LogForm : IconForm
 	{
 		private class LogItem
 		{

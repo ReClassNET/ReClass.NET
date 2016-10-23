@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET.Logger
 {
-	enum LogLevel
+	public enum LogLevel
 	{
 		Debug,
 		Information,

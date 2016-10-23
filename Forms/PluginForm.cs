@@ -9,7 +9,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
-	partial class PluginForm : IconForm
+	public partial class PluginForm : IconForm
 	{
 		private readonly PluginManager pluginManager;
 		private readonly NativeHelper nativeHelper;
@@ -32,7 +32,7 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		public PluginForm(PluginManager pluginManager, NativeHelper nativeHelper)
+		internal PluginForm(PluginManager pluginManager, NativeHelper nativeHelper)
 		{
 			Contract.Requires(pluginManager != null);
 			Contract.Requires(nativeHelper != null);

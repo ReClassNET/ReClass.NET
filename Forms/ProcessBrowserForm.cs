@@ -11,7 +11,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET
 {
-	partial class ProcessBrowserForm : IconForm
+	public partial class ProcessBrowserForm : IconForm
 	{
 		private const string NoPreviousProcess = "No previous process";
 

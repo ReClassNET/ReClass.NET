@@ -10,7 +10,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET
 {
-	partial class ProcessMemoryViewer : IconForm
+	public partial class ProcessMemoryViewer : IconForm
 	{
 		private readonly ClassNodeView classesView;
 

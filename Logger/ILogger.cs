@@ -2,9 +2,9 @@
 
 namespace ReClassNET.Logger
 {
-	delegate void NewLogEntryEventHandler(LogLevel level, string message);
+	public delegate void NewLogEntryEventHandler(LogLevel level, string message);
 
-	interface ILogger
+	public interface ILogger
 	{
 		event NewLogEntryEventHandler NewLogEntry;
 
