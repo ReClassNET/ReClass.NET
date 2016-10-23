@@ -10,11 +10,11 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
-			if (Program.Settings.ShowFloat)
+			if (Program.Settings.ShowCommentFloat)
 			{
 				x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, $"({(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000})");
 			}
-			if (Program.Settings.ShowInteger)
+			if (Program.Settings.ShowCommentInteger)
 			{
 				if (ivalue == IntPtr.Zero)
 				{
@@ -31,12 +31,12 @@ namespace ReClassNET.Nodes
 			{
 				x += view.Font.Width;
 
-				if (Program.Settings.ShowPointer)
+				if (Program.Settings.ShowCommentPointer)
 				{
 					x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, $"-> {namedAddress}") + view.Font.Width;
 				}
 
-				if (Program.Settings.ShowRTTI)
+				if (Program.Settings.ShowCommentRtti)
 				{
 					var rtti = view.Memory.Process.ReadRemoteRuntimeTypeInformation(ivalue);
 					if (!string.IsNullOrEmpty(rtti))
@@ -45,7 +45,7 @@ namespace ReClassNET.Nodes
 					}
 				}
 
-				if (Program.Settings.ShowSymbols)
+				if (Program.Settings.ShowCommentSymbol)
 				{
 					var module = view.Memory.Process.Modules.Where(m => ivalue.InRange(m.Start, m.End)).FirstOrDefault();
 					if (module != null)
@@ -62,7 +62,7 @@ namespace ReClassNET.Nodes
 					}
 				}
 
-				if (Program.Settings.ShowStrings)
+				if (Program.Settings.ShowCommentString)
 				{
 					var txt = view.Memory.Process.ReadRemoteRawUTF8String(ivalue, 64);
 					if (!string.IsNullOrEmpty(txt))
@@ -74,7 +74,7 @@ namespace ReClassNET.Nodes
 					}
 				}
 
-				if (Program.Settings.ShowPluginInfo)
+				if (Program.Settings.ShowCommentPluginInfo)
 				{
 					foreach (var reader in NodeInfoReader)
 					{

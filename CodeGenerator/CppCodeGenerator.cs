@@ -11,29 +11,29 @@ namespace ReClassNET.CodeGenerator
 	{
 		private Dictionary<Type, string> typeToTypedefMap = new Dictionary<Type, string>
 		{
-			[typeof(DoubleNode)] = Program.Settings.Typedef.Double,
-			[typeof(FloatNode)] = Program.Settings.Typedef.Float,
-			[typeof(FunctionPtrNode)] = Program.Settings.Typedef.FunctionPtr,
-			[typeof(Int8Node)] = Program.Settings.Typedef.Int8,
-			[typeof(Int16Node)] = Program.Settings.Typedef.Int16,
-			[typeof(Int32Node)] = Program.Settings.Typedef.Int32,
-			[typeof(Int64Node)] = Program.Settings.Typedef.Int64,
-			[typeof(Matrix3x3Node)] = Program.Settings.Typedef.Matrix3x3,
-			[typeof(Matrix3x4Node)] = Program.Settings.Typedef.Matrix3x4,
-			[typeof(Matrix4x4Node)] = Program.Settings.Typedef.Matrix4x4,
-			[typeof(UInt8Node)] = Program.Settings.Typedef.UInt8,
-			[typeof(UInt16Node)] = Program.Settings.Typedef.UInt16,
-			[typeof(UInt32Node)] = Program.Settings.Typedef.UInt32,
-			[typeof(UInt64Node)] = Program.Settings.Typedef.UInt64,
-			[typeof(UTF8TextNode)] = Program.Settings.Typedef.UTF8Text,
-			[typeof(UTF8TextPtrNode)] = Program.Settings.Typedef.UTF8PtrText,
-			[typeof(UTF16TextNode)] = Program.Settings.Typedef.UTF16Text,
-			[typeof(UTF16TextPtrNode)] = Program.Settings.Typedef.UTF16PtrText,
-			[typeof(UTF32TextNode)] = Program.Settings.Typedef.UTF32Text,
-			[typeof(UTF32TextPtrNode)] = Program.Settings.Typedef.UTF32PtrText,
-			[typeof(Vector2Node)] = Program.Settings.Typedef.Vector2,
-			[typeof(Vector3Node)] = Program.Settings.Typedef.Vector3,
-			[typeof(Vector4Node)] = Program.Settings.Typedef.Vector4
+			[typeof(DoubleNode)] = Program.Settings.TypeDouble,
+			[typeof(FloatNode)] = Program.Settings.TypeFloat,
+			[typeof(FunctionPtrNode)] = Program.Settings.TypeFunctionPtr,
+			[typeof(Int8Node)] = Program.Settings.TypeInt8,
+			[typeof(Int16Node)] = Program.Settings.TypeInt16,
+			[typeof(Int32Node)] = Program.Settings.TypeInt32,
+			[typeof(Int64Node)] = Program.Settings.TypeInt64,
+			[typeof(Matrix3x3Node)] = Program.Settings.TypeMatrix3x3,
+			[typeof(Matrix3x4Node)] = Program.Settings.TypeMatrix3x4,
+			[typeof(Matrix4x4Node)] = Program.Settings.TypeMatrix4x4,
+			[typeof(UInt8Node)] = Program.Settings.TypeUInt8,
+			[typeof(UInt16Node)] = Program.Settings.TypeUInt16,
+			[typeof(UInt32Node)] = Program.Settings.TypeUInt32,
+			[typeof(UInt64Node)] = Program.Settings.TypeUInt64,
+			[typeof(UTF8TextNode)] = Program.Settings.TypeUTF8Text,
+			[typeof(UTF8TextPtrNode)] = Program.Settings.TypeUTF8TextPtr,
+			[typeof(UTF16TextNode)] = Program.Settings.TypeUTF16Text,
+			[typeof(UTF16TextPtrNode)] = Program.Settings.TypeUTF16TextPtr,
+			[typeof(UTF32TextNode)] = Program.Settings.TypeUTF32Text,
+			[typeof(UTF32TextPtrNode)] = Program.Settings.TypeUTF32PtrText,
+			[typeof(Vector2Node)] = Program.Settings.TypeVector2,
+			[typeof(Vector3Node)] = Program.Settings.TypeVector3,
+			[typeof(Vector4Node)] = Program.Settings.TypeVector4
 		};
 
 		public string GetCodeFromClasses(IEnumerable<ClassNode> classes)
@@ -150,7 +150,7 @@ namespace ReClassNET.CodeGenerator
 				
 				if (fill != 0)
 				{
-					yield return BuildMemberDefinition(Program.Settings.Typedef.Hex, fill, $"unknown{fillStart:X04}", fillStart, string.Empty);
+					yield return BuildMemberDefinition(Program.Settings.TypePadding, fill, $"unknown{fillStart:X04}", fillStart, string.Empty);
 
 					fill = 0;
 				}
@@ -172,16 +172,16 @@ namespace ReClassNET.CodeGenerator
 					switch (((BitFieldNode)member).Bits)
 					{
 						case 8:
-							type = Program.Settings.Typedef.UInt8;
+							type = Program.Settings.TypeUInt8;
 							break;
 						case 16:
-							type = Program.Settings.Typedef.UInt16;
+							type = Program.Settings.TypeUInt16;
 							break;
 						case 32:
-							type = Program.Settings.Typedef.UInt32;
+							type = Program.Settings.TypeUInt32;
 							break;
 						case 64:
-							type = Program.Settings.Typedef.UInt64;
+							type = Program.Settings.TypeUInt64;
 							break;
 					}
 
@@ -211,7 +211,7 @@ namespace ReClassNET.CodeGenerator
 
 			if (fill != 0)
 			{
-				yield return BuildMemberDefinition(Program.Settings.Typedef.Hex, fill, $"unknown{fillStart:X04}", fillStart, string.Empty);
+				yield return BuildMemberDefinition(Program.Settings.TypePadding, fill, $"unknown{fillStart:X04}", fillStart, string.Empty);
 			}
 		}
 

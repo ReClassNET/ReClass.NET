@@ -62,7 +62,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
-			return Draw(view, x, y, Program.Settings.ShowText ? view.Memory.ReadPrintableASCIIString(Offset, 8) + " " : null, 8);
+			return Draw(view, x, y, Program.Settings.ShowNodeText ? view.Memory.ReadPrintableASCIIString(Offset, 8) + " " : null, 8);
 		}
 
 		public override void Update(HotSpot spot)

@@ -653,6 +653,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap color_wheel {
+            get {
+                object obj = ResourceManager.GetObject("color_wheel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap control_pause {
             get {
                 object obj = ResourceManager.GetObject("control_pause", resourceCulture);
@@ -836,6 +846,16 @@ namespace ReClassNET.Properties {
         internal static System.Drawing.Bitmap note_add {
             get {
                 object obj = ResourceManager.GetObject("note_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap note_edit {
+            get {
+                object obj = ResourceManager.GetObject("note_edit", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

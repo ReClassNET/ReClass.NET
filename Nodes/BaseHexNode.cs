@@ -34,7 +34,7 @@ namespace ReClassNET.Nodes
 			x += TXOFFSET + 16;
 			x = AddAddressOffset(view, x, y);
 
-			if (Program.Settings.ShowText)
+			if (Program.Settings.ShowNodeText)
 			{
 				x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, text);
 			}

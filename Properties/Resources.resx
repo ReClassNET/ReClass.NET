@@ -412,4 +412,10 @@
   <data name="note_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\note_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="color_wheel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\color_wheel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="note_edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\note_edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

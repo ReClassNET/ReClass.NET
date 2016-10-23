@@ -33,7 +33,7 @@ namespace ReClassNET.UI
 
 			m_vWindows.Add(form);
 
-			form.TopMost = Program.Settings.AlwaysOnTop;
+			form.TopMost = Program.Settings.StayOnTop;
 
 			WindowAdded?.Invoke(null, new GlobalWindowManagerEventArgs(form));
 		}

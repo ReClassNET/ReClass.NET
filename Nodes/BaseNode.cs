@@ -199,12 +199,12 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
-			if (Program.Settings.ShowOffset)
+			if (Program.Settings.ShowNodeOffset)
 			{
 				x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, $"{Offset.ToInt32():X04}") + view.Font.Width;
 			}
 
-			if (Program.Settings.ShowAddress)
+			if (Program.Settings.ShowNodeAddress)
 			{
 #if WIN32
 				x = AddText(view, x, y, Program.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt32():X08}") + view.Font.Width;
