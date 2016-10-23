@@ -1,6 +1,7 @@
 using System.Diagnostics.Contracts;
 using System.Resources;
 using ReClassNET.Forms;
+using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.Plugins
@@ -13,29 +14,32 @@ namespace ReClassNET.Plugins
 
 		public RemoteProcess Process { get; }
 
-		public DefaultPluginHost(MainForm form, RemoteProcess process)
+		public ILogger Logger { get; }
+
+		public DefaultPluginHost(MainForm form, RemoteProcess process, ILogger logger)
 		{
 			Contract.Requires(form != null);
 			Contract.Requires(process != null);
+			Contract.Requires(logger != null);
 
 			MainWindow = form;
-
 			Process = process;
+			Logger = logger;
 		}
 
-		public void RegisterGetNodeInfoCallback(GetNodeInfoCallback callback)
+		public void RegisterNodeInfoReader(INodeInfoReader reader)
 		{
-			if (callback != null)
+			if (reader != null)
 			{
-				BaseNode.GetNodeInfoCallbacks.Add(callback);
+				BaseNode.NodeInfoReader.Add(reader);
 			}
 		}
 
-		public void UnregisterGetNodeInfoCallback(GetNodeInfoCallback callback)
+		public void UnregisterNodeInfoReader(INodeInfoReader reader)
 		{
-			if (callback != null)
+			if (reader != null)
 			{
-				BaseNode.GetNodeInfoCallbacks.Remove(callback);
+				BaseNode.NodeInfoReader.Remove(reader);
 			}
 		}
 	}

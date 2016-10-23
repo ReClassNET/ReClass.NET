@@ -76,9 +76,9 @@ namespace ReClassNET.Nodes
 
 				if (Program.Settings.ShowPluginInfo)
 				{
-					foreach (var getNodeInfo in GetNodeInfoCallbacks)
+					foreach (var reader in NodeInfoReader)
 					{
-						var info = getNodeInfo(this, ivalue, view.Memory);
+						var info = reader.ReadNodeInfo(this, ivalue, view.Memory);
 						if (info != null)
 						{
 							x = AddText(view, x, y, Program.Settings.PluginColor, HotSpot.NoneId, info);

@@ -6,11 +6,9 @@ using System.Drawing;
 
 namespace ReClassNET.Nodes
 {
-	public delegate string GetNodeInfoCallback(BaseNode node, IntPtr value, Memory memory);
-
 	public abstract class BaseNode : INotifyPropertyChanged
 	{
-		internal static List<GetNodeInfoCallback> GetNodeInfoCallbacks = new List<GetNodeInfoCallback>();
+		internal static readonly List<INodeInfoReader> NodeInfoReader = new List<INodeInfoReader>();
 
 		protected const int TXOFFSET = 16;
 		private static int NodeIndex = 0;

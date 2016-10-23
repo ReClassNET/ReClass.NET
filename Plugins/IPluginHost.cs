@@ -1,5 +1,6 @@
 using System.Resources;
 using ReClassNET.Forms;
+using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.Plugins
@@ -12,7 +13,9 @@ namespace ReClassNET.Plugins
 
 		RemoteProcess Process { get; }
 
-		void RegisterGetNodeInfoCallback(GetNodeInfoCallback callback);
-		void UnregisterGetNodeInfoCallback(GetNodeInfoCallback callback);
+		ILogger Logger { get; }
+
+		void RegisterNodeInfoReader(INodeInfoReader reader);
+		void UnregisterNodeInfoReader(INodeInfoReader reader);
 	}
 }

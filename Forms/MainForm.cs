@@ -42,6 +42,8 @@ namespace ReClassNET.Forms
 			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true);
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(false);
 
+			logger = new GuiLogger();
+
 			remoteProcess = new RemoteProcess(nativeHelper);
 			remoteProcess.ProcessChanged += delegate (RemoteProcess sender)
 			{
@@ -60,7 +62,7 @@ namespace ReClassNET.Forms
 				Process = remoteProcess
 			};
 
-			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess), nativeHelper);
+			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess, logger), nativeHelper);
 
 			ClassNode.NewClassCreated += delegate (ClassNode node)
 			{
@@ -69,8 +71,6 @@ namespace ReClassNET.Forms
 
 			memoryViewControl.Settings = settings;
 			memoryViewControl.Memory = memory;
-
-			logger = new GuiLogger();
 
 			newClassToolStripButton_Click(null, null);
 		}

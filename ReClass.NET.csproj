@@ -99,6 +99,7 @@
     <Compile Include="DataExchange\ReClassFile.cs" />
     <Compile Include="DataExchange\ReClass2007File.cs" />
     <Compile Include="DpiUtil.cs" />
+    <Compile Include="Nodes\INodeInfoReader.cs" />
     <Compile Include="UI\ClassNodeView.cs">
       <SubType>UserControl</SubType>
     </Compile>
