@@ -1,34 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
+using ColorCode;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
 {
 	class CSharpCodeGenerator : ICodeGenerator
 	{
-		[StructLayout(LayoutKind.Explicit)]
-		struct UInt32FloatData
-		{
-			[FieldOffset(0)]
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-			public byte[] Bytes;
-
-			[FieldOffset(0)]
-			public float FloatValue;
-
-			[FieldOffset(0)]
-			public int IntValue;
-
-			public IntPtr IntPtr => unchecked((IntPtr)IntValue);
-
-			[FieldOffset(0)]
-			public uint UIntValue;
-
-			public UIntPtr UIntPtr => unchecked((UIntPtr)UIntValue);
-		}
+		public ILanguage Language => Languages.CSharp;
 
 		public string GetCodeFromClasses(IEnumerable<ClassNode> classes)
 		{

@@ -59,6 +59,9 @@
     <ApplicationIcon>Resources\Icon\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ColorCode">
+      <HintPath>.\ColorCode.dll</HintPath>
+    </Reference>
     <Reference Include="Dia2Lib">
       <HintPath>.\Dia2Lib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>

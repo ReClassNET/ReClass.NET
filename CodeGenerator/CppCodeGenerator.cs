@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using ColorCode;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
@@ -35,6 +36,8 @@ namespace ReClassNET.CodeGenerator
 			[typeof(Vector3Node)] = Program.Settings.TypeVector3,
 			[typeof(Vector4Node)] = Program.Settings.TypeVector4
 		};
+
+		public ILanguage Language => Languages.Cpp;
 
 		public string GetCodeFromClasses(IEnumerable<ClassNode> classes)
 		{

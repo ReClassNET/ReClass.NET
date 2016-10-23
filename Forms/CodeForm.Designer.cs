@@ -28,26 +28,24 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.codeRichTextBox = new System.Windows.Forms.RichTextBox();
+			this.codeWebBrowser = new System.Windows.Forms.WebBrowser();
 			this.SuspendLayout();
 			// 
-			// codeRichTextBox
+			// codeWebBrowser
 			// 
-			this.codeRichTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.codeRichTextBox.Location = new System.Drawing.Point(12, 12);
-			this.codeRichTextBox.Name = "codeRichTextBox";
-			this.codeRichTextBox.Size = new System.Drawing.Size(478, 406);
-			this.codeRichTextBox.TabIndex = 0;
-			this.codeRichTextBox.Text = "";
+			this.codeWebBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.codeWebBrowser.Location = new System.Drawing.Point(0, 0);
+			this.codeWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+			this.codeWebBrowser.Name = "codeWebBrowser";
+			this.codeWebBrowser.Size = new System.Drawing.Size(502, 430);
+			this.codeWebBrowser.TabIndex = 1;
 			// 
 			// CodeForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(502, 430);
-			this.Controls.Add(this.codeRichTextBox);
+			this.Controls.Add(this.codeWebBrowser);
 			this.Name = "CodeForm";
 			this.Text = "ReClass.NET - Code";
 			this.ResumeLayout(false);
@@ -55,7 +53,6 @@
 		}
 
 		#endregion
-
-		private System.Windows.Forms.RichTextBox codeRichTextBox;
+		private System.Windows.Forms.WebBrowser codeWebBrowser;
 	}
 }

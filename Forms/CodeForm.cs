@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Windows.Forms;
+using ColorCode;
 using ReClassNET.CodeGenerator;
 using ReClassNET.Nodes;
 using ReClassNET.UI;
@@ -17,7 +18,8 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
-			codeRichTextBox.Text = generator.GetCodeFromClasses(classes);
+			var code = generator.GetCodeFromClasses(classes);
+			codeWebBrowser.DocumentText = new CodeColorizer().Colorize(code, generator.Language);
 		}
 
 		protected override void OnLoad(EventArgs e)
