@@ -69,7 +69,7 @@ namespace ReClassNET.Nodes
 					{
 						if (!txt.Take(IntPtr.Size).Where(c => !c.IsPrintable()).Any())
 						{
-							x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, $"'{txt}'");
+							x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, $"'{txt}'") + view.Font.Width;
 						}
 					}
 				}
@@ -81,7 +81,7 @@ namespace ReClassNET.Nodes
 						var info = reader.ReadNodeInfo(this, ivalue, view.Memory);
 						if (info != null)
 						{
-							x = AddText(view, x, y, Program.Settings.PluginColor, HotSpot.NoneId, info);
+							x = AddText(view, x, y, Program.Settings.PluginColor, HotSpot.NoneId, info) + view.Font.Width;
 						}
 					}
 				}
