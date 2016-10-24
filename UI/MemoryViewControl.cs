@@ -12,9 +12,26 @@ namespace ReClassNET.UI
 {
 	partial class MemoryViewControl : ScrollableCustomControl
 	{
+		private bool check = false;
+		private ClassNode classNode;
+
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public ClassNode ClassNode { get; set; }
+		public ClassNode ClassNode
+		{
+			get { return classNode; }
+			set
+			{
+				classNode = value;
+
+				VerticalScroll.Value = 0;
+				if (classNode != null && Memory != null)
+				{
+					classNode.UpdateAddress(Memory);
+				}
+				Invalidate();
+			}
+		}
 
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
