@@ -632,6 +632,7 @@
 			this.copyAddressToolStripMenuItem.Name = "copyAddressToolStripMenuItem";
 			this.copyAddressToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.copyAddressToolStripMenuItem.Text = "Copy Address";
+			this.copyAddressToolStripMenuItem.Click += new System.EventHandler(this.copyAddressToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 

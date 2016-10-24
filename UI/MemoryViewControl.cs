@@ -218,11 +218,15 @@ namespace ReClassNET.UI
 							}
 							else if (e.Button == MouseButtons.Right)
 							{
-								/*ClearSelection();
+								// If there is only one selected node, select the node the user clicked at.
+								if (selected.Count <= 1)
+								{
+									ClearSelection();
 
-								hitObject.IsSelected = true;
+									hitObject.IsSelected = true;
 
-								selected.Add(hotSpot);*/
+									selected.Add(hotSpot);
+								}
 
 								selectedNodeContextMenuStrip.Show(this, e.Location);
 							}
@@ -501,6 +505,37 @@ namespace ReClassNET.UI
 		private void removeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			RemoveSelectedNodes();
+		}
+
+		private void copyAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (selected.Count > 0)
+			{
+				Clipboard.SetText(selected.First().Address.ToString("X"));
+			}
+		}
+
+		internal void AddNodeType(Type type, string text, Image icon)
+		{
+			var item = new TypeToolStripMenuItem
+			{
+				Image = icon,
+				Text = text,
+				Value = type
+			};
+			item.Click += memoryTypeToolStripMenuItem_Click;
+
+			changeTypeToolStripMenuItem.DropDownItems.Add(item);
+		}
+
+		internal void RemoveNodeType(Type type)
+		{
+			var item = changeTypeToolStripMenuItem.DropDownItems.OfType<TypeToolStripMenuItem>().Where(i => i.Value == type).FirstOrDefault();
+			if (item != null)
+			{
+				item.Click -= memoryTypeToolStripMenuItem_Click;
+				changeTypeToolStripMenuItem.DropDownItems.Remove(item);
+			}
 		}
 	}
 }

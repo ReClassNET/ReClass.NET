@@ -1,4 +1,7 @@
+using System;
+using System.Drawing;
 using System.Resources;
+using ReClassNET.DataExchange;
 using ReClassNET.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
@@ -19,5 +22,8 @@ namespace ReClassNET.Plugins
 
 		void RegisterNodeInfoReader(INodeInfoReader reader);
 		void UnregisterNodeInfoReader(INodeInfoReader reader);
+
+		void RegisterNodeType(Type type, ICustomSchemaConverter converter, string name, Image icon);
+		void UnregisterNodeType(Type type, ICustomSchemaConverter converter);
 	}
 }

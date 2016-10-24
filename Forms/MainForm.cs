@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -372,6 +373,33 @@ namespace ReClassNET.Forms
 
 				MessageBox.Show("You can't exit the application at the moment.\nYou need to wait until the task finishes.");
 			}
+		}
+
+		internal void AddNodeType(Type type, string text, Image icon)
+		{
+			var item = new TypeToolStripButton
+			{
+				Image = icon,
+				ToolTipText = text,
+				Value = type
+			};
+			item.Click += memoryTypeToolStripButton_Click;
+
+			toolStrip.Items.Add(item);
+
+			memoryViewControl.AddNodeType(type, text, icon);
+		}
+
+		internal void RemoveNodeType(Type type)
+		{
+			var item = toolStrip.Items.OfType<TypeToolStripButton>().Where(i => i.Value == type).FirstOrDefault();
+			if (item != null)
+			{
+				item.Click -= memoryTypeToolStripButton_Click;
+				toolStrip.Items.Remove(item);
+			}
+
+			memoryViewControl.RemoveNodeType(type);
 		}
 	}
 }
