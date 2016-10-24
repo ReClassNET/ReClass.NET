@@ -2,7 +2,7 @@
 
 namespace ReClassNET
 {
-	class Icons
+	public class Icons
 	{
 		private static Image openCloseOpenIcon = DpiUtil.ScaleImage(Properties.Resources.open_icon);
 		private static Image openCloseClosedIcon = DpiUtil.ScaleImage(Properties.Resources.closed_icon);

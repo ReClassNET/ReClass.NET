@@ -9,25 +9,25 @@ using ReClassNET.Logger;
 
 namespace ReClassNET.DataExchange
 {
-	class ReClassNetFile : IReClassImport, IReClassExport
+	public class ReClassNetFile : IReClassImport, IReClassExport
 	{
 		public const string FormatName = "ReClass.NET File";
 		public const string FileExtension = ".rcnet";
 
 		private const string ClassFileName = "Classes.xml";
 
-		private const string XmlRootElement = "reclass";
-		private const string XmlClassesElement = "classes";
-		private const string XmlClassElement = "class";
-		private const string XmlNodeElement = "node";
-		private const string XmlMethodElement = "method";
-		private const string XmlVersionAttribute = "version";
-		private const string XmlNameAttribute = "name";
-		private const string XmlCommentAttribute = "comment";
-		private const string XmlAddressAttribute = "address";
-		private const string XmlTypeAttribute = "type";
-		private const string XmlReferenceAttribute = "reference";
-		private const string XmlSizeAttribute = "size";
+		public const string XmlRootElement = "reclass";
+		public const string XmlClassesElement = "classes";
+		public const string XmlClassElement = "class";
+		public const string XmlNodeElement = "node";
+		public const string XmlMethodElement = "method";
+		public const string XmlVersionAttribute = "version";
+		public const string XmlNameAttribute = "name";
+		public const string XmlCommentAttribute = "comment";
+		public const string XmlAddressAttribute = "address";
+		public const string XmlTypeAttribute = "type";
+		public const string XmlReferenceAttribute = "reference";
+		public const string XmlSizeAttribute = "size";
 
 		#region Load
 
@@ -110,7 +110,7 @@ namespace ReClassNET.DataExchange
 				var converter = CustomSchemaConvert.GetReadConverter(node);
 				if (converter != null)
 				{
-					return converter.ReadFromXml(node);
+					return converter.ReadFromXml(node, classes, logger);
 				}
 
 				logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {node.Attribute(XmlTypeAttribute)?.Value}");
@@ -179,10 +179,11 @@ namespace ReClassNET.DataExchange
 
 		#region Write
 
-		public void Save(string filePath, SchemaBuilder schema)
+		public void Save(string filePath, SchemaBuilder schema, ILogger logger)
 		{
 			Contract.Requires(filePath != null);
 			Contract.Requires(schema != null);
+			Contract.Requires(logger != null);
 
 			using (var fs = new FileStream(filePath, FileMode.Create))
 			{
@@ -191,15 +192,16 @@ namespace ReClassNET.DataExchange
 					var classesEntry = archive.CreateEntry(ClassFileName);
 					using (var writer = new StreamWriter(classesEntry.Open()))
 					{
-						writer.Write(GenerateXml(schema));
+						writer.Write(GenerateXml(schema, logger));
 					}
 				}
 			}
 		}
 
-		private XDocument GenerateXml(SchemaBuilder schema)
+		private XDocument GenerateXml(SchemaBuilder schema, ILogger logger)
 		{
 			Contract.Requires(schema != null);
+			Contract.Requires(logger != null);
 
 			var document = new XDocument(
 				new XComment("ReClass.NET by KN4CK3R"),
@@ -207,16 +209,17 @@ namespace ReClassNET.DataExchange
 					XmlRootElement,
 					new XAttribute(XmlVersionAttribute, "1"),
 					new XAttribute(XmlTypeAttribute, Constants.Platform),
-					new XElement(XmlClassesElement, schema.BuildSchema().Select(c => WriteNode(c)).Where(e => e != null))
+					new XElement(XmlClassesElement, schema.BuildSchema().Select(c => WriteNode(c, logger)).Where(e => e != null))
 				)
 			);
 
 			return document;
 		}
 
-		private XElement WriteNode(SchemaNode node)
+		private XElement WriteNode(SchemaNode node, ILogger logger)
 		{
 			Contract.Requires(node != null);
+			Contract.Requires(logger != null);
 
 			if (node is SchemaClassNode)
 			{
@@ -227,7 +230,7 @@ namespace ReClassNET.DataExchange
 					new XAttribute(XmlNameAttribute, node.Name ?? string.Empty),
 					new XAttribute(XmlCommentAttribute, node.Comment ?? string.Empty),
 					new XAttribute(XmlAddressAttribute, classNode.AddressFormula ?? string.Empty),
-					classNode.Nodes.Select(n => WriteNode(n)).Where(e => e != null)
+					classNode.Nodes.Select(n => WriteNode(n, logger)).Where(e => e != null)
 				);
 			}
 
@@ -236,10 +239,12 @@ namespace ReClassNET.DataExchange
 				var converter = CustomSchemaConvert.GetWriteConverter(node as SchemaCustomNode);
 				if (converter != null)
 				{
-					return converter.WriteToXml(node as SchemaCustomNode);
+					return converter.WriteToXml(node as SchemaCustomNode, logger);
 				}
 
-				//error
+				logger.Log(LogLevel.Warning, $"Skipping node with unknown type converter: {node.Name}");
+				logger.Log(LogLevel.Warning, node.GetType().ToString());
+
 				return null;
 			}
 
@@ -252,7 +257,7 @@ namespace ReClassNET.DataExchange
 
 			if (node is SchemaReferenceNode)
 			{
-				element.SetAttributeValue(XmlReferenceAttribute, (node as SchemaReferenceNode).InnerNode.Name);
+				element.SetAttributeValue(XmlReferenceAttribute, (node as SchemaReferenceNode).InnerNode.Name ?? string.Empty);
 			}
 			if (node is SchemaVTableNode)
 			{

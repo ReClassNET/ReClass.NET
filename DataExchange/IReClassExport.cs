@@ -1,7 +1,9 @@
-﻿namespace ReClassNET.DataExchange
+﻿using ReClassNET.Logger;
+
+namespace ReClassNET.DataExchange
 {
 	interface IReClassExport
 	{
-		void Save(string filePath, SchemaBuilder schema);
+		void Save(string filePath, SchemaBuilder schema, ILogger logger);
 	}
 }

@@ -16,6 +16,8 @@ namespace ReClassNET.Plugins
 
 		public ILogger Logger { get; }
 
+		public Settings Settings => Program.Settings;
+
 		public DefaultPluginHost(MainForm form, RemoteProcess process, ILogger logger)
 		{
 			Contract.Requires(form != null);

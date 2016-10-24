@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.DataExchange
@@ -72,7 +73,7 @@ namespace ReClassNET.DataExchange
 		}
 	}
 
-	class SchemaReferenceNode : SchemaNode
+	public class SchemaReferenceNode : SchemaNode
 	{
 		public SchemaClassNode InnerNode { get; }
 
@@ -85,7 +86,7 @@ namespace ReClassNET.DataExchange
 		}
 	}
 
-	class SchemaVTableNode : SchemaNode
+	public class SchemaVTableNode : SchemaNode
 	{
 		public List<SchemaNode> Nodes { get; } = new List<SchemaNode>();
 
@@ -96,7 +97,7 @@ namespace ReClassNET.DataExchange
 		}
 	}
 
-	class SchemaClassNode : SchemaNode
+	public class SchemaClassNode : SchemaNode
 	{
 		public string AddressFormula { get; set; }
 		public List<SchemaNode> Nodes { get; } = new List<SchemaNode>();
@@ -108,7 +109,7 @@ namespace ReClassNET.DataExchange
 		}
 	}
 
-	class SchemaBuilder
+	public class SchemaBuilder
 	{
 		private readonly List<SchemaClassNode> schema;
 
@@ -165,7 +166,7 @@ namespace ReClassNET.DataExchange
 			return new SchemaBuilder(classes);
 		}
 
-		public static SchemaBuilder FromNodes(IEnumerable<ClassNode> classes)
+		public static SchemaBuilder FromNodes(IEnumerable<ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(classes != null);
 
@@ -184,11 +185,26 @@ namespace ReClassNET.DataExchange
 				var sc = sclasses[c];
 				foreach (var n in c.Nodes)
 				{
+					SchemaType type;
+					if (!NodeTypeToSchemaTypeMap.TryGetValue(n.GetType(), out type))
+					{
+						var converter = CustomSchemaConvert.GetReadConverter(n);
+						if (converter != null)
+						{
+							sc.Nodes.Add(converter.ReadFromNode(n, sclasses, logger));
+							continue;
+						}
+
+						logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {n.GetType()}");
+
+						continue;
+					}
+
 					SchemaNode node;
 					if (n is BaseReferenceNode)
 					{
 						node = new SchemaReferenceNode(
-							NodeTypeToSchemaTypeMap[n.GetType()],
+							type,
 							sclasses[(n as BaseReferenceNode).InnerNode as ClassNode]
 						);
 					}
@@ -206,20 +222,6 @@ namespace ReClassNET.DataExchange
 					}
 					else
 					{
-						SchemaType type;
-						if (!NodeTypeToSchemaTypeMap.TryGetValue(n.GetType(), out type))
-						{
-							var converter = CustomSchemaConvert.GetReadConverter(n);
-							if (converter != null)
-							{
-								sc.Nodes.Add(converter.ReadFromNode(n));
-								continue;
-							}
-
-							//error
-							continue;
-						}
-
 						node = new SchemaNode(type);
 					}
 					node.Name = n.Name;
@@ -253,7 +255,7 @@ namespace ReClassNET.DataExchange
 			return schema;
 		}
 
-		public IList<ClassNode> BuildNodes()
+		public IList<ClassNode> BuildNodes(ILogger logger)
 		{
 			var classes = schema.ToDictionary(
 				sc => sc,
@@ -311,11 +313,12 @@ namespace ReClassNET.DataExchange
 							var converter = CustomSchemaConvert.GetWriteConverter(sn as SchemaCustomNode);
 							if (converter != null)
 							{
-								cn.AddNode(converter.WriteToNode(sn as SchemaCustomNode));
+								cn.AddNode(converter.WriteToNode(sn as SchemaCustomNode, classes, logger));
 								continue;
 							}
 
-							//error
+							logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {sn.GetType()}");
+
 							continue;
 						}
 

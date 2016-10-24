@@ -15,6 +15,8 @@ namespace ReClassNET.Plugins
 
 		ILogger Logger { get; }
 
+		Settings Settings { get; }
+
 		void RegisterNodeInfoReader(INodeInfoReader reader);
 		void UnregisterNodeInfoReader(INodeInfoReader reader);
 	}

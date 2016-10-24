@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Xml.Linq;
+using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.DataExchange
@@ -14,11 +15,11 @@ namespace ReClassNET.DataExchange
 
 		bool CanWriteNode(SchemaCustomNode node);
 
-		SchemaCustomNode ReadFromXml(XElement element);
-		XElement WriteToXml(SchemaCustomNode node);
+		SchemaCustomNode ReadFromXml(XElement element, IReadOnlyDictionary<string, SchemaClassNode> classes, ILogger logger);
+		XElement WriteToXml(SchemaCustomNode node, ILogger logger);
 
-		SchemaCustomNode ReadFromNode(BaseNode node);
-		BaseNode WriteToNode(SchemaCustomNode schema);
+		SchemaCustomNode ReadFromNode(BaseNode node, IReadOnlyDictionary<ClassNode, SchemaClassNode> classes, ILogger logger);
+		BaseNode WriteToNode(SchemaCustomNode schema, IReadOnlyDictionary<SchemaClassNode, ClassNode> classes, ILogger logger);
 	}
 
 	public class CustomSchemaConvert
