@@ -5,14 +5,13 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.Forms;
 using ReClassNET.Nodes;
+using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {
 	partial class MemoryViewControl : ScrollableCustomControl
 	{
-		private bool check = false;
 		private ClassNode classNode;
 
 		[Browsable(false)]

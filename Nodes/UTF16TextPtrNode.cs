@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Text;
+using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {

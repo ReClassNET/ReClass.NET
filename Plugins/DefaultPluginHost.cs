@@ -6,6 +6,7 @@ using ReClassNET.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.DataExchange;
+using ReClassNET.Util;
 
 namespace ReClassNET.Plugins
 {

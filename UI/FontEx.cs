@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace ReClassNET
+namespace ReClassNET.UI
 {
 	public class FontEx
 	{

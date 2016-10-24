@@ -11,6 +11,7 @@ using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Forms
 {

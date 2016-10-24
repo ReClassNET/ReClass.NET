@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Forms
 {

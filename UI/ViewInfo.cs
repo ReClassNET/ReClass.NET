@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using ReClassNET.Util;
 
-namespace ReClassNET
+namespace ReClassNET.UI
 {
 	public class ViewInfo
 	{

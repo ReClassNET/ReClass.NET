@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ReClassNET
+namespace ReClassNET.Util
 {
 	public class Memory
 	{

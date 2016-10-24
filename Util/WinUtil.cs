@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Win32;
 
-namespace ReClassNET
+namespace ReClassNET.Util
 {
 	public static class WinUtil
 	{

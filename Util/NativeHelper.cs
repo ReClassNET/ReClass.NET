@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace ReClassNET
+namespace ReClassNET.Util
 {
 	public class NativeHelper : IDisposable
 	{

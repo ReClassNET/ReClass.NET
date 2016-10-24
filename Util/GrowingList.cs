@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ReClassNET
+namespace ReClassNET.Util
 {
 	public class GrowingList<T>
 	{

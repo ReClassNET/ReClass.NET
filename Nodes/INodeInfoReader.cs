@@ -1,4 +1,5 @@
 ﻿using System;
+using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {

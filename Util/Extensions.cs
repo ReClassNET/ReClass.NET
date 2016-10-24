@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Nodes;
 
-namespace ReClassNET
+namespace ReClassNET.Util
 {
 	static class Extensions
 	{

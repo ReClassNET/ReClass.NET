@@ -102,7 +102,7 @@
     <Compile Include="DataExchange\IReClassExport.cs" />
     <Compile Include="DataExchange\ReClassFile.cs" />
     <Compile Include="DataExchange\ReClass2007File.cs" />
-    <Compile Include="DpiUtil.cs" />
+    <Compile Include="UI\DpiUtil.cs" />
     <Compile Include="Nodes\INodeInfoReader.cs" />
     <Compile Include="UI\ClassNodeView.cs">
       <SubType>UserControl</SubType>
@@ -139,7 +139,7 @@
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
-    <Compile Include="GrowingList.cs" />
+    <Compile Include="Util\GrowingList.cs" />
     <Compile Include="Forms\PluginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,13 +152,13 @@
     <Compile Include="Forms\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="HotSpot.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="FontEx.cs" />
+    <Compile Include="UI\HotSpot.cs" />
+    <Compile Include="Util\Extensions.cs" />
+    <Compile Include="UI\FontEx.cs" />
     <Compile Include="UI\HotSpotTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Icons.cs" />
+    <Compile Include="UI\Icons.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -174,12 +174,12 @@
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LogLevel.cs" />
     <Compile Include="Logger\NullLogger.cs" />
-    <Compile Include="Memory.cs" />
+    <Compile Include="Util\Memory.cs" />
     <Compile Include="UI\MemoryViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="NativeHelper.cs" />
-    <Compile Include="NativeMethods.cs" />
+    <Compile Include="Util\NativeHelper.cs" />
+    <Compile Include="Util\NativeMethods.cs" />
     <Compile Include="Nodes\ClassInstanceArrayNode.cs" />
     <Compile Include="Nodes\BaseArrayNode.cs" />
     <Compile Include="Nodes\BaseContainerNode.cs" />
@@ -243,7 +243,7 @@
     <Compile Include="Plugins\Plugin.cs" />
     <Compile Include="Plugins\PluginInfo.cs" />
     <Compile Include="Plugins\PluginManager.cs" />
-    <Compile Include="ProcessInfo.cs" />
+    <Compile Include="Util\ProcessInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -251,12 +251,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RemoteProcess.cs" />
+    <Compile Include="Util\RemoteProcess.cs" />
     <Compile Include="UI\ScrollableCustomControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="ShellIcon.cs" />
+    <Compile Include="UI\ShellIcon.cs" />
     <Compile Include="SymbolReader\ComDisposableWrapper.cs" />
     <Compile Include="SymbolReader\SymbolReader.cs" />
     <Compile Include="SymbolReader\Symbols.cs" />
@@ -267,8 +267,8 @@
     <Compile Include="UI\SettingsTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ViewInfo.cs" />
-    <Compile Include="WinUtil.cs" />
+    <Compile Include="UI\ViewInfo.cs" />
+    <Compile Include="Util\WinUtil.cs" />
     <EmbeddedResource Include="Forms\CodeForm.resx">
       <DependentUpon>CodeForm.cs</DependentUpon>
     </EmbeddedResource>

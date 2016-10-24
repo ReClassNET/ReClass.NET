@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
+using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {

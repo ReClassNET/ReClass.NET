@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using ReClassNET.Util;
 
-namespace ReClassNET
+namespace ReClassNET.UI
 {
 	public static class ShellIcon
 	{

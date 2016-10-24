@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Text;
 using Dia2Lib;
+using ReClassNET.Util;
 
 namespace ReClassNET.SymbolReader
 {

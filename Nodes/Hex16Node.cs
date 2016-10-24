@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
+using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {

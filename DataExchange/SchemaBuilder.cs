@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
+using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange
 {
