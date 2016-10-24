@@ -11,7 +11,7 @@ namespace ReClassNET.Nodes
 
 		public override void Intialize()
 		{
-			InnerNode = new ClassNode();
+			InnerNode = ClassManager.CreateClass();
 			InnerNode.Intialize();
 		}
 

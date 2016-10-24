@@ -278,7 +278,7 @@ namespace ReClassNET.UI
 
 								var menu = new ContextMenuStrip();
 								menu.Items.AddRange(
-									ClassNode.Classes
+									ClassManager.Classes
 									.Where(c => hotSpot.Type == HotSpotType.ChangeSkipParent ? hitObject.ParentNode != c : true)
 									.OrderBy(c => c.Name)
 									.Select(c =>

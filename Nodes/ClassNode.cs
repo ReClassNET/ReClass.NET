@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using ReClassNET.UI;
@@ -9,11 +8,6 @@ namespace ReClassNET.Nodes
 {
 	public class ClassNode : BaseContainerNode
 	{
-		public delegate void NewClassCreatedEvent(ClassNode sender);
-		public static event NewClassCreatedEvent NewClassCreated;
-
-		public static List<ClassNode> Classes = new List<ClassNode>();
-
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
 
@@ -27,26 +21,14 @@ namespace ReClassNET.Nodes
 
 		public string AddressFormula { get; set; }
 
-		public ClassNode()
-			: this(true)
-		{
-
-		}
-
-		public ClassNode(bool notifiy)
+		/// <summary>Only the <see cref="ClassManager"/> and the <see cref="DataExchange.SchemaBuilder"/> are allowed to call the constructor.</summary>
+		internal ClassNode()
 		{
 #if WIN64
 			AddressFormula = "140000000";
 #else
 			AddressFormula = "400000";
 #endif
-
-			Classes.Add(this);
-
-			if (notifiy)
-			{
-				NewClassCreated?.Invoke(this);
-			}
 		}
 
 		public override void Intialize()
@@ -123,7 +105,7 @@ namespace ReClassNET.Nodes
 
 		internal void NotifyMemorySizeChanged()
 		{
-			OnPropertyChanged(nameof(Nodes));
+			ClassManager.Classes.ForEach(c => c.UpdateOffsets());
 		}
 
 		public void AddNode(BaseNode node)

@@ -27,7 +27,7 @@ namespace ReClassNET.Nodes
 		public string Comment { get; set; }
 
 		/// <summary>Gets or sets the parent node.</summary>
-		public BaseContainerNode ParentNode { get; set; }
+		public BaseContainerNode ParentNode { get; internal set; }
 
 		/// <summary>Gets or sets a value indicating whether this object is hidden.</summary>
 		public bool IsHidden { get; protected set; }

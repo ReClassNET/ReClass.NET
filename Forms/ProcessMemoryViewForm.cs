@@ -109,10 +109,8 @@ namespace ReClassNET
 			var address = GetSelectedRegionAddress();
 			if (address != IntPtr.Zero)
 			{
-				var node = new ClassNode
-				{
-					Address = address
-				};
+				var node = ClassManager.CreateClass();
+				node.Address = address;
 				node.AddBytes(64);
 
 				classesView.SelectedClass = node;

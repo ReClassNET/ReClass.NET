@@ -260,7 +260,7 @@ namespace ReClassNET.DataExchange
 		{
 			var classes = schema.ToDictionary(
 				sc => sc,
-				sc => new ClassNode(false)
+				sc => new ClassNode
 				{
 					Name = sc.Name ?? string.Empty,
 					AddressFormula = sc.AddressFormula ?? string.Empty,

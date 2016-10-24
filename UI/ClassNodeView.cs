@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Nodes;
@@ -11,21 +12,31 @@ namespace ReClassNET.UI
 {
 	public partial class ClassNodeView : UserControl
 	{
-		private readonly List<ClassNode> classes = new List<ClassNode>();
-
-		public IEnumerable<ClassNode> Classes => classes;
-
 		private readonly TreeNode root;
 
-		public delegate void ClassSelectedEvent(object sender, ClassNode node);
-		public event ClassSelectedEvent ClassSelected;
+		private ClassNode selectedClass;
+
+		public delegate void SelectionChangedEvent(object sender, ClassNode node);
+		public event SelectionChangedEvent SelectionChanged;
 
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ClassNode SelectedClass
 		{
-			get { return classesTreeView.SelectedNode.Tag as ClassNode; }
-			set { if (value != null) { classesTreeView.SelectedNode = root.Nodes.Cast<TreeNode>().Where(n => n.Tag == value).FirstOrDefault(); } }
+			get { return selectedClass; }
+			set
+			{
+				if (selectedClass != value)
+				{
+					selectedClass = value;
+					if (selectedClass != null)
+					{
+						classesTreeView.SelectedNode = root.Nodes.Cast<TreeNode>().Where(n => n.Tag == selectedClass).FirstOrDefault();
+					}
+
+					SelectionChanged?.Invoke(this, selectedClass);
+				}
+			}
 		}
 
 		public ClassNodeView()
@@ -48,72 +59,47 @@ namespace ReClassNET.UI
 			classesTreeView.Nodes.Add(root);
 		}
 
-		public void Clear()
-		{
-			classes.Clear();
-			root.Nodes.Clear();
-
-			ClassSelected?.Invoke(this, null);
-		}
-
 		public void Add(ClassNode node)
 		{
-			if (!classes.Contains(node))
+			Contract.Requires(node != null);
+
+			node.PropertyChanged += NodePropertyChanged;
+
+			var treeNode = new TreeNode
 			{
-				classes.Add(node);
+				Text = node.Name,
+				Tag = node,
+				ImageIndex = 1,
+				SelectedImageIndex = 1
+			};
 
-				node.PropertyChanged += NodePropertyChanged;
+			root.Nodes.Add(treeNode);
 
-				var treeNode = new TreeNode
-				{
-					Text = node.Name,
-					Tag = node,
-					ImageIndex = 1,
-					SelectedImageIndex = 1
-				};
-
-				root.Nodes.Add(treeNode);
-
-				root.Expand();
-			}
-		}
-
-		private IEnumerable<ClassNode> GetClassReferences(ClassNode node)
-		{
-			return classes.Where(c => c != node).Where(c => c.Descendants().Where(n => (n as BaseReferenceNode)?.InnerNode == node).Any());
+			root.Expand();
 		}
 
 		public void Remove(ClassNode node)
 		{
-			var references = GetClassReferences(node).ToList();
-			if (references.Any())
+			var tn = FindClassTreeNode(node);
+			if (tn != null)
 			{
-				var message = "This class still has references:\n\n";
-				message += string.Join("\n", references.Select(n => n.Name));
+				root.Nodes.Remove(tn);
 
-				MessageBox.Show(message, "Error");
-
-				return;
-			}
-
-			if (classes.Remove(node))
-			{
-				root.Nodes.Remove(FindClassNode(node));
-
-				ClassSelected?.Invoke(this, root.Nodes.Cast<TreeNode>().FirstOrDefault()?.Tag as ClassNode);
-			}
-		}
-
-		public void RemoveUnusedClasses()
-		{
-			var toRemove = classes.Except(classes.Where(x => GetClassReferences(x).Any())).Where(c => c.Nodes.All(n => n is BaseHexNode)).ToList();
-			foreach (var node in toRemove)
-			{
-				Remove(node);
+				if (selectedClass == node)
+				{
+					if (root.Nodes.Count > 0)
+					{
+						classesTreeView.SelectedNode = root.Nodes[0];
+					}
+					else
+					{
+						SelectedClass = null;
+					}
+				}
 			}
 		}
 
-		private TreeNode FindClassNode(ClassNode node)
+		private TreeNode FindClassTreeNode(ClassNode node)
 		{
 			return root.Nodes.Cast<TreeNode>().Where(t => t.Tag == node).FirstOrDefault();
 		}
@@ -126,17 +112,13 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			var treeNode = FindClassNode(node);
+			var treeNode = FindClassTreeNode(node);
 
 			switch (e.PropertyName)
 			{
 				case nameof(BaseNode.Name):
 					// Name has changed, update the TreeView
 					treeNode.Text = node.Name;
-					break;
-				case nameof(ClassNode.Nodes):
-					// Child nodes have changed, update all offsets
-					classes.ForEach(c => c.UpdateOffsets());
 					break;
 			}
 		}
@@ -166,7 +148,10 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			ClassSelected?.Invoke(this, node);
+			if (selectedClass != node)
+			{
+				SelectedClass = node;
+			}
 		}
 
 		private void classesTreeView_MouseUp(object sender, MouseEventArgs e)
@@ -186,7 +171,7 @@ namespace ReClassNET.UI
 
 		private void removeUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			RemoveUnusedClasses();
+			ClassManager.RemoveUnusedClasses();
 		}
 
 		private void deleteClassToolStripMenuItem_Click(object sender, EventArgs e)
@@ -197,7 +182,7 @@ namespace ReClassNET.UI
 				var classNode = treeNode.Tag as ClassNode;
 				if (classNode != null)
 				{
-					Remove(classNode);
+					ClassManager.Remove(classNode);
 				}
 			}
 		}

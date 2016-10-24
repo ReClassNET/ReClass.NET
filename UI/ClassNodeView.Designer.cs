@@ -42,6 +42,7 @@
 			// 
 			this.classesTreeView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.classesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.classesTreeView.HideSelection = false;
 			this.classesTreeView.LabelEdit = true;
 			this.classesTreeView.Location = new System.Drawing.Point(0, 0);
 			this.classesTreeView.Name = "classesTreeView";

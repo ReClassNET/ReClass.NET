@@ -64,15 +64,13 @@ namespace ReClassNET.Forms
 				Process = remoteProcess
 			};
 
-			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess, logger), nativeHelper);
-
-			ClassNode.NewClassCreated += delegate (ClassNode node)
-			{
-				classesView.Add(node);
-			};
-
 			memoryViewControl.Settings = settings;
 			memoryViewControl.Memory = memory;
+
+			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess, logger), nativeHelper);
+
+			ClassManager.ClassAdded += c => classesView.Add(c);
+			ClassManager.ClassRemoved += c => classesView.Remove(c);
 
 			newClassToolStripButton_Click(null, null);
 		}
@@ -141,7 +139,7 @@ namespace ReClassNET.Forms
 
 		private void cleanUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			classesView.RemoveUnusedClasses();
+			ClassManager.RemoveUnusedClasses();
 		}
 
 		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -179,7 +177,7 @@ namespace ReClassNET.Forms
 
 		private void newClassToolStripButton_Click(object sender, EventArgs e)
 		{
-			var node = new ClassNode();
+			var node = ClassManager.CreateClass();
 			node.AddBytes(64);
 
 			classesView.SelectedClass = node;
@@ -224,11 +222,10 @@ namespace ReClassNET.Forms
 								projectPath = ofd.FileName;
 							}
 
-							ClassNode.Classes.Clear();
-							classesView.Clear();
+							ClassManager.Clear();
 
 							var classes = schema.BuildNodes(logger);
-							classes.ForEach(c => classesView.Add(c));
+							classes.ForEach(c => ClassManager.AddClass(c));
 							memoryViewControl.ClassNode = classes.FirstOrDefault();
 						}
 					}
@@ -238,7 +235,7 @@ namespace ReClassNET.Forms
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (!ClassNode.Classes.Any())
+			if (!ClassManager.Classes.Any())
 			{
 				return;
 			}
@@ -251,12 +248,12 @@ namespace ReClassNET.Forms
 			}
 
 			var file = new ReClassNetFile();
-			file.Save(projectPath, SchemaBuilder.FromNodes(ClassNode.Classes, logger), logger);
+			file.Save(projectPath, SchemaBuilder.FromNodes(ClassManager.Classes, logger), logger);
 		}
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (!ClassNode.Classes.Any())
+			if (!ClassManager.Classes.Any())
 			{
 				return;
 			}
@@ -290,8 +287,8 @@ namespace ReClassNET.Forms
 
 		private void clearProjectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			classesView.Clear();
-			ClassNode.Classes.Clear();
+			ClassManager.Clear();
+
 			memoryViewControl.ClassNode = null;
 		}
 
@@ -360,7 +357,7 @@ namespace ReClassNET.Forms
 
 		private void ShowCodeForm(ICodeGenerator generator)
 		{
-			using (var cf = new CodeForm(generator, ClassNode.Classes))
+			using (var cf = new CodeForm(generator, ClassManager.Classes))
 			{
 				cf.ShowDialog();
 			}

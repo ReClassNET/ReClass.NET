@@ -1136,7 +1136,7 @@
 			this.classesView.Name = "classesView";
 			this.classesView.Size = new System.Drawing.Size(201, 524);
 			this.classesView.TabIndex = 0;
-			this.classesView.ClassSelected += new ReClassNET.UI.ClassNodeView.ClassSelectedEvent(this.classesView_ClassSelected);
+			this.classesView.SelectionChanged += new ReClassNET.UI.ClassNodeView.SelectionChangedEvent(this.classesView_ClassSelected);
 			// 
 			// memoryViewControl
 			// 
