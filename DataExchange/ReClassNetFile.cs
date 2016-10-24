@@ -59,7 +59,7 @@ namespace ReClassNET.DataExchange
 							var platform = document.Root.Attribute(XmlTypeAttribute)?.Value;
 							if (platform != Constants.Platform)
 							{
-								logger.Log(LogLevel.Warning, $"The platform of the file ('{platform}') doesn't match the program platform ('{Constants.Platform}').");
+								logger.Log(LogLevel.Warning, $"The platform of the file ({platform}) doesn't match the program platform ({Constants.Platform}).");
 							}
 
 							classes = document.Root
