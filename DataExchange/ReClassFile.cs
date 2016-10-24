@@ -149,7 +149,7 @@ namespace ReClassNET.DataExchange
 					int.TryParse(node.Attribute("Size")?.Value, out count);
 					sn.Count = type == SchemaType.UTF8Text ? count : count / 2;
 					break;
-				case SchemaType.Custom:
+				case SchemaType.Padding:
 					int.TryParse(node.Attribute("Size")?.Value, out count);
 					sn.Count = count;
 					break;
@@ -183,7 +183,7 @@ namespace ReClassNET.DataExchange
 			SchemaType.UInt8,
 			SchemaType.UTF8Text,
 			SchemaType.FunctionPtr,
-			SchemaType.Custom,
+			SchemaType.Padding,
 			SchemaType.Vector2,
 			SchemaType.Vector3,
 			SchemaType.Vector4,
@@ -226,7 +226,7 @@ namespace ReClassNET.DataExchange
 			SchemaType.UTF8Text,
 			SchemaType.UTF16Text,
 			SchemaType.FunctionPtr,
-			SchemaType.Custom,
+			SchemaType.Padding,
 			SchemaType.Vector2,
 			SchemaType.Vector3,
 			SchemaType.Vector4,

@@ -98,6 +98,7 @@
     <Compile Include="CodeGenerator\CSharpCodeGenerator.cs" />
     <Compile Include="CodeGenerator\ICodeGenerator.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="DataExchange\CustomSchemaConverter.cs" />
     <Compile Include="DataExchange\IReClassExport.cs" />
     <Compile Include="DataExchange\ReClassFile.cs" />
     <Compile Include="DataExchange\ReClass2007File.cs" />

@@ -6,7 +6,7 @@ using ReClassNET.Nodes;
 
 namespace ReClassNET.DataExchange
 {
-	enum SchemaType
+	public enum SchemaType
 	{
 		None,
 		Array,
@@ -43,11 +43,14 @@ namespace ReClassNET.DataExchange
 		Vector4,
 		VTable,
 		VMethod,
-		Custom,
-		BitField
+		BitField,
+
+		Padding,
+
+		Custom
 	}
 
-	class SchemaNode
+	public class SchemaNode
 	{
 		public SchemaType Type { get; }
 		public string Name { get; set; }
@@ -57,6 +60,15 @@ namespace ReClassNET.DataExchange
 		public SchemaNode(SchemaType type)
 		{
 			Type = type;
+		}
+	}
+
+	public class SchemaCustomNode : SchemaNode
+	{
+		public SchemaCustomNode()
+			: base(SchemaType.Custom)
+		{
+
 		}
 	}
 
@@ -100,7 +112,7 @@ namespace ReClassNET.DataExchange
 	{
 		private readonly List<SchemaClassNode> schema;
 
-		private static Dictionary<SchemaType, Type> SchemaTypeToNodeTypeMap = new Dictionary<SchemaType, Type>
+		private static readonly Dictionary<SchemaType, Type> SchemaTypeToNodeTypeMap = new Dictionary<SchemaType, Type>
 		{
 			[SchemaType.Array] = typeof(ClassInstanceArrayNode),
 			[SchemaType.ClassInstance] = typeof(ClassInstanceNode),
@@ -137,7 +149,7 @@ namespace ReClassNET.DataExchange
 			[SchemaType.VTable] = typeof(VTableNode),
 			[SchemaType.BitField] = typeof(BitFieldNode)
 		};
-		private static Dictionary<Type, SchemaType> NodeTypeToSchemaTypeMap = SchemaTypeToNodeTypeMap.ToDictionary(kp => kp.Value, kp => kp.Key);
+		private static readonly Dictionary<Type, SchemaType> NodeTypeToSchemaTypeMap = SchemaTypeToNodeTypeMap.ToDictionary(kp => kp.Value, kp => kp.Key);
 
 		private SchemaBuilder(IEnumerable<SchemaClassNode> classes)
 		{
@@ -194,9 +206,21 @@ namespace ReClassNET.DataExchange
 					}
 					else
 					{
-						node = new SchemaNode(
-							NodeTypeToSchemaTypeMap[n.GetType()]
-						);
+						SchemaType type;
+						if (!NodeTypeToSchemaTypeMap.TryGetValue(n.GetType(), out type))
+						{
+							var converter = CustomSchemaConvert.GetReadConverter(n);
+							if (converter != null)
+							{
+								sc.Nodes.Add(converter.ReadFromNode(n));
+								continue;
+							}
+
+							//error
+							continue;
+						}
+
+						node = new SchemaNode(type);
 					}
 					node.Name = n.Name;
 					node.Comment = n.Comment;
@@ -246,8 +270,8 @@ namespace ReClassNET.DataExchange
 				var cn = classes[sc];
 				foreach (var sn in sc.Nodes)
 				{
-					// Special case Custom type
-					if (sn.Type == SchemaType.Custom)
+					// Special case padding type (known as Custom in original ReClass)
+					if (sn.Type == SchemaType.Padding)
 					{
 						var size = sn.Count;
 						while (size != 0)
@@ -282,6 +306,19 @@ namespace ReClassNET.DataExchange
 					}
 					else
 					{
+						if (sn is SchemaCustomNode)
+						{
+							var converter = CustomSchemaConvert.GetWriteConverter(sn as SchemaCustomNode);
+							if (converter != null)
+							{
+								cn.AddNode(converter.WriteToNode(sn as SchemaCustomNode));
+								continue;
+							}
+
+							//error
+							continue;
+						}
+
 						var node = Activator.CreateInstance(SchemaTypeToNodeTypeMap[sn.Type]) as BaseNode;
 						node.Name = sn.Name ?? string.Empty;
 						node.Comment = sn.Comment ?? string.Empty;

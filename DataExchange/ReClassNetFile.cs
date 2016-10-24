@@ -106,6 +106,13 @@ namespace ReClassNET.DataExchange
 			var type = SchemaType.None;
 			if (!Enum.TryParse(node.Attribute(XmlTypeAttribute)?.Value, out type))
 			{
+				// No build in type matched, try the custom converters.
+				var converter = CustomSchemaConvert.GetReadConverter(node);
+				if (converter != null)
+				{
+					return converter.ReadFromXml(node);
+				}
+
 				logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {node.Attribute(XmlTypeAttribute)?.Value}");
 				logger.Log(LogLevel.Warning, node.ToString());
 
@@ -200,7 +207,7 @@ namespace ReClassNET.DataExchange
 					XmlRootElement,
 					new XAttribute(XmlVersionAttribute, "1"),
 					new XAttribute(XmlTypeAttribute, Constants.Platform),
-					new XElement(XmlClassesElement, schema.BuildSchema().Select(c => WriteNode(c)))
+					new XElement(XmlClassesElement, schema.BuildSchema().Select(c => WriteNode(c)).Where(e => e != null))
 				)
 			);
 
@@ -220,8 +227,20 @@ namespace ReClassNET.DataExchange
 					new XAttribute(XmlNameAttribute, node.Name ?? string.Empty),
 					new XAttribute(XmlCommentAttribute, node.Comment ?? string.Empty),
 					new XAttribute(XmlAddressAttribute, classNode.AddressFormula ?? string.Empty),
-					classNode.Nodes.Select(n => WriteNode(n))
+					classNode.Nodes.Select(n => WriteNode(n)).Where(e => e != null)
 				);
+			}
+
+			if (node is SchemaCustomNode)
+			{
+				var converter = CustomSchemaConvert.GetWriteConverter(node as SchemaCustomNode);
+				if (converter != null)
+				{
+					return converter.WriteToXml(node as SchemaCustomNode);
+				}
+
+				//error
+				return null;
 			}
 
 			var element = new XElement(
