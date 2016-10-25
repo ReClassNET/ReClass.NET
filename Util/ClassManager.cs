@@ -84,6 +84,69 @@ namespace ReClassNET.Util
 				}
 			}
 		}
+
+		public static bool IsCycleFree(ClassNode parent, ClassNode check)
+		{
+			return IsCycleFree(parent, check, classes);
+		}
+
+		public static bool IsCycleFree(ClassNode parent, ClassNode check, IEnumerable<ClassNode> classes)
+		{
+			Contract.Requires(parent != null);
+			Contract.Requires(check != null);
+			Contract.Requires(classes != null);
+			Contract.Requires(Contract.ForAll(classes, c => c != null));
+
+			var selector = new Func<ClassNode, IEnumerable<ClassNode>>(
+				c => c.Nodes
+					.Where(n => n is ClassInstanceNode || n is ClassInstanceArrayNode)
+					.Select(n => ((BaseReferenceNode)n).InnerNode as ClassNode)
+			);
+
+			var toCheck = new HashSet<ClassNode>(selector(parent).Traverse(selector));
+
+			if (!toCheck.Add(check))
+			{
+				return false;
+			}
+
+			if (!IsCycleFreeUp(parent, toCheck, classes))
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		private static bool IsCycleFreeUp(ClassNode root, HashSet<ClassNode> seen, IEnumerable<ClassNode> classes)
+		{
+			Contract.Requires(root != null);
+			Contract.Requires(seen != null);
+			Contract.Requires(Contract.ForAll(seen, c => c != null));
+			Contract.Requires(Contract.ForAll(classes, c => c != null));
+
+			if (!seen.Add(root))
+			{
+				return false;
+			}
+
+			foreach (var cls in classes/*.Except(seen)*/)
+			{
+				if (cls.Nodes
+					.OfType<BaseReferenceNode>()
+					.Where(n => n is ClassInstanceNode || n is ClassInstanceArrayNode)
+					.Where(n => n.InnerNode == root)
+					.Any())
+				{
+					if (!IsCycleFreeUp(cls, seen, classes))
+					{
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
 	}
 
 	public class ClassReferencedException : Exception

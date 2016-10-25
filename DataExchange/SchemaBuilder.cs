@@ -196,7 +196,7 @@ namespace ReClassNET.DataExchange
 							continue;
 						}
 
-						logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {n.GetType()}");
+						logger.Log(LogLevel.Error, $"Skipping node with unknown type: {n.GetType()}");
 
 						continue;
 					}
@@ -318,19 +318,39 @@ namespace ReClassNET.DataExchange
 								continue;
 							}
 
-							logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {sn.GetType()}");
+							logger.Log(LogLevel.Error, $"Skipping node with unknown type: {sn.GetType()}");
 
 							continue;
 						}
 
 						var node = Activator.CreateInstance(SchemaTypeToNodeTypeMap[sn.Type]) as BaseNode;
-						node.Name = sn.Name ?? string.Empty;
+						if (node == null)
+						{
+							logger.Log(LogLevel.Error, $"Could not create node of type: {SchemaTypeToNodeTypeMap[sn.Type]}");
+
+							continue;
+						}
+
+						if (!string.IsNullOrEmpty(sn.Name))
+						{
+							node.Name = sn.Name;
+						}
 						node.Comment = sn.Comment ?? string.Empty;
 
 						var referenceNode = node as BaseReferenceNode;
 						if (referenceNode != null)
 						{
 							var srn = sn as SchemaReferenceNode;
+
+							if (node is ClassInstanceNode || node is ClassInstanceArrayNode)
+							{
+								if (!ClassManager.IsCycleFree(cn, classes[srn.InnerNode], classes.Values))
+								{
+									logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {node.Name}");
+
+									continue;
+								}
+							}
 							referenceNode.InnerNode = classes[srn.InnerNode];
 						}
 

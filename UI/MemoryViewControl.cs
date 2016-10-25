@@ -273,6 +273,13 @@ namespace ReClassNET.UI
 										return;
 									}
 
+									if (!ClassManager.IsCycleFree(refNode.ParentNode as ClassNode, classNode))
+									{
+										MessageBox.Show("Can't change node type because this would create a cycle!");
+
+										return;
+									}
+
 									refNode.InnerNode = classNode;
 								};
 
