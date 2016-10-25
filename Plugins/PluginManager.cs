@@ -36,7 +36,7 @@ namespace ReClassNET.Plugins
 
 		public void LoadAllPlugins(string path)
 		{
-			Contract.Requires(host != null);
+			Contract.Requires(path != null);
 
 			try
 			{

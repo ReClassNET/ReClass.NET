@@ -5,7 +5,7 @@ namespace ReClassNET.UI
 {
 	class CustomToolStripProfessionalRenderer : ToolStripProfessionalRenderer
 	{
-		private bool renderBorder;
+		private readonly bool renderBorder;
 
 		public CustomToolStripProfessionalRenderer(bool renderBorder)
 			: base(new CustomProfessionalColorTable())

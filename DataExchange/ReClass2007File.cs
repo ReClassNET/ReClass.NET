@@ -34,9 +34,9 @@ namespace ReClassNET.DataExchange
 							{
 								Name = Query(connection, $"SELECT variable FROM {r["tbl_name"]} WHERE type = 2 LIMIT 1").First()["variable"].ToString(),
 #if WIN64
-								AddressFormula = "0x140000000"
+								AddressFormula = "140000000"
 #else
-								AddressFormula = "0x400000"
+								AddressFormula = "400000"
 #endif
 							}
 						);
@@ -95,7 +95,7 @@ namespace ReClassNET.DataExchange
 
 			if (type == SchemaType.None)
 			{
-				logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {row["type"]}");
+				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {row["type"]}");
 				logger.Log(LogLevel.Warning, row.ToString());
 
 				return null;
@@ -108,7 +108,7 @@ namespace ReClassNET.DataExchange
 				var reference = Convert.ToInt32(row["ref"]);
 				if (!classes.ContainsKey(reference))
 				{
-					logger.Log(LogLevel.Warning, $"Skipping node with unknown reference: {row["ref"]}");
+					logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {row["ref"]}");
 					logger.Log(LogLevel.Warning, row.ToString());
 
 					return null;

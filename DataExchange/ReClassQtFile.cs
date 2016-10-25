@@ -107,7 +107,7 @@ namespace ReClassNET.DataExchange
 
 			if (type == SchemaType.None)
 			{
-				logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {node.Attribute("Type")?.Value}");
+				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Attribute("Type")?.Value}");
 				logger.Log(LogLevel.Warning, node.ToString());
 
 				return null;
@@ -120,7 +120,7 @@ namespace ReClassNET.DataExchange
 				var pointToClassId = node.Attribute("PointToClass")?.Value;
 				if (pointToClassId == null || !classes.ContainsKey(pointToClassId))
 				{
-					logger.Log(LogLevel.Warning, $"Skipping node with unknown reference: {pointToClassId}");
+					logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {pointToClassId}");
 					logger.Log(LogLevel.Warning, node.ToString());
 
 					return null;

@@ -23,7 +23,7 @@ namespace ReClassNET.DataExchange
 			{
 				var document = XDocument.Load(filePath);
 
-				var typeMap = TypeMap2013;
+				SchemaType[] typeMap = TypeMap2013;
 
 				var versionComment = document.Root.FirstNode as XComment;
 				if (versionComment != null)
@@ -32,12 +32,21 @@ namespace ReClassNET.DataExchange
 					{
 						case "reclass 2011":
 						case "reclass 2013":
+							typeMap = TypeMap2013;
 							break;
 						case "reclass 2015":
 						case "reclass 2016":
 							typeMap = TypeMap2016;
 							break;
 					}
+				}
+
+				if (typeMap == null)
+				{
+					logger.Log(LogLevel.Warning, $"Unknown file version: {versionComment?.Value}");
+					logger.Log(LogLevel.Warning, "Defaulting to ReClass 2016.");
+
+					typeMap = TypeMap2016;
 				}
 
 				classes = document.Root

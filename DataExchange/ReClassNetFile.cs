@@ -14,7 +14,7 @@ namespace ReClassNET.DataExchange
 		public const string FormatName = "ReClass.NET File";
 		public const string FileExtension = ".rcnet";
 
-		private const string ClassFileName = "Classes.xml";
+		private const string ClassFileName = "Data.xml";
 
 		public const string XmlRootElement = "reclass";
 		public const string XmlClassesElement = "classes";
@@ -113,7 +113,7 @@ namespace ReClassNET.DataExchange
 					return converter.ReadFromXml(node, classes, logger);
 				}
 
-				logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {node.Attribute(XmlTypeAttribute)?.Value}");
+				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Attribute(XmlTypeAttribute)?.Value}");
 				logger.Log(LogLevel.Warning, node.ToString());
 
 				return null;
@@ -126,7 +126,7 @@ namespace ReClassNET.DataExchange
 				var reference = node.Attribute(XmlReferenceAttribute)?.Value;
 				if (reference == null || !classes.ContainsKey(reference))
 				{
-					logger.Log(LogLevel.Warning, $"Skipping node with unknown reference: {reference}");
+					logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {reference}");
 					logger.Log(LogLevel.Warning, node.ToString());
 
 					return null;
@@ -242,7 +242,7 @@ namespace ReClassNET.DataExchange
 					return converter.WriteToXml(node as SchemaCustomNode, logger);
 				}
 
-				logger.Log(LogLevel.Warning, $"Skipping node with unknown type converter: {node.Name}");
+				logger.Log(LogLevel.Error, $"Skipping node with unknown type converter: {node.Name}");
 				logger.Log(LogLevel.Warning, node.GetType().ToString());
 
 				return null;

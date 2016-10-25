@@ -95,7 +95,7 @@ namespace ReClassNET.Util
 		private IntPtr fnControlRemoteProcess;
 		private ControlRemoteProcessDelegate controlRemoteProcessDelegate;
 
-		private RequestFunctionPtrCallback requestFunctionPtrReference;
+		private readonly RequestFunctionPtrCallback requestFunctionPtrReference;
 
 		private bool disposedValue = false;
 

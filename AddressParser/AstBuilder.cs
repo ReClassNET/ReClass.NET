@@ -11,8 +11,8 @@ namespace ReClassNET.AddressParser
 	{
 		private readonly Dictionary<char, int> operationPrecedence;
 
-		private Stack<Operation> resultStack = new Stack<Operation>();
-		private Stack<Token> operatorStack = new Stack<Token>();
+		private readonly Stack<Operation> resultStack = new Stack<Operation>();
+		private readonly Stack<Token> operatorStack = new Stack<Token>();
 
 		public AstBuilder()
 		{

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using ReClassNET.UI;
@@ -8,6 +9,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
+	[DebuggerDisplay("{Name}")]
 	public abstract class BaseNode : INotifyPropertyChanged
 	{
 		internal static readonly List<INodeInfoReader> NodeInfoReader = new List<INodeInfoReader>();
