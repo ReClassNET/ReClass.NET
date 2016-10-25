@@ -11,8 +11,8 @@ namespace ReClassNET.SymbolReader
 {
 	class DiaUtil : IDisposable
 	{
-		public IDiaDataSource _IDiaDataSource;
-		public IDiaSession _IDiaSession;
+		public readonly IDiaDataSource _IDiaDataSource;
+		public readonly IDiaSession _IDiaSession;
 
 		public DiaUtil(string pdbName)
 		{
@@ -54,7 +54,7 @@ namespace ReClassNET.SymbolReader
 
 		public string SymbolSearchPath => $"srv*{SymbolCachePath}*http://msdl.microsoft.com/download/symbols";
 
-		private Dictionary<string, SymbolReader> symbolReaders = new Dictionary<string, SymbolReader>();
+		private readonly Dictionary<string, SymbolReader> symbolReaders = new Dictionary<string, SymbolReader>();
 
 		public Symbols()
 		{

@@ -117,6 +117,7 @@ namespace ReClassNET.Nodes
 
 		public void InsertNode(int index, BaseNode node)
 		{
+			Contract.Requires(index >= 0);
 			Contract.Requires(node != null);
 
 			node.ParentNode = this;

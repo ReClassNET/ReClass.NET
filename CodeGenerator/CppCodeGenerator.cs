@@ -10,7 +10,7 @@ namespace ReClassNET.CodeGenerator
 {
 	class CppCodeGenerator : ICodeGenerator
 	{
-		private Dictionary<Type, string> typeToTypedefMap = new Dictionary<Type, string>
+		private readonly Dictionary<Type, string> typeToTypedefMap = new Dictionary<Type, string>
 		{
 			[typeof(DoubleNode)] = Program.Settings.TypeDouble,
 			[typeof(FloatNode)] = Program.Settings.TypeFloat,

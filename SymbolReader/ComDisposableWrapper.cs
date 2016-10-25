@@ -45,7 +45,7 @@ namespace ReClassNET.SymbolReader
 		public ComDisposableWrapper(T com)
 			: base(com)
 		{
-
+			Contract.Requires(obj != null);
 		}
 	}
 }

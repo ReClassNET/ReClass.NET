@@ -11,7 +11,7 @@ namespace ReClassNET.SymbolReader
 		private ComDisposableWrapper<DiaSource> diaSource;
 		private ComDisposableWrapper<IDiaSession> diaSession;
 
-		private string searchPath;
+		private readonly string searchPath;
 
 		public SymbolReader(string searchPath)
 		{

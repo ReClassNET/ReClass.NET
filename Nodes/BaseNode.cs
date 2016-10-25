@@ -242,7 +242,7 @@ namespace ReClassNET.Nodes
 				}
 			}
 
-			AddHotSpot(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), null,-1, HotSpotType.Select);
+			AddHotSpot(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), string.Empty, -1, HotSpotType.Select);
 		}
 
 		/// <summary>Draws an icon and adds a <see cref="HotSpot"/> if <paramref name="hitId"/> is not <see cref="HotSpot.NoneId"/>.</summary>
@@ -269,7 +269,7 @@ namespace ReClassNET.Nodes
 
 			if (id != -1)
 			{
-				AddHotSpot(view, new Rectangle(x, y, IconSize, IconSize), null, id, type);
+				AddHotSpot(view, new Rectangle(x, y, IconSize, IconSize), string.Empty, id, type);
 			}
 
 			return x + IconSize;

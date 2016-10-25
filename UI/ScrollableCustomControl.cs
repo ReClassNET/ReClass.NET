@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 
 namespace ReClassNET.UI
@@ -13,6 +14,9 @@ namespace ReClassNET.UI
 
 		protected override void OnMouseWheel(MouseEventArgs e)
 		{
+			Contract.Requires(VerticalScroll != null);
+			Contract.Requires(HorizontalScroll != null);
+
 			const int WHEEL_DELTA = 120;
 
 			var scrollProperties = VerticalScroll.Enabled ? (ScrollProperties)VerticalScroll : (ScrollProperties)HorizontalScroll;
@@ -77,6 +81,8 @@ namespace ReClassNET.UI
 
 		private void SetValue(ScrollEventType type, ScrollProperties scrollProperties, int newValue)
 		{
+			Contract.Requires(scrollProperties != null);
+
 			if (newValue < scrollProperties.Minimum)
 			{
 				newValue = scrollProperties.Minimum;
@@ -106,6 +112,8 @@ namespace ReClassNET.UI
 
 		private void DoScroll(ScrollEventType type, ScrollProperties scrollProperties)
 		{
+			Contract.Requires(scrollProperties != null);
+
 			var oldValue = scrollProperties.Value;
 			var newValue = oldValue;
 
@@ -136,6 +144,8 @@ namespace ReClassNET.UI
 
 		private void ProcessMessage(ref Message msg, ScrollProperties scrollProperties)
 		{
+			Contract.Requires(scrollProperties != null);
+
 			var type = WParamToScrollEventType(msg.WParam);
 			switch (type)
 			{
@@ -176,21 +186,8 @@ namespace ReClassNET.UI
 			base.WndProc(ref msg);
 		}
 
-		static int HiWord(int number)
-		{
-			if ((number & 0x80000000) == 0x80000000)
-			{
-				return (number >> 16);
-			}
-			else
-			{
-				return (number >> 16) & 0xffff;
-			}
-		}
+		static int HiWord(int number) => (number >> 16) & 0xffff;
 
-		static int LoWord(int number)
-		{
-			return number & 0xffff;
-		}
+		static int LoWord(int number) => number & 0xffff;
 	}
 }

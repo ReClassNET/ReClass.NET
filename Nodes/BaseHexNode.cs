@@ -7,11 +7,11 @@ namespace ReClassNET.Nodes
 {
 	abstract class BaseHexNode : BaseNode
 	{
-		private byte[] buffer;
+		private readonly byte[] buffer;
 		private DateTime highlightUntil;
 
 		public static DateTime CurrentHighlightTime;
-		public static TimeSpan HightlightDuration = TimeSpan.FromSeconds(1);
+		public static readonly TimeSpan HightlightDuration = TimeSpan.FromSeconds(1);
 
 		public BaseHexNode()
 		{

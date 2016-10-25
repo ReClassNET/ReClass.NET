@@ -6,7 +6,7 @@ namespace ReClassNET.Logger
 {
 	class GuiLogger : BaseLogger
 	{
-		private LogForm form;
+		private readonly LogForm form;
 
 		public LogLevel Level { get; set; } = LogLevel.Warning;
 

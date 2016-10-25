@@ -232,6 +232,8 @@ namespace ReClassNET.Util
 
 		public void SetActiveNativeMethod(MethodInfo methodInfo)
 		{
+			Contract.Requires(methodInfo != null);
+
 			switch (methodInfo.Method)
 			{
 				case RequestFunction.EnumerateProcesses:

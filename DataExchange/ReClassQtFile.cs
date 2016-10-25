@@ -66,7 +66,7 @@ namespace ReClassNET.DataExchange
 			}
 		}
 
-		private SchemaType[] typeMap = new SchemaType[]
+		private readonly SchemaType[] typeMap = new SchemaType[]
 		{
 			SchemaType.None,
 			SchemaType.None,

@@ -36,7 +36,7 @@ namespace ReClassNET.AddressParser
 						buffer += characters[i];
 					}
 
-					if (characters[i] != '>')
+					if (i >= characters.Length || characters[i] != '>')
 					{
 						throw new ParseException($"Invalid token '{characters[i]}' detected at position {i}.");
 					}

@@ -80,11 +80,19 @@ namespace ReClassNET.Util
 
 		public string ReadPrintableASCIIString(IntPtr offset, int length)
 		{
+			Contract.Requires(length >= 0);
+
 			return ReadPrintableASCIIString(offset.ToInt32(), length);
 		}
 
 		public string ReadPrintableASCIIString(int offset, int length)
 		{
+			Contract.Requires(offset >= 0);
+			Contract.Requires(offset < data.Length);
+			Contract.Requires(length >= 0);
+			Contract.Requires(length < data.Length);
+			Contract.Requires(offset + length < data.Length);
+
 			var sb = new StringBuilder(length);
 			for (var i = 0; i < length; ++i)
 			{

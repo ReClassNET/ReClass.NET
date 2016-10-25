@@ -26,7 +26,7 @@ namespace ReClassNET.Util
 		public delegate void RemoteProcessChangedEvent(RemoteProcess sender);
 		public event RemoteProcessChangedEvent ProcessChanged;
 
-		private Dictionary<IntPtr, string> rttiCache = new Dictionary<IntPtr, string>();
+		private readonly Dictionary<IntPtr, string> rttiCache = new Dictionary<IntPtr, string>();
 
 		public class Module
 		{
@@ -71,6 +71,8 @@ namespace ReClassNET.Util
 
 		public void ReadRemoteMemoryIntoBuffer(IntPtr address, ref byte[] data)
 		{
+			Contract.Requires(data != null);
+
 			if (!IsValid)
 			{
 				Process = null;
@@ -85,6 +87,8 @@ namespace ReClassNET.Util
 
 		public byte[] ReadRemoteMemory(IntPtr address, int size)
 		{
+			Contract.Requires(size >= 0);
+
 			var data = new byte[size];
 			ReadRemoteMemoryIntoBuffer(address, ref data);
 			return data;
@@ -103,6 +107,9 @@ namespace ReClassNET.Util
 
 		public string ReadRemoteString(Encoding encoding, IntPtr address, int length)
 		{
+			Contract.Requires(encoding != null);
+			Contract.Requires(length >= 0);
+
 			var data = ReadRemoteMemory(address, length);
 			if (data == null)
 			{
@@ -127,6 +134,8 @@ namespace ReClassNET.Util
 
 		public string ReadRemoteRawUTF8String(IntPtr address, int length)
 		{
+			Contract.Requires(length >= 0);
+
 			var data = ReadRemoteMemory(address, length);
 			if (data == null)
 			{

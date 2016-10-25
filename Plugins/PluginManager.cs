@@ -68,7 +68,7 @@ namespace ReClassNET.Plugins
 				{
 					fvi = FileVersionInfo.GetVersionInfo(fi.FullName);
 
-					if (fvi == null || (fvi.ProductName != PluginInfo.PluginName && fvi.ProductName != PluginInfo.PluginNativeName))
+					if (fvi.ProductName != PluginInfo.PluginName && fvi.ProductName != PluginInfo.PluginNativeName)
 					{
 						continue;
 					}

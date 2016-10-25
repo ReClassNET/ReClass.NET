@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Util
 {
 	public class GrowingList<T>
 	{
-		private List<T> list;
+		private readonly List<T> list;
 
 		public T DefaultValue { get; set; }
 
@@ -30,10 +31,7 @@ namespace ReClassNET.Util
 
 		private void CheckIndex(int index)
 		{
-			if (index < 0)
-			{
-				throw new ArgumentOutOfRangeException(nameof(index));
-			}
+			Contract.Requires(index >= 0);
 
 			if (index >= list.Count)
 			{
@@ -45,12 +43,16 @@ namespace ReClassNET.Util
 		{
 			get
 			{
+				Contract.Requires(index >= 0);
+
 				CheckIndex(index);
 
 				return list[index];
 			}
 			set
 			{
+				Contract.Requires(index >= 0);
+
 				CheckIndex(index);
 
 				list[index] = value;
