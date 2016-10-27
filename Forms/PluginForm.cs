@@ -38,10 +38,12 @@ namespace ReClassNET.Forms
 			Contract.Requires(pluginManager != null);
 			Contract.Requires(nativeHelper != null);
 
-			InitializeComponent();
-
 			this.pluginManager = pluginManager;
 			this.nativeHelper = nativeHelper;
+
+			InitializeComponent();
+
+			BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.page_code_big, "Plugins", "Here you can configure all loaded ReClass.NET plugins.");
 
 			// Plugins Tab
 

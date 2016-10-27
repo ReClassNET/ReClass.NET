@@ -18,6 +18,8 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
+			BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.page_code_big, "Code Generator", "This is the code generated from the classes.");
+
 			var code = generator.GetCodeFromClasses(classes);
 			codeWebBrowser.DocumentText = new CodeColorizer().Colorize(code, generator.Language);
 		}

@@ -59,21 +59,22 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.getMoreLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.closeButton = new System.Windows.Forms.Button();
+			this.bannerImage = new System.Windows.Forms.PictureBox();
 			this.tabControl.SuspendLayout();
 			this.pluginsTabPage.SuspendLayout();
 			this.descriptionGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pluginsDataGridView)).BeginInit();
 			this.nativesTabPage.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControl
 			// 
-			this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+			this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl.Controls.Add(this.pluginsTabPage);
 			this.tabControl.Controls.Add(this.nativesTabPage);
-			this.tabControl.Location = new System.Drawing.Point(12, 12);
+			this.tabControl.Location = new System.Drawing.Point(12, 60);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
 			this.tabControl.Size = new System.Drawing.Size(716, 328);
@@ -383,7 +384,7 @@
 			// 
 			this.getMoreLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.getMoreLinkLabel.AutoSize = true;
-			this.getMoreLinkLabel.Location = new System.Drawing.Point(9, 348);
+			this.getMoreLinkLabel.Location = new System.Drawing.Point(9, 396);
 			this.getMoreLinkLabel.Name = "getMoreLinkLabel";
 			this.getMoreLinkLabel.Size = new System.Drawing.Size(95, 13);
 			this.getMoreLinkLabel.TabIndex = 1;
@@ -394,19 +395,29 @@
 			// 
 			this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.closeButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.closeButton.Location = new System.Drawing.Point(653, 343);
+			this.closeButton.Location = new System.Drawing.Point(653, 391);
 			this.closeButton.Name = "closeButton";
 			this.closeButton.Size = new System.Drawing.Size(75, 23);
 			this.closeButton.TabIndex = 2;
 			this.closeButton.Text = "Close";
 			this.closeButton.UseVisualStyleBackColor = true;
 			// 
+			// bannerImage
+			// 
+			this.bannerImage.Dock = System.Windows.Forms.DockStyle.Top;
+			this.bannerImage.Location = new System.Drawing.Point(0, 0);
+			this.bannerImage.Name = "bannerImage";
+			this.bannerImage.Size = new System.Drawing.Size(740, 48);
+			this.bannerImage.TabIndex = 3;
+			this.bannerImage.TabStop = false;
+			// 
 			// PluginForm
 			// 
 			this.AcceptButton = this.closeButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(740, 375);
+			this.ClientSize = new System.Drawing.Size(740, 423);
+			this.Controls.Add(this.bannerImage);
 			this.Controls.Add(this.closeButton);
 			this.Controls.Add(this.getMoreLinkLabel);
 			this.Controls.Add(this.tabControl);
@@ -421,6 +432,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pluginsDataGridView)).EndInit();
 			this.nativesTabPage.ResumeLayout(false);
 			this.nativesTabPage.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -459,5 +471,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn authorColumn;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.ComboBox controlRemoteProcessComboBox;
+		private System.Windows.Forms.PictureBox bannerImage;
 	}
 }
