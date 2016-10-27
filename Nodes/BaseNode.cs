@@ -10,6 +10,7 @@ using ReClassNET.Util;
 namespace ReClassNET.Nodes
 {
 	[DebuggerDisplay("{Name}")]
+	[ContractClass(typeof(BaseNodeContract))]
 	public abstract class BaseNode : INotifyPropertyChanged
 	{
 		internal static readonly List<INodeInfoReader> NodeInfoReader = new List<INodeInfoReader>();
@@ -62,6 +63,8 @@ namespace ReClassNET.Nodes
 		/// <summary>Constructor which sets a unique <see cref="Name"/>.</summary>
 		public BaseNode()
 		{
+			Contract.Ensures(name != null);
+
 			Name = $"N{NodeIndex++:X08}";
 
 			levelsOpen[0] = true;
@@ -357,6 +360,27 @@ namespace ReClassNET.Nodes
 			view.Context.FillRectangle(new SolidBrush(IsSelected ? Program.Settings.SelectedColor : Program.Settings.HiddenColor), 0, y, view.ClientArea.Right, 1);
 
 			return y + 1;
+		}
+	}
+
+	[ContractClassFor(typeof(BaseNode))]
+	internal abstract class BaseNodeContract : BaseNode
+	{
+		public override int MemorySize
+		{
+			get
+			{
+				Contract.Ensures(Contract.Result<int>() >= 0);
+
+				throw new NotImplementedException();
+			}
+		}
+
+		public override int Draw(ViewInfo view, int x, int y)
+		{
+			Contract.Requires(view != null);
+
+			throw new NotImplementedException();
 		}
 	}
 }

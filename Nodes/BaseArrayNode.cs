@@ -1,14 +1,16 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
+	[ContractClass(typeof(BaseArrayNodeContract))]
 	abstract class BaseArrayNode : BaseReferenceNode
 	{
 		public int CurrentIndex { get; set; }
 		public int Count { get; set; } = 1;
 
-		public int Draw(ViewInfo view, int x, int y, string type, HotSpotType exchange)
+		protected int Draw(ViewInfo view, int x, int y, string type, HotSpotType exchange)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -60,8 +62,6 @@ namespace ReClassNET.Nodes
 
 		public override void Update(HotSpot spot)
 		{
-			Contract.Requires(spot != null);
-
 			base.Update(spot);
 
 			if (spot.Id == 0 || spot.Id == 1)
@@ -101,6 +101,17 @@ namespace ReClassNET.Nodes
 					++CurrentIndex;
 				}
 			}
+		}
+	}
+
+	[ContractClassFor(typeof(BaseArrayNode))]
+	internal abstract class BaseArrayNodeContract : BaseArrayNode
+	{
+		protected override int DrawChild(ViewInfo view, int x, int y)
+		{
+			Contract.Requires(view != null);
+
+			throw new NotImplementedException();
 		}
 	}
 }

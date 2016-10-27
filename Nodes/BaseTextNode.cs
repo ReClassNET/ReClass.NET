@@ -1,9 +1,11 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
+	[ContractClass(typeof(BaseTextNodeContract))]
 	abstract class BaseTextNode : BaseNode
 	{
 		public int CharacterCount { get; set; }
@@ -15,12 +17,10 @@ namespace ReClassNET.Nodes
 
 		public override void CopyFromNode(BaseNode node)
 		{
-			Contract.Requires(node != null);
-
 			CharacterCount = node.MemorySize / CharacterSize;
 		}
 
-		public int DrawText(ViewInfo view, int x, int y, string type, int length, string text)
+		protected int DrawText(ViewInfo view, int x, int y, string type, int length, string text)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -56,8 +56,6 @@ namespace ReClassNET.Nodes
 
 		public override void Update(HotSpot spot)
 		{
-			Contract.Requires(spot != null);
-
 			base.Update(spot);
 
 			if (spot.Id == 0)
@@ -69,6 +67,20 @@ namespace ReClassNET.Nodes
 
 					(ParentNode as ClassNode)?.NotifyMemorySizeChanged();
 				}
+			}
+		}
+	}
+
+	[ContractClassFor(typeof(BaseTextNode))]
+	internal abstract class BaseTextNodeContract : BaseTextNode
+	{
+		public override int CharacterSize
+		{
+			get
+			{
+				Contract.Ensures(Contract.Result<int>() > 0);
+
+				throw new NotImplementedException();
 			}
 		}
 	}

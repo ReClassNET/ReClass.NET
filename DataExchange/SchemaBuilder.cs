@@ -11,6 +11,7 @@ namespace ReClassNET.DataExchange
 	public enum SchemaType
 	{
 		None,
+
 		Array,
 		ClassPtrArray,
 		ClassInstance,
@@ -156,6 +157,7 @@ namespace ReClassNET.DataExchange
 		private SchemaBuilder(IEnumerable<SchemaClassNode> classes)
 		{
 			Contract.Requires(classes != null);
+			Contract.Ensures(schema != null);
 
 			schema = classes.ToList();
 		}
@@ -163,6 +165,7 @@ namespace ReClassNET.DataExchange
 		public static SchemaBuilder FromSchema(IEnumerable<SchemaClassNode> classes)
 		{
 			Contract.Requires(classes != null);
+			Contract.Ensures(Contract.Result<SchemaBuilder>() != null);
 
 			return new SchemaBuilder(classes);
 		}
@@ -170,6 +173,8 @@ namespace ReClassNET.DataExchange
 		public static SchemaBuilder FromNodes(IEnumerable<ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(classes != null);
+			Contract.Requires(logger != null);
+			Contract.Ensures(Contract.Result<SchemaBuilder>() != null);
 
 			var sclasses = classes.ToDictionary(
 				c => c,
@@ -253,11 +258,17 @@ namespace ReClassNET.DataExchange
 
 		public IList<SchemaClassNode> BuildSchema()
 		{
+			Contract.Ensures(Contract.Result<IList<SchemaClassNode>>() != null);
+
 			return schema;
 		}
 
 		public IList<ClassNode> BuildNodes(ILogger logger)
 		{
+			Contract.Requires(logger != null);
+
+			Contract.Ensures(Contract.Result<IList<ClassNode>>() != null);
+
 			var classes = schema.ToDictionary(
 				sc => sc,
 				sc => new ClassNode
@@ -315,6 +326,7 @@ namespace ReClassNET.DataExchange
 							if (converter != null)
 							{
 								cn.AddNode(converter.WriteToNode(sn as SchemaCustomNode, classes, logger));
+
 								continue;
 							}
 

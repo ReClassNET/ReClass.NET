@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using ReClassNET.UI;
+﻿using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
@@ -14,8 +13,6 @@ namespace ReClassNET.Nodes
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			Contract.Requires(view != null);
-
 			return DrawText(view, x, y, "Text16", MemorySize / CharacterSize, view.Memory.ReadUTF16String(Offset, MemorySize));
 		}
 	}

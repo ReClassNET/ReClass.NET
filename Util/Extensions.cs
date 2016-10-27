@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using Microsoft.SqlServer.MessageBox;
@@ -7,13 +8,15 @@ using ReClassNET.Nodes;
 
 namespace ReClassNET.Util
 {
-	static class Extensions
+	public static class Extensions
 	{
+		[Pure]
 		public static bool IsNull(this IntPtr ptr)
 		{
 			return ptr == IntPtr.Zero;
 		}
 
+		[Pure]
 		public static bool MayBeValid(this IntPtr ptr)
 		{
 #if WIN64
@@ -23,6 +26,7 @@ namespace ReClassNET.Util
 #endif
 		}
 
+		[Pure]
 		public static IntPtr Add(this IntPtr lhs, IntPtr rhs)
 		{
 #if WIN64
@@ -32,6 +36,7 @@ namespace ReClassNET.Util
 #endif
 		}
 
+		[Pure]
 		public static IntPtr Sub(this IntPtr lhs, IntPtr rhs)
 		{
 #if WIN64
@@ -41,6 +46,7 @@ namespace ReClassNET.Util
 #endif
 		}
 
+		[Pure]
 		public static IntPtr Mul(this IntPtr lhs, IntPtr rhs)
 		{
 #if WIN64
@@ -50,8 +56,11 @@ namespace ReClassNET.Util
 #endif
 		}
 
+		[Pure]
 		public static IntPtr Div(this IntPtr lhs, IntPtr rhs)
 		{
+			Contract.Requires(!rhs.IsNull());
+
 #if WIN64
 			return new IntPtr(lhs.ToInt64() / rhs.ToInt64());
 #else
@@ -59,6 +68,7 @@ namespace ReClassNET.Util
 #endif
 		}
 
+		[Pure]
 		public static bool InRange(this IntPtr address, IntPtr start, IntPtr end)
 		{
 #if WIN64
@@ -70,16 +80,19 @@ namespace ReClassNET.Util
 #endif
 		}
 
+		[Pure]
 		public static int ToRgb(this Color color)
 		{
 			return 0xFFFFFF & color.ToArgb();
 		}
 
+		[Pure]
 		public static bool IsPrintable(this char c)
 		{
 			return ' ' <= c && c <= '~';
 		}
 
+		[Pure]
 		public static Point OffsetEx(this Point p, int x, int y)
 		{
 			var temp = p;
@@ -87,8 +100,11 @@ namespace ReClassNET.Util
 			return temp;
 		}
 
+		[Pure]
 		public static string LimitLength(this string s, int length)
 		{
+			Contract.Requires(s != null);
+
 			if (s.Length <= length)
 			{
 				return s;
@@ -96,8 +112,11 @@ namespace ReClassNET.Util
 			return s.Substring(0, length);
 		}
 
+		[Pure]
 		public static void FillWithZero(this byte[] b)
 		{
+			Contract.Requires(b != null);
+
 			for (var i = 0; i < b.Length; ++i)
 			{
 				b[i] = 0;
@@ -106,6 +125,8 @@ namespace ReClassNET.Util
 
 		public static IEnumerable<BaseNode> Descendants(this BaseNode root)
 		{
+			Contract.Requires(root != null);
+
 			var nodes = new Stack<BaseNode>();
 			nodes.Push(root);
 			while (nodes.Any())
@@ -126,6 +147,10 @@ namespace ReClassNET.Util
 
 		public static int FindIndex<T>(this IEnumerable<T> items, Func<T, bool> predicate)
 		{
+			Contract.Requires(items != null);
+			Contract.Requires(predicate != null);
+			Contract.Ensures(Contract.Result<int>() >= -1);
+
 			int retVal = 0;
 			foreach (var item in items)
 			{
@@ -140,6 +165,9 @@ namespace ReClassNET.Util
 
 		public static void ForEach<T>(this IEnumerable<T> items, Action<T> func)
 		{
+			Contract.Requires(items != null);
+			Contract.Requires(func != null);
+
 			foreach (var item in items)
 			{
 				func(item);
@@ -153,6 +181,9 @@ namespace ReClassNET.Util
 
 		public static IEnumerable<T> Traverse<T>(this IEnumerable<T> items, Func<T, IEnumerable<T>> childSelector)
 		{
+			Contract.Requires(items != null);
+			Contract.Requires(childSelector != null);
+
 			var stack = new Stack<T>(items);
 			while (stack.Any())
 			{
@@ -169,6 +200,8 @@ namespace ReClassNET.Util
 
 		public static void ShowDialog(this Exception ex)
 		{
+			Contract.Requires(ex != null);
+
 			// This doesn't look good...
 			ex.HelpLink = "https://github.com/KN4CK3R/ReClass.NET/issues";
 

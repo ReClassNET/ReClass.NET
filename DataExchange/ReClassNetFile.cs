@@ -35,9 +35,6 @@ namespace ReClassNET.DataExchange
 
 		public SchemaBuilder Load(string filePath, ILogger logger)
 		{
-			Contract.Requires(filePath != null);
-			Contract.Requires(logger != null);
-
 			try
 			{
 				using (var fs = new FileStream(filePath, FileMode.Open))
@@ -181,10 +178,6 @@ namespace ReClassNET.DataExchange
 
 		public void Save(string filePath, SchemaBuilder schema, ILogger logger)
 		{
-			Contract.Requires(filePath != null);
-			Contract.Requires(schema != null);
-			Contract.Requires(logger != null);
-
 			using (var fs = new FileStream(filePath, FileMode.Create))
 			{
 				using (var archive = new ZipArchive(fs, ZipArchiveMode.Create))
@@ -202,6 +195,7 @@ namespace ReClassNET.DataExchange
 		{
 			Contract.Requires(schema != null);
 			Contract.Requires(logger != null);
+			Contract.Ensures(Contract.Result<XDocument>() != null);
 
 			var document = new XDocument(
 				new XComment("ReClass.NET by KN4CK3R"),

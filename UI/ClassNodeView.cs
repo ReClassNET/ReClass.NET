@@ -182,7 +182,14 @@ namespace ReClassNET.UI
 				var classNode = treeNode.Tag as ClassNode;
 				if (classNode != null)
 				{
-					ClassManager.Remove(classNode);
+					try
+					{
+						ClassManager.Remove(classNode);
+					}
+					catch (ClassReferencedException ex)
+					{
+						ex.ShowDialog();
+					}
 				}
 			}
 		}

@@ -17,9 +17,6 @@ namespace ReClassNET.DataExchange
 
 		public SchemaBuilder Load(string filePath, ILogger logger)
 		{
-			Contract.Requires(filePath != null);
-			Contract.Requires(logger != null);
-
 			try
 			{
 				using (var connection = new SQLiteConnection($@"Data Source={filePath}"))

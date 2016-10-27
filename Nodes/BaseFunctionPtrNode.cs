@@ -16,9 +16,6 @@ namespace ReClassNET.Nodes
 
 		public override string GetToolTipText(HotSpot spot, Memory memory)
 		{
-			Contract.Requires(spot != null);
-			Contract.Requires(memory != null);
-
 			var ptr = memory.ReadObject<IntPtr>(Offset);
 
 			DisassembleRemoteCode(memory, ptr);
@@ -26,7 +23,7 @@ namespace ReClassNET.Nodes
 			return string.Join("\n", assembledCode);
 		}
 
-		public int Draw(ViewInfo view, int x, int y, string type, string name)
+		protected int Draw(ViewInfo view, int x, int y, string type, string name)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);

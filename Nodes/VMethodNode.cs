@@ -10,6 +10,8 @@ namespace ReClassNET.Nodes
 
 		public VMethodNode()
 		{
+			Contract.Ensures(Name != null);
+
 			Name = string.Empty;
 		}
 
@@ -20,8 +22,6 @@ namespace ReClassNET.Nodes
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			Contract.Requires(view != null);
-
 			return Draw(view, x, y, $"({Offset.ToInt32() / IntPtr.Size})", MethodName);
 		}
 	}

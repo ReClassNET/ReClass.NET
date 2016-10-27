@@ -14,7 +14,7 @@ namespace ReClassNET.Nodes
 		/// <param name="type">The type of the node.</param>
 		/// <param name="value">The value of the node.</param>
 		/// <returns>The height the node occupies.</returns>
-		public int DrawNumeric(ViewInfo view, int x, int y, Image icon, string type, string value)
+		protected int DrawNumeric(ViewInfo view, int x, int y, Image icon, string type, string value)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(icon != null);

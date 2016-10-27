@@ -15,6 +15,8 @@ namespace ReClassNET.Nodes
 		{
 			set
 			{
+				Contract.Ensures(AddressFormula != null);
+
 				AddressFormula = value.ToString("X");
 			}
 		}
@@ -24,6 +26,8 @@ namespace ReClassNET.Nodes
 		/// <summary>Only the <see cref="ClassManager"/> and the <see cref="DataExchange.SchemaBuilder"/> are allowed to call the constructor.</summary>
 		internal ClassNode()
 		{
+			Contract.Ensures(AddressFormula != null);
+
 #if WIN64
 			AddressFormula = "140000000";
 #else
@@ -53,8 +57,6 @@ namespace ReClassNET.Nodes
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			Contract.Requires(view != null);
-
 			AddSelection(view, 0, y, view.Font.Height);
 			x = AddOpenClose(view, x, y);
 
@@ -84,8 +86,6 @@ namespace ReClassNET.Nodes
 
 		public override void Update(HotSpot spot)
 		{
-			Contract.Requires(spot != null);
-
 			base.Update(spot);
 
 			if (spot.Id == 0)
@@ -134,8 +134,6 @@ namespace ReClassNET.Nodes
 
 		public override bool RemoveNode(BaseNode node)
 		{
-			Contract.Requires(node != null);
-
 			var removed = base.RemoveNode(node);
 			if (removed)
 			{

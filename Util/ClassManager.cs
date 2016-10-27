@@ -87,6 +87,9 @@ namespace ReClassNET.Util
 
 		public static bool IsCycleFree(ClassNode parent, ClassNode check)
 		{
+			Contract.Requires(parent != null);
+			Contract.Requires(check != null);
+
 			return IsCycleFree(parent, check, classes);
 		}
 
@@ -97,13 +100,15 @@ namespace ReClassNET.Util
 			Contract.Requires(classes != null);
 			Contract.Requires(Contract.ForAll(classes, c => c != null));
 
-			var selector = new Func<ClassNode, IEnumerable<ClassNode>>(
-				c => c.Nodes
+			var toCheck = new HashSet<ClassNode>(
+				parent.Yield()
+				.Traverse(
+					c => c.Nodes
 					.Where(n => n is ClassInstanceNode || n is ClassInstanceArrayNode)
 					.Select(n => ((BaseReferenceNode)n).InnerNode as ClassNode)
+				)
+				.Where(c => c != parent)
 			);
-
-			var toCheck = new HashSet<ClassNode>(selector(parent).Traverse(selector));
 
 			if (!toCheck.Add(check))
 			{
@@ -157,6 +162,7 @@ namespace ReClassNET.Util
 			: base("This class has references.")
 		{
 			Contract.Requires(references != null);
+			Contract.Requires(Contract.ForAll(references, c => c != null));
 
 			References = references;
 		}

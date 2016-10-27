@@ -41,8 +41,6 @@ namespace ReClassNET.CodeGenerator
 
 		public string GetCodeFromClasses(IEnumerable<ClassNode> classes)
 		{
-			Contract.Requires(classes != null);
-
 			var sb = new StringBuilder();
 			sb.AppendLine("// Created with ReClass.NET");
 			sb.AppendLine();
@@ -104,6 +102,9 @@ namespace ReClassNET.CodeGenerator
 		private IEnumerable<ClassNode> OrderByInheritance(IEnumerable<ClassNode> classes)
 		{
 			Contract.Requires(classes != null);
+			Contract.Requires(Contract.ForAll(classes, c => c != null));
+			Contract.Ensures(Contract.Result<IEnumerable<ClassNode>>() != null);
+			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<ClassNode>>(), c => c != null));
 
 			var alreadySeen = new HashSet<ClassNode>();
 
@@ -114,6 +115,9 @@ namespace ReClassNET.CodeGenerator
 		{
 			Contract.Requires(node != null);
 			Contract.Requires(alreadySeen != null);
+			Contract.Requires(Contract.ForAll(alreadySeen, c => c != null));
+			Contract.Ensures(Contract.Result<IEnumerable<ClassNode>>() != null);
+			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<ClassNode>>(), c => c != null));
 
 			if (!alreadySeen.Add(node))
 			{
@@ -134,6 +138,9 @@ namespace ReClassNET.CodeGenerator
 		private IEnumerable<string> YieldMemberDefinitions(IEnumerable<BaseNode> members)
 		{
 			Contract.Requires(members != null);
+			Contract.Requires(Contract.ForAll(members, m => m != null));
+			Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
+			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<string>>(), d => d != null));
 
 			int fill = 0;
 			int fillStart = 0;
@@ -222,6 +229,7 @@ namespace ReClassNET.CodeGenerator
 		{
 			Contract.Requires(member != null);
 			Contract.Requires(type != null);
+			Contract.Ensures(Contract.Result<string>() != null);
 
 			return BuildMemberDefinition(member, type, 0);
 		}
@@ -230,6 +238,8 @@ namespace ReClassNET.CodeGenerator
 		{
 			Contract.Requires(member != null);
 			Contract.Requires(type != null);
+			Contract.Requires(count >= 0);
+			Contract.Ensures(Contract.Result<string>() != null);
 
 			var comment = string.IsNullOrEmpty(member.Comment) ? string.Empty : " " + member.Comment;
 
@@ -238,6 +248,13 @@ namespace ReClassNET.CodeGenerator
 
 		private string BuildMemberDefinition(string type, int count, string name, int offset, string comment)
 		{
+			Contract.Requires(type != null);
+			Contract.Requires(count >= 0);
+			Contract.Requires(name != null);
+			Contract.Requires(offset >= 0);
+			Contract.Requires(comment != null);
+			Contract.Ensures(Contract.Result<string>() != null);
+
 			if (count == 0)
 			{
 				return $"{type} {name}; //0x{offset:X04}{comment}";

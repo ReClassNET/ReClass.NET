@@ -36,7 +36,11 @@ namespace ReClassNET.AddressParser
 						buffer += characters[i];
 					}
 
-					if (i >= characters.Length || characters[i] != '>')
+					if (i >= characters.Length)
+					{
+						throw new ParseException("Unexpected end of input detected.");
+					}
+					if (characters[i] != '>')
 					{
 						throw new ParseException($"Invalid token '{characters[i]}' detected at position {i}.");
 					}

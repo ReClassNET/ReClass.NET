@@ -1,6 +1,7 @@
 ﻿// Design taken from https://github.com/pieterderycke/Jace
 
 using System;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.AddressParser
 {
@@ -41,6 +42,8 @@ namespace ReClassNET.AddressParser
 	{
 		public ReadPointerOperation(Operation argument)
 		{
+			Contract.Requires(argument != null);
+
 			Argument = argument;
 		}
 
@@ -51,6 +54,9 @@ namespace ReClassNET.AddressParser
 	{
 		public AdditionOperation(Operation argument1, Operation argument2)
 		{
+			Contract.Requires(argument1 != null);
+			Contract.Requires(argument2 != null);
+
 			Argument1 = argument1;
 			Argument2 = argument2;
 		}
@@ -63,6 +69,9 @@ namespace ReClassNET.AddressParser
 	{
 		public SubtractionOperation(Operation argument1, Operation argument2)
 		{
+			Contract.Requires(argument1 != null);
+			Contract.Requires(argument2 != null);
+
 			Argument1 = argument1;
 			Argument2 = argument2;
 		}
@@ -75,6 +84,9 @@ namespace ReClassNET.AddressParser
 	{
 		public DivisionOperation(Operation dividend, Operation divisor)
 		{
+			Contract.Requires(dividend != null);
+			Contract.Requires(divisor != null);
+
 			Dividend = dividend;
 			Divisor = divisor;
 		}
@@ -87,6 +99,9 @@ namespace ReClassNET.AddressParser
 	{
 		public MultiplicationOperation(Operation argument1, Operation argument2)
 		{
+			Contract.Requires(argument1 != null);
+			Contract.Requires(argument2 != null);
+
 			Argument1 = argument1;
 			Argument2 = argument2;
 		}
@@ -99,6 +114,8 @@ namespace ReClassNET.AddressParser
 	{
 		public ModuleOffsetOperation(string name)
 		{
+			Contract.Requires(name != null);
+
 			Name = name;
 		}
 

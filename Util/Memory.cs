@@ -30,18 +30,23 @@ namespace ReClassNET.Util
 
 		public Memory()
 		{
+			Contract.Ensures(data != null);
+
 			data = new byte[0];
 		}
 
 		public Memory(Memory other)
 		{
 			Contract.Requires(other != null);
+			Contract.Ensures(data != null);
 
 			data = other.data;
 		}
 
 		public Memory Clone()
 		{
+			Contract.Ensures(Contract.Result<Memory>() != null);
+
 			return new Memory(this)
 			{
 				Offset = Offset,
@@ -64,12 +69,12 @@ namespace ReClassNET.Util
 			return data[Offset + offset];
 		}
 
-		public T ReadObject<T>(IntPtr offset)
+		public T ReadObject<T>(IntPtr offset) where T : struct
 		{
 			return ReadObject<T>(offset.ToInt32());
 		}
 
-		public T ReadObject<T>(int offset)
+		public T ReadObject<T>(int offset) where T : struct
 		{
 			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
 			var obj = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject() + offset, typeof(T));
@@ -81,6 +86,7 @@ namespace ReClassNET.Util
 		public string ReadPrintableASCIIString(IntPtr offset, int length)
 		{
 			Contract.Requires(length >= 0);
+			Contract.Ensures(Contract.Result<string>() != null);
 
 			return ReadPrintableASCIIString(offset.ToInt32(), length);
 		}
@@ -88,10 +94,11 @@ namespace ReClassNET.Util
 		public string ReadPrintableASCIIString(int offset, int length)
 		{
 			Contract.Requires(offset >= 0);
-			Contract.Requires(offset < data.Length);
+			//Contract.Requires(offset < data.Length);
 			Contract.Requires(length >= 0);
-			Contract.Requires(length < data.Length);
-			Contract.Requires(offset + length < data.Length);
+			//Contract.Requires(length < data.Length);
+			//Contract.Requires(offset + length < data.Length);
+			Contract.Ensures(Contract.Result<string>() != null);
 
 			var sb = new StringBuilder(length);
 			for (var i = 0; i < length; ++i)
@@ -105,6 +112,7 @@ namespace ReClassNET.Util
 		private string ReadString(Encoding encoding, int offset, int length)
 		{
 			Contract.Requires(encoding != null);
+			Contract.Ensures(Contract.Result<string>() != null);
 
 			var sb = new StringBuilder(encoding.GetString(data, offset, length));
 			for (var i = 0; i < sb.Length; ++i)
@@ -119,16 +127,22 @@ namespace ReClassNET.Util
 
 		public string ReadUTF8String(IntPtr offset, int length)
 		{
+			Contract.Ensures(Contract.Result<string>() != null);
+
 			return ReadString(Encoding.UTF8, offset.ToInt32(), length);
 		}
 
 		public string ReadUTF16String(IntPtr offset, int length)
 		{
+			Contract.Ensures(Contract.Result<string>() != null);
+
 			return ReadString(Encoding.Unicode, offset.ToInt32(), length);
 		}
 
 		public string ReadUTF32String(IntPtr offset, int length)
 		{
+			Contract.Ensures(Contract.Result<string>() != null);
+
 			return ReadString(Encoding.UTF32, offset.ToInt32(), length);
 		}
 	}

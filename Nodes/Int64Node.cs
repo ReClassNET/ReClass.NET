@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using ReClassNET.UI;
+﻿using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
@@ -15,8 +14,6 @@ namespace ReClassNET.Nodes
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			Contract.Requires(view != null);
-
 			return DrawNumeric(view, x, y, Icons.Signed, "Int64", view.Memory.ReadObject<long>(Offset).ToString());
 		}
 
@@ -24,8 +21,6 @@ namespace ReClassNET.Nodes
 		/// <param name="spot">The spot.</param>
 		public override void Update(HotSpot spot)
 		{
-			Contract.Requires(spot != null);
-
 			base.Update(spot);
 
 			if (spot.Id == 0)

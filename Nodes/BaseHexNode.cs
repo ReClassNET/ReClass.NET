@@ -15,10 +15,12 @@ namespace ReClassNET.Nodes
 
 		public BaseHexNode()
 		{
+			Contract.Ensures(buffer != null);
+
 			buffer = new byte[MemorySize];
 		}
 
-		public int Draw(ViewInfo view, int x, int y, string text, int length)
+		protected int Draw(ViewInfo view, int x, int y, string text, int length)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(text != null);

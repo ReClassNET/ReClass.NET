@@ -14,8 +14,8 @@ namespace ReClassNET.UI
 
 		protected override void OnMouseWheel(MouseEventArgs e)
 		{
-			Contract.Requires(VerticalScroll != null);
-			Contract.Requires(HorizontalScroll != null);
+			Contract.Assume(VerticalScroll != null);
+			Contract.Assume(HorizontalScroll != null);
 
 			const int WHEEL_DELTA = 120;
 

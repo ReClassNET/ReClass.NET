@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using ReClassNET.UI;
 using ReClassNET.Util;
@@ -34,9 +33,6 @@ namespace ReClassNET.Nodes
 		/// <returns>The information to show in a tool tip.</returns>
 		public override string GetToolTipText(HotSpot spot, Memory memory)
 		{
-			Contract.Requires(spot != null);
-			Contract.Requires(memory != null);
-
 			var value = memory.ReadObject<UInt32FloatData>(Offset);
 
 			return $"Int32: {value.IntValue}\nUInt32: 0x{value.UIntValue:X08}\nFloat: {value.FloatValue:0.000}";
@@ -49,22 +45,16 @@ namespace ReClassNET.Nodes
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			Contract.Requires(view != null);
-
 			return Draw(view, x, y, Program.Settings.ShowNodeText ? view.Memory.ReadPrintableASCIIString(Offset, 4) + "     " : null, 4);
 		}
 
 		public override void Update(HotSpot spot)
 		{
-			Contract.Requires(spot != null);
-
 			Update(spot, 4);
 		}
 
 		protected override int AddComment(ViewInfo view, int x, int y)
 		{
-			Contract.Requires(view != null);
-
 			x = base.AddComment(view, x, y);
 
 			var value = view.Memory.ReadObject<UInt32FloatData>(Offset);

@@ -12,6 +12,8 @@ namespace ReClassNET.Util
 
 		public GrowingList()
 		{
+			Contract.Ensures(list != null);
+
 			list = new List<T>();
 		}
 

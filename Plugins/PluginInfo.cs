@@ -40,7 +40,7 @@ namespace ReClassNET.Plugins
 			Author = (versionInfo.CompanyName ?? string.Empty).Trim();
 
 			Name = (versionInfo.FileDescription ?? string.Empty).Trim();
-			if (string.IsNullOrEmpty(Name))
+			if (Name == string.Empty)
 			{
 				Name = Path.GetFileNameWithoutExtension(FilePath);
 			}

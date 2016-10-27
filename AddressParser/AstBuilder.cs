@@ -16,6 +16,8 @@ namespace ReClassNET.AddressParser
 
 		public AstBuilder()
 		{
+			Contract.Ensures(operationPrecedence != null);
+
 			operationPrecedence = new Dictionary<char, int>
 			{
 				['\r'] = 0,
@@ -30,6 +32,7 @@ namespace ReClassNET.AddressParser
 		public Operation Build(IEnumerable<Token> tokens)
 		{
 			Contract.Requires(tokens != null);
+			Contract.Ensures(Contract.ForAll(tokens, t => t != null));
 
 			resultStack.Clear();
 			operatorStack.Clear();

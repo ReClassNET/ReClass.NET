@@ -18,6 +18,9 @@ namespace ReClassNET.Nodes
 			get { return bits; }
 			set
 			{
+				Contract.Ensures(bits > 0);
+				Contract.Ensures(size > 0);
+
 				if (value >= 64)
 				{
 					bits = 64;
@@ -52,8 +55,6 @@ namespace ReClassNET.Nodes
 		/// <param name="node">The node to copy from.</param>
 		public override void CopyFromNode(BaseNode node)
 		{
-			Contract.Requires(node != null);
-
 			base.CopyFromNode(node);
 
 			Bits = node.MemorySize * 8;
@@ -65,6 +66,7 @@ namespace ReClassNET.Nodes
 		private string ConvertValueToBitString(Memory memory)
 		{
 			Contract.Requires(memory != null);
+			Contract.Ensures(Contract.Result<string>() != null);
 
 			string str;
 			switch(bits)
@@ -92,8 +94,6 @@ namespace ReClassNET.Nodes
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			Contract.Requires(view != null);
-
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
@@ -151,8 +151,6 @@ namespace ReClassNET.Nodes
 		/// <param name="spot">The spot.</param>
 		public override void Update(HotSpot spot)
 		{
-			Contract.Requires(spot != null);
-
 			base.Update(spot);
 
 			if (spot.Id >= 0 && spot.Id < bits)

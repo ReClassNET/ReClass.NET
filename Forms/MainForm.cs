@@ -375,6 +375,9 @@ namespace ReClassNET.Forms
 
 		internal void AddNodeType(Type type, string text, Image icon)
 		{
+			Contract.Requires(type != null);
+			Contract.Requires(text != null);
+
 			var item = new TypeToolStripButton
 			{
 				Image = icon,
@@ -390,6 +393,8 @@ namespace ReClassNET.Forms
 
 		internal void RemoveNodeType(Type type)
 		{
+			Contract.Requires(type != null);
+
 			var item = toolStrip.Items.OfType<TypeToolStripButton>().Where(i => i.Value == type).FirstOrDefault();
 			if (item != null)
 			{

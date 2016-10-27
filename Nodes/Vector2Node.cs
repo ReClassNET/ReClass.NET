@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -25,8 +24,6 @@ namespace ReClassNET.Nodes
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x2, int y2)
 		{
-			Contract.Requires(view != null);
-
 			return DrawVectorType(view, x2, y2, "Vector2", (ref int x, ref int y) =>
 			{
 				var value = view.Memory.ReadObject<Vector2Data>(Offset);
@@ -41,8 +38,6 @@ namespace ReClassNET.Nodes
 
 		public override void Update(HotSpot spot)
 		{
-			Contract.Requires(spot != null);
-
 			base.Update(spot);
 
 			Update(spot, 2);
