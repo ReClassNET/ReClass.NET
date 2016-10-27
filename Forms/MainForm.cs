@@ -409,5 +409,16 @@ namespace ReClassNET.Forms
 		{
 			new AboutForm().ShowDialog();
 		}
+
+		private void FastOpenToolStripDropDownButton_MouseEnter(object sender, EventArgs e)
+		{
+			var button = sender as ToolStripDropDownButton;
+			if (button == null)
+			{
+				return;
+			}
+
+			button.ShowDropDown();
+		}
 	}
 }
