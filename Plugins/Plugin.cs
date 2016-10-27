@@ -1,3 +1,4 @@
+using System.Diagnostics.Contracts;
 using System.Drawing;
 
 namespace ReClassNET.Plugins
@@ -8,7 +9,9 @@ namespace ReClassNET.Plugins
 
 		public virtual bool Initialize(IPluginHost host)
 		{
-			return (host != null);
+			Contract.Requires(host != null);
+
+			return true;
 		}
 
 		public virtual void Terminate()
