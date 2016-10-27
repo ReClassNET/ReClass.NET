@@ -104,7 +104,6 @@ namespace ReClassNET.CodeGenerator
 			Contract.Requires(classes != null);
 			Contract.Requires(Contract.ForAll(classes, c => c != null));
 			Contract.Ensures(Contract.Result<IEnumerable<ClassNode>>() != null);
-			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<ClassNode>>(), c => c != null));
 
 			var alreadySeen = new HashSet<ClassNode>();
 
@@ -117,7 +116,6 @@ namespace ReClassNET.CodeGenerator
 			Contract.Requires(alreadySeen != null);
 			Contract.Requires(Contract.ForAll(alreadySeen, c => c != null));
 			Contract.Ensures(Contract.Result<IEnumerable<ClassNode>>() != null);
-			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<ClassNode>>(), c => c != null));
 
 			if (!alreadySeen.Add(node))
 			{

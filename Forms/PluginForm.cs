@@ -79,6 +79,8 @@ namespace ReClassNET.Forms
 
 		private void FillComboBox(ComboBox cb, NativeHelper.RequestFunction method)
 		{
+			Contract.Requires(cb != null);
+
 			var methods = nativeHelper.MethodRegistry[method];
 
 			var selectedFnPtr = nativeHelper.RequestFunctionPtr(method);
