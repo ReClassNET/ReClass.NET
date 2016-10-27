@@ -24,7 +24,7 @@ namespace ReClassNET
 
 			InitializeComponent();
 
-			BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.B32x32_Magnifier, "Memory Regions", "The list contains all memory regions mapped in the process.");
+			//BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.B32x32_Magnifier, "Memory Regions", "The list contains all memory regions mapped in the process.");
 
 			sectionsDataGridView.AutoGenerateColumns = false;
 
@@ -122,6 +122,11 @@ namespace ReClassNET
 		private void sectionsDataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
 			setCurrentClassAddressToolStripMenuItem_Click(sender, e);
+		}
+
+		private void ProcessMemoryViewer_Load(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

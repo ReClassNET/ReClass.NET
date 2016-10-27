@@ -59,13 +59,13 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.getMoreLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.closeButton = new System.Windows.Forms.Button();
-			this.bannerImage = new System.Windows.Forms.PictureBox();
+			this.bannerBox = new ReClassNET.UI.BannerBox();
 			this.tabControl.SuspendLayout();
 			this.pluginsTabPage.SuspendLayout();
 			this.descriptionGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pluginsDataGridView)).BeginInit();
 			this.nativesTabPage.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControl
@@ -402,14 +402,16 @@
 			this.closeButton.Text = "Close";
 			this.closeButton.UseVisualStyleBackColor = true;
 			// 
-			// bannerImage
+			// bannerBox
 			// 
-			this.bannerImage.Dock = System.Windows.Forms.DockStyle.Top;
-			this.bannerImage.Location = new System.Drawing.Point(0, 0);
-			this.bannerImage.Name = "bannerImage";
-			this.bannerImage.Size = new System.Drawing.Size(740, 48);
-			this.bannerImage.TabIndex = 3;
-			this.bannerImage.TabStop = false;
+			this.bannerBox.Dock = System.Windows.Forms.DockStyle.Top;
+			this.bannerBox.Icon = global::ReClassNET.Properties.Resources.B32x32_Plugin;
+			this.bannerBox.Location = new System.Drawing.Point(0, 0);
+			this.bannerBox.Name = "bannerBox";
+			this.bannerBox.Size = new System.Drawing.Size(740, 48);
+			this.bannerBox.TabIndex = 3;
+			this.bannerBox.Text = "Here you can configure all loaded ReClass.NET plugins.";
+			this.bannerBox.Title = "Plugins";
 			// 
 			// PluginForm
 			// 
@@ -417,7 +419,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(740, 423);
-			this.Controls.Add(this.bannerImage);
+			this.Controls.Add(this.bannerBox);
 			this.Controls.Add(this.closeButton);
 			this.Controls.Add(this.getMoreLinkLabel);
 			this.Controls.Add(this.tabControl);
@@ -432,7 +434,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pluginsDataGridView)).EndInit();
 			this.nativesTabPage.ResumeLayout(false);
 			this.nativesTabPage.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -471,6 +473,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn authorColumn;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.ComboBox controlRemoteProcessComboBox;
-		private System.Windows.Forms.PictureBox bannerImage;
+		private UI.BannerBox bannerBox;
 	}
 }

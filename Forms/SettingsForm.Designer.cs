@@ -75,6 +75,7 @@
 			this.backgroundLabel = new System.Windows.Forms.Label();
 			this.backgroundColorBox = new ReClassNET.UI.ColorBox();
 			this.typeDefinitionsSettingsTabPage = new System.Windows.Forms.TabPage();
+			this.label1 = new System.Windows.Forms.Label();
 			this.functionPtrLabel = new System.Windows.Forms.Label();
 			this.functionPtrTextBox = new ReClassNET.UI.SettingsTextBox();
 			this.utf16TextPtrLabel = new System.Windows.Forms.Label();
@@ -119,7 +120,7 @@
 			this.int8TextBox = new ReClassNET.UI.SettingsTextBox();
 			this.paddingLabel = new System.Windows.Forms.Label();
 			this.paddingTextBox = new ReClassNET.UI.SettingsTextBox();
-			this.label1 = new System.Windows.Forms.Label();
+			this.bannerBox = new ReClassNET.UI.BannerBox();
 			this.settingsTabControl.SuspendLayout();
 			this.generalSettingsTabPage.SuspendLayout();
 			this.commentsGroupBox.SuspendLayout();
@@ -127,6 +128,7 @@
 			this.colorsSettingTabPage.SuspendLayout();
 			this.nodeColorGroupBox.SuspendLayout();
 			this.typeDefinitionsSettingsTabPage.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// settingsTabControl
@@ -134,7 +136,7 @@
 			this.settingsTabControl.Controls.Add(this.generalSettingsTabPage);
 			this.settingsTabControl.Controls.Add(this.colorsSettingTabPage);
 			this.settingsTabControl.Controls.Add(this.typeDefinitionsSettingsTabPage);
-			this.settingsTabControl.Location = new System.Drawing.Point(12, 12);
+			this.settingsTabControl.Location = new System.Drawing.Point(12, 60);
 			this.settingsTabControl.Name = "settingsTabControl";
 			this.settingsTabControl.SelectedIndex = 0;
 			this.settingsTabControl.Size = new System.Drawing.Size(562, 355);
@@ -643,6 +645,15 @@
 			this.typeDefinitionsSettingsTabPage.Text = "Type Definitions";
 			this.typeDefinitionsSettingsTabPage.UseVisualStyleBackColor = true;
 			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(6, 6);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(214, 13);
+			this.label1.TabIndex = 44;
+			this.label1.Text = "These types are used to generate the code:";
+			// 
 			// functionPtrLabel
 			// 
 			this.functionPtrLabel.AutoSize = true;
@@ -995,20 +1006,23 @@
 			this.paddingTextBox.Size = new System.Drawing.Size(120, 20);
 			this.paddingTextBox.TabIndex = 0;
 			// 
-			// label1
+			// bannerBox
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(6, 6);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(214, 13);
-			this.label1.TabIndex = 44;
-			this.label1.Text = "These types are used to generate the code:";
+			this.bannerBox.Dock = System.Windows.Forms.DockStyle.Top;
+			this.bannerBox.Icon = global::ReClassNET.Properties.Resources.B32x32_Cogs;
+			this.bannerBox.Location = new System.Drawing.Point(0, 0);
+			this.bannerBox.Name = "bannerBox";
+			this.bannerBox.Size = new System.Drawing.Size(586, 48);
+			this.bannerBox.TabIndex = 2;
+			this.bannerBox.Text = "Configure the global settings.";
+			this.bannerBox.Title = "Settings";
 			// 
 			// SettingsForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(586, 379);
+			this.ClientSize = new System.Drawing.Size(586, 427);
+			this.Controls.Add(this.bannerBox);
 			this.Controls.Add(this.settingsTabControl);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
@@ -1030,6 +1044,7 @@
 			this.nodeColorGroupBox.PerformLayout();
 			this.typeDefinitionsSettingsTabPage.ResumeLayout(false);
 			this.typeDefinitionsSettingsTabPage.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -1127,5 +1142,6 @@
 		private UI.SettingsTextBox doubleTextBox;
 		private System.Windows.Forms.GroupBox nodeColorGroupBox;
 		private System.Windows.Forms.Label label1;
+		private UI.BannerBox bannerBox;
 	}
 }

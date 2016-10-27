@@ -17,7 +17,9 @@ namespace ReClassNET.Forms
 		{
 			InitializeComponent();
 
-			BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.ReClassNet.ToBitmap(), AssemblyInfo.Title, $"Version: {AssemblyInfo.Version.ToString(2)}");
+			bannerBox.Icon = Properties.Resources.ReClassNet.ToBitmap();
+			bannerBox.Title = AssemblyInfo.Title;
+			bannerBox.Text = $"Version: {AssemblyInfo.Version.ToString(2)}";
 		}
 
 		protected override void OnLoad(EventArgs e)

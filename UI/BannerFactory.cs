@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
+using System.Linq;
 
 namespace ReClassNET.UI
 {
@@ -13,9 +13,10 @@ namespace ReClassNET.UI
 		private const int StdHeight = 48; // 96 DPI
 		private const int StdIconDim = 32;
 
+		private const int MaxCacheEntries = 20;
 		private static readonly Dictionary<string, Image> imageCache = new Dictionary<string, Image>();
 
-		public static Image CreateBanner(int bannerWidth, int bannerHeight, Image icon, string title, string text)
+		public static Image CreateBanner(int bannerWidth, int bannerHeight, Image icon, string title, string text, bool skipCache)
 		{
 			Contract.Requires(title != null);
 			Contract.Requires(text != null);
@@ -23,7 +24,7 @@ namespace ReClassNET.UI
 			var bannerId = $"{bannerWidth}x{bannerHeight}:{title}:{text}";
 
 			Image image = null;
-			if (!imageCache.TryGetValue(bannerId, out image))
+			if (skipCache || !imageCache.TryGetValue(bannerId, out image))
 			{
 				image = new Bitmap(bannerWidth, bannerHeight, PixelFormat.Format24bppRgb);
 				using (var g = Graphics.FromImage(image))
@@ -88,9 +89,19 @@ namespace ReClassNET.UI
 					{
 						DrawText(g, text, tx, ty, fontSmall, Color.White);
 					}
+
+					image.Save("C:\\test.jpg");
 				}
 
-				imageCache[bannerId] = image;
+				if (!skipCache)
+				{
+					while (imageCache.Count > MaxCacheEntries)
+					{
+						imageCache.Remove(imageCache.Keys.First());
+					}
+
+					imageCache[bannerId] = image;
+				}
 			}
 
 			return image;
@@ -115,26 +126,6 @@ namespace ReClassNET.UI
 		private static float DpiScaleFloat(float x, int height)
 		{
 			return (x * height) / StdHeight;
-		}
-
-		public static void CreateBannerEx(PictureBox pictureBox, Image icon, string title, string text)
-		{
-			Contract.Requires(title != null);
-			Contract.Requires(text != null);
-
-			if (pictureBox == null)
-			{
-				return;
-			}
-
-			try
-			{
-				pictureBox.Image = CreateBanner(pictureBox.Width, pictureBox.Height, icon, title, text);
-			}
-			catch (Exception)
-			{
-
-			}
 		}
 	}
 }

@@ -633,6 +633,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Cogs {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Cogs", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Color_Wheel {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Color_Wheel", resourceCulture);
@@ -796,6 +806,16 @@ namespace ReClassNET.Properties {
         internal static System.Drawing.Bitmap B16x16_Left_Button {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Left_Button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Magnifier {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Magnifier", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1026,6 +1046,16 @@ namespace ReClassNET.Properties {
         internal static System.Drawing.Bitmap B16x16_Warning {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Warning", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B32x32_Cogs {
+            get {
+                object obj = ResourceManager.GetObject("B32x32_Cogs", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

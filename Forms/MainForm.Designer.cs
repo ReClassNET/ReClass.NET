@@ -65,7 +65,6 @@
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
 			this.selectProcessToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.pluginsToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.openProjectToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -200,7 +199,7 @@
 			// 
 			// selectProcessToolStripMenuItem
 			// 
-			this.selectProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Gear;
+			this.selectProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
 			this.selectProcessToolStripMenuItem.Name = "selectProcessToolStripMenuItem";
 			this.selectProcessToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
 			this.selectProcessToolStripMenuItem.Text = "Select Process...";
@@ -259,7 +258,7 @@
 			// 
 			// settingsToolStripMenuItem
 			// 
-			this.settingsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Text_List_Bullets;
+			this.settingsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Cogs;
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
 			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
 			this.settingsToolStripMenuItem.Text = "Settings...";
@@ -303,7 +302,7 @@
 			// 
 			// memoryViewerToolStripMenuItem
 			// 
-			this.memoryViewerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Table_Gear;
+			this.memoryViewerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
 			this.memoryViewerToolStripMenuItem.Name = "memoryViewerToolStripMenuItem";
 			this.memoryViewerToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
 			this.memoryViewerToolStripMenuItem.Text = "Memory Viewer";
@@ -410,7 +409,7 @@
 			// 
 			this.aboutToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Information;
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
@@ -418,7 +417,6 @@
 			// 
 			this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectProcessToolStripButton,
-            this.pluginsToolStripButton,
             this.toolStripSeparator6,
             this.openProjectToolStripButton,
             this.saveToolStripButton,
@@ -474,22 +472,12 @@
 			// selectProcessToolStripButton
 			// 
 			this.selectProcessToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.selectProcessToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Gear;
+			this.selectProcessToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
 			this.selectProcessToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.selectProcessToolStripButton.Name = "selectProcessToolStripButton";
 			this.selectProcessToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.selectProcessToolStripButton.ToolTipText = "Select Process...";
 			this.selectProcessToolStripButton.Click += new System.EventHandler(this.selectProcessToolStripMenuItem_Click);
-			// 
-			// pluginsToolStripButton
-			// 
-			this.pluginsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.pluginsToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Plugin;
-			this.pluginsToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.pluginsToolStripButton.Name = "pluginsToolStripButton";
-			this.pluginsToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.pluginsToolStripButton.ToolTipText = "Plugins...";
-			this.pluginsToolStripButton.Click += new System.EventHandler(this.pluginsToolStripButton_Click);
 			// 
 			// toolStripSeparator6
 			// 
@@ -1211,7 +1199,6 @@
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStrip toolStrip;
 		private System.Windows.Forms.ToolStripButton selectProcessToolStripButton;
-		private System.Windows.Forms.ToolStripButton pluginsToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.SplitContainer splitContainer;
 		private System.Windows.Forms.ToolStripStatusLabel processInfoToolStripStatusLabel;

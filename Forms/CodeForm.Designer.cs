@@ -28,19 +28,10 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.bannerImage = new System.Windows.Forms.PictureBox();
 			this.codeWebBrowser = new System.Windows.Forms.WebBrowser();
-			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).BeginInit();
+			this.bannerBox = new ReClassNET.UI.BannerBox();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// bannerImage
-			// 
-			this.bannerImage.Dock = System.Windows.Forms.DockStyle.Top;
-			this.bannerImage.Location = new System.Drawing.Point(0, 0);
-			this.bannerImage.Name = "bannerImage";
-			this.bannerImage.Size = new System.Drawing.Size(588, 48);
-			this.bannerImage.TabIndex = 2;
-			this.bannerImage.TabStop = false;
 			// 
 			// codeWebBrowser
 			// 
@@ -48,29 +39,38 @@
 			this.codeWebBrowser.Location = new System.Drawing.Point(0, 48);
 			this.codeWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
 			this.codeWebBrowser.Name = "codeWebBrowser";
-			this.codeWebBrowser.Size = new System.Drawing.Size(588, 421);
+			this.codeWebBrowser.Size = new System.Drawing.Size(629, 390);
 			this.codeWebBrowser.TabIndex = 1;
+			// 
+			// bannerBox
+			// 
+			this.bannerBox.Dock = System.Windows.Forms.DockStyle.Top;
+			this.bannerBox.Icon = global::ReClassNET.Properties.Resources.B32x32_Page_Code;
+			this.bannerBox.Location = new System.Drawing.Point(0, 0);
+			this.bannerBox.Name = "bannerBox";
+			this.bannerBox.Size = new System.Drawing.Size(629, 48);
+			this.bannerBox.TabIndex = 2;
+			this.bannerBox.Text = "The classes transformed into source code.";
+			this.bannerBox.Title = "Code Generator";
 			// 
 			// CodeForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(588, 469);
+			this.ClientSize = new System.Drawing.Size(629, 438);
 			this.Controls.Add(this.codeWebBrowser);
-			this.Controls.Add(this.bannerImage);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
+			this.Controls.Add(this.bannerBox);
+			this.MinimumSize = new System.Drawing.Size(350, 185);
 			this.Name = "CodeForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "ReClass.NET - Code Generator";
-			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
 		private System.Windows.Forms.WebBrowser codeWebBrowser;
-		private System.Windows.Forms.PictureBox bannerImage;
+		private UI.BannerBox bannerBox;
 	}
 }

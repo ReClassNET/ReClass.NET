@@ -42,10 +42,10 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.filterTextBox = new System.Windows.Forms.TextBox();
-			this.bannerImage = new System.Windows.Forms.PictureBox();
+			this.bannerBox = new ReClassNET.UI.BannerBox();
 			((System.ComponentModel.ISupportInitialize)(this.processDataGridView)).BeginInit();
 			this.searchGroupBox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// processDataGridView
@@ -217,21 +217,23 @@
 			this.filterTextBox.TabIndex = 0;
 			this.filterTextBox.TextChanged += new System.EventHandler(this.filterTextBox_TextChanged);
 			// 
-			// bannerImage
+			// bannerBox
 			// 
-			this.bannerImage.Dock = System.Windows.Forms.DockStyle.Top;
-			this.bannerImage.Location = new System.Drawing.Point(0, 0);
-			this.bannerImage.Name = "bannerImage";
-			this.bannerImage.Size = new System.Drawing.Size(573, 48);
-			this.bannerImage.TabIndex = 6;
-			this.bannerImage.TabStop = false;
+			this.bannerBox.Dock = System.Windows.Forms.DockStyle.Top;
+			this.bannerBox.Icon = global::ReClassNET.Properties.Resources.B32x32_Magnifier;
+			this.bannerBox.Location = new System.Drawing.Point(0, 0);
+			this.bannerBox.Name = "bannerBox";
+			this.bannerBox.Size = new System.Drawing.Size(573, 48);
+			this.bannerBox.TabIndex = 6;
+			this.bannerBox.Text = "Select the process to open.";
+			this.bannerBox.Title = "Select Process";
 			// 
 			// ProcessBrowserForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(573, 554);
-			this.Controls.Add(this.bannerImage);
+			this.Controls.Add(this.bannerBox);
 			this.Controls.Add(this.searchGroupBox);
 			this.Controls.Add(this.loadSymbolsCheckBox);
 			this.Controls.Add(this.openProcessButton);
@@ -245,7 +247,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.processDataGridView)).EndInit();
 			this.searchGroupBox.ResumeLayout(false);
 			this.searchGroupBox.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -267,6 +269,6 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox filterTextBox;
-		private System.Windows.Forms.PictureBox bannerImage;
+		private UI.BannerBox bannerBox;
 	}
 }

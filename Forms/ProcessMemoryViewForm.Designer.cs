@@ -29,8 +29,13 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.setCurrentClassAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.createClassAtAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.regionsGroupBox = new System.Windows.Forms.GroupBox();
 			this.sectionsDataGridView = new System.Windows.Forms.DataGridView();
 			this.addressColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.sizeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -39,17 +44,55 @@
 			this.stateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.typeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.moduleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.setCurrentClassAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.createClassAtAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.regionsGroupBox = new System.Windows.Forms.GroupBox();
-			this.bannerImage = new System.Windows.Forms.PictureBox();
-			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).BeginInit();
+			this.bannerBox1 = new ReClassNET.UI.BannerBox();
 			this.contextMenuStrip.SuspendLayout();
 			this.regionsGroupBox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox1)).BeginInit();
 			this.SuspendLayout();
+			// 
+			// contextMenuStrip
+			// 
+			this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setCurrentClassAddressToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.createClassAtAddressToolStripMenuItem});
+			this.contextMenuStrip.Name = "contextMenuStrip";
+			this.contextMenuStrip.Size = new System.Drawing.Size(203, 54);
+			// 
+			// setCurrentClassAddressToolStripMenuItem
+			// 
+			this.setCurrentClassAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Exchange_Button;
+			this.setCurrentClassAddressToolStripMenuItem.Name = "setCurrentClassAddressToolStripMenuItem";
+			this.setCurrentClassAddressToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+			this.setCurrentClassAddressToolStripMenuItem.Text = "Set current class address";
+			this.setCurrentClassAddressToolStripMenuItem.Click += new System.EventHandler(this.setCurrentClassAddressToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(199, 6);
+			// 
+			// createClassAtAddressToolStripMenuItem
+			// 
+			this.createClassAtAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
+			this.createClassAtAddressToolStripMenuItem.Name = "createClassAtAddressToolStripMenuItem";
+			this.createClassAtAddressToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+			this.createClassAtAddressToolStripMenuItem.Text = "Create class at address";
+			this.createClassAtAddressToolStripMenuItem.Click += new System.EventHandler(this.createClassAtAddressToolStripMenuItem_Click);
+			// 
+			// regionsGroupBox
+			// 
+			this.regionsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.regionsGroupBox.Controls.Add(this.sectionsDataGridView);
+			this.regionsGroupBox.Location = new System.Drawing.Point(12, 60);
+			this.regionsGroupBox.Name = "regionsGroupBox";
+			this.regionsGroupBox.Size = new System.Drawing.Size(810, 418);
+			this.regionsGroupBox.TabIndex = 1;
+			this.regionsGroupBox.TabStop = false;
+			this.regionsGroupBox.Text = "Memory Regions";
 			// 
 			// sectionsDataGridView
 			// 
@@ -76,7 +119,7 @@
 			this.sectionsDataGridView.RowHeadersVisible = false;
 			this.sectionsDataGridView.RowTemplate.ContextMenuStrip = this.contextMenuStrip;
 			this.sectionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.sectionsDataGridView.Size = new System.Drawing.Size(978, 462);
+			this.sectionsDataGridView.Size = new System.Drawing.Size(798, 393);
 			this.sectionsDataGridView.TabIndex = 0;
 			this.sectionsDataGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.sectionsDataGridView_CellMouseDoubleClick);
 			this.sectionsDataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.sectionsDataGridView_CellMouseDown);
@@ -84,8 +127,8 @@
 			// addressColumn
 			// 
 			this.addressColumn.DataPropertyName = "address";
-			dataGridViewCellStyle5.Format = "X";
-			this.addressColumn.DefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle1.Format = "X";
+			this.addressColumn.DefaultCellStyle = dataGridViewCellStyle1;
 			this.addressColumn.HeaderText = "Address";
 			this.addressColumn.Name = "addressColumn";
 			this.addressColumn.ReadOnly = true;
@@ -94,9 +137,9 @@
 			// 
 			this.sizeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
 			this.sizeColumn.DataPropertyName = "size";
-			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle6.Format = "X";
-			this.sizeColumn.DefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle2.Format = "X";
+			this.sizeColumn.DefaultCellStyle = dataGridViewCellStyle2;
 			this.sizeColumn.HeaderText = "Size";
 			this.sizeColumn.Name = "sizeColumn";
 			this.sizeColumn.ReadOnly = true;
@@ -146,72 +189,33 @@
 			this.moduleColumn.Name = "moduleColumn";
 			this.moduleColumn.ReadOnly = true;
 			// 
-			// contextMenuStrip
+			// bannerBox1
 			// 
-			this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.setCurrentClassAddressToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.createClassAtAddressToolStripMenuItem});
-			this.contextMenuStrip.Name = "contextMenuStrip";
-			this.contextMenuStrip.Size = new System.Drawing.Size(203, 54);
-			// 
-			// setCurrentClassAddressToolStripMenuItem
-			// 
-			this.setCurrentClassAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Exchange_Button;
-			this.setCurrentClassAddressToolStripMenuItem.Name = "setCurrentClassAddressToolStripMenuItem";
-			this.setCurrentClassAddressToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-			this.setCurrentClassAddressToolStripMenuItem.Text = "Set current class address";
-			this.setCurrentClassAddressToolStripMenuItem.Click += new System.EventHandler(this.setCurrentClassAddressToolStripMenuItem_Click);
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(199, 6);
-			// 
-			// createClassAtAddressToolStripMenuItem
-			// 
-			this.createClassAtAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
-			this.createClassAtAddressToolStripMenuItem.Name = "createClassAtAddressToolStripMenuItem";
-			this.createClassAtAddressToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-			this.createClassAtAddressToolStripMenuItem.Text = "Create class at address";
-			this.createClassAtAddressToolStripMenuItem.Click += new System.EventHandler(this.createClassAtAddressToolStripMenuItem_Click);
-			// 
-			// regionsGroupBox
-			// 
-			this.regionsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.regionsGroupBox.Controls.Add(this.sectionsDataGridView);
-			this.regionsGroupBox.Location = new System.Drawing.Point(12, 60);
-			this.regionsGroupBox.Name = "regionsGroupBox";
-			this.regionsGroupBox.Size = new System.Drawing.Size(990, 487);
-			this.regionsGroupBox.TabIndex = 1;
-			this.regionsGroupBox.TabStop = false;
-			this.regionsGroupBox.Text = "Memory Regions";
-			// 
-			// bannerImage
-			// 
-			this.bannerImage.Dock = System.Windows.Forms.DockStyle.Top;
-			this.bannerImage.Location = new System.Drawing.Point(0, 0);
-			this.bannerImage.Name = "bannerImage";
-			this.bannerImage.Size = new System.Drawing.Size(1014, 48);
-			this.bannerImage.TabIndex = 4;
-			this.bannerImage.TabStop = false;
+			this.bannerBox1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.bannerBox1.Icon = global::ReClassNET.Properties.Resources.B32x32_Magnifier;
+			this.bannerBox1.Location = new System.Drawing.Point(0, 0);
+			this.bannerBox1.Name = "bannerBox1";
+			this.bannerBox1.Size = new System.Drawing.Size(834, 48);
+			this.bannerBox1.TabIndex = 2;
+			this.bannerBox1.Text = "View all memory regions mapped in the process.";
+			this.bannerBox1.Title = "Memory Viewer";
 			// 
 			// ProcessMemoryViewer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1014, 559);
-			this.Controls.Add(this.bannerImage);
+			this.ClientSize = new System.Drawing.Size(834, 490);
+			this.Controls.Add(this.bannerBox1);
 			this.Controls.Add(this.regionsGroupBox);
+			this.MinimumSize = new System.Drawing.Size(586, 320);
 			this.Name = "ProcessMemoryViewer";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "ReClass.NET - Memory Viewer";
-			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).EndInit();
+			this.Load += new System.EventHandler(this.ProcessMemoryViewer_Load);
 			this.contextMenuStrip.ResumeLayout(false);
 			this.regionsGroupBox.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox1)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -231,6 +235,6 @@
 		private System.Windows.Forms.ToolStripMenuItem setCurrentClassAddressToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem createClassAtAddressToolStripMenuItem;
-		private System.Windows.Forms.PictureBox bannerImage;
+		private UI.BannerBox bannerBox1;
 	}
 }
