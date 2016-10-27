@@ -108,7 +108,7 @@ namespace ReClassNET.Nodes
 			ClassManager.Classes.ForEach(c => c.UpdateOffsets());
 		}
 
-		public void AddNode(BaseNode node)
+		internal void AddNode(BaseNode node)
 		{
 			Contract.Requires(node != null);
 

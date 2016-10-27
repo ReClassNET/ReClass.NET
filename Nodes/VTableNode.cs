@@ -77,7 +77,7 @@ namespace ReClassNET.Nodes
 			return y;
 		}
 
-		public void AddNode(VMethodNode node)
+		internal void AddNode(VMethodNode node)
 		{
 			Contract.Requires(node != null);
 
