@@ -20,9 +20,11 @@ namespace ReClassNET
 			Contract.Requires(process != null);
 			Contract.Requires(classesView != null);
 
+			this.classesView = classesView;
+
 			InitializeComponent();
 
-			this.classesView = classesView;
+			BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.B32x32_Magnifier, "Memory Regions", "The list contains all memory regions mapped in the process.");
 
 			sectionsDataGridView.AutoGenerateColumns = false;
 

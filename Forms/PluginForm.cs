@@ -43,7 +43,7 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
-			BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.B32x32_Page_Code, "Plugins", "Here you can configure all loaded ReClass.NET plugins.");
+			BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.B32x32_Plugin, "Plugins", "Here you can configure all loaded ReClass.NET plugins.");
 
 			// Plugins Tab
 

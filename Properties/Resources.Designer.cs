@@ -1033,9 +1033,29 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B32x32_Magnifier {
+            get {
+                object obj = ResourceManager.GetObject("B32x32_Magnifier", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B32x32_Page_Code {
             get {
                 object obj = ResourceManager.GetObject("B32x32_Page_Code", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B32x32_Plugin {
+            get {
+                object obj = ResourceManager.GetObject("B32x32_Plugin", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

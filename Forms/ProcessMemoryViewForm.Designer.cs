@@ -29,8 +29,8 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.sectionsDataGridView = new System.Windows.Forms.DataGridView();
 			this.addressColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.sizeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,9 +44,11 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.createClassAtAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.regionsGroupBox = new System.Windows.Forms.GroupBox();
+			this.bannerImage = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).BeginInit();
 			this.contextMenuStrip.SuspendLayout();
 			this.regionsGroupBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// sectionsDataGridView
@@ -82,8 +84,8 @@
 			// addressColumn
 			// 
 			this.addressColumn.DataPropertyName = "address";
-			dataGridViewCellStyle1.Format = "X";
-			this.addressColumn.DefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle5.Format = "X";
+			this.addressColumn.DefaultCellStyle = dataGridViewCellStyle5;
 			this.addressColumn.HeaderText = "Address";
 			this.addressColumn.Name = "addressColumn";
 			this.addressColumn.ReadOnly = true;
@@ -92,9 +94,9 @@
 			// 
 			this.sizeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
 			this.sizeColumn.DataPropertyName = "size";
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle2.Format = "X";
-			this.sizeColumn.DefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle6.Format = "X";
+			this.sizeColumn.DefaultCellStyle = dataGridViewCellStyle6;
 			this.sizeColumn.HeaderText = "Size";
 			this.sizeColumn.Name = "sizeColumn";
 			this.sizeColumn.ReadOnly = true;
@@ -180,18 +182,28 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.regionsGroupBox.Controls.Add(this.sectionsDataGridView);
-			this.regionsGroupBox.Location = new System.Drawing.Point(12, 12);
+			this.regionsGroupBox.Location = new System.Drawing.Point(12, 60);
 			this.regionsGroupBox.Name = "regionsGroupBox";
 			this.regionsGroupBox.Size = new System.Drawing.Size(990, 487);
 			this.regionsGroupBox.TabIndex = 1;
 			this.regionsGroupBox.TabStop = false;
 			this.regionsGroupBox.Text = "Memory Regions";
 			// 
+			// bannerImage
+			// 
+			this.bannerImage.Dock = System.Windows.Forms.DockStyle.Top;
+			this.bannerImage.Location = new System.Drawing.Point(0, 0);
+			this.bannerImage.Name = "bannerImage";
+			this.bannerImage.Size = new System.Drawing.Size(1014, 48);
+			this.bannerImage.TabIndex = 4;
+			this.bannerImage.TabStop = false;
+			// 
 			// ProcessMemoryViewer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1014, 511);
+			this.ClientSize = new System.Drawing.Size(1014, 559);
+			this.Controls.Add(this.bannerImage);
 			this.Controls.Add(this.regionsGroupBox);
 			this.Name = "ProcessMemoryViewer";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -199,6 +211,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).EndInit();
 			this.contextMenuStrip.ResumeLayout(false);
 			this.regionsGroupBox.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -218,5 +231,6 @@
 		private System.Windows.Forms.ToolStripMenuItem setCurrentClassAddressToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem createClassAtAddressToolStripMenuItem;
+		private System.Windows.Forms.PictureBox bannerImage;
 	}
 }

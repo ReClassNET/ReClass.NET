@@ -49,6 +49,8 @@ namespace ReClassNET
 
 			InitializeComponent();
 
+			BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.B32x32_Magnifier, "Select Process", "Select the process to open.");
+
 			processDataGridView.AutoGenerateColumns = false;
 
 			previousProcessLinkLabel.Text = string.IsNullOrEmpty(previousProcess) ? NoPreviousProcess : previousProcess;

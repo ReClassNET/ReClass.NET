@@ -42,8 +42,10 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.filterTextBox = new System.Windows.Forms.TextBox();
+			this.bannerImage = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.processDataGridView)).BeginInit();
 			this.searchGroupBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// processDataGridView
@@ -61,7 +63,7 @@
             this.processNameColumn,
             this.pidColumn,
             this.pathColumn});
-			this.processDataGridView.Location = new System.Drawing.Point(12, 151);
+			this.processDataGridView.Location = new System.Drawing.Point(12, 199);
 			this.processDataGridView.MultiSelect = false;
 			this.processDataGridView.Name = "processDataGridView";
 			this.processDataGridView.ReadOnly = true;
@@ -140,7 +142,7 @@
 			this.openProcessButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.openProcessButton.Image = global::ReClassNET.Properties.Resources.B16x16_Accept;
-			this.openProcessButton.Location = new System.Drawing.Point(12, 471);
+			this.openProcessButton.Location = new System.Drawing.Point(12, 519);
 			this.openProcessButton.Name = "openProcessButton";
 			this.openProcessButton.Size = new System.Drawing.Size(549, 23);
 			this.openProcessButton.TabIndex = 3;
@@ -154,7 +156,7 @@
 			// 
 			this.loadSymbolsCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.loadSymbolsCheckBox.AutoSize = true;
-			this.loadSymbolsCheckBox.Location = new System.Drawing.Point(12, 448);
+			this.loadSymbolsCheckBox.Location = new System.Drawing.Point(12, 496);
 			this.loadSymbolsCheckBox.Name = "loadSymbolsCheckBox";
 			this.loadSymbolsCheckBox.Size = new System.Drawing.Size(92, 17);
 			this.loadSymbolsCheckBox.TabIndex = 4;
@@ -171,7 +173,7 @@
 			this.searchGroupBox.Controls.Add(this.filterCheckBox);
 			this.searchGroupBox.Controls.Add(this.refreshButton);
 			this.searchGroupBox.Controls.Add(this.filterTextBox);
-			this.searchGroupBox.Location = new System.Drawing.Point(12, 12);
+			this.searchGroupBox.Location = new System.Drawing.Point(12, 60);
 			this.searchGroupBox.Name = "searchGroupBox";
 			this.searchGroupBox.Size = new System.Drawing.Size(549, 133);
 			this.searchGroupBox.TabIndex = 5;
@@ -215,11 +217,21 @@
 			this.filterTextBox.TabIndex = 0;
 			this.filterTextBox.TextChanged += new System.EventHandler(this.filterTextBox_TextChanged);
 			// 
+			// bannerImage
+			// 
+			this.bannerImage.Dock = System.Windows.Forms.DockStyle.Top;
+			this.bannerImage.Location = new System.Drawing.Point(0, 0);
+			this.bannerImage.Name = "bannerImage";
+			this.bannerImage.Size = new System.Drawing.Size(573, 48);
+			this.bannerImage.TabIndex = 6;
+			this.bannerImage.TabStop = false;
+			// 
 			// ProcessBrowserForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(573, 506);
+			this.ClientSize = new System.Drawing.Size(573, 554);
+			this.Controls.Add(this.bannerImage);
 			this.Controls.Add(this.searchGroupBox);
 			this.Controls.Add(this.loadSymbolsCheckBox);
 			this.Controls.Add(this.openProcessButton);
@@ -233,6 +245,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.processDataGridView)).EndInit();
 			this.searchGroupBox.ResumeLayout(false);
 			this.searchGroupBox.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bannerImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -254,5 +267,6 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox filterTextBox;
+		private System.Windows.Forms.PictureBox bannerImage;
 	}
 }
