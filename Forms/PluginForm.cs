@@ -19,7 +19,7 @@ namespace ReClassNET.Forms
 		{
 			private readonly PluginInfo plugin;
 
-			public Image Icon => plugin.Interface?.Icon ?? Properties.Resources.plugin;
+			public Image Icon => plugin.Interface?.Icon ?? Properties.Resources.B16x16_Plugin;
 			public string Name => plugin.Name;
 			public string Version => plugin.FileVersion;
 			public string Author => plugin.Author;
@@ -43,7 +43,7 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
-			BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.page_code_big, "Plugins", "Here you can configure all loaded ReClass.NET plugins.");
+			BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.B32x32_Page_Code, "Plugins", "Here you can configure all loaded ReClass.NET plugins.");
 
 			// Plugins Tab
 

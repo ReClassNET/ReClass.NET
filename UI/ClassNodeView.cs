@@ -46,8 +46,8 @@ namespace ReClassNET.UI
 			DoubleBuffered = true;
 
 			classesTreeView.ImageList = new ImageList();
-			classesTreeView.ImageList.Images.Add(Properties.Resources.text_list_bullets);
-			classesTreeView.ImageList.Images.Add(Properties.Resources.class_icon);
+			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);
+			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Class_Type);
 
 			root = new TreeNode
 			{

@@ -155,7 +155,7 @@
 			// 
 			// setCurrentClassAddressToolStripMenuItem
 			// 
-			this.setCurrentClassAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.exchange_icon;
+			this.setCurrentClassAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Exchange_Button;
 			this.setCurrentClassAddressToolStripMenuItem.Name = "setCurrentClassAddressToolStripMenuItem";
 			this.setCurrentClassAddressToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
 			this.setCurrentClassAddressToolStripMenuItem.Text = "Set current class address";
@@ -168,7 +168,7 @@
 			// 
 			// createClassAtAddressToolStripMenuItem
 			// 
-			this.createClassAtAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_class_add;
+			this.createClassAtAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
 			this.createClassAtAddressToolStripMenuItem.Name = "createClassAtAddressToolStripMenuItem";
 			this.createClassAtAddressToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
 			this.createClassAtAddressToolStripMenuItem.Text = "Create class at address";

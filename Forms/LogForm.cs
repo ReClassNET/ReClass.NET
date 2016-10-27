@@ -58,16 +58,16 @@ namespace ReClassNET.Forms
 			switch (level)
 			{
 				case LogLevel.Error:
-					icon = Properties.Resources.error;
+					icon = Properties.Resources.B16x16_Error;
 					break;
 				case LogLevel.Warning:
-					icon = Properties.Resources.warning;
+					icon = Properties.Resources.B16x16_Warning;
 					break;
 				case LogLevel.Information:
-					icon = Properties.Resources.information;
+					icon = Properties.Resources.B16x16_Information;
 					break;
 				default:
-					icon = Properties.Resources.cog;
+					icon = Properties.Resources.B16x16_Gear;
 					break;
 			}
 

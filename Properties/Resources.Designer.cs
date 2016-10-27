@@ -63,9 +63,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap accept {
+        internal static System.Drawing.Bitmap B16x16_Accept {
             get {
-                object obj = ResourceManager.GetObject("accept", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Accept", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap add {
+        internal static System.Drawing.Bitmap B16x16_Array_Type {
             get {
-                object obj = ResourceManager.GetObject("add", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Array_Type", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap array_icon {
+        internal static System.Drawing.Bitmap B16x16_Arrow_Refresh {
             get {
-                object obj = ResourceManager.GetObject("array_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Arrow_Refresh", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap arrow_down_icon {
+        internal static System.Drawing.Bitmap B16x16_Button_Add_Bytes_1024 {
             get {
-                object obj = ResourceManager.GetObject("arrow_down_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Add_Bytes_1024", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap arrow_refresh {
+        internal static System.Drawing.Bitmap B16x16_Button_Add_Bytes_2048 {
             get {
-                object obj = ResourceManager.GetObject("arrow_refresh", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Add_Bytes_2048", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_add_bytes_1024 {
+        internal static System.Drawing.Bitmap B16x16_Button_Add_Bytes_256 {
             get {
-                object obj = ResourceManager.GetObject("button_add_bytes_1024", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Add_Bytes_256", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +123,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_add_bytes_2048 {
+        internal static System.Drawing.Bitmap B16x16_Button_Add_Bytes_4 {
             get {
-                object obj = ResourceManager.GetObject("button_add_bytes_2048", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Add_Bytes_4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +133,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_add_bytes_256 {
+        internal static System.Drawing.Bitmap B16x16_Button_Add_Bytes_4096 {
             get {
-                object obj = ResourceManager.GetObject("button_add_bytes_256", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Add_Bytes_4096", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +143,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_add_bytes_4 {
+        internal static System.Drawing.Bitmap B16x16_Button_Add_Bytes_64 {
             get {
-                object obj = ResourceManager.GetObject("button_add_bytes_4", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Add_Bytes_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +153,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_add_bytes_4096 {
+        internal static System.Drawing.Bitmap B16x16_Button_Add_Bytes_8 {
             get {
-                object obj = ResourceManager.GetObject("button_add_bytes_4096", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Add_Bytes_8", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,9 +163,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_add_bytes_64 {
+        internal static System.Drawing.Bitmap B16x16_Button_Add_Bytes_x {
             get {
-                object obj = ResourceManager.GetObject("button_add_bytes_64", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Add_Bytes_x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,9 +173,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_add_bytes_8 {
+        internal static System.Drawing.Bitmap B16x16_Button_Array {
             get {
-                object obj = ResourceManager.GetObject("button_add_bytes_8", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Array", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -183,9 +183,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_add_bytes_x {
+        internal static System.Drawing.Bitmap B16x16_Button_Bits {
             get {
-                object obj = ResourceManager.GetObject("button_add_bytes_x", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Bits", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,9 +193,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_array {
+        internal static System.Drawing.Bitmap B16x16_Button_Class_Add {
             get {
-                object obj = ResourceManager.GetObject("button_array", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Class_Add", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +203,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_bits {
+        internal static System.Drawing.Bitmap B16x16_Button_Class_Instance {
             get {
-                object obj = ResourceManager.GetObject("button_bits", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Class_Instance", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -213,9 +213,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_class_add {
+        internal static System.Drawing.Bitmap B16x16_Button_Class_Pointer {
             get {
-                object obj = ResourceManager.GetObject("button_class_add", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Class_Pointer", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +223,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_class_inst {
+        internal static System.Drawing.Bitmap B16x16_Button_Class_Remove {
             get {
-                object obj = ResourceManager.GetObject("button_class_inst", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Class_Remove", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +233,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_class_ptr {
+        internal static System.Drawing.Bitmap B16x16_Button_Delete {
             get {
-                object obj = ResourceManager.GetObject("button_class_ptr", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Delete", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -243,9 +243,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_class_remove {
+        internal static System.Drawing.Bitmap B16x16_Button_Double {
             get {
-                object obj = ResourceManager.GetObject("button_class_remove", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Double", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -253,9 +253,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_double {
+        internal static System.Drawing.Bitmap B16x16_Button_Drop_Down {
             get {
-                object obj = ResourceManager.GetObject("button_double", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Drop_Down", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -263,9 +263,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_float {
+        internal static System.Drawing.Bitmap B16x16_Button_Float {
             get {
-                object obj = ResourceManager.GetObject("button_float", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Float", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -273,9 +273,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_fn_ptr {
+        internal static System.Drawing.Bitmap B16x16_Button_Function_Pointer {
             get {
-                object obj = ResourceManager.GetObject("button_fn_ptr", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Function_Pointer", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -283,9 +283,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_hex_16 {
+        internal static System.Drawing.Bitmap B16x16_Button_Hex_16 {
             get {
-                object obj = ResourceManager.GetObject("button_hex_16", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Hex_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -293,9 +293,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_hex_32 {
+        internal static System.Drawing.Bitmap B16x16_Button_Hex_32 {
             get {
-                object obj = ResourceManager.GetObject("button_hex_32", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Hex_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -303,9 +303,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_hex_64 {
+        internal static System.Drawing.Bitmap B16x16_Button_Hex_64 {
             get {
-                object obj = ResourceManager.GetObject("button_hex_64", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Hex_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -313,9 +313,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_hex_8 {
+        internal static System.Drawing.Bitmap B16x16_Button_Hex_8 {
             get {
-                object obj = ResourceManager.GetObject("button_hex_8", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Hex_8", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -323,9 +323,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_insert_bytes_1024 {
+        internal static System.Drawing.Bitmap B16x16_Button_Insert_Bytes_1024 {
             get {
-                object obj = ResourceManager.GetObject("button_insert_bytes_1024", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Insert_Bytes_1024", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -333,9 +333,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_insert_bytes_2048 {
+        internal static System.Drawing.Bitmap B16x16_Button_Insert_Bytes_2048 {
             get {
-                object obj = ResourceManager.GetObject("button_insert_bytes_2048", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Insert_Bytes_2048", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -343,9 +343,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_insert_bytes_256 {
+        internal static System.Drawing.Bitmap B16x16_Button_Insert_Bytes_256 {
             get {
-                object obj = ResourceManager.GetObject("button_insert_bytes_256", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Insert_Bytes_256", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -353,9 +353,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_insert_bytes_4 {
+        internal static System.Drawing.Bitmap B16x16_Button_Insert_Bytes_4 {
             get {
-                object obj = ResourceManager.GetObject("button_insert_bytes_4", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Insert_Bytes_4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -363,9 +363,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_insert_bytes_4096 {
+        internal static System.Drawing.Bitmap B16x16_Button_Insert_Bytes_4096 {
             get {
-                object obj = ResourceManager.GetObject("button_insert_bytes_4096", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Insert_Bytes_4096", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -373,9 +373,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_insert_bytes_64 {
+        internal static System.Drawing.Bitmap B16x16_Button_Insert_Bytes_64 {
             get {
-                object obj = ResourceManager.GetObject("button_insert_bytes_64", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Insert_Bytes_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -383,9 +383,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_insert_bytes_8 {
+        internal static System.Drawing.Bitmap B16x16_Button_Insert_Bytes_8 {
             get {
-                object obj = ResourceManager.GetObject("button_insert_bytes_8", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Insert_Bytes_8", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -393,9 +393,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_insert_bytes_x {
+        internal static System.Drawing.Bitmap B16x16_Button_Insert_Bytes_x {
             get {
-                object obj = ResourceManager.GetObject("button_insert_bytes_x", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Insert_Bytes_x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -403,9 +403,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_int_16 {
+        internal static System.Drawing.Bitmap B16x16_Button_Int_16 {
             get {
-                object obj = ResourceManager.GetObject("button_int_16", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Int_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -413,9 +413,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_int_32 {
+        internal static System.Drawing.Bitmap B16x16_Button_Int_32 {
             get {
-                object obj = ResourceManager.GetObject("button_int_32", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Int_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -423,9 +423,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_int_64 {
+        internal static System.Drawing.Bitmap B16x16_Button_Int_64 {
             get {
-                object obj = ResourceManager.GetObject("button_int_64", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Int_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -433,9 +433,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_int_8 {
+        internal static System.Drawing.Bitmap B16x16_Button_Int_8 {
             get {
-                object obj = ResourceManager.GetObject("button_int_8", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Int_8", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -443,9 +443,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_mat_33 {
+        internal static System.Drawing.Bitmap B16x16_Button_Matrix_3x3 {
             get {
-                object obj = ResourceManager.GetObject("button_mat_33", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Matrix_3x3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -453,9 +453,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_mat_34 {
+        internal static System.Drawing.Bitmap B16x16_Button_Matrix_3x4 {
             get {
-                object obj = ResourceManager.GetObject("button_mat_34", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Matrix_3x4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -463,9 +463,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_mat_44 {
+        internal static System.Drawing.Bitmap B16x16_Button_Matrix_4x4 {
             get {
-                object obj = ResourceManager.GetObject("button_mat_44", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Matrix_4x4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -473,9 +473,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_ptrarray {
+        internal static System.Drawing.Bitmap B16x16_Button_Pointer_Array {
             get {
-                object obj = ResourceManager.GetObject("button_ptrarray", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Pointer_Array", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -483,9 +483,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_text {
+        internal static System.Drawing.Bitmap B16x16_Button_Text {
             get {
-                object obj = ResourceManager.GetObject("button_text", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Text", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -493,9 +493,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_text_ptr {
+        internal static System.Drawing.Bitmap B16x16_Button_Text_Pointer {
             get {
-                object obj = ResourceManager.GetObject("button_text_ptr", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Text_Pointer", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -503,9 +503,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_uint_16 {
+        internal static System.Drawing.Bitmap B16x16_Button_UInt_16 {
             get {
-                object obj = ResourceManager.GetObject("button_uint_16", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_UInt_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -513,9 +513,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_uint_32 {
+        internal static System.Drawing.Bitmap B16x16_Button_UInt_32 {
             get {
-                object obj = ResourceManager.GetObject("button_uint_32", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_UInt_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -523,9 +523,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_uint_64 {
+        internal static System.Drawing.Bitmap B16x16_Button_UInt_64 {
             get {
-                object obj = ResourceManager.GetObject("button_uint_64", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_UInt_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -533,9 +533,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_uint_8 {
+        internal static System.Drawing.Bitmap B16x16_Button_UInt_8 {
             get {
-                object obj = ResourceManager.GetObject("button_uint_8", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_UInt_8", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -543,9 +543,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_utext {
+        internal static System.Drawing.Bitmap B16x16_Button_UText {
             get {
-                object obj = ResourceManager.GetObject("button_utext", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_UText", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -553,9 +553,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_utext_ptr {
+        internal static System.Drawing.Bitmap B16x16_Button_UText_Pointer {
             get {
-                object obj = ResourceManager.GetObject("button_utext_ptr", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_UText_Pointer", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -563,9 +563,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_vec_2 {
+        internal static System.Drawing.Bitmap B16x16_Button_Vector_2 {
             get {
-                object obj = ResourceManager.GetObject("button_vec_2", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Vector_2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -573,9 +573,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_vec_3 {
+        internal static System.Drawing.Bitmap B16x16_Button_Vector_3 {
             get {
-                object obj = ResourceManager.GetObject("button_vec_3", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Vector_3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -583,9 +583,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_vec_4 {
+        internal static System.Drawing.Bitmap B16x16_Button_Vector_4 {
             get {
-                object obj = ResourceManager.GetObject("button_vec_4", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Vector_4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -593,9 +593,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_vtable {
+        internal static System.Drawing.Bitmap B16x16_Button_VTable {
             get {
-                object obj = ResourceManager.GetObject("button_vtable", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_VTable", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -603,9 +603,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cancel {
+        internal static System.Drawing.Bitmap B16x16_Chart_Delete {
             get {
-                object obj = ResourceManager.GetObject("cancel", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Chart_Delete", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -613,9 +613,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap chart_organisation_delete {
+        internal static System.Drawing.Bitmap B16x16_Class_Type {
             get {
-                object obj = ResourceManager.GetObject("chart_organisation_delete", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Class_Type", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -623,9 +623,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap class_icon {
+        internal static System.Drawing.Bitmap B16x16_Closed_Icon {
             get {
-                object obj = ResourceManager.GetObject("class_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Closed_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -633,9 +633,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap closed_icon {
+        internal static System.Drawing.Bitmap B16x16_Color_Wheel {
             get {
-                object obj = ResourceManager.GetObject("closed_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Color_Wheel", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -643,9 +643,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cog {
+        internal static System.Drawing.Bitmap B16x16_Control_Pause {
             get {
-                object obj = ResourceManager.GetObject("cog", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Control_Pause", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -653,9 +653,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap color_wheel {
+        internal static System.Drawing.Bitmap B16x16_Control_Play {
             get {
-                object obj = ResourceManager.GetObject("color_wheel", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Control_Play", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -663,9 +663,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap control_pause {
+        internal static System.Drawing.Bitmap B16x16_Control_Stop {
             get {
-                object obj = ResourceManager.GetObject("control_pause", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Control_Stop", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -673,9 +673,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap control_play {
+        internal static System.Drawing.Bitmap B16x16_Custom_Type {
             get {
-                object obj = ResourceManager.GetObject("control_play", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Custom_Type", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -683,9 +683,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap control_stop {
+        internal static System.Drawing.Bitmap B16x16_Double_Type {
             get {
-                object obj = ResourceManager.GetObject("control_stop", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Double_Type", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -693,9 +693,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cross {
+        internal static System.Drawing.Bitmap B16x16_Enum_Type {
             get {
-                object obj = ResourceManager.GetObject("cross", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Enum_Type", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -703,9 +703,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap custom_icon {
+        internal static System.Drawing.Bitmap B16x16_Error {
             get {
-                object obj = ResourceManager.GetObject("custom_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Error", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -713,9 +713,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap double_icon {
+        internal static System.Drawing.Bitmap B16x16_Exchange_Button {
             get {
-                object obj = ResourceManager.GetObject("double_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Exchange_Button", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -723,9 +723,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap enum_icon {
+        internal static System.Drawing.Bitmap B16x16_Float_Type {
             get {
-                object obj = ResourceManager.GetObject("enum_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Float_Type", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -733,9 +733,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap error {
+        internal static System.Drawing.Bitmap B16x16_Folder {
             get {
-                object obj = ResourceManager.GetObject("error", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Folder", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -743,9 +743,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap exchange_icon {
+        internal static System.Drawing.Bitmap B16x16_Function_Type {
             get {
-                object obj = ResourceManager.GetObject("exchange_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Function_Type", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -753,9 +753,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap float_icon {
+        internal static System.Drawing.Bitmap B16x16_Gear {
             get {
-                object obj = ResourceManager.GetObject("float_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Gear", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -763,9 +763,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap folder {
+        internal static System.Drawing.Bitmap B16x16_Help {
             get {
-                object obj = ResourceManager.GetObject("folder", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Help", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -773,9 +773,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap function_icon {
+        internal static System.Drawing.Bitmap B16x16_Information {
             get {
-                object obj = ResourceManager.GetObject("function_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Information", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -783,9 +783,259 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap help {
+        internal static System.Drawing.Bitmap B16x16_Interface_Type {
             get {
-                object obj = ResourceManager.GetObject("help", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Interface_Type", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Left_Button {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Left_Button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Matrix_Type {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Matrix_Type", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Open_Icon {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Open_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Page_Code {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Page_Code", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Page_Code_Add {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Page_Code_Add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Page_Code_Cpp {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Page_Code_Cpp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Page_Code_Csharp {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Page_Code_Csharp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Page_Copy {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Page_Copy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Pdb {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Pdb", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Plugin {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Plugin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Pointer_Type {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Pointer_Type", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Quit {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Quit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Right_Button {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Right_Button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Save {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Save", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Save_As {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Save_As", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Settings_Edit {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Settings_Edit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Signed_Type {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Signed_Type", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Table_Gear {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Table_Gear", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Text_List_Bullets {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Text_List_Bullets", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Text_Type {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Text_Type", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Textfield_Rename {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Textfield_Rename", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Unsigned_Type {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Unsigned_Type", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Vector_Type {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Vector_Type", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Warning {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Warning", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B32x32_Page_Code {
+            get {
+                object obj = ResourceManager.GetObject("B32x32_Page_Code", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -793,280 +1043,10 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
         /// </summary>
-        internal static System.Drawing.Icon icon {
+        internal static System.Drawing.Icon ReClassNet {
             get {
-                object obj = ResourceManager.GetObject("icon", resourceCulture);
+                object obj = ResourceManager.GetObject("ReClassNet", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap information {
-            get {
-                object obj = ResourceManager.GetObject("information", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap interface_icon {
-            get {
-                object obj = ResourceManager.GetObject("interface_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap left_icon {
-            get {
-                object obj = ResourceManager.GetObject("left_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap matrix_icon {
-            get {
-                object obj = ResourceManager.GetObject("matrix_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap note_add {
-            get {
-                object obj = ResourceManager.GetObject("note_add", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap note_edit {
-            get {
-                object obj = ResourceManager.GetObject("note_edit", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap open_icon {
-            get {
-                object obj = ResourceManager.GetObject("open_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap page_code {
-            get {
-                object obj = ResourceManager.GetObject("page_code", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap page_code_add {
-            get {
-                object obj = ResourceManager.GetObject("page_code_add", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap page_code_big {
-            get {
-                object obj = ResourceManager.GetObject("page_code_big", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap page_copy {
-            get {
-                object obj = ResourceManager.GetObject("page_copy", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap page_white_cplusplus {
-            get {
-                object obj = ResourceManager.GetObject("page_white_cplusplus", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap page_white_csharp {
-            get {
-                object obj = ResourceManager.GetObject("page_white_csharp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap pdb {
-            get {
-                object obj = ResourceManager.GetObject("pdb", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap plugin {
-            get {
-                object obj = ResourceManager.GetObject("plugin", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap pointer_icon {
-            get {
-                object obj = ResourceManager.GetObject("pointer_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap right_icon {
-            get {
-                object obj = ResourceManager.GetObject("right_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap save {
-            get {
-                object obj = ResourceManager.GetObject("save", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap save_as {
-            get {
-                object obj = ResourceManager.GetObject("save_as", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap signed_icon {
-            get {
-                object obj = ResourceManager.GetObject("signed_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap table_gear {
-            get {
-                object obj = ResourceManager.GetObject("table_gear", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap text_icon {
-            get {
-                object obj = ResourceManager.GetObject("text_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap text_list_bullets {
-            get {
-                object obj = ResourceManager.GetObject("text_list_bullets", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap textfield_rename {
-            get {
-                object obj = ResourceManager.GetObject("textfield_rename", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap unsigned_icon {
-            get {
-                object obj = ResourceManager.GetObject("unsigned_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap vector_icon {
-            get {
-                object obj = ResourceManager.GetObject("vector_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap warning {
-            get {
-                object obj = ResourceManager.GetObject("warning", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

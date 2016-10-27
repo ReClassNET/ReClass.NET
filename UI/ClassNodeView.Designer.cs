@@ -66,7 +66,7 @@
 			// 
 			// renameClassToolStripMenuItem
 			// 
-			this.renameClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.textfield_rename;
+			this.renameClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Textfield_Rename;
 			this.renameClassToolStripMenuItem.Name = "renameClassToolStripMenuItem";
 			this.renameClassToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
 			this.renameClassToolStripMenuItem.Text = "Rename class";
@@ -74,7 +74,7 @@
 			// 
 			// deleteClassToolStripMenuItem
 			// 
-			this.deleteClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_class_remove;
+			this.deleteClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Remove;
 			this.deleteClassToolStripMenuItem.Name = "deleteClassToolStripMenuItem";
 			this.deleteClassToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
 			this.deleteClassToolStripMenuItem.Text = "Delete class";
@@ -87,7 +87,7 @@
 			// 
 			// removeUnusedClassesToolStripMenuItem
 			// 
-			this.removeUnusedClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.chart_organisation_delete;
+			this.removeUnusedClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Chart_Delete;
 			this.removeUnusedClassesToolStripMenuItem.Name = "removeUnusedClassesToolStripMenuItem";
 			this.removeUnusedClassesToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
 			this.removeUnusedClassesToolStripMenuItem.Text = "Remove unused classes";

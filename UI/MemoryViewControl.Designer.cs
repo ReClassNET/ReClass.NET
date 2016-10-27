@@ -150,14 +150,14 @@
             this.arrayOfPointersToolStripMenuItem,
             this.vTablePointerToolStripMenuItem,
             this.functionPointerToolStripMenuItem});
-			this.changeTypeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.exchange_icon;
+			this.changeTypeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Exchange_Button;
 			this.changeTypeToolStripMenuItem.Name = "changeTypeToolStripMenuItem";
 			this.changeTypeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.changeTypeToolStripMenuItem.Text = "Change Type";
 			// 
 			// hex64ToolStripMenuItem
 			// 
-			this.hex64ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_hex_64;
+			this.hex64ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_64;
 			this.hex64ToolStripMenuItem.Name = "hex64ToolStripMenuItem";
 			this.hex64ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.hex64ToolStripMenuItem.Text = "Hex 64";
@@ -166,7 +166,7 @@
 			// 
 			// hex32ToolStripMenuItem
 			// 
-			this.hex32ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_hex_32;
+			this.hex32ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_32;
 			this.hex32ToolStripMenuItem.Name = "hex32ToolStripMenuItem";
 			this.hex32ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.hex32ToolStripMenuItem.Text = "Hex 32";
@@ -175,7 +175,7 @@
 			// 
 			// hex16ToolStripMenuItem
 			// 
-			this.hex16ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_hex_16;
+			this.hex16ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_16;
 			this.hex16ToolStripMenuItem.Name = "hex16ToolStripMenuItem";
 			this.hex16ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.hex16ToolStripMenuItem.Text = "Hex 16";
@@ -184,7 +184,7 @@
 			// 
 			// hex8ToolStripMenuItem
 			// 
-			this.hex8ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_hex_8;
+			this.hex8ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_8;
 			this.hex8ToolStripMenuItem.Name = "hex8ToolStripMenuItem";
 			this.hex8ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.hex8ToolStripMenuItem.Text = "Hex 8";
@@ -198,7 +198,7 @@
 			// 
 			// int64ToolStripMenuItem
 			// 
-			this.int64ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_int_64;
+			this.int64ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_64;
 			this.int64ToolStripMenuItem.Name = "int64ToolStripMenuItem";
 			this.int64ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.int64ToolStripMenuItem.Text = "Int 64";
@@ -207,7 +207,7 @@
 			// 
 			// int32ToolStripMenuItem
 			// 
-			this.int32ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_int_32;
+			this.int32ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_32;
 			this.int32ToolStripMenuItem.Name = "int32ToolStripMenuItem";
 			this.int32ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.int32ToolStripMenuItem.Text = "Int 32";
@@ -216,7 +216,7 @@
 			// 
 			// int16ToolStripMenuItem
 			// 
-			this.int16ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_int_16;
+			this.int16ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_16;
 			this.int16ToolStripMenuItem.Name = "int16ToolStripMenuItem";
 			this.int16ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.int16ToolStripMenuItem.Text = "Int 16";
@@ -225,7 +225,7 @@
 			// 
 			// int8ToolStripMenuItem
 			// 
-			this.int8ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_int_8;
+			this.int8ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_8;
 			this.int8ToolStripMenuItem.Name = "int8ToolStripMenuItem";
 			this.int8ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.int8ToolStripMenuItem.Text = "Int 8";
@@ -239,7 +239,7 @@
 			// 
 			// uInt64ToolStripMenuItem
 			// 
-			this.uInt64ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_uint_64;
+			this.uInt64ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_64;
 			this.uInt64ToolStripMenuItem.Name = "uInt64ToolStripMenuItem";
 			this.uInt64ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uInt64ToolStripMenuItem.Text = "UInt 64";
@@ -248,7 +248,7 @@
 			// 
 			// uInt32ToolStripMenuItem
 			// 
-			this.uInt32ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_uint_32;
+			this.uInt32ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_32;
 			this.uInt32ToolStripMenuItem.Name = "uInt32ToolStripMenuItem";
 			this.uInt32ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uInt32ToolStripMenuItem.Text = "UInt 32";
@@ -257,7 +257,7 @@
 			// 
 			// uInt16ToolStripMenuItem
 			// 
-			this.uInt16ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_uint_16;
+			this.uInt16ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_16;
 			this.uInt16ToolStripMenuItem.Name = "uInt16ToolStripMenuItem";
 			this.uInt16ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uInt16ToolStripMenuItem.Text = "UInt 16";
@@ -266,7 +266,7 @@
 			// 
 			// uInt8ToolStripMenuItem
 			// 
-			this.uInt8ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_uint_8;
+			this.uInt8ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_8;
 			this.uInt8ToolStripMenuItem.Name = "uInt8ToolStripMenuItem";
 			this.uInt8ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uInt8ToolStripMenuItem.Text = "UInt 8";
@@ -280,7 +280,7 @@
 			// 
 			// floatToolStripMenuItem
 			// 
-			this.floatToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_float;
+			this.floatToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Float;
 			this.floatToolStripMenuItem.Name = "floatToolStripMenuItem";
 			this.floatToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.floatToolStripMenuItem.Text = "Float";
@@ -289,7 +289,7 @@
 			// 
 			// doubleToolStripMenuItem
 			// 
-			this.doubleToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_double;
+			this.doubleToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Double;
 			this.doubleToolStripMenuItem.Name = "doubleToolStripMenuItem";
 			this.doubleToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.doubleToolStripMenuItem.Text = "Double";
@@ -303,7 +303,7 @@
 			// 
 			// vector4ToolStripMenuItem
 			// 
-			this.vector4ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_vec_4;
+			this.vector4ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Vector_4;
 			this.vector4ToolStripMenuItem.Name = "vector4ToolStripMenuItem";
 			this.vector4ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.vector4ToolStripMenuItem.Text = "Vector 4";
@@ -312,7 +312,7 @@
 			// 
 			// vector3ToolStripMenuItem
 			// 
-			this.vector3ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_vec_3;
+			this.vector3ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Vector_3;
 			this.vector3ToolStripMenuItem.Name = "vector3ToolStripMenuItem";
 			this.vector3ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.vector3ToolStripMenuItem.Text = "Vector 3";
@@ -321,7 +321,7 @@
 			// 
 			// vector2ToolStripMenuItem
 			// 
-			this.vector2ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_vec_2;
+			this.vector2ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Vector_2;
 			this.vector2ToolStripMenuItem.Name = "vector2ToolStripMenuItem";
 			this.vector2ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.vector2ToolStripMenuItem.Text = "Vector 2";
@@ -335,7 +335,7 @@
 			// 
 			// matrix4x4ToolStripMenuItem
 			// 
-			this.matrix4x4ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_mat_44;
+			this.matrix4x4ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Matrix_4x4;
 			this.matrix4x4ToolStripMenuItem.Name = "matrix4x4ToolStripMenuItem";
 			this.matrix4x4ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.matrix4x4ToolStripMenuItem.Text = "Matrix 4x4";
@@ -344,7 +344,7 @@
 			// 
 			// matrix3x4ToolStripMenuItem
 			// 
-			this.matrix3x4ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_mat_34;
+			this.matrix3x4ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Matrix_3x4;
 			this.matrix3x4ToolStripMenuItem.Name = "matrix3x4ToolStripMenuItem";
 			this.matrix3x4ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.matrix3x4ToolStripMenuItem.Text = "Matrix 3x4";
@@ -353,7 +353,7 @@
 			// 
 			// matrix3x3ToolStripMenuItem
 			// 
-			this.matrix3x3ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_mat_33;
+			this.matrix3x3ToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Matrix_3x3;
 			this.matrix3x3ToolStripMenuItem.Name = "matrix3x3ToolStripMenuItem";
 			this.matrix3x3ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.matrix3x3ToolStripMenuItem.Text = "Matrix 3x3";
@@ -367,7 +367,7 @@
 			// 
 			// uTF8TextToolStripMenuItem
 			// 
-			this.uTF8TextToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_text;
+			this.uTF8TextToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Text;
 			this.uTF8TextToolStripMenuItem.Name = "uTF8TextToolStripMenuItem";
 			this.uTF8TextToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uTF8TextToolStripMenuItem.Text = "UTF8 Text";
@@ -376,7 +376,7 @@
 			// 
 			// uTF8TextPointerToolStripMenuItem
 			// 
-			this.uTF8TextPointerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_text_ptr;
+			this.uTF8TextPointerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Text_Pointer;
 			this.uTF8TextPointerToolStripMenuItem.Name = "uTF8TextPointerToolStripMenuItem";
 			this.uTF8TextPointerToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uTF8TextPointerToolStripMenuItem.Text = "UTF8 Text Pointer";
@@ -385,7 +385,7 @@
 			// 
 			// uTF16TextToolStripMenuItem
 			// 
-			this.uTF16TextToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_utext;
+			this.uTF16TextToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UText;
 			this.uTF16TextToolStripMenuItem.Name = "uTF16TextToolStripMenuItem";
 			this.uTF16TextToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uTF16TextToolStripMenuItem.Text = "UTF16 Text";
@@ -394,7 +394,7 @@
 			// 
 			// uTF16TextPointerToolStripMenuItem
 			// 
-			this.uTF16TextPointerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_utext_ptr;
+			this.uTF16TextPointerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UText_Pointer;
 			this.uTF16TextPointerToolStripMenuItem.Name = "uTF16TextPointerToolStripMenuItem";
 			this.uTF16TextPointerToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uTF16TextPointerToolStripMenuItem.Text = "UTF16 Text Pointer";
@@ -408,7 +408,7 @@
 			// 
 			// classInstanceToolStripMenuItem
 			// 
-			this.classInstanceToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_class_inst;
+			this.classInstanceToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Instance;
 			this.classInstanceToolStripMenuItem.Name = "classInstanceToolStripMenuItem";
 			this.classInstanceToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.classInstanceToolStripMenuItem.Text = "Class Instance";
@@ -417,7 +417,7 @@
 			// 
 			// classPointerToolStripMenuItem
 			// 
-			this.classPointerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_class_ptr;
+			this.classPointerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Pointer;
 			this.classPointerToolStripMenuItem.Name = "classPointerToolStripMenuItem";
 			this.classPointerToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.classPointerToolStripMenuItem.Text = "Class Pointer";
@@ -431,7 +431,7 @@
 			// 
 			// arrayToolStripMenuItem
 			// 
-			this.arrayToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_array;
+			this.arrayToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Array;
 			this.arrayToolStripMenuItem.Name = "arrayToolStripMenuItem";
 			this.arrayToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.arrayToolStripMenuItem.Text = "Array of Classes";
@@ -440,7 +440,7 @@
 			// 
 			// arrayOfPointersToolStripMenuItem
 			// 
-			this.arrayOfPointersToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_ptrarray;
+			this.arrayOfPointersToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Pointer_Array;
 			this.arrayOfPointersToolStripMenuItem.Name = "arrayOfPointersToolStripMenuItem";
 			this.arrayOfPointersToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.arrayOfPointersToolStripMenuItem.Text = "Array of Pointers";
@@ -449,7 +449,7 @@
 			// 
 			// vTablePointerToolStripMenuItem
 			// 
-			this.vTablePointerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_vtable;
+			this.vTablePointerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_VTable;
 			this.vTablePointerToolStripMenuItem.Name = "vTablePointerToolStripMenuItem";
 			this.vTablePointerToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.vTablePointerToolStripMenuItem.Text = "VTable Pointer";
@@ -458,7 +458,7 @@
 			// 
 			// functionPointerToolStripMenuItem
 			// 
-			this.functionPointerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_fn_ptr;
+			this.functionPointerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Function_Pointer;
 			this.functionPointerToolStripMenuItem.Name = "functionPointerToolStripMenuItem";
 			this.functionPointerToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.functionPointerToolStripMenuItem.Text = "Function Pointer";
@@ -475,14 +475,14 @@
             this.add1024BytesToolStripMenuItem,
             this.add2048BytesToolStripMenuItem,
             this.add4096BytesToolStripMenuItem});
-			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_x;
+			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_x;
 			this.addBytesToolStripMenuItem.Name = "addBytesToolStripMenuItem";
 			this.addBytesToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.addBytesToolStripMenuItem.Text = "Add Bytes";
 			// 
 			// add4BytesToolStripMenuItem
 			// 
-			this.add4BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_4;
+			this.add4BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_4;
 			this.add4BytesToolStripMenuItem.Name = "add4BytesToolStripMenuItem";
 			this.add4BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add4BytesToolStripMenuItem.Text = "Add 4 Bytes";
@@ -491,7 +491,7 @@
 			// 
 			// add8BytesToolStripMenuItem
 			// 
-			this.add8BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_8;
+			this.add8BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_8;
 			this.add8BytesToolStripMenuItem.Name = "add8BytesToolStripMenuItem";
 			this.add8BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add8BytesToolStripMenuItem.Text = "Add 8 Bytes";
@@ -500,7 +500,7 @@
 			// 
 			// add64BytesToolStripMenuItem
 			// 
-			this.add64BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_64;
+			this.add64BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_64;
 			this.add64BytesToolStripMenuItem.Name = "add64BytesToolStripMenuItem";
 			this.add64BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add64BytesToolStripMenuItem.Text = "Add 64 Bytes";
@@ -509,7 +509,7 @@
 			// 
 			// add256BytesToolStripMenuItem
 			// 
-			this.add256BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_256;
+			this.add256BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_256;
 			this.add256BytesToolStripMenuItem.Name = "add256BytesToolStripMenuItem";
 			this.add256BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add256BytesToolStripMenuItem.Text = "Add 256 Bytes";
@@ -518,7 +518,7 @@
 			// 
 			// add1024BytesToolStripMenuItem
 			// 
-			this.add1024BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_1024;
+			this.add1024BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_1024;
 			this.add1024BytesToolStripMenuItem.Name = "add1024BytesToolStripMenuItem";
 			this.add1024BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add1024BytesToolStripMenuItem.Text = "Add 1024 Bytes";
@@ -527,7 +527,7 @@
 			// 
 			// add2048BytesToolStripMenuItem
 			// 
-			this.add2048BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_2048;
+			this.add2048BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_2048;
 			this.add2048BytesToolStripMenuItem.Name = "add2048BytesToolStripMenuItem";
 			this.add2048BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add2048BytesToolStripMenuItem.Text = "Add 2048 Bytes";
@@ -536,7 +536,7 @@
 			// 
 			// add4096BytesToolStripMenuItem
 			// 
-			this.add4096BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_4096;
+			this.add4096BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_4096;
 			this.add4096BytesToolStripMenuItem.Name = "add4096BytesToolStripMenuItem";
 			this.add4096BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add4096BytesToolStripMenuItem.Text = "Add 4096 Bytes";
@@ -553,14 +553,14 @@
             this.insert1024BytesToolStripMenuItem,
             this.insert2048BytesToolStripMenuItem,
             this.insert4096BytesToolStripMenuItem});
-			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_x;
+			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_x;
 			this.insertBytesToolStripMenuItem.Name = "insertBytesToolStripMenuItem";
 			this.insertBytesToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.insertBytesToolStripMenuItem.Text = "Insert Bytes";
 			// 
 			// insert4BytesToolStripMenuItem
 			// 
-			this.insert4BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_4;
+			this.insert4BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_4;
 			this.insert4BytesToolStripMenuItem.Name = "insert4BytesToolStripMenuItem";
 			this.insert4BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert4BytesToolStripMenuItem.Text = "Insert 4 Bytes";
@@ -569,7 +569,7 @@
 			// 
 			// insert8BytesToolStripMenuItem
 			// 
-			this.insert8BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_8;
+			this.insert8BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_8;
 			this.insert8BytesToolStripMenuItem.Name = "insert8BytesToolStripMenuItem";
 			this.insert8BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert8BytesToolStripMenuItem.Text = "Insert 8 Bytes";
@@ -578,7 +578,7 @@
 			// 
 			// insert64BytesToolStripMenuItem
 			// 
-			this.insert64BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_64;
+			this.insert64BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_64;
 			this.insert64BytesToolStripMenuItem.Name = "insert64BytesToolStripMenuItem";
 			this.insert64BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert64BytesToolStripMenuItem.Text = "Insert 64 Bytes";
@@ -587,7 +587,7 @@
 			// 
 			// insert256BytesToolStripMenuItem
 			// 
-			this.insert256BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_256;
+			this.insert256BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_256;
 			this.insert256BytesToolStripMenuItem.Name = "insert256BytesToolStripMenuItem";
 			this.insert256BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert256BytesToolStripMenuItem.Text = "Insert 256 Bytes";
@@ -596,7 +596,7 @@
 			// 
 			// insert1024BytesToolStripMenuItem
 			// 
-			this.insert1024BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_1024;
+			this.insert1024BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_1024;
 			this.insert1024BytesToolStripMenuItem.Name = "insert1024BytesToolStripMenuItem";
 			this.insert1024BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert1024BytesToolStripMenuItem.Text = "Insert 1024 Bytes";
@@ -605,7 +605,7 @@
 			// 
 			// insert2048BytesToolStripMenuItem
 			// 
-			this.insert2048BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_2048;
+			this.insert2048BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_2048;
 			this.insert2048BytesToolStripMenuItem.Name = "insert2048BytesToolStripMenuItem";
 			this.insert2048BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert2048BytesToolStripMenuItem.Text = "Insert 2048 Bytes";
@@ -614,7 +614,7 @@
 			// 
 			// insert4096BytesToolStripMenuItem
 			// 
-			this.insert4096BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_4096;
+			this.insert4096BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_4096;
 			this.insert4096BytesToolStripMenuItem.Name = "insert4096BytesToolStripMenuItem";
 			this.insert4096BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert4096BytesToolStripMenuItem.Text = "Insert 4096 Bytes";
@@ -628,7 +628,7 @@
 			// 
 			// copyAddressToolStripMenuItem
 			// 
-			this.copyAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.page_copy;
+			this.copyAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Copy;
 			this.copyAddressToolStripMenuItem.Name = "copyAddressToolStripMenuItem";
 			this.copyAddressToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.copyAddressToolStripMenuItem.Text = "Copy Address";
@@ -641,7 +641,7 @@
 			// 
 			// removeToolStripMenuItem
 			// 
-			this.removeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.cross;
+			this.removeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Delete;
 			this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
 			this.removeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.removeToolStripMenuItem.Text = "Remove";

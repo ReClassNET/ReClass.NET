@@ -200,7 +200,7 @@
 			// 
 			// selectProcessToolStripMenuItem
 			// 
-			this.selectProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.cog;
+			this.selectProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Gear;
 			this.selectProcessToolStripMenuItem.Name = "selectProcessToolStripMenuItem";
 			this.selectProcessToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
 			this.selectProcessToolStripMenuItem.Text = "Select Process...";
@@ -213,7 +213,7 @@
 			// 
 			// openProjectToolStripMenuItem
 			// 
-			this.openProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.folder;
+			this.openProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Folder;
 			this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
 			this.openProjectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
 			this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
@@ -222,7 +222,7 @@
 			// 
 			// clearProjectToolStripMenuItem
 			// 
-			this.clearProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.arrow_refresh;
+			this.clearProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Arrow_Refresh;
 			this.clearProjectToolStripMenuItem.Name = "clearProjectToolStripMenuItem";
 			this.clearProjectToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
 			this.clearProjectToolStripMenuItem.Text = "Clear Project";
@@ -235,7 +235,7 @@
 			// 
 			// saveToolStripMenuItem
 			// 
-			this.saveToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.save;
+			this.saveToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Save;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
 			this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
 			this.saveToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
@@ -244,7 +244,7 @@
 			// 
 			// saveAsToolStripMenuItem
 			// 
-			this.saveAsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.save_as;
+			this.saveAsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Save_As;
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
 			this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
@@ -259,7 +259,7 @@
 			// 
 			// settingsToolStripMenuItem
 			// 
-			this.settingsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.text_list_bullets;
+			this.settingsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Text_List_Bullets;
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
 			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
 			this.settingsToolStripMenuItem.Text = "Settings...";
@@ -267,7 +267,7 @@
 			// 
 			// pluginsToolStripMenuItem
 			// 
-			this.pluginsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.plugin;
+			this.pluginsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Plugin;
 			this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
 			this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
 			this.pluginsToolStripMenuItem.Text = "Plugins...";
@@ -280,7 +280,7 @@
 			// 
 			// quitToolStripMenuItem
 			// 
-			this.quitToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.cancel;
+			this.quitToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Quit;
 			this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
 			this.quitToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
 			this.quitToolStripMenuItem.Text = "Quit";
@@ -303,7 +303,7 @@
 			// 
 			// memoryViewerToolStripMenuItem
 			// 
-			this.memoryViewerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.table_gear;
+			this.memoryViewerToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Table_Gear;
 			this.memoryViewerToolStripMenuItem.Name = "memoryViewerToolStripMenuItem";
 			this.memoryViewerToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
 			this.memoryViewerToolStripMenuItem.Text = "Memory Viewer";
@@ -316,7 +316,7 @@
 			// 
 			// loadSymbolToolStripMenuItem
 			// 
-			this.loadSymbolToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.pdb;
+			this.loadSymbolToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Pdb;
 			this.loadSymbolToolStripMenuItem.Name = "loadSymbolToolStripMenuItem";
 			this.loadSymbolToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
 			this.loadSymbolToolStripMenuItem.Text = "Load Symbol...";
@@ -336,7 +336,7 @@
 			// 
 			// resumeProcessToolStripMenuItem
 			// 
-			this.resumeProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.control_play;
+			this.resumeProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Control_Play;
 			this.resumeProcessToolStripMenuItem.Name = "resumeProcessToolStripMenuItem";
 			this.resumeProcessToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
 			this.resumeProcessToolStripMenuItem.Text = "Resume";
@@ -344,7 +344,7 @@
 			// 
 			// suspendProcessToolStripMenuItem
 			// 
-			this.suspendProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.control_pause;
+			this.suspendProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Control_Pause;
 			this.suspendProcessToolStripMenuItem.Name = "suspendProcessToolStripMenuItem";
 			this.suspendProcessToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
 			this.suspendProcessToolStripMenuItem.Text = "Suspend";
@@ -352,7 +352,7 @@
 			// 
 			// terminateProcessToolStripMenuItem
 			// 
-			this.terminateProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.control_stop;
+			this.terminateProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Control_Stop;
 			this.terminateProcessToolStripMenuItem.Name = "terminateProcessToolStripMenuItem";
 			this.terminateProcessToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
 			this.terminateProcessToolStripMenuItem.Text = "Kill";
@@ -371,7 +371,7 @@
 			// 
 			// cleanUnusedClassesToolStripMenuItem
 			// 
-			this.cleanUnusedClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.chart_organisation_delete;
+			this.cleanUnusedClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Chart_Delete;
 			this.cleanUnusedClassesToolStripMenuItem.Name = "cleanUnusedClassesToolStripMenuItem";
 			this.cleanUnusedClassesToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
 			this.cleanUnusedClassesToolStripMenuItem.Text = "Remove unused classes";
@@ -384,7 +384,7 @@
 			// 
 			// generateCCodeToolStripMenuItem
 			// 
-			this.generateCCodeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.page_white_cplusplus;
+			this.generateCCodeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Code_Cpp;
 			this.generateCCodeToolStripMenuItem.Name = "generateCCodeToolStripMenuItem";
 			this.generateCCodeToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
 			this.generateCCodeToolStripMenuItem.Text = "Generate C++ Code";
@@ -393,7 +393,7 @@
 			// generateCCodeToolStripMenuItem1
 			// 
 			this.generateCCodeToolStripMenuItem1.Enabled = false;
-			this.generateCCodeToolStripMenuItem1.Image = global::ReClassNET.Properties.Resources.page_white_csharp;
+			this.generateCCodeToolStripMenuItem1.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Code_Csharp;
 			this.generateCCodeToolStripMenuItem1.Name = "generateCCodeToolStripMenuItem1";
 			this.generateCCodeToolStripMenuItem1.Size = new System.Drawing.Size(198, 22);
 			this.generateCCodeToolStripMenuItem1.Text = "Generate C# Code";
@@ -408,7 +408,7 @@
 			// 
 			// aboutToolStripMenuItem
 			// 
-			this.aboutToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.information;
+			this.aboutToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Information;
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
 			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.aboutToolStripMenuItem.Text = "About...";
@@ -474,7 +474,7 @@
 			// selectProcessToolStripButton
 			// 
 			this.selectProcessToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.selectProcessToolStripButton.Image = global::ReClassNET.Properties.Resources.cog;
+			this.selectProcessToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Gear;
 			this.selectProcessToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.selectProcessToolStripButton.Name = "selectProcessToolStripButton";
 			this.selectProcessToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -484,7 +484,7 @@
 			// pluginsToolStripButton
 			// 
 			this.pluginsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.pluginsToolStripButton.Image = global::ReClassNET.Properties.Resources.plugin;
+			this.pluginsToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Plugin;
 			this.pluginsToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.pluginsToolStripButton.Name = "pluginsToolStripButton";
 			this.pluginsToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -499,7 +499,7 @@
 			// openProjectToolStripButton
 			// 
 			this.openProjectToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.openProjectToolStripButton.Image = global::ReClassNET.Properties.Resources.folder;
+			this.openProjectToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Folder;
 			this.openProjectToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.openProjectToolStripButton.Name = "openProjectToolStripButton";
 			this.openProjectToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -509,7 +509,7 @@
 			// saveToolStripButton
 			// 
 			this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.saveToolStripButton.Image = global::ReClassNET.Properties.Resources.save;
+			this.saveToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Save;
 			this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.saveToolStripButton.Name = "saveToolStripButton";
 			this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -524,7 +524,7 @@
 			// newClassToolStripButton
 			// 
 			this.newClassToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.newClassToolStripButton.Image = global::ReClassNET.Properties.Resources.button_class_add;
+			this.newClassToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
 			this.newClassToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.newClassToolStripButton.Name = "newClassToolStripButton";
 			this.newClassToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -544,14 +544,14 @@
             this.add2048BytesToolStripMenuItem,
             this.add4096BytesToolStripMenuItem,
             this.addBytesToolStripMenuItem});
-			this.addToolStripDropDownButton.Image = global::ReClassNET.Properties.Resources.button_add_bytes_x;
+			this.addToolStripDropDownButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_x;
 			this.addToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.addToolStripDropDownButton.Name = "addToolStripDropDownButton";
 			this.addToolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
 			// 
 			// add4BytesToolStripMenuItem
 			// 
-			this.add4BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_4;
+			this.add4BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_4;
 			this.add4BytesToolStripMenuItem.Name = "add4BytesToolStripMenuItem";
 			this.add4BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add4BytesToolStripMenuItem.Tag = "";
@@ -561,7 +561,7 @@
 			// 
 			// add8BytesToolStripMenuItem
 			// 
-			this.add8BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_8;
+			this.add8BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_8;
 			this.add8BytesToolStripMenuItem.Name = "add8BytesToolStripMenuItem";
 			this.add8BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add8BytesToolStripMenuItem.Text = "Add 8 Bytes";
@@ -570,7 +570,7 @@
 			// 
 			// add64BytesToolStripMenuItem
 			// 
-			this.add64BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_64;
+			this.add64BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_64;
 			this.add64BytesToolStripMenuItem.Name = "add64BytesToolStripMenuItem";
 			this.add64BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add64BytesToolStripMenuItem.Text = "Add 64 Bytes";
@@ -579,7 +579,7 @@
 			// 
 			// add256BytesToolStripMenuItem
 			// 
-			this.add256BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_256;
+			this.add256BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_256;
 			this.add256BytesToolStripMenuItem.Name = "add256BytesToolStripMenuItem";
 			this.add256BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add256BytesToolStripMenuItem.Text = "Add 256 Bytes";
@@ -588,7 +588,7 @@
 			// 
 			// add1024BytesToolStripMenuItem
 			// 
-			this.add1024BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_1024;
+			this.add1024BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_1024;
 			this.add1024BytesToolStripMenuItem.Name = "add1024BytesToolStripMenuItem";
 			this.add1024BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add1024BytesToolStripMenuItem.Text = "Add 1024 Bytes";
@@ -597,7 +597,7 @@
 			// 
 			// add2048BytesToolStripMenuItem
 			// 
-			this.add2048BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_2048;
+			this.add2048BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_2048;
 			this.add2048BytesToolStripMenuItem.Name = "add2048BytesToolStripMenuItem";
 			this.add2048BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add2048BytesToolStripMenuItem.Text = "Add 2048 Bytes";
@@ -606,7 +606,7 @@
 			// 
 			// add4096BytesToolStripMenuItem
 			// 
-			this.add4096BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_4096;
+			this.add4096BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_4096;
 			this.add4096BytesToolStripMenuItem.Name = "add4096BytesToolStripMenuItem";
 			this.add4096BytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.add4096BytesToolStripMenuItem.Text = "Add 4096 Bytes";
@@ -617,7 +617,7 @@
 			// 
 			this.addBytesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTextBox1});
-			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_add_bytes_x;
+			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_x;
 			this.addBytesToolStripMenuItem.Name = "addBytesToolStripMenuItem";
 			this.addBytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.addBytesToolStripMenuItem.Text = "Add ... Bytes";
@@ -641,7 +641,7 @@
             this.insert2048BytesToolStripMenuItem,
             this.insert4096BytesToolStripMenuItem,
             this.insertBytesToolStripMenuItem});
-			this.insertToolStripDropDownButton.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_x;
+			this.insertToolStripDropDownButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_x;
 			this.insertToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.insertToolStripDropDownButton.Name = "insertToolStripDropDownButton";
 			this.insertToolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
@@ -649,7 +649,7 @@
 			// 
 			// insert4BytesToolStripMenuItem
 			// 
-			this.insert4BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_4;
+			this.insert4BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_4;
 			this.insert4BytesToolStripMenuItem.Name = "insert4BytesToolStripMenuItem";
 			this.insert4BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert4BytesToolStripMenuItem.Tag = "";
@@ -659,7 +659,7 @@
 			// 
 			// insert8BytesToolStripMenuItem
 			// 
-			this.insert8BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_8;
+			this.insert8BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_8;
 			this.insert8BytesToolStripMenuItem.Name = "insert8BytesToolStripMenuItem";
 			this.insert8BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert8BytesToolStripMenuItem.Text = "Insert 8 Bytes";
@@ -668,7 +668,7 @@
 			// 
 			// insert64BytesToolStripMenuItem
 			// 
-			this.insert64BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_64;
+			this.insert64BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_64;
 			this.insert64BytesToolStripMenuItem.Name = "insert64BytesToolStripMenuItem";
 			this.insert64BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert64BytesToolStripMenuItem.Text = "Insert 64 Bytes";
@@ -677,7 +677,7 @@
 			// 
 			// insert256BytesToolStripMenuItem
 			// 
-			this.insert256BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_256;
+			this.insert256BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_256;
 			this.insert256BytesToolStripMenuItem.Name = "insert256BytesToolStripMenuItem";
 			this.insert256BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert256BytesToolStripMenuItem.Text = "Insert 256 Bytes";
@@ -686,7 +686,7 @@
 			// 
 			// insert1024BytesToolStripMenuItem
 			// 
-			this.insert1024BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_1024;
+			this.insert1024BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_1024;
 			this.insert1024BytesToolStripMenuItem.Name = "insert1024BytesToolStripMenuItem";
 			this.insert1024BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert1024BytesToolStripMenuItem.Text = "Insert 1024 Bytes";
@@ -695,7 +695,7 @@
 			// 
 			// insert2048BytesToolStripMenuItem
 			// 
-			this.insert2048BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_2048;
+			this.insert2048BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_2048;
 			this.insert2048BytesToolStripMenuItem.Name = "insert2048BytesToolStripMenuItem";
 			this.insert2048BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert2048BytesToolStripMenuItem.Text = "Insert 2048 Bytes";
@@ -704,7 +704,7 @@
 			// 
 			// insert4096BytesToolStripMenuItem
 			// 
-			this.insert4096BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_4096;
+			this.insert4096BytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_4096;
 			this.insert4096BytesToolStripMenuItem.Name = "insert4096BytesToolStripMenuItem";
 			this.insert4096BytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insert4096BytesToolStripMenuItem.Text = "Insert 4096 Bytes";
@@ -715,7 +715,7 @@
 			// 
 			this.insertBytesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTextBox2});
-			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.button_insert_bytes_x;
+			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_x;
 			this.insertBytesToolStripMenuItem.Name = "insertBytesToolStripMenuItem";
 			this.insertBytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insertBytesToolStripMenuItem.Text = "Insert ... Bytes";
@@ -733,7 +733,7 @@
 			// hex64ToolStripButton
 			// 
 			this.hex64ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.hex64ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_hex_64;
+			this.hex64ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_64;
 			this.hex64ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.hex64ToolStripButton.Name = "hex64ToolStripButton";
 			this.hex64ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -744,7 +744,7 @@
 			// hex32ToolStripButton
 			// 
 			this.hex32ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.hex32ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_hex_32;
+			this.hex32ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_32;
 			this.hex32ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.hex32ToolStripButton.Name = "hex32ToolStripButton";
 			this.hex32ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -755,7 +755,7 @@
 			// hex16ToolStripButton
 			// 
 			this.hex16ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.hex16ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_hex_16;
+			this.hex16ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_16;
 			this.hex16ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.hex16ToolStripButton.Name = "hex16ToolStripButton";
 			this.hex16ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -766,7 +766,7 @@
 			// hex8ToolStripButton
 			// 
 			this.hex8ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.hex8ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_hex_8;
+			this.hex8ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_8;
 			this.hex8ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.hex8ToolStripButton.Name = "hex8ToolStripButton";
 			this.hex8ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -782,7 +782,7 @@
 			// int64ToolStripButton
 			// 
 			this.int64ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.int64ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_int_64;
+			this.int64ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_64;
 			this.int64ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.int64ToolStripButton.Name = "int64ToolStripButton";
 			this.int64ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -793,7 +793,7 @@
 			// int32ToolStripButton
 			// 
 			this.int32ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.int32ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_int_32;
+			this.int32ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_32;
 			this.int32ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.int32ToolStripButton.Name = "int32ToolStripButton";
 			this.int32ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -804,7 +804,7 @@
 			// int16ToolStripButton
 			// 
 			this.int16ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.int16ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_int_16;
+			this.int16ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_16;
 			this.int16ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.int16ToolStripButton.Name = "int16ToolStripButton";
 			this.int16ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -815,7 +815,7 @@
 			// int8ToolStripButton
 			// 
 			this.int8ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.int8ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_int_8;
+			this.int8ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_8;
 			this.int8ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.int8ToolStripButton.Name = "int8ToolStripButton";
 			this.int8ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -831,7 +831,7 @@
 			// uint64ToolStripButton
 			// 
 			this.uint64ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.uint64ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_uint_64;
+			this.uint64ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_64;
 			this.uint64ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.uint64ToolStripButton.Name = "uint64ToolStripButton";
 			this.uint64ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -842,7 +842,7 @@
 			// uint32ToolStripButton
 			// 
 			this.uint32ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.uint32ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_uint_32;
+			this.uint32ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_32;
 			this.uint32ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.uint32ToolStripButton.Name = "uint32ToolStripButton";
 			this.uint32ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -853,7 +853,7 @@
 			// uint16ToolStripButton
 			// 
 			this.uint16ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.uint16ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_uint_16;
+			this.uint16ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_16;
 			this.uint16ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.uint16ToolStripButton.Name = "uint16ToolStripButton";
 			this.uint16ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -864,7 +864,7 @@
 			// uint8ToolStripButton
 			// 
 			this.uint8ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.uint8ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_uint_8;
+			this.uint8ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_8;
 			this.uint8ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.uint8ToolStripButton.Name = "uint8ToolStripButton";
 			this.uint8ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -880,7 +880,7 @@
 			// bitFieldToolStripButton
 			// 
 			this.bitFieldToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.bitFieldToolStripButton.Image = global::ReClassNET.Properties.Resources.button_bits;
+			this.bitFieldToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Bits;
 			this.bitFieldToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bitFieldToolStripButton.Name = "bitFieldToolStripButton";
 			this.bitFieldToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -896,7 +896,7 @@
 			// floatToolStripButton
 			// 
 			this.floatToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.floatToolStripButton.Image = global::ReClassNET.Properties.Resources.button_float;
+			this.floatToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Float;
 			this.floatToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.floatToolStripButton.Name = "floatToolStripButton";
 			this.floatToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -907,7 +907,7 @@
 			// doubleToolStripButton
 			// 
 			this.doubleToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.doubleToolStripButton.Image = global::ReClassNET.Properties.Resources.button_double;
+			this.doubleToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Double;
 			this.doubleToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.doubleToolStripButton.Name = "doubleToolStripButton";
 			this.doubleToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -923,7 +923,7 @@
 			// vec4ToolStripButton
 			// 
 			this.vec4ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.vec4ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_vec_4;
+			this.vec4ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Vector_4;
 			this.vec4ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.vec4ToolStripButton.Name = "vec4ToolStripButton";
 			this.vec4ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -934,7 +934,7 @@
 			// vec3ToolStripButton
 			// 
 			this.vec3ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.vec3ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_vec_3;
+			this.vec3ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Vector_3;
 			this.vec3ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.vec3ToolStripButton.Name = "vec3ToolStripButton";
 			this.vec3ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -945,7 +945,7 @@
 			// vec2ToolStripButton
 			// 
 			this.vec2ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.vec2ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_vec_2;
+			this.vec2ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Vector_2;
 			this.vec2ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.vec2ToolStripButton.Name = "vec2ToolStripButton";
 			this.vec2ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -956,7 +956,7 @@
 			// mat44ToolStripButton
 			// 
 			this.mat44ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.mat44ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_mat_44;
+			this.mat44ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Matrix_4x4;
 			this.mat44ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.mat44ToolStripButton.Name = "mat44ToolStripButton";
 			this.mat44ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -967,7 +967,7 @@
 			// mat34ToolStripButton
 			// 
 			this.mat34ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.mat34ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_mat_34;
+			this.mat34ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Matrix_3x4;
 			this.mat34ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.mat34ToolStripButton.Name = "mat34ToolStripButton";
 			this.mat34ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -978,7 +978,7 @@
 			// mat33ToolStripButton
 			// 
 			this.mat33ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.mat33ToolStripButton.Image = global::ReClassNET.Properties.Resources.button_mat_33;
+			this.mat33ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Matrix_3x3;
 			this.mat33ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.mat33ToolStripButton.Name = "mat33ToolStripButton";
 			this.mat33ToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -994,7 +994,7 @@
 			// utf8TextToolStripButton
 			// 
 			this.utf8TextToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.utf8TextToolStripButton.Image = global::ReClassNET.Properties.Resources.button_text;
+			this.utf8TextToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Text;
 			this.utf8TextToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.utf8TextToolStripButton.Name = "utf8TextToolStripButton";
 			this.utf8TextToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -1005,7 +1005,7 @@
 			// utf8TextPtrToolStripButton
 			// 
 			this.utf8TextPtrToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.utf8TextPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.button_text_ptr;
+			this.utf8TextPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Text_Pointer;
 			this.utf8TextPtrToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.utf8TextPtrToolStripButton.Name = "utf8TextPtrToolStripButton";
 			this.utf8TextPtrToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -1016,7 +1016,7 @@
 			// utf16TextToolStripButton
 			// 
 			this.utf16TextToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.utf16TextToolStripButton.Image = global::ReClassNET.Properties.Resources.button_utext;
+			this.utf16TextToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UText;
 			this.utf16TextToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.utf16TextToolStripButton.Name = "utf16TextToolStripButton";
 			this.utf16TextToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -1027,7 +1027,7 @@
 			// utf16TextPtrToolStripButton
 			// 
 			this.utf16TextPtrToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.utf16TextPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.button_utext_ptr;
+			this.utf16TextPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UText_Pointer;
 			this.utf16TextPtrToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.utf16TextPtrToolStripButton.Name = "utf16TextPtrToolStripButton";
 			this.utf16TextPtrToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -1043,7 +1043,7 @@
 			// classInstanceToolStripButton6
 			// 
 			this.classInstanceToolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.classInstanceToolStripButton6.Image = global::ReClassNET.Properties.Resources.button_class_inst;
+			this.classInstanceToolStripButton6.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Instance;
 			this.classInstanceToolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.classInstanceToolStripButton6.Name = "classInstanceToolStripButton6";
 			this.classInstanceToolStripButton6.Size = new System.Drawing.Size(23, 22);
@@ -1054,7 +1054,7 @@
 			// classPtrToolStripButton
 			// 
 			this.classPtrToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.classPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.button_class_ptr;
+			this.classPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Pointer;
 			this.classPtrToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.classPtrToolStripButton.Name = "classPtrToolStripButton";
 			this.classPtrToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -1070,7 +1070,7 @@
 			// arrayToolStripButton
 			// 
 			this.arrayToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.arrayToolStripButton.Image = global::ReClassNET.Properties.Resources.button_array;
+			this.arrayToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Array;
 			this.arrayToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.arrayToolStripButton.Name = "arrayToolStripButton";
 			this.arrayToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -1081,7 +1081,7 @@
 			// ptrArrayToolStripButton
 			// 
 			this.ptrArrayToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.ptrArrayToolStripButton.Image = global::ReClassNET.Properties.Resources.button_ptrarray;
+			this.ptrArrayToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Pointer_Array;
 			this.ptrArrayToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.ptrArrayToolStripButton.Name = "ptrArrayToolStripButton";
 			this.ptrArrayToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -1092,7 +1092,7 @@
 			// vtableToolStripButton
 			// 
 			this.vtableToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.vtableToolStripButton.Image = global::ReClassNET.Properties.Resources.button_vtable;
+			this.vtableToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_VTable;
 			this.vtableToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.vtableToolStripButton.Name = "vtableToolStripButton";
 			this.vtableToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -1103,7 +1103,7 @@
 			// fnPtrToolStripButton
 			// 
 			this.fnPtrToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.fnPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.button_fn_ptr;
+			this.fnPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Function_Pointer;
 			this.fnPtrToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.fnPtrToolStripButton.Name = "fnPtrToolStripButton";
 			this.fnPtrToolStripButton.Size = new System.Drawing.Size(23, 22);

@@ -124,7 +124,7 @@
 			// 
 			// refreshButton
 			// 
-			this.refreshButton.Image = global::ReClassNET.Properties.Resources.arrow_refresh;
+			this.refreshButton.Image = global::ReClassNET.Properties.Resources.B16x16_Arrow_Refresh;
 			this.refreshButton.Location = new System.Drawing.Point(9, 99);
 			this.refreshButton.Name = "refreshButton";
 			this.refreshButton.Size = new System.Drawing.Size(158, 23);
@@ -139,7 +139,7 @@
 			// 
 			this.openProcessButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.openProcessButton.Image = global::ReClassNET.Properties.Resources.accept;
+			this.openProcessButton.Image = global::ReClassNET.Properties.Resources.B16x16_Accept;
 			this.openProcessButton.Location = new System.Drawing.Point(12, 471);
 			this.openProcessButton.Name = "openProcessButton";
 			this.openProcessButton.Size = new System.Drawing.Size(549, 23);

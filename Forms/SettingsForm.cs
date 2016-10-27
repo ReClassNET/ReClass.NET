@@ -18,9 +18,9 @@ namespace ReClassNET.Forms
 			InitializeComponent();
 
 			var imageList = new ImageList();
-			imageList.Images.Add(Properties.Resources.cog);
-			imageList.Images.Add(Properties.Resources.color_wheel);
-			imageList.Images.Add(Properties.Resources.note_edit);
+			imageList.Images.Add(Properties.Resources.B16x16_Gear);
+			imageList.Images.Add(Properties.Resources.B16x16_Color_Wheel);
+			imageList.Images.Add(Properties.Resources.B16x16_Settings_Edit);
 
 			settingsTabControl.ImageList = imageList;
 			generalSettingsTabPage.ImageIndex = 0;
