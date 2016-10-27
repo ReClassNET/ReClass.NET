@@ -215,7 +215,7 @@
 			this.controlRemoteProcessComboBox.Name = "controlRemoteProcessComboBox";
 			this.controlRemoteProcessComboBox.Size = new System.Drawing.Size(161, 21);
 			this.controlRemoteProcessComboBox.TabIndex = 17;
-			this.controlRemoteProcessComboBox.SelectedIndexChanged += new System.EventHandler(this.NativeMethodComboBox_SelectedIndexChanged);
+			this.controlRemoteProcessComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
 			// 
 			// label9
 			// 
@@ -234,7 +234,7 @@
 			this.disassembleRemoteCodeComboBox.Name = "disassembleRemoteCodeComboBox";
 			this.disassembleRemoteCodeComboBox.Size = new System.Drawing.Size(161, 21);
 			this.disassembleRemoteCodeComboBox.TabIndex = 15;
-			this.disassembleRemoteCodeComboBox.SelectedIndexChanged += new System.EventHandler(this.NativeMethodComboBox_SelectedIndexChanged);
+			this.disassembleRemoteCodeComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
 			// 
 			// label8
 			// 
@@ -253,7 +253,7 @@
 			this.writeRemoteMemoryComboBox.Name = "writeRemoteMemoryComboBox";
 			this.writeRemoteMemoryComboBox.Size = new System.Drawing.Size(161, 21);
 			this.writeRemoteMemoryComboBox.TabIndex = 13;
-			this.writeRemoteMemoryComboBox.SelectedIndexChanged += new System.EventHandler(this.NativeMethodComboBox_SelectedIndexChanged);
+			this.writeRemoteMemoryComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
 			// 
 			// label7
 			// 
@@ -272,7 +272,7 @@
 			this.readRemoteMemoryComboBox.Name = "readRemoteMemoryComboBox";
 			this.readRemoteMemoryComboBox.Size = new System.Drawing.Size(161, 21);
 			this.readRemoteMemoryComboBox.TabIndex = 11;
-			this.readRemoteMemoryComboBox.SelectedIndexChanged += new System.EventHandler(this.NativeMethodComboBox_SelectedIndexChanged);
+			this.readRemoteMemoryComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
 			// 
 			// label6
 			// 
@@ -291,7 +291,7 @@
 			this.closeRemoteProcessComboBox.Name = "closeRemoteProcessComboBox";
 			this.closeRemoteProcessComboBox.Size = new System.Drawing.Size(161, 21);
 			this.closeRemoteProcessComboBox.TabIndex = 9;
-			this.closeRemoteProcessComboBox.SelectedIndexChanged += new System.EventHandler(this.NativeMethodComboBox_SelectedIndexChanged);
+			this.closeRemoteProcessComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
 			// 
 			// label5
 			// 
@@ -310,7 +310,7 @@
 			this.openRemoteProcessComboBox.Name = "openRemoteProcessComboBox";
 			this.openRemoteProcessComboBox.Size = new System.Drawing.Size(161, 21);
 			this.openRemoteProcessComboBox.TabIndex = 7;
-			this.openRemoteProcessComboBox.SelectedIndexChanged += new System.EventHandler(this.NativeMethodComboBox_SelectedIndexChanged);
+			this.openRemoteProcessComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
 			// 
 			// label4
 			// 
@@ -329,7 +329,7 @@
 			this.isProcessValidComboBox.Name = "isProcessValidComboBox";
 			this.isProcessValidComboBox.Size = new System.Drawing.Size(161, 21);
 			this.isProcessValidComboBox.TabIndex = 5;
-			this.isProcessValidComboBox.SelectedIndexChanged += new System.EventHandler(this.NativeMethodComboBox_SelectedIndexChanged);
+			this.isProcessValidComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
 			// 
 			// enumerateProcessesComboBox
 			// 
@@ -339,7 +339,7 @@
 			this.enumerateProcessesComboBox.Name = "enumerateProcessesComboBox";
 			this.enumerateProcessesComboBox.Size = new System.Drawing.Size(161, 21);
 			this.enumerateProcessesComboBox.TabIndex = 4;
-			this.enumerateProcessesComboBox.SelectedIndexChanged += new System.EventHandler(this.NativeMethodComboBox_SelectedIndexChanged);
+			this.enumerateProcessesComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
 			// 
 			// label3
 			// 
@@ -367,7 +367,7 @@
 			this.enumerateRemoteSectionsAndModulesComboBox.Name = "enumerateRemoteSectionsAndModulesComboBox";
 			this.enumerateRemoteSectionsAndModulesComboBox.Size = new System.Drawing.Size(161, 21);
 			this.enumerateRemoteSectionsAndModulesComboBox.TabIndex = 1;
-			this.enumerateRemoteSectionsAndModulesComboBox.SelectedIndexChanged += new System.EventHandler(this.NativeMethodComboBox_SelectedIndexChanged);
+			this.enumerateRemoteSectionsAndModulesComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
 			// 
 			// label1
 			// 

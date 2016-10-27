@@ -81,9 +81,11 @@ namespace ReClassNET.Forms
 		{
 			var methods = nativeHelper.MethodRegistry[method];
 
+			var selectedFnPtr = nativeHelper.RequestFunctionPtr(method);
+
 			cb.DisplayMember = nameof(NativeHelper.MethodInfo.Provider);
 			cb.DataSource = methods;
-			cb.SelectedIndex = methods.FindIndex(m => m.FunctionPtr == nativeHelper.RequestFunctionPtr(method));
+			cb.SelectedIndex = methods.FindIndex(m => m.FunctionPtr == selectedFnPtr);
 		}
 
 		private void pluginsDataGridView_SelectionChanged(object sender, EventArgs e)
@@ -110,7 +112,7 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private void NativeMethodComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		private void NativeMethodComboBox_SelectionChangeCommitted(object sender, EventArgs e)
 		{
 			var cb = sender as ComboBox;
 			if (cb == null)
