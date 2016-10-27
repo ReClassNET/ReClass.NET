@@ -1,151 +1,135 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics.Contracts;
 
 namespace ReClassNET.UI
 {
 	public static class BannerFactory
 	{
-		private const int StdHeight = 48; // Standard height for 96 DPI
+		private const int StdHeight = 48; // 96 DPI
 		private const int StdIconDim = 32;
 
 		private static readonly Dictionary<string, Image> imageCache = new Dictionary<string, Image>();
 
-		public static Image CreateBanner(int nWidth, int nHeight, Image imgIcon, string strTitle, string strLine)
+		public static Image CreateBanner(int bannerWidth, int bannerHeight, Image icon, string title, string text)
 		{
-			Contract.Requires(strTitle != null);
-			Contract.Requires(strLine != null);
+			Contract.Requires(title != null);
+			Contract.Requires(text != null);
 
-			//Debug.Assert((nHeight == StdHeight) || DpiUtil.ScalingRequired);
+			var bannerId = $"{bannerWidth}x{bannerHeight}:{title}:{text}";
 
-			string strImageID = $"{nWidth}x{nHeight}:{strTitle}:{strLine}";
-
-			Image img = null;
-			if (imageCache.TryGetValue(strImageID, out img))
+			Image image = null;
+			if (!imageCache.TryGetValue(bannerId, out image))
 			{
-				return img;
-			}
-
-			const float fVert = 90.0f;
-
-			if (img == null)
-			{
-				img = new Bitmap(nWidth, nHeight, PixelFormat.Format24bppRgb);
-				using (var g = Graphics.FromImage(img))
+				image = new Bitmap(bannerWidth, bannerHeight, PixelFormat.Format24bppRgb);
+				using (var g = Graphics.FromImage(image))
 				{
-					int xIcon = DpiScaleInt(10, nHeight);
+					int xIcon = DpiScaleInt(10, bannerHeight);
 
-					var clrStart = Color.FromArgb(151, 154, 173);
-					var clrEnd = Color.FromArgb(27, 27, 37);
-
-					var fAngle = fVert;
-
-					var rect = new Rectangle(0, 0, nWidth, nHeight);
-					using (var brush = new LinearGradientBrush(rect, clrStart, clrEnd, LinearGradientMode.Vertical/*, fAngle, true*/))
+					var rect = new Rectangle(0, 0, bannerWidth, bannerHeight);
+					using (var brush = new LinearGradientBrush(rect, Color.FromArgb(151, 154, 173), Color.FromArgb(27, 27, 37), LinearGradientMode.Vertical))
 					{
 						g.FillRectangle(brush, rect);
 					}
 
 					int wIconScaled = StdIconDim;
 					int hIconScaled = StdIconDim;
-					if (imgIcon != null)
+					if (icon != null)
 					{
-						float fIconRel = (float)imgIcon.Width / (float)imgIcon.Height;
-						wIconScaled = (int)Math.Round(DpiScaleFloat(fIconRel * (float)StdIconDim, nHeight));
-						hIconScaled = DpiScaleInt(StdIconDim, nHeight);
+						float fIconRel = (float)icon.Width / (float)icon.Height;
+						wIconScaled = (int)Math.Round(DpiScaleFloat(fIconRel * (float)StdIconDim, bannerHeight));
+						hIconScaled = DpiScaleInt(StdIconDim, bannerHeight);
 
-						int yIcon = (nHeight - hIconScaled) / 2;
-						if (hIconScaled == imgIcon.Height)
+						int yIcon = (bannerHeight - hIconScaled) / 2;
+						if (hIconScaled == icon.Height)
 						{
-							g.DrawImageUnscaled(imgIcon, xIcon, yIcon);
+							g.DrawImageUnscaled(icon, xIcon, yIcon);
 						}
 						else
 						{
-							g.DrawImage(imgIcon, xIcon, yIcon, wIconScaled, hIconScaled);
+							g.DrawImage(icon, xIcon, yIcon, wIconScaled, hIconScaled);
 						}
 
-						ColorMatrix cm = new ColorMatrix();
-						cm.Matrix33 = 0.1f;
-						ImageAttributes ia = new ImageAttributes();
-						ia.SetColorMatrix(cm);
+						var attributes = new ImageAttributes();
+						attributes.SetColorMatrix(new ColorMatrix
+						{
+							Matrix33 = 0.1f
+						});
 
-						int w = wIconScaled * 2, h = hIconScaled * 2;
-						int x = nWidth - w - xIcon, y = (nHeight - h) / 2;
-						var rectDest = new Rectangle(x, y, w, h);
-						g.DrawImage(imgIcon, rectDest, 0, 0, imgIcon.Width, imgIcon.Height, GraphicsUnit.Pixel, ia);
+						int w = wIconScaled * 2;
+						int h = hIconScaled * 2;
+						int x = bannerWidth - w - xIcon;
+						int y = (bannerHeight - h) / 2;
+						g.DrawImage(icon, new Rectangle(x, y, w, h), 0, 0, icon.Width, icon.Height, GraphicsUnit.Pixel, attributes);
 					}
 
 					int tx = 2 * xIcon;
-					int ty = DpiScaleInt(4, nHeight);
-					if (imgIcon != null)
+					int ty = DpiScaleInt(4, bannerHeight);
+					if (icon != null)
 					{
 						tx += wIconScaled;
 					}
 
-					float fFontSize = DpiScaleFloat((12.0f * 96.0f) / g.DpiY, nHeight);
-					using (Font font = new Font(FontFamily.GenericSansSerif, fFontSize, FontStyle.Bold))
+					float fontSize = DpiScaleFloat((12.0f * 96.0f) / g.DpiY, bannerHeight);
+					using (var font = new Font(FontFamily.GenericSansSerif, fontSize, FontStyle.Bold))
 					{
-						// - TextRenderer.MeasureText(g, strTitle, font).Width));
-						// g.DrawString(strTitle, font, brush, fx, fy);
-						DrawText(g, strTitle, tx, ty, font, Color.White);
+						DrawText(g, title, tx, ty, font, Color.White);
 					}
 
-					tx += xIcon; // fx
-					ty += xIcon * 2 + 2; // fy
+					tx += xIcon;
+					ty += xIcon * 2 + 2;
 
-					float fFontSizeSm = DpiScaleFloat((9.0f * 96.0f) / g.DpiY, nHeight);
-					using (Font fontSmall = new Font(FontFamily.GenericSansSerif, fFontSizeSm, FontStyle.Regular))
+					float fontSizeSmall = DpiScaleFloat((9.0f * 96.0f) / g.DpiY, bannerHeight);
+					using (var fontSmall = new Font(FontFamily.GenericSansSerif, fontSizeSmall, FontStyle.Regular))
 					{
-						// - TextRenderer.MeasureText(g, strLine, fontSmall).Width));
-						// g.DrawString(strLine, fontSmall, brush, fx, fy);
-						DrawText(g, strLine, tx, ty, fontSmall, Color.White);
+						DrawText(g, text, tx, ty, fontSmall, Color.White);
 					}
 				}
+
+				imageCache[bannerId] = image;
 			}
 
-			imageCache[strImageID] = img;
-
-			return img;
+			return image;
 		}
 
-		private static void DrawText(Graphics g, string strText, int x, int y, Font font, Color clrForeground)
+		private static void DrawText(Graphics g, string text, int x, int y, Font font, Color color)
 		{
-			using (var brush = new SolidBrush(clrForeground))
+			using (var brush = new SolidBrush(color))
 			{
-				using (var sf = new StringFormat(StringFormatFlags.FitBlackBox | StringFormatFlags.NoClip))
+				using (var format = new StringFormat(StringFormatFlags.FitBlackBox | StringFormatFlags.NoClip))
 				{
-					g.DrawString(strText, font, brush, x, y, sf);
+					g.DrawString(text, font, brush, x, y, format);
 				}
 			}
 		}
 
-		private static int DpiScaleInt(int x, int nBaseHeight)
+		private static int DpiScaleInt(int x, int height)
 		{
-			return (int)Math.Round((double)(x * nBaseHeight) / (double)StdHeight);
+			return (int)Math.Round((x * height) / (double)StdHeight);
 		}
 
-		private static float DpiScaleFloat(float x, int nBaseHeight)
+		private static float DpiScaleFloat(float x, int height)
 		{
-			return (x * (float)nBaseHeight) / (float)StdHeight;
+			return (x * height) / StdHeight;
 		}
 
-		public static void CreateBannerEx(PictureBox picBox, Image imgIcon, string strTitle, string strLine)
+		public static void CreateBannerEx(PictureBox pictureBox, Image icon, string title, string text)
 		{
-			if (picBox == null)
+			Contract.Requires(title != null);
+			Contract.Requires(text != null);
+
+			if (pictureBox == null)
 			{
 				return;
 			}
 
 			try
 			{
-				picBox.Image = CreateBanner(picBox.Width, picBox.Height, imgIcon, strTitle, strLine);
+				pictureBox.Image = CreateBanner(pictureBox.Width, pictureBox.Height, icon, title, text);
 			}
 			catch (Exception)
 			{

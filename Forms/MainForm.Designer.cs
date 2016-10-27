@@ -544,7 +544,7 @@
             this.add2048BytesToolStripMenuItem,
             this.add4096BytesToolStripMenuItem,
             this.addBytesToolStripMenuItem});
-			this.addToolStripDropDownButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_x;
+			this.addToolStripDropDownButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_X;
 			this.addToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.addToolStripDropDownButton.Name = "addToolStripDropDownButton";
 			this.addToolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
@@ -617,7 +617,7 @@
 			// 
 			this.addBytesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTextBox1});
-			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_x;
+			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_X;
 			this.addBytesToolStripMenuItem.Name = "addBytesToolStripMenuItem";
 			this.addBytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.addBytesToolStripMenuItem.Text = "Add ... Bytes";
@@ -641,7 +641,7 @@
             this.insert2048BytesToolStripMenuItem,
             this.insert4096BytesToolStripMenuItem,
             this.insertBytesToolStripMenuItem});
-			this.insertToolStripDropDownButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_x;
+			this.insertToolStripDropDownButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_X;
 			this.insertToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.insertToolStripDropDownButton.Name = "insertToolStripDropDownButton";
 			this.insertToolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
@@ -715,7 +715,7 @@
 			// 
 			this.insertBytesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTextBox2});
-			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_x;
+			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_X;
 			this.insertBytesToolStripMenuItem.Name = "insertBytesToolStripMenuItem";
 			this.insertBytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insertBytesToolStripMenuItem.Text = "Insert ... Bytes";

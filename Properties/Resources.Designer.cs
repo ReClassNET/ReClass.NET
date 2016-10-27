@@ -163,9 +163,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap B16x16_Button_Add_Bytes_x {
+        internal static System.Drawing.Bitmap B16x16_Button_Add_Bytes_X {
             get {
-                object obj = ResourceManager.GetObject("B16x16_Button_Add_Bytes_x", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Add_Bytes_X", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -393,9 +393,9 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap B16x16_Button_Insert_Bytes_x {
+        internal static System.Drawing.Bitmap B16x16_Button_Insert_Bytes_X {
             get {
-                object obj = ResourceManager.GetObject("B16x16_Button_Insert_Bytes_x", resourceCulture);
+                object obj = ResourceManager.GetObject("B16x16_Button_Insert_Bytes_X", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

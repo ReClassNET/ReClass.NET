@@ -475,7 +475,7 @@
             this.add1024BytesToolStripMenuItem,
             this.add2048BytesToolStripMenuItem,
             this.add4096BytesToolStripMenuItem});
-			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_x;
+			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_X;
 			this.addBytesToolStripMenuItem.Name = "addBytesToolStripMenuItem";
 			this.addBytesToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.addBytesToolStripMenuItem.Text = "Add Bytes";
@@ -553,7 +553,7 @@
             this.insert1024BytesToolStripMenuItem,
             this.insert2048BytesToolStripMenuItem,
             this.insert4096BytesToolStripMenuItem});
-			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_x;
+			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_X;
 			this.insertBytesToolStripMenuItem.Name = "insertBytesToolStripMenuItem";
 			this.insertBytesToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
 			this.insertBytesToolStripMenuItem.Text = "Insert Bytes";
