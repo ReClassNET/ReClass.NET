@@ -138,7 +138,7 @@
     <Compile Include="AddressParser\ParseException.cs" />
     <Compile Include="AddressParser\Token.cs" />
     <Compile Include="AddressParser\TokenReader.cs" />
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Util\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -380,307 +380,307 @@
     <None Include="Resources\application.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Add_Bytes_4.png" />
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_4.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Add_Bytes_8.png" />
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_8.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Add_Bytes_64.png" />
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_64.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Add_Bytes_256.png" />
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_256.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Add_Bytes_1024.png" />
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_1024.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Add_Bytes_2048.png" />
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_2048.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Add_Bytes_4096.png" />
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_4096.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Add_Bytes_X.png" />
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_X.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Array.png" />
+    <None Include="Resources\Images\B16x16_Button_Array.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Class_Instance.png" />
+    <None Include="Resources\Images\B16x16_Button_Class_Instance.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Class_Pointer.png" />
+    <None Include="Resources\Images\B16x16_Button_Class_Pointer.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Class_Remove.png" />
+    <None Include="Resources\Images\B16x16_Button_Class_Remove.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Double.png" />
+    <None Include="Resources\Images\B16x16_Button_Double.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Float.png" />
+    <None Include="Resources\Images\B16x16_Button_Float.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Function_Pointer.png" />
+    <None Include="Resources\Images\B16x16_Button_Function_Pointer.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Hex_8.png" />
+    <None Include="Resources\Images\B16x16_Button_Hex_8.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Hex_16.png" />
+    <None Include="Resources\Images\B16x16_Button_Hex_16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Hex_32.png" />
+    <None Include="Resources\Images\B16x16_Button_Hex_32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Hex_64.png" />
+    <None Include="Resources\Images\B16x16_Button_Hex_64.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Insert_Bytes_4.png" />
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_4.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Insert_Bytes_8.png" />
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_8.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Insert_Bytes_64.png" />
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_64.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Insert_Bytes_256.png" />
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_256.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Insert_Bytes_1024.png" />
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_1024.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Insert_Bytes_2048.png" />
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_2048.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Insert_Bytes_4096.png" />
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_4096.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Insert_Bytes_X.png" />
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_X.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Int_8.png" />
+    <None Include="Resources\Images\B16x16_Button_Int_8.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Int_16.png" />
+    <None Include="Resources\Images\B16x16_Button_Int_16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Int_32.png" />
+    <None Include="Resources\Images\B16x16_Button_Int_32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Int_64.png" />
+    <None Include="Resources\Images\B16x16_Button_Int_64.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Matrix_3x3.png" />
+    <None Include="Resources\Images\B16x16_Button_Matrix_3x3.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Matrix_3x4.png" />
+    <None Include="Resources\Images\B16x16_Button_Matrix_3x4.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Matrix_4x4.png" />
+    <None Include="Resources\Images\B16x16_Button_Matrix_4x4.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Text.png" />
+    <None Include="Resources\Images\B16x16_Button_Text.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Text_Pointer.png" />
+    <None Include="Resources\Images\B16x16_Button_Text_Pointer.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_UInt_8.png" />
+    <None Include="Resources\Images\B16x16_Button_UInt_8.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_UInt_16.png" />
+    <None Include="Resources\Images\B16x16_Button_UInt_16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_UInt_32.png" />
+    <None Include="Resources\Images\B16x16_Button_UInt_32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_UInt_64.png" />
+    <None Include="Resources\Images\B16x16_Button_UInt_64.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_UText.png" />
+    <None Include="Resources\Images\B16x16_Button_UText.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_UText_Pointer.png" />
+    <None Include="Resources\Images\B16x16_Button_UText_Pointer.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Vector_2.png" />
+    <None Include="Resources\Images\B16x16_Button_Vector_2.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Vector_3.png" />
+    <None Include="Resources\Images\B16x16_Button_Vector_3.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Vector_4.png" />
+    <None Include="Resources\Images\B16x16_Button_Vector_4.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_VTable.png" />
+    <None Include="Resources\Images\B16x16_Button_VTable.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Control_Pause.png" />
+    <None Include="Resources\Images\B16x16_Control_Pause.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Control_Play.png" />
+    <None Include="Resources\Images\B16x16_Control_Play.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Control_Stop.png" />
+    <None Include="Resources\Images\B16x16_Control_Stop.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Textfield_Rename.png" />
+    <None Include="Resources\Images\B16x16_Textfield_Rename.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Accept.png" />
+    <None Include="Resources\Images\B16x16_Accept.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\add.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Arrow_Refresh.png" />
+    <None Include="Resources\Images\B16x16_Arrow_Refresh.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Quit.png" />
+    <None Include="Resources\Images\B16x16_Quit.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Chart_Delete.png" />
+    <None Include="Resources\Images\B16x16_Chart_Delete.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Gear.png" />
+    <None Include="Resources\Images\B16x16_Gear.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Delete.png" />
+    <None Include="Resources\Images\B16x16_Button_Delete.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Error.png" />
+    <None Include="Resources\Images\B16x16_Error.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Folder.png" />
+    <None Include="Resources\Images\B16x16_Folder.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Help.png" />
+    <None Include="Resources\Images\B16x16_Help.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Information.png" />
+    <None Include="Resources\Images\B16x16_Information.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Page_Code.png" />
+    <None Include="Resources\Images\B16x16_Page_Code.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Page_Code_Add.png" />
+    <None Include="Resources\Images\B16x16_Page_Code_Add.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Pdb.png" />
+    <None Include="Resources\Images\B16x16_Pdb.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Plugin.png" />
+    <None Include="Resources\Images\B16x16_Plugin.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Save.png" />
+    <None Include="Resources\Images\B16x16_Save.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Class_Add.png" />
+    <None Include="Resources\Images\B16x16_Button_Class_Add.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Save_As.png" />
+    <None Include="Resources\Images\B16x16_Save_As.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Table_Gear.png" />
+    <None Include="Resources\Images\B16x16_Table_Gear.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Text_List_Bullets.png" />
+    <None Include="Resources\Images\B16x16_Text_List_Bullets.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Array_Type.png" />
+    <None Include="Resources\Images\B16x16_Array_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Drop_Down.png" />
+    <None Include="Resources\Images\B16x16_Button_Drop_Down.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Class_Type.png" />
+    <None Include="Resources\Images\B16x16_Class_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Closed_Icon.png" />
+    <None Include="Resources\Images\B16x16_Closed_Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Custom_Type.png" />
+    <None Include="Resources\Images\B16x16_Custom_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Double_Type.png" />
+    <None Include="Resources\Images\B16x16_Double_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Enum_Type.png" />
+    <None Include="Resources\Images\B16x16_Enum_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Exchange_Button.png" />
+    <None Include="Resources\Images\B16x16_Exchange_Button.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Float_Type.png" />
+    <None Include="Resources\Images\B16x16_Float_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Left_Button.png" />
+    <None Include="Resources\Images\B16x16_Left_Button.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Matrix_Type.png" />
+    <None Include="Resources\Images\B16x16_Matrix_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Open_Icon.png" />
+    <None Include="Resources\Images\B16x16_Open_Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Pointer_Type.png" />
+    <None Include="Resources\Images\B16x16_Pointer_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Right_Button.png" />
+    <None Include="Resources\Images\B16x16_Right_Button.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Signed_Type.png" />
+    <None Include="Resources\Images\B16x16_Signed_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Text_Type.png" />
+    <None Include="Resources\Images\B16x16_Text_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Unsigned_Type.png" />
+    <None Include="Resources\Images\B16x16_Unsigned_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Vector_Type.png" />
+    <None Include="Resources\Images\B16x16_Vector_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Page_Copy.png" />
+    <None Include="Resources\Images\B16x16_Page_Copy.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Pointer_Array.png" />
+    <None Include="Resources\Images\B16x16_Button_Pointer_Array.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Function_Type.png" />
+    <None Include="Resources\Images\B16x16_Function_Type.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Interface_Type.png" />
+    <None Include="Resources\Images\B16x16_Interface_Type.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Icon\ReClassNet.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Page_Code_Cpp.png" />
+    <None Include="Resources\Images\B16x16_Page_Code_Cpp.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Page_Code_Csharp.png" />
+    <None Include="Resources\Images\B16x16_Page_Code_Csharp.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Button_Bits.png" />
+    <None Include="Resources\Images\B16x16_Button_Bits.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Warning.png" />
+    <None Include="Resources\Images\B16x16_Warning.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\note_add.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Color_Wheel.png" />
+    <None Include="Resources\Images\B16x16_Color_Wheel.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B16x16_Settings_Edit.png" />
+    <None Include="Resources\Images\B16x16_Settings_Edit.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\B32x32_Page_Code.png" />
+    <None Include="Resources\Images\B32x32_Page_Code.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" />
