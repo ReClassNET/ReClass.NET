@@ -46,6 +46,7 @@
 			this.uInt16ToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.uInt8ToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.bitsToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.floatToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.doubleToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
@@ -69,6 +70,7 @@
 			this.arrayOfPointersToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.vTablePointerToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.functionPointerToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
+			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
 			this.addBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.add4BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.add8BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
@@ -127,6 +129,8 @@
             this.uInt16ToolStripMenuItem,
             this.uInt8ToolStripMenuItem,
             this.toolStripSeparator5,
+            this.bitsToolStripMenuItem,
+            this.toolStripSeparator11,
             this.floatToolStripMenuItem,
             this.doubleToolStripMenuItem,
             this.toolStripSeparator6,
@@ -277,6 +281,15 @@
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
 			this.toolStripSeparator5.Size = new System.Drawing.Size(170, 6);
+			// 
+			// bitsToolStripMenuItem
+			// 
+			this.bitsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Bits;
+			this.bitsToolStripMenuItem.Name = "bitsToolStripMenuItem";
+			this.bitsToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+			this.bitsToolStripMenuItem.Text = "Bits";
+			this.bitsToolStripMenuItem.Value = typeof(ReClassNET.Nodes.BitFieldNode);
+			this.bitsToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
 			// 
 			// floatToolStripMenuItem
 			// 
@@ -464,6 +477,11 @@
 			this.functionPointerToolStripMenuItem.Text = "Function Pointer";
 			this.functionPointerToolStripMenuItem.Value = typeof(ReClassNET.Nodes.FunctionPtrNode);
 			this.functionPointerToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator11
+			// 
+			this.toolStripSeparator11.Name = "toolStripSeparator11";
+			this.toolStripSeparator11.Size = new System.Drawing.Size(170, 6);
 			// 
 			// addBytesToolStripMenuItem
 			// 
@@ -656,7 +674,6 @@
 			// editBox
 			// 
 			this.editBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.editBox.HotSpot = null;
 			this.editBox.Location = new System.Drawing.Point(36, 81);
 			this.editBox.MinimumWidth = 0;
 			this.editBox.Name = "editBox";
@@ -679,7 +696,7 @@
 			// 
 			this.Controls.Add(this.editBox);
 			this.Name = "MemoryViewControl";
-			this.Size = new System.Drawing.Size(150, 129);
+			this.Size = new System.Drawing.Size(150, 138);
 			this.selectedNodeContextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -752,5 +769,7 @@
 		private UI.TypeToolStripMenuItem functionPointerToolStripMenuItem;
 		private UI.TypeToolStripMenuItem arrayOfPointersToolStripMenuItem;
 		private System.Windows.Forms.Timer updateClassTimer;
+		private UI.TypeToolStripMenuItem bitsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
 	}
 }
