@@ -176,6 +176,7 @@
 			this.Controls.Add(this.infoLabel);
 			this.Controls.Add(this.bannerBox);
 			this.Name = "AboutForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "ReClass.NET - Info";
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
 			this.licenseGroupBox.ResumeLayout(false);
