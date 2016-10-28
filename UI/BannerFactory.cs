@@ -89,8 +89,6 @@ namespace ReClassNET.UI
 					{
 						DrawText(g, text, tx, ty, fontSmall, Color.White);
 					}
-
-					image.Save("C:\\test.jpg");
 				}
 
 				if (!skipCache)

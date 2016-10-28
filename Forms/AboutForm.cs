@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows.Forms;
 using ReClassNET.UI;
 
@@ -18,8 +12,13 @@ namespace ReClassNET.Forms
 			InitializeComponent();
 
 			bannerBox.Icon = Properties.Resources.ReClassNet.ToBitmap();
-			bannerBox.Title = AssemblyInfo.Title;
-			bannerBox.Text = $"Version: {AssemblyInfo.Version.ToString(2)}";
+			bannerBox.Title = Constants.ApplicationName;
+			bannerBox.Text = $"Version: {Constants.ApplicationVersion}";
+
+			platformValueLabel.Text = Constants.Platform;
+			buildTimeValueLabel.Text = Properties.Resources.BuildDate;
+			authorValueLabel.Text = Constants.Author;
+			homepageValueLabel.Text = Constants.HomepageUrl;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -34,6 +33,11 @@ namespace ReClassNET.Forms
 			base.OnFormClosed(e);
 
 			GlobalWindowManager.RemoveWindow(this);
+		}
+
+		private void homepageValueLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Process.Start(Constants.HomepageUrl);
 		}
 	}
 }

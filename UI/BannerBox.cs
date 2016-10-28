@@ -43,11 +43,6 @@ namespace ReClassNET.UI
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			if (DesignMode)
-			{
-				return;
-			}
-
 			if (image != null)
 			{
 				e.Graphics.DrawImage(image, ClientRectangle);

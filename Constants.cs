@@ -2,6 +2,14 @@
 {
 	class Constants
 	{
+		public const string ApplicationName = "ReClass.NET";
+
+		public const string ApplicationVersion = "1.0";
+
+		public const string Author = "KN4CK3R";
+
+		public const string HomepageUrl = "https://github.com/KN4CK3R/ReClass.NET";
+
 #if WIN64
 		public const string Platform = "x64";
 #else
