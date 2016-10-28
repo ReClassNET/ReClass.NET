@@ -123,6 +123,8 @@ namespace ReClassNET.Nodes
 			node.ParentNode = this;
 
 			nodes.Insert(index, node);
+
+			NotifyMemorySizeChanged();
 		}
 
 		public override void InsertBytes(int index, int size)
@@ -142,6 +144,16 @@ namespace ReClassNET.Nodes
 				NotifyMemorySizeChanged();
 			}
 			return removed;
+		}
+
+		public override bool ReplaceChildNode(int index, BaseNode node)
+		{
+			var replaced = base.ReplaceChildNode(index, node);
+			if (replaced)
+			{
+				NotifyMemorySizeChanged();
+			}
+			return replaced;
 		}
 	}
 }

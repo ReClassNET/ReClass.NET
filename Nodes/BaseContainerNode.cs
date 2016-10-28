@@ -46,8 +46,6 @@ namespace ReClassNET.Nodes
 
 			nodes[index] = node;
 
-			OnPropertyChanged(nameof(Nodes));
-
 			var oldSize = oldNode.MemorySize;
 			var newSize = node.MemorySize;
 

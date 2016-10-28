@@ -88,10 +88,7 @@ namespace ReClassNET.Nodes
 			UpdateOffsets();
 		}
 
-		public override bool ReplaceChildNode(int index, BaseNode node)
-		{
-			return false;
-		}
+		public override bool ReplaceChildNode(int index, BaseNode node) => false;
 
 		public override void InsertBytes(int index, int size)
 		{
