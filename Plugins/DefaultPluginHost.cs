@@ -7,6 +7,7 @@ using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.DataExchange;
 using ReClassNET.Util;
+using ReClassNET.CodeGenerator;
 
 namespace ReClassNET.Plugins
 {
@@ -43,15 +44,19 @@ namespace ReClassNET.Plugins
 			BaseNode.NodeInfoReader.Remove(reader);
 		}
 
-		public void RegisterNodeType(Type type, ICustomSchemaConverter converter, string name, Image icon)
+		public void RegisterNodeType(Type type, string name, Image icon, ICustomSchemaConverter converter, ICustomCodeGenerator generator)
 		{
 			CustomSchemaConvert.RegisterCustomType(converter);
+			CustomCodeGenerator.RegisterCustomType(generator);
+
 			MainWindow.AddNodeType(type, name, icon);
 		}
 
-		public void UnregisterNodeType(Type type, ICustomSchemaConverter converter)
+		public void UnregisterNodeType(Type type, ICustomSchemaConverter converter, ICustomCodeGenerator generator)
 		{
 			CustomSchemaConvert.UnregisterCustomType(converter);
+			CustomCodeGenerator.UnregisterCustomType(generator);
+
 			MainWindow.RemoveNodeType(type);
 		}
 	}

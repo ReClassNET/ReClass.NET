@@ -7,27 +7,49 @@ using ReClassNET.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
+using ReClassNET.CodeGenerator;
 
 namespace ReClassNET.Plugins
 {
 	[ContractClass(typeof(IPluginHostContract))]
 	public interface IPluginHost
 	{
+		/// <summary>Gets the main window of ReClass.NET.</summary>
 		MainForm MainWindow { get; }
 
+		/// <summary>Gets the resources of ReClass.NET.</summary>
 		ResourceManager Resources { get; }
 
+		/// <summary>Gets the process ReClass.NET is attached to.</summary>
 		RemoteProcess Process { get; }
 
+		/// <summary>Gets the logger ReClass.NET is using.</summary>
 		ILogger Logger { get; }
 
+		/// <summary>Gets the settings ReClass.NET is using.</summary>
 		Settings Settings { get; }
 
+		/// <summary>Registers a node information reader to display custom data on nodes.</summary>
+		/// <param name="reader">The node information reader.</param>
 		void RegisterNodeInfoReader(INodeInfoReader reader);
+
+		/// <summary>Unregisters the node information reader.</summary>
+		/// <param name="reader">The node information reader.</param>
 		void UnregisterNodeInfoReader(INodeInfoReader reader);
 
-		void RegisterNodeType(Type type, ICustomSchemaConverter converter, string name, Image icon);
-		void UnregisterNodeType(Type type, ICustomSchemaConverter converter);
+		/// <summary>Registers a new node type.</summary>
+		/// <param name="type">The type of the node.</param>
+		/// <param name="name">The name of the type.</param>
+		/// <param name="icon">The icon of the type (may be null).</param>
+		/// <param name="converter">The converter used to serialize the node.</param>
+		/// <param name="generator">The generator used to generate code from the node.</param>
+		void RegisterNodeType(Type type, string name, Image icon, ICustomSchemaConverter converter, ICustomCodeGenerator generator);
+
+		/// <summary>Unregisters a node type.</summary>
+		/// <param name="type">The type of the node.</param>
+		/// <param name="converter">The converter used to serialize the node.</param>
+		/// <param name="generator">The generator used to generate code from the node.</param>
+		void UnregisterNodeType(Type type, ICustomSchemaConverter converter, ICustomCodeGenerator generator);
 	}
 
 	[ContractClassFor(typeof(IPluginHost))]
@@ -90,11 +112,12 @@ namespace ReClassNET.Plugins
 			throw new NotImplementedException();
 		}
 
-		public void RegisterNodeType(Type type, ICustomSchemaConverter converter, string name, Image icon)
+		public void RegisterNodeType(Type type, string name, Image icon, ICustomSchemaConverter converter, ICustomCodeGenerator generator)
 		{
 			Contract.Requires(type != null);
-			Contract.Requires(converter != null);
 			Contract.Requires(name != null);
+			Contract.Requires(converter != null);
+			Contract.Requires(generator != null);
 
 			throw new NotImplementedException();
 		}
@@ -106,10 +129,11 @@ namespace ReClassNET.Plugins
 			throw new NotImplementedException();
 		}
 
-		public void UnregisterNodeType(Type type, ICustomSchemaConverter converter)
+		public void UnregisterNodeType(Type type, ICustomSchemaConverter converter, ICustomCodeGenerator generator)
 		{
 			Contract.Requires(type != null);
 			Contract.Requires(converter != null);
+			Contract.Requires(generator != null);
 
 			throw new NotImplementedException();
 		}

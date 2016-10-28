@@ -116,7 +116,7 @@ namespace ReClassNET.CodeGenerator
 					}
 					else
 					{
-						var generator = CustomCodeGenerator.GetGenerator(member);
+						var generator = CustomCodeGenerator.GetGenerator(member, Language.Cpp);
 						if (generator != null)
 						{
 							yield return generator.GetMemberDefinition(member, Language);

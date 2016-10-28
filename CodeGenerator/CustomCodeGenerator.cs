@@ -9,7 +9,7 @@ namespace ReClassNET.CodeGenerator
 	[ContractClass(typeof(ICustomCodeGeneratorContract))]
 	public interface ICustomCodeGenerator
 	{
-		bool CanGenerateCode(BaseNode node);
+		bool CanGenerateCode(BaseNode node, Language language);
 
 		MemberDefinition GetMemberDefinition(BaseNode node, Language language);
 	}
@@ -17,7 +17,7 @@ namespace ReClassNET.CodeGenerator
 	[ContractClassFor(typeof(ICustomCodeGenerator))]
 	internal abstract class ICustomCodeGeneratorContract : ICustomCodeGenerator
 	{
-		public bool CanGenerateCode(BaseNode node)
+		public bool CanGenerateCode(BaseNode node, Language language)
 		{
 			Contract.Requires(node != null);
 
@@ -51,11 +51,11 @@ namespace ReClassNET.CodeGenerator
 			generators.Remove(generator);
 		}
 
-		public static ICustomCodeGenerator GetGenerator(BaseNode node)
+		public static ICustomCodeGenerator GetGenerator(BaseNode node, Language language)
 		{
 			Contract.Requires(node != null);
 
-			return generators.Where(c => c.CanGenerateCode(node)).FirstOrDefault();
+			return generators.Where(c => c.CanGenerateCode(node, language)).FirstOrDefault();
 		}
 	}
 }
