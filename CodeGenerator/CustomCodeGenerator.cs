@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using ReClassNET.Nodes;
-using ColorCode;
 
 namespace ReClassNET.CodeGenerator
 {
@@ -57,20 +56,6 @@ namespace ReClassNET.CodeGenerator
 			Contract.Requires(node != null);
 
 			return generators.Where(c => c.CanGenerateCode(node)).FirstOrDefault();
-		}
-	}
-
-	class WeakPtrCodeGenerator : ICustomCodeGenerator
-	{
-		abstract class WeakPtrNode : BaseNode { }
-
-		public bool CanGenerateCode(BaseNode node) => node is WeakPtrNode;
-
-		public MemberDefinition GetMemberDefinition(BaseNode node, Language language)
-		{
-			if (language == Language.Cpp)
-
-			throw new NotImplementedException();
 		}
 	}
 }
