@@ -19,6 +19,7 @@ namespace ReClassNET.Nodes
 		private static int NodeIndex = 0;
 
 		private string name;
+		private string comment;
 
 		/// <summary>Gets or sets the name of the node. If a new name was set the property changed event gets fired.</summary>
 		public string Name { get { return name; } set { if (value != null && name != value) { name = value; OnPropertyChanged(nameof(Name)); } } }
@@ -27,7 +28,7 @@ namespace ReClassNET.Nodes
 		public IntPtr Offset { get; set; }
 
 		/// <summary>Gets or sets the comment of the node.</summary>
-		public string Comment { get; set; }
+		public string Comment { get { return comment; } set { comment = value ?? string.Empty; } }
 
 		/// <summary>Gets or sets the parent node.</summary>
 		public BaseContainerNode ParentNode { get; internal set; }
@@ -66,6 +67,7 @@ namespace ReClassNET.Nodes
 			Contract.Ensures(name != null);
 
 			Name = $"N{NodeIndex++:X08}";
+			Comment = string.Empty;
 
 			levelsOpen[0] = true;
 		}
@@ -343,7 +345,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 
 			x = AddText(view, x, y, Program.Settings.CommentColor, HotSpot.NoneId, "//");
-			x = AddText(view, x, y, Program.Settings.CommentColor, HotSpot.CommentId, Comment + " ");
+			x = AddText(view, x, y, Program.Settings.CommentColor, HotSpot.CommentId, Comment) + view.Font.Width;
 
 			return x;
 		}

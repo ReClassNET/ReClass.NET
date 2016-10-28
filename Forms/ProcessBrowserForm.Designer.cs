@@ -238,6 +238,7 @@
 			this.Controls.Add(this.loadSymbolsCheckBox);
 			this.Controls.Add(this.openProcessButton);
 			this.Controls.Add(this.processDataGridView);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ProcessBrowserForm";
