@@ -107,7 +107,7 @@ namespace ReClassNET.DataExchange
 				var converter = CustomSchemaConvert.GetReadConverter(node);
 				if (converter != null)
 				{
-					return converter.ReadFromXml(node, classes, logger);
+					return converter.CreateSchemaFromElement(node, classes, logger);
 				}
 
 				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Attribute(XmlTypeAttribute)?.Value}");
@@ -233,7 +233,7 @@ namespace ReClassNET.DataExchange
 				var converter = CustomSchemaConvert.GetWriteConverter(node as SchemaCustomNode);
 				if (converter != null)
 				{
-					return converter.WriteToXml(node as SchemaCustomNode, logger);
+					return converter.CreateElementFromSchema(node as SchemaCustomNode, logger);
 				}
 
 				logger.Log(LogLevel.Error, $"Skipping node with unknown type converter: {node.Name}");

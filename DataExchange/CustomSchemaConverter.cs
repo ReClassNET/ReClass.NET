@@ -11,44 +11,44 @@ namespace ReClassNET.DataExchange
 	[ContractClass(typeof(ICustomSchemaConverterContract))]
 	public interface ICustomSchemaConverter
 	{
-		bool CanReadNode(XElement element);
+		bool CanHandleElement(XElement element);
 
-		bool CanReadNode(BaseNode node);
+		bool CanHandleNode(BaseNode node);
 
-		bool CanWriteNode(SchemaCustomNode node);
+		bool CanHandleSchema(SchemaCustomNode node);
 
-		SchemaCustomNode ReadFromXml(XElement element, IReadOnlyDictionary<string, SchemaClassNode> classes, ILogger logger);
-		XElement WriteToXml(SchemaCustomNode node, ILogger logger);
+		SchemaCustomNode CreateSchemaFromElement(XElement element, IReadOnlyDictionary<string, SchemaClassNode> classes, ILogger logger);
+		XElement CreateElementFromSchema(SchemaCustomNode node, ILogger logger);
 
-		SchemaCustomNode ReadFromNode(BaseNode node, IReadOnlyDictionary<ClassNode, SchemaClassNode> classes, ILogger logger);
-		BaseNode WriteToNode(SchemaCustomNode schema, IReadOnlyDictionary<SchemaClassNode, ClassNode> classes, ILogger logger);
+		SchemaCustomNode CreateSchemaFromNode(BaseNode node, IReadOnlyDictionary<ClassNode, SchemaClassNode> classes, ILogger logger);
+		BaseNode CreateNodeFromSchema(SchemaCustomNode schema, IReadOnlyDictionary<SchemaClassNode, ClassNode> classes, ILogger logger);
 	}
 
 	[ContractClassFor(typeof(ICustomSchemaConverter))]
 	internal abstract class ICustomSchemaConverterContract : ICustomSchemaConverter
 	{
-		public bool CanReadNode(BaseNode node)
+		public bool CanHandleNode(BaseNode node)
 		{
 			Contract.Requires(node != null);
 
 			throw new NotImplementedException();
 		}
 
-		public bool CanReadNode(XElement element)
+		public bool CanHandleElement(XElement element)
 		{
 			Contract.Requires(element != null);
 
 			throw new NotImplementedException();
 		}
 
-		public bool CanWriteNode(SchemaCustomNode node)
+		public bool CanHandleSchema(SchemaCustomNode node)
 		{
 			Contract.Requires(node != null);
 
 			throw new NotImplementedException();
 		}
 
-		public SchemaCustomNode ReadFromNode(BaseNode node, IReadOnlyDictionary<ClassNode, SchemaClassNode> classes, ILogger logger)
+		public SchemaCustomNode CreateSchemaFromNode(BaseNode node, IReadOnlyDictionary<ClassNode, SchemaClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(node != null);
 			Contract.Requires(classes != null);
@@ -61,7 +61,7 @@ namespace ReClassNET.DataExchange
 			throw new NotImplementedException();
 		}
 
-		public SchemaCustomNode ReadFromXml(XElement element, IReadOnlyDictionary<string, SchemaClassNode> classes, ILogger logger)
+		public SchemaCustomNode CreateSchemaFromElement(XElement element, IReadOnlyDictionary<string, SchemaClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(element != null);
 			Contract.Requires(classes != null);
@@ -72,7 +72,7 @@ namespace ReClassNET.DataExchange
 			throw new NotImplementedException();
 		}
 
-		public BaseNode WriteToNode(SchemaCustomNode schema, IReadOnlyDictionary<SchemaClassNode, ClassNode> classes, ILogger logger)
+		public BaseNode CreateNodeFromSchema(SchemaCustomNode schema, IReadOnlyDictionary<SchemaClassNode, ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(schema != null);
 			Contract.Requires(classes != null);
@@ -85,7 +85,7 @@ namespace ReClassNET.DataExchange
 			throw new NotImplementedException();
 		}
 
-		public XElement WriteToXml(SchemaCustomNode node, ILogger logger)
+		public XElement CreateElementFromSchema(SchemaCustomNode node, ILogger logger)
 		{
 			Contract.Requires(node != null);
 			Contract.Requires(logger != null);
@@ -118,21 +118,21 @@ namespace ReClassNET.DataExchange
 		{
 			Contract.Requires(element != null);
 
-			return converters.Where(c => c.CanReadNode(element)).FirstOrDefault();
+			return converters.Where(c => c.CanHandleElement(element)).FirstOrDefault();
 		}
 
 		public static ICustomSchemaConverter GetReadConverter(BaseNode node)
 		{
 			Contract.Requires(node != null);
 
-			return converters.Where(c => c.CanReadNode(node)).FirstOrDefault();
+			return converters.Where(c => c.CanHandleNode(node)).FirstOrDefault();
 		}
 
 		public static ICustomSchemaConverter GetWriteConverter(SchemaCustomNode node)
 		{
 			Contract.Requires(node != null);
 
-			return converters.Where(c => c.CanWriteNode(node)).FirstOrDefault();
+			return converters.Where(c => c.CanHandleSchema(node)).FirstOrDefault();
 		}
 	}
 }

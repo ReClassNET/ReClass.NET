@@ -197,7 +197,7 @@ namespace ReClassNET.DataExchange
 						var converter = CustomSchemaConvert.GetReadConverter(n);
 						if (converter != null)
 						{
-							sc.Nodes.Add(converter.ReadFromNode(n, sclasses, logger));
+							sc.Nodes.Add(converter.CreateSchemaFromNode(n, sclasses, logger));
 							continue;
 						}
 
@@ -325,7 +325,7 @@ namespace ReClassNET.DataExchange
 							var converter = CustomSchemaConvert.GetWriteConverter(sn as SchemaCustomNode);
 							if (converter != null)
 							{
-								cn.AddNode(converter.WriteToNode(sn as SchemaCustomNode, classes, logger));
+								cn.AddNode(converter.CreateNodeFromSchema(sn as SchemaCustomNode, classes, logger));
 
 								continue;
 							}
