@@ -55,7 +55,10 @@ namespace ReClassNET.Forms
 				}
 				else
 				{
-					processInfoToolStripStatusLabel.Text = $"{sender.Process.Name} (PID: {sender.Process.Id})";
+					var text = $"{sender.Process.Name} (PID: {sender.Process.Id})";
+
+					Text = $"{Constants.ApplicationName} {text}";
+					processInfoToolStripStatusLabel.Text = text;
 				}
 			};
 
@@ -350,9 +353,14 @@ namespace ReClassNET.Forms
 			nativeHelper.ControlRemoteProcess(remoteProcess.Process.Handle, action);
 		}
 
-		private void generateCCodeToolStripMenuItem_Click(object sender, EventArgs e)
+		private void generateCppCodeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ShowCodeForm(new CppCodeGenerator());
+		}
+
+		private void generateCSharpCodeToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			ShowCodeForm(new CSharpCodeGenerator());
 		}
 
 		private void ShowCodeForm(ICodeGenerator generator)

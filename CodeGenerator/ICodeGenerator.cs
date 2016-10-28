@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using ColorCode;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
@@ -9,7 +8,7 @@ namespace ReClassNET.CodeGenerator
 	[ContractClass(typeof(ICodeGeneratorContract))]
 	public interface ICodeGenerator
 	{
-		ILanguage Language { get; }
+		Language Language { get; }
 
 		string GetCodeFromClasses(IEnumerable<ClassNode> classes);
 	}
@@ -17,12 +16,10 @@ namespace ReClassNET.CodeGenerator
 	[ContractClassFor(typeof(ICodeGenerator))]
 	internal abstract class ICodeGeneratorContract : ICodeGenerator
 	{
-		public ILanguage Language
+		public Language Language
 		{
 			get
 			{
-				Contract.Ensures(Contract.Result<ILanguage>() != null);
-
 				throw new NotImplementedException();
 			}
 		}

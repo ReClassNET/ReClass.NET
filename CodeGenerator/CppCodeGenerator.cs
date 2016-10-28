@@ -37,12 +37,12 @@ namespace ReClassNET.CodeGenerator
 			[typeof(Vector4Node)] = Program.Settings.TypeVector4
 		};
 
-		public ILanguage Language => Languages.Cpp;
+		public Language Language => Language.Cpp;
 
 		public string GetCodeFromClasses(IEnumerable<ClassNode> classes)
 		{
 			var sb = new StringBuilder();
-			sb.AppendLine("// Created with ReClass.NET");
+			sb.AppendLine($"// Created with {Constants.ApplicationName} by {Constants.Author}");
 			sb.AppendLine();
 			sb.AppendLine(
 				string.Join(
@@ -74,6 +74,7 @@ namespace ReClassNET.CodeGenerator
 							string.Join(
 								"\n",
 								YieldMemberDefinitions(c.Nodes.Skip(skipFirstMember ? 1 : 0))
+									.Select(m => MemberDefinitionToString(m))
 									.Select(s => "\t" + s)
 							)
 						);
@@ -133,12 +134,12 @@ namespace ReClassNET.CodeGenerator
 			yield return node;
 		}
 
-		private IEnumerable<string> YieldMemberDefinitions(IEnumerable<BaseNode> members)
+		private IEnumerable<MemberDefinition> YieldMemberDefinitions(IEnumerable<BaseNode> members)
 		{
 			Contract.Requires(members != null);
 			Contract.Requires(Contract.ForAll(members, m => m != null));
-			Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
-			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<string>>(), d => d != null));
+			Contract.Ensures(Contract.Result<IEnumerable<MemberDefinition>>() != null);
+			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<MemberDefinition>>(), d => d != null));
 
 			int fill = 0;
 			int fillStart = 0;
@@ -158,7 +159,7 @@ namespace ReClassNET.CodeGenerator
 				
 				if (fill != 0)
 				{
-					yield return BuildMemberDefinition(Program.Settings.TypePadding, fill, $"unknown{fillStart:X04}", fillStart, string.Empty);
+					yield return new MemberDefinition(Program.Settings.TypePadding, fill, $"pad_{fillStart:X04}", fillStart, string.Empty);
 
 					fill = 0;
 				}
@@ -172,7 +173,7 @@ namespace ReClassNET.CodeGenerator
 						count = ((BaseTextNode)member).CharacterCount;
 					}
 
-					yield return BuildMemberDefinition(member, type, count);
+					yield return new MemberDefinition(member, type, count);
 				}
 
 				if (member is BitFieldNode)
@@ -193,73 +194,57 @@ namespace ReClassNET.CodeGenerator
 							break;
 					}
 
-					yield return BuildMemberDefinition(member, type);
+					yield return new MemberDefinition(member, type);
 				}
 				else if (member is ClassInstanceArrayNode)
 				{
 					var instanceArray = (ClassInstanceArrayNode)member;
 
-					yield return BuildMemberDefinition(member, instanceArray.InnerNode.Name, instanceArray.Count);
+					yield return new MemberDefinition(member, instanceArray.InnerNode.Name, instanceArray.Count);
 				}
 				else if (member is ClassInstanceNode)
 				{
-					yield return BuildMemberDefinition(member, ((ClassInstanceNode)member).InnerNode.Name);
+					yield return new MemberDefinition(member, ((ClassInstanceNode)member).InnerNode.Name);
 				}
 				else if (member is ClassPtrArrayNode)
 				{
 					var ptrArray = (ClassPtrArrayNode)member;
 
-					yield return BuildMemberDefinition(member, $"class {ptrArray.InnerNode.Name}*", ptrArray.Count);
+					yield return new MemberDefinition(member, $"class {ptrArray.InnerNode.Name}*", ptrArray.Count);
 				}
 				else if (member is ClassPtrNode)
 				{
-					yield return BuildMemberDefinition(member, $"class {((ClassPtrNode)member).InnerNode.Name}*");
+					yield return new MemberDefinition(member, $"class {((ClassPtrNode)member).InnerNode.Name}*");
+				}
+				else
+				{
+					var generator = CustomCodeGenerator.GetGenerator(member);
+					if (generator != null)
+					{
+						yield return generator.GetMemberDefinition(member, Language);
+					}
+
+					//report warning
 				}
 			}
 
 			if (fill != 0)
 			{
-				yield return BuildMemberDefinition(Program.Settings.TypePadding, fill, $"unknown{fillStart:X04}", fillStart, string.Empty);
+				yield return new MemberDefinition(Program.Settings.TypePadding, fill, $"pad_{fillStart:X04}", fillStart, string.Empty);
 			}
 		}
 
-		private string BuildMemberDefinition(BaseNode member, string type)
+		private string MemberDefinitionToString(MemberDefinition member)
 		{
 			Contract.Requires(member != null);
-			Contract.Requires(type != null);
-			Contract.Ensures(Contract.Result<string>() != null);
 
-			return BuildMemberDefinition(member, type, 0);
-		}
-
-		private string BuildMemberDefinition(BaseNode member, string type, int count)
-		{
-			Contract.Requires(member != null);
-			Contract.Requires(type != null);
-			Contract.Requires(count >= 0);
-			Contract.Ensures(Contract.Result<string>() != null);
-
-			var comment = string.IsNullOrEmpty(member.Comment) ? string.Empty : " " + member.Comment;
-
-			return BuildMemberDefinition(type, count, member.Name, member.Offset.ToInt32(), comment);
-		}
-
-		private string BuildMemberDefinition(string type, int count, string name, int offset, string comment)
-		{
-			Contract.Requires(type != null);
-			Contract.Requires(count >= 0);
-			Contract.Requires(name != null);
-			Contract.Requires(offset >= 0);
-			Contract.Requires(comment != null);
-			Contract.Ensures(Contract.Result<string>() != null);
-
-			if (count == 0)
+			if (member.IsArray)
 			{
-				return $"{type} {name}; //0x{offset:X04}{comment}";
+				return $"{member.Type} {member.Name}[{member.ArrayCount}]; //0x{member.Offset:X04} {member.Comment}".Trim();
 			}
 			else
 			{
-				return $"{type} {name}[{count}]; //0x{offset:X04}{comment}";
+				return $"{member.Type} {member.Name}; //0x{member.Offset:X04} {member.Comment}".Trim();
 			}
 		}
 	}

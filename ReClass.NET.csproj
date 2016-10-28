@@ -138,6 +138,9 @@
     <Compile Include="AddressParser\ParseException.cs" />
     <Compile Include="AddressParser\Token.cs" />
     <Compile Include="AddressParser\TokenReader.cs" />
+    <Compile Include="CodeGenerator\CustomCodeGenerator.cs" />
+    <Compile Include="CodeGenerator\Language.cs" />
+    <Compile Include="CodeGenerator\MemberDefinition.cs" />
     <Compile Include="UI\BannerBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -700,6 +703,9 @@
   <ItemGroup>
     <None Include="Resources\Images\B32x32_Cogs.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BuildDate.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -708,6 +714,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>powershell -Command "((Get-Date).ToUniversalTime()).ToString(\"yyyy\/MM\/dd HH:mm:ss\") | Out-File '$(ProjectDir)Resources\BuildDate.txt'"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
