@@ -330,7 +330,7 @@ namespace ReClassNET.DataExchange
 								continue;
 							}
 
-							logger.Log(LogLevel.Error, $"Skipping node with unknown type: {sn.GetType()}");
+							logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {sn.GetType()}");
 
 							continue;
 						}

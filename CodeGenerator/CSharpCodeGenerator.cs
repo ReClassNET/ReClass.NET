@@ -120,7 +120,11 @@ namespace ReClassNET.CodeGenerator
 						if (generator != null)
 						{
 							yield return generator.GetMemberDefinition(member, Language, logger);
+
+							continue;
 						}
+
+						logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {member.GetType()}");
 					}
 				}
 			}
