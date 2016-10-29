@@ -383,6 +383,7 @@
 			this.addBytesToolStripMenuItem.Name = "addBytesToolStripMenuItem";
 			this.addBytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.addBytesToolStripMenuItem.Text = "Add ... Bytes";
+			this.addBytesToolStripMenuItem.Enabled = false;
 			// 
 			// toolStripTextBox1
 			// 
@@ -482,6 +483,7 @@
 			this.insertBytesToolStripMenuItem.Name = "insertBytesToolStripMenuItem";
 			this.insertBytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insertBytesToolStripMenuItem.Text = "Insert ... Bytes";
+			this.insertBytesToolStripMenuItem.Enabled = false;
 			// 
 			// toolStripTextBox2
 			// 
