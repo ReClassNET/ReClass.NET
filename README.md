@@ -45,19 +45,19 @@ Just download the [latest version](https://github.com/KN4CK3R/ReClass.NET/releas
 If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file.
 
 ## Screenshots
-Process Selection
+Process Selection  
 ![](https://abload.de/img/processgya2k.jpg)
 
-Memory Viewer
+Memory Viewer  
 ![](https://abload.de/img/memoryviewerb4y1s.jpg)
 
-Code Generator
+Code Generator  
 ![](https://abload.de/img/codegeneratorqdat2.jpg)
 ![](https://abload.de/img/codegenerator24qzce.jpg)
 
-Plugins
+Plugins  
 ![](https://abload.de/img/plugin1mda4r.jpg)
 ![](https://abload.de/img/plugin25dxk1.jpg)
 
-Settings
+Settings  
 ![](https://abload.de/img/settings8sz4b.jpg)
