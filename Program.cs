@@ -1,9 +1,9 @@
-﻿using ReClassNET.Forms;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Forms;
-using ReClassNET.Util;
+using ReClassNET.Forms;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET
 {
@@ -29,29 +29,34 @@ namespace ReClassNET
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
+			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+
+			settings = Settings.Load(Constants.SettingsFile);
+
 #if RELEASE
 			try
 			{
-#endif
-				CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-
-				settings = Settings.Load(Constants.SettingsFile);
-
 				using (var nativeHelper = new NativeHelper())
 				{
 					var form = new MainForm(nativeHelper, settings);
 
 					Application.Run(form);
 				}
-
-				Settings.Save(settings, Constants.SettingsFile);
-#if RELEASE
 			}
 			catch (Exception ex)
 			{
 				ex.ShowDialog();
 			}
+#else
+			using (var nativeHelper = new NativeHelper())
+			{
+				var form = new MainForm(nativeHelper, settings);
+
+				Application.Run(form);
+			}
 #endif
+
+			Settings.Save(settings, Constants.SettingsFile);
 		}
 	}
 }
