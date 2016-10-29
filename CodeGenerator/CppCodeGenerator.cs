@@ -175,8 +175,7 @@ namespace ReClassNET.CodeGenerator
 
 					yield return new MemberDefinition(member, type, count);
 				}
-
-				if (member is BitFieldNode)
+				else if (member is BitFieldNode)
 				{
 					switch (((BitFieldNode)member).Bits)
 					{
@@ -222,11 +221,11 @@ namespace ReClassNET.CodeGenerator
 					if (generator != null)
 					{
 						yield return generator.GetMemberDefinition(member, Language, logger);
-
-						continue;
 					}
-
-					logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {member.GetType()}");
+					else
+					{
+						logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {member.GetType()}");
+					}
 				}
 			}
 

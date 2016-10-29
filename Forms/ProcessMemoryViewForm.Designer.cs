@@ -209,7 +209,7 @@
 			this.Controls.Add(this.regionsGroupBox);
 			this.MinimumSize = new System.Drawing.Size(586, 320);
 			this.Name = "ProcessMemoryViewer";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "ReClass.NET - Memory Viewer";
 			this.Load += new System.EventHandler(this.ProcessMemoryViewer_Load);
 			this.contextMenuStrip.ResumeLayout(false);
