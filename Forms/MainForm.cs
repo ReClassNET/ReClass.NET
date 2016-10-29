@@ -365,7 +365,7 @@ namespace ReClassNET.Forms
 
 		private void ShowCodeForm(ICodeGenerator generator)
 		{
-			using (var cf = new CodeForm(generator, ClassManager.Classes))
+			using (var cf = new CodeForm(generator, ClassManager.Classes, logger))
 			{
 				cf.ShowDialog();
 			}
@@ -415,7 +415,10 @@ namespace ReClassNET.Forms
 
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			new AboutForm().ShowDialog();
+			using (var af = new AboutForm())
+			{
+				af.ShowDialog();
+			}
 		}
 
 		private void FastOpenToolStripDropDownButton_MouseEnter(object sender, EventArgs e)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
@@ -11,7 +12,7 @@ namespace ReClassNET.CodeGenerator
 	{
 		bool CanGenerateCode(BaseNode node, Language language);
 
-		MemberDefinition GetMemberDefinition(BaseNode node, Language language);
+		MemberDefinition GetMemberDefinition(BaseNode node, Language language, ILogger logger);
 	}
 
 	[ContractClassFor(typeof(ICustomCodeGenerator))]
@@ -24,7 +25,7 @@ namespace ReClassNET.CodeGenerator
 			throw new NotImplementedException();
 		}
 
-		public MemberDefinition GetMemberDefinition(BaseNode node, Language language)
+		public MemberDefinition GetMemberDefinition(BaseNode node, Language language, ILogger logger)
 		{
 			Contract.Requires(node != null);
 			Contract.Ensures(Contract.Result<MemberDefinition>() != null);

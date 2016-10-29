@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
-using ColorCode;
+using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
@@ -33,7 +33,7 @@ namespace ReClassNET.CodeGenerator
 
 		public Language Language => Language.CSharp;
 
-		public string GetCodeFromClasses(IEnumerable<ClassNode> classes)
+		public string GetCodeFromClasses(IEnumerable<ClassNode> classes, ILogger logger)
 		{
 			var sb = new StringBuilder();
 			sb.AppendLine($"// Created with  {Constants.ApplicationName} by {Constants.Author}");
@@ -63,7 +63,7 @@ namespace ReClassNET.CodeGenerator
 						csb.AppendLine(
 							string.Join(
 								"\n\n",
-								YieldMemberDefinitions(c.Nodes)
+								YieldMemberDefinitions(c.Nodes, logger)
 									.Select(m => $"\t{GetFieldDecorator(m)}\n\t{GetFieldDefinition(m)}")
 							)
 						);
@@ -76,7 +76,7 @@ namespace ReClassNET.CodeGenerator
 			return sb.ToString();
 		}
 
-		private IEnumerable<MemberDefinition> YieldMemberDefinitions(IEnumerable<BaseNode> members)
+		private IEnumerable<MemberDefinition> YieldMemberDefinitions(IEnumerable<BaseNode> members, ILogger logger)
 		{
 			Contract.Requires(members != null);
 			Contract.Requires(Contract.ForAll(members, m => m != null));
@@ -116,10 +116,10 @@ namespace ReClassNET.CodeGenerator
 					}
 					else
 					{
-						var generator = CustomCodeGenerator.GetGenerator(member, Language.Cpp);
+						var generator = CustomCodeGenerator.GetGenerator(member, Language);
 						if (generator != null)
 						{
-							yield return generator.GetMemberDefinition(member, Language);
+							yield return generator.GetMemberDefinition(member, Language, logger);
 						}
 					}
 				}

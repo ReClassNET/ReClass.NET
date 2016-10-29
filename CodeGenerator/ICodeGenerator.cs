@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
@@ -10,7 +11,7 @@ namespace ReClassNET.CodeGenerator
 	{
 		Language Language { get; }
 
-		string GetCodeFromClasses(IEnumerable<ClassNode> classes);
+		string GetCodeFromClasses(IEnumerable<ClassNode> classes, ILogger logger);
 	}
 
 	[ContractClassFor(typeof(ICodeGenerator))]
@@ -24,7 +25,7 @@ namespace ReClassNET.CodeGenerator
 			}
 		}
 
-		public string GetCodeFromClasses(IEnumerable<ClassNode> classes)
+		public string GetCodeFromClasses(IEnumerable<ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(classes != null);
 			Contract.Requires(Contract.ForAll(classes, c => c != null));

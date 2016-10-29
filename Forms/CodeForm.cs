@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 using ColorCode;
 using ReClassNET.CodeGenerator;
+using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.UI;
 
@@ -11,14 +12,14 @@ namespace ReClassNET.Forms
 {
 	public partial class CodeForm : IconForm
 	{
-		public CodeForm(ICodeGenerator generator, IEnumerable<ClassNode> classes)
+		public CodeForm(ICodeGenerator generator, IEnumerable<ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(generator != null);
 			Contract.Requires(classes != null);
 
 			InitializeComponent();
 
-			var code = generator.GetCodeFromClasses(classes);
+			var code = generator.GetCodeFromClasses(classes, logger);
 			codeWebBrowser.DocumentText = new CodeColorizer().Colorize(code, generator.Language == Language.Cpp ? Languages.Cpp : Languages.CSharp);
 		}
 
