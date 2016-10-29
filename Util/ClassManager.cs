@@ -101,19 +101,13 @@ namespace ReClassNET.Util
 			Contract.Requires(Contract.ForAll(classes, c => c != null));
 
 			var toCheck = new HashSet<ClassNode>(
-				parent.Yield()
+				check.Yield()
 				.Traverse(
 					c => c.Nodes
 					.Where(n => n is ClassInstanceNode || n is ClassInstanceArrayNode)
 					.Select(n => ((BaseReferenceNode)n).InnerNode as ClassNode)
 				)
-				.Where(c => c != parent)
 			);
-
-			if (!toCheck.Add(check))
-			{
-				return false;
-			}
 
 			if (!IsCycleFreeUp(parent, toCheck, classes))
 			{
