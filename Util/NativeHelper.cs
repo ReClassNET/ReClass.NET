@@ -8,6 +8,8 @@ namespace ReClassNET.Util
 {
 	public class NativeHelper : IDisposable
 	{
+		private const string NativeHelperDll = "NativeHelper.dll";
+
 		public enum RequestFunction
 		{
 			IsProcessValid,
@@ -102,20 +104,6 @@ namespace ReClassNET.Util
 		public NativeHelper()
 		{
 			requestFunctionPtrReference = RequestFunctionPtr;
-
-#if DEBUG
-#if WIN32
-			const string NativeHelperDll = "NativeHelper_x86d.dll";
-#else
-			const string NativeHelperDll = "NativeHelper_x64d.dll";
-#endif
-#else
-#if WIN32
-			const string NativeHelperDll = "NativeHelper_x86.dll";
-#else
-			const string NativeHelperDll = "NativeHelper_x64.dll";
-#endif
-#endif
 
 			nativeHelperHandle = NativeMethods.LoadLibrary(NativeHelperDll);
 			if (nativeHelperHandle.IsNull())
