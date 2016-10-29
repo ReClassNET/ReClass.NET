@@ -76,6 +76,8 @@ namespace ReClassNET.UI
 			root.Nodes.Add(treeNode);
 
 			root.Expand();
+
+			classesTreeView.Sort();
 		}
 
 		public void Remove(ClassNode node)
