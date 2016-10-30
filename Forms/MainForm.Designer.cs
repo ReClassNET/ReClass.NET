@@ -50,7 +50,6 @@
 			this.add2048BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.add4096BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.addBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
 			this.insertToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.insert4BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.insert8BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
@@ -60,7 +59,6 @@
 			this.insert2048BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.insert4096BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.insertBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.hex64ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
 			this.hex32ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
@@ -377,20 +375,11 @@
 			// 
 			// addBytesToolStripMenuItem
 			// 
-			this.addBytesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBox1});
 			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_X;
 			this.addBytesToolStripMenuItem.Name = "addBytesToolStripMenuItem";
 			this.addBytesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.addBytesToolStripMenuItem.Text = "Add ... Bytes";
-			this.addBytesToolStripMenuItem.Enabled = false;
-			// 
-			// toolStripTextBox1
-			// 
-			this.toolStripTextBox1.Name = "toolStripTextBox1";
-			this.toolStripTextBox1.Size = new System.Drawing.Size(100, 23);
-			this.toolStripTextBox1.Text = "4";
-			this.toolStripTextBox1.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.addBytesToolStripMenuItem.Click += new System.EventHandler(this.addBytesToolStripMenuItem_Click_1);
 			// 
 			// insertToolStripDropDownButton
 			// 
@@ -477,18 +466,11 @@
 			// 
 			// insertBytesToolStripMenuItem
 			// 
-			this.insertBytesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBox2});
 			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_X;
 			this.insertBytesToolStripMenuItem.Name = "insertBytesToolStripMenuItem";
 			this.insertBytesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
 			this.insertBytesToolStripMenuItem.Text = "Insert ... Bytes";
-			this.insertBytesToolStripMenuItem.Enabled = false;
-			// 
-			// toolStripTextBox2
-			// 
-			this.toolStripTextBox2.Name = "toolStripTextBox2";
-			this.toolStripTextBox2.Size = new System.Drawing.Size(100, 23);
+			this.insertBytesToolStripMenuItem.Click += new System.EventHandler(this.insertBytesToolStripMenuItem_Click_1);
 			// 
 			// toolStripSeparator8
 			// 
@@ -1228,9 +1210,7 @@
 		private UI.IntegerToolStripMenuItem insert2048BytesToolStripMenuItem;
 		private UI.IntegerToolStripMenuItem insert4096BytesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem addBytesToolStripMenuItem;
-		private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
 		private System.Windows.Forms.ToolStripMenuItem insertBytesToolStripMenuItem;
-		private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private UI.TypeToolStripButton hex64ToolStripButton;
 		private UI.TypeToolStripButton hex32ToolStripButton;

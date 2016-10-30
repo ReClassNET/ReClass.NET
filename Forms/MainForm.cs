@@ -431,5 +431,33 @@ namespace ReClassNET.Forms
 
 			button.ShowDropDown();
 		}
+
+		private void addBytesToolStripMenuItem_Click_1(object sender, EventArgs e)
+		{
+			AskAddOrInsertBytes("Add Bytes", memoryViewControl.AddBytes);
+		}
+
+		private void insertBytesToolStripMenuItem_Click_1(object sender, EventArgs e)
+		{
+			AskAddOrInsertBytes("Insert Bytes", memoryViewControl.InsertBytes);
+		}
+
+		private void AskAddOrInsertBytes(string title, Action<int> func)
+		{
+			if (memoryViewControl.ClassNode == null)
+			{
+				return;
+			}
+
+			using (var ib = new InputBytesForm(memoryViewControl.ClassNode.MemorySize))
+			{
+				ib.Text = title;
+
+				if (ib.ShowDialog() == DialogResult.OK)
+				{
+					func(ib.Bytes);
+				}
+			}
+		}
 	}
 }

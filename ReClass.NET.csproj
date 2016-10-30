@@ -143,6 +143,12 @@
     <Compile Include="CodeGenerator\CustomCodeGenerator.cs" />
     <Compile Include="CodeGenerator\Language.cs" />
     <Compile Include="CodeGenerator\MemberDefinition.cs" />
+    <Compile Include="Forms\InputBytesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InputBytesForm.Designer.cs">
+      <DependentUpon>InputBytesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\BannerBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -335,6 +341,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CodeForm.resx">
       <DependentUpon>CodeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InputBytesForm.resx">
+      <DependentUpon>InputBytesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ClassNodeView.resx">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
