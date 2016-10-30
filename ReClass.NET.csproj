@@ -103,15 +103,17 @@
     <ApplicationIcon>Resources\Icon\ReClassNet.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ColorCode">
-      <HintPath>.\ColorCode.dll</HintPath>
+    <Reference Include="ColorCode, Version=1.0.1.62759, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\ColorCode.dll</HintPath>
     </Reference>
     <Reference Include="Dia2Lib">
-      <HintPath>.\Dia2Lib.dll</HintPath>
+      <HintPath>Dependencies\Dia2Lib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Microsoft.ExceptionMessageBox">
-      <HintPath>.\Microsoft.ExceptionMessageBox.dll</HintPath>
+    <Reference Include="Microsoft.ExceptionMessageBox, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Microsoft.ExceptionMessageBox.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
