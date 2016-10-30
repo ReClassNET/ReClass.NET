@@ -23,6 +23,8 @@ namespace ReClassNET.Nodes
 
 		public string AddressFormula { get; set; }
 
+		public event EventHandler NodesChanged;
+
 		/// <summary>Only the <see cref="ClassManager"/> and the <see cref="DataExchange.SchemaBuilder"/> are allowed to call the constructor.</summary>
 		internal ClassNode()
 		{
@@ -106,6 +108,8 @@ namespace ReClassNET.Nodes
 		internal void NotifyMemorySizeChanged()
 		{
 			ClassManager.Classes.ForEach(c => c.UpdateOffsets());
+
+			NodesChanged?.Invoke(this, EventArgs.Empty);
 		}
 
 		internal void AddNode(BaseNode node)

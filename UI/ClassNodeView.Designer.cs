@@ -35,6 +35,8 @@
 			this.deleteClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.removeUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.enableHierarchyViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -46,7 +48,6 @@
 			this.classesTreeView.LabelEdit = true;
 			this.classesTreeView.Location = new System.Drawing.Point(0, 0);
 			this.classesTreeView.Name = "classesTreeView";
-			this.classesTreeView.ShowPlusMinus = false;
 			this.classesTreeView.ShowRootLines = false;
 			this.classesTreeView.Size = new System.Drawing.Size(150, 150);
 			this.classesTreeView.TabIndex = 0;
@@ -60,9 +61,11 @@
             this.renameClassToolStripMenuItem,
             this.deleteClassToolStripMenuItem,
             this.toolStripSeparator1,
-            this.removeUnusedClassesToolStripMenuItem});
+            this.removeUnusedClassesToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.enableHierarchyViewToolStripMenuItem});
 			this.contextMenuStrip.Name = "contextMenuStrip";
-			this.contextMenuStrip.Size = new System.Drawing.Size(199, 76);
+			this.contextMenuStrip.Size = new System.Drawing.Size(199, 126);
 			// 
 			// renameClassToolStripMenuItem
 			// 
@@ -93,6 +96,20 @@
 			this.removeUnusedClassesToolStripMenuItem.Text = "Remove unused classes";
 			this.removeUnusedClassesToolStripMenuItem.Click += new System.EventHandler(this.removeUnusedClassesToolStripMenuItem_Click);
 			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(195, 6);
+			// 
+			// enableHierarchyViewToolStripMenuItem
+			// 
+			this.enableHierarchyViewToolStripMenuItem.Checked = true;
+			this.enableHierarchyViewToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.enableHierarchyViewToolStripMenuItem.Name = "enableHierarchyViewToolStripMenuItem";
+			this.enableHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+			this.enableHierarchyViewToolStripMenuItem.Text = "Enable hierarchy view";
+			this.enableHierarchyViewToolStripMenuItem.Click += new System.EventHandler(this.enableHierarchyViewToolStripMenuItem_Click);
+			// 
 			// ClassNodeView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -112,5 +129,7 @@
 		private System.Windows.Forms.ToolStripMenuItem deleteClassToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem removeUnusedClassesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem enableHierarchyViewToolStripMenuItem;
 	}
 }

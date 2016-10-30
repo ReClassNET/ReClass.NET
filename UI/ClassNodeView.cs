@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Nodes;
@@ -64,6 +65,25 @@ namespace ReClassNET.UI
 			Contract.Requires(node != null);
 
 			node.PropertyChanged += NodePropertyChanged;
+			node.NodesChanged += RebuildClassHierarchy;
+
+			BuildClassHierarchy(root, node, new HashSet<ClassNode>());
+
+			root.ExpandAll();
+
+			classesTreeView.Sort();
+		}
+
+		private void BuildClassHierarchy(TreeNode root, ClassNode node, HashSet<ClassNode> seen)
+		{
+			Contract.Requires(root != null);
+			Contract.Requires(node != null);
+			Contract.Requires(seen != null);
+
+			if (!seen.Add(node))
+			{
+				return;
+			}
 
 			var treeNode = new TreeNode
 			{
@@ -72,12 +92,33 @@ namespace ReClassNET.UI
 				ImageIndex = 1,
 				SelectedImageIndex = 1
 			};
-
 			root.Nodes.Add(treeNode);
 
-			root.Expand();
+			foreach (var child in node.Nodes
+				.OfType<BaseReferenceNode>()
+				.Select(r => r.InnerNode)
+				.OfType<ClassNode>())
+			{
+				BuildClassHierarchy(treeNode, child, seen);
+			}
+		}
 
-			classesTreeView.Sort();
+		private void RebuildClassHierarchy(object sender, EventArgs e)
+		{
+			foreach (var treeNode in root.Nodes.Cast<TreeNode>())
+			{
+				treeNode.Nodes.Clear();
+
+				foreach (var child in ((ClassNode)treeNode.Tag).Nodes
+					.OfType<BaseReferenceNode>()
+					.Select(r => r.InnerNode)
+					.OfType<ClassNode>())
+				{
+					BuildClassHierarchy(treeNode, child, new HashSet<ClassNode>());
+				}
+			}
+
+			root.ExpandAll();
 		}
 
 		public void Remove(ClassNode node)
@@ -123,6 +164,8 @@ namespace ReClassNET.UI
 					treeNode.Text = node.Name;
 					break;
 			}
+
+			RebuildClassHierarchy(sender, e);
 		}
 
 		private void classesTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
@@ -203,6 +246,13 @@ namespace ReClassNET.UI
 			{
 				treeNode.BeginEdit();
 			}
+		}
+
+		private void enableHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			enableHierarchyViewToolStripMenuItem.Checked = !enableHierarchyViewToolStripMenuItem.Checked;
+
+			classesTreeView.ShowPlusMinus = enableHierarchyViewToolStripMenuItem.Checked;
 		}
 	}
 }
