@@ -21,6 +21,10 @@ namespace ReClassNET.UI
 			get { return classNode; }
 			set
 			{
+				ClearSelection();
+
+				OnSelectionChanged();
+
 				classNode = value;
 
 				VerticalScroll.Value = 0;
@@ -154,8 +158,8 @@ namespace ReClassNET.UI
 			var count = selected.Count();
 			var node = selected.Select(s => s.Node).FirstOrDefault();
 
-			addBytesToolStripMenuItem.Enabled = node.ParentNode != null || node is ClassNode;
-			insertBytesToolStripMenuItem.Enabled = count == 1 && node.ParentNode != null;
+			addBytesToolStripMenuItem.Enabled = node?.ParentNode != null || node is ClassNode;
+			insertBytesToolStripMenuItem.Enabled = count == 1 && node?.ParentNode != null;
 
 			changeTypeToolStripMenuItem.Enabled = count > 0 && !(node is ClassNode);
 
