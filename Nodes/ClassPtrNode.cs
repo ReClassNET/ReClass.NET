@@ -44,7 +44,7 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, "Ptr") + view.Font.Width;
 			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 			x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name}>");
-			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeAll);
+			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeType);
 
 			x += view.Font.Width;
 			x = AddComment(view, x, y);

@@ -132,6 +132,7 @@
 			this.generateCSharpCodeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
@@ -234,7 +235,8 @@
             this.arrayToolStripButton,
             this.ptrArrayToolStripButton,
             this.vtableToolStripButton,
-            this.fnPtrToolStripButton});
+            this.fnPtrToolStripButton,
+            this.toolStripSeparator19});
 			this.toolStrip.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip.Name = "toolStrip";
 			this.toolStrip.Size = new System.Drawing.Size(1141, 25);
@@ -1128,6 +1130,11 @@
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
+			// toolStripSeparator19
+			// 
+			this.toolStripSeparator19.Name = "toolStripSeparator19";
+			this.toolStripSeparator19.Size = new System.Drawing.Size(6, 25);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1262,6 +1269,7 @@
 		private UI.TypeToolStripButton bitFieldToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
 		private System.Windows.Forms.ToolStripStatusLabel infoToolStripStatusLabel;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator19;
 	}
 }
 

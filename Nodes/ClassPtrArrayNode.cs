@@ -26,7 +26,7 @@ namespace ReClassNET.Nodes
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			return Draw(view, x, y, "PtrArray", HotSpotType.ChangeAll);
+			return Draw(view, x, y, "PtrArray", HotSpotType.ChangeType);
 		}
 
 		protected override int DrawChild(ViewInfo view, int x, int y)

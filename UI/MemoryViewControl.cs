@@ -43,7 +43,11 @@ namespace ReClassNET.UI
 		private readonly List<HotSpot> hotSpots;
 		private readonly List<HotSpot> selected;
 
+		public IEnumerable<HotSpot> SelectedNodes => selected;
+
 		private readonly FontEx font;
+
+		public event EventHandler SelectionChanged;
 
 		public MemoryViewControl()
 		{
@@ -143,6 +147,11 @@ namespace ReClassNET.UI
 			}
 		}
 
+		private void OnSelectionChanged()
+		{
+			SelectionChanged?.Invoke(this, EventArgs.Empty);
+		}
+
 		protected override void OnMouseClick(MouseEventArgs e)
 		{
 			editBox.Visible = false;
@@ -174,6 +183,8 @@ namespace ReClassNET.UI
 									hitObject.IsSelected = true;
 
 									selected.Add(hotSpot);
+
+									OnSelectionChanged();
 								}
 								else if (ModifierKeys == Keys.Control)
 								{
@@ -187,6 +198,8 @@ namespace ReClassNET.UI
 									{
 										selected.Remove(selected.Where(c => c.Node == hitObject).FirstOrDefault());
 									}
+
+									OnSelectionChanged();
 								}
 								else if (ModifierKeys == Keys.Shift)
 								{
@@ -229,6 +242,8 @@ namespace ReClassNET.UI
 											spot.Node.IsSelected = true;
 											selected.Add(spot);
 										}
+
+										OnSelectionChanged();
 									}
 								}
 							}
@@ -242,6 +257,8 @@ namespace ReClassNET.UI
 									hitObject.IsSelected = true;
 
 									selected.Add(hotSpot);
+
+									OnSelectionChanged();
 								}
 
 								selectedNodeContextMenuStrip.Show(this, e.Location);
@@ -255,7 +272,7 @@ namespace ReClassNET.UI
 						{
 							RemoveSelectedNodes();
 						}
-						else if (hotSpot.Type == HotSpotType.ChangeAll || hotSpot.Type == HotSpotType.ChangeSkipParent)
+						else if (hotSpot.Type == HotSpotType.ChangeType)
 						{
 							var refNode = hitObject as BaseReferenceNode;
 							if (refNode != null)
@@ -286,7 +303,6 @@ namespace ReClassNET.UI
 								var menu = new ContextMenuStrip();
 								menu.Items.AddRange(
 									ClassManager.Classes
-									.Where(c => hotSpot.Type == HotSpotType.ChangeSkipParent ? hitObject.ParentNode != c : true)
 									.OrderBy(c => c.Name)
 									.Select(c =>
 									{
@@ -473,6 +489,8 @@ namespace ReClassNET.UI
 						Node = sel
 					});
 				}
+
+				OnSelectionChanged();
 			}
 
 			Invalidate();
@@ -523,6 +541,8 @@ namespace ReClassNET.UI
 			selected.Where(h => !(h.Node is ClassNode)).ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
 
 			selected.Clear();
+
+			OnSelectionChanged();
 		}
 
 		private void removeToolStripMenuItem_Click(object sender, EventArgs e)
