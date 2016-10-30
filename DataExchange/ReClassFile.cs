@@ -48,18 +48,29 @@ namespace ReClassNET.DataExchange
 
 				classes = document.Root
 					.Elements("Class")
+					.GroupBy(cls => cls.Attribute("Name")?.Value)
 					.ToDictionary(
-						cls => cls.Attribute("Name")?.Value,
-						cls => new SchemaClassNode
+						g => g.Key,
+						g =>
 						{
-							AddressFormula = cls.Attribute("strOffset")?.Value ?? string.Empty,
-							Name = cls.Attribute("Name")?.Value ?? string.Empty
+							var c = new SchemaClassNode
+							{
+								AddressFormula = g.First().Attribute("strOffset")?.Value ?? string.Empty,
+								Name = g.Key ?? string.Empty
+							};
+							if (c.AddressFormula.StartsWith("*"))
+							{
+								c.AddressFormula = $"[{c.AddressFormula}]";
+							}
+
+							return c;
 						}
 					);
 
 				var schema = document.Root
 					.Elements("Class")
-					.Select(cls => new { Data = cls, Class = classes[cls.Attribute("Name")?.Value] })
+					.GroupBy(cls => cls.Attribute("Name")?.Value)
+					.Select(g => new { Data = g.First(), Class = classes[g.First().Attribute("Name")?.Value] })
 					.Select(x =>
 					{
 						x.Class.Nodes.AddRange(x.Data.Elements("Node").Select(n => ParseNode(n, typeMap, logger)).Where(n => n != null));

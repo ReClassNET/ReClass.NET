@@ -62,20 +62,22 @@ namespace ReClassNET.DataExchange
 							classes = document.Root
 								.Element(XmlClassesElement)
 								.Elements(XmlClassElement)
+								.GroupBy(cls => cls.Attribute(XmlNameAttribute)?.Value)
 								.ToDictionary(
-									cls => cls.Attribute(XmlNameAttribute)?.Value,
-									cls => new SchemaClassNode
+									g => g.Key,
+									g => new SchemaClassNode
 									{
-										AddressFormula = cls.Attribute(XmlAddressAttribute)?.Value ?? string.Empty,
-										Name = cls.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
-										Comment = cls.Attribute(XmlCommentAttribute)?.Value ?? string.Empty
+										AddressFormula = g.First().Attribute(XmlAddressAttribute)?.Value ?? string.Empty,
+										Name = g.First().Attribute(XmlNameAttribute)?.Value ?? string.Empty,
+										Comment = g.First().Attribute(XmlCommentAttribute)?.Value ?? string.Empty
 									}
 								);
 
 							var schema = document.Root
 								.Element(XmlClassesElement)
 								.Elements(XmlClassElement)
-								.Select(cls => new { Data = cls, Class = classes[cls.Attribute(XmlNameAttribute)?.Value] })
+								.GroupBy(cls => cls.Attribute(XmlNameAttribute)?.Value)
+								.Select(g => new { Data = g.First(), Class = classes[g.First().Attribute(XmlNameAttribute)?.Value] })
 								.Select(x =>
 								{
 									x.Class.Nodes.AddRange(x.Data.Elements(XmlNodeElement).Select(n => ReadNode(n, logger)).Where(n => n != null));

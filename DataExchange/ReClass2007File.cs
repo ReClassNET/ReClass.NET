@@ -25,11 +25,12 @@ namespace ReClassNET.DataExchange
 
 					classes = Query(connection, "SELECT tbl_name FROM sqlite_master WHERE tbl_name like 'class%'")
 						.AsEnumerable()
+						.GroupBy(r => Convert.ToInt32(r["tbl_name"].ToString().Substring(5)))
 						.ToDictionary(
-							r => Convert.ToInt32(r["tbl_name"].ToString().Substring(5)),
-							r => new SchemaClassNode
+							g => g.Key,
+							g => new SchemaClassNode
 							{
-								Name = Query(connection, $"SELECT variable FROM {r["tbl_name"]} WHERE type = 2 LIMIT 1").First()["variable"].ToString(),
+								Name = Query(connection, $"SELECT variable FROM {g.First()["tbl_name"]} WHERE type = 2 LIMIT 1").First()["variable"].ToString(),
 #if WIN64
 								AddressFormula = "140000000"
 #else

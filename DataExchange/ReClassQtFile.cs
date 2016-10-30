@@ -23,10 +23,12 @@ namespace ReClassNET.DataExchange
 				classes = document.Root
 					.Elements("Namespace")
 					.SelectMany(ns => ns.Elements("Class"))
+					.GroupBy(cls => cls.Attribute("ClassId")?.Value)
 					.ToDictionary(
-						cls => cls.Attribute("ClassId")?.Value,
-						cls =>
+						g => g.Key,
+						g =>
 						{
+							var cls = g.First();
 							var c = new SchemaClassNode
 							{
 								AddressFormula = cls.Attribute("Address")?.Value ?? string.Empty,
@@ -46,7 +48,8 @@ namespace ReClassNET.DataExchange
 				var schema = document.Root
 					.Elements("Namespace")
 					.SelectMany(ns => ns.Elements("Class"))
-					.Select(cls => new { Data = cls, Class = classes[cls.Attribute("ClassId")?.Value] })
+					.GroupBy(cls => cls.Attribute("ClassId")?.Value)
+					.Select(g => new { Data = g.First(), Class = classes[g.First().Attribute("ClassId")?.Value] })
 					.Select(x =>
 					{
 						x.Class.Nodes.AddRange(x.Data.Elements("Node").Select(n => ReadNode(n, logger)).Where(n => n != null));
