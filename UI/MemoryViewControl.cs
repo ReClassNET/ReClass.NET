@@ -43,7 +43,7 @@ namespace ReClassNET.UI
 		private readonly List<HotSpot> hotSpots;
 		private readonly List<HotSpot> selected;
 
-		public IEnumerable<HotSpot> SelectedNodes => selected;
+		public IEnumerable<BaseNode> SelectedNodes => selected.Select(s => s.Node);
 
 		private readonly FontEx font;
 
@@ -150,6 +150,16 @@ namespace ReClassNET.UI
 		private void OnSelectionChanged()
 		{
 			SelectionChanged?.Invoke(this, EventArgs.Empty);
+
+			var count = selected.Count();
+			var node = selected.Select(s => s.Node).FirstOrDefault();
+
+			addBytesToolStripMenuItem.Enabled = node.ParentNode != null || node is ClassNode;
+			insertBytesToolStripMenuItem.Enabled = count == 1 && node.ParentNode != null;
+
+			changeTypeToolStripMenuItem.Enabled = count > 0 && !(node is ClassNode);
+
+			removeToolStripMenuItem.Enabled = !(node is ClassNode);
 		}
 
 		protected override void OnMouseClick(MouseEventArgs e)

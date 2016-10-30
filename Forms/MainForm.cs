@@ -459,5 +459,23 @@ namespace ReClassNET.Forms
 				}
 			}
 		}
+
+		private void memoryViewControl_SelectionChanged(object sender, EventArgs e)
+		{
+			var memoryView = sender as MemoryViewControl;
+			if (memoryView == null)
+			{
+				return;
+			}
+
+			var count = memoryView.SelectedNodes.Count();
+			var node = memoryView.SelectedNodes.FirstOrDefault();
+
+			addToolStripDropDownButton.Enabled = node.ParentNode != null || node is ClassNode;
+			insertToolStripDropDownButton.Enabled = count == 1 && node.ParentNode != null;
+
+			var enabled = count > 0 && !(node is ClassNode);
+			toolStrip.Items.OfType<TypeToolStripButton>().ForEach(b => b.Enabled = enabled);
+		}
 	}
 }

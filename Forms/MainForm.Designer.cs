@@ -99,6 +99,7 @@
 			this.ptrArrayToolStripButton = new ReClassNET.UI.TypeToolStripButton();
 			this.vtableToolStripButton = new ReClassNET.UI.TypeToolStripButton();
 			this.fnPtrToolStripButton = new ReClassNET.UI.TypeToolStripButton();
+			this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.processInfoToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.infoToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -132,7 +133,6 @@
 			this.generateCSharpCodeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
@@ -184,6 +184,7 @@
 			this.memoryViewControl.Name = "memoryViewControl";
 			this.memoryViewControl.Size = new System.Drawing.Size(936, 524);
 			this.memoryViewControl.TabIndex = 0;
+			this.memoryViewControl.SelectionChanged += new System.EventHandler(this.memoryViewControl_SelectionChanged);
 			// 
 			// toolStrip
 			// 
@@ -860,6 +861,11 @@
 			this.fnPtrToolStripButton.Value = typeof(ReClassNET.Nodes.FunctionPtrNode);
 			this.fnPtrToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
 			// 
+			// toolStripSeparator19
+			// 
+			this.toolStripSeparator19.Name = "toolStripSeparator19";
+			this.toolStripSeparator19.Size = new System.Drawing.Size(6, 25);
+			// 
 			// statusStrip
 			// 
 			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1129,11 +1135,6 @@
 			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-			// 
-			// toolStripSeparator19
-			// 
-			this.toolStripSeparator19.Name = "toolStripSeparator19";
-			this.toolStripSeparator19.Size = new System.Drawing.Size(6, 25);
 			// 
 			// MainForm
 			// 
