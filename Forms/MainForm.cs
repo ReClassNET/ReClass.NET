@@ -433,12 +433,12 @@ namespace ReClassNET.Forms
 			button.ShowDropDown();
 		}
 
-		private void addBytesToolStripMenuItem_Click_1(object sender, EventArgs e)
+		private void addXBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			AskAddOrInsertBytes("Add Bytes", memoryViewControl.AddBytes);
 		}
 
-		private void insertBytesToolStripMenuItem_Click_1(object sender, EventArgs e)
+		private void insertXBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			AskAddOrInsertBytes("Insert Bytes", memoryViewControl.InsertBytes);
 		}
@@ -472,8 +472,8 @@ namespace ReClassNET.Forms
 			var count = memoryView.SelectedNodes.Count();
 			var node = memoryView.SelectedNodes.FirstOrDefault();
 
-			addToolStripDropDownButton.Enabled = node?.ParentNode != null || node is ClassNode;
-			insertToolStripDropDownButton.Enabled = count == 1 && node?.ParentNode != null;
+			addBytesToolStripDropDownButton.Enabled = node?.ParentNode != null || node is ClassNode;
+			insertBytesToolStripDropDownButton.Enabled = count == 1 && node?.ParentNode != null;
 
 			var enabled = count > 0 && !(node is ClassNode);
 			toolStrip.Items.OfType<TypeToolStripButton>().ForEach(b => b.Enabled = enabled);
