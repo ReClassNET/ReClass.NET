@@ -80,20 +80,25 @@ namespace ReClassNET.Nodes
 				nv.Level++;
 				foreach (var node in Nodes)
 				{
+					// If the node is in the visible area draw it.
 					if (view.ClientArea.Contains(tx, y))
 					{
 						y = node.Draw(nv, tx, y);
 					}
 					else
 					{
+						// Otherwise calculate the height...
 						var height = node.CalculateHeight(nv);
 
+						// and check if the nodes area overlaps with the visible area...
 						if (new Rectangle(tx, y, view.ClientArea.Width, height).IntersectsWith(view.ClientArea))
 						{
+							// then draw the node...
 							y = node.Draw(nv, tx, y);
 						}
 						else
 						{
+							// or skip drawing and just add the height.
 							y += height;
 						}
 					}
