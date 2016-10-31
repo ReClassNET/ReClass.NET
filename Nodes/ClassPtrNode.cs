@@ -4,12 +4,18 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	class ClassPtrNode : BaseReferenceNode
+	public class ClassPtrNode : BaseReferenceNode
 	{
 		private readonly Memory memory = new Memory();
 
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
+
+		public ClassPtrNode()
+			: base(false)
+		{
+
+		}
 
 		public override void Intialize()
 		{

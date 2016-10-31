@@ -4,12 +4,18 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	class ClassPtrArrayNode : BaseArrayNode
+	public class ClassPtrArrayNode : BaseArrayNode
 	{
 		private readonly Memory memory = new Memory();
 
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size * Count;
+
+		public ClassPtrArrayNode()
+			: base(false)
+		{
+
+		}
 
 		public override void Intialize()
 		{

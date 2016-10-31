@@ -13,6 +13,56 @@ namespace ReClassNET.UI
 {
 	public partial class ClassNodeView : UserControl
 	{
+		private class ClassTreeNode : TreeNode
+		{
+			public ClassNode ClassNode { get; }
+
+			public ClassTreeNode(ClassNode node)
+			{
+				Contract.Requires(node != null);
+
+				ClassNode = node;
+
+				node.PropertyChanged += NodePropertyChanged;
+				node.NodesChanged += RebuildClassHierarchy;
+
+				Text = node.Name;
+
+				ImageIndex = 1;
+				SelectedImageIndex = 1;
+			}
+
+			private void NodePropertyChanged(object sender, PropertyChangedEventArgs e)
+			{
+				var node = sender as ClassNode;
+				if (node == null)
+				{
+					return;
+				}
+
+				switch (e.PropertyName)
+				{
+					case nameof(BaseNode.Name):
+						// Name has changed, update the TreeView
+						Text = node.Name;
+						break;
+				}
+			}
+
+			private void RebuildClassHierarchy(BaseNode sender)
+			{
+				Nodes.Clear();
+
+				foreach (var child in ClassNode.Nodes
+					.OfType<BaseReferenceNode>()
+					.Select(r => r.InnerNode)
+					.OfType<ClassNode>())
+				{
+					Nodes.Add(new ClassTreeNode(child));
+				}
+			}
+		}
+
 		private readonly TreeNode root;
 
 		private ClassNode selectedClass;
@@ -64,61 +114,11 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(node != null);
 
-			node.PropertyChanged += NodePropertyChanged;
-			node.NodesChanged += RebuildClassHierarchy;
-
-			BuildClassHierarchy(root, node, new HashSet<ClassNode>());
+			root.Nodes.Add(new ClassTreeNode(node));
 
 			root.ExpandAll();
 
 			classesTreeView.Sort();
-		}
-
-		private void BuildClassHierarchy(TreeNode root, ClassNode node, HashSet<ClassNode> seen)
-		{
-			Contract.Requires(root != null);
-			Contract.Requires(node != null);
-			Contract.Requires(seen != null);
-
-			if (!seen.Add(node))
-			{
-				return;
-			}
-
-			var treeNode = new TreeNode
-			{
-				Text = node.Name,
-				Tag = node,
-				ImageIndex = 1,
-				SelectedImageIndex = 1
-			};
-			root.Nodes.Add(treeNode);
-
-			foreach (var child in node.Nodes
-				.OfType<BaseReferenceNode>()
-				.Select(r => r.InnerNode)
-				.OfType<ClassNode>())
-			{
-				BuildClassHierarchy(treeNode, child, seen);
-			}
-		}
-
-		private void RebuildClassHierarchy(object sender, EventArgs e)
-		{
-			foreach (var treeNode in root.Nodes.Cast<TreeNode>())
-			{
-				treeNode.Nodes.Clear();
-
-				foreach (var child in ((ClassNode)treeNode.Tag).Nodes
-					.OfType<BaseReferenceNode>()
-					.Select(r => r.InnerNode)
-					.OfType<ClassNode>())
-				{
-					BuildClassHierarchy(treeNode, child, new HashSet<ClassNode>());
-				}
-			}
-
-			root.ExpandAll();
 		}
 
 		public void Remove(ClassNode node)
@@ -144,38 +144,17 @@ namespace ReClassNET.UI
 
 		private TreeNode FindClassTreeNode(ClassNode node)
 		{
-			return root.Nodes.Cast<TreeNode>().Where(t => t.Tag == node).FirstOrDefault();
-		}
-
-		private void NodePropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			var node = sender as ClassNode;
-			if (node == null)
-			{
-				return;
-			}
-
-			var treeNode = FindClassTreeNode(node);
-
-			switch (e.PropertyName)
-			{
-				case nameof(BaseNode.Name):
-					// Name has changed, update the TreeView
-					treeNode.Text = node.Name;
-					break;
-			}
-
-			RebuildClassHierarchy(sender, e);
+			return root.Nodes.OfType<ClassTreeNode>().Where(t => t.ClassNode == node).FirstOrDefault();
 		}
 
 		private void classesTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
 		{
 			if (!string.IsNullOrEmpty(e.Label))
 			{
-				var node = e.Node.Tag as ClassNode;
+				var node = e.Node as ClassTreeNode;
 				if (node != null)
 				{
-					node.Name = e.Label;
+					node.ClassNode.Name = e.Label;
 				}
 			}
 		}
@@ -187,15 +166,15 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			var node = e.Node.Tag as ClassNode;
+			var node = e.Node as ClassTreeNode;
 			if (node == null)
 			{
 				return;
 			}
 
-			if (selectedClass != node)
+			if (selectedClass != node.ClassNode)
 			{
-				SelectedClass = node;
+				SelectedClass = node.ClassNode;
 			}
 		}
 
@@ -221,20 +200,16 @@ namespace ReClassNET.UI
 
 		private void deleteClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var treeNode = classesTreeView.SelectedNode;
+			var treeNode = classesTreeView.SelectedNode as ClassTreeNode;
 			if (treeNode != null)
 			{
-				var classNode = treeNode.Tag as ClassNode;
-				if (classNode != null)
+				try
 				{
-					try
-					{
-						ClassManager.Remove(classNode);
-					}
-					catch (ClassReferencedException ex)
-					{
-						ex.ShowDialog();
-					}
+					ClassManager.Remove(treeNode.ClassNode);
+				}
+				catch (ClassReferencedException ex)
+				{
+					ex.ShowDialog();
 				}
 			}
 		}

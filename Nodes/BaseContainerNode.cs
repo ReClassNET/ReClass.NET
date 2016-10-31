@@ -129,5 +129,12 @@ namespace ReClassNET.Nodes
 
 			return nodes.Remove(node);
 		}
+
+		/// <summary>Called by a child if it has changed.</summary>
+		/// <param name="child">The child.</param>
+		protected internal virtual void ChildHasChanged(BaseNode child)
+		{
+
+		}
 	}
 }

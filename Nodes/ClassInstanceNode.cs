@@ -3,10 +3,16 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	class ClassInstanceNode : BaseReferenceNode
+	public class ClassInstanceNode : BaseReferenceNode
 	{
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => InnerNode.MemorySize;
+
+		public ClassInstanceNode()
+			: base(true)
+		{
+
+		}
 
 		public override void Intialize()
 		{

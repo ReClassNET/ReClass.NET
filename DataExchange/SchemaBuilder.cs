@@ -363,7 +363,7 @@ namespace ReClassNET.DataExchange
 									continue;
 								}
 							}
-							referenceNode.InnerNode = classes[srn.InnerNode];
+							referenceNode.ChangeInnerNode(classes[srn.InnerNode]);
 						}
 
 						var vtableNode = node as VTableNode;

@@ -9,7 +9,9 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	[DebuggerDisplay("{Name}")]
+	public delegate void NodeEventHandler(BaseNode sender);
+
+	[DebuggerDisplay("{Offset} {Name}")]
 	[ContractClass(typeof(BaseNodeContract))]
 	public abstract class BaseNode : INotifyPropertyChanged
 	{

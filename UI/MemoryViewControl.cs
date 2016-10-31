@@ -293,25 +293,20 @@ namespace ReClassNET.UI
 							{
 								EventHandler changeInnerType = (sender2, e2) =>
 								{
-									var item = sender2 as TypeToolStripMenuItem;
-									if (item == null)
-									{
-										return;
-									}
-									var classNode = item.Tag as ClassNode;
+									var classNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
 									if (classNode == null)
 									{
 										return;
 									}
 
-									if (!ClassManager.IsCycleFree(refNode.ParentNode as ClassNode, classNode))
+									try
+									{
+										refNode.ChangeInnerNode(classNode);
+									}
+									catch (ClassCycleException)
 									{
 										MessageBox.Show("Can't change node type because this would create a cycle!");
-
-										return;
 									}
-
-									refNode.InnerNode = classNode;
 								};
 
 								var menu = new ContextMenuStrip();
