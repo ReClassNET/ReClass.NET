@@ -14,9 +14,9 @@ namespace ReClassNET.UI
 	{
 		private class ValueWrapper<T> where T : struct
 		{
-			public ValueWrapper(T item)
+			public ValueWrapper(T value)
 			{
-				Value = item;
+				Value = value;
 			}
 
 			public T Value { get; set; }
@@ -224,11 +224,18 @@ namespace ReClassNET.UI
 			{
 				var node = classesTreeView.GetNodeAt(e.X, e.Y);
 
-				if (node != null && node != root)
+				if (node != null)
 				{
-					classesTreeView.SelectedNode = node;
+					if (node != root)
+					{
+						classesTreeView.SelectedNode = node;
 
-					contextMenuStrip.Show(classesTreeView, e.Location);
+						classContextMenuStrip.Show(classesTreeView, e.Location);
+					}
+					else
+					{
+						rootContextMenuStrip.Show(classesTreeView, e.Location);
+					}
 				}
 			}
 		}
@@ -263,11 +270,11 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private void enableHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
+		private void autoExpandHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			enableHierarchyViewToolStripMenuItem.Checked = !enableHierarchyViewToolStripMenuItem.Checked;
+			autoExpandHierarchyViewToolStripMenuItem.Checked = !autoExpandHierarchyViewToolStripMenuItem.Checked;
 
-			autoExpand.Value = enableHierarchyViewToolStripMenuItem.Checked;
+			autoExpand.Value = autoExpandHierarchyViewToolStripMenuItem.Checked;
 
 			if (autoExpand.Value)
 			{
