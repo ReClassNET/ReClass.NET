@@ -19,6 +19,7 @@ namespace ReClassNET.Forms
 			bytesNumericUpDown.Maximum = int.MaxValue;
 
 			FormatLabelText(currentSizeLabel, currentSize);
+			FormatLabelText(newSizeLabel, currentSize);
 		}
 
 		private void hexRadioButton_CheckedChanged(object sender, EventArgs e)
