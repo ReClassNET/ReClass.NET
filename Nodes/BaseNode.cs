@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -11,10 +10,12 @@ namespace ReClassNET.Nodes
 {
 	public delegate void NodeEventHandler(BaseNode sender);
 
-	[DebuggerDisplay("{Offset} {Name}")]
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	[ContractClass(typeof(BaseNodeContract))]
-	public abstract class BaseNode : INotifyPropertyChanged
+	public abstract class BaseNode
 	{
+		private string DebuggerDisplay => $"Type: {GetType().Name} Name: {Name} Offset: 0x{Offset.ToString("X")}";
+
 		internal static readonly List<INodeInfoReader> NodeInfoReader = new List<INodeInfoReader>();
 
 		protected const int TXOFFSET = 16;
@@ -26,13 +27,13 @@ namespace ReClassNET.Nodes
 		private string comment;
 
 		/// <summary>Gets or sets the name of the node. If a new name was set the property changed event gets fired.</summary>
-		public string Name { get { return name; } set { if (value != null && name != value) { name = value; OnPropertyChanged(nameof(Name)); } } }
+		public string Name { get { return name; } set { if (value != null && name != value) { name = value; NameChanged?.Invoke(this); } } }
 
 		/// <summary>Gets or sets the offset of the node.</summary>
 		public IntPtr Offset { get; set; }
 
 		/// <summary>Gets or sets the comment of the node.</summary>
-		public string Comment { get { return comment; } set { comment = value ?? string.Empty; } }
+		public string Comment { get { return comment; } set { if (value != null && comment != value) { comment = value; CommentChanged?.Invoke(this); } } }
 
 		/// <summary>Gets or sets the parent node.</summary>
 		public BaseContainerNode ParentNode { get; internal set; }
@@ -45,25 +46,11 @@ namespace ReClassNET.Nodes
 
 		protected GrowingList<bool> levelsOpen = new GrowingList<bool>(false);
 
-		#region INotifyPropertyChanged
-
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		protected void OnPropertyChanged(PropertyChangedEventArgs e)
-		{
-			PropertyChanged?.Invoke(this, e);
-		}
-
-		protected void OnPropertyChanged(string propertyName)
-		{
-			OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
-		}
-
-		#endregion
-
 		/// <summary>Size of the node in bytes.</summary>
 		public abstract int MemorySize { get; }
 
+		public event NodeEventHandler NameChanged;
+		public event NodeEventHandler CommentChanged;
 
 		/// <summary>Constructor which sets a unique <see cref="Name"/>.</summary>
 		public BaseNode()

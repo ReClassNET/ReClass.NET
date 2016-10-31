@@ -43,7 +43,7 @@ namespace ReClassNET.UI
 
 				ClassNode = node;
 
-				node.PropertyChanged += NodePropertyChanged;
+				node.NameChanged += sender => Text = sender.Name;
 				node.NodesChanged += sender => RebuildClassHierarchy(new HashSet<ClassNode> { ClassNode });
 
 				Text = node.Name;
@@ -54,23 +54,8 @@ namespace ReClassNET.UI
 				RebuildClassHierarchy(seen ?? new HashSet<ClassNode> { ClassNode });
 			}
 
-			private void NodePropertyChanged(object sender, PropertyChangedEventArgs e)
-			{
-				var node = sender as ClassNode;
-				if (node == null)
-				{
-					return;
-				}
-
-				switch (e.PropertyName)
-				{
-					case nameof(BaseNode.Name):
-						// Name has changed, update the TreeView
-						Text = node.Name;
-						break;
-				}
-			}
-
+			/// <summary>Rebuilds the class hierarchy.</summary>
+			/// <param name="seen">The already seen classes.</param>
 			private void RebuildClassHierarchy(HashSet<ClassNode> seen)
 			{
 				Contract.Requires(seen != null);
@@ -147,6 +132,8 @@ namespace ReClassNET.UI
 			classesTreeView.Nodes.Add(root);
 		}
 
+		/// <summary>Adds the class to the view.</summary>
+		/// <param name="node">The class to add.</param>
 		public void Add(ClassNode node)
 		{
 			Contract.Requires(node != null);
@@ -161,6 +148,8 @@ namespace ReClassNET.UI
 			}
 		}
 
+		/// <summary>Removes the class from the view.</summary>
+		/// <param name="node">The class to remove.</param>
 		public void Remove(ClassNode node)
 		{
 			var tn = FindClassTreeNode(node);
@@ -182,7 +171,10 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private TreeNode FindClassTreeNode(ClassNode node)
+		/// <summary>Searches for the ClassTreeNode which represents the class.</summary>
+		/// <param name="node">The class to search.</param>
+		/// <returns>The found class tree node.</returns>
+		private ClassTreeNode FindClassTreeNode(ClassNode node)
 		{
 			return root.Nodes.OfType<ClassTreeNode>().Where(t => t.ClassNode == node).FirstOrDefault();
 		}
