@@ -29,10 +29,17 @@ namespace ReClassNET.Util
 
 			if (!classes.Contains(node))
 			{
+				node.NodesChanged += ClassHasChanged;
+
 				classes.Add(node);
 
 				ClassAdded?.Invoke(node);
 			}
+		}
+
+		private static void ClassHasChanged(BaseNode sender)
+		{
+			classes.ForEach(c => c.UpdateOffsets());
 		}
 
 		public static void Clear()

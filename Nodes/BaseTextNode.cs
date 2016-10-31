@@ -65,7 +65,7 @@ namespace ReClassNET.Nodes
 				{
 					CharacterCount = val;
 
-					(ParentNode as ClassNode)?.NotifyMemorySizeChanged();
+					ParentNode.ChildHasChanged(this);
 				}
 			}
 		}

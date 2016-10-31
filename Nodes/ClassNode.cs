@@ -105,13 +105,6 @@ namespace ReClassNET.Nodes
 			Offset = memory.Process.ParseAddress(AddressFormula);
 		}
 
-		internal void NotifyMemorySizeChanged()
-		{
-			ClassManager.Classes.ForEach(c => c.UpdateOffsets());
-
-			NodesChanged?.Invoke(this);
-		}
-
 		internal void AddNode(BaseNode node)
 		{
 			Contract.Requires(node != null);
@@ -128,14 +121,14 @@ namespace ReClassNET.Nodes
 
 			nodes.Insert(index, node);
 
-			NotifyMemorySizeChanged();
+			ChildHasChanged(node);
 		}
 
 		public override void InsertBytes(int index, int size)
 		{
 			base.InsertBytes(index, size);
 
-			NotifyMemorySizeChanged();
+			ChildHasChanged(null);
 		}
 
 		public override bool RemoveNode(BaseNode node)
@@ -145,7 +138,7 @@ namespace ReClassNET.Nodes
 			{
 				UpdateOffsets();
 
-				NotifyMemorySizeChanged();
+				ChildHasChanged(node);
 			}
 			return removed;
 		}
@@ -155,14 +148,14 @@ namespace ReClassNET.Nodes
 			var replaced = base.ReplaceChildNode(index, node);
 			if (replaced)
 			{
-				NotifyMemorySizeChanged();
+				ChildHasChanged(node);
 			}
 			return replaced;
 		}
 
 		protected internal override void ChildHasChanged(BaseNode child)
 		{
-			NotifyMemorySizeChanged();
+			NodesChanged?.Invoke(this);
 		}
 	}
 }

@@ -81,7 +81,7 @@ namespace ReClassNET.Nodes
 						{
 							Count = value;
 
-							(ParentNode as ClassNode)?.NotifyMemorySizeChanged();
+							ParentNode.ChildHasChanged(this);
 						}
 					}
 					else
