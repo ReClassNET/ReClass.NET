@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Forms
 {
@@ -57,6 +58,10 @@ namespace ReClassNET.Forms
 		{
 			stayOnTopCheckBox.Source = settings;
 			stayOnTopCheckBox.SettingName = nameof(Settings.StayOnTop);
+			stayOnTopCheckBox.CheckedChanged += (sender, e) =>
+			{
+				GlobalWindowManager.Windows.ForEach(w => w.TopMost = stayOnTopCheckBox.Checked);
+			};
 
 			showNodeAddressCheckBox.Source = settings;
 			showNodeAddressCheckBox.SettingName = nameof(Settings.ShowNodeAddress);

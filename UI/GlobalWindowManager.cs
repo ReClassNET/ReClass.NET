@@ -20,9 +20,10 @@ namespace ReClassNET.UI
 
 	public static class GlobalWindowManager
 	{
-		private static readonly List<Form> m_vWindows = new List<Form>();
+		private static readonly List<Form> windows = new List<Form>();
 
-		public static Form TopWindow => m_vWindows.LastOrDefault();
+		public static Form TopWindow => windows.LastOrDefault();
+		public static IEnumerable<Form> Windows => windows;
 
 		public static event EventHandler<GlobalWindowManagerEventArgs> WindowAdded;
 		public static event EventHandler<GlobalWindowManagerEventArgs> WindowRemoved;
@@ -31,7 +32,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(form != null);
 
-			m_vWindows.Add(form);
+			windows.Add(form);
 
 			form.TopMost = Program.Settings.StayOnTop;
 
@@ -42,7 +43,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(form != null);
 
-			if (m_vWindows.Remove(form))
+			if (windows.Remove(form))
 			{
 				WindowRemoved?.Invoke(null, new GlobalWindowManagerEventArgs(form));
 			}
