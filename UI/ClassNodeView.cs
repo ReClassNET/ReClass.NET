@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Nodes;
@@ -13,23 +12,46 @@ namespace ReClassNET.UI
 {
 	public partial class ClassNodeView : UserControl
 	{
+		private class ValueWrapper<T> where T : struct
+		{
+			public ValueWrapper(T item)
+			{
+				Value = item;
+			}
+
+			public T Value { get; set; }
+		}
+
 		private class ClassTreeNode : TreeNode
 		{
 			public ClassNode ClassNode { get; }
 
-			public ClassTreeNode(ClassNode node)
+			private ValueWrapper<bool> autoExpand;
+
+			public ClassTreeNode(ClassNode node, ValueWrapper<bool> autoExpand)
+				: this(node, autoExpand, null)
 			{
 				Contract.Requires(node != null);
+			}
+
+			private ClassTreeNode(ClassNode node, ValueWrapper<bool> autoExpand, HashSet<ClassNode> seen)
+			{
+				Contract.Requires(node != null);
+				Contract.Requires(autoExpand != null);
+
+				this.autoExpand = autoExpand;
 
 				ClassNode = node;
 
 				node.PropertyChanged += NodePropertyChanged;
-				node.NodesChanged += RebuildClassHierarchy;
+				node.NodesChanged += sender => RebuildClassHierarchy(new HashSet<ClassNode> { ClassNode });
 
 				Text = node.Name;
 
 				ImageIndex = 1;
 				SelectedImageIndex = 1;
+
+				RebuildClassHierarchy(seen ?? new HashSet<ClassNode> { ClassNode });
 			}
 
 			private void NodePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -49,21 +71,34 @@ namespace ReClassNET.UI
 				}
 			}
 
-			private void RebuildClassHierarchy(BaseNode sender)
+			private void RebuildClassHierarchy(HashSet<ClassNode> seen)
 			{
+				Contract.Requires(seen != null);
+
 				Nodes.Clear();
 
 				foreach (var child in ClassNode.Nodes
 					.OfType<BaseReferenceNode>()
 					.Select(r => r.InnerNode)
-					.OfType<ClassNode>())
+					.OfType<ClassNode>()
+					.Distinct())
 				{
-					Nodes.Add(new ClassTreeNode(child));
+					var childSeen = new HashSet<ClassNode>(seen);
+					if (childSeen.Add(child))
+					{
+						Nodes.Add(new ClassTreeNode(child, autoExpand, childSeen));
+					}
+				}
+
+				if (autoExpand.Value)
+				{
+					Expand();
 				}
 			}
 		}
 
 		private readonly TreeNode root;
+		private ValueWrapper<bool> autoExpand;
 
 		private ClassNode selectedClass;
 
@@ -96,6 +131,8 @@ namespace ReClassNET.UI
 
 			DoubleBuffered = true;
 
+			autoExpand = new ValueWrapper<bool>(true);
+
 			classesTreeView.ImageList = new ImageList();
 			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);
 			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Class_Type);
@@ -114,11 +151,14 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(node != null);
 
-			root.Nodes.Add(new ClassTreeNode(node));
-
-			root.ExpandAll();
+			root.Nodes.Add(new ClassTreeNode(node, autoExpand));
 
 			classesTreeView.Sort();
+
+			if (autoExpand.Value)
+			{
+				root.Expand();
+			}
 		}
 
 		public void Remove(ClassNode node)
@@ -227,7 +267,12 @@ namespace ReClassNET.UI
 		{
 			enableHierarchyViewToolStripMenuItem.Checked = !enableHierarchyViewToolStripMenuItem.Checked;
 
-			classesTreeView.ShowPlusMinus = enableHierarchyViewToolStripMenuItem.Checked;
+			autoExpand.Value = enableHierarchyViewToolStripMenuItem.Checked;
+
+			if (autoExpand.Value)
+			{
+				root.ExpandAll();
+			}
 		}
 	}
 }

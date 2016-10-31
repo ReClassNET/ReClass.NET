@@ -4,19 +4,19 @@ using System.Windows.Forms.Design;
 
 namespace ReClassNET.UI
 {
-	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.MenuStrip | ToolStripItemDesignerAvailability.ToolStrip | ToolStripItemDesignerAvailability.ContextMenuStrip)]
+	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
 	class IntegerToolStripMenuItem : ToolStripMenuItem
 	{
 		public int Value { get; set; }
 	}
 
-	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.MenuStrip | ToolStripItemDesignerAvailability.ToolStrip | ToolStripItemDesignerAvailability.ContextMenuStrip)]
+	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
 	class TypeToolStripMenuItem : ToolStripMenuItem
 	{
 		public Type Value { get; set; }
 	}
 
-	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.MenuStrip | ToolStripItemDesignerAvailability.ToolStrip | ToolStripItemDesignerAvailability.ContextMenuStrip)]
+	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
 	class TypeToolStripButton : ToolStripButton
 	{
 		public Type Value { get; set; }
