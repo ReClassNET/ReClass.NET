@@ -2,7 +2,7 @@
 
 namespace ReClassNET.Nodes
 {
-	class UInt64Node : BaseNumericNode
+	public class UInt64Node : BaseNumericNode
 	{
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 8;

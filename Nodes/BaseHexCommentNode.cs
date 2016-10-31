@@ -6,7 +6,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	abstract class BaseHexCommentNode : BaseHexNode
+	public abstract class BaseHexCommentNode : BaseHexNode
 	{
 		protected int AddComment(ViewInfo view, int x, int y, float fvalue, IntPtr ivalue, UIntPtr uvalue)
 		{

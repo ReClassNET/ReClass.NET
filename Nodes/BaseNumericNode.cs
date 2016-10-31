@@ -4,7 +4,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	abstract class BaseNumericNode : BaseNode
+	public abstract class BaseNumericNode : BaseNode
 	{
 		/// <summary>Draws the node.</summary>
 		/// <param name="view">The view information.</param>

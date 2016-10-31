@@ -2,7 +2,7 @@
 
 namespace ReClassNET.Nodes
 {
-	class FunctionPtrNode : BaseFunctionPtrNode
+	public class FunctionPtrNode : BaseFunctionPtrNode
 	{
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>

@@ -5,7 +5,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	class VTableNode : BaseContainerNode
+	public class VTableNode : BaseContainerNode
 	{
 		private readonly Memory memory = new Memory();
 

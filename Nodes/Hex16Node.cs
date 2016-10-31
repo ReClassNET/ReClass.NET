@@ -4,7 +4,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	class Hex16Node : BaseHexNode
+	public class Hex16Node : BaseHexNode
 	{
 		[StructLayout(LayoutKind.Explicit)]
 		struct UInt16Data

@@ -4,7 +4,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	abstract class BaseTextPtrNode : BaseNode
+	public abstract class BaseTextPtrNode : BaseNode
 	{
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;

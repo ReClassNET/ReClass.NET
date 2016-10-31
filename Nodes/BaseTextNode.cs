@@ -6,7 +6,7 @@ using ReClassNET.Util;
 namespace ReClassNET.Nodes
 {
 	[ContractClass(typeof(BaseTextNodeContract))]
-	abstract class BaseTextNode : BaseNode
+	public abstract class BaseTextNode : BaseNode
 	{
 		public int CharacterCount { get; set; }
 

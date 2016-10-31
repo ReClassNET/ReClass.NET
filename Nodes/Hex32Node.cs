@@ -5,7 +5,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	class Hex32Node : BaseHexCommentNode
+	public class Hex32Node : BaseHexCommentNode
 	{
 		[StructLayout(LayoutKind.Explicit)]
 		struct UInt32FloatData

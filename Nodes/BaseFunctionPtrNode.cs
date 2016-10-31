@@ -6,7 +6,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	abstract class BaseFunctionPtrNode : BaseNode
+	public abstract class BaseFunctionPtrNode : BaseNode
 	{
 		private IntPtr address = IntPtr.Zero;
 		private readonly List<string> assembledCode = new List<string>();

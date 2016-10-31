@@ -3,7 +3,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	class Vector2Node : BaseMatrixNode
+	public class Vector2Node : BaseMatrixNode
 	{
 		[StructLayout(LayoutKind.Explicit)]
 		struct Vector2Data

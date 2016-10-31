@@ -6,7 +6,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	class BitFieldNode : BaseNode
+	public class BitFieldNode : BaseNode
 	{
 		private int size;
 		private int bits;

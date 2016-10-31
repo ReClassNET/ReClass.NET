@@ -3,7 +3,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	abstract class BaseMatrixNode : BaseNode
+	public abstract class BaseMatrixNode : BaseNode
 	{
 		public BaseMatrixNode()
 		{

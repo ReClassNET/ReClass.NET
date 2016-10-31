@@ -5,7 +5,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	abstract class BaseHexNode : BaseNode
+	public abstract class BaseHexNode : BaseNode
 	{
 		private readonly byte[] buffer;
 		private DateTime highlightUntil;

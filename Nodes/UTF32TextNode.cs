@@ -2,7 +2,7 @@
 
 namespace ReClassNET.Nodes
 {
-	class UTF32TextNode : BaseTextNode
+	public class UTF32TextNode : BaseTextNode
 	{
 		public override int CharacterSize => 4;
 

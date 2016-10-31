@@ -4,7 +4,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	class VMethodNode : BaseFunctionPtrNode
+	public class VMethodNode : BaseFunctionPtrNode
 	{
 		public string MethodName => string.IsNullOrEmpty(Name) ? $"Function{Offset.ToInt32() / IntPtr.Size}" : Name;
 
