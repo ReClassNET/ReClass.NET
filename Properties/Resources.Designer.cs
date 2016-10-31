@@ -1023,6 +1023,26 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Tree_Collapse {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Tree_Collapse", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Tree_Expand {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Tree_Expand", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Unsigned_Type {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Unsigned_Type", resourceCulture);
@@ -1091,7 +1111,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 2016-10-28T09:36:34
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2016/10/31 22:37:29
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {

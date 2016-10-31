@@ -717,6 +717,15 @@
   <ItemGroup>
     <None Include="Resources\BuildDate.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\B16x16_Chart_Organisation_Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Tree_Collapse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Tree_Expand.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

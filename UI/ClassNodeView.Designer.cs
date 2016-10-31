@@ -37,6 +37,9 @@
 			this.removeUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.rootContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.autoExpandHierarchyViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.expandAllClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.collapseAllClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.classContextMenuStrip.SuspendLayout();
 			this.rootContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -98,18 +101,40 @@
 			// rootContextMenuStrip
 			// 
 			this.rootContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.autoExpandHierarchyViewToolStripMenuItem});
+            this.autoExpandHierarchyViewToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.expandAllClassesToolStripMenuItem,
+            this.collapseAllClassesToolStripMenuItem});
 			this.rootContextMenuStrip.Name = "rootContextMenuStrip";
-			this.rootContextMenuStrip.Size = new System.Drawing.Size(221, 48);
+			this.rootContextMenuStrip.Size = new System.Drawing.Size(221, 76);
 			// 
 			// autoExpandHierarchyViewToolStripMenuItem
 			// 
-			this.autoExpandHierarchyViewToolStripMenuItem.Checked = true;
-			this.autoExpandHierarchyViewToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.autoExpandHierarchyViewToolStripMenuItem.Name = "autoExpandHierarchyViewToolStripMenuItem";
 			this.autoExpandHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
 			this.autoExpandHierarchyViewToolStripMenuItem.Text = "Auto expand hierarchy view";
 			this.autoExpandHierarchyViewToolStripMenuItem.Click += new System.EventHandler(this.autoExpandHierarchyViewToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(217, 6);
+			// 
+			// expandAllClassesToolStripMenuItem
+			// 
+			this.expandAllClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Tree_Expand;
+			this.expandAllClassesToolStripMenuItem.Name = "expandAllClassesToolStripMenuItem";
+			this.expandAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.expandAllClassesToolStripMenuItem.Text = "Expand all classes";
+			this.expandAllClassesToolStripMenuItem.Click += new System.EventHandler(this.expandAllClassesToolStripMenuItem_Click);
+			// 
+			// collapseAllClassesToolStripMenuItem
+			// 
+			this.collapseAllClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Tree_Collapse;
+			this.collapseAllClassesToolStripMenuItem.Name = "collapseAllClassesToolStripMenuItem";
+			this.collapseAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.collapseAllClassesToolStripMenuItem.Text = "Collapse all classes";
+			this.collapseAllClassesToolStripMenuItem.Click += new System.EventHandler(this.collapseAllClassesToolStripMenuItem_Click);
 			// 
 			// ClassNodeView
 			// 
@@ -133,5 +158,8 @@
 		private System.Windows.Forms.ToolStripMenuItem removeUnusedClassesToolStripMenuItem;
 		private System.Windows.Forms.ContextMenuStrip rootContextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem autoExpandHierarchyViewToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem expandAllClassesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem collapseAllClassesToolStripMenuItem;
 	}
 }

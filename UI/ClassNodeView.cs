@@ -116,7 +116,7 @@ namespace ReClassNET.UI
 
 			DoubleBuffered = true;
 
-			autoExpand = new ValueWrapper<bool>(true);
+			autoExpand = new ValueWrapper<bool>(false);
 
 			classesTreeView.ImageList = new ImageList();
 			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);
@@ -142,10 +142,7 @@ namespace ReClassNET.UI
 
 			classesTreeView.Sort();
 
-			if (autoExpand.Value)
-			{
-				root.Expand();
-			}
+			root.Expand();
 		}
 
 		/// <summary>Removes the class from the view.</summary>
@@ -272,6 +269,16 @@ namespace ReClassNET.UI
 			{
 				root.ExpandAll();
 			}
+		}
+
+		private void expandAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			root.ExpandAll();
+		}
+
+		private void collapseAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			root.Nodes.Cast<TreeNode>().ForEach(n => n.Collapse());
 		}
 	}
 }
