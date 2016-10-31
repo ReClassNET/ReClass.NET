@@ -18,6 +18,7 @@ This is a port of ReClass to the .NET platform with additional features.
  - Class Arrays and array of pointers to classes
  - VTable
  - Function Pointer
+- Highlight changed memory
 - Display types from Debug Symbols (*.pdb)
 - Display Runtime Type Informations (RTTI)
 - Control the remote process: start / stop / kill
@@ -43,6 +44,7 @@ Just download the [latest version](https://github.com/KN4CK3R/ReClass.NET/releas
 
 ## Compiling
 If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file.
+Compile the project and copy the dependencies to the output folder.
 
 ## Screenshots
 Process Selection  
