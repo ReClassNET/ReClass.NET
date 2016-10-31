@@ -40,6 +40,11 @@ namespace ReClassNET.Nodes
 			});
 		}
 
+		protected override int CalculateValuesHeight(ViewInfo view)
+		{
+			return 0;
+		}
+
 		public override void Update(HotSpot spot)
 		{
 			base.Update(spot);

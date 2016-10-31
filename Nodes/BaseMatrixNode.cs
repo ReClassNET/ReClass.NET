@@ -83,10 +83,27 @@ namespace ReClassNET.Nodes
 
 			x += view.Font.Width;
 
-			x = AddComment(view, x, y);
+			AddComment(view, x, y);
 
 			return y + view.Font.Height;
 		}
+
+		public override int CalculateHeight(ViewInfo view)
+		{
+			if (IsHidden)
+			{
+				return HiddenHeight;
+			}
+
+			var h = view.Font.Height;
+			if (levelsOpen[view.Level])
+			{
+				h += CalculateValuesHeight(view);
+			}
+			return h;
+		}
+
+		protected abstract int CalculateValuesHeight(ViewInfo view);
 
 		public void Update(HotSpot spot, int max)
 		{

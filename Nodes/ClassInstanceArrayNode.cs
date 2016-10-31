@@ -1,4 +1,5 @@
-﻿using ReClassNET.UI;
+﻿using System;
+using ReClassNET.UI;
 using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
@@ -38,6 +39,11 @@ namespace ReClassNET.Nodes
 			v.Memory.Offset = Offset.ToInt32() + InnerNode.MemorySize * CurrentIndex;
 
 			return InnerNode.Draw(v, x, y);
+		}
+
+		protected override int CalculateChildHeight(ViewInfo view)
+		{
+			return InnerNode.CalculateHeight(view);
 		}
 	}
 }

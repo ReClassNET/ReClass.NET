@@ -18,6 +18,8 @@ namespace ReClassNET.Nodes
 		internal static readonly List<INodeInfoReader> NodeInfoReader = new List<INodeInfoReader>();
 
 		protected const int TXOFFSET = 16;
+		protected const int HiddenHeight = 1;
+
 		private static int NodeIndex = 0;
 
 		private string name;
@@ -67,6 +69,7 @@ namespace ReClassNET.Nodes
 		public BaseNode()
 		{
 			Contract.Ensures(name != null);
+			Contract.Ensures(comment != null);
 
 			Name = $"N{NodeIndex++:X08}";
 			Comment = string.Empty;
@@ -116,6 +119,15 @@ namespace ReClassNET.Nodes
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
 		public abstract int Draw(ViewInfo view, int x, int y);
+
+		/// <summary>
+		/// Calculates the height of the node if drawn.
+		/// This method is used to determine if a node outside the visible area should be drawn.
+		/// The returned height must be equal to the height which gets added by the <see cref="Draw(ViewInfo, int, int)"/> method.
+		/// </summary>
+		/// <param name="view">The view information.</param>
+		/// <returns>The calculated height.</returns>
+		public abstract int CalculateHeight(ViewInfo view);
 
 		/// <summary>Updates the node from the given <paramref name="spot"/>. Sets the <see cref="Name"/> and <see cref="Comment"/> of the node.</summary>
 		/// <param name="spot">The spot.</param>
@@ -363,7 +375,7 @@ namespace ReClassNET.Nodes
 
 			view.Context.FillRectangle(new SolidBrush(IsSelected ? Program.Settings.SelectedColor : Program.Settings.HiddenColor), 0, y, view.ClientArea.Right, 1);
 
-			return y + 1;
+			return y + HiddenHeight;
 		}
 	}
 
@@ -381,6 +393,13 @@ namespace ReClassNET.Nodes
 		}
 
 		public override int Draw(ViewInfo view, int x, int y)
+		{
+			Contract.Requires(view != null);
+
+			throw new NotImplementedException();
+		}
+
+		public override int CalculateHeight(ViewInfo view)
 		{
 			Contract.Requires(view != null);
 

@@ -53,7 +53,7 @@ namespace ReClassNET.Nodes
 			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeType);
 
 			x += view.Font.Width;
-			x = AddComment(view, x, y);
+			AddComment(view, x, y);
 
 			y += view.Font.Height;
 
@@ -73,6 +73,21 @@ namespace ReClassNET.Nodes
 			}
 
 			return y;
+		}
+
+		public override int CalculateHeight(ViewInfo view)
+		{
+			if (IsHidden)
+			{
+				return HiddenHeight;
+			}
+
+			var h = view.Font.Height;
+			if (levelsOpen[view.Level])
+			{
+				h += InnerNode.CalculateHeight(view);
+			}
+			return h;
 		}
 	}
 }

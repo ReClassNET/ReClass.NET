@@ -123,7 +123,7 @@ namespace ReClassNET.Nodes
 
 			x += view.Font.Width;
 
-			x = AddComment(view, x, y);
+			AddComment(view, x, y);
 
 			if (levelsOpen[view.Level])
 			{
@@ -145,6 +145,21 @@ namespace ReClassNET.Nodes
 			}
 
 			return y + view.Font.Height;
+		}
+
+		public override int CalculateHeight(ViewInfo view)
+		{
+			if (IsHidden)
+			{
+				return HiddenHeight;
+			}
+
+			var h = view.Font.Height;
+			if (levelsOpen[view.Level])
+			{
+				h += view.Font.Height + 2;
+			}
+			return h;
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected bit.</summary>

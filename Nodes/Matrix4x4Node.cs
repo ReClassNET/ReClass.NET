@@ -106,6 +106,11 @@ namespace ReClassNET.Nodes
 			});
 		}
 
+		protected override int CalculateValuesHeight(ViewInfo view)
+		{
+			return 4 * view.Font.Height;
+		}
+
 		public override void Update(HotSpot spot)
 		{
 			base.Update(spot);

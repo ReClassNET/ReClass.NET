@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -52,7 +53,7 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, Program.Settings.VTableColor, HotSpot.NoneId, $"VTable[{nodes.Count}]") + view.Font.Width;
 			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 
-			x = AddComment(view, x, y);
+			AddComment(view, x, y);
 
 			y += view.Font.Height;
 
@@ -75,6 +76,21 @@ namespace ReClassNET.Nodes
 			}
 
 			return y;
+		}
+
+		public override int CalculateHeight(ViewInfo view)
+		{
+			if (IsHidden)
+			{
+				return HiddenHeight;
+			}
+
+			var h = view.Font.Height;
+			if (levelsOpen[view.Level])
+			{
+				h += nodes.Sum(n => n.CalculateHeight(view));
+			}
+			return h;
 		}
 
 		internal void AddNode(VMethodNode node)

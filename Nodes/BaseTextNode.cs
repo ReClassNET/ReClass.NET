@@ -13,6 +13,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => CharacterCount * CharacterSize;
 
+		/// <summary>Size of one character in bytes.</summary>
 		public abstract int CharacterSize { get; }
 
 		public override void CopyFromNode(BaseNode node)
@@ -49,9 +50,14 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, text.LimitLength(150));
 			x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
 
-			x = AddComment(view, x, y);
+			AddComment(view, x, y);
 
 			return y + view.Font.Height;
+		}
+
+		public override int CalculateHeight(ViewInfo view)
+		{
+			return IsHidden ? HiddenHeight : view.Font.Height;
 		}
 
 		public override void Update(HotSpot spot)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Linq;
 using ReClassNET.UI;
 using ReClassNET.Util;
@@ -79,11 +80,44 @@ namespace ReClassNET.Nodes
 				nv.Level++;
 				foreach (var node in Nodes)
 				{
-					y = node.Draw(nv, tx, y);
+					if (view.ClientArea.Contains(tx, y))
+					{
+						y = node.Draw(nv, tx, y);
+					}
+					else
+					{
+						var height = node.CalculateHeight(nv);
+
+						if (new Rectangle(tx, y, view.ClientArea.Width, height).IntersectsWith(view.ClientArea))
+						{
+							y = node.Draw(nv, tx, y);
+						}
+						else
+						{
+							y += height;
+						}
+					}
 				}
 			}
 
 			return y;
+		}
+
+		public override int CalculateHeight(ViewInfo view)
+		{
+			if (IsHidden)
+			{
+				return HiddenHeight;
+			}
+
+			var h = view.Font.Height;
+			if (levelsOpen[view.Level])
+			{
+				var nv = view.Clone();
+				nv.Level++;
+				h += Nodes.Sum(n => n.CalculateHeight(nv));
+			}
+			return h;
 		}
 
 		public override void Update(HotSpot spot)

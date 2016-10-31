@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -72,6 +73,11 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, Program.Settings.ValueColor, 8, $"{value._33,14:0.000}");
 				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, "|");
 			});
+		}
+
+		protected override int CalculateValuesHeight(ViewInfo view)
+		{
+			return 3 * view.Font.Height;
 		}
 
 		public override void Update(HotSpot spot)

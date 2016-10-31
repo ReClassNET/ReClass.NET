@@ -49,5 +49,10 @@ namespace ReClassNET.Nodes
 
 			return InnerNode.Draw(v, x, y);
 		}
+
+		protected override int CalculateChildHeight(ViewInfo view)
+		{
+			return InnerNode.CalculateHeight(view);
+		}
 	}
 }

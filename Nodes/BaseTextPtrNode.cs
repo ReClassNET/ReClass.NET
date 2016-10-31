@@ -40,9 +40,14 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, text);
 			x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
 
-			x = AddComment(view, x, y);
+			AddComment(view, x, y);
 
 			return y + view.Font.Height;
+		}
+
+		public override int CalculateHeight(ViewInfo view)
+		{
+			return IsHidden ? HiddenHeight : view.Font.Height;
 		}
 	}
 }

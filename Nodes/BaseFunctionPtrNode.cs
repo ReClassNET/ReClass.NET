@@ -69,6 +69,21 @@ namespace ReClassNET.Nodes
 			return y + view.Font.Height;
 		}
 
+		public override int CalculateHeight(ViewInfo view)
+		{
+			if (IsHidden)
+			{
+				return HiddenHeight;
+			}
+
+			var h = view.Font.Height;
+			if (levelsOpen[view.Level])
+			{
+				h += assembledCode.Count * view.Font.Height;
+			}
+			return h;
+		}
+
 		private void DisassembleRemoteCode(Memory memory, IntPtr address)
 		{
 			Contract.Requires(memory != null);

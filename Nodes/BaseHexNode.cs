@@ -62,9 +62,14 @@ namespace ReClassNET.Nodes
 				highlightUntil = CurrentHighlightTime.Add(HightlightDuration);
 			}
 
-			x = AddComment(view, x, y);
+			AddComment(view, x, y);
 
 			return y + view.Font.Height;
+		}
+
+		public override int CalculateHeight(ViewInfo view)
+		{
+			return IsHidden ? HiddenHeight : view.Font.Height;
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected byte.</summary>
