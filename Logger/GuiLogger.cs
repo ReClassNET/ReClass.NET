@@ -4,6 +4,7 @@ using ReClassNET.Forms;
 
 namespace ReClassNET.Logger
 {
+	/// <summary>A logger which displays messages in a form.</summary>
 	class GuiLogger : BaseLogger
 	{
 		private readonly LogForm form;

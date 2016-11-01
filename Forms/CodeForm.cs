@@ -19,7 +19,7 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
-			var code = generator.GetCodeFromClasses(classes, logger);
+			var code = generator.GenerateCode(classes, logger);
 			codeWebBrowser.DocumentText = new CodeColorizer().Colorize(code, generator.Language == Language.Cpp ? Languages.Cpp : Languages.CSharp);
 		}
 

@@ -33,7 +33,7 @@ namespace ReClassNET.CodeGenerator
 
 		public Language Language => Language.CSharp;
 
-		public string GetCodeFromClasses(IEnumerable<ClassNode> classes, ILogger logger)
+		public string GenerateCode(IEnumerable<ClassNode> classes, ILogger logger)
 		{
 			var sb = new StringBuilder();
 			sb.AppendLine($"// Created with  {Constants.ApplicationName} by {Constants.Author}");

@@ -2,6 +2,7 @@
 
 namespace ReClassNET.Logger
 {
+	/// <summary>A logger that does nothing.</summary>
 	public class NullLogger : ILogger
 	{
 		public event NewLogEntryEventHandler NewLogEntry { add { } remove { } }

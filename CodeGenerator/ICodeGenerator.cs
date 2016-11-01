@@ -9,9 +9,14 @@ namespace ReClassNET.CodeGenerator
 	[ContractClass(typeof(ICodeGeneratorContract))]
 	public interface ICodeGenerator
 	{
+		/// <summary>The language this generator produces.</summary>
 		Language Language { get; }
 
-		string GetCodeFromClasses(IEnumerable<ClassNode> classes, ILogger logger);
+		/// <summary>Generates code for the classes.</summary>
+		/// <param name="classes">The classes to generate code from.</param>
+		/// <param name="logger">The logger used to output messages.</param>
+		/// <returns>The code for the classes.</returns>
+		string GenerateCode(IEnumerable<ClassNode> classes, ILogger logger);
 	}
 
 	[ContractClassFor(typeof(ICodeGenerator))]
@@ -25,10 +30,11 @@ namespace ReClassNET.CodeGenerator
 			}
 		}
 
-		public string GetCodeFromClasses(IEnumerable<ClassNode> classes, ILogger logger)
+		public string GenerateCode(IEnumerable<ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(classes != null);
 			Contract.Requires(Contract.ForAll(classes, c => c != null));
+			Contract.Requires(logger != null);
 
 			Contract.Ensures(Contract.Result<string>() != null);
 

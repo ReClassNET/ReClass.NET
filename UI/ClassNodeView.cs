@@ -12,6 +12,8 @@ namespace ReClassNET.UI
 {
 	public partial class ClassNodeView : UserControl
 	{
+		/// <summary>A wrapper for non reference types.</summary>
+		/// <typeparam name="T">Generic type parameter.</typeparam>
 		private class ValueWrapper<T> where T : struct
 		{
 			public ValueWrapper(T value)
@@ -22,16 +24,21 @@ namespace ReClassNET.UI
 			public T Value { get; set; }
 		}
 
+		/// <summary>A custom tree node for class nodes with hierarchical structure.</summary>
 		private class ClassTreeNode : TreeNode
 		{
 			public ClassNode ClassNode { get; }
 
 			private ValueWrapper<bool> autoExpand;
 
+			/// <summary>Constructor of the class.</summary>
+			/// <param name="node">The class node.</param>
+			/// <param name="autoExpand">The value if nodes should get expanded.</param>
 			public ClassTreeNode(ClassNode node, ValueWrapper<bool> autoExpand)
 				: this(node, autoExpand, null)
 			{
 				Contract.Requires(node != null);
+				Contract.Requires(autoExpand != null);
 			}
 
 			private ClassTreeNode(ClassNode node, ValueWrapper<bool> autoExpand, HashSet<ClassNode> seen)

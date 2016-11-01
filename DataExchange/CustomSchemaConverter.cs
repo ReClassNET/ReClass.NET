@@ -11,16 +11,46 @@ namespace ReClassNET.DataExchange
 	[ContractClass(typeof(ICustomSchemaConverterContract))]
 	public interface ICustomSchemaConverter
 	{
+		/// <summary>Determine if the instance can handle the xml element.</summary>
+		/// <param name="element">The xml element to check.</param>
+		/// <returns>True if the instance can handle the element, false if not.</returns>
 		bool CanHandleElement(XElement element);
 
+		/// <summary>Determine if the instance can handle the node.</summary>
+		/// <param name="node">The node.</param>
+		/// <returns>True if the instance can handle the node, false if not.</returns>
 		bool CanHandleNode(BaseNode node);
 
+		/// <summary>Determine if the instance can handle the schema.</summary>
+		/// <param name="node">The node.</param>
+		/// <returns>True if the instance can handle the schema, false if not.</returns>
 		bool CanHandleSchema(SchemaCustomNode node);
 
+		/// <summary>Creates a schema node from the xml element. This method gets only called if <see cref="CanHandleElement(XElement)"/> returned true.</summary>
+		/// <param name="element">The element to create the schema from.</param>
+		/// <param name="classes">The list of classes which correspond to the schema.</param>
+		/// <param name="logger">The logger used to output messages.</param>
+		/// <returns>The schema node for the xml element.</returns>
 		SchemaCustomNode CreateSchemaFromElement(XElement element, IReadOnlyDictionary<string, SchemaClassNode> classes, ILogger logger);
+
+		/// <summary>Creates a xml element from the schema node. This method gets only called if <see cref="CanHandleSchema(SchemaCustomNode)"/> returned true.</summary>
+		/// <param name="node">The schema node to create the xml element from.</param>
+		/// <param name="logger">The logger used to output messages.</param>
+		/// <returns>The xml element for the schema node.</returns>
 		XElement CreateElementFromSchema(SchemaCustomNode node, ILogger logger);
 
+		/// <summary>Creates a schema node from the memory node. This method gets only called if <see cref="CanHandleNode(BaseNode)"/> returned true.</summary>
+		/// <param name="node">The node to create the schema from.</param>
+		/// <param name="classes">The list of classes which correspond to the schema.</param>
+		/// <param name="logger">The logger used to output messages.</param>
+		/// <returns>The schema node for the memory node.</returns>
 		SchemaCustomNode CreateSchemaFromNode(BaseNode node, IReadOnlyDictionary<ClassNode, SchemaClassNode> classes, ILogger logger);
+
+		/// <summary>Creates a node from the schema node. This method gets only called if <see cref="CanHandleSchema(SchemaCustomNode)"/> returned true.</summary>
+		/// <param name="schema">The schema node to create the memory node from.</param>
+		/// <param name="classes">The list of classes which correspond to the schema.</param>
+		/// <param name="logger">The logger used to output messages.</param>
+		/// <returns>The memory node for the schema node.</returns>
 		BaseNode CreateNodeFromSchema(SchemaCustomNode schema, IReadOnlyDictionary<SchemaClassNode, ClassNode> classes, ILogger logger);
 	}
 

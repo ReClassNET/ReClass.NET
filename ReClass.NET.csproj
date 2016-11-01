@@ -394,9 +394,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\application.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Images\B16x16_Button_Add_Bytes_4.png" />
   </ItemGroup>
   <ItemGroup>
@@ -550,9 +547,6 @@
     <None Include="Resources\Images\B16x16_Accept.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\add.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Images\B16x16_Arrow_Refresh.png" />
   </ItemGroup>
   <ItemGroup>
@@ -688,9 +682,6 @@
     <None Include="Resources\Images\B16x16_Warning.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\note_add.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Images\B16x16_Color_Wheel.png" />
   </ItemGroup>
   <ItemGroup>
@@ -716,9 +707,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BuildDate.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\B16x16_Chart_Organisation_Add.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Tree_Collapse.png" />
