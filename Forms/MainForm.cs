@@ -377,15 +377,34 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			// Stop the update timer
 			processUpdateTimer.Stop();
 
 			// and cancel all running tasks.
-			loadSymbolsTaskToken?.Cancel();
-			loadSymbolsTask?.Wait();
-			updateProcessInformationsTask?.Wait();
+			if (loadSymbolsTask != null || updateProcessInformationsTask != null)
+			{
+				Hide();
+				e.Cancel = true;
+
+				if (loadSymbolsTask != null)
+				{
+					loadSymbolsTaskToken.Cancel();
+					await loadSymbolsTask;
+
+					loadSymbolsTask = null;
+				}
+				
+				if (updateProcessInformationsTask != null)
+				{
+					await updateProcessInformationsTask;
+
+					updateProcessInformationsTask = null;
+				}
+
+				Close();
+			}
 		}
 
 		internal void AddNodeType(Type type, string text, Image icon)
