@@ -198,6 +198,21 @@ namespace ReClassNET.Util
 			}
 		}
 
+		public static IEnumerable<T> EveryNth<T>(this IEnumerable<T> items, int n)
+		{
+			Contract.Requires(items != null);
+			Contract.Requires(n > 0);
+
+			int i = 0;
+			foreach (var item in items)
+			{
+				if (i++ % n == 0)
+				{
+					yield return item;
+				}
+			}
+		}
+
 		public static void ShowDialog(this Exception ex)
 		{
 			Contract.Requires(ex != null);

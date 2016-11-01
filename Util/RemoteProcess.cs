@@ -158,7 +158,7 @@ namespace ReClassNET.Util
 		/// <param name="address">The address of the string.</param>
 		/// <param name="length">The length of the string.</param>
 		/// <returns>The string.</returns>
-		public string ReadRemoteRawUTF8String(IntPtr address, int length)
+		public string ReadRemoteUTF8StringUntilFirstNullCharacter(IntPtr address, int length)
 		{
 			Contract.Requires(length >= 0);
 
@@ -232,7 +232,7 @@ namespace ReClassNET.Util
 								var typeDescriptorPtr = ReadRemoteObject<IntPtr>(baseClassDescriptorPtr);
 								if (typeDescriptorPtr.MayBeValid())
 								{
-									var name = ReadRemoteRawUTF8String(typeDescriptorPtr + 0x0C, 60);
+									var name = ReadRemoteUTF8StringUntilFirstNullCharacter(typeDescriptorPtr + 0x0C, 60);
 									if (name.EndsWith("@@"))
 									{
 										name = NativeMethods.UnDecorateSymbolName("?" + name);
@@ -294,7 +294,12 @@ namespace ReClassNET.Util
 									{
 										var typeDescriptorPtr = baseAddress + typeDescriptorOffset;
 
-										var name = ReadRemoteRawUTF8String(typeDescriptorPtr + 0x14, 60);
+										var name = ReadRemoteUTF8StringUntilFirstNullCharacter(typeDescriptorPtr + 0x14, 60);
+										if (string.IsNullOrEmpty(name))
+										{
+											break;
+										}
+
 										if (name.EndsWith("@@"))
 										{
 											name = NativeMethods.UnDecorateSymbolName("?" + name);
