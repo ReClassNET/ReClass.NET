@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.CodeGenerator;
@@ -29,7 +30,9 @@ namespace ReClassNET.Forms
 
 		private string projectPath;
 
-		private bool canCloseForm = true;
+		private Task updateProcessInformationsTask;
+		private Task loadSymbolsTask;
+		private CancellationTokenSource loadSymbolsTaskToken;
 
 		public MainForm(NativeHelper nativeHelper, Settings settings)
 		{
@@ -111,19 +114,17 @@ namespace ReClassNET.Forms
 					remoteProcess.UpdateProcessInformations();
 					if (pb.LoadSymbols)
 					{
-						remoteProcess
-							.LoadAllSymbolsAsync(m =>
+						loadSymbolsTaskToken = new CancellationTokenSource();
+						loadSymbolsTask = remoteProcess.LoadAllSymbolsAsync(m =>
 							{
-								canCloseForm = false;
-
 								Invoke((MethodInvoker)delegate ()
 								{
 									infoToolStripStatusLabel.Visible = true;
 									infoToolStripStatusLabel.Text = $"Loading symbols for module: {m.Name}";
 								});
-							})
+							}, loadSymbolsTaskToken.Token)
 							.ContinueWith(
-								t => { canCloseForm = true; infoToolStripStatusLabel.Visible = false; },
+								t => { infoToolStripStatusLabel.Visible = false; },
 								TaskScheduler.FromCurrentSynchronizationContext()
 							);
 					}
@@ -226,10 +227,11 @@ namespace ReClassNET.Forms
 								projectPath = ofd.FileName;
 							}
 
-							ClassManager.Clear();
-
 							var classes = schema.BuildNodes(logger);
+
+							ClassManager.Clear();
 							classes.ForEach(c => ClassManager.AddClass(c));
+
 							memoryViewControl.ClassNode = classes.FirstOrDefault();
 						}
 					}
@@ -303,7 +305,10 @@ namespace ReClassNET.Forms
 
 		private void processUpdateTimer_Tick(object sender, EventArgs e)
 		{
-			remoteProcess.UpdateProcessInformations();
+			if (updateProcessInformationsTask == null || updateProcessInformationsTask.IsCompleted)
+			{
+				updateProcessInformationsTask = remoteProcess.UpdateProcessInformationsAsync();
+			}
 		}
 
 		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)
@@ -374,12 +379,13 @@ namespace ReClassNET.Forms
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (!canCloseForm)
-			{
-				e.Cancel = true;
+			// Stop the update timer
+			processUpdateTimer.Stop();
 
-				MessageBox.Show("You can't exit the application at the moment.\nYou need to wait until the task finishes.");
-			}
+			// and cancel all running tasks.
+			loadSymbolsTaskToken?.Cancel();
+			loadSymbolsTask?.Wait();
+			updateProcessInformationsTask?.Wait();
 		}
 
 		internal void AddNodeType(Type type, string text, Image icon)

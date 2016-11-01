@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ReClassNET.AddressParser;
 using ReClassNET.SymbolReader;
@@ -69,6 +70,9 @@ namespace ReClassNET.Util
 
 		#region ReadMemory
 
+		/// <summary>Reads remote memory from the address into the buffer.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <param name="data">[out] The data buffer to fill. If the remote process is not valid, the buffer will get filled with zeros.</param>
 		public void ReadRemoteMemoryIntoBuffer(IntPtr address, ref byte[] data)
 		{
 			Contract.Requires(data != null);
@@ -85,16 +89,25 @@ namespace ReClassNET.Util
 			nativeHelper.ReadRemoteMemory(Process.Handle, address, data, (uint)data.Length);
 		}
 
+		/// <summary>Reads <paramref name="size"/> bytes from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <param name="size">The size in bytes to read.</param>
+		/// <returns>An array of bytes.</returns>
 		public byte[] ReadRemoteMemory(IntPtr address, int size)
 		{
 			Contract.Requires(size >= 0);
+			Contract.Ensures(Contract.Result<byte[]>() != null);
 
 			var data = new byte[size];
 			ReadRemoteMemoryIntoBuffer(address, ref data);
 			return data;
 		}
 
-		public T ReadRemoteObject<T>(IntPtr address)
+		/// <summary>Reads the object from the address in the remote process.</summary>
+		/// <typeparam name="T">Type of the value to read.</typeparam>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The remote object.</returns>
+		public T ReadRemoteObject<T>(IntPtr address) where T : struct
 		{
 			var data = ReadRemoteMemory(address, Marshal.SizeOf<T>());
 
@@ -105,45 +118,54 @@ namespace ReClassNET.Util
 			return obj;
 		}
 
+		/// <summary>Reads a string from the address in the remote process with the given length using the provided encoding.</summary>
+		/// <param name="encoding">The encoding used by the string.</param>
+		/// <param name="address">The address of the string.</param>
+		/// <param name="length">The length of the string.</param>
+		/// <returns>The string.</returns>
 		public string ReadRemoteString(Encoding encoding, IntPtr address, int length)
 		{
 			Contract.Requires(encoding != null);
 			Contract.Requires(length >= 0);
+			Contract.Ensures(Contract.Result<string>() != null);
 
 			var data = ReadRemoteMemory(address, length);
-			if (data == null)
-			{
-				return null;
-			}
 
-			var sb = new StringBuilder(encoding.GetString(data));
-			for (var i = 0; i < sb.Length; ++i)
+			try
 			{
-				if (sb[i] == 0)
+				var sb = new StringBuilder(encoding.GetString(data));
+				for (var i = 0; i < sb.Length; ++i)
 				{
-					sb.Length = i;
-					break;
+					if (sb[i] == 0)
+					{
+						sb.Length = i;
+						break;
+					}
+					if (!sb[i].IsPrintable())
+					{
+						sb[i] = '.';
+					}
 				}
-				if (!sb[i].IsPrintable())
-				{
-					sb[i] = '.';
-				}
+				return sb.ToString();
 			}
-			return sb.ToString();
+			catch
+			{
+				return string.Empty;
+			}
 		}
 
+		/// <summary>Reads a string from the address in the remote process with the given length using UTF8 encoding. The string gets truncated at the first zero character.</summary>
+		/// <param name="address">The address of the string.</param>
+		/// <param name="length">The length of the string.</param>
+		/// <returns>The string.</returns>
 		public string ReadRemoteRawUTF8String(IntPtr address, int length)
 		{
 			Contract.Requires(length >= 0);
 
 			var data = ReadRemoteMemory(address, length);
-			if (data == null)
-			{
-				return null;
-			}
 
-			int index = -1;
-			for (index = 0; index < data.Length; ++index)
+			int index = 0;
+			for (; index < data.Length; ++index)
 			{
 				if (data[index] == 0)
 				{
@@ -151,9 +173,19 @@ namespace ReClassNET.Util
 				}
 			}
 
-			return Encoding.UTF8.GetString(data, 0, Math.Min(index, data.Length));
+			try
+			{
+				return Encoding.UTF8.GetString(data, 0, Math.Min(index, data.Length));
+			}
+			catch
+			{
+				return string.Empty;
+			}
 		}
 
+		/// <summary>Reads remote runtime type information for the given address from the remote process.</summary>
+		/// <param name="address">The address.</param>
+		/// <returns>A string containing the runtime type information or null if no information could get found.</returns>
 		public string ReadRemoteRuntimeTypeInformation(IntPtr address)
 		{
 			if (address.MayBeValid())
@@ -296,6 +328,10 @@ namespace ReClassNET.Util
 
 		#region WriteMemory
 
+		/// <summary>Writes the given <paramref name="data"/> to the <paramref name="address"/> in the remote process.</summary>
+		/// <param name="address">The address to write to.</param>
+		/// <param name="data">The data to write.</param>
+		/// <returns>True if it succeeds, false if it fails.</returns>
 		public bool WriteRemoteMemory(IntPtr address, byte[] data)
 		{
 			Contract.Requires(data != null);
@@ -308,6 +344,11 @@ namespace ReClassNET.Util
 			return nativeHelper.WriteRemoteMemory(Process.Handle, address, data, (uint)data.Length);
 		}
 
+		/// <summary>Writes the given <paramref name="value"/> to the <paramref name="address"/> in the remote process.</summary>
+		/// <typeparam name="T">Type of the value to write.</typeparam>
+		/// <param name="address">The address to write to.</param>
+		/// <param name="value">The value to write.</param>
+		/// <returns>True if it succeeds, false if it fails.</returns>
 		public bool WriteRemoteMemory<T>(IntPtr address, T value) where T : struct
 		{
 			var data = new byte[Marshal.SizeOf<T>()];
@@ -321,6 +362,9 @@ namespace ReClassNET.Util
 
 		#endregion
 
+		/// <summary>Tries to map the given address to a section or a module of the process.</summary>
+		/// <param name="address">The address to map.</param>
+		/// <returns>The named address or null if no mapping exists.</returns>
 		public string GetNamedAddress(IntPtr address)
 		{
 			var section = sections.Where(s => s.Category != null).Where(s => address.InRange(s.Start, s.End)).FirstOrDefault();
@@ -336,59 +380,81 @@ namespace ReClassNET.Util
 			return null;
 		}
 
+		/// <summary>Updates the process informations.</summary>
 		public void UpdateProcessInformations()
 		{
-			modules.Clear();
-			sections.Clear();
-
-			if (!IsValid)
-			{
-				return;
-			}
-
-			nativeHelper.EnumerateRemoteSectionsAndModules(
-				process.Handle,
-				delegate (IntPtr baseAddress, IntPtr regionSize, string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, string modulePath)
-				{
-					var section = new Section
-					{
-						Start = baseAddress,
-						End = baseAddress.Add(regionSize),
-						Name = name,
-						State = state,
-						Protection = protection,
-						Type = type,
-						ModulePath = modulePath,
-						ModuleName = Path.GetFileName(modulePath)
-					};
-					switch (section.Name)
-					{
-						case ".text":
-						case "code":
-							section.Category = "CODE";
-							break;
-						case ".data":
-						case "data":
-						case ".rdata":
-						case ".idata":
-							section.Category = "DATA";
-							break;
-					}
-					sections.Add(section);
-				},
-				delegate (IntPtr baseAddress, IntPtr regionSize, string modulePath)
-				{
-					modules.Add(new Module
-					{
-						Start = baseAddress,
-						End = baseAddress.Add(regionSize),
-						Path = modulePath,
-						Name = Path.GetFileName(modulePath)
-					});
-				}
-			);
+			UpdateProcessInformationsAsync().Wait();
 		}
 
+		/// <summary>Updates the process informations asynchronous.</summary>
+		/// <returns>The Task.</returns>
+		public Task UpdateProcessInformationsAsync()
+		{
+			if (!IsValid)
+			{
+				modules.Clear();
+				sections.Clear();
+
+				return Task.CompletedTask;
+			}
+
+			return Task.Run(() =>
+			{
+				var modules = new List<Module>();
+				var sections = new List<Section>();
+
+				nativeHelper.EnumerateRemoteSectionsAndModules(
+					process.Handle,
+					delegate (IntPtr baseAddress, IntPtr regionSize, string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, string modulePath)
+					{
+						var section = new Section
+						{
+							Start = baseAddress,
+							End = baseAddress.Add(regionSize),
+							Name = name,
+							State = state,
+							Protection = protection,
+							Type = type,
+							ModulePath = modulePath,
+							ModuleName = Path.GetFileName(modulePath)
+						};
+						switch (section.Name)
+						{
+							case ".text":
+							case "code":
+								section.Category = "CODE";
+								break;
+							case ".data":
+							case "data":
+							case ".rdata":
+							case ".idata":
+								section.Category = "DATA";
+								break;
+						}
+						sections.Add(section);
+					},
+					delegate (IntPtr baseAddress, IntPtr regionSize, string modulePath)
+					{
+						modules.Add(new Module
+						{
+							Start = baseAddress,
+							End = baseAddress.Add(regionSize),
+							Path = modulePath,
+							Name = Path.GetFileName(modulePath)
+						});
+					}
+				);
+
+				this.modules.Clear();
+				this.modules.AddRange(modules);
+				this.sections.Clear();
+				this.sections.AddRange(sections);
+			});
+		}
+
+		/// <summary>Parse the address formula.</summary>
+		/// <param name="addressFormula">The address formula.</param>
+		/// <returns>The result of the parsed address or <see cref="IntPtr.Zero"/>.</returns>
 		public IntPtr ParseAddress(string addressFormula)
 		{
 			Contract.Requires(addressFormula != null);
@@ -408,20 +474,33 @@ namespace ReClassNET.Util
 			return interpreter.Execute(operation, this);
 		}
 
+		/// <summary>Loads all symbols for the process modules.</summary>
 		public void LoadAllSymbols()
 		{
-			LoadAllSymbolsAsync(null).Wait();
+			LoadAllSymbolsAsync(null, new CancellationToken()).Wait();
 		}
 
+		/// <summary>A callback which gets called for every module while loading symbols.</summary>
+		/// <param name="module">The current module.</param>
 		public delegate void LoadModuleSymbols(Module module);
-		public Task LoadAllSymbolsAsync(LoadModuleSymbols callback)
+
+		/// <summary>Loads all symbols asynchronous.</summary>
+		/// <param name="callback">The callback is called for every module. The callback can be null.</param>
+		/// <param name="token">The token used to cancel the task.</param>
+		/// <returns>The task.</returns>
+		public Task LoadAllSymbolsAsync(LoadModuleSymbols callback, CancellationToken token)
 		{
-			var copy = this.modules.ToList();
+			var copy = modules.ToList();
 
 			return Task.Run(() =>
 			{
 				foreach (var module in copy)
 				{
+					if (token.IsCancellationRequested)
+					{
+						break;
+					}
+
 					try
 					{
 						callback?.Invoke(module);
@@ -433,7 +512,7 @@ namespace ReClassNET.Util
 						//ignore
 					}
 				}
-			});
+			}, token);
 		}
 	}
 }
