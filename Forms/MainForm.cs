@@ -450,17 +450,6 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private void FastOpenToolStripDropDownButton_MouseEnter(object sender, EventArgs e)
-		{
-			var button = sender as ToolStripDropDownButton;
-			if (button == null)
-			{
-				return;
-			}
-
-			button.ShowDropDown();
-		}
-
 		private void addXBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			AskAddOrInsertBytes("Add Bytes", memoryViewControl.AddBytes);

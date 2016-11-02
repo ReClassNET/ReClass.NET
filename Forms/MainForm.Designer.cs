@@ -310,7 +310,6 @@
 			this.addBytesToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.addBytesToolStripDropDownButton.Name = "addBytesToolStripDropDownButton";
 			this.addBytesToolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
-			this.addBytesToolStripDropDownButton.MouseEnter += new System.EventHandler(this.FastOpenToolStripDropDownButton_MouseEnter);
 			// 
 			// add4BytesToolStripMenuItem
 			// 
@@ -401,7 +400,6 @@
 			this.insertBytesToolStripDropDownButton.Name = "insertBytesToolStripDropDownButton";
 			this.insertBytesToolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
 			this.insertBytesToolStripDropDownButton.ToolTipText = "Insert bytes at selected position";
-			this.insertBytesToolStripDropDownButton.MouseEnter += new System.EventHandler(this.FastOpenToolStripDropDownButton_MouseEnter);
 			// 
 			// insert4BytesToolStripMenuItem
 			// 
