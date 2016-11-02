@@ -4,7 +4,7 @@ using ReClassNET.Logger;
 namespace ReClassNET.DataExchange
 {
 	[ContractClass(typeof(IReClassExportContract))]
-	interface IReClassExport
+	public interface IReClassExport
 	{
 		void Save(string filePath, SchemaBuilder schema, ILogger logger);
 	}

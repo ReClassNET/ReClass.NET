@@ -152,7 +152,6 @@
     <Compile Include="UI\BannerBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Util\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -210,7 +209,7 @@
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
-    <Compile Include="Util\ClassManager.cs" />
+    <Compile Include="Nodes\ClassManager.cs" />
     <Compile Include="Util\GrowingList.cs" />
     <Compile Include="Forms\PluginForm.cs">
       <SubType>Form</SubType>

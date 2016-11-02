@@ -215,6 +215,9 @@ namespace ReClassNET.Forms
 						case ReClass2007File.FileExtension:
 							import = new ReClass2007File();
 							break;
+						default:
+							logger.Log(LogLevel.Error, $"The file '{ofd.SafeFileName}' has an unknown type.");
+							break;
 					}
 					if (import != null)
 					{

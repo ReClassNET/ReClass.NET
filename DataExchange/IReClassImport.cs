@@ -5,7 +5,7 @@ using ReClassNET.Logger;
 namespace ReClassNET.DataExchange
 {
 	[ContractClass(typeof(IReClassImportContract))]
-	interface IReClassImport
+	public interface IReClassImport
 	{
 		SchemaBuilder Load(string filePath, ILogger logger);
 	}

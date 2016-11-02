@@ -29,7 +29,7 @@ namespace ReClassNET.Util
 
 			if (!classes.Contains(node))
 			{
-				node.NodesChanged += ClassHasChanged;
+				node.NodesChanged += NodesChanged_Handler;
 
 				classes.Add(node);
 
@@ -37,7 +37,7 @@ namespace ReClassNET.Util
 			}
 		}
 
-		private static void ClassHasChanged(BaseNode sender)
+		private static void NodesChanged_Handler(BaseNode sender)
 		{
 			classes.ForEach(c => c.UpdateOffsets());
 		}
@@ -50,6 +50,8 @@ namespace ReClassNET.Util
 
 			foreach (var node in temp)
 			{
+				node.NodesChanged -= NodesChanged_Handler;
+
 				ClassRemoved?.Invoke(node);
 			}
 		}
@@ -73,6 +75,8 @@ namespace ReClassNET.Util
 
 			if (classes.Remove(node))
 			{
+				node.NodesChanged -= NodesChanged_Handler;
+
 				ClassRemoved?.Invoke(node);
 			}
 		}

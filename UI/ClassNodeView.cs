@@ -25,7 +25,7 @@ namespace ReClassNET.UI
 		}
 
 		/// <summary>A custom tree node for class nodes with hierarchical structure.</summary>
-		private class ClassTreeNode : TreeNode
+		private class ClassTreeNode : TreeNode, IDisposable
 		{
 			public ClassNode ClassNode { get; }
 
@@ -50,8 +50,8 @@ namespace ReClassNET.UI
 
 				ClassNode = node;
 
-				node.NameChanged += sender => Text = sender.Name;
-				node.NodesChanged += sender => RebuildClassHierarchy(new HashSet<ClassNode> { ClassNode });
+				node.NameChanged += NameChanged_Handler;
+				node.NodesChanged += NodesChanged_Handler;
 
 				Text = node.Name;
 
@@ -61,12 +61,29 @@ namespace ReClassNET.UI
 				RebuildClassHierarchy(seen ?? new HashSet<ClassNode> { ClassNode });
 			}
 
+			public void Dispose()
+			{
+				ClassNode.NameChanged -= NameChanged_Handler;
+				ClassNode.NodesChanged -= NodesChanged_Handler;
+			}
+
+			private void NameChanged_Handler(BaseNode sender)
+			{
+				Text = sender.Name;
+			}
+
+			private void NodesChanged_Handler(BaseNode sender)
+			{
+				RebuildClassHierarchy(new HashSet<ClassNode> { ClassNode });
+			}
+
 			/// <summary>Rebuilds the class hierarchy.</summary>
 			/// <param name="seen">The already seen classes.</param>
 			private void RebuildClassHierarchy(HashSet<ClassNode> seen)
 			{
 				Contract.Requires(seen != null);
 
+				Nodes.OfType<ClassTreeNode>().ForEach(t => t.Dispose());
 				Nodes.Clear();
 
 				foreach (var child in ClassNode.Nodes
