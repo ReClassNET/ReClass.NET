@@ -45,13 +45,16 @@ namespace ReClassNET.UI
 		public Settings Settings { get; set; }
 
 		private readonly List<HotSpot> hotSpots = new List<HotSpot>();
-		private readonly List<HotSpot> selected = new List<HotSpot>();
+		private readonly List<HotSpot> selectedNodes = new List<HotSpot>();
 
-		public IEnumerable<BaseNode> SelectedNodes => selected.Select(s => s.Node);
+		public IEnumerable<BaseNode> SelectedNodes => selectedNodes.Select(s => s.Node);
 
-		private readonly FontEx font;
+		private HotSpot selectionCaret = null;
+		private HotSpot selectionAnchor = null;
 
 		public event EventHandler SelectionChanged;
+
+		private readonly FontEx font;
 
 		public MemoryViewControl()
 		{
@@ -109,7 +112,7 @@ namespace ReClassNET.UI
 				ClientArea = ClientRectangle,
 				Level = 0,
 				Memory = Memory,
-				MultiSelected = selected.Count > 1,
+				MultiSelected = selectedNodes.Count > 1,
 				HotSpots = hotSpots
 			};
 
@@ -150,8 +153,8 @@ namespace ReClassNET.UI
 		{
 			SelectionChanged?.Invoke(this, EventArgs.Empty);
 
-			var count = selected.Count();
-			var node = selected.Select(s => s.Node).FirstOrDefault();
+			var count = selectedNodes.Count();
+			var node = selectedNodes.Select(s => s.Node).FirstOrDefault();
 
 			addBytesToolStripMenuItem.Enabled = node?.ParentNode != null || node is ClassNode;
 			insertBytesToolStripMenuItem.Enabled = count == 1 && node?.ParentNode != null;
@@ -192,9 +195,11 @@ namespace ReClassNET.UI
 
 									hitObject.IsSelected = true;
 
-									selected.Add(hotSpot);
+									selectedNodes.Add(hotSpot);
 
 									OnSelectionChanged();
+
+									selectionAnchor = selectionCaret = hotSpot;
 								}
 								else if (ModifierKeys == Keys.Control)
 								{
@@ -202,73 +207,61 @@ namespace ReClassNET.UI
 
 									if (hitObject.IsSelected)
 									{
-										selected.Add(hotSpot);
+										selectedNodes.Add(hotSpot);
 									}
 									else
 									{
-										selected.Remove(selected.Where(c => c.Node == hitObject).FirstOrDefault());
+										selectedNodes.Remove(selectedNodes.Where(c => c.Node == hitObject).FirstOrDefault());
 									}
 
 									OnSelectionChanged();
 								}
 								else if (ModifierKeys == Keys.Shift)
 								{
-									if (selected.Count > 0)
+									if (selectedNodes.Count > 0)
 									{
-										var selectedNode = selected[0].Node;
-										if (selectedNode.ParentNode != hitObject.ParentNode)
+										var selectedNode = selectedNodes[0].Node;
+										if (hitObject.ParentNode != null && selectedNode.ParentNode != hitObject.ParentNode)
 										{
 											continue;
 										}
 
-										var containerNode = selectedNode.ParentNode;
-										if (containerNode == null)
-										{
-											continue;
-										}
-
-										var idx1 = FindNodeIndex(selectedNode);
-										if (idx1 == -1)
-										{
-											continue;
-										}
-										var idx2 = FindNodeIndex(hitObject);
-										if (idx2 == -1)
-										{
-											continue;
-										}
-										if (idx2 < idx1)
-										{
-											var temp = idx1;
-											idx1 = idx2;
-											idx2 = temp;
-										}
+										var first = Utils.Min(selectedNodes[0], hotSpot, h => h.Node.Offset.ToInt32());
+										var last = first == hotSpot ? selectedNodes[0] : hotSpot;
 
 										ClearSelection();
 
-										foreach (var spot in containerNode.Nodes.Skip(idx1).Take(idx2 - idx1 + 1)
+										var containerNode = selectedNode.ParentNode;
+										foreach (var spot in containerNode.Nodes
+											.SkipWhile(n => n != first.Node)
+											.TakeUntil(n => n == last.Node)
 											.Select(n => new HotSpot { Address = containerNode.Offset.Add(n.Offset), Node = n }))
 										{
 											spot.Node.IsSelected = true;
-											selected.Add(spot);
+											selectedNodes.Add(spot);
 										}
 
 										OnSelectionChanged();
+
+										selectionAnchor = first;
+										selectionCaret = last;
 									}
 								}
 							}
 							else if (e.Button == MouseButtons.Right)
 							{
 								// If there is only one selected node, select the node the user clicked at.
-								if (selected.Count <= 1)
+								if (selectedNodes.Count <= 1)
 								{
 									ClearSelection();
 
 									hitObject.IsSelected = true;
 
-									selected.Add(hotSpot);
+									selectedNodes.Add(hotSpot);
 
 									OnSelectionChanged();
+
+									selectionAnchor = selectionCaret = hotSpot;
 								}
 
 								selectedNodeContextMenuStrip.Show(this, e.Location);
@@ -361,10 +354,10 @@ namespace ReClassNET.UI
 		{
 			base.OnMouseHover(e);
 
-			if (selected.Count > 1)
+			if (selectedNodes.Count > 1)
 			{
-				var memorySize = selected.Select(h => h.Node.MemorySize).Sum();
-				toolTip.Show($"{selected.Count} Nodes selected, {memorySize} bytes", this, toolTipPosition.OffsetEx(16, 16));
+				var memorySize = selectedNodes.Select(h => h.Node.MemorySize).Sum();
+				toolTip.Show($"{selectedNodes.Count} Nodes selected, {memorySize} bytes", this, toolTipPosition.OffsetEx(16, 16));
 			}
 			else
 			{
@@ -402,7 +395,7 @@ namespace ReClassNET.UI
 		{
 			if (editBox.Visible == false) // Only process keys if the edit field is not visible.
 			{
-				if (selected.Count > 0)
+				if (selectedNodes.Count > 0)
 				{
 					var key = keyData & Keys.KeyCode;
 					var modifier = keyData & Keys.Modifiers;
@@ -424,33 +417,45 @@ namespace ReClassNET.UI
 						HotSpot toSelect = null;
 						if (key == Keys.Down)
 						{
-							var lastNode = selected.Last().Node;
-							toSelect = hotSpots.SkipWhile(h => h.Node != lastNode).Skip(1).Where(h => h.Type == HotSpotType.Select).FirstOrDefault();
+							toSelect = hotSpots
+								.SkipUntil(h => h.Node == selectionCaret.Node)
+								.Where(h => h.Type == HotSpotType.Select)
+								.Where(h => h.Node.ParentNode == selectionCaret.Node.ParentNode)
+								.FirstOrDefault();
 						}
 						else
 						{
-							var firstNode = selected.Last().Node;
-							toSelect = hotSpots.TakeWhile(h => h.Node != firstNode).Where(h => h.Type == HotSpotType.Select).LastOrDefault();
+							toSelect = hotSpots
+								.TakeWhile(h => h.Node != selectionCaret.Node)
+								.Where(h => h.Type == HotSpotType.Select)
+								.Where(h => h.Node.ParentNode == selectionCaret.Node.ParentNode)
+								.LastOrDefault();
 						}
 
 						if (toSelect != null)
 						{
 							if (modifier != Keys.Shift)
 							{
-								ClearSelection();
-							}
-
-							if (toSelect.Node.IsSelected)
-							{
-								toSelect.Node.IsSelected = false;
-
-								selected.Remove(toSelect);
+								selectionAnchor = selectionCaret = toSelect;
 							}
 							else
 							{
-								toSelect.Node.IsSelected = true;
+								selectionCaret = toSelect;
+							}
 
-								selected.Add(toSelect);
+							var first = Utils.Min(selectionAnchor, selectionCaret, h => h.Node.Offset.ToInt32());
+							var last = first == selectionAnchor ? selectionCaret : selectionAnchor;
+
+							ClearSelection();
+
+							var containerNode = toSelect.Node.ParentNode;
+							foreach (var spot in containerNode.Nodes
+								.SkipWhile(n => n != first.Node)
+								.TakeUntil(n => n == last.Node)
+								.Select(n => new HotSpot { Address = containerNode.Offset.Add(n.Offset), Node = n }))
+							{
+								spot.Node.IsSelected = true;
+								selectedNodes.Add(spot);
 							}
 
 							OnSelectionChanged();
@@ -459,6 +464,26 @@ namespace ReClassNET.UI
 
 							return true;
 						}
+					}
+				}
+				else
+				{
+					// If no node is selected, try to select the first one.
+					var selection = hotSpots
+						.Where(h => h.Type == HotSpotType.Select)
+						.Where(h => !(h.Node is ClassNode))
+						.FirstOrDefault();
+					if (selection != null)
+					{
+						selectionAnchor = selectionCaret = selection;
+
+						selection.Node.IsSelected = true;
+
+						selectedNodes.Add(selection);
+
+						OnSelectionChanged();
+
+						return true;
 					}
 				}
 			}
@@ -491,7 +516,7 @@ namespace ReClassNET.UI
 
 		private int FindNodeIndex(BaseNode node)
 		{
-			var containerNode = node.ParentNode as BaseContainerNode;
+			var containerNode = node.ParentNode;
 			if (containerNode == null)
 			{
 				return -1;
@@ -504,7 +529,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(length >= 0);
 
-			var hotspot = selected.FirstOrDefault();
+			var hotspot = selectedNodes.FirstOrDefault();
 			if (hotspot != null)
 			{
 				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode).AddBytes(length);
@@ -517,7 +542,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(length >= 0);
 
-			var hotspot = selected.FirstOrDefault();
+			var hotspot = selectedNodes.FirstOrDefault();
 			if (hotspot != null)
 			{
 				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode).InsertBytes(FindNodeIndex(hotspot.Node), length);
@@ -531,37 +556,42 @@ namespace ReClassNET.UI
 			Contract.Requires(type != null);
 			Contract.Requires(type.IsSubclassOf(typeof(BaseNode)));
 
-			var newSelected = new List<BaseNode>(selected.Count);
+			var newSelected = new List<HotSpot>(selectedNodes.Count);
 
-			foreach (var sel in selected)
+			foreach (var selected in selectedNodes.Where(s => !(s.Node is ClassNode)))
 			{
-				if (!(sel.Node is ClassNode))
+				var node = Activator.CreateInstance(type) as BaseNode;
+
+				node.Intialize();
+
+				if (selected.Node.ParentNode.ReplaceChildNode(FindNodeIndex(selected.Node), node))
 				{
-					var node = Activator.CreateInstance(type) as BaseNode;
+					node.IsSelected = true;
 
-					node.Intialize();
-
-					if (sel.Node.ParentNode.ReplaceChildNode(FindNodeIndex(sel.Node), node))
+					var hotspot = new HotSpot
 					{
-						newSelected.Add(node);
+						Address = node.ParentNode.Offset.Add(node.Offset),
+						Node = node
+					};
+
+					newSelected.Add(hotspot);
+
+					if (selectionAnchor.Node == selected.Node)
+					{
+						selectionAnchor = hotspot;
+					}
+					if (selectionCaret.Node == selected.Node)
+					{
+						selectionCaret = hotspot;
 					}
 				}
 			}
 
 			if (newSelected.Count > 0)
 			{
-				selected.Clear();
+				selectedNodes.Clear();
 
-				foreach (var sel in newSelected)
-				{
-					sel.IsSelected = true;
-
-					selected.Add(new HotSpot
-					{
-						Address = sel.ParentNode.Offset.Add(sel.Offset),
-						Node = sel
-					});
-				}
+				selectedNodes.AddRange(newSelected);
 
 				OnSelectionChanged();
 			}
@@ -604,16 +634,16 @@ namespace ReClassNET.UI
 
 		private void ClearSelection()
 		{
-			selected.ForEach(h => h.Node.ClearSelection());
+			selectedNodes.ForEach(h => h.Node.ClearSelection());
 
-			selected.Clear();
+			selectedNodes.Clear();
 		}
 
 		private void RemoveSelectedNodes()
 		{
-			selected.Where(h => !(h.Node is ClassNode)).ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
+			selectedNodes.Where(h => !(h.Node is ClassNode)).ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
 
-			selected.Clear();
+			selectedNodes.Clear();
 
 			OnSelectionChanged();
 
@@ -627,9 +657,9 @@ namespace ReClassNET.UI
 
 		private void copyAddressToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (selected.Count > 0)
+			if (selectedNodes.Count > 0)
 			{
-				Clipboard.SetText(selected.First().Address.ToString("X"));
+				Clipboard.SetText(selectedNodes.First().Address.ToString("X"));
 			}
 		}
 

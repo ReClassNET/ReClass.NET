@@ -334,6 +334,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\ViewInfo.cs" />
+    <Compile Include="Util\Util.cs" />
     <Compile Include="Util\WinUtil.cs" />
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>

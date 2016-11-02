@@ -145,14 +145,14 @@ namespace ReClassNET.Util
 			}
 		}
 
-		public static int FindIndex<T>(this IEnumerable<T> items, Func<T, bool> predicate)
+		public static int FindIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
 		{
-			Contract.Requires(items != null);
+			Contract.Requires(source != null);
 			Contract.Requires(predicate != null);
 			Contract.Ensures(Contract.Result<int>() >= -1);
 
 			int retVal = 0;
-			foreach (var item in items)
+			foreach (var item in source)
 			{
 				if (predicate(item))
 				{
@@ -163,28 +163,28 @@ namespace ReClassNET.Util
 			return -1;
 		}
 
-		public static void ForEach<T>(this IEnumerable<T> items, Action<T> func)
+		public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> func)
 		{
-			Contract.Requires(items != null);
+			Contract.Requires(source != null);
 			Contract.Requires(func != null);
 
-			foreach (var item in items)
+			foreach (var item in source)
 			{
 				func(item);
 			}
 		}
 
-		public static IEnumerable<T> Yield<T>(this T item)
+		public static IEnumerable<TSource> Yield<TSource>(this TSource item)
 		{
 			yield return item;
 		}
 
-		public static IEnumerable<T> Traverse<T>(this IEnumerable<T> items, Func<T, IEnumerable<T>> childSelector)
+		public static IEnumerable<TSource> Traverse<TSource>(this IEnumerable<TSource> source, Func<TSource, IEnumerable<TSource>> childSelector)
 		{
-			Contract.Requires(items != null);
+			Contract.Requires(source != null);
 			Contract.Requires(childSelector != null);
 
-			var stack = new Stack<T>(items);
+			var stack = new Stack<TSource>(source);
 			while (stack.Any())
 			{
 				var next = stack.Pop();
@@ -198,17 +198,53 @@ namespace ReClassNET.Util
 			}
 		}
 
-		public static IEnumerable<T> EveryNth<T>(this IEnumerable<T> items, int n)
+		public static IEnumerable<TSource> EveryNth<TSource>(this IEnumerable<TSource> source, int n)
 		{
-			Contract.Requires(items != null);
+			Contract.Requires(source != null);
 			Contract.Requires(n > 0);
 
 			int i = 0;
-			foreach (var item in items)
+			foreach (var item in source)
 			{
 				if (i++ % n == 0)
 				{
 					yield return item;
+				}
+			}
+		}
+
+		public static IEnumerable<TSource> SkipUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		{
+			Contract.Requires(source != null);
+			Contract.Requires(predicate != null);
+
+			using (var iterator = source.GetEnumerator())
+			{
+				while (iterator.MoveNext())
+				{
+					if (predicate(iterator.Current))
+					{
+						break;
+					}
+				}
+				while (iterator.MoveNext())
+				{
+					yield return iterator.Current;
+				}
+			}
+		}
+
+		public static IEnumerable<TSource> TakeUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		{
+			Contract.Requires(source != null);
+			Contract.Requires(predicate != null);
+
+			foreach (var item in source)
+			{
+				yield return item;
+				if (predicate(item))
+				{
+					yield break;
 				}
 			}
 		}
