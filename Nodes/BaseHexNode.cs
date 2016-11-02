@@ -34,7 +34,7 @@ namespace ReClassNET.Nodes
 			AddDelete(view, x, y);
 			AddTypeDrop(view, x, y);
 
-			x += TXOFFSET + 16;
+			x += TextPadding + 16;
 			x = AddAddressOffset(view, x, y);
 
 			if (Program.Settings.ShowNodeText)

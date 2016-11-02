@@ -18,7 +18,7 @@ namespace ReClassNET.Nodes
 
 		internal static readonly List<INodeInfoReader> NodeInfoReader = new List<INodeInfoReader>();
 
-		protected const int TXOFFSET = 16;
+		protected static readonly int TextPadding = Icons.Dimensions;
 		protected const int HiddenHeight = 1;
 
 		private static int NodeIndex = 0;
@@ -44,13 +44,13 @@ namespace ReClassNET.Nodes
 		/// <summary>Gets or sets a value indicating whether this object is selected.</summary>
 		public bool IsSelected { get; set; }
 
-		protected GrowingList<bool> levelsOpen = new GrowingList<bool>(false);
-
 		/// <summary>Size of the node in bytes.</summary>
 		public abstract int MemorySize { get; }
 
 		public event NodeEventHandler NameChanged;
 		public event NodeEventHandler CommentChanged;
+
+		protected GrowingList<bool> levelsOpen = new GrowingList<bool>(false);
 
 		/// <summary>Constructor which sets a unique <see cref="Name"/>.</summary>
 		public BaseNode()
@@ -264,21 +264,19 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(icon != null);
 
-			const int IconSize = 16;
-
-			if (y > view.ClientArea.Bottom || y + IconSize < 0)
+			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0)
 			{
-				return x + IconSize;
+				return x + Icons.Dimensions;
 			}
 
-			view.Context.DrawImage(icon, x + 2, y, 16, 16);
+			view.Context.DrawImage(icon, x + 2, y, Icons.Dimensions, Icons.Dimensions);
 
 			if (id != -1)
 			{
-				AddHotSpot(view, new Rectangle(x, y, IconSize, IconSize), string.Empty, id, type);
+				AddHotSpot(view, new Rectangle(x, y, Icons.Dimensions, Icons.Dimensions), string.Empty, id, type);
 			}
 
-			return x + IconSize;
+			return x + Icons.Dimensions;
 		}
 
 		/// <summary>Adds a togglable Open/Close icon.</summary>
@@ -290,9 +288,9 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
-			if (y > view.ClientArea.Bottom || y + 16 < 0)
+			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0)
 			{
-				return x + 16;
+				return x + Icons.Dimensions;
 			}
 
 			return AddIcon(view, x, y, levelsOpen[view.Level] ? Icons.OpenCloseOpen : Icons.OpenCloseClosed, 0, HotSpotType.OpenClose);
@@ -306,14 +304,14 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
-			if (y > view.ClientArea.Bottom || y + 16 < 0)
+			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0)
 			{
 				return;
 			}
 
 			if (IsSelected)
 			{
-				AddIcon(view, view.ClientArea.Right - 16, y, Icons.Delete, 0, HotSpotType.Delete);
+				AddIcon(view, view.ClientArea.Right - Icons.Dimensions, y, Icons.Delete, 0, HotSpotType.Delete);
 			}
 		}
 
@@ -325,7 +323,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
-			if (view.MultiSelected || (y > view.ClientArea.Bottom || y + 16 < 0))
+			if (view.MultiSelected || (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0))
 			{
 				return;
 			}
