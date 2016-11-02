@@ -164,6 +164,7 @@ namespace ReClassNET.UI
 			changeTypeToolStripMenuItem.Enabled = count > 0 && !(node is ClassNode);
 
 			removeToolStripMenuItem.Enabled = !(node is ClassNode);
+			copyAddressToolStripMenuItem.Enabled = !(node is ClassNode);
 		}
 
 		protected override void OnMouseClick(MouseEventArgs e)

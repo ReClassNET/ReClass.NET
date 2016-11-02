@@ -87,9 +87,9 @@ namespace ReClassNET.UI
 			{
 				newValue = scrollProperties.Minimum;
 			}
-			if (newValue > scrollProperties.Maximum)
+			if (newValue > scrollProperties.Maximum - scrollProperties.LargeChange)
 			{
-				newValue = scrollProperties.Maximum;
+				newValue = scrollProperties.Maximum - scrollProperties.LargeChange + 1;
 			}
 			if (scrollProperties.Value != newValue)
 			{
