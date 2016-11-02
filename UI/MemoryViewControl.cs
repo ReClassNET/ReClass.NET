@@ -44,8 +44,8 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Settings Settings { get; set; }
 
-		private readonly List<HotSpot> hotSpots;
-		private readonly List<HotSpot> selected;
+		private readonly List<HotSpot> hotSpots = new List<HotSpot>();
+		private readonly List<HotSpot> selected = new List<HotSpot>();
 
 		public IEnumerable<BaseNode> SelectedNodes => selected.Select(s => s.Node);
 
@@ -56,11 +56,6 @@ namespace ReClassNET.UI
 		public MemoryViewControl()
 		{
 			InitializeComponent();
-
-			DoubleBuffered = true;
-
-			hotSpots = new List<HotSpot>();
-			selected = new List<HotSpot>();
 
 			font = new FontEx
 			{
@@ -226,7 +221,7 @@ namespace ReClassNET.UI
 											continue;
 										}
 
-										var containerNode = selectedNode.ParentNode as BaseContainerNode;
+										var containerNode = selectedNode.ParentNode;
 										if (containerNode == null)
 										{
 											continue;
@@ -403,6 +398,74 @@ namespace ReClassNET.UI
 			}
 		}
 
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if (editBox.Visible == false) // Only process keys if the edit field is not visible.
+			{
+				if (selected.Count > 0)
+				{
+					var key = keyData & Keys.KeyCode;
+					var modifier = keyData & Keys.Modifiers;
+
+					if (key == Keys.Delete)
+					{
+						RemoveSelectedNodes();
+
+						return true;
+					}
+					else if (key == Keys.Menu)
+					{
+						selectedNodeContextMenuStrip.Show(this, 10, 10);
+
+						return true;
+					}
+					else if (key == Keys.Down || key == Keys.Up)
+					{
+						HotSpot toSelect = null;
+						if (key == Keys.Down)
+						{
+							var lastNode = selected.Last().Node;
+							toSelect = hotSpots.SkipWhile(h => h.Node != lastNode).Skip(1).Where(h => h.Type == HotSpotType.Select).FirstOrDefault();
+						}
+						else
+						{
+							var firstNode = selected.Last().Node;
+							toSelect = hotSpots.TakeWhile(h => h.Node != firstNode).Where(h => h.Type == HotSpotType.Select).LastOrDefault();
+						}
+
+						if (toSelect != null)
+						{
+							if (modifier != Keys.Shift)
+							{
+								ClearSelection();
+							}
+
+							if (toSelect.Node.IsSelected)
+							{
+								toSelect.Node.IsSelected = false;
+
+								selected.Remove(toSelect);
+							}
+							else
+							{
+								toSelect.Node.IsSelected = true;
+
+								selected.Add(toSelect);
+							}
+
+							OnSelectionChanged();
+
+							Invalidate();
+
+							return true;
+						}
+					}
+				}
+			}
+
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
+
 		private void repaintTimer_Tick(object sender, EventArgs e)
 		{
 			if (DesignMode)
@@ -553,6 +616,8 @@ namespace ReClassNET.UI
 			selected.Clear();
 
 			OnSelectionChanged();
+
+			Invalidate();
 		}
 
 		private void removeToolStripMenuItem_Click(object sender, EventArgs e)

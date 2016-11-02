@@ -47,6 +47,7 @@
 			this.uInt8ToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.bitsToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
+			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
 			this.floatToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.doubleToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
@@ -70,7 +71,6 @@
 			this.arrayOfPointersToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.vTablePointerToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.functionPointerToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
-			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
 			this.addBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.add4BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.add8BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
@@ -291,6 +291,11 @@
 			this.bitsToolStripMenuItem.Value = typeof(ReClassNET.Nodes.BitFieldNode);
 			this.bitsToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
 			// 
+			// toolStripSeparator11
+			// 
+			this.toolStripSeparator11.Name = "toolStripSeparator11";
+			this.toolStripSeparator11.Size = new System.Drawing.Size(170, 6);
+			// 
 			// floatToolStripMenuItem
 			// 
 			this.floatToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Float;
@@ -477,11 +482,6 @@
 			this.functionPointerToolStripMenuItem.Text = "Function Pointer";
 			this.functionPointerToolStripMenuItem.Value = typeof(ReClassNET.Nodes.FunctionPtrNode);
 			this.functionPointerToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
-			// 
-			// toolStripSeparator11
-			// 
-			this.toolStripSeparator11.Name = "toolStripSeparator11";
-			this.toolStripSeparator11.Size = new System.Drawing.Size(170, 6);
 			// 
 			// addBytesToolStripMenuItem
 			// 
@@ -695,6 +695,7 @@
 			// MemoryViewControl
 			// 
 			this.Controls.Add(this.editBox);
+			this.DoubleBuffered = true;
 			this.Name = "MemoryViewControl";
 			this.Size = new System.Drawing.Size(150, 138);
 			this.selectedNodeContextMenuStrip.ResumeLayout(false);
