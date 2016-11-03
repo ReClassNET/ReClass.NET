@@ -52,6 +52,7 @@ namespace ReClassNET.DataExchange
 		Custom
 	}
 
+	[Serializable]
 	public class SchemaNode
 	{
 		public SchemaType Type { get; }
@@ -65,6 +66,7 @@ namespace ReClassNET.DataExchange
 		}
 	}
 
+	[Serializable]
 	public class SchemaReferenceNode : SchemaNode
 	{
 		public SchemaClassNode InnerNode { get; }
@@ -78,6 +80,7 @@ namespace ReClassNET.DataExchange
 		}
 	}
 
+	[Serializable]
 	public class SchemaVTableNode : SchemaNode
 	{
 		public List<SchemaNode> Nodes { get; } = new List<SchemaNode>();
@@ -89,6 +92,7 @@ namespace ReClassNET.DataExchange
 		}
 	}
 
+	[Serializable]
 	public class SchemaClassNode : SchemaNode
 	{
 		public string AddressFormula { get; set; }
@@ -101,10 +105,10 @@ namespace ReClassNET.DataExchange
 		}
 	}
 
+	/// <summary>Converts nodes to schema nodes and vice verca.</summary>
 	public class SchemaBuilder
 	{
-		private readonly List<SchemaClassNode> schema;
-
+		/// <summary>This map contains the mapping to build in nodes.</summary>
 		private static readonly Dictionary<SchemaType, Type> SchemaTypeToNodeTypeMap = new Dictionary<SchemaType, Type>
 		{
 			[SchemaType.Array] = typeof(ClassInstanceArrayNode),
@@ -144,6 +148,8 @@ namespace ReClassNET.DataExchange
 		};
 		private static readonly Dictionary<Type, SchemaType> NodeTypeToSchemaTypeMap = SchemaTypeToNodeTypeMap.ToDictionary(kp => kp.Value, kp => kp.Key);
 
+		private readonly List<SchemaClassNode> schema;
+
 		private SchemaBuilder(IEnumerable<SchemaClassNode> classes)
 		{
 			Contract.Requires(classes != null);
@@ -152,6 +158,9 @@ namespace ReClassNET.DataExchange
 			schema = classes.ToList();
 		}
 
+		/// <summary>Initializes this object from the given list of <see cref="SchemaClassNode"/>.</summary>
+		/// <param name="classes">The classes.</param>
+		/// <returns>An instance of <see cref="SchemaBuilder"/>.</returns>
 		public static SchemaBuilder FromSchema(IEnumerable<SchemaClassNode> classes)
 		{
 			Contract.Requires(classes != null);
@@ -160,13 +169,17 @@ namespace ReClassNET.DataExchange
 			return new SchemaBuilder(classes);
 		}
 
-		public static SchemaBuilder FromNodes(IEnumerable<ClassNode> classes, ILogger logger)
+		/// <summary>Initializes this object from the given list of <see cref="ClassNode"/>.</summary>
+		/// <param name="classes">The classes.</param>
+		/// <param name="logger">The logger.</param>
+		/// <returns>An instance of <see cref="SchemaBuilder"/> which contains the schema of the classes.</returns>
+		public static SchemaBuilder FromClasses(IEnumerable<ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(classes != null);
 			Contract.Requires(logger != null);
 			Contract.Ensures(Contract.Result<SchemaBuilder>() != null);
 
-			var sclasses = classes.ToDictionary(
+			var classMap = classes.ToDictionary(
 				c => c,
 				c => new SchemaClassNode
 				{
@@ -176,87 +189,109 @@ namespace ReClassNET.DataExchange
 				}
 			);
 
-			foreach (var c in classes)
+			foreach (var classNode in classes)
 			{
-				var sc = sclasses[c];
-				foreach (var n in c.Nodes)
+				var schemaClass = classMap[classNode];
+
+				foreach (var node in classNode.Nodes)
 				{
-					SchemaType type;
-					if (!NodeTypeToSchemaTypeMap.TryGetValue(n.GetType(), out type))
+					SchemaNode schemaNode;
+					if (TryCreateSchemaFromNode(node, classMap, logger, out schemaNode))
 					{
-						var converter = CustomSchemaConvert.GetReadConverter(n);
-						if (converter != null)
-						{
-							sc.Nodes.Add(converter.CreateSchemaFromNode(n, sclasses, logger));
-							continue;
-						}
-
-						logger.Log(LogLevel.Error, $"Skipping node with unknown type: {n.GetType()}");
-
-						continue;
+						schemaClass.Nodes.Add(schemaNode);
 					}
-
-					SchemaNode node;
-					if (n is BaseReferenceNode)
-					{
-						node = new SchemaReferenceNode(
-							type,
-							sclasses[(n as BaseReferenceNode).InnerNode as ClassNode]
-						);
-					}
-					else if (n is VTableNode)
-					{
-						var vtableNode = new SchemaVTableNode();
-
-						vtableNode.Nodes.AddRange(((VTableNode)n).Nodes.Select(m => new SchemaNode(SchemaType.None)
-						{
-							Name = m.Name,
-							Comment = m.Comment
-						}));
-
-						node = vtableNode;
-					}
-					else
-					{
-						node = new SchemaNode(type);
-					}
-					node.Name = n.Name;
-					node.Comment = n.Comment;
-
-					var arrayNode = n as BaseArrayNode;
-					if (arrayNode != null)
-					{
-						node.Count = arrayNode.Count;
-					}
-					var textNode = n as BaseTextNode;
-					if (textNode != null)
-					{
-						node.Count = textNode.CharacterCount;
-					}
-					var bitFieldNode = n as BitFieldNode;
-					if (bitFieldNode != null)
-					{
-						node.Count = bitFieldNode.Bits;
-					}
-
-					sc.Nodes.Add(node);
 				}
 			}
 
-			return new SchemaBuilder(sclasses.Values);
+			return new SchemaBuilder(classMap.Values);
 		}
 
-		public IList<SchemaClassNode> BuildSchema()
+		public static bool TryCreateSchemaFromNode(BaseNode node, IReadOnlyDictionary<ClassNode, SchemaClassNode> classes, ILogger logger, out SchemaNode schemaNode)
+		{
+			Contract.Requires(node != null);
+			Contract.Requires(classes != null);
+			Contract.Requires(Contract.ForAll(classes.Keys, k => k != null));
+			Contract.Requires(Contract.ForAll(classes.Values, v => v != null));
+			Contract.Requires(logger != null);
+
+			schemaNode = null;
+
+			SchemaType type;
+			if (!NodeTypeToSchemaTypeMap.TryGetValue(node.GetType(), out type))
+			{
+				var converter = CustomSchemaConvert.GetReadConverter(node);
+				if (converter != null)
+				{
+					schemaNode = converter.CreateSchemaFromNode(node, classes, logger);
+
+					return true;
+				}
+
+				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.GetType()}");
+
+				return false;
+			}
+
+			if (node is BaseReferenceNode)
+			{
+				schemaNode = new SchemaReferenceNode(
+					type,
+					classes[(node as BaseReferenceNode).InnerNode as ClassNode]
+				);
+			}
+			else if (node is VTableNode)
+			{
+				var vtableNode = new SchemaVTableNode();
+
+				vtableNode.Nodes.AddRange(((VTableNode)node).Nodes.Select(m => new SchemaNode(SchemaType.None)
+				{
+					Name = m.Name,
+					Comment = m.Comment
+				}));
+
+				schemaNode = vtableNode;
+			}
+			else
+			{
+				schemaNode = new SchemaNode(type);
+			}
+			schemaNode.Name = node.Name;
+			schemaNode.Comment = node.Comment;
+
+			var arrayNode = node as BaseArrayNode;
+			if (arrayNode != null)
+			{
+				schemaNode.Count = arrayNode.Count;
+			}
+			var textNode = node as BaseTextNode;
+			if (textNode != null)
+			{
+				schemaNode.Count = textNode.CharacterCount;
+			}
+			var bitFieldNode = node as BitFieldNode;
+			if (bitFieldNode != null)
+			{
+				schemaNode.Count = bitFieldNode.Bits;
+			}
+
+			return true;
+		}
+
+		/// <summary>Builds the schema.</summary>
+		/// <returns>A list of <see cref="SchemaClassNode"/>.</returns>
+		public List<SchemaClassNode> BuildSchema()
 		{
 			Contract.Ensures(Contract.Result<IList<SchemaClassNode>>() != null);
 
 			return schema;
 		}
 
-		public IList<ClassNode> BuildNodes(ILogger logger)
+		/// <summary>Builds the nodes.</summary>
+		/// <param name="logger">The logger.</param>
+		/// <returns>A list of.</returns>
+		public List<ClassNode> BuildNodes(ILogger logger)
 		{
 			Contract.Requires(logger != null);
-
 			Contract.Ensures(Contract.Result<IList<ClassNode>>() != null);
 
 			var classes = schema.ToDictionary(
@@ -269,15 +304,15 @@ namespace ReClassNET.DataExchange
 				}
 			);
 
-			foreach (var sc in schema)
+			foreach (var schemaClassNode in schema)
 			{
-				var cn = classes[sc];
-				foreach (var sn in sc.Nodes)
+				var classNode = classes[schemaClassNode];
+				foreach (var schemaNode in schemaClassNode.Nodes)
 				{
 					// Special case padding type (known as Custom in original ReClass)
-					if (sn.Type == SchemaType.Padding)
+					if (schemaNode.Type == SchemaType.Padding)
 					{
-						var size = sn.Count;
+						var size = schemaNode.Count;
 						while (size != 0)
 						{
 							BaseNode node = null;
@@ -301,91 +336,20 @@ namespace ReClassNET.DataExchange
 								node = new Hex8Node();
 							}
 
-							node.Comment = sn.Comment ?? string.Empty;
+							node.Comment = schemaNode.Comment ?? string.Empty;
 
 							size -= node.MemorySize;
 
-							cn.AddNode(node);
+							classNode.AddNode(node);
 						}
 					}
 					else
 					{
-						if (sn.Type == SchemaType.Custom)
+						BaseNode node;
+						if (TryCreateNodeFromSchema(schemaNode, classNode, classes, logger, out node))
 						{
-							var converter = CustomSchemaConvert.GetWriteConverter(sn);
-							if (converter != null)
-							{
-								cn.AddNode(converter.CreateNodeFromSchema(sn, classes, logger));
-
-								continue;
-							}
-
-							logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {sn.GetType()}");
-
-							continue;
+							classNode.AddNode(node);
 						}
-
-						var node = Activator.CreateInstance(SchemaTypeToNodeTypeMap[sn.Type]) as BaseNode;
-						if (node == null)
-						{
-							logger.Log(LogLevel.Error, $"Could not create node of type: {SchemaTypeToNodeTypeMap[sn.Type]}");
-
-							continue;
-						}
-
-						if (!string.IsNullOrEmpty(sn.Name))
-						{
-							node.Name = sn.Name;
-						}
-						node.Comment = sn.Comment ?? string.Empty;
-
-						var referenceNode = node as BaseReferenceNode;
-						if (referenceNode != null)
-						{
-							var srn = sn as SchemaReferenceNode;
-
-							if (node is ClassInstanceNode || node is ClassInstanceArrayNode)
-							{
-								if (!ClassManager.IsCycleFree(cn, classes[srn.InnerNode], classes.Values))
-								{
-									logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {node.Name}");
-
-									continue;
-								}
-							}
-							referenceNode.ChangeInnerNode(classes[srn.InnerNode]);
-						}
-
-						var vtableNode = node as VTableNode;
-						if (vtableNode != null)
-						{
-							(sn as SchemaVTableNode).Nodes.Select(n => new VMethodNode()
-							{
-								Name = n.Name,
-								Comment = n.Comment
-							}).ForEach(n => vtableNode.AddNode(n));
-						}
-
-						if (sn.Count > 0)
-						{
-							var arrayNode = node as BaseArrayNode;
-							if (arrayNode != null)
-							{
-								arrayNode.Count = sn.Count;
-							}
-							var textNode = node as BaseTextNode;
-							if (textNode != null)
-							{
-								textNode.CharacterCount = sn.Count;
-							}
-							var bitFieldNode = node as BitFieldNode;
-							if (bitFieldNode != null)
-							{
-								bitFieldNode.Bits = sn.Count;
-							}
-						}
-
-						cn.AddNode(node);
 					}
 				}
 			}
@@ -393,6 +357,95 @@ namespace ReClassNET.DataExchange
 			classes.Values.ForEach(c => c.UpdateOffsets());
 
 			return classes.Values.ToList();
+		}
+
+		public static bool TryCreateNodeFromSchema(SchemaNode schemaNode, ClassNode parentNode, IReadOnlyDictionary<SchemaClassNode, ClassNode> classes, ILogger logger, out BaseNode node)
+		{
+			Contract.Requires(schemaNode != null);
+			Contract.Requires(parentNode != null);
+			Contract.Requires(classes != null);
+			Contract.Requires(Contract.ForAll(classes.Keys, k => k != null));
+			Contract.Requires(Contract.ForAll(classes.Values, v => v != null));
+			Contract.Requires(logger != null);
+
+			node = null;
+
+			if (schemaNode.Type == SchemaType.Custom)
+			{
+				var converter = CustomSchemaConvert.GetWriteConverter(schemaNode);
+				if (converter != null)
+				{
+					node = converter.CreateNodeFromSchema(schemaNode, classes, logger);
+
+					return true;
+				}
+
+				logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {schemaNode.GetType()}");
+
+				return false;
+			}
+
+			node = Activator.CreateInstance(SchemaTypeToNodeTypeMap[schemaNode.Type]) as BaseNode;
+			if (node == null)
+			{
+				logger.Log(LogLevel.Error, $"Could not create node of type: {SchemaTypeToNodeTypeMap[schemaNode.Type]}");
+
+				return false;
+			}
+
+			if (!string.IsNullOrEmpty(schemaNode.Name))
+			{
+				node.Name = schemaNode.Name;
+			}
+			node.Comment = schemaNode.Comment ?? string.Empty;
+
+			var referenceNode = node as BaseReferenceNode;
+			if (referenceNode != null)
+			{
+				var schemaReferenceNode = schemaNode as SchemaReferenceNode;
+
+				if (node is ClassInstanceNode || node is ClassInstanceArrayNode)
+				{
+					if (!ClassManager.IsCycleFree(parentNode, classes[schemaReferenceNode.InnerNode], classes.Values))
+					{
+						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {node.Name}");
+
+						return false;
+					}
+				}
+				referenceNode.ChangeInnerNode(classes[schemaReferenceNode.InnerNode]);
+			}
+
+			var vtableNode = node as VTableNode;
+			if (vtableNode != null)
+			{
+				(schemaNode as SchemaVTableNode).Nodes.Select(n => new VMethodNode()
+				{
+					Name = n.Name,
+					Comment = n.Comment
+				}).ForEach(n => vtableNode.AddNode(n));
+			}
+
+			if (schemaNode.Count > 0)
+			{
+				var arrayNode = node as BaseArrayNode;
+				if (arrayNode != null)
+				{
+					arrayNode.Count = schemaNode.Count;
+				}
+				var textNode = node as BaseTextNode;
+				if (textNode != null)
+				{
+					textNode.CharacterCount = schemaNode.Count;
+				}
+				var bitFieldNode = node as BitFieldNode;
+				if (bitFieldNode != null)
+				{
+					bitFieldNode.Bits = schemaNode.Count;
+				}
+			}
+
+			return true;
 		}
 	}
 }

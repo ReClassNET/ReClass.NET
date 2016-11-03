@@ -893,6 +893,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Page_Paste {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Page_Paste", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Pdb {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Pdb", resourceCulture);
@@ -1111,7 +1121,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 2016/10/31 22:37:29
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2016/11/03 13:06:31
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {

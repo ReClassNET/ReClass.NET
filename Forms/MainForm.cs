@@ -257,7 +257,7 @@ namespace ReClassNET.Forms
 			}
 
 			var file = new ReClassNetFile();
-			file.Save(projectPath, SchemaBuilder.FromNodes(ClassManager.Classes, logger), logger);
+			file.Save(projectPath, SchemaBuilder.FromClasses(ClassManager.Classes, logger), logger);
 		}
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)

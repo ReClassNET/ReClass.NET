@@ -5,6 +5,8 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ReClassNET.DataExchange;
+using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
 
@@ -683,6 +685,31 @@ namespace ReClassNET.UI
 			{
 				item.Click -= memoryTypeToolStripMenuItem_Click;
 				changeTypeToolStripMenuItem.DropDownItems.Remove(item);
+			}
+		}
+
+		private void copyNodeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (selectedNodes.Count > 0)
+			{
+				ReClassClipboard.Copy(selectedNodes.Select(h => h.Node), ClassManager.Classes);
+			}
+		}
+
+		private void pasteNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (selectedNodes.Count == 1)
+			{
+				var selectedNode = selectedNodes.First().Node;
+				var parent = selectedNode.ParentNode as ClassNode;
+				if (parent != null)
+				{
+					var nodes = ReClassClipboard.Paste(parent, ClassManager.Classes);
+					foreach (var node in nodes)
+					{
+						parent.InsertNode(FindNodeIndex(selectedNode), node);
+					}
+				}
 			}
 		}
 	}
