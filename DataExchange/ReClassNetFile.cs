@@ -230,12 +230,12 @@ namespace ReClassNET.DataExchange
 				);
 			}
 
-			if (node is SchemaCustomNode)
+			if (node.Type == SchemaType.Custom)
 			{
-				var converter = CustomSchemaConvert.GetWriteConverter(node as SchemaCustomNode);
+				var converter = CustomSchemaConvert.GetWriteConverter(node);
 				if (converter != null)
 				{
-					return converter.CreateElementFromSchema(node as SchemaCustomNode, logger);
+					return converter.CreateElementFromSchema(node, logger);
 				}
 
 				logger.Log(LogLevel.Error, $"Skipping node with unknown type converter: {node.Name}");

@@ -24,34 +24,34 @@ namespace ReClassNET.DataExchange
 		/// <summary>Determine if the instance can handle the schema.</summary>
 		/// <param name="node">The node.</param>
 		/// <returns>True if the instance can handle the schema, false if not.</returns>
-		bool CanHandleSchema(SchemaCustomNode node);
+		bool CanHandleSchema(SchemaNode node);
 
 		/// <summary>Creates a schema node from the xml element. This method gets only called if <see cref="CanHandleElement(XElement)"/> returned true.</summary>
 		/// <param name="element">The element to create the schema from.</param>
 		/// <param name="classes">The list of classes which correspond to the schema.</param>
 		/// <param name="logger">The logger used to output messages.</param>
 		/// <returns>The schema node for the xml element.</returns>
-		SchemaCustomNode CreateSchemaFromElement(XElement element, IReadOnlyDictionary<string, SchemaClassNode> classes, ILogger logger);
+		SchemaNode CreateSchemaFromElement(XElement element, IReadOnlyDictionary<string, SchemaClassNode> classes, ILogger logger);
 
 		/// <summary>Creates a xml element from the schema node. This method gets only called if <see cref="CanHandleSchema(SchemaCustomNode)"/> returned true.</summary>
 		/// <param name="node">The schema node to create the xml element from.</param>
 		/// <param name="logger">The logger used to output messages.</param>
 		/// <returns>The xml element for the schema node.</returns>
-		XElement CreateElementFromSchema(SchemaCustomNode node, ILogger logger);
+		XElement CreateElementFromSchema(SchemaNode node, ILogger logger);
 
 		/// <summary>Creates a schema node from the memory node. This method gets only called if <see cref="CanHandleNode(BaseNode)"/> returned true.</summary>
 		/// <param name="node">The node to create the schema from.</param>
 		/// <param name="classes">The list of classes which correspond to the schema.</param>
 		/// <param name="logger">The logger used to output messages.</param>
 		/// <returns>The schema node for the memory node.</returns>
-		SchemaCustomNode CreateSchemaFromNode(BaseNode node, IReadOnlyDictionary<ClassNode, SchemaClassNode> classes, ILogger logger);
+		SchemaNode CreateSchemaFromNode(BaseNode node, IReadOnlyDictionary<ClassNode, SchemaClassNode> classes, ILogger logger);
 
 		/// <summary>Creates a node from the schema node. This method gets only called if <see cref="CanHandleSchema(SchemaCustomNode)"/> returned true.</summary>
 		/// <param name="schema">The schema node to create the memory node from.</param>
 		/// <param name="classes">The list of classes which correspond to the schema.</param>
 		/// <param name="logger">The logger used to output messages.</param>
 		/// <returns>The memory node for the schema node.</returns>
-		BaseNode CreateNodeFromSchema(SchemaCustomNode schema, IReadOnlyDictionary<SchemaClassNode, ClassNode> classes, ILogger logger);
+		BaseNode CreateNodeFromSchema(SchemaNode schema, IReadOnlyDictionary<SchemaClassNode, ClassNode> classes, ILogger logger);
 	}
 
 	[ContractClassFor(typeof(ICustomSchemaConverter))]
@@ -71,14 +71,14 @@ namespace ReClassNET.DataExchange
 			throw new NotImplementedException();
 		}
 
-		public bool CanHandleSchema(SchemaCustomNode node)
+		public bool CanHandleSchema(SchemaNode node)
 		{
 			Contract.Requires(node != null);
 
 			throw new NotImplementedException();
 		}
 
-		public SchemaCustomNode CreateSchemaFromNode(BaseNode node, IReadOnlyDictionary<ClassNode, SchemaClassNode> classes, ILogger logger)
+		public SchemaNode CreateSchemaFromNode(BaseNode node, IReadOnlyDictionary<ClassNode, SchemaClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(node != null);
 			Contract.Requires(classes != null);
@@ -86,12 +86,12 @@ namespace ReClassNET.DataExchange
 			Contract.Requires(Contract.ForAll(classes.Values, v => v != null));
 			Contract.Requires(logger != null);
 
-			Contract.Ensures(Contract.Result<SchemaCustomNode>() != null);
+			Contract.Ensures(Contract.Result<SchemaNode>() != null);
 
 			throw new NotImplementedException();
 		}
 
-		public SchemaCustomNode CreateSchemaFromElement(XElement element, IReadOnlyDictionary<string, SchemaClassNode> classes, ILogger logger)
+		public SchemaNode CreateSchemaFromElement(XElement element, IReadOnlyDictionary<string, SchemaClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(element != null);
 			Contract.Requires(classes != null);
@@ -102,7 +102,7 @@ namespace ReClassNET.DataExchange
 			throw new NotImplementedException();
 		}
 
-		public BaseNode CreateNodeFromSchema(SchemaCustomNode schema, IReadOnlyDictionary<SchemaClassNode, ClassNode> classes, ILogger logger)
+		public BaseNode CreateNodeFromSchema(SchemaNode schema, IReadOnlyDictionary<SchemaClassNode, ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(schema != null);
 			Contract.Requires(classes != null);
@@ -115,7 +115,7 @@ namespace ReClassNET.DataExchange
 			throw new NotImplementedException();
 		}
 
-		public XElement CreateElementFromSchema(SchemaCustomNode node, ILogger logger)
+		public XElement CreateElementFromSchema(SchemaNode node, ILogger logger)
 		{
 			Contract.Requires(node != null);
 			Contract.Requires(logger != null);
@@ -158,7 +158,7 @@ namespace ReClassNET.DataExchange
 			return converters.Where(c => c.CanHandleNode(node)).FirstOrDefault();
 		}
 
-		public static ICustomSchemaConverter GetWriteConverter(SchemaCustomNode node)
+		public static ICustomSchemaConverter GetWriteConverter(SchemaNode node)
 		{
 			Contract.Requires(node != null);
 

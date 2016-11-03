@@ -11,6 +11,7 @@ namespace ReClassNET.DataExchange
 	public enum SchemaType
 	{
 		None,
+		Padding,
 
 		Array,
 		ClassPtrArray,
@@ -48,8 +49,6 @@ namespace ReClassNET.DataExchange
 		VMethod,
 		BitField,
 
-		Padding,
-
 		Custom
 	}
 
@@ -63,15 +62,6 @@ namespace ReClassNET.DataExchange
 		public SchemaNode(SchemaType type)
 		{
 			Type = type;
-		}
-	}
-
-	public class SchemaCustomNode : SchemaNode
-	{
-		public SchemaCustomNode()
-			: base(SchemaType.Custom)
-		{
-
 		}
 	}
 
@@ -320,12 +310,12 @@ namespace ReClassNET.DataExchange
 					}
 					else
 					{
-						if (sn is SchemaCustomNode)
+						if (sn.Type == SchemaType.Custom)
 						{
-							var converter = CustomSchemaConvert.GetWriteConverter(sn as SchemaCustomNode);
+							var converter = CustomSchemaConvert.GetWriteConverter(sn);
 							if (converter != null)
 							{
-								cn.AddNode(converter.CreateNodeFromSchema(sn as SchemaCustomNode, classes, logger));
+								cn.AddNode(converter.CreateNodeFromSchema(sn, classes, logger));
 
 								continue;
 							}
