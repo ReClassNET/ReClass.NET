@@ -83,7 +83,7 @@ namespace ReClassNET.CodeGenerator
 			Contract.Ensures(Contract.Result<IEnumerable<MemberDefinition>>() != null);
 			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<MemberDefinition>>(), d => d != null));
 
-			foreach (var member in members.Where(n => !(n is BaseHexNode || n is BaseReferenceNode)))
+			foreach (var member in members.Where(n => !(n is BaseHexNode)))
 			{
 				if (member is BitFieldNode)
 				{
