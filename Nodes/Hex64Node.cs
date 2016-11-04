@@ -1,42 +1,10 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using ReClassNET.Memory;
+﻿using ReClassNET.Memory;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
 	public class Hex64Node : BaseHexCommentNode
 	{
-		[StructLayout(LayoutKind.Explicit)]
-		struct UInt64FloatDoubleData
-		{
-			[FieldOffset(0)]
-			public long LongValue;
-
-			public IntPtr IntPtr =>
-#if WIN32
-			unchecked((IntPtr)(int)LongValue);
-#else
-			unchecked((IntPtr)LongValue);
-#endif
-
-			[FieldOffset(0)]
-			public ulong ULongValue;
-
-			public UIntPtr UIntPtr =>
-#if WIN32
-			unchecked((UIntPtr)(uint)ULongValue);
-#else
-			unchecked((UIntPtr)ULongValue);
-#endif
-
-			[FieldOffset(0)]
-			public float FloatValue;
-
-			[FieldOffset(0)]
-			public double DoubleValue;
-		}
-
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 8;
 

@@ -150,6 +150,7 @@
     <Compile Include="Forms\InputBytesForm.Designer.cs">
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Memory\UnionDataType.cs" />
     <Compile Include="UI\BannerBox.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -1,21 +1,10 @@
-﻿using System.Runtime.InteropServices;
-using ReClassNET.Memory;
+﻿using ReClassNET.Memory;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
 	public class Hex8Node : BaseHexNode
 	{
-		[StructLayout(LayoutKind.Explicit)]
-		struct UInt8Data
-		{
-			[FieldOffset(0)]
-			public sbyte SByteValue;
-
-			[FieldOffset(0)]
-			public byte ByteValue;
-		}
-
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 1;
 
