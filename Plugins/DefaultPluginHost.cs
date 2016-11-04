@@ -2,12 +2,12 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Resources;
+using ReClassNET.CodeGenerator;
+using ReClassNET.DataExchange;
 using ReClassNET.Forms;
 using ReClassNET.Logger;
+using ReClassNET.Memory;
 using ReClassNET.Nodes;
-using ReClassNET.DataExchange;
-using ReClassNET.Util;
-using ReClassNET.CodeGenerator;
 
 namespace ReClassNET.Plugins
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -14,7 +15,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
 
-		public override string GetToolTipText(HotSpot spot, Memory memory)
+		public override string GetToolTipText(HotSpot spot, MemoryBuffer memory)
 		{
 			var ptr = memory.ReadObject<IntPtr>(Offset);
 
@@ -84,7 +85,7 @@ namespace ReClassNET.Nodes
 			return h;
 		}
 
-		private void DisassembleRemoteCode(Memory memory, IntPtr address)
+		private void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address)
 		{
 			Contract.Requires(memory != null);
 

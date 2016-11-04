@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using ReClassNET.Memory;
 using ReClassNET.Util;
 
 namespace ReClassNET.AddressParser

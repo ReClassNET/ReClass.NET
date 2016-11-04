@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Forms;
+using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;
 

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
+using ReClassNET.Memory;
 using ReClassNET.Util;
 
 namespace ReClassNET.Plugins

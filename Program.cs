@@ -2,9 +2,10 @@
 using System.Globalization;
 using System.Windows.Forms;
 using ReClassNET.Forms;
+using ReClassNET.Logger;
+using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;
-using ReClassNET.Logger;
 
 namespace ReClassNET
 {

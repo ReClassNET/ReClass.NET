@@ -2,10 +2,11 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using System.Text;
+using ReClassNET.Util;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Memory
 {
-	public class Memory
+	public class MemoryBuffer
 	{
 		public RemoteProcess Process { get; set; }
 
@@ -28,14 +29,14 @@ namespace ReClassNET.Util
 
 		public int Offset { get; set; }
 
-		public Memory()
+		public MemoryBuffer()
 		{
 			Contract.Ensures(data != null);
 
 			data = new byte[0];
 		}
 
-		public Memory(Memory other)
+		public MemoryBuffer(MemoryBuffer other)
 		{
 			Contract.Requires(other != null);
 			Contract.Ensures(data != null);
@@ -43,11 +44,11 @@ namespace ReClassNET.Util
 			data = other.data;
 		}
 
-		public Memory Clone()
+		public MemoryBuffer Clone()
 		{
-			Contract.Ensures(Contract.Result<Memory>() != null);
+			Contract.Ensures(Contract.Result<MemoryBuffer>() != null);
 
-			return new Memory(this)
+			return new MemoryBuffer(this)
 			{
 				Offset = Offset,
 				Process = Process

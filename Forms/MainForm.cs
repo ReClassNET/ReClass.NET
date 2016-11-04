@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using ReClassNET.CodeGenerator;
 using ReClassNET.DataExchange;
 using ReClassNET.Logger;
+using ReClassNET.Memory;
 using ReClassNET.Nodes;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
@@ -21,7 +22,7 @@ namespace ReClassNET.Forms
 		private readonly NativeHelper nativeHelper;
 
 		private readonly RemoteProcess remoteProcess;
-		private readonly Memory memory;
+		private readonly MemoryBuffer memory;
 
 		private readonly PluginManager pluginManager;
 
@@ -58,7 +59,7 @@ namespace ReClassNET.Forms
 				}
 			};
 
-			memory = new Memory
+			memory = new MemoryBuffer
 			{
 				Process = remoteProcess
 			};

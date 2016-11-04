@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.InteropServices;
+using ReClassNET.Util;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Memory
 {
 	public class NativeHelper : IDisposable
 	{

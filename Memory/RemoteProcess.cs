@@ -9,8 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using ReClassNET.AddressParser;
 using ReClassNET.SymbolReader;
+using ReClassNET.Util;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Memory
 {
 	public class RemoteProcess
 	{

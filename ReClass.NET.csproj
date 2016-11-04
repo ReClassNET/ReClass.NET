@@ -246,11 +246,11 @@
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LogLevel.cs" />
     <Compile Include="Logger\NullLogger.cs" />
-    <Compile Include="Util\Memory.cs" />
+    <Compile Include="Memory\Memory.cs" />
     <Compile Include="UI\MemoryViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Util\NativeHelper.cs" />
+    <Compile Include="Memory\NativeHelper.cs" />
     <Compile Include="Util\NativeMethods.cs" />
     <Compile Include="Nodes\ClassInstanceArrayNode.cs" />
     <Compile Include="Nodes\BaseArrayNode.cs" />
@@ -315,10 +315,10 @@
     <Compile Include="Plugins\Plugin.cs" />
     <Compile Include="Plugins\PluginInfo.cs" />
     <Compile Include="Plugins\PluginManager.cs" />
-    <Compile Include="Util\ProcessInfo.cs" />
+    <Compile Include="Memory\ProcessInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\RemoteProcess.cs" />
+    <Compile Include="Memory\RemoteProcess.cs" />
     <Compile Include="UI\ScrollableCustomControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

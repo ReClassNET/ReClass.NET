@@ -5,7 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Dia2Lib;
 using Microsoft.Win32;
-using ReClassNET.Util;
+using ReClassNET.Memory;
 
 namespace ReClassNET.SymbolReader
 {

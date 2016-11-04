@@ -1,4 +1,5 @@
 ﻿using System;
+using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -6,7 +7,7 @@ namespace ReClassNET.Nodes
 {
 	public class ClassPtrArrayNode : BaseArrayNode
 	{
-		private readonly Memory memory = new Memory();
+		private readonly MemoryBuffer memory = new MemoryBuffer();
 
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size * Count;

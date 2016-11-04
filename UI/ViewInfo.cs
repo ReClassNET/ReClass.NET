@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using ReClassNET.Util;
+using ReClassNET.Memory;
 
 namespace ReClassNET.UI
 {
@@ -10,7 +10,7 @@ namespace ReClassNET.UI
 		public Graphics Context { get; set; }
 		public FontEx Font { get; set; }
 
-		public Memory Memory { get; set; }
+		public MemoryBuffer Memory { get; set; }
 
 		public Rectangle ClientArea { get; set; }
 		public List<HotSpot> HotSpots { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
+using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -23,7 +23,7 @@ namespace ReClassNET.Nodes
 		/// <param name="spot">The spot.</param>
 		/// <param name="memory">The process memory.</param>
 		/// <returns>The information to show in a tool tip.</returns>
-		public override string GetToolTipText(HotSpot spot, Memory memory)
+		public override string GetToolTipText(HotSpot spot, MemoryBuffer memory)
 		{
 			var b = memory.ReadByte(Offset);
 

@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
+using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -137,7 +138,7 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		public void UpdateAddress(Memory memory)
+		public void UpdateAddress(MemoryBuffer memory)
 		{
 			Contract.Requires(memory != null);
 

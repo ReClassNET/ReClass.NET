@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Linq;
+using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
 	public class VTableNode : BaseContainerNode
 	{
-		private readonly Memory memory = new Memory();
+		private readonly MemoryBuffer memory = new MemoryBuffer();
 
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;

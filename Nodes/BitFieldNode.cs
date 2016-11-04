@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -63,7 +63,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Converts the memory value to a bit string.</summary>
 		/// <param name="memory">The process memory.</param>
 		/// <returns>The value converted to a bit string.</returns>
-		private string ConvertValueToBitString(Memory memory)
+		private string ConvertValueToBitString(MemoryBuffer memory)
 		{
 			Contract.Requires(memory != null);
 			Contract.Ensures(Contract.Result<string>() != null);

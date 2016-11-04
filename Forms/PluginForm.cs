@@ -4,9 +4,9 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ReClassNET.Memory;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Forms
 {

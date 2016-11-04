@@ -1,7 +1,7 @@
-﻿using ReClassNET.Nodes;
-using System;
+﻿using System;
 using System.Drawing;
-using ReClassNET.Util;
+using ReClassNET.Memory;
+using ReClassNET.Nodes;
 
 namespace ReClassNET.UI
 {
@@ -39,6 +39,6 @@ namespace ReClassNET.UI
 
 		public IntPtr Address { get; set; }
 
-		public Memory Memory { get; set; }
+		public MemoryBuffer Memory { get; set; }
 	}
 }

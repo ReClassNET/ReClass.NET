@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using ReClassNET.Util;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Memory
 {
 	public class ProcessInfo : IDisposable
 	{

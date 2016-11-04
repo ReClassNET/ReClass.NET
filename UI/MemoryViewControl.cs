@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.DataExchange;
-using ReClassNET.Logger;
+using ReClassNET.Memory;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
 
@@ -40,7 +40,7 @@ namespace ReClassNET.UI
 
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Memory Memory { get; set; }
+		public MemoryBuffer Memory { get; set; }
 
 		private readonly List<HotSpot> hotSpots = new List<HotSpot>();
 		private readonly List<HotSpot> selectedNodes = new List<HotSpot>();
@@ -193,7 +193,7 @@ namespace ReClassNET.UI
 
 			changeTypeToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
 
-			pasteNodesToolStripMenuItem.Enabled = count == 1 && ReClassClipboard.ContainsData;
+			pasteNodesToolStripMenuItem.Enabled = count == 1 && ReClassClipboard.ContainsData(ReClassClipboard.Format.Nodes);
 			removeToolStripMenuItem.Enabled = !nodeIsClass;
 
 			copyAddressToolStripMenuItem.Enabled = !nodeIsClass;
@@ -721,7 +721,7 @@ namespace ReClassNET.UI
 		{
 			if (selectedNodes.Count > 0)
 			{
-				ReClassClipboard.Copy(selectedNodes.Select(h => h.Node), ClassManager.Classes, Program.Logger);
+				ReClassClipboard.CopyNodes(selectedNodes.Select(h => h.Node), ClassManager.Classes, Program.Logger);
 			}
 		}
 
@@ -733,7 +733,7 @@ namespace ReClassNET.UI
 				var parent = selectedNode.ParentNode as ClassNode;
 				if (parent != null)
 				{
-					var nodes = ReClassClipboard.Paste(parent, ClassManager.Classes, Program.Logger);
+					var nodes = ReClassClipboard.PasteNodes(parent, ClassManager.Classes, Program.Logger);
 					foreach (var node in nodes)
 					{
 						try
