@@ -130,7 +130,7 @@
 			this.cleanUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
 			this.generateCppCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.generateCSharpCodeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.generateCSharpCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -1084,7 +1084,7 @@
             this.cleanUnusedClassesToolStripMenuItem,
             this.toolStripSeparator16,
             this.generateCppCodeToolStripMenuItem,
-            this.generateCSharpCodeToolStripMenuItem1});
+            this.generateCSharpCodeToolStripMenuItem});
 			this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
 			this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
 			this.projectToolStripMenuItem.Text = "Project";
@@ -1112,11 +1112,11 @@
 			// 
 			// generateCSharpCodeToolStripMenuItem1
 			// 
-			this.generateCSharpCodeToolStripMenuItem1.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Code_Csharp;
-			this.generateCSharpCodeToolStripMenuItem1.Name = "generateCSharpCodeToolStripMenuItem1";
-			this.generateCSharpCodeToolStripMenuItem1.Size = new System.Drawing.Size(198, 22);
-			this.generateCSharpCodeToolStripMenuItem1.Text = "Generate C# Code";
-			this.generateCSharpCodeToolStripMenuItem1.Click += new System.EventHandler(this.generateCSharpCodeToolStripMenuItem1_Click);
+			this.generateCSharpCodeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Code_Csharp;
+			this.generateCSharpCodeToolStripMenuItem.Name = "generateCSharpCodeToolStripMenuItem";
+			this.generateCSharpCodeToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+			this.generateCSharpCodeToolStripMenuItem.Text = "Generate C# Code";
+			this.generateCSharpCodeToolStripMenuItem.Click += new System.EventHandler(this.generateCSharpCodeToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -1260,7 +1260,7 @@
 		private UI.TypeToolStripButton ptrArrayToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
 		private System.Windows.Forms.ToolStripMenuItem generateCppCodeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem generateCSharpCodeToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem generateCSharpCodeToolStripMenuItem;
 		private System.Windows.Forms.Timer processUpdateTimer;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
 		private System.Windows.Forms.ToolStripMenuItem loadSymbolToolStripMenuItem;

@@ -35,7 +35,7 @@ namespace ReClassNET.Plugins
 
 		/// <summary>Unregisters the node information reader.</summary>
 		/// <param name="reader">The node information reader.</param>
-		void UnregisterNodeInfoReader(INodeInfoReader reader);
+		void DeregisterNodeInfoReader(INodeInfoReader reader);
 
 		/// <summary>Registers a new node type.</summary>
 		/// <param name="type">The type of the node.</param>
@@ -49,7 +49,7 @@ namespace ReClassNET.Plugins
 		/// <param name="type">The type of the node.</param>
 		/// <param name="converter">The converter used to serialize the node.</param>
 		/// <param name="generator">The generator used to generate code from the node.</param>
-		void UnregisterNodeType(Type type, ICustomSchemaConverter converter, ICustomCodeGenerator generator);
+		void DeregisterNodeType(Type type, ICustomSchemaConverter converter, ICustomCodeGenerator generator);
 	}
 
 	[ContractClassFor(typeof(IPluginHost))]
@@ -122,14 +122,14 @@ namespace ReClassNET.Plugins
 			throw new NotImplementedException();
 		}
 
-		public void UnregisterNodeInfoReader(INodeInfoReader reader)
+		public void DeregisterNodeInfoReader(INodeInfoReader reader)
 		{
 			Contract.Requires(reader != null);
 
 			throw new NotImplementedException();
 		}
 
-		public void UnregisterNodeType(Type type, ICustomSchemaConverter converter, ICustomCodeGenerator generator)
+		public void DeregisterNodeType(Type type, ICustomSchemaConverter converter, ICustomCodeGenerator generator)
 		{
 			Contract.Requires(type != null);
 			Contract.Requires(converter != null);

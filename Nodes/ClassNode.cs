@@ -144,30 +144,31 @@ namespace ReClassNET.Nodes
 			Offset = memory.Process.ParseAddress(AddressFormula);
 		}
 
-		internal void AddNode(BaseNode node)
-		{
-			Contract.Requires(node != null);
-
-			InsertNode(nodes.Count, node);
-		}
-
-		public void InsertNode(int index, BaseNode node)
-		{
-			Contract.Requires(index >= 0);
-			Contract.Requires(node != null);
-
-			node.ParentNode = this;
-
-			nodes.Insert(index, node);
-
-			ChildHasChanged(node);
-		}
-
 		public override void InsertBytes(int index, int size)
 		{
 			base.InsertBytes(index, size);
 
 			ChildHasChanged(null);
+		}
+
+		public override void InsertNode(int index, BaseNode node)
+		{
+			if (node is ClassNode || node is VMethodNode)
+			{
+				return;
+			}
+
+			if (node is BaseReferenceNode)
+			{
+				if (!ClassManager.IsCycleFree(this, ((BaseReferenceNode)node).InnerNode))
+				{
+					throw new ClassCycleException();
+				}
+			}
+
+			base.InsertNode(index, node);
+
+			ChildHasChanged(node);
 		}
 
 		public override bool RemoveNode(BaseNode node)

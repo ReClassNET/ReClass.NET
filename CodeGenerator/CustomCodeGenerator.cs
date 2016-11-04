@@ -45,7 +45,7 @@ namespace ReClassNET.CodeGenerator
 			generators.Add(generator);
 		}
 
-		public static void UnregisterCustomType(ICustomCodeGenerator generator)
+		public static void DeregisterCustomType(ICustomCodeGenerator generator)
 		{
 			Contract.Requires(generator != null);
 

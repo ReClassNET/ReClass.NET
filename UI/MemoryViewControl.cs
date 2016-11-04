@@ -42,10 +42,6 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Memory Memory { get; set; }
 
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Settings Settings { get; set; }
-
 		private readonly List<HotSpot> hotSpots = new List<HotSpot>();
 		private readonly List<HotSpot> selectedNodes = new List<HotSpot>();
 
@@ -83,6 +79,35 @@ namespace ReClassNET.UI
 			HorizontalScroll.Visible = false;
 		}
 
+		internal void RegisterNodeType(Type type, string name, Image icon)
+		{
+			Contract.Requires(type != null);
+			Contract.Requires(name != null);
+			Contract.Requires(icon != null);
+
+			var item = new TypeToolStripMenuItem
+			{
+				Image = icon,
+				Text = name,
+				Value = type
+			};
+			item.Click += memoryTypeToolStripMenuItem_Click;
+
+			changeTypeToolStripMenuItem.DropDownItems.Add(item);
+		}
+
+		internal void DeregisterNodeType(Type type)
+		{
+			Contract.Requires(type != null);
+
+			var item = changeTypeToolStripMenuItem.DropDownItems.OfType<TypeToolStripMenuItem>().Where(i => i.Value == type).FirstOrDefault();
+			if (item != null)
+			{
+				item.Click -= memoryTypeToolStripMenuItem_Click;
+				changeTypeToolStripMenuItem.DropDownItems.Remove(item);
+			}
+		}
+
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
@@ -96,7 +121,10 @@ namespace ReClassNET.UI
 
 			hotSpots.Clear();
 
-			e.Graphics.FillRectangle(new SolidBrush(Settings.BackgroundColor), ClientRectangle);
+			using (var brush = new SolidBrush(Program.Settings.BackgroundColor))
+			{
+				e.Graphics.FillRectangle(brush, ClientRectangle);
+			}
 
 			if (ClassNode == null)
 			{
@@ -158,14 +186,20 @@ namespace ReClassNET.UI
 			var count = selectedNodes.Count();
 			var node = selectedNodes.Select(s => s.Node).FirstOrDefault();
 
-			addBytesToolStripMenuItem.Enabled = node?.ParentNode != null || node is ClassNode;
+			var nodeIsClass = node is ClassNode;
+
+			addBytesToolStripMenuItem.Enabled = node?.ParentNode != null || nodeIsClass;
 			insertBytesToolStripMenuItem.Enabled = count == 1 && node?.ParentNode != null;
 
-			changeTypeToolStripMenuItem.Enabled = count > 0 && !(node is ClassNode);
+			changeTypeToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
 
-			removeToolStripMenuItem.Enabled = !(node is ClassNode);
-			copyAddressToolStripMenuItem.Enabled = !(node is ClassNode);
+			pasteNodesToolStripMenuItem.Enabled = count == 1 && ReClassClipboard.ContainsData;
+			removeToolStripMenuItem.Enabled = !nodeIsClass;
+
+			copyAddressToolStripMenuItem.Enabled = !nodeIsClass;
 		}
+
+		#region Process Input
 
 		protected override void OnMouseClick(MouseEventArgs e)
 		{
@@ -296,7 +330,7 @@ namespace ReClassNET.UI
 									}
 									catch (ClassCycleException)
 									{
-										MessageBox.Show("Can't change node type because this would create a cycle!");
+										MessageBox.Show("Can't change node type because this would create a cycle.");
 									}
 								};
 
@@ -342,7 +376,7 @@ namespace ReClassNET.UI
 			{
 				if (hotSpot.Rect.Contains(e.Location))
 				{
-					editBox.BackColor = Settings.SelectedColor;
+					editBox.BackColor = Program.Settings.SelectedColor;
 					editBox.HotSpot = hotSpot;
 					editBox.Visible = true;
 
@@ -397,11 +431,11 @@ namespace ReClassNET.UI
 		{
 			if (editBox.Visible == false) // Only process keys if the edit field is not visible.
 			{
+				var key = keyData & Keys.KeyCode;
+				var modifier = keyData & Keys.Modifiers;
+
 				if (selectedNodes.Count > 0)
 				{
-					var key = keyData & Keys.KeyCode;
-					var modifier = keyData & Keys.Modifiers;
-
 					if (key == Keys.Delete)
 					{
 						RemoveSelectedNodes();
@@ -411,6 +445,19 @@ namespace ReClassNET.UI
 					else if (key == Keys.Menu)
 					{
 						selectedNodeContextMenuStrip.Show(this, 10, 10);
+
+						return true;
+					}
+					else if (modifier == Keys.Control && (key == Keys.C || key == Keys.V))
+					{
+						if (key == Keys.C)
+						{
+							CopySelectedNodesToClipboard();
+						}
+						else if (key == Keys.V)
+						{
+							PasteNodeFromClipboardToSelection();
+						}
 
 						return true;
 					}
@@ -468,7 +515,7 @@ namespace ReClassNET.UI
 						}
 					}
 				}
-				else
+				else if (key == Keys.Down || key == Keys.Up)
 				{
 					// If no node is selected, try to select the first one.
 					var selection = hotSpots
@@ -493,6 +540,10 @@ namespace ReClassNET.UI
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
 
+		#endregion
+
+		#region Event Handler
+
 		private void repaintTimer_Tick(object sender, EventArgs e)
 		{
 			if (DesignMode)
@@ -514,91 +565,6 @@ namespace ReClassNET.UI
 			{
 				ClassNode.UpdateAddress(Memory);
 			}
-		}
-
-		private int FindNodeIndex(BaseNode node)
-		{
-			var containerNode = node.ParentNode;
-			if (containerNode == null)
-			{
-				return -1;
-			}
-
-			return containerNode.Nodes.FindIndex(n => n == node);
-		}
-
-		public void AddBytes(int length)
-		{
-			Contract.Requires(length >= 0);
-
-			var hotspot = selectedNodes.FirstOrDefault();
-			if (hotspot != null)
-			{
-				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode).AddBytes(length);
-			}
-
-			Invalidate();
-		}
-
-		public void InsertBytes(int length)
-		{
-			Contract.Requires(length >= 0);
-
-			var hotspot = selectedNodes.FirstOrDefault();
-			if (hotspot != null)
-			{
-				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode).InsertBytes(FindNodeIndex(hotspot.Node), length);
-
-				Invalidate();
-			}
-		}
-
-		public void ReplaceSelectedNodesWithType(Type type)
-		{
-			Contract.Requires(type != null);
-			Contract.Requires(type.IsSubclassOf(typeof(BaseNode)));
-
-			var newSelected = new List<HotSpot>(selectedNodes.Count);
-
-			foreach (var selected in selectedNodes.Where(s => !(s.Node is ClassNode)))
-			{
-				var node = Activator.CreateInstance(type) as BaseNode;
-
-				node.Intialize();
-
-				if (selected.Node.ParentNode.ReplaceChildNode(FindNodeIndex(selected.Node), node))
-				{
-					node.IsSelected = true;
-
-					var hotspot = new HotSpot
-					{
-						Address = node.ParentNode.Offset.Add(node.Offset),
-						Node = node
-					};
-
-					newSelected.Add(hotspot);
-
-					if (selectionAnchor.Node == selected.Node)
-					{
-						selectionAnchor = hotspot;
-					}
-					if (selectionCaret.Node == selected.Node)
-					{
-						selectionCaret = hotspot;
-					}
-				}
-			}
-
-			if (newSelected.Count > 0)
-			{
-				selectedNodes.Clear();
-
-				selectedNodes.AddRange(newSelected);
-
-				OnSelectionChanged();
-			}
-
-			Invalidate();
 		}
 
 		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -634,6 +600,105 @@ namespace ReClassNET.UI
 			ReplaceSelectedNodesWithType(item.Value);
 		}
 
+		private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			RemoveSelectedNodes();
+		}
+
+		private void copyAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (selectedNodes.Count > 0)
+			{
+				Clipboard.SetText(selectedNodes.First().Address.ToString("X"));
+			}
+		}
+
+		private void copyNodeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CopySelectedNodesToClipboard();
+		}
+
+		private void pasteNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PasteNodeFromClipboardToSelection();
+		}
+
+		#endregion
+
+		public void AddBytes(int length)
+		{
+			Contract.Requires(length >= 0);
+
+			var hotspot = selectedNodes.FirstOrDefault();
+			if (hotspot != null)
+			{
+				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode).AddBytes(length);
+			}
+
+			Invalidate();
+		}
+
+		public void InsertBytes(int length)
+		{
+			Contract.Requires(length >= 0);
+
+			var hotspot = selectedNodes.FirstOrDefault();
+			if (hotspot != null)
+			{
+				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode).InsertBytes(hotspot.Node, length);
+
+				Invalidate();
+			}
+		}
+
+		public void ReplaceSelectedNodesWithType(Type type)
+		{
+			Contract.Requires(type != null);
+			Contract.Requires(type.IsSubclassOf(typeof(BaseNode)));
+
+			var newSelected = new List<HotSpot>(selectedNodes.Count);
+
+			foreach (var selected in selectedNodes.Where(s => !(s.Node is ClassNode)))
+			{
+				var node = Activator.CreateInstance(type) as BaseNode;
+
+				node.Intialize();
+
+				if (selected.Node.ParentNode.ReplaceChildNode(selected.Node, node))
+				{
+					node.IsSelected = true;
+
+					var hotspot = new HotSpot
+					{
+						Address = node.ParentNode.Offset.Add(node.Offset),
+						Node = node
+					};
+
+					newSelected.Add(hotspot);
+
+					if (selectionAnchor.Node == selected.Node)
+					{
+						selectionAnchor = hotspot;
+					}
+					if (selectionCaret.Node == selected.Node)
+					{
+						selectionCaret = hotspot;
+					}
+				}
+			}
+
+			if (newSelected.Count > 0)
+			{
+				selectedNodes.Clear();
+
+				selectedNodes.AddRange(newSelected);
+
+				OnSelectionChanged();
+			}
+
+			Invalidate();
+		}
+
 		private void ClearSelection()
 		{
 			selectedNodes.ForEach(h => h.Node.ClearSelection());
@@ -652,51 +717,15 @@ namespace ReClassNET.UI
 			Invalidate();
 		}
 
-		private void removeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			RemoveSelectedNodes();
-		}
-
-		private void copyAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		private void CopySelectedNodesToClipboard()
 		{
 			if (selectedNodes.Count > 0)
 			{
-				Clipboard.SetText(selectedNodes.First().Address.ToString("X"));
+				ReClassClipboard.Copy(selectedNodes.Select(h => h.Node), ClassManager.Classes, Program.Logger);
 			}
 		}
 
-		internal void AddNodeType(Type type, string text, Image icon)
-		{
-			var item = new TypeToolStripMenuItem
-			{
-				Image = icon,
-				Text = text,
-				Value = type
-			};
-			item.Click += memoryTypeToolStripMenuItem_Click;
-
-			changeTypeToolStripMenuItem.DropDownItems.Add(item);
-		}
-
-		internal void RemoveNodeType(Type type)
-		{
-			var item = changeTypeToolStripMenuItem.DropDownItems.OfType<TypeToolStripMenuItem>().Where(i => i.Value == type).FirstOrDefault();
-			if (item != null)
-			{
-				item.Click -= memoryTypeToolStripMenuItem_Click;
-				changeTypeToolStripMenuItem.DropDownItems.Remove(item);
-			}
-		}
-
-		private void copyNodeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (selectedNodes.Count > 0)
-			{
-				ReClassClipboard.Copy(selectedNodes.Select(h => h.Node), ClassManager.Classes);
-			}
-		}
-
-		private void pasteNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		private void PasteNodeFromClipboardToSelection()
 		{
 			if (selectedNodes.Count == 1)
 			{
@@ -704,10 +733,17 @@ namespace ReClassNET.UI
 				var parent = selectedNode.ParentNode as ClassNode;
 				if (parent != null)
 				{
-					var nodes = ReClassClipboard.Paste(parent, ClassManager.Classes);
+					var nodes = ReClassClipboard.Paste(parent, ClassManager.Classes, Program.Logger);
 					foreach (var node in nodes)
 					{
-						parent.InsertNode(FindNodeIndex(selectedNode), node);
+						try
+						{
+							parent.InsertNode(selectedNode, node);
+						}
+						catch (ClassCycleException)
+						{
+							MessageBox.Show("Can't paste node because this would create a cycle.");
+						}
 					}
 				}
 			}

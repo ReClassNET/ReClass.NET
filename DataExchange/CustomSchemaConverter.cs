@@ -137,7 +137,7 @@ namespace ReClassNET.DataExchange
 			converters.Add(converter);
 		}
 
-		public static void UnregisterCustomType(ICustomSchemaConverter converter)
+		public static void DeregisterCustomType(ICustomSchemaConverter converter)
 		{
 			Contract.Requires(converter != null);
 

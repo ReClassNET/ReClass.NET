@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -20,6 +21,26 @@ namespace ReClassNET.Nodes
 				node.Offset = offset;
 				offset += node.MemorySize;
 			}
+		}
+
+		/// <summary>Searches for the node index.</summary>
+		/// <param name="node">The node to search.</param>
+		/// <returns>The found node index or -1 if the node was not found.</returns>
+		public int FindNodeIndex(BaseNode node)
+		{
+			Contract.Requires(node != null);
+			Contract.Ensures(Contract.Result<int>() >= -1);
+
+			return Nodes.FindIndex(n => n == node);
+		}
+
+		/// <summary>Replaces the child at the specific position with the provided node.</summary>
+		/// <param name="index">Zero-based position.</param>
+		/// <param name="node">The node to add.</param>
+		/// <returns>True if it succeeds, false if it fails.</returns>
+		public virtual bool ReplaceChildNode(BaseNode child, BaseNode node)
+		{
+			return ReplaceChildNode(FindNodeIndex(child), node);
 		}
 
 		/// <summary>Replaces the child at the specific position with the provided node.</summary>
@@ -66,6 +87,11 @@ namespace ReClassNET.Nodes
 		public void AddBytes(int size)
 		{
 			InsertBytes(nodes.Count, size);
+		}
+
+		public virtual void InsertBytes(BaseNode position, int size)
+		{
+			InsertBytes(FindNodeIndex(position), size);
 		}
 
 		/// <summary>Inserts <paramref name="size"/> bytes at the specified position.</summary>
@@ -118,6 +144,28 @@ namespace ReClassNET.Nodes
 
 				index++;
 			}
+		}
+
+		public void AddNode(BaseNode node)
+		{
+			Contract.Requires(node != null);
+
+			InsertNode(nodes.Count, node);
+		}
+
+		public virtual void InsertNode(BaseNode position, BaseNode node)
+		{
+			InsertNode(FindNodeIndex(position), node);
+		}
+
+		public virtual void InsertNode(int index, BaseNode node)
+		{
+			Contract.Requires(index >= 0);
+			Contract.Requires(node != null);
+
+			node.ParentNode = this;
+
+			nodes.Insert(index, node);
 		}
 
 		/// <summary>Removes the specified node.</summary>

@@ -19,14 +19,11 @@ namespace ReClassNET.Forms
 	public partial class MainForm : IconForm
 	{
 		private readonly NativeHelper nativeHelper;
-		private readonly Settings settings;
 
 		private readonly RemoteProcess remoteProcess;
 		private readonly Memory memory;
 
 		private readonly PluginManager pluginManager;
-
-		private readonly ILogger logger;
 
 		private string projectPath;
 
@@ -34,20 +31,16 @@ namespace ReClassNET.Forms
 		private Task loadSymbolsTask;
 		private CancellationTokenSource loadSymbolsTaskToken;
 
-		public MainForm(NativeHelper nativeHelper, Settings settings)
+		public MainForm(NativeHelper nativeHelper)
 		{
 			Contract.Requires(nativeHelper != null);
-			Contract.Requires(settings != null);
 
 			this.nativeHelper = nativeHelper;
-			this.settings = settings;
 
 			InitializeComponent();
 
 			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true);
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(false);
-
-			logger = new GuiLogger();
 
 			remoteProcess = new RemoteProcess(nativeHelper);
 			remoteProcess.ProcessChanged += delegate (RemoteProcess sender)
@@ -70,10 +63,9 @@ namespace ReClassNET.Forms
 				Process = remoteProcess
 			};
 
-			memoryViewControl.Settings = settings;
 			memoryViewControl.Memory = memory;
 
-			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess, logger), nativeHelper);
+			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess, Program.Logger), nativeHelper);
 
 			ClassManager.ClassAdded += c => classesView.Add(c);
 			ClassManager.ClassRemoved += c => classesView.Remove(c);
@@ -99,9 +91,43 @@ namespace ReClassNET.Forms
 			base.OnClosed(e);
 		}
 
+		#region Event Handler
+
+		private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			// Stop the update timer
+			processUpdateTimer.Stop();
+
+			// and cancel all running tasks.
+			if (loadSymbolsTask != null || updateProcessInformationsTask != null)
+			{
+				Hide();
+				e.Cancel = true;
+
+				if (loadSymbolsTask != null)
+				{
+					loadSymbolsTaskToken.Cancel();
+					await loadSymbolsTask;
+
+					loadSymbolsTask = null;
+				}
+
+				if (updateProcessInformationsTask != null)
+				{
+					await updateProcessInformationsTask;
+
+					updateProcessInformationsTask = null;
+				}
+
+				Close();
+			}
+		}
+
+		#region Menustrip
+
 		private void selectProcessToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var pb = new ProcessBrowserForm(nativeHelper, settings.LastProcess))
+			using (var pb = new ProcessBrowserForm(nativeHelper, Program.Settings.LastProcess))
 			{
 				if (pb.ShowDialog() == DialogResult.OK)
 				{
@@ -129,54 +155,9 @@ namespace ReClassNET.Forms
 							);
 					}
 
-					settings.LastProcess = remoteProcess.Process.Name;
+					Program.Settings.LastProcess = remoteProcess.Process.Name;
 				}
 			}
-		}
-
-		private void classesView_ClassSelected(object sender, ClassNode node)
-		{
-			memoryViewControl.ClassNode = node;
-
-			memoryViewControl.Invalidate();
-		}
-
-		private void cleanUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ClassManager.RemoveUnusedClasses();
-		}
-
-		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			var item = sender as IntegerToolStripMenuItem;
-			if (item == null)
-			{
-				return;
-			}
-
-			memoryViewControl.AddBytes(item.Value);
-		}
-
-		private void insertBytesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			var item = sender as IntegerToolStripMenuItem;
-			if (item == null)
-			{
-				return;
-			}
-
-			memoryViewControl.InsertBytes(item.Value);
-		}
-
-		private void memoryTypeToolStripButton_Click(object sender, EventArgs e)
-		{
-			var item = sender as TypeToolStripButton;
-			if (item == null)
-			{
-				return;
-			}
-
-			memoryViewControl.ReplaceSelectedNodesWithType(item.Value);
 		}
 
 		private void newClassToolStripButton_Click(object sender, EventArgs e)
@@ -216,12 +197,12 @@ namespace ReClassNET.Forms
 							import = new ReClass2007File();
 							break;
 						default:
-							logger.Log(LogLevel.Error, $"The file '{ofd.SafeFileName}' has an unknown type.");
+							Program.Logger.Log(LogLevel.Error, $"The file '{ofd.SafeFileName}' has an unknown type.");
 							break;
 					}
 					if (import != null)
 					{
-						var schema = import.Load(ofd.FileName, logger);
+						var schema = import.Load(ofd.FileName, Program.Logger);
 						if (schema != null)
 						{
 							// If we have our filetype save the path to skip the Save As dialog.
@@ -230,7 +211,7 @@ namespace ReClassNET.Forms
 								projectPath = ofd.FileName;
 							}
 
-							var classes = schema.BuildNodes(logger);
+							var classes = schema.BuildNodes(Program.Logger);
 
 							ClassManager.Clear();
 							classes.ForEach(c => ClassManager.AddClass(c));
@@ -240,6 +221,13 @@ namespace ReClassNET.Forms
 					}
 				}
 			}
+		}
+
+		private void clearProjectToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ClassManager.Clear();
+
+			memoryViewControl.ClassNode = null;
 		}
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -257,7 +245,7 @@ namespace ReClassNET.Forms
 			}
 
 			var file = new ReClassNetFile();
-			file.Save(projectPath, SchemaBuilder.FromClasses(ClassManager.Classes, logger), logger);
+			file.Save(projectPath, SchemaBuilder.FromClasses(ClassManager.Classes, Program.Logger), Program.Logger);
 		}
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -281,56 +269,11 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private void memoryViewerToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			new ProcessMemoryViewer(remoteProcess, classesView).Show();
-		}
-
 		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var sd = new SettingsForm(settings))
+			using (var sd = new SettingsForm(Program.Settings))
 			{
 				sd.ShowDialog();
-			}
-		}
-
-		private void clearProjectToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ClassManager.Clear();
-
-			memoryViewControl.ClassNode = null;
-		}
-
-		private void quitToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Close();
-		}
-
-		private void processUpdateTimer_Tick(object sender, EventArgs e)
-		{
-			if (updateProcessInformationsTask == null || updateProcessInformationsTask.IsCompleted)
-			{
-				updateProcessInformationsTask = remoteProcess.UpdateProcessInformationsAsync();
-			}
-		}
-
-		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using (var ofd = new OpenFileDialog())
-			{
-				ofd.Filter = "Program Debug Database (*.pdb)|*.pdb|All Files (*.*)|*.*";
-
-				if (ofd.ShowDialog() == DialogResult.OK)
-				{
-					try
-					{
-						remoteProcess.Symbols.LoadSymbolsFromPDB(ofd.FileName);
-					}
-					catch (Exception ex)
-					{
-						ex.ShowDialog();
-					}
-				}
 			}
 		}
 
@@ -340,6 +283,16 @@ namespace ReClassNET.Forms
 			{
 				pf.ShowDialog();
 			}
+		}
+
+		private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
+
+		private void memoryViewerToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			new ProcessMemoryViewer(remoteProcess, classesView).Show();
 		}
 
 		private void ControlRemoteProcessToolStripMenuItem_Click(object sender, EventArgs e)
@@ -362,84 +315,39 @@ namespace ReClassNET.Forms
 			nativeHelper.ControlRemoteProcess(remoteProcess.Process.Handle, action);
 		}
 
+		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (var ofd = new OpenFileDialog())
+			{
+				ofd.Filter = "Program Debug Database (*.pdb)|*.pdb|All Files (*.*)|*.*";
+
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					try
+					{
+						remoteProcess.Symbols.LoadSymbolsFromPDB(ofd.FileName);
+					}
+					catch (Exception ex)
+					{
+						ex.ShowDialog();
+					}
+				}
+			}
+		}
+
+		private void cleanUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ClassManager.RemoveUnusedClasses();
+		}
+
 		private void generateCppCodeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ShowCodeForm(new CppCodeGenerator());
 		}
 
-		private void generateCSharpCodeToolStripMenuItem1_Click(object sender, EventArgs e)
+		private void generateCSharpCodeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ShowCodeForm(new CSharpCodeGenerator());
-		}
-
-		private void ShowCodeForm(ICodeGenerator generator)
-		{
-			using (var cf = new CodeForm(generator, ClassManager.Classes, logger))
-			{
-				cf.ShowDialog();
-			}
-		}
-
-		private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			// Stop the update timer
-			processUpdateTimer.Stop();
-
-			// and cancel all running tasks.
-			if (loadSymbolsTask != null || updateProcessInformationsTask != null)
-			{
-				Hide();
-				e.Cancel = true;
-
-				if (loadSymbolsTask != null)
-				{
-					loadSymbolsTaskToken.Cancel();
-					await loadSymbolsTask;
-
-					loadSymbolsTask = null;
-				}
-				
-				if (updateProcessInformationsTask != null)
-				{
-					await updateProcessInformationsTask;
-
-					updateProcessInformationsTask = null;
-				}
-
-				Close();
-			}
-		}
-
-		internal void AddNodeType(Type type, string text, Image icon)
-		{
-			Contract.Requires(type != null);
-			Contract.Requires(text != null);
-
-			var item = new TypeToolStripButton
-			{
-				Image = icon,
-				ToolTipText = text,
-				Value = type
-			};
-			item.Click += memoryTypeToolStripButton_Click;
-
-			toolStrip.Items.Add(item);
-
-			memoryViewControl.AddNodeType(type, text, icon);
-		}
-
-		internal void RemoveNodeType(Type type)
-		{
-			Contract.Requires(type != null);
-
-			var item = toolStrip.Items.OfType<TypeToolStripButton>().Where(i => i.Value == type).FirstOrDefault();
-			if (item != null)
-			{
-				item.Click -= memoryTypeToolStripButton_Click;
-				toolStrip.Items.Remove(item);
-			}
-
-			memoryViewControl.RemoveNodeType(type);
 		}
 
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -450,9 +358,35 @@ namespace ReClassNET.Forms
 			}
 		}
 
+		#endregion
+
+		#region Toolstrip
+
+		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var item = sender as IntegerToolStripMenuItem;
+			if (item == null)
+			{
+				return;
+			}
+
+			memoryViewControl.AddBytes(item.Value);
+		}
+
 		private void addXBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			AskAddOrInsertBytes("Add Bytes", memoryViewControl.AddBytes);
+		}
+
+		private void insertBytesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var item = sender as IntegerToolStripMenuItem;
+			if (item == null)
+			{
+				return;
+			}
+
+			memoryViewControl.InsertBytes(item.Value);
 		}
 
 		private void insertXBytesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -460,22 +394,32 @@ namespace ReClassNET.Forms
 			AskAddOrInsertBytes("Insert Bytes", memoryViewControl.InsertBytes);
 		}
 
-		private void AskAddOrInsertBytes(string title, Action<int> func)
+		private void memoryTypeToolStripButton_Click(object sender, EventArgs e)
 		{
-			if (memoryViewControl.ClassNode == null)
+			var item = sender as TypeToolStripButton;
+			if (item == null)
 			{
 				return;
 			}
 
-			using (var ib = new InputBytesForm(memoryViewControl.ClassNode.MemorySize))
-			{
-				ib.Text = title;
+			memoryViewControl.ReplaceSelectedNodesWithType(item.Value);
+		}
 
-				if (ib.ShowDialog() == DialogResult.OK)
-				{
-					func(ib.Bytes);
-				}
+		#endregion
+
+		private void processUpdateTimer_Tick(object sender, EventArgs e)
+		{
+			if (updateProcessInformationsTask == null || updateProcessInformationsTask.IsCompleted)
+			{
+				updateProcessInformationsTask = remoteProcess.UpdateProcessInformationsAsync();
 			}
+		}
+
+		private void classesView_ClassSelected(object sender, ClassNode node)
+		{
+			memoryViewControl.ClassNode = node;
+
+			memoryViewControl.Invalidate();
 		}
 
 		private void memoryViewControl_SelectionChanged(object sender, EventArgs e)
@@ -494,6 +438,83 @@ namespace ReClassNET.Forms
 
 			var enabled = count > 0 && !(node is ClassNode);
 			toolStrip.Items.OfType<TypeToolStripButton>().ForEach(b => b.Enabled = enabled);
+		}
+
+		#endregion
+
+		/// <summary>Registers the node type which will create the ToolStrip and MenuStrip entries.</summary>
+		/// <param name="type">The node type.</param>
+		/// <param name="name">The name of the node type.</param>
+		/// <param name="icon">The icon of the node type.</param>
+		internal void RegisterNodeType(Type type, string name, Image icon)
+		{
+			Contract.Requires(type != null);
+			Contract.Requires(name != null);
+			Contract.Requires(icon != null);
+
+			var item = new TypeToolStripButton
+			{
+				Image = icon,
+				ToolTipText = name,
+				Value = type
+			};
+			item.Click += memoryTypeToolStripButton_Click;
+
+			toolStrip.Items.Add(item);
+
+			memoryViewControl.RegisterNodeType(type, name, icon);
+		}
+
+		/// <summary>Deregisters the node type.</summary>
+		/// <param name="type">The node type.</param>
+		internal void DeregisterNodeType(Type type)
+		{
+			Contract.Requires(type != null);
+
+			var item = toolStrip.Items.OfType<TypeToolStripButton>().Where(i => i.Value == type).FirstOrDefault();
+			if (item != null)
+			{
+				item.Click -= memoryTypeToolStripButton_Click;
+				toolStrip.Items.Remove(item);
+			}
+
+			memoryViewControl.DeregisterNodeType(type);
+		}
+
+		/// <summary>Shows the code form with the given <paramref name="generator"/>.</summary>
+		/// <param name="generator">The generator.</param>
+		private void ShowCodeForm(ICodeGenerator generator)
+		{
+			Contract.Requires(generator != null);
+
+			using (var cf = new CodeForm(generator, ClassManager.Classes, Program.Logger))
+			{
+				cf.ShowDialog();
+			}
+		}
+
+		/// <summary>Opens the <see cref="InputBytesForm"/> and calls <paramref name="callback"/> with the result.</summary>
+		/// <param name="title">The title of the input form.</param>
+		/// <param name="callback">The function to call afterwards.</param>
+		private void AskAddOrInsertBytes(string title, Action<int> callback)
+		{
+			Contract.Requires(title != null);
+			Contract.Requires(callback != null);
+
+			if (memoryViewControl.ClassNode == null)
+			{
+				return;
+			}
+
+			using (var ib = new InputBytesForm(memoryViewControl.ClassNode.MemorySize))
+			{
+				ib.Text = title;
+
+				if (ib.ShowDialog() == DialogResult.OK)
+				{
+					callback(ib.Bytes);
+				}
+			}
 		}
 	}
 }

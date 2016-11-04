@@ -4,16 +4,20 @@ using System.Windows.Forms;
 using ReClassNET.Forms;
 using ReClassNET.UI;
 using ReClassNET.Util;
+using ReClassNET.Logger;
 
 namespace ReClassNET
 {
 	static class Program
 	{
 		private static Settings settings;
+		private static ILogger logger;
 		private static Random random = new Random();
 		private static bool designMode = true;
 
 		public static Settings Settings => settings;
+
+		public static ILogger Logger => logger;
 
 		public static Random GlobalRandom => random;
 
@@ -32,7 +36,7 @@ namespace ReClassNET
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
 			settings = Settings.Load(Constants.SettingsFile);
-
+			logger = new GuiLogger();
 #if RELEASE
 			try
 			{
@@ -50,7 +54,7 @@ namespace ReClassNET
 #else
 			using (var nativeHelper = new NativeHelper())
 			{
-				var form = new MainForm(nativeHelper, settings);
+				var form = new MainForm(nativeHelper);
 
 				Application.Run(form);
 			}

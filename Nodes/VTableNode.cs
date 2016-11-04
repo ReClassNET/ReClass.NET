@@ -93,17 +93,6 @@ namespace ReClassNET.Nodes
 			return h;
 		}
 
-		internal void AddNode(VMethodNode node)
-		{
-			Contract.Requires(node != null);
-
-			node.ParentNode = this;
-
-			nodes.Add(node);
-
-			UpdateOffsets();
-		}
-
 		public override bool ReplaceChildNode(int index, BaseNode node) => false;
 
 		public override void InsertBytes(int index, int size)
@@ -135,6 +124,18 @@ namespace ReClassNET.Nodes
 
 				index++;
 			}
+
+			UpdateOffsets();
+		}
+
+		public override void InsertNode(int index, BaseNode node)
+		{
+			if (!(node is VMethodNode))
+			{
+				return;
+			}
+
+			base.InsertNode(index, node);
 
 			UpdateOffsets();
 		}

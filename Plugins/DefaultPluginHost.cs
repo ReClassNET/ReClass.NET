@@ -39,7 +39,7 @@ namespace ReClassNET.Plugins
 			BaseNode.NodeInfoReader.Add(reader);
 		}
 
-		public void UnregisterNodeInfoReader(INodeInfoReader reader)
+		public void DeregisterNodeInfoReader(INodeInfoReader reader)
 		{
 			BaseNode.NodeInfoReader.Remove(reader);
 		}
@@ -49,15 +49,15 @@ namespace ReClassNET.Plugins
 			CustomSchemaConvert.RegisterCustomType(converter);
 			CustomCodeGenerator.RegisterCustomType(generator);
 
-			MainWindow.AddNodeType(type, name, icon);
+			MainWindow.RegisterNodeType(type, name, icon ?? Properties.Resources.B16x16_Plugin);
 		}
 
-		public void UnregisterNodeType(Type type, ICustomSchemaConverter converter, ICustomCodeGenerator generator)
+		public void DeregisterNodeType(Type type, ICustomSchemaConverter converter, ICustomCodeGenerator generator)
 		{
-			CustomSchemaConvert.UnregisterCustomType(converter);
-			CustomCodeGenerator.UnregisterCustomType(generator);
+			CustomSchemaConvert.DeregisterCustomType(converter);
+			CustomCodeGenerator.DeregisterCustomType(generator);
 
-			MainWindow.RemoveNodeType(type);
+			MainWindow.DeregisterNodeType(type);
 		}
 	}
 }
