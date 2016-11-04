@@ -16,6 +16,14 @@ namespace ReClassNET.UI
 		private const int MaxCacheEntries = 20;
 		private static readonly Dictionary<string, Image> imageCache = new Dictionary<string, Image>();
 
+		/// <summary>Creates a banner with the given <paramref name="icon"/>, <paramref name="title"/> and <paramref name="text"/>.</summary>
+		/// <param name="bannerWidth">Width of the banner.</param>
+		/// <param name="bannerHeight">Height of the banner.</param>
+		/// <param name="icon">The icon of the banner.</param>
+		/// <param name="title">The title of the banner.</param>
+		/// <param name="text">The text of the banner.</param>
+		/// <param name="skipCache">True to skip cache.</param>
+		/// <returns>The created banner.</returns>
 		public static Image CreateBanner(int bannerWidth, int bannerHeight, Image icon, string title, string text, bool skipCache)
 		{
 			Contract.Requires(title != null);
@@ -41,8 +49,8 @@ namespace ReClassNET.UI
 					int hIconScaled = StdIconDim;
 					if (icon != null)
 					{
-						float fIconRel = (float)icon.Width / (float)icon.Height;
-						wIconScaled = (int)Math.Round(DpiScaleFloat(fIconRel * (float)StdIconDim, bannerHeight));
+						float iconRel = (float)icon.Width / (float)icon.Height;
+						wIconScaled = (int)Math.Round(DpiScaleFloat(iconRel * (float)StdIconDim, bannerHeight));
 						hIconScaled = DpiScaleInt(StdIconDim, bannerHeight);
 
 						int yIcon = (bannerHeight - hIconScaled) / 2;
@@ -116,14 +124,8 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private static int DpiScaleInt(int x, int height)
-		{
-			return (int)Math.Round((x * height) / (double)StdHeight);
-		}
+		private static int DpiScaleInt(int x, int height) => (int)Math.Round((x * height) / (double)StdHeight);
 
-		private static float DpiScaleFloat(float x, int height)
-		{
-			return (x * height) / StdHeight;
-		}
+		private static float DpiScaleFloat(float x, int height) => (x * height) / StdHeight;
 	}
 }

@@ -156,49 +156,7 @@ namespace ReClassNET.UI
 			classesTreeView.Nodes.Add(root);
 		}
 
-		/// <summary>Adds the class to the view.</summary>
-		/// <param name="node">The class to add.</param>
-		public void Add(ClassNode node)
-		{
-			Contract.Requires(node != null);
-
-			root.Nodes.Add(new ClassTreeNode(node, autoExpand));
-
-			classesTreeView.Sort();
-
-			root.Expand();
-		}
-
-		/// <summary>Removes the class from the view.</summary>
-		/// <param name="node">The class to remove.</param>
-		public void Remove(ClassNode node)
-		{
-			var tn = FindClassTreeNode(node);
-			if (tn != null)
-			{
-				root.Nodes.Remove(tn);
-
-				if (selectedClass == node)
-				{
-					if (root.Nodes.Count > 0)
-					{
-						classesTreeView.SelectedNode = root.Nodes[0];
-					}
-					else
-					{
-						SelectedClass = null;
-					}
-				}
-			}
-		}
-
-		/// <summary>Searches for the ClassTreeNode which represents the class.</summary>
-		/// <param name="node">The class to search.</param>
-		/// <returns>The found class tree node.</returns>
-		private ClassTreeNode FindClassTreeNode(ClassNode node)
-		{
-			return root.Nodes.OfType<ClassTreeNode>().Where(t => t.ClassNode == node).FirstOrDefault();
-		}
+		#region Event Handler
 
 		private void classesTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
 		{
@@ -303,6 +261,52 @@ namespace ReClassNET.UI
 		private void collapseAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			root.Nodes.Cast<TreeNode>().ForEach(n => n.Collapse());
+		}
+
+		#endregion
+
+		/// <summary>Adds the class to the view.</summary>
+		/// <param name="node">The class to add.</param>
+		public void Add(ClassNode node)
+		{
+			Contract.Requires(node != null);
+
+			root.Nodes.Add(new ClassTreeNode(node, autoExpand));
+
+			classesTreeView.Sort();
+
+			root.Expand();
+		}
+
+		/// <summary>Removes the class from the view.</summary>
+		/// <param name="node">The class to remove.</param>
+		public void Remove(ClassNode node)
+		{
+			var tn = FindClassTreeNode(node);
+			if (tn != null)
+			{
+				root.Nodes.Remove(tn);
+
+				if (selectedClass == node)
+				{
+					if (root.Nodes.Count > 0)
+					{
+						classesTreeView.SelectedNode = root.Nodes[0];
+					}
+					else
+					{
+						SelectedClass = null;
+					}
+				}
+			}
+		}
+
+		/// <summary>Searches for the ClassTreeNode which represents the class.</summary>
+		/// <param name="node">The class to search.</param>
+		/// <returns>The found class tree node.</returns>
+		private ClassTreeNode FindClassTreeNode(ClassNode node)
+		{
+			return root.Nodes.OfType<ClassTreeNode>().Where(t => t.ClassNode == node).FirstOrDefault();
 		}
 	}
 }

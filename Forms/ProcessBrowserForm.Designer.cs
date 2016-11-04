@@ -141,6 +141,7 @@
 			// 
 			this.openProcessButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.openProcessButton.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.openProcessButton.Image = global::ReClassNET.Properties.Resources.B16x16_Accept;
 			this.openProcessButton.Location = new System.Drawing.Point(12, 519);
 			this.openProcessButton.Name = "openProcessButton";
@@ -150,7 +151,6 @@
 			this.openProcessButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.openProcessButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.openProcessButton.UseVisualStyleBackColor = true;
-			this.openProcessButton.Click += new System.EventHandler(this.openProcessButton_Click);
 			// 
 			// loadSymbolsCheckBox
 			// 
@@ -230,6 +230,7 @@
 			// 
 			// ProcessBrowserForm
 			// 
+			this.AcceptButton = this.openProcessButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(573, 554);

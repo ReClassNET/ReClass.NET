@@ -79,9 +79,16 @@ namespace ReClassNET
 			GlobalWindowManager.RemoveWindow(this);
 		}
 
+		#region Event Handler
+
 		private void filterCheckBox_CheckedChanged(object sender, EventArgs e)
 		{
 			RefreshProcessList();
+		}
+
+		private void filterTextBox_TextChanged(object sender, EventArgs e)
+		{
+			ApplyFilter();
 		}
 
 		private void refreshButton_Click(object sender, EventArgs e)
@@ -89,10 +96,17 @@ namespace ReClassNET
 			RefreshProcessList();
 		}
 
-		private void openProcessButton_Click(object sender, EventArgs e)
+		private void previousProcessLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			DialogResult = DialogResult.OK;
+			filterTextBox.Text = previousProcessLinkLabel.Text == NoPreviousProcess ? string.Empty : previousProcessLinkLabel.Text;
 		}
+
+		private void processDataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+		{
+			AcceptButton.PerformClick();
+		}
+
+		#endregion
 
 		/// <summary>Queries all processes and displays them.</summary>
 		private void RefreshProcessList()
@@ -160,11 +174,6 @@ namespace ReClassNET
 			return DateTime.MinValue;
 		}
 
-		private void filterTextBox_TextChanged(object sender, EventArgs e)
-		{
-			ApplyFilter();
-		}
-
 		private void ApplyFilter()
 		{
 			var filter = filterTextBox.Text;
@@ -173,16 +182,6 @@ namespace ReClassNET
 				filter = $"name like '%{filter}%' or path like '%{filter}%'";
 			}
 			(processDataGridView.DataSource as DataTable).DefaultView.RowFilter = filter;
-		}
-
-		private void previousProcessLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		{
-			filterTextBox.Text = previousProcessLinkLabel.Text == NoPreviousProcess ? string.Empty : previousProcessLinkLabel.Text;
-		}
-
-		private void processDataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-		{
-			openProcessButton_Click(sender, e);
 		}
 	}
 }

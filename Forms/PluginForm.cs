@@ -77,6 +77,30 @@ namespace ReClassNET.Forms
 			GlobalWindowManager.RemoveWindow(this);
 		}
 
+		#region Event Handler
+
+		private void pluginsDataGridView_SelectionChanged(object sender, EventArgs e)
+		{
+			UpdatePluginDescription();
+		}
+
+		private void NativeMethodComboBox_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			var cb = sender as ComboBox;
+			if (cb == null)
+			{
+				return;
+			}
+
+			var methodInfo = cb.SelectedItem as NativeHelper.MethodInfo;
+			if (methodInfo != null)
+			{
+				nativeHelper.SetActiveNativeMethod(methodInfo);
+			}
+		}
+
+		#endregion
+
 		private void FillComboBox(ComboBox cb, NativeHelper.RequestFunction method)
 		{
 			Contract.Requires(cb != null);
@@ -88,11 +112,6 @@ namespace ReClassNET.Forms
 			cb.DisplayMember = nameof(NativeHelper.MethodInfo.Provider);
 			cb.DataSource = methods;
 			cb.SelectedIndex = methods.FindIndex(m => m.FunctionPtr == selectedFnPtr);
-		}
-
-		private void pluginsDataGridView_SelectionChanged(object sender, EventArgs e)
-		{
-			UpdatePluginDescription();
 		}
 
 		private void UpdatePluginDescription()
@@ -111,21 +130,6 @@ namespace ReClassNET.Forms
 			{
 				descriptionGroupBox.Text = plugin.Name;
 				descriptionLabel.Text = plugin.Description;
-			}
-		}
-
-		private void NativeMethodComboBox_SelectionChangeCommitted(object sender, EventArgs e)
-		{
-			var cb = sender as ComboBox;
-			if (cb == null)
-			{
-				return;
-			}
-
-			var methodInfo = cb.SelectedItem as NativeHelper.MethodInfo;
-			if (methodInfo != null)
-			{
-				nativeHelper.SetActiveNativeMethod(methodInfo);
 			}
 		}
 	}

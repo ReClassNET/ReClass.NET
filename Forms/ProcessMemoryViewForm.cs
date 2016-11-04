@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Forms;
-using ReClassNET.Nodes;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -23,8 +22,6 @@ namespace ReClassNET
 			this.classesView = classesView;
 
 			InitializeComponent();
-
-			//BannerFactory.CreateBannerEx(bannerImage, Properties.Resources.B32x32_Magnifier, "Memory Regions", "The list contains all memory regions mapped in the process.");
 
 			sectionsDataGridView.AutoGenerateColumns = false;
 
@@ -71,6 +68,8 @@ namespace ReClassNET
 			GlobalWindowManager.RemoveWindow(this);
 		}
 
+		#region Event Handler
+
 		private void sectionsDataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right)
@@ -81,16 +80,6 @@ namespace ReClassNET
 					sectionsDataGridView.Rows[rowSelected].Selected = true;
 				}
 			}
-		}
-
-		private IntPtr GetSelectedRegionAddress()
-		{
-			var row = sectionsDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView;
-			if (row != null)
-			{
-				return (IntPtr)(long)row["address"];
-			}
-			return IntPtr.Zero;
 		}
 
 		private void setCurrentClassAddressToolStripMenuItem_Click(object sender, EventArgs e)
@@ -124,9 +113,16 @@ namespace ReClassNET
 			setCurrentClassAddressToolStripMenuItem_Click(sender, e);
 		}
 
-		private void ProcessMemoryViewer_Load(object sender, EventArgs e)
-		{
+		#endregion
 
+		private IntPtr GetSelectedRegionAddress()
+		{
+			var row = sectionsDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView;
+			if (row != null)
+			{
+				return (IntPtr)(long)row["address"];
+			}
+			return IntPtr.Zero;
 		}
 	}
 }
