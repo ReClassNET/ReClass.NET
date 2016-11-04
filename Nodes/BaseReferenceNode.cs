@@ -45,7 +45,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Performs a class cycle check for the given class.</summary>
 		/// <exception cref="ClassCycleException">Thrown when a class cycle is present.</exception>
 		/// <param name="node">The class to check.</param>
-		private void PerformCycleCheck(ClassNode node)
+		public void PerformCycleCheck(ClassNode node)
 		{
 			Contract.Requires(node != null);
 

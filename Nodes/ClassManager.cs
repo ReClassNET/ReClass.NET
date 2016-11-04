@@ -120,7 +120,7 @@ namespace ReClassNET.Util
 				)
 			);
 
-			if (!IsCycleFreeUp(parent, toCheck, classes))
+			if (!IsCycleFree(parent, toCheck, classes))
 			{
 				return false;
 			}
@@ -128,7 +128,7 @@ namespace ReClassNET.Util
 			return true;
 		}
 
-		private static bool IsCycleFreeUp(ClassNode root, HashSet<ClassNode> seen, IEnumerable<ClassNode> classes)
+		private static bool IsCycleFree(ClassNode root, HashSet<ClassNode> seen, IEnumerable<ClassNode> classes)
 		{
 			Contract.Requires(root != null);
 			Contract.Requires(seen != null);
@@ -148,7 +148,7 @@ namespace ReClassNET.Util
 					.Where(n => n.InnerNode == root)
 					.Any())
 				{
-					if (!IsCycleFreeUp(cls, seen, classes))
+					if (!IsCycleFree(cls, seen, classes))
 					{
 						return false;
 					}
