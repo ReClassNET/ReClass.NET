@@ -42,7 +42,7 @@ namespace ReClassNET
 			{
 				using (var nativeHelper = new NativeHelper())
 				{
-					var form = new MainForm(nativeHelper, settings);
+					var form = new MainForm(nativeHelper);
 
 					Application.Run(form);
 				}
