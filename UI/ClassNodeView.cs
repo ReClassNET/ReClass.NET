@@ -29,7 +29,7 @@ namespace ReClassNET.UI
 		{
 			public ClassNode ClassNode { get; }
 
-			private ValueWrapper<bool> autoExpand;
+			private readonly ValueWrapper<bool> autoExpand;
 
 			/// <summary>Constructor of the class.</summary>
 			/// <param name="node">The class node.</param>
@@ -107,7 +107,7 @@ namespace ReClassNET.UI
 		}
 
 		private readonly TreeNode root;
-		private ValueWrapper<bool> autoExpand;
+		private readonly ValueWrapper<bool> autoExpand;
 
 		private ClassNode selectedClass;
 

@@ -235,7 +235,7 @@ namespace ReClassNET.Util
 			{
 				return true;
 			}
-			else if (val == 0 || other == 0 || diff < float.Epsilon)
+			else if (val == 0.0f || other == 0.0f || diff < float.Epsilon)
 			{
 				return diff < epsilon;
 			}
@@ -260,7 +260,7 @@ namespace ReClassNET.Util
 			{
 				return true;
 			}
-			else if (val == 0 || other == 0 || diff < double.Epsilon)
+			else if (val == 0.0 || other == 0.0 || diff < double.Epsilon)
 			{
 				return diff < epsilon;
 			}

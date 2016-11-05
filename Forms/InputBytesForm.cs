@@ -6,7 +6,7 @@ namespace ReClassNET.Forms
 {
 	public partial class InputBytesForm : IconForm
 	{
-		private int currentSize;
+		private readonly int currentSize;
 
 		public int Bytes => (int)bytesNumericUpDown.Value;
 

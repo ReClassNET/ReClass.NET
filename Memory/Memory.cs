@@ -80,6 +80,7 @@ namespace ReClassNET.Memory
 		public byte[] ReadBytes(int offset, int length)
 		{
 			Contract.Requires(offset >= 0);
+			Contract.Requires(length >= 0);
 
 			var bytes = new byte[length];
 
@@ -166,6 +167,7 @@ namespace ReClassNET.Memory
 
 		public string ReadUTF8String(IntPtr offset, int length)
 		{
+			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 
 			return ReadString(Encoding.UTF8, offset.ToInt32(), length);
@@ -173,6 +175,7 @@ namespace ReClassNET.Memory
 
 		public string ReadUTF16String(IntPtr offset, int length)
 		{
+			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 
 			return ReadString(Encoding.Unicode, offset.ToInt32(), length);
@@ -180,6 +183,7 @@ namespace ReClassNET.Memory
 
 		public string ReadUTF32String(IntPtr offset, int length)
 		{
+			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 
 			return ReadString(Encoding.UTF32, offset.ToInt32(), length);

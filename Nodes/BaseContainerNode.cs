@@ -36,6 +36,8 @@ namespace ReClassNET.Nodes
 
 		public virtual BaseNode ReplaceChildNode(BaseNode child, Type nodeType)
 		{
+			Contract.Requires(nodeType != null);
+
 			return ReplaceChildNode(FindNodeIndex(child), nodeType);
 		}
 
