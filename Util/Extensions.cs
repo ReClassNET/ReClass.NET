@@ -142,9 +142,56 @@ namespace ReClassNET.Util
 			return ' ' <= c && c <= '~';
 		}
 
-		public static bool IsPrintableData(this IEnumerable<byte> source)
+		public static IEnumerable<char> InterpretAsUTF8(this IEnumerable<byte> source)
 		{
-			return source.All(b => ((char)b).IsPrintable());
+			Contract.Requires(source != null);
+
+			return source.Select(b => (char)b);
+		}
+
+		public static IEnumerable<char> InterpretAsUTF16(this IEnumerable<byte> source)
+		{
+			Contract.Requires(source != null);
+
+			var bytes = source.ToArray();
+			var chars = new char[bytes.Length / 2];
+			Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+			return chars;
+		}
+
+		public static bool IsPrintableData(this IEnumerable<char> source)
+		{
+			Contract.Requires(source != null);
+
+			return IsLikelyPrintableData(source) >= 0.75f;
+		}
+
+		public static float IsLikelyPrintableData(this IEnumerable<char> source)
+		{
+			Contract.Requires(source != null);
+
+			bool doCountValid = true;
+			int countValid = 0;
+			int countAll = 0;
+
+			foreach (var c in source)
+			{
+				countAll++;
+
+				if (doCountValid)
+				{
+					if (c.IsPrintable())
+					{
+						countValid++;
+					}
+					else
+					{
+						doCountValid = false;
+					}
+				}
+			}
+
+			return countValid / (float)countAll;
 		}
 
 		[Pure]
@@ -249,21 +296,6 @@ namespace ReClassNET.Util
 				foreach (var child in childSelector(next))
 				{
 					stack.Push(child);
-				}
-			}
-		}
-
-		public static IEnumerable<TSource> EveryNth<TSource>(this IEnumerable<TSource> source, int n)
-		{
-			Contract.Requires(source != null);
-			Contract.Requires(n > 0);
-
-			int i = 0;
-			foreach (var item in source)
-			{
-				if (i++ % n == 0)
-				{
-					yield return item;
 				}
 			}
 		}

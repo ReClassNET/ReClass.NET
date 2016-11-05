@@ -67,9 +67,11 @@ namespace ReClassNET.Memory
 
 		public byte ReadByte(int offset)
 		{
-			if (Offset + offset < 0 || Offset + offset > data.Length)
+			Contract.Requires(offset >= 0);
+
+			if (Offset + offset > data.Length)
 			{
-				throw new IndexOutOfRangeException();
+				return 0;
 			}
 
 			return data[Offset + offset];
@@ -77,14 +79,17 @@ namespace ReClassNET.Memory
 
 		public byte[] ReadBytes(int offset, int length)
 		{
-			if (Offset + offset < 0 || Offset + offset + length > data.Length)
+			Contract.Requires(offset >= 0);
+
+			var bytes = new byte[length];
+
+			if (Offset + offset + length > data.Length)
 			{
-				throw new IndexOutOfRangeException();
+				return bytes;
 			}
 
-			var b = new byte[length];
-			Array.Copy(data, Offset + offset, b, 0, length);
-			return b;
+			Array.Copy(data, Offset + offset, bytes, 0, length);
+			return bytes;
 		}
 
 		public T ReadObject<T>(IntPtr offset) where T : struct
@@ -94,6 +99,13 @@ namespace ReClassNET.Memory
 
 		public T ReadObject<T>(int offset) where T : struct
 		{
+			Contract.Requires(offset >= 0);
+
+			if (Offset + offset + Marshal.SizeOf(typeof(T)) > data.Length)
+			{
+				return default(T);
+			}
+
 			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
 			var obj = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject() + Offset + offset, typeof(T));
 			handle.Free();
@@ -112,16 +124,18 @@ namespace ReClassNET.Memory
 		public string ReadPrintableASCIIString(int offset, int length)
 		{
 			Contract.Requires(offset >= 0);
-			//Contract.Requires(offset < data.Length);
 			Contract.Requires(length >= 0);
-			//Contract.Requires(length < data.Length);
-			//Contract.Requires(offset + length < data.Length);
 			Contract.Ensures(Contract.Result<string>() != null);
+
+			if (Offset + offset + length > data.Length)
+			{
+				length = data.Length - Offset - offset;
+			}
 
 			var sb = new StringBuilder(length);
 			for (var i = 0; i < length; ++i)
 			{
-				var c = (char)data[offset + i];
+				var c = (char)data[Offset + offset + i];
 				sb.Append(c.IsPrintable() ? c : '.');
 			}
 			return sb.ToString();
@@ -130,7 +144,14 @@ namespace ReClassNET.Memory
 		private string ReadString(Encoding encoding, int offset, int length)
 		{
 			Contract.Requires(encoding != null);
+			Contract.Requires(offset >= 0);
+			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
+
+			if (Offset + offset + length > data.Length)
+			{
+				length = data.Length - Offset - offset;
+			}
 
 			var sb = new StringBuilder(encoding.GetString(data, offset, length));
 			for (var i = 0; i < sb.Length; ++i)

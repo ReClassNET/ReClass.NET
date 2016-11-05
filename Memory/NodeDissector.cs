@@ -41,15 +41,15 @@ namespace ReClassNET.Memory
 			var data64 = memory.ReadObject<UInt64FloatDoubleData>(offset);
 			var data32 = memory.ReadObject<UInt32FloatData>(offset);
 
-			/*var raw = memory.ReadBytes(offset, node.MemorySize);
-			if (raw.IsPrintableData())
+			var raw = memory.ReadBytes(offset, node.MemorySize);
+			if (raw.InterpretAsUTF8().IsPrintableData())
 			{
 				return typeof(UTF8TextNode);
 			}
-			else if (raw.EveryNth(2).IsPrintableData())
+			else if (raw.InterpretAsUTF16().IsPrintableData())
 			{
 				return typeof(UTF16TextNode);
-			}*/
+			}
 
 			if (is8ByteAligned)
 			{
@@ -139,18 +139,14 @@ namespace ReClassNET.Memory
 
 					// Check if it is a string.
 					var data = memory.Process.ReadRemoteMemory(address, IntPtr.Size);
-					if (data.IsPrintableData())
+					if (data.InterpretAsUTF8().IsPrintableData())
 					{
 						return typeof(UTF8TextPtrNode);
 					}
-					else if (data.EveryNth(2).IsPrintableData())
+					else if (data.InterpretAsUTF16().IsPrintableData())
 					{
 						return typeof(UTF16TextPtrNode);
 					}
-					/*else if (!data.EveryNth(4).Where(b => !((char)b).IsPrintable()).Any())
-					{
-						return typeof(UTF32TextPtrNode);
-					}*/
 
 					// Now it could be a pointer to something else but we can't tell. :(
 					//return typeof(ClassPtrNode);
