@@ -21,9 +21,7 @@ namespace ReClassNET.AddressParser
 			}
 			else if (operation is ModuleOffsetOperation)
 			{
-				var module = process.Modules
-					.Where(m => m.Name.Equals(((ModuleOffsetOperation)operation).Name, StringComparison.InvariantCultureIgnoreCase))
-					.FirstOrDefault();
+				var module = process.GetModuleByName(((ModuleOffsetOperation)operation).Name);
 				if (module != null)
 				{
 					return module.Start;

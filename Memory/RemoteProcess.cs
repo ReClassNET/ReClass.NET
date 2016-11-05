@@ -59,10 +59,8 @@ namespace ReClassNET.Memory
 		}
 
 		private readonly List<Module> modules = new List<Module>();
-		public IEnumerable<Module> Modules => modules;
 
 		private readonly List<Section> sections = new List<Section>();
-		public IEnumerable<Section> Sections => sections;
 
 		private readonly Symbols symbols = new Symbols();
 		public Symbols Symbols => symbols;
@@ -337,7 +335,7 @@ namespace ReClassNET.Memory
 			return null;
 		}
 
-#endregion
+		#endregion
 
 		#region WriteMemory
 
@@ -377,17 +375,33 @@ namespace ReClassNET.Memory
 
 		public Section GetSectionToPointer(IntPtr address)
 		{
-			return sections
-				.Where(s => s.Category != SectionCategory.Unknown)
-				.Where(s => address.InRange(s.Start, s.End))
-				.FirstOrDefault();
+			lock (sections)
+			{
+				return sections
+					.Where(s => s.Category != SectionCategory.Unknown)
+					.Where(s => address.InRange(s.Start, s.End))
+					.FirstOrDefault();
+			}
 		}
 
 		public Module GetModuleToPointer(IntPtr address)
 		{
-			return modules
-				.Where(m => address.InRange(m.Start, m.End))
-				.FirstOrDefault();
+			lock (modules)
+			{
+				return modules
+					.Where(m => address.InRange(m.Start, m.End))
+					.FirstOrDefault();
+			}
+		}
+
+		public Module GetModuleByName(string name)
+		{
+			lock (modules)
+			{
+				return modules
+					.Where(m => m.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+					.FirstOrDefault();
+			}
 		}
 
 		/// <summary>Tries to map the given address to a section or a module of the process.</summary>
@@ -420,16 +434,22 @@ namespace ReClassNET.Memory
 		{
 			if (!IsValid)
 			{
-				modules.Clear();
-				sections.Clear();
+				lock(modules)
+				{
+					modules.Clear();
+				}
+				lock(sections)
+				{
+					sections.Clear();
+				}
 
 				return Task.CompletedTask;
 			}
 
 			return Task.Run(() =>
 			{
-				var modules = new List<Module>();
-				var sections = new List<Section>();
+				var newModules = new List<Module>();
+				var newSections = new List<Section>();
 
 				nativeHelper.EnumerateRemoteSectionsAndModules(
 					process.Handle,
@@ -459,11 +479,11 @@ namespace ReClassNET.Memory
 								section.Category = SectionCategory.Data;
 								break;
 						}
-						sections.Add(section);
+						newSections.Add(section);
 					},
 					delegate (IntPtr baseAddress, IntPtr regionSize, string modulePath)
 					{
-						modules.Add(new Module
+						newModules.Add(new Module
 						{
 							Start = baseAddress,
 							End = baseAddress.Add(regionSize),
@@ -473,10 +493,16 @@ namespace ReClassNET.Memory
 					}
 				);
 
-				this.modules.Clear();
-				this.modules.AddRange(modules);
-				this.sections.Clear();
-				this.sections.AddRange(sections);
+				lock (modules)
+				{
+					modules.Clear();
+					modules.AddRange(newModules);
+				}
+				lock (sections)
+				{
+					sections.Clear();
+					sections.AddRange(newSections);
+				}
 			});
 		}
 

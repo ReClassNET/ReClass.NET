@@ -50,7 +50,7 @@ namespace ReClassNET.Nodes
 
 				if (Program.Settings.ShowCommentSymbol)
 				{
-					var module = view.Memory.Process.Modules.Where(m => ivalue.InRange(m.Start, m.End)).FirstOrDefault();
+					var module = view.Memory.Process.GetModuleToPointer(ivalue);
 					if (module != null)
 					{
 						var symbols = view.Memory.Process.Symbols.GetSymbolsForModule(module);

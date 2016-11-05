@@ -95,7 +95,11 @@ namespace ReClassNET.SymbolReader
 			Contract.Requires(module != null);
 
 			var reader = SymbolReader.FromModule(module, SymbolSearchPath);
-			symbolReaders[module.Name.ToLower()] = reader;
+
+			lock (symbolReaders)
+			{
+				symbolReaders[module.Name.ToLower()] = reader;
+			}
 		}
 
 		public void LoadSymbolsFromPDB(string path)
@@ -103,7 +107,11 @@ namespace ReClassNET.SymbolReader
 			Contract.Requires(path != null);
 
 			var reader = SymbolReader.FromDatabase(path);
-			symbolReaders[Path.GetFileName(path).ToLower()] = reader;
+
+			lock (symbolReaders)
+			{
+				symbolReaders[Path.GetFileName(path).ToLower()] = reader;
+			}
 		}
 
 		public SymbolReader GetSymbolsForModule(RemoteProcess.Module module)
@@ -112,14 +120,17 @@ namespace ReClassNET.SymbolReader
 
 			var name = module.Name.ToLower();
 
-			SymbolReader reader;
-			if (!symbolReaders.TryGetValue(name, out reader))
+			lock (symbolReaders)
 			{
-				name = Path.ChangeExtension(name, ".pdb");
+				SymbolReader reader;
+				if (!symbolReaders.TryGetValue(name, out reader))
+				{
+					name = Path.ChangeExtension(name, ".pdb");
 
-				symbolReaders.TryGetValue(name, out reader);
+					symbolReaders.TryGetValue(name, out reader);
+				}
+				return reader;
 			}
-			return reader;
 		}
 	}
 }
