@@ -18,7 +18,9 @@ This is a port of ReClass to the .NET platform with additional features.
  - Class Arrays and array of pointers to classes
  - VTable
  - Function Pointer
+- Automatic Node Dissection
 - Highlight changed memory
+- Copy / Paste Support
 - Display types from Debug Symbols (*.pdb)
 - Display Runtime Type Informations (RTTI)
 - Control the remote process: start / stop / kill
