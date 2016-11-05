@@ -163,7 +163,7 @@ namespace ReClassNET.Util
 		{
 			Contract.Requires(source != null);
 
-			return IsLikelyPrintableData(source) >= 0.75f;
+			return IsLikelyPrintableData(source) >= 0.5f;
 		}
 
 		public static float IsLikelyPrintableData(this IEnumerable<char> source)
