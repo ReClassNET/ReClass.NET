@@ -11,54 +11,66 @@ namespace ReClassNET.Util
 	public static class Extensions
 	{
 		[Pure]
-		public static bool IsNearlyEqual(this float val, float other)
+		public static int ToRgb(this Color color)
 		{
-			return IsNearlyEqual(val, other, float.Epsilon);
+			return 0xFFFFFF & color.ToArgb();
 		}
 
 		[Pure]
-		public static bool IsNearlyEqual(this float val, float other, float epsilon)
+		public static void FillWithZero(this byte[] b)
 		{
-			var diff = Math.Abs(val - other);
+			Contract.Requires(b != null);
 
-			if (val == other)
+			for (var i = 0; i < b.Length; ++i)
 			{
-				return true;
+				b[i] = 0;
 			}
-			else if (val == 0 || other == 0 || diff < float.Epsilon)
-			{
-				return diff < epsilon;
-			}
-			else
-			{
-				return diff / (Math.Abs(val) + Math.Abs(other)) < epsilon;
-			}
+		}
+
+		public static void ShowDialog(this Exception ex)
+		{
+			Contract.Requires(ex != null);
+
+			// This doesn't look good...
+			ex.HelpLink = "https://github.com/KN4CK3R/ReClass.NET/issues";
+
+			var msg = new ExceptionMessageBox(ex);
+			msg.ShowToolBar = true;
+			msg.Symbol = ExceptionMessageBoxSymbol.Error;
+			msg.Show(null);
 		}
 
 		[Pure]
-		public static bool IsNearlyEqual(this double val, double other)
+		public static Point OffsetEx(this Point p, int x, int y)
 		{
-			return IsNearlyEqual(val, other, double.Epsilon);
+			var temp = p;
+			temp.Offset(x, y);
+			return temp;
 		}
 
-		[Pure]
-		public static bool IsNearlyEqual(this double val, double other, double epsilon)
+		public static IEnumerable<BaseNode> Descendants(this BaseNode root)
 		{
-			var diff = Math.Abs(val - other);
+			Contract.Requires(root != null);
 
-			if (val == other)
+			var nodes = new Stack<BaseNode>();
+			nodes.Push(root);
+			while (nodes.Any())
 			{
-				return true;
-			}
-			else if (val == 0 || other == 0 || diff < double.Epsilon)
-			{
-				return diff < epsilon;
-			}
-			else
-			{
-				return diff / (Math.Abs(val) + Math.Abs(other)) < epsilon;
+				var node = nodes.Pop();
+				yield return node;
+
+				var classNode = node as ClassNode;
+				if (classNode != null)
+				{
+					foreach (var child in classNode.Nodes)
+					{
+						nodes.Push(child);
+					}
+				}
 			}
 		}
+
+		#region Pointer
 
 		[Pure]
 		public static bool IsNull(this IntPtr ptr)
@@ -130,11 +142,9 @@ namespace ReClassNET.Util
 #endif
 		}
 
-		[Pure]
-		public static int ToRgb(this Color color)
-		{
-			return 0xFFFFFF & color.ToArgb();
-		}
+		#endregion
+
+		#region String
 
 		[Pure]
 		public static bool IsPrintable(this char c)
@@ -195,14 +205,6 @@ namespace ReClassNET.Util
 		}
 
 		[Pure]
-		public static Point OffsetEx(this Point p, int x, int y)
-		{
-			var temp = p;
-			temp.Offset(x, y);
-			return temp;
-		}
-
-		[Pure]
 		public static string LimitLength(this string s, int length)
 		{
 			Contract.Requires(s != null);
@@ -214,38 +216,63 @@ namespace ReClassNET.Util
 			return s.Substring(0, length);
 		}
 
+		#endregion
+
+		#region Floating Point
+
 		[Pure]
-		public static void FillWithZero(this byte[] b)
+		public static bool IsNearlyEqual(this float val, float other)
 		{
-			Contract.Requires(b != null);
+			return IsNearlyEqual(val, other, float.Epsilon);
+		}
 
-			for (var i = 0; i < b.Length; ++i)
+		[Pure]
+		public static bool IsNearlyEqual(this float val, float other, float epsilon)
+		{
+			var diff = Math.Abs(val - other);
+
+			if (val == other)
 			{
-				b[i] = 0;
+				return true;
+			}
+			else if (val == 0 || other == 0 || diff < float.Epsilon)
+			{
+				return diff < epsilon;
+			}
+			else
+			{
+				return diff / (Math.Abs(val) + Math.Abs(other)) < epsilon;
 			}
 		}
 
-		public static IEnumerable<BaseNode> Descendants(this BaseNode root)
+		[Pure]
+		public static bool IsNearlyEqual(this double val, double other)
 		{
-			Contract.Requires(root != null);
+			return IsNearlyEqual(val, other, double.Epsilon);
+		}
 
-			var nodes = new Stack<BaseNode>();
-			nodes.Push(root);
-			while (nodes.Any())
+		[Pure]
+		public static bool IsNearlyEqual(this double val, double other, double epsilon)
+		{
+			var diff = Math.Abs(val - other);
+
+			if (val == other)
 			{
-				var node = nodes.Pop();
-				yield return node;
-
-				var classNode = node as ClassNode;
-				if (classNode != null)
-				{
-					foreach (var child in classNode.Nodes)
-					{
-						nodes.Push(child);
-					}
-				}
+				return true;
+			}
+			else if (val == 0 || other == 0 || diff < double.Epsilon)
+			{
+				return diff < epsilon;
+			}
+			else
+			{
+				return diff / (Math.Abs(val) + Math.Abs(other)) < epsilon;
 			}
 		}
+
+		#endregion
+
+		#region Linq
 
 		public static int FindIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
 		{
@@ -336,17 +363,6 @@ namespace ReClassNET.Util
 			}
 		}
 
-		public static void ShowDialog(this Exception ex)
-		{
-			Contract.Requires(ex != null);
-
-			// This doesn't look good...
-			ex.HelpLink = "https://github.com/KN4CK3R/ReClass.NET/issues";
-
-			var msg = new ExceptionMessageBox(ex);
-			msg.ShowToolBar = true;
-			msg.Symbol = ExceptionMessageBoxSymbol.Error;
-			msg.Show(null);
-		}
+		#endregion
 	}
 }
