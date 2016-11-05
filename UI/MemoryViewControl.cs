@@ -629,6 +629,8 @@ namespace ReClassNET.UI
 			if (hexNodes.Any())
 			{
 				NodeDissector.DissectNodes(hexNodes.Select(h => (BaseHexNode)h.Node), Memory);
+
+				ClearSelection();
 			}
 		}
 
