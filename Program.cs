@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Forms;
+using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET
 {
@@ -50,7 +50,7 @@ namespace ReClassNET
 			}
 			catch (Exception ex)
 			{
-				ex.ShowDialog();
+				ShowException(ex);
 			}
 #else
 			using (var nativeHelper = new NativeHelper())
@@ -62,6 +62,18 @@ namespace ReClassNET
 #endif
 
 			Settings.Save(settings, Constants.SettingsFile);
+		}
+
+		/// <summary>Shows the exception in a special form.</summary>
+		/// <param name="ex">The exception.</param>
+		public static void ShowException(Exception ex)
+		{
+			ex.HelpLink = Constants.HelpUrl;
+
+			var msg = new ExceptionMessageBox(ex);
+			msg.ShowToolBar = true;
+			msg.Symbol = ExceptionMessageBoxSymbol.Error;
+			msg.Show(null);
 		}
 	}
 }

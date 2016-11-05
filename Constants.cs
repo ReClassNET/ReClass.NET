@@ -10,6 +10,8 @@
 
 		public const string HomepageUrl = "https://github.com/KN4CK3R/ReClass.NET";
 
+		public const string HelpUrl = "https://github.com/KN4CK3R/ReClass.NET/issues";
+
 #if WIN64
 		public const string Platform = "x64";
 #else

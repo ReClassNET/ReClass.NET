@@ -119,12 +119,7 @@ namespace ReClassNET.Forms
 			{
 				if (item.Exception != null)
 				{
-					item.Exception.HelpLink = "https://github.com/KN4CK3R/ReClass.NET/issues";
-
-					var msg = new ExceptionMessageBox(item.Exception);
-					msg.ShowToolBar = true;
-					msg.Symbol = ExceptionMessageBoxSymbol.Error;
-					msg.Show(null);
+					Program.ShowException(item.Exception);
 				}
 			}
 		}
