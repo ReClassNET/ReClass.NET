@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using ReClassNET.Memory;
 using ReClassNET.Util;
+using ReClassNET.Logger;
 
 namespace ReClassNET.Plugins
 {
@@ -35,9 +36,10 @@ namespace ReClassNET.Plugins
 			return plugins.GetEnumerator();
 		}
 
-		public void LoadAllPlugins(string path)
+		public void LoadAllPlugins(string path, ILogger logger)
 		{
 			Contract.Requires(path != null);
+			Contract.Requires(logger != null);
 
 			try
 			{
@@ -48,19 +50,20 @@ namespace ReClassNET.Plugins
 
 				var directory = new DirectoryInfo(path);
 
-				LoadPlugins(directory.GetFiles("*.dll"));
+				LoadPlugins(directory.GetFiles("*.dll"), logger);
 
-				LoadPlugins(directory.GetFiles("*.exe"));
+				LoadPlugins(directory.GetFiles("*.exe"), logger);
 			}
-			catch
+			catch (Exception ex)
 			{
-
+				logger.Log(ex);
 			}
 		}
 
-		private void LoadPlugins(IEnumerable<FileInfo> files)
+		private void LoadPlugins(IEnumerable<FileInfo> files, ILogger logger)
 		{
 			Contract.Requires(files != null);
+			Contract.Requires(logger != null);
 
 			foreach (var fi in files)
 			{
@@ -114,7 +117,7 @@ namespace ReClassNET.Plugins
 				}
 				catch (Exception ex)
 				{
-					ex.ShowDialog();
+					logger.Log(ex);
 				}
 			}
 		}

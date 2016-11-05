@@ -80,7 +80,7 @@ namespace ReClassNET.Forms
 
 			GlobalWindowManager.AddWindow(this);
 
-			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, Constants.PluginsFolder));
+			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, Constants.PluginsFolder), Program.Logger);
 		}
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
@@ -330,7 +330,7 @@ namespace ReClassNET.Forms
 					}
 					catch (Exception ex)
 					{
-						ex.ShowDialog();
+						Program.Logger.Log(ex);
 					}
 				}
 			}

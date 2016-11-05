@@ -28,12 +28,16 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.closeButton = new System.Windows.Forms.Button();
 			this.copyToClipboardButton = new System.Windows.Forms.Button();
 			this.entriesDataGridView = new System.Windows.Forms.DataGridView();
 			this.iconColumn = new System.Windows.Forms.DataGridViewImageColumn();
 			this.messageColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.showDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.entriesDataGridView)).BeginInit();
+			this.contextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// closeButton
@@ -82,9 +86,11 @@
 			this.entriesDataGridView.Name = "entriesDataGridView";
 			this.entriesDataGridView.ReadOnly = true;
 			this.entriesDataGridView.RowHeadersVisible = false;
+			this.entriesDataGridView.RowTemplate.ContextMenuStrip = this.contextMenuStrip;
 			this.entriesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.entriesDataGridView.Size = new System.Drawing.Size(563, 188);
 			this.entriesDataGridView.TabIndex = 1;
+			this.entriesDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.entriesDataGridView_CellContentDoubleClick);
 			// 
 			// iconColumn
 			// 
@@ -105,6 +111,20 @@
 			this.messageColumn.Name = "messageColumn";
 			this.messageColumn.ReadOnly = true;
 			// 
+			// contextMenuStrip
+			// 
+			this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showDetailsToolStripMenuItem});
+			this.contextMenuStrip.Name = "contextMenuStrip";
+			this.contextMenuStrip.Size = new System.Drawing.Size(150, 26);
+			// 
+			// showDetailsToolStripMenuItem
+			// 
+			this.showDetailsToolStripMenuItem.Name = "showDetailsToolStripMenuItem";
+			this.showDetailsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.showDetailsToolStripMenuItem.Text = "Show details...";
+			this.showDetailsToolStripMenuItem.Click += new System.EventHandler(this.showDetailsToolStripMenuItem_Click);
+			// 
 			// LogForm
 			// 
 			this.AcceptButton = this.closeButton;
@@ -117,6 +137,7 @@
 			this.Name = "LogForm";
 			this.Text = "ReClass.NET - Diagnostic Messages";
 			((System.ComponentModel.ISupportInitialize)(this.entriesDataGridView)).EndInit();
+			this.contextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -127,5 +148,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn messageColumn;
 		private System.Windows.Forms.Button closeButton;
 		private System.Windows.Forms.Button copyToClipboardButton;
+		private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem showDetailsToolStripMenuItem;
 	}
 }

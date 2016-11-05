@@ -83,7 +83,7 @@ namespace ReClassNET.UI
 				}
 				catch (Exception ex)
 				{
-					ex.ShowDialog();
+					Program.Logger.Log(ex);
 				}
 
 				Parent.Invalidate();

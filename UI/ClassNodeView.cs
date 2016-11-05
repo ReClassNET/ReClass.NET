@@ -227,7 +227,7 @@ namespace ReClassNET.UI
 				}
 				catch (ClassReferencedException ex)
 				{
-					ex.ShowDialog();
+					Program.Logger.Log(ex);
 				}
 			}
 		}

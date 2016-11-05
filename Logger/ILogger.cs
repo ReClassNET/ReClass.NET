@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Logger
 {
-	public delegate void NewLogEntryEventHandler(LogLevel level, string message);
+	public delegate void NewLogEntryEventHandler(LogLevel level, string message, Exception ex);
 
 	[ContractClass(typeof(ILoggerContract))]
 	public interface ILogger

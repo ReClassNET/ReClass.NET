@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
-using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Nodes;
 
 namespace ReClassNET.Util
@@ -25,19 +24,6 @@ namespace ReClassNET.Util
 			{
 				b[i] = 0;
 			}
-		}
-
-		public static void ShowDialog(this Exception ex)
-		{
-			Contract.Requires(ex != null);
-
-			// This doesn't look good...
-			ex.HelpLink = "https://github.com/KN4CK3R/ReClass.NET/issues";
-
-			var msg = new ExceptionMessageBox(ex);
-			msg.ShowToolBar = true;
-			msg.Symbol = ExceptionMessageBoxSymbol.Error;
-			msg.Show(null);
 		}
 
 		[Pure]

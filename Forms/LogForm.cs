@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Logger;
 using ReClassNET.UI;
 
@@ -17,6 +18,8 @@ namespace ReClassNET.Forms
 			public Image Icon { get; set; }
 
 			public string Message { get; set; }
+
+			public Exception Exception { get; set; }
 		}
 
 		private readonly List<LogItem> items = new List<LogItem>();
@@ -43,6 +46,39 @@ namespace ReClassNET.Forms
 			GlobalWindowManager.RemoveWindow(this);
 		}
 
+		#region Event Handler
+
+		private void copyToClipboardButton_Click(object sender, EventArgs e)
+		{
+			Clipboard.SetText(items.Select(i => i.Message).Aggregate((a, b) => $"{a}{Environment.NewLine}{b}"));
+		}
+
+		private void closeButton_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
+
+		private void entriesDataGridView_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+		{
+			ShowDetailsForm();
+		}
+
+		private void showDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ShowDetailsForm();
+		}
+
+		#endregion
+
+		private void RefreshDataBinding()
+		{
+			var cm = entriesDataGridView.BindingContext[items] as CurrencyManager;
+			if (cm != null)
+			{
+				cm.Refresh();
+			}
+		}
+
 		public void Clear()
 		{
 			items.Clear();
@@ -50,7 +86,7 @@ namespace ReClassNET.Forms
 			RefreshDataBinding();
 		}
 
-		public void Add(LogLevel level, string message)
+		public void Add(LogLevel level, string message, Exception ex)
 		{
 			Contract.Requires(message != null);
 
@@ -71,28 +107,26 @@ namespace ReClassNET.Forms
 					break;
 			}
 
-			items.Add(new LogItem { Icon = icon, Message = message });
+			items.Add(new LogItem { Icon = icon, Message = message, Exception = ex });
 
 			RefreshDataBinding();
 		}
 
-		private void RefreshDataBinding()
+		private void ShowDetailsForm()
 		{
-			var cm = entriesDataGridView.BindingContext[items] as CurrencyManager;
-			if (cm != null)
+			var item = entriesDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as LogItem;
+			if (item != null)
 			{
-				cm.Refresh();
+				if (item.Exception != null)
+				{
+					item.Exception.HelpLink = "https://github.com/KN4CK3R/ReClass.NET/issues";
+
+					var msg = new ExceptionMessageBox(item.Exception);
+					msg.ShowToolBar = true;
+					msg.Symbol = ExceptionMessageBoxSymbol.Error;
+					msg.Show(null);
+				}
 			}
-		}
-
-		private void copyToClipboardButton_Click(object sender, EventArgs e)
-		{
-			Clipboard.SetText(items.Select(i => i.Message).Aggregate((a, b) => $"{a}{Environment.NewLine}{b}"));
-		}
-
-		private void closeButton_Click(object sender, EventArgs e)
-		{
-			Close();
 		}
 	}
 }

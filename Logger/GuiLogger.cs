@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 using ReClassNET.Forms;
+using System;
 
 namespace ReClassNET.Logger
 {
@@ -26,7 +27,7 @@ namespace ReClassNET.Logger
 			NewLogEntry += OnNewLogEntry;
 		}
 
-		private void OnNewLogEntry(LogLevel level, string message)
+		private void OnNewLogEntry(LogLevel level, string message, Exception ex)
 		{
 			Contract.Requires(message != null);
 
@@ -37,7 +38,7 @@ namespace ReClassNET.Logger
 
 			ShowForm();
 
-			form.Add(level, message);
+			form.Add(level, message, ex);
 		}
 
 		public void ShowForm()
@@ -45,6 +46,8 @@ namespace ReClassNET.Logger
 			if (!form.Visible)
 			{
 				form.Show();
+
+				form.BringToFront();
 			}
 		}
 	}

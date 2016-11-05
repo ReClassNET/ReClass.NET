@@ -75,10 +75,10 @@ namespace ReClassNET
 		{
 			if (e.Button == MouseButtons.Right)
 			{
-				int rowSelected = e.RowIndex;
+				int row = e.RowIndex;
 				if (e.RowIndex != -1)
 				{
-					sectionsDataGridView.Rows[rowSelected].Selected = true;
+					sectionsDataGridView.Rows[row].Selected = true;
 				}
 			}
 		}

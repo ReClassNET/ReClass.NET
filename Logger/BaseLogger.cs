@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.SqlServer.MessageBox;
+using System;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Logger
 {
@@ -10,14 +12,25 @@ namespace ReClassNET.Logger
 
 		public void Log(Exception ex)
 		{
-			Log(LogLevel.Error, ex.ToString());
+			Contract.Requires(ex != null);
+
+			Log(LogLevel.Error, ExceptionMessageBox.GetMessageText(ex), ex);
 		}
 
 		public void Log(LogLevel level, string message)
 		{
+			Contract.Requires(message != null);
+
+			Log(level, message, null);
+		}
+
+		private void Log(LogLevel level, string message, Exception ex)
+		{
+			Contract.Requires(message != null);
+
 			lock (sync)
 			{
-				NewLogEntry?.Invoke(level, message);
+				NewLogEntry?.Invoke(level, message, ex);
 			}
 		}
 	}
