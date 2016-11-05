@@ -67,7 +67,24 @@ namespace ReClassNET.Memory
 
 		public byte ReadByte(int offset)
 		{
+			if (Offset + offset < 0 || Offset + offset > data.Length)
+			{
+				throw new IndexOutOfRangeException();
+			}
+
 			return data[Offset + offset];
+		}
+
+		public byte[] ReadBytes(int offset, int length)
+		{
+			if (Offset + offset < 0 || Offset + offset + length > data.Length)
+			{
+				throw new IndexOutOfRangeException();
+			}
+
+			var b = new byte[length];
+			Array.Copy(data, Offset + offset, b, 0, length);
+			return b;
 		}
 
 		public T ReadObject<T>(IntPtr offset) where T : struct
@@ -78,7 +95,7 @@ namespace ReClassNET.Memory
 		public T ReadObject<T>(int offset) where T : struct
 		{
 			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			var obj = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject() + offset, typeof(T));
+			var obj = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject() + Offset + offset, typeof(T));
 			handle.Free();
 
 			return obj;

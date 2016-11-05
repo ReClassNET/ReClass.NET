@@ -623,6 +623,15 @@ namespace ReClassNET.UI
 			PasteNodeFromClipboardToSelection();
 		}
 
+		private void dissectNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var hexNodes = selectedNodes.Where(h => h.Node is BaseHexNode);
+			if (hexNodes.Any())
+			{
+				NodeDissector.DissectNodes(hexNodes.Select(h => (BaseHexNode)h.Node), Memory);
+			}
+		}
+
 		#endregion
 
 		public void AddBytes(int length)

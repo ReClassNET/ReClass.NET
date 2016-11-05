@@ -38,12 +38,19 @@ namespace ReClassNET.Memory
 			public string Path;
 		}
 
+		public enum SectionCategory
+		{
+			Unknown,
+			Code,
+			Data
+		}
+
 		public class Section
 		{
 			public IntPtr Start;
 			public IntPtr End;
 			public string Name;
-			public string Category;
+			public SectionCategory Category;
 			public NativeMethods.StateEnum State;
 			public NativeMethods.AllocationProtectEnum Protection;
 			public NativeMethods.TypeEnum Type;
@@ -368,17 +375,32 @@ namespace ReClassNET.Memory
 
 		#endregion
 
+		public Section GetSectionToPointer(IntPtr address)
+		{
+			return sections
+				.Where(s => s.Category != SectionCategory.Unknown)
+				.Where(s => address.InRange(s.Start, s.End))
+				.FirstOrDefault();
+		}
+
+		public Module GetModuleToPointer(IntPtr address)
+		{
+			return modules
+				.Where(m => address.InRange(m.Start, m.End))
+				.FirstOrDefault();
+		}
+
 		/// <summary>Tries to map the given address to a section or a module of the process.</summary>
 		/// <param name="address">The address to map.</param>
 		/// <returns>The named address or null if no mapping exists.</returns>
 		public string GetNamedAddress(IntPtr address)
 		{
-			var section = sections.Where(s => s.Category != null).Where(s => address.InRange(s.Start, s.End)).FirstOrDefault();
+			var section = GetSectionToPointer(address);
 			if (section != null)
 			{
 				return $"<{section.Category}>{section.ModuleName}.{address.ToString("X")}";
 			}
-			var module = modules.Where(m => address.InRange(m.Start, m.End)).FirstOrDefault();
+			var module = GetModuleToPointer(address);
 			if (module != null)
 			{
 				return $"{module.Name}.{address.ToString("X")}";
@@ -428,13 +450,13 @@ namespace ReClassNET.Memory
 						{
 							case ".text":
 							case "code":
-								section.Category = "CODE";
+								section.Category = SectionCategory.Code;
 								break;
 							case ".data":
 							case "data":
 							case ".rdata":
 							case ".idata":
-								section.Category = "DATA";
+								section.Category = SectionCategory.Data;
 								break;
 						}
 						sections.Add(section);

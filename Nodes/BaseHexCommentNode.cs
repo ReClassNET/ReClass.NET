@@ -70,12 +70,12 @@ namespace ReClassNET.Nodes
 					var data = view.Memory.Process.ReadRemoteMemory(ivalue, 64);
 
 					// First check if it could be an UTF8 string and if not try UTF16.
-					if (!data.Take(IntPtr.Size).Where(b => !((char)b).IsPrintable()).Any())
+					if (data.Take(IntPtr.Size).IsPrintableData())
 					{
 						var text = new string(Encoding.UTF8.GetChars(data).TakeWhile(c => c != 0).ToArray());
 						x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, $"'{text}'") + view.Font.Width;
 					}
-					else if(!data.EveryNth(2).Take(IntPtr.Size).Where(b => !((char)b).IsPrintable()).Any())
+					else if(data.EveryNth(2).Take(IntPtr.Size).IsPrintableData())
 					{
 						var text = new string(Encoding.Unicode.GetChars(data).TakeWhile(c => c != 0).ToArray());
 						x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, $"L'{text}'") + view.Font.Width;

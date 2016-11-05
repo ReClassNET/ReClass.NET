@@ -34,11 +34,37 @@ namespace ReClassNET.Nodes
 			return Nodes.FindIndex(n => n == node);
 		}
 
+		public virtual BaseNode ReplaceChildNode(BaseNode child, Type nodeType)
+		{
+			return ReplaceChildNode(FindNodeIndex(child), nodeType);
+		}
+
 		/// <summary>Replaces the child at the specific position with the provided node.</summary>
 		/// <param name="index">Zero-based position.</param>
 		/// <param name="node">The node to add.</param>
 		/// <returns>True if it succeeds, false if it fails.</returns>
-		public virtual bool ReplaceChildNode(BaseNode child, BaseNode node)
+		public virtual BaseNode ReplaceChildNode(int index, Type nodeType)
+		{
+			Contract.Requires(nodeType != null);
+			Contract.Requires(nodeType.IsSubclassOf(typeof(BaseNode)));
+
+			var node = Activator.CreateInstance(nodeType) as BaseNode;
+
+			node.Intialize();
+
+			if (ReplaceChildNode(index, node))
+			{
+				return node;
+			}
+
+			return null;
+		}
+
+		/// <summary>Replaces the child at the specific position with the provided node.</summary>
+		/// <param name="index">Zero-based position.</param>
+		/// <param name="node">The node to add.</param>
+		/// <returns>True if it succeeds, false if it fails.</returns>
+		public bool ReplaceChildNode(BaseNode child, BaseNode node)
 		{
 			return ReplaceChildNode(FindNodeIndex(child), node);
 		}

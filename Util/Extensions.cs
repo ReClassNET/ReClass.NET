@@ -11,6 +11,56 @@ namespace ReClassNET.Util
 	public static class Extensions
 	{
 		[Pure]
+		public static bool IsNearlyEqual(this float val, float other)
+		{
+			return IsNearlyEqual(val, other, float.Epsilon);
+		}
+
+		[Pure]
+		public static bool IsNearlyEqual(this float val, float other, float epsilon)
+		{
+			var diff = Math.Abs(val - other);
+
+			if (val == other)
+			{
+				return true;
+			}
+			else if (val == 0 || other == 0 || diff < float.Epsilon)
+			{
+				return diff < epsilon;
+			}
+			else
+			{
+				return diff / (Math.Abs(val) + Math.Abs(other)) < epsilon;
+			}
+		}
+
+		[Pure]
+		public static bool IsNearlyEqual(this double val, double other)
+		{
+			return IsNearlyEqual(val, other, double.Epsilon);
+		}
+
+		[Pure]
+		public static bool IsNearlyEqual(this double val, double other, double epsilon)
+		{
+			var diff = Math.Abs(val - other);
+
+			if (val == other)
+			{
+				return true;
+			}
+			else if (val == 0 || other == 0 || diff < double.Epsilon)
+			{
+				return diff < epsilon;
+			}
+			else
+			{
+				return diff / (Math.Abs(val) + Math.Abs(other)) < epsilon;
+			}
+		}
+
+		[Pure]
 		public static bool IsNull(this IntPtr ptr)
 		{
 			return ptr == IntPtr.Zero;
@@ -90,6 +140,11 @@ namespace ReClassNET.Util
 		public static bool IsPrintable(this char c)
 		{
 			return ' ' <= c && c <= '~';
+		}
+
+		public static bool IsPrintableData(this IEnumerable<byte> source)
+		{
+			return source.All(b => ((char)b).IsPrintable());
 		}
 
 		[Pure]

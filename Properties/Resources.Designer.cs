@@ -603,6 +603,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Camera {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Camera", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Chart_Delete {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Chart_Delete", resourceCulture);
@@ -1121,7 +1131,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 2016/11/03 13:06:31
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2016/11/05 11:24:43
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {

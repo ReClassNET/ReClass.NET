@@ -88,6 +88,8 @@
 			this.insert2048BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.insert4096BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.dissectNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.copyNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pasteNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,13 +109,15 @@
             this.addBytesToolStripMenuItem,
             this.insertBytesToolStripMenuItem,
             this.toolStripSeparator1,
+            this.dissectNodesToolStripMenuItem,
+            this.toolStripSeparator2,
             this.copyNodeToolStripMenuItem,
             this.pasteNodesToolStripMenuItem,
             this.removeToolStripMenuItem,
             this.toolStripSeparator12,
             this.copyAddressToolStripMenuItem});
 			this.selectedNodeContextMenuStrip.Name = "selectedNodeContextMenuStrip";
-			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(163, 170);
+			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(163, 220);
 			// 
 			// changeTypeToolStripMenuItem
 			// 
@@ -648,6 +652,19 @@
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(159, 6);
 			// 
+			// dissectNodesToolStripMenuItem
+			// 
+			this.dissectNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Camera;
+			this.dissectNodesToolStripMenuItem.Name = "dissectNodesToolStripMenuItem";
+			this.dissectNodesToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+			this.dissectNodesToolStripMenuItem.Text = "Dissect Node(s)";
+			this.dissectNodesToolStripMenuItem.Click += new System.EventHandler(this.dissectNodesToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(159, 6);
+			// 
 			// copyNodeToolStripMenuItem
 			// 
 			this.copyNodeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Copy;
@@ -794,5 +811,7 @@
 		private System.Windows.Forms.ToolStripMenuItem copyNodeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem pasteNodesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+		private System.Windows.Forms.ToolStripMenuItem dissectNodesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 	}
 }
