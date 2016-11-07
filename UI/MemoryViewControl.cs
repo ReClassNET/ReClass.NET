@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ReClassNET.AddressParser;
 using ReClassNET.DataExchange;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
@@ -561,7 +562,7 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			if (ClassNode != null)
+			if (ClassNode != null && Memory != null)
 			{
 				ClassNode.UpdateAddress(Memory);
 			}

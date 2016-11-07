@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
+using ReClassNET.AddressParser;
 using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;
@@ -142,7 +143,14 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(memory != null);
 
-			Offset = memory.Process.ParseAddress(AddressFormula);
+			try
+			{
+				Offset = memory.Process.ParseAddress(AddressFormula);
+			}
+			catch (ParseException)
+			{
+				Offset = IntPtr.Zero;
+			}
 		}
 
 		public override void InsertBytes(int index, int size)
