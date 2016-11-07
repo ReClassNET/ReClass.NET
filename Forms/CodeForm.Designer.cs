@@ -35,10 +35,14 @@
 			// 
 			// codeWebBrowser
 			// 
+			this.codeWebBrowser.AllowNavigation = false;
+			this.codeWebBrowser.AllowWebBrowserDrop = false;
 			this.codeWebBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.codeWebBrowser.IsWebBrowserContextMenuEnabled = false;
 			this.codeWebBrowser.Location = new System.Drawing.Point(0, 48);
 			this.codeWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
 			this.codeWebBrowser.Name = "codeWebBrowser";
+			this.codeWebBrowser.ScriptErrorsSuppressed = true;
 			this.codeWebBrowser.Size = new System.Drawing.Size(629, 390);
 			this.codeWebBrowser.TabIndex = 1;
 			// 

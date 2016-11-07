@@ -144,7 +144,7 @@ namespace ReClassNET.CodeGenerator
 			int fill = 0;
 			int fillStart = 0;
 
-			foreach (var member in members)
+			foreach (var member in members.Where(m => !(m is VTableNode)))
 			{
 				if (member is BaseHexNode)
 				{

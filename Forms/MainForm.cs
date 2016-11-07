@@ -488,10 +488,7 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(generator != null);
 
-			using (var cf = new CodeForm(generator, ClassManager.Classes, Program.Logger))
-			{
-				cf.ShowDialog();
-			}
+			new CodeForm(generator, ClassManager.Classes, Program.Logger).Show();
 		}
 
 		/// <summary>Opens the <see cref="InputBytesForm"/> and calls <paramref name="callback"/> with the result.</summary>
