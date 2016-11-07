@@ -10,12 +10,6 @@ namespace ReClassNET.Nodes
 		public int CurrentIndex { get; set; }
 		public int Count { get; set; } = 1;
 
-		public BaseArrayNode(bool performCycleCheck)
-			: base(performCycleCheck)
-		{
-
-		}
-
 		protected int Draw(ViewInfo view, int x, int y, string type, HotSpotType exchange)
 		{
 			Contract.Requires(view != null);
@@ -130,11 +124,6 @@ namespace ReClassNET.Nodes
 	[ContractClassFor(typeof(BaseArrayNode))]
 	internal abstract class BaseArrayNodeContract : BaseArrayNode
 	{
-		public BaseArrayNodeContract(bool performCycleCheck)
-			: base(performCycleCheck)
-		{
-		}
-
 		protected override int DrawChild(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);

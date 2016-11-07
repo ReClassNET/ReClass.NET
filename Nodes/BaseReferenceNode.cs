@@ -14,14 +14,11 @@ namespace ReClassNET.Nodes
 		/// <summary>Gets signaled if the inner node was changed.</summary>
 		public event NodeEventHandler InnerNodeChanged;
 
-		/// <summary>Constructor.</summary>
-		/// <param name="performCycleCheck">True to perform class cycle checks when changing the inner node.</param>
-		public BaseReferenceNode(bool performCycleCheck)
-		{
-			this.performCycleCheck = performCycleCheck;
-		}
+		/// <summary>True to perform class cycle checks when changing the inner node.</summary>
+		public abstract bool PerformCycleCheck { get; }
 
 		/// <summary>Changes the inner node.</summary>
+		/// <exception cref="ClassCycleException">Thrown when a class cycle is present.</exception>
 		/// <param name="node">The new node.</param>
 		public void ChangeInnerNode(ClassNode node)
 		{
@@ -29,9 +26,12 @@ namespace ReClassNET.Nodes
 
 			if (InnerNode != node)
 			{
-				if (performCycleCheck)
+				if (PerformCycleCheck && ParentNode != null)
 				{
-					PerformCycleCheck(node);
+					if (!ClassManager.IsCycleFree(ParentNode as ClassNode, node))
+					{
+						throw new ClassCycleException();
+					}
 				}
 
 				InnerNode = node;
@@ -41,23 +41,10 @@ namespace ReClassNET.Nodes
 				ParentNode?.ChildHasChanged(this);
 			}
 		}
-
-		/// <summary>Performs a class cycle check for the given class.</summary>
-		/// <exception cref="ClassCycleException">Thrown when a class cycle is present.</exception>
-		/// <param name="node">The class to check.</param>
-		public void PerformCycleCheck(ClassNode node)
-		{
-			Contract.Requires(node != null);
-
-			if (!ClassManager.IsCycleFree(ParentNode as ClassNode, node))
-			{
-				throw new ClassCycleException();
-			}
-		}
 	}
 
 
-	/// <summary>Exception for signalling class cycle errors.</summary>
+	/// <summary>Exception for signaling class cycle errors.</summary>
 	public class ClassCycleException : Exception
 	{
 

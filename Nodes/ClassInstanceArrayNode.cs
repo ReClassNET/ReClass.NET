@@ -9,11 +9,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => InnerNode.MemorySize * Count;
 
-		public ClassInstanceArrayNode()
-			: base(true)
-		{
-
-		}
+		public override bool PerformCycleCheck => true;
 
 		public override void Intialize()
 		{

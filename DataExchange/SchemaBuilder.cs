@@ -404,16 +404,14 @@ namespace ReClassNET.DataExchange
 			{
 				var schemaReferenceNode = schemaNode as SchemaReferenceNode;
 
-				try
+				if (referenceNode.PerformCycleCheck && !ClassManager.IsCycleFree(parentNode, classes[schemaReferenceNode.InnerNode], classes.Values))
 				{
-					referenceNode.ChangeInnerNode(classes[schemaReferenceNode.InnerNode]);
-				}
-				catch (ClassCycleException)
-				{
-					logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {node.Name}");
+					logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {schemaReferenceNode.InnerNode.Name}->{node.Name}");
 
 					return false;
 				}
+
+				referenceNode.ChangeInnerNode(classes[schemaReferenceNode.InnerNode]);
 			}
 
 			var vtableNode = node as VTableNode;

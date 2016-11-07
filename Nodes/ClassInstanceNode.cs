@@ -1,4 +1,5 @@
-﻿using ReClassNET.UI;
+﻿using System;
+using ReClassNET.UI;
 using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
@@ -8,11 +9,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => InnerNode.MemorySize;
 
-		public ClassInstanceNode()
-			: base(true)
-		{
-
-		}
+		public override bool PerformCycleCheck => true;
 
 		public override void Intialize()
 		{

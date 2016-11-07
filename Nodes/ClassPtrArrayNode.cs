@@ -12,11 +12,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size * Count;
 
-		public ClassPtrArrayNode()
-			: base(false)
-		{
-
-		}
+		public override bool PerformCycleCheck => true;
 
 		public override void Intialize()
 		{

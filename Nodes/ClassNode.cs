@@ -159,9 +159,10 @@ namespace ReClassNET.Nodes
 				return;
 			}
 
-			if (node is BaseReferenceNode)
+			var referenceNode = node as BaseReferenceNode;
+			if (referenceNode != null)
 			{
-				if (!ClassManager.IsCycleFree(this, ((BaseReferenceNode)node).InnerNode))
+				if (referenceNode.PerformCycleCheck && !ClassManager.IsCycleFree(this, referenceNode.InnerNode))
 				{
 					throw new ClassCycleException();
 				}
