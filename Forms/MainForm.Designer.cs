@@ -294,7 +294,7 @@
 			this.newClassToolStripButton.ToolTipText = "Add a new class to this project";
 			this.newClassToolStripButton.Click += new System.EventHandler(this.newClassToolStripButton_Click);
 			// 
-			// addToolStripDropDownButton
+			// addBytesToolStripDropDownButton
 			// 
 			this.addBytesToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.addBytesToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -375,7 +375,7 @@
 			this.add4096BytesToolStripMenuItem.Value = 4096;
 			this.add4096BytesToolStripMenuItem.Click += new System.EventHandler(this.addBytesToolStripMenuItem_Click);
 			// 
-			// addBytesToolStripMenuItem
+			// addXBytesToolStripMenuItem
 			// 
 			this.addXBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_X;
 			this.addXBytesToolStripMenuItem.Name = "addXBytesToolStripMenuItem";
@@ -383,7 +383,7 @@
 			this.addXBytesToolStripMenuItem.Text = "Add ... Bytes";
 			this.addXBytesToolStripMenuItem.Click += new System.EventHandler(this.addXBytesToolStripMenuItem_Click);
 			// 
-			// insertToolStripDropDownButton
+			// insertBytesToolStripDropDownButton
 			// 
 			this.insertBytesToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.insertBytesToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -465,7 +465,7 @@
 			this.insert4096BytesToolStripMenuItem.Value = 4096;
 			this.insert4096BytesToolStripMenuItem.Click += new System.EventHandler(this.insertBytesToolStripMenuItem_Click);
 			// 
-			// insertBytesToolStripMenuItem
+			// insertXBytesToolStripMenuItem
 			// 
 			this.insertXBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_X;
 			this.insertXBytesToolStripMenuItem.Name = "insertXBytesToolStripMenuItem";
@@ -1110,7 +1110,7 @@
 			this.generateCppCodeToolStripMenuItem.Text = "Generate C++ Code";
 			this.generateCppCodeToolStripMenuItem.Click += new System.EventHandler(this.generateCppCodeToolStripMenuItem_Click);
 			// 
-			// generateCSharpCodeToolStripMenuItem1
+			// generateCSharpCodeToolStripMenuItem
 			// 
 			this.generateCSharpCodeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Code_Csharp;
 			this.generateCSharpCodeToolStripMenuItem.Name = "generateCSharpCodeToolStripMenuItem";
@@ -1136,6 +1136,7 @@
 			// 
 			// MainForm
 			// 
+			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1141, 595);
@@ -1148,6 +1149,8 @@
 			this.Name = "MainForm";
 			this.Text = "ReClass.NET";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
+			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainForm_DragEnter);
 			this.splitContainer.Panel1.ResumeLayout(false);
 			this.splitContainer.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();

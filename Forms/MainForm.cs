@@ -182,44 +182,7 @@ namespace ReClassNET.Forms
 
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
-					IReClassImport import = null;
-					switch (Path.GetExtension(ofd.SafeFileName))
-					{
-						case ReClassNetFile.FileExtension:
-							import = new ReClassNetFile();
-							break;
-						case ReClassQtFile.FileExtension:
-							import = new ReClassQtFile();
-							break;
-						case ReClassFile.FileExtension:
-							import = new ReClassFile();
-							break;
-						case ReClass2007File.FileExtension:
-							import = new ReClass2007File();
-							break;
-						default:
-							Program.Logger.Log(LogLevel.Error, $"The file '{ofd.SafeFileName}' has an unknown type.");
-							break;
-					}
-					if (import != null)
-					{
-						var schema = import.Load(ofd.FileName, Program.Logger);
-						if (schema != null)
-						{
-							// If we have our filetype save the path to skip the Save As dialog.
-							if (import is ReClassNetFile)
-							{
-								projectPath = ofd.FileName;
-							}
-
-							var classes = schema.BuildNodes(Program.Logger);
-
-							ClassManager.Clear();
-							classes.ForEach(c => ClassManager.AddClass(c));
-
-							memoryViewControl.ClassNode = classes.FirstOrDefault();
-						}
-					}
+					LoadFileFromPath(ofd.SafeFileName);
 				}
 			}
 		}
@@ -408,6 +371,35 @@ namespace ReClassNET.Forms
 
 		#endregion
 
+		private void MainForm_DragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+				if (files != null && files.Any())
+				{
+					switch (Path.GetExtension(files.First()))
+					{
+						case ReClassNetFile.FileExtension:
+						case ReClassQtFile.FileExtension:
+						case ReClassFile.FileExtension:
+						case ReClass2007File.FileExtension:
+							e.Effect = DragDropEffects.Copy;
+							break;
+					}
+				}
+			}
+		}
+
+		private void MainForm_DragDrop(object sender, DragEventArgs e)
+		{
+			var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+			if (files != null && files.Any())
+			{
+				LoadFileFromPath(files.First());
+			}
+		}
+
 		private void processUpdateTimer_Tick(object sender, EventArgs e)
 		{
 			if (updateProcessInformationsTask == null || updateProcessInformationsTask.IsCompleted)
@@ -511,6 +503,48 @@ namespace ReClassNET.Forms
 				if (ib.ShowDialog() == DialogResult.OK)
 				{
 					callback(ib.Bytes);
+				}
+			}
+		}
+
+		private void LoadFileFromPath(string filePath)
+		{
+			IReClassImport import = null;
+			switch (Path.GetExtension(filePath))
+			{
+				case ReClassNetFile.FileExtension:
+					import = new ReClassNetFile();
+					break;
+				case ReClassQtFile.FileExtension:
+					import = new ReClassQtFile();
+					break;
+				case ReClassFile.FileExtension:
+					import = new ReClassFile();
+					break;
+				case ReClass2007File.FileExtension:
+					import = new ReClass2007File();
+					break;
+				default:
+					Program.Logger.Log(LogLevel.Error, $"The file '{filePath}' has an unknown type.");
+					break;
+			}
+			if (import != null)
+			{
+				var schema = import.Load(filePath, Program.Logger);
+				if (schema != null)
+				{
+					// If we have our filetype save the path to skip the Save As dialog.
+					if (import is ReClassNetFile)
+					{
+						projectPath = filePath;
+					}
+
+					var classes = schema.BuildNodes(Program.Logger);
+
+					ClassManager.Clear();
+					classes.ForEach(c => ClassManager.AddClass(c));
+
+					memoryViewControl.ClassNode = classes.FirstOrDefault();
 				}
 			}
 		}
