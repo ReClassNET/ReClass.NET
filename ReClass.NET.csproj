@@ -144,6 +144,8 @@
     <Compile Include="CodeGenerator\Language.cs" />
     <Compile Include="CodeGenerator\MemberDefinition.cs" />
     <Compile Include="DataExchange\ReClassClipboard.cs" />
+    <Compile Include="DataExchange\SchemaNodes.cs" />
+    <Compile Include="DataExchange\SchemaType.cs" />
     <Compile Include="Forms\InputBytesForm.cs">
       <SubType>Form</SubType>
     </Compile>
