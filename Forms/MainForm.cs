@@ -182,7 +182,7 @@ namespace ReClassNET.Forms
 
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
-					LoadFileFromPath(ofd.SafeFileName);
+					LoadFileFromPath(ofd.FileName);
 				}
 			}
 		}
