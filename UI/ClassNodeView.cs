@@ -158,18 +158,6 @@ namespace ReClassNET.UI
 
 		#region Event Handler
 
-		private void classesTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-		{
-			if (!string.IsNullOrEmpty(e.Label))
-			{
-				var node = e.Node as ClassTreeNode;
-				if (node != null)
-				{
-					node.ClassNode.Name = e.Label;
-				}
-			}
-		}
-
 		private void classesTreeView_AfterSelect(object sender, TreeViewEventArgs e)
 		{
 			if (e.Node.Level == 0)
@@ -238,6 +226,25 @@ namespace ReClassNET.UI
 			if (treeNode != null)
 			{
 				treeNode.BeginEdit();
+			}
+		}
+
+		private void classesTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+		{
+			if (!string.IsNullOrEmpty(e.Label))
+			{
+				var node = e.Node as ClassTreeNode;
+				if (node != null)
+				{
+					node.ClassNode.Name = e.Label;
+
+					// Cancel the edit if the class refused the name.
+					// This prevents the tree node from using the wrong name.
+					if (node.ClassNode.Name != e.Label)
+					{
+						e.CancelEdit = true;
+					}
+				}
 			}
 		}
 

@@ -14,6 +14,22 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
 
+		public override string Name
+		{
+			get { return base.Name; }
+			set
+			{
+				if (!ClassManager.Classes.Any(c => c.Name == value))
+				{
+					base.Name = value;
+				}
+				else
+				{
+					Program.Logger.Log(Logger.LogLevel.Warning, $"The class name {value} is already in use.");
+				}
+			}
+		}
+
 		public IntPtr Address
 		{
 			set
