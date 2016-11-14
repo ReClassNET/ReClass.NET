@@ -7,6 +7,8 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 1;
 
+		protected override BaseNode CreateCloneInstance() => new UInt8Node();
+
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>

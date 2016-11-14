@@ -27,11 +27,11 @@ namespace ReClassNET.Nodes
 		private string name;
 		private string comment;
 
-		/// <summary>Gets or sets the name of the node. If a new name was set the property changed event gets fired.</summary>
-		public virtual string Name { get { return name; } set { if (value != null && name != value) { name = value; NameChanged?.Invoke(this); } } }
-
 		/// <summary>Gets or sets the offset of the node.</summary>
 		public IntPtr Offset { get; set; }
+
+		/// <summary>Gets or sets the name of the node. If a new name was set the property changed event gets fired.</summary>
+		public virtual string Name { get { return name; } set { if (value != null && name != value) { name = value; NameChanged?.Invoke(this); } } }
 
 		/// <summary>Gets or sets the comment of the node.</summary>
 		public string Comment { get { return comment; } set { if (value != null && comment != value) { comment = value; CommentChanged?.Invoke(this); } } }
@@ -65,6 +65,20 @@ namespace ReClassNET.Nodes
 			levelsOpen[0] = true;
 		}
 
+		/// <summary>Makes a copy of this object.</summary>
+		/// <returns>A copy of this object.</returns>
+		public virtual BaseNode Clone()
+		{
+			var clone = CreateCloneInstance();
+
+			clone.Offset = Offset;
+			clone.Name = Name;
+			clone.Comment = Comment;
+
+			return clone;
+		}
+
+		protected abstract BaseNode CreateCloneInstance();
 
 		/// <summary>Clears the selection of the node.</summary>
 		public virtual void ClearSelection()

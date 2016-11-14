@@ -26,7 +26,8 @@ namespace ReClassNET.Forms
 
 		private readonly PluginManager pluginManager;
 
-		private string projectPath;
+		private ReClassNetProject currentProject;
+		public ReClassNetProject CurrentProject => currentProject;
 
 		private Task updateProcessInformationsTask;
 		private Task loadSymbolsTask;
@@ -68,8 +69,7 @@ namespace ReClassNET.Forms
 
 			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess, Program.Logger), nativeHelper);
 
-			ClassManager.ClassAdded += c => classesView.Add(c);
-			ClassManager.ClassRemoved += c => classesView.Remove(c);
+			SetProject(new ReClassNetProject());
 
 			newClassToolStripButton_Click(null, null);
 		}
@@ -163,7 +163,7 @@ namespace ReClassNET.Forms
 
 		private void newClassToolStripButton_Click(object sender, EventArgs e)
 		{
-			var node = ClassManager.CreateClass();
+			var node = ClassNode.Create();
 			node.AddBytes(64);
 
 			classesView.SelectedClass = node;
@@ -189,32 +189,32 @@ namespace ReClassNET.Forms
 
 		private void clearProjectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ClassManager.Clear();
+			SetProject(new ReClassNetProject());
 
 			memoryViewControl.ClassNode = null;
 		}
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (!ClassManager.Classes.Any())
+			if (!currentProject.Classes.Any())
 			{
 				return;
 			}
 
-			if (string.IsNullOrEmpty(projectPath))
+			if (string.IsNullOrEmpty(currentProject.Path))
 			{
 				saveAsToolStripMenuItem_Click(sender, e);
 
 				return;
 			}
 
-			var file = new ReClassNetFile();
-			file.Save(projectPath, SchemaBuilder.FromClasses(ClassManager.Classes, Program.Logger), Program.Logger);
+			var file = new ReClassNetFile(currentProject);
+			file.Save(currentProject.Path, Program.Logger);
 		}
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (!ClassManager.Classes.Any())
+			if (!currentProject.Classes.Any())
 			{
 				return;
 			}
@@ -226,7 +226,7 @@ namespace ReClassNET.Forms
 
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
-					projectPath = sfd.FileName;
+					currentProject.Path = sfd.FileName;
 
 					saveToolStripMenuItem_Click(sender, e);
 				}
@@ -301,7 +301,7 @@ namespace ReClassNET.Forms
 
 		private void cleanUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ClassManager.RemoveUnusedClasses();
+			currentProject.RemoveUnusedClasses();
 		}
 
 		private void generateCppCodeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -435,6 +435,27 @@ namespace ReClassNET.Forms
 
 		#endregion
 
+		private void SetProject(ReClassNetProject newProject)
+		{
+			Contract.Requires(newProject != null);
+
+			if (currentProject != null)
+			{
+				ClassNode.ClassCreated -= currentProject.AddClass;
+			}
+
+			currentProject = newProject;
+
+			ClassUtil.Classes = currentProject.Classes;
+
+			ClassNode.ClassCreated += currentProject.AddClass;
+
+			classesView.Project = currentProject;
+			memoryViewControl.Project = currentProject;
+
+			memoryViewControl.ClassNode = currentProject.Classes.FirstOrDefault();
+		}
+
 		/// <summary>Registers the node type which will create the ToolStrip and MenuStrip entries.</summary>
 		/// <param name="type">The node type.</param>
 		/// <param name="name">The name of the node type.</param>
@@ -480,7 +501,7 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(generator != null);
 
-			new CodeForm(generator, ClassManager.Classes, Program.Logger).Show();
+			new CodeForm(generator, currentProject.Classes, Program.Logger).Show();
 		}
 
 		/// <summary>Opens the <see cref="InputBytesForm"/> and calls <paramref name="callback"/> with the result.</summary>
@@ -509,20 +530,23 @@ namespace ReClassNET.Forms
 
 		private void LoadFileFromPath(string filePath)
 		{
+			var loadProject = new ReClassNetProject();
+
 			IReClassImport import = null;
 			switch (Path.GetExtension(filePath))
 			{
 				case ReClassNetFile.FileExtension:
-					import = new ReClassNetFile();
+					import = new ReClassNetFile(loadProject);
+					loadProject.Path = filePath;
 					break;
 				case ReClassQtFile.FileExtension:
-					import = new ReClassQtFile();
+					import = new ReClassQtFile(loadProject);
 					break;
 				case ReClassFile.FileExtension:
-					import = new ReClassFile();
+					import = new ReClassFile(loadProject);
 					break;
 				case ReClass2007File.FileExtension:
-					import = new ReClass2007File();
+					import = new ReClass2007File(loadProject);
 					break;
 				default:
 					Program.Logger.Log(LogLevel.Error, $"The file '{filePath}' has an unknown type.");
@@ -530,22 +554,24 @@ namespace ReClassNET.Forms
 			}
 			if (import != null)
 			{
-				var schema = import.Load(filePath, Program.Logger);
-				if (schema != null)
+				try
 				{
-					// If we have our filetype save the path to skip the Save As dialog.
-					if (import is ReClassNetFile)
-					{
-						projectPath = filePath;
-					}
+					import.Load(filePath, Program.Logger);
 
-					var classes = schema.BuildNodes(Program.Logger);
+					SetProject(loadProject);
+
+					/*var classes = schema.BuildNodes(Program.Logger);
 
 					ClassManager.Clear();
 					classes.ForEach(c => ClassManager.AddClass(c));
 
-					memoryViewControl.ClassNode = classes.FirstOrDefault();
+					memoryViewControl.ClassNode = classes.FirstOrDefault();*/
 				}
+				catch (Exception ex)
+				{
+					Program.Logger.Log(ex);
+				}
+				
 			}
 		}
 	}

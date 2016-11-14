@@ -9,24 +9,24 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
+	public delegate void ClassCreatedEventHandler(ClassNode node);
+
 	public class ClassNode : BaseContainerNode
 	{
+		public static event ClassCreatedEventHandler ClassCreated;
+
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
 
-		public override string Name
+		private NodeUuid uuid;
+		public NodeUuid Uuid
 		{
-			get { return base.Name; }
+			get { return uuid; }
 			set
 			{
-				if (!ClassManager.Classes.Any(c => c.Name == value))
-				{
-					base.Name = value;
-				}
-				else
-				{
-					Program.Logger.Log(Logger.LogLevel.Warning, $"The class name {value} is already in use.");
-				}
+				Contract.Requires(uuid != null);
+
+				uuid = value;
 			}
 		}
 
@@ -44,17 +44,30 @@ namespace ReClassNET.Nodes
 
 		public event NodeEventHandler NodesChanged;
 
-		/// <summary>Only the <see cref="ClassManager"/> and the <see cref="DataExchange.SchemaBuilder"/> are allowed to call the constructor.</summary>
-		internal ClassNode()
+		internal ClassNode(bool notifyClassCreated)
 		{
 			Contract.Ensures(AddressFormula != null);
 
+			Uuid = new NodeUuid(true);
+
 #if WIN64
-			AddressFormula = "140000000";
+			Address = (IntPtr)0x140000000;
 #else
-			AddressFormula = "400000";
+			Address = (IntPtr)0x400000;
 #endif
+
+			if (notifyClassCreated)
+			{
+				ClassCreated?.Invoke(this);
+			}
 		}
+
+		public static ClassNode Create()
+		{
+			return new ClassNode(true);
+		}
+
+		protected override BaseNode CreateCloneInstance() => new ClassNode(false);
 
 		public override void Intialize()
 		{
@@ -181,15 +194,6 @@ namespace ReClassNET.Nodes
 			if (node is ClassNode || node is VMethodNode)
 			{
 				return;
-			}
-
-			var referenceNode = node as BaseReferenceNode;
-			if (referenceNode != null)
-			{
-				if (referenceNode.PerformCycleCheck && !ClassManager.IsCycleFree(this, referenceNode.InnerNode))
-				{
-					throw new ClassCycleException();
-				}
 			}
 
 			base.InsertNode(index, node);

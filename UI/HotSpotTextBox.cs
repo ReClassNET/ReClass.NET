@@ -52,6 +52,8 @@ namespace ReClassNET.UI
 			}
 		}
 
+		public event EventHandler Committed;
+
 		public HotSpotTextBox()
 		{
 			BorderStyle = BorderStyle.None;
@@ -75,20 +77,7 @@ namespace ReClassNET.UI
 		{
 			if (e.KeyCode == Keys.Enter)
 			{
-				hotSpot.Text = Text.Trim();
-
-				try
-				{
-					hotSpot.Node.Update(hotSpot);
-				}
-				catch (Exception ex)
-				{
-					Program.Logger.Log(ex);
-				}
-
-				Parent.Invalidate();
-
-				Visible = false;
+				OnCommit();
 
 				e.Handled = true;
 				e.SuppressKeyPress = true;
@@ -96,6 +85,13 @@ namespace ReClassNET.UI
 
 			base.OnKeyDown(e);
 		}
+
+		/*protected override void OnLeave(EventArgs e)
+		{
+			base.OnLeave(e);
+
+			OnCommit();
+		}*/
 
 		protected override void OnTextChanged(EventArgs e)
 		{
@@ -106,6 +102,24 @@ namespace ReClassNET.UI
 			{
 				Width = w;
 			}
+		}
+
+		private void OnCommit()
+		{
+			hotSpot.Text = Text.Trim();
+
+			try
+			{
+				hotSpot.Node.Update(hotSpot);
+			}
+			catch (Exception ex)
+			{
+				Program.Logger.Log(ex);
+			}
+
+			Committed?.Invoke(this, EventArgs.Empty);
+
+			Visible = false;
 		}
 	}
 }

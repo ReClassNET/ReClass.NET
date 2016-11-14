@@ -4,6 +4,9 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Xml.Linq;
 using ReClassNET.Logger;
+using ReClassNET.Nodes;
+using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange
 {
@@ -12,249 +15,378 @@ namespace ReClassNET.DataExchange
 		public const string FormatName = "ReClass File";
 		public const string FileExtension = ".reclass";
 
-		private Dictionary<string, SchemaClassNode> classes;
+		private ReClassNetProject project;
 
-		public SchemaBuilder Load(string filePath, ILogger logger)
+		public ReClassFile(ReClassNetProject project)
 		{
-			try
+			Contract.Requires(project != null);
+
+			this.project = project;
+		}
+
+		public void Load(string filePath, ILogger logger)
+		{
+			var document = XDocument.Load(filePath);
+
+			Type[] typeMap = null;
+
+			var versionComment = document.Root.FirstNode as XComment;
+			if (versionComment != null)
 			{
-				var document = XDocument.Load(filePath);
-
-				SchemaType[] typeMap = TypeMap2013;
-
-				var versionComment = document.Root.FirstNode as XComment;
-				if (versionComment != null)
+				switch (versionComment.Value.Substring(0, 12).ToLower())
 				{
-					switch (versionComment.Value.Substring(0, 12).ToLower())
-					{
-						case "reclass 2011":
-						case "reclass 2013":
-							typeMap = TypeMap2013;
-							break;
-						case "reclass 2015":
-						case "reclass 2016":
-							typeMap = TypeMap2016;
-							break;
-					}
+					case "reclass 2011":
+					case "reclass 2013":
+						typeMap = TypeMap2013;
+						break;
+					case "reclass 2015":
+					case "reclass 2016":
+						typeMap = TypeMap2016;
+						break;
 				}
-
-				if (typeMap == null)
-				{
-					logger.Log(LogLevel.Warning, $"Unknown file version: {versionComment?.Value}");
-					logger.Log(LogLevel.Warning, "Defaulting to ReClass 2016.");
-
-					typeMap = TypeMap2016;
-				}
-
-				classes = document.Root
-					.Elements("Class")
-					.GroupBy(cls => cls.Attribute("Name")?.Value)
-					.ToDictionary(
-						g => g.Key,
-						g =>
-						{
-							var c = new SchemaClassNode
-							{
-								AddressFormula = g.First().Attribute("strOffset")?.Value ?? string.Empty,
-								Name = g.Key ?? string.Empty
-							};
-							if (c.AddressFormula.StartsWith("*"))
-							{
-								c.AddressFormula = $"[{c.AddressFormula}]";
-							}
-
-							return c;
-						}
-					);
-
-				var schema = document.Root
-					.Elements("Class")
-					.GroupBy(cls => cls.Attribute("Name")?.Value)
-					.Select(g => new { Data = g.First(), Class = classes[g.First().Attribute("Name")?.Value] })
-					.Select(x =>
-					{
-						x.Class.Nodes.AddRange(x.Data.Elements("Node").Select(n => ParseNode(n, typeMap, logger)).Where(n => n != null));
-						return x.Class;
-					});
-
-				return SchemaBuilder.FromSchema(schema);
 			}
-			catch (Exception ex)
-			{
-				logger.Log(ex);
 
-				return null;
+			if (typeMap == null)
+			{
+				logger.Log(LogLevel.Warning, $"Unknown file version: {versionComment?.Value}");
+				logger.Log(LogLevel.Warning, "Defaulting to ReClass 2016.");
+
+				typeMap = TypeMap2016;
+			}
+
+			var classes = new List<Tuple<XElement, ClassNode>>();
+
+			foreach (var element in document.Root
+				.Elements("Class")
+				.DistinctBy(e => e.Attribute("Name")?.Value))
+			{
+				var node = new ClassNode(false)
+				{
+					Name = element.Attribute("Name")?.Value ?? string.Empty,
+					AddressFormula = TransformAddressString(element.Attribute("strOffset")?.Value ?? string.Empty)
+				};
+
+				project.AddClass(node);
+
+				classes.Add(Tuple.Create(element, node));
+			}
+
+			var classMap = classes.ToDictionary(t => t.Item2.Name, t => t.Item2);
+			foreach (var t in classes)
+			{
+				ReadNodeElements(
+					t.Item1.Elements("Node"),
+					t.Item2,
+					classMap,
+					typeMap,
+					logger
+				).ForEach(t.Item2.AddNode);
 			}
 		}
 
-		private SchemaNode ParseNode(XElement node, SchemaType[] typeMap, ILogger logger)
+		/// <summary>Parse ReClass address string and transform it into a ReClass.NET formula.</summary>
+		/// <param name="address">The address string.</param>
+		/// <returns>A string.</returns>
+		private string TransformAddressString(string address)
 		{
-			var type = SchemaType.None;
+			Contract.Requires(address != null);
 
-			int typeVal;
-			if (int.TryParse(node.Attribute("Type")?.Value, out typeVal))
+			var parts = address.Split('+').Select(s => s.Trim().ToLower().Replace("\"", string.Empty)).Where(s => s != string.Empty).ToArray();
+
+			for (int i = 0; i < parts.Length; ++i)
 			{
-				if (typeVal >= 0 && typeVal < typeMap.Length)
+				var part = parts[i];
+
+				bool isModule = part.Contains(".exe") || part.Contains(".dll");
+
+				bool isPointer = false;
+				if (part.StartsWith("*"))
 				{
-					type = typeMap[typeVal];
-				}
-			}
-
-			if (type == SchemaType.None)
-			{
-				logger.Log(LogLevel.Warning, $"Skipping node with unknown type: {node.Attribute("Type")?.Value}");
-				logger.Log(LogLevel.Warning, node.ToString());
-
-				return null;
-			}
-
-			SchemaNode sn = null;
-
-			if (type == SchemaType.Array || type == SchemaType.ClassPtrArray || type == SchemaType.ClassInstance || type == SchemaType.ClassPtr)
-			{
-				string reference = null;
-				if (type == SchemaType.Array)
-				{
-					reference = node.Element("Array")?.Attribute("Name")?.Value;
-				}
-				else
-				{
-					reference = node.Attribute("Pointer")?.Value ?? node.Attribute("Instance")?.Value;
+					isPointer = true;
+					part = part.Substring(1);
 				}
 
-				if (reference == null || !classes.ContainsKey(reference))
+				if (part.Contains(".exe") || part.Contains(".dll"))
 				{
-					logger.Log(LogLevel.Warning, $"Skipping node with unknown reference: {reference}");
-					logger.Log(LogLevel.Warning, node.ToString());
-
-					return null;
+					part = $"<{part}>";
+				}
+				if (isPointer)
+				{
+					part = $"[{part}]";
 				}
 
-				sn = new SchemaReferenceNode(type, classes[reference]);
+				parts[i] = part;
 			}
-			else if (type == SchemaType.VTable)
+
+			return string.Join(" + ", parts);
+		}
+
+		private IEnumerable<BaseNode> ReadNodeElements(IEnumerable<XElement> elements, ClassNode parent, IReadOnlyDictionary<string, ClassNode> classes, Type[] typeMap, ILogger logger)
+		{
+			Contract.Requires(elements != null);
+			Contract.Requires(parent != null);
+			Contract.Requires(classes != null);
+			Contract.Requires(typeMap != null);
+			Contract.Requires(logger != null);
+
+			foreach (var element in elements)
 			{
-				var vtableNode = new SchemaVTableNode();
-				vtableNode.Nodes.AddRange(node.Elements("Function").Select(f => new SchemaNode(SchemaType.VMethod)
+				Type nodeType = null;
+
+				int typeVal;
+				if (int.TryParse(element.Attribute("Type")?.Value, out typeVal))
 				{
-					Name = f.Attribute("Name")?.Value,
-					Comment = f.Attribute("Comment")?.Value
-				}));
-				sn = vtableNode;
+					if (typeVal >= 0 && typeVal < typeMap.Length)
+					{
+						nodeType = typeMap[typeVal];
+					}
+				}
+
+				if (nodeType == null)
+				{
+					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {element.Attribute("Type")?.Value}");
+					logger.Log(LogLevel.Warning, element.ToString());
+
+					continue;
+				}
+
+				var node = Activator.CreateInstance(nodeType) as BaseNode;
+				if (node == null)
+				{
+					logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");
+
+					continue;
+				}
+
+				node.Name = element.Attribute("Name")?.Value ?? string.Empty;
+				node.Comment = element.Attribute("Comments")?.Value ?? string.Empty;
+
+				// Convert the Custom node into normal hex nodes.
+				if (node is CustomNode)
+				{
+					int size;
+					int.TryParse(element.Attribute("Size")?.Value, out size);
+
+					while (size != 0)
+					{
+						BaseNode paddingNode = null;
+#if WIN64
+						if (size >= 8)
+						{
+							paddingNode = new Hex64Node();
+						}
+						else 
+#endif
+						if (size >= 4)
+						{
+							paddingNode = new Hex32Node();
+						}
+						else if (size >= 2)
+						{
+							paddingNode = new Hex16Node();
+						}
+						else
+						{
+							paddingNode = new Hex8Node();
+						}
+
+						paddingNode.Comment = node.Comment;
+
+						size -= node.MemorySize;
+
+						yield return paddingNode;
+					}
+
+					continue;
+				}
+
+				var referenceNode = node as BaseReferenceNode;
+				if (referenceNode != null)
+				{
+					string reference = null;
+					if (referenceNode is ClassInstanceArrayNode)
+					{
+						reference = element.Element("Array")?.Attribute("Name")?.Value;
+					}
+					else
+					{
+						reference = element.Attribute("Pointer")?.Value ?? element.Attribute("Instance")?.Value;
+					}
+
+					if (reference == null || !classes.ContainsKey(reference))
+					{
+						logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {reference}");
+						logger.Log(LogLevel.Warning, element.ToString());
+
+						continue;
+					}
+
+					var innerClassNode = classes[reference];
+					if (referenceNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, project.Classes))
+					{
+						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {parent.Name}->{node.Name}");
+
+						continue;
+					}
+
+					referenceNode.ChangeInnerNode(innerClassNode);
+				}
+				var vtableNode = node as VTableNode;
+				if (vtableNode != null)
+				{
+					element
+						.Elements("Function")
+						.Select(e => new VMethodNode
+						{
+							Name = e.Attribute("Name")?.Value ?? string.Empty,
+							Comment = e.Attribute("Comments")?.Value ?? string.Empty
+						})
+						.ForEach(vtableNode.AddNode);
+				}
+				var classInstanceArrayNode = node as ClassInstanceArrayNode;
+				if (classInstanceArrayNode != null)
+				{
+					int count;
+					TryGetAttributeValue(element, "Total", out count, logger);
+					classInstanceArrayNode.Count = count;
+				}
+				var classPtrArrayNode = node as ClassPtrArrayNode;
+				if (classPtrArrayNode != null)
+				{
+					int count;
+					TryGetAttributeValue(element, "Size", out count, logger);
+					classInstanceArrayNode.Count = count / IntPtr.Size;
+				}
+				var textNode = node as BaseTextNode;
+				if (textNode != null)
+				{
+					int length;
+					TryGetAttributeValue(element, "Size", out length, logger);
+					textNode.CharacterCount = textNode is UTF16TextNode ? length / 2 : length;
+				}
+				var bitFieldNode = node as BitFieldNode;
+				if (bitFieldNode != null)
+				{
+					int bits;
+					TryGetAttributeValue(element, "Size", out bits, logger);
+					bitFieldNode.Bits = bits * 8;
+				}
+
+				yield return node;
 			}
-			else
+		}
+
+		private static void TryGetAttributeValue(XElement element, string attribute, out int val, ILogger logger)
+		{
+			if (!int.TryParse(element.Attribute(attribute)?.Value, out val))
 			{
-				sn = new SchemaNode(type);
+				val = 0;
+
+				logger.Log(LogLevel.Error, $"Node is missing a valid '{attribute}' attribute, defaulting to 0.");
+				logger.Log(LogLevel.Warning, element.ToString());
 			}
+		}
 
-			sn.Name = node.Attribute("Name")?.Value;
-			sn.Comment = node.Attribute("Comment")?.Value;
-
-			int count;
-			switch (type)
+		/// <summary>Dummy node to represent the ReClass Custom node.</summary>
+		private class CustomNode : BaseNode
+		{
+			public override int MemorySize
 			{
-				case SchemaType.Array:
-					int.TryParse(node.Attribute("Total")?.Value, out count);
-					sn.Count = count;
-					break;
-				case SchemaType.ClassPtrArray:
-					int.TryParse(node.Attribute("Size")?.Value, out count);
-					sn.Count = count / IntPtr.Size;
-					break;
-				case SchemaType.UTF8Text:
-				case SchemaType.UTF16Text:
-					int.TryParse(node.Attribute("Size")?.Value, out count);
-					sn.Count = type == SchemaType.UTF8Text ? count : count / 2;
-					break;
-				case SchemaType.Padding:
-					int.TryParse(node.Attribute("Size")?.Value, out count);
-					sn.Count = count;
-					break;
-				case SchemaType.BitField:
-					int.TryParse(node.Attribute("Size")?.Value, out count);
-					sn.Count = count * 8;
-					break;
+				get { throw new NotImplementedException(); }
 			}
 
-			return sn;
+			public override int CalculateHeight(ViewInfo view)
+			{
+				throw new NotImplementedException();
+			}
+
+			public override int Draw(ViewInfo view, int x, int y)
+			{
+				throw new NotImplementedException();
+			}
+
+			protected override BaseNode CreateCloneInstance()
+			{
+				throw new NotImplementedException();
+			}
 		}
 
 		#region ReClass 2011 / ReClass 2013
 
-		private static readonly SchemaType[] TypeMap2013 = new SchemaType[]
+		private static readonly Type[] TypeMap2013 = new Type[]
 		{
-			SchemaType.None,
-			SchemaType.ClassInstance,
-			SchemaType.None,
-			SchemaType.None,
-			SchemaType.Hex32,
-			SchemaType.Hex16,
-			SchemaType.Hex8,
-			SchemaType.ClassPtr,
-			SchemaType.Int32,
-			SchemaType.Int16,
-			SchemaType.Int8,
-			SchemaType.Float,
-			SchemaType.UInt32,
-			SchemaType.UInt16,
-			SchemaType.UInt8,
-			SchemaType.UTF8Text,
-			SchemaType.FunctionPtr,
-			SchemaType.Padding,
-			SchemaType.Vector2,
-			SchemaType.Vector3,
-			SchemaType.Vector4,
-			SchemaType.Matrix4x4,
-			SchemaType.VTable,
-			SchemaType.Array,
-			SchemaType.Class,
-			SchemaType.None,
-			SchemaType.None,
-			SchemaType.Int64,
-			SchemaType.Double,
-			SchemaType.UTF16Text,
-			SchemaType.ClassPtrArray
+			null,
+			typeof(ClassInstanceNode),
+			null,
+			null,
+			typeof(Hex32Node),
+			typeof(Hex16Node),
+			typeof(Hex8Node),
+			typeof(ClassPtrNode),
+			typeof(Int32Node),
+			typeof(Int16Node),
+			typeof(Int8Node),
+			typeof(FloatNode),
+			typeof(UInt32Node),
+			typeof(UInt16Node),
+			typeof(UInt8Node),
+			typeof(UTF8TextNode),
+			typeof(FunctionPtrNode),
+			typeof(CustomNode),
+			typeof(Vector2Node),
+			typeof(Vector3Node),
+			typeof(Vector4Node),
+			typeof(Matrix4x4Node),
+			typeof(VTableNode),
+			typeof(ClassInstanceArrayNode),
+			null,
+			null,
+			null,
+			typeof(Int64Node),
+			typeof(DoubleNode),
+			typeof(UTF16TextNode),
+			typeof(ClassPtrArrayNode)
 		};
 
 		#endregion
 
 		#region ReClass 2015 / ReClass 2016
 
-		private static readonly SchemaType[] TypeMap2016 = new SchemaType[]
+		private static readonly Type[] TypeMap2016 = new Type[]
 		{
-			SchemaType.None,
-			SchemaType.ClassInstance,
-			SchemaType.None,
-			SchemaType.None,
-			SchemaType.Hex32,
-			SchemaType.Hex64,
-			SchemaType.Hex16,
-			SchemaType.Hex8,
-			SchemaType.ClassPtr,
-			SchemaType.Int64,
-			SchemaType.Int32,
-			SchemaType.Int16,
-			SchemaType.Int8,
-			SchemaType.Float,
-			SchemaType.Double,
-			SchemaType.UInt32,
-			SchemaType.UInt16,
-			SchemaType.UInt8,
-			SchemaType.UTF8Text,
-			SchemaType.UTF16Text,
-			SchemaType.FunctionPtr,
-			SchemaType.Padding,
-			SchemaType.Vector2,
-			SchemaType.Vector3,
-			SchemaType.Vector4,
-			SchemaType.Matrix4x4,
-			SchemaType.VTable,
-			SchemaType.Array,
-			SchemaType.Class,
-			SchemaType.UTF8TextPtr,
-			SchemaType.UTF16TextPtr,
-			SchemaType.BitField,
-			SchemaType.UInt64
+			null,
+			typeof(ClassInstanceNode),
+			null,
+			null,
+			typeof(Hex32Node),
+			typeof(Hex64Node),
+			typeof(Hex16Node),
+			typeof(Hex8Node),
+			typeof(ClassPtrNode),
+			typeof(Int64Node),
+			typeof(Int32Node),
+			typeof(Int16Node),
+			typeof(Int8Node),
+			typeof(FloatNode),
+			typeof(DoubleNode),
+			typeof(UInt32Node),
+			typeof(UInt16Node),
+			typeof(UInt8Node),
+			typeof(UTF8TextNode),
+			typeof(UTF16TextNode),
+			typeof(FunctionPtrNode),
+			typeof(CustomNode),
+			typeof(Vector2Node),
+			typeof(Vector3Node),
+			typeof(Vector4Node),
+			typeof(Matrix4x4Node),
+			typeof(VTableNode),
+			typeof(ClassInstanceArrayNode),
+			null,
+			typeof(UTF8TextPtrNode),
+			typeof(UTF16TextPtrNode),
+			typeof(BitFieldNode),
+			typeof(UInt64Node)
 		};
 
 		#endregion

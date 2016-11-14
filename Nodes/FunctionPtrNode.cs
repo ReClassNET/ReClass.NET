@@ -4,6 +4,8 @@ namespace ReClassNET.Nodes
 {
 	public class FunctionPtrNode : BaseFunctionPtrNode
 	{
+		protected override BaseNode CreateCloneInstance() => new FunctionPtrNode();
+
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>

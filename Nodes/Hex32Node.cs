@@ -8,6 +8,8 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 4;
 
+		protected override BaseNode CreateCloneInstance() => new Hex32Node();
+
 		/// <summary>Gets informations about this node to show in a tool tip.</summary>
 		/// <param name="spot">The spot.</param>
 		/// <param name="memory">The process memory.</param>

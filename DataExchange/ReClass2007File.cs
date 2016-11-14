@@ -5,6 +5,8 @@ using System.Data.SQLite;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using ReClassNET.Logger;
+using ReClassNET.Nodes;
+using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange
 {
@@ -13,123 +15,178 @@ namespace ReClassNET.DataExchange
 		public const string FormatName = "ReClass 2007 File";
 		public const string FileExtension = ".rdc";
 
-		private Dictionary<int, SchemaClassNode> classes;
-
-		public SchemaBuilder Load(string filePath, ILogger logger)
+		private static readonly Type[] TypeMap = new Type[]
 		{
-			try
+			null,
+			typeof(ClassInstanceNode),
+			typeof(ClassNode),
+			null,
+			typeof(Hex32Node),
+			typeof(Hex16Node),
+			typeof(Hex8Node),
+			typeof(ClassPtrNode),
+			typeof(Int32Node),
+			typeof(Int16Node),
+			typeof(Int8Node),
+			typeof(FloatNode),
+			typeof(UInt32Node),
+			typeof(UInt16Node),
+			typeof(UInt8Node),
+			typeof(UTF8TextNode),
+			typeof(FunctionPtrNode)
+		};
+
+		private ReClassNetProject project;
+
+		public ReClass2007File(ReClassNetProject project)
+		{
+			Contract.Requires(project != null);
+
+			this.project = project;
+		}
+
+		public void Load(string filePath, ILogger logger)
+		{
+			using (var connection = new SQLiteConnection($@"Data Source={filePath}"))
 			{
-				using (var connection = new SQLiteConnection($@"Data Source={filePath}"))
+				connection.Open();
+
+				var classes = new Dictionary<int, ClassNode>();
+				var vtables = new Dictionary<int, VTableNode>();
+
+				foreach (var row in Query(connection, "SELECT tbl_name FROM sqlite_master WHERE tbl_name LIKE 'class%'"))
 				{
-					connection.Open();
+					var id = Convert.ToInt32(row["tbl_name"].ToString().Substring(5));
 
-					classes = Query(connection, "SELECT tbl_name FROM sqlite_master WHERE tbl_name like 'class%'")
-						.AsEnumerable()
-						.GroupBy(r => Convert.ToInt32(r["tbl_name"].ToString().Substring(5)))
-						.ToDictionary(
-							g => g.Key,
-							g => new SchemaClassNode
+					var classRow = Query(connection, $"SELECT variable, comment FROM class{id} WHERE type = 2 LIMIT 1").FirstOrDefault();
+					if (classRow == null)
+					{
+						continue;
+					}
+
+					// Skip the vtable classes.
+					if (classRow["variable"].ToString() == "VTABLE")
+					{
+						var vtableNode = new VTableNode();
+
+						Query(connection, $"SELECT variable, comment FROM class{id} WHERE type = 16")
+							.Select(e => new VMethodNode
 							{
-								Name = Query(connection, $"SELECT variable FROM {g.First()["tbl_name"]} WHERE type = 2 LIMIT 1").First()["variable"].ToString(),
-#if WIN64
-								AddressFormula = "140000000"
-#else
-								AddressFormula = "400000"
-#endif
-							}
-						);
+								Name = Convert.ToString(e["variable"]) ?? string.Empty,
+								Comment = Convert.ToString(e["comment"]) ?? string.Empty
+							})
+							.ForEach(vtableNode.AddNode);
 
-					var schema = classes
-						.Select(kv =>
+						foreach (var method in vtableNode.Nodes)
 						{
-							kv.Value.Nodes.AddRange(Query(connection, $"SELECT variable, comment, type, length, ref FROM class{kv.Key} WHERE type != 2").Select(r => ReadNode(r, logger)).Where(n => n != null));
-							return kv.Value;
-						}).ToList();
+							if (method.Name == "void function()")
+							{
+								method.Name = string.Empty;
+							}
+						}
 
-					return SchemaBuilder.FromSchema(schema);
+						vtables.Add(id, vtableNode);
+
+						continue;
+					}
+
+					var node = new ClassNode(false)
+					{
+						Name = classRow["variable"].ToString(),
+						Comment = classRow["comment"].ToString()
+					};
+
+					project.AddClass(node);
+
+					classes.Add(id, node);
 				}
-			}
-			catch (Exception ex)
-			{
-				logger.Log(ex);
 
-				return null;
+				foreach (var kv in classes)
+				{
+					ReadNodeRows(
+						Query(connection, $"SELECT variable, comment, type, length, ref FROM class{kv.Key} WHERE type != 2"),
+						kv.Value,
+						classes,
+						vtables,
+						logger
+					).ForEach(kv.Value.AddNode);
+				}
 			}
 		}
 
-		private static readonly SchemaType[] TypeMap = new SchemaType[]
+		private IEnumerable<BaseNode> ReadNodeRows(IEnumerable<DataRow> rows, ClassNode parent, IReadOnlyDictionary<int, ClassNode> classes, IReadOnlyDictionary<int, VTableNode> vtables, ILogger logger)
 		{
-			SchemaType.None,
-			SchemaType.ClassInstance,
-			SchemaType.None,
-			SchemaType.None,
-			SchemaType.Hex32,
-			SchemaType.Hex16,
-			SchemaType.Hex8,
-			SchemaType.ClassPtr,
-			SchemaType.Int32,
-			SchemaType.Int16,
-			SchemaType.Int8,
-			SchemaType.Float,
-			SchemaType.UInt32,
-			SchemaType.UInt16,
-			SchemaType.UInt8,
-			SchemaType.UTF8Text,
-			SchemaType.FunctionPtr
-		};
-
-		private SchemaNode ReadNode(DataRow row, ILogger logger)
-		{
-			Contract.Requires(row != null);
+			Contract.Requires(rows != null);
+			Contract.Requires(parent != null);
 			Contract.Requires(logger != null);
 
-			var type = SchemaType.None;
-
-			int typeVal = Convert.ToInt32(row["type"]);
-			if (typeVal >= 0 && typeVal < TypeMap.Length)
+			foreach (var row in rows)
 			{
-				type = TypeMap[typeVal];
-			}
+				Type nodeType = null;
 
-			if (type == SchemaType.None)
-			{
-				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {row["type"]}");
-				logger.Log(LogLevel.Warning, row.ToString());
-
-				return null;
-			}
-
-			SchemaNode sn = null;
-
-			if (type == SchemaType.ClassInstance || type == SchemaType.ClassPtr)
-			{
-				var reference = Convert.ToInt32(row["ref"]);
-				if (!classes.ContainsKey(reference))
+				int typeVal = Convert.ToInt32(row["type"]);
+				if (typeVal >= 0 && typeVal < TypeMap.Length)
 				{
-					logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {row["ref"]}");
-					logger.Log(LogLevel.Warning, row.ToString());
-
-					return null;
+					nodeType = TypeMap[typeVal];
 				}
 
-				sn = new SchemaReferenceNode(type, classes[reference]);
-			}
-			else
-			{
-				sn = new SchemaNode(type);
-			}
+				if (nodeType == null)
+				{
+					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {row["type"]}");
+					logger.Log(LogLevel.Warning, string.Join(",", row.ItemArray));
 
-			sn.Name = Convert.ToString(row["variable"]);
-			sn.Comment = Convert.ToString(row["comment"]);
+					continue;
+				}
 
-			switch (type)
-			{
-				case SchemaType.UTF8Text:
-					sn.Count = Convert.ToInt32(row["length"]);
-					break;
+				var node = Activator.CreateInstance(nodeType) as BaseNode;
+				if (node == null)
+				{
+					logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");
+
+					continue;
+				}
+
+				node.Name = Convert.ToString(row["variable"]) ?? string.Empty;
+				node.Comment = Convert.ToString(row["comment"]) ?? string.Empty;
+
+				var referenceNode = node as BaseReferenceNode;
+				if (referenceNode != null)
+				{
+					var reference = Convert.ToInt32(row["ref"]);
+					if (!classes.ContainsKey(reference))
+					{
+						VTableNode vtableNode;
+						if (!vtables.TryGetValue(reference, out vtableNode))
+						{
+							logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {row["ref"]}");
+							logger.Log(LogLevel.Warning, string.Join(",", row.ItemArray));
+
+							continue;
+						}
+
+						yield return vtableNode;
+
+						continue;
+					}
+
+					var innerClassNode = classes[reference];
+					if (referenceNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, project.Classes))
+					{
+						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {parent.Name}->{node.Name}");
+
+						continue;
+					}
+
+					referenceNode.ChangeInnerNode(innerClassNode);
+				}
+				var textNode = node as BaseTextNode;
+				if (textNode != null)
+				{
+					textNode.CharacterCount = Math.Max(IntPtr.Size, Convert.ToInt32(row["length"]));
+				}
+
+				yield return node;
 			}
-
-			return sn;
 		}
 
 		private IEnumerable<DataRow> Query(SQLiteConnection connection, string query)

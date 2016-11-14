@@ -44,17 +44,17 @@ namespace ReClassNET.Plugins
 			BaseNode.NodeInfoReader.Remove(reader);
 		}
 
-		public void RegisterNodeType(Type type, string name, Image icon, ICustomSchemaConverter converter, ICustomCodeGenerator generator)
+		public void RegisterNodeType(Type type, string name, Image icon, ICustomNodeConverter converter, ICustomCodeGenerator generator)
 		{
-			CustomSchemaConvert.RegisterCustomType(converter);
+			CustomNodeConvert.RegisterCustomType(converter);
 			CustomCodeGenerator.RegisterCustomType(generator);
 
 			MainWindow.RegisterNodeType(type, name, icon ?? Properties.Resources.B16x16_Plugin);
 		}
 
-		public void DeregisterNodeType(Type type, ICustomSchemaConverter converter, ICustomCodeGenerator generator)
+		public void DeregisterNodeType(Type type, ICustomNodeConverter converter, ICustomCodeGenerator generator)
 		{
-			CustomSchemaConvert.DeregisterCustomType(converter);
+			CustomNodeConvert.DeregisterCustomType(converter);
 			CustomCodeGenerator.DeregisterCustomType(generator);
 
 			MainWindow.DeregisterNodeType(type);

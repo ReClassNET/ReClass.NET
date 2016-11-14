@@ -10,6 +10,16 @@ namespace ReClassNET.Nodes
 		public int CurrentIndex { get; set; }
 		public int Count { get; set; } = 1;
 
+		public override BaseNode Clone()
+		{
+			var clone = (BaseArrayNode)base.Clone();
+
+			clone.CurrentIndex = CurrentIndex;
+			clone.Count = Count;
+
+			return clone;
+		}
+
 		protected int Draw(ViewInfo view, int x, int y, string type, HotSpotType exchange)
 		{
 			Contract.Requires(view != null);

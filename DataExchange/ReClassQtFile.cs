@@ -4,6 +4,8 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Xml.Linq;
 using ReClassNET.Logger;
+using ReClassNET.Nodes;
+using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange
 {
@@ -12,135 +14,159 @@ namespace ReClassNET.DataExchange
 		public const string FormatName = "ReClassQt File";
 		public const string FileExtension = ".reclassqt";
 
-		private Dictionary<string, SchemaClassNode> classes;
+		private ReClassNetProject project;
 
-		public SchemaBuilder Load(string filePath, ILogger logger)
+		public ReClassQtFile(ReClassNetProject project)
 		{
-			try
+			Contract.Requires(project != null);
+
+			this.project = project;
+		}
+
+		public void Load(string filePath, ILogger logger)
+		{
+			var document = XDocument.Load(filePath);
+
+			var classes = new List<Tuple<XElement, ClassNode>>();
+
+			foreach (var element in document.Root
+				.Elements("Namespace")
+				.SelectMany(ns => ns.Elements("Class"))
+				.DistinctBy(e => e.Attribute("ClassId")?.Value))
 			{
-				var document = XDocument.Load(filePath);
+				var node = new ClassNode(false)
+				{
+					Name = element.Attribute("Name")?.Value ?? string.Empty,
+					AddressFormula = ParseAddressString(element)
+				};
 
-				classes = document.Root
-					.Elements("Namespace")
-					.SelectMany(ns => ns.Elements("Class"))
-					.GroupBy(cls => cls.Attribute("ClassId")?.Value)
-					.ToDictionary(
-						g => g.Key,
-						g =>
-						{
-							var cls = g.First();
-							var c = new SchemaClassNode
-							{
-								AddressFormula = cls.Attribute("Address")?.Value ?? string.Empty,
-								Name = cls.Attribute("Name")?.Value ?? string.Empty
-							};
-							if (!string.IsNullOrEmpty(c.AddressFormula))
-							{
-								if (cls.Attribute("DerefTwice")?.Value == "1")
-								{
-									c.AddressFormula = $"[{c.AddressFormula}]";
-								}
-							}
-							return c;
-						}
-					);
+				project.AddClass(node);
 
-				var schema = document.Root
-					.Elements("Namespace")
-					.SelectMany(ns => ns.Elements("Class"))
-					.GroupBy(cls => cls.Attribute("ClassId")?.Value)
-					.Select(g => new { Data = g.First(), Class = classes[g.First().Attribute("ClassId")?.Value] })
-					.Select(x =>
-					{
-						x.Class.Nodes.AddRange(x.Data.Elements("Node").Select(n => ReadNode(n, logger)).Where(n => n != null));
-						return x.Class;
-					});
-
-				return SchemaBuilder.FromSchema(schema);
+				classes.Add(Tuple.Create(element, node));
 			}
-			catch (Exception ex)
-			{
-				logger.Log(ex);
 
-				return null;
+			var classMap = classes.ToDictionary(c => c.Item1.Attribute("ClassId")?.Value, c => c.Item2);
+			foreach (var t in classes)
+			{
+				ReadNodeElements(
+					t.Item1.Elements("Node"),
+					t.Item2,
+					classMap,
+					logger
+				).ForEach(t.Item2.AddNode);
 			}
 		}
 
-		private readonly SchemaType[] typeMap = new SchemaType[]
+		/// <summary>Parse a ReClassQT address string and transform it into a ReClass.NET formula.</summary>
+		/// <param name="element">The class element.</param>
+		/// <returns>A string with an address formula.</returns>
+		private string ParseAddressString(XElement element)
 		{
-			SchemaType.None,
-			SchemaType.None,
-			SchemaType.ClassPtr,
-			SchemaType.ClassInstance,
-			SchemaType.Hex64,
-			SchemaType.Hex32,
-			SchemaType.Hex16,
-			SchemaType.Hex8,
-			SchemaType.Int64,
-			SchemaType.Int32,
-			SchemaType.Int16,
-			SchemaType.Int8,
-			SchemaType.UInt32,
-			SchemaType.None,
-			SchemaType.None,
-			SchemaType.UInt32, //bool
-			SchemaType.None,
-			SchemaType.Float,
-			SchemaType.Double,
-			SchemaType.Vector4,
-			SchemaType.Vector3,
-			SchemaType.Vector2
+			Contract.Requires(element != null);
+
+			var address = element.Attribute("Address")?.Value;
+			if (string.IsNullOrEmpty(address))
+			{
+				return string.Empty;
+			}
+
+			if (element.Attribute("DerefTwice")?.Value == "1")
+			{
+				address = $"[{address}]";
+			}
+
+			return address;
+		}
+
+		private readonly Type[] typeMap = new Type[]
+		{
+			null,
+			null,
+			typeof(ClassPtrNode),
+			typeof(ClassInstanceNode),
+			typeof(Hex64Node),
+			typeof(Hex32Node),
+			typeof(Hex16Node),
+			typeof(Hex8Node),
+			typeof(Int64Node),
+			typeof(Int32Node),
+			typeof(Int16Node),
+			typeof(Int8Node),
+			typeof(UInt32Node),
+			null,
+			null,
+			typeof(UInt32Node), //bool
+			null,
+			typeof(FloatNode),
+			typeof(DoubleNode),
+			typeof(Vector4Node),
+			typeof(Vector3Node),
+			typeof(Vector2Node)
 		};
 
-		private SchemaNode ReadNode(XElement node, ILogger logger)
+		private IEnumerable<BaseNode> ReadNodeElements(IEnumerable<XElement> elements, ClassNode parent, IReadOnlyDictionary<string, ClassNode> classes, ILogger logger)
 		{
-			var type = SchemaType.None;
+			Contract.Requires(elements != null);
+			Contract.Requires(parent != null);
+			Contract.Requires(logger != null);
 
-			int typeVal;
-			if (int.TryParse(node.Attribute("Type")?.Value, out typeVal))
+			foreach (var element in elements)
 			{
-				if (typeVal >= 0 && typeVal < typeMap.Length)
+				Type nodeType = null;
+
+				int typeVal;
+				if (int.TryParse(element.Attribute("Type")?.Value, out typeVal))
 				{
-					type = typeMap[typeVal];
-				}
-			}
-
-			if (type == SchemaType.None)
-			{
-				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Attribute("Type")?.Value}");
-				logger.Log(LogLevel.Warning, node.ToString());
-
-				return null;
-			}
-
-			SchemaNode sn = null;
-
-			if (type == SchemaType.ClassInstance || type == SchemaType.ClassPtr)
-			{
-				var pointToClassId = node.Attribute("PointToClass")?.Value;
-				if (pointToClassId == null || !classes.ContainsKey(pointToClassId))
-				{
-					logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {pointToClassId}");
-					logger.Log(LogLevel.Warning, node.ToString());
-
-					return null;
+					if (typeVal >= 0 && typeVal < typeMap.Length)
+					{
+						nodeType = typeMap[typeVal];
+					}
 				}
 
-				sn = new SchemaReferenceNode(type, classes[pointToClassId]);
-			}
-			else
-			{
-				sn = new SchemaNode(type);
-			}
+				if (nodeType == null)
+				{
+					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {element.Attribute("Type")?.Value}");
+					logger.Log(LogLevel.Warning, element.ToString());
 
-			sn.Name = node.Attribute("Name")?.Value;
-			if (sn.Name == "m_Unknown")
-			{
-				sn.Name = null;
-			}
-			sn.Comment = node.Attribute("Comments")?.Value;
+					continue;
+				}
 
-			return sn;
+				var node = Activator.CreateInstance(nodeType) as BaseNode;
+				if (node == null)
+				{
+					logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");
+
+					continue;
+				}
+
+				node.Name = element.Attribute("Name")?.Value ?? string.Empty;
+				node.Comment = element.Attribute("Comments")?.Value ?? string.Empty;
+
+				var referenceNode = node as BaseReferenceNode;
+				if (referenceNode != null)
+				{
+					var pointToClassId = element.Attribute("PointToClass")?.Value;
+					if (pointToClassId == null || !classes.ContainsKey(pointToClassId))
+					{
+						logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {pointToClassId}");
+						logger.Log(LogLevel.Warning, element.ToString());
+
+						continue;
+					}
+
+					var innerClassNode = classes[pointToClassId];
+					if (referenceNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, project.Classes))
+					{
+						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {parent.Name}->{node.Name}");
+
+						continue;
+					}
+
+					referenceNode.ChangeInnerNode(innerClassNode);
+				}
+
+				yield return node;
+			}
 		}
 	}
 }

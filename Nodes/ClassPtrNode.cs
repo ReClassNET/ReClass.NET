@@ -14,9 +14,11 @@ namespace ReClassNET.Nodes
 
 		public override bool PerformCycleCheck => false;
 
+		protected override BaseNode CreateCloneInstance() => new ClassPtrNode();
+
 		public override void Intialize()
 		{
-			var node = ClassManager.CreateClass();
+			var node = ClassNode.Create();
 			node.Intialize();
 			node.AddBytes(64);
 			InnerNode = node;

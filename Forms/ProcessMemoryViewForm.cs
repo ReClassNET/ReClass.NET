@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Forms;
 using ReClassNET.Memory;
+using ReClassNET.Nodes;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -101,7 +102,7 @@ namespace ReClassNET
 			var address = GetSelectedRegionAddress();
 			if (address != IntPtr.Zero)
 			{
-				var node = ClassManager.CreateClass();
+				var node = ClassNode.Create();
 				node.Address = address;
 				node.AddBytes(64);
 

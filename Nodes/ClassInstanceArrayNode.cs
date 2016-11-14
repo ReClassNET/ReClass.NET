@@ -11,9 +11,11 @@ namespace ReClassNET.Nodes
 
 		public override bool PerformCycleCheck => true;
 
+		protected override BaseNode CreateCloneInstance() => new ClassInstanceArrayNode();
+
 		public override void Intialize()
 		{
-			InnerNode = ClassManager.CreateClass();
+			InnerNode = ClassNode.Create();
 			InnerNode.Intialize();
 		}
 

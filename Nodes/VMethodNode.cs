@@ -15,6 +15,8 @@ namespace ReClassNET.Nodes
 			Name = string.Empty;
 		}
 
+		protected override BaseNode CreateCloneInstance() => new VMethodNode();
+
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>

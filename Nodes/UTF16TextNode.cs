@@ -6,6 +6,8 @@ namespace ReClassNET.Nodes
 	{
 		public override int CharacterSize => 2;
 
+		protected override BaseNode CreateCloneInstance() => new UTF16TextNode();
+
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>

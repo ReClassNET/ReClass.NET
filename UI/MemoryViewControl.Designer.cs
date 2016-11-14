@@ -98,7 +98,6 @@
 			this.repaintTimer = new System.Windows.Forms.Timer(this.components);
 			this.editBox = new ReClassNET.UI.HotSpotTextBox();
 			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.updateClassTimer = new System.Windows.Forms.Timer(this.components);
 			this.selectedNodeContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -118,6 +117,7 @@
             this.copyAddressToolStripMenuItem});
 			this.selectedNodeContextMenuStrip.Name = "selectedNodeContextMenuStrip";
 			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(163, 220);
+			this.selectedNodeContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.selectedNodeContextMenuStrip_Opening);
 			// 
 			// changeTypeToolStripMenuItem
 			// 
@@ -718,16 +718,11 @@
 			this.editBox.TabIndex = 1;
 			this.editBox.TabStop = false;
 			this.editBox.Visible = false;
+			this.editBox.Committed += new System.EventHandler(this.editBox_Committed);
 			// 
 			// toolTip
 			// 
 			this.toolTip.ShowAlways = true;
-			// 
-			// updateClassTimer
-			// 
-			this.updateClassTimer.Enabled = true;
-			this.updateClassTimer.Interval = 1000;
-			this.updateClassTimer.Tick += new System.EventHandler(this.updateClassTimer_Tick);
 			// 
 			// MemoryViewControl
 			// 
@@ -805,7 +800,6 @@
 		private UI.TypeToolStripMenuItem vTablePointerToolStripMenuItem;
 		private UI.TypeToolStripMenuItem functionPointerToolStripMenuItem;
 		private UI.TypeToolStripMenuItem arrayOfPointersToolStripMenuItem;
-		private System.Windows.Forms.Timer updateClassTimer;
 		private UI.TypeToolStripMenuItem bitsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
 		private System.Windows.Forms.ToolStripMenuItem copyNodeToolStripMenuItem;

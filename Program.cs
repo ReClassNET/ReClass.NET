@@ -14,6 +14,7 @@ namespace ReClassNET
 		private static Settings settings;
 		private static ILogger logger;
 		private static Random random = new Random();
+		private static MainForm mainForm;
 		private static bool designMode = true;
 
 		public static Settings Settings => settings;
@@ -21,6 +22,8 @@ namespace ReClassNET
 		public static ILogger Logger => logger;
 
 		public static Random GlobalRandom => random;
+
+		public static MainForm MainForm => mainForm;
 
 		public static bool DesignMode => designMode;
 
@@ -43,9 +46,9 @@ namespace ReClassNET
 			{
 				using (var nativeHelper = new NativeHelper())
 				{
-					var form = new MainForm(nativeHelper);
+					mainForm = new MainForm(nativeHelper);
 
-					Application.Run(form);
+					Application.Run(mainForm);
 				}
 			}
 			catch (Exception ex)
@@ -55,9 +58,9 @@ namespace ReClassNET
 #else
 			using (var nativeHelper = new NativeHelper())
 			{
-				var form = new MainForm(nativeHelper);
+				mainForm = new MainForm(nativeHelper);
 
-				Application.Run(form);
+				Application.Run(mainForm);
 			}
 #endif
 

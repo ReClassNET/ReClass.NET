@@ -65,6 +65,9 @@ namespace ReClassNET.UI
 			{
 				ClassNode.NameChanged -= NameChanged_Handler;
 				ClassNode.NodesChanged -= NodesChanged_Handler;
+
+				Nodes.OfType<ClassTreeNode>().ForEach(t => t.Dispose());
+				Nodes.Clear();
 			}
 
 			private void NameChanged_Handler(BaseNode sender)
@@ -109,10 +112,46 @@ namespace ReClassNET.UI
 		private readonly TreeNode root;
 		private readonly ValueWrapper<bool> autoExpand;
 
+		private ReClassNetProject project;
+
 		private ClassNode selectedClass;
 
 		public delegate void SelectionChangedEvent(object sender, ClassNode node);
 		public event SelectionChangedEvent SelectionChanged;
+
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public ReClassNetProject Project
+		{
+			get { return project; }
+			set
+			{
+				Contract.Requires(value != null);
+
+				if (project != value)
+				{
+					root.Nodes.OfType<ClassTreeNode>().ForEach(t => t.Dispose());
+					root.Nodes.Clear();
+
+					if (project != null)
+					{
+						project.ClassAdded -= AddClass;
+						project.ClassRemoved -= RemoveClass;
+					}
+
+					project = value;
+
+					project.ClassAdded += AddClass;
+					project.ClassRemoved += RemoveClass;
+
+					classesTreeView.BeginUpdate();
+
+					project.Classes.ForEach(AddClass);
+
+					classesTreeView.EndUpdate();
+				}
+			}
+		}
 
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -201,7 +240,7 @@ namespace ReClassNET.UI
 
 		private void removeUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ClassManager.RemoveUnusedClasses();
+			project.RemoveUnusedClasses();
 		}
 
 		private void deleteClassToolStripMenuItem_Click(object sender, EventArgs e)
@@ -211,7 +250,7 @@ namespace ReClassNET.UI
 			{
 				try
 				{
-					ClassManager.Remove(treeNode.ClassNode);
+					project.Remove(treeNode.ClassNode);
 				}
 				catch (ClassReferencedException ex)
 				{
@@ -274,7 +313,7 @@ namespace ReClassNET.UI
 
 		/// <summary>Adds the class to the view.</summary>
 		/// <param name="node">The class to add.</param>
-		public void Add(ClassNode node)
+		public void AddClass(ClassNode node)
 		{
 			Contract.Requires(node != null);
 
@@ -287,12 +326,14 @@ namespace ReClassNET.UI
 
 		/// <summary>Removes the class from the view.</summary>
 		/// <param name="node">The class to remove.</param>
-		public void Remove(ClassNode node)
+		public void RemoveClass(ClassNode node)
 		{
 			var tn = FindClassTreeNode(node);
 			if (tn != null)
 			{
 				root.Nodes.Remove(tn);
+
+				tn.Dispose();
 
 				if (selectedClass == node)
 				{
