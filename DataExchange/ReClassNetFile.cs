@@ -22,21 +22,21 @@ namespace ReClassNET.DataExchange
 
 		private const string SerialisationClassName = "__Serialization_Class__";
 
-		private const string XmlRootElement = "reclass";
-		private const string XmlClassesElement = "classes";
-		private const string XmlClassElement = "class";
-		private const string XmlNodeElement = "node";
-		private const string XmlMethodElement = "method";
-		private const string XmlVersionAttribute = "version";
-		private const string XmlUuidAttribute = "uuid";
-		private const string XmlNameAttribute = "name";
-		private const string XmlCommentAttribute = "comment";
-		private const string XmlAddressAttribute = "address";
-		private const string XmlTypeAttribute = "type";
-		private const string XmlReferenceAttribute = "reference";
-		private const string XmlCountAttribute = "count";
-		private const string XmlBitsAttribute = "bits";
-		private const string XmlLengthAttribute = "length";
+		public const string XmlRootElement = "reclass";
+		public const string XmlClassesElement = "classes";
+		public const string XmlClassElement = "class";
+		public const string XmlNodeElement = "node";
+		public const string XmlMethodElement = "method";
+		public const string XmlVersionAttribute = "version";
+		public const string XmlUuidAttribute = "uuid";
+		public const string XmlNameAttribute = "name";
+		public const string XmlCommentAttribute = "comment";
+		public const string XmlAddressAttribute = "address";
+		public const string XmlTypeAttribute = "type";
+		public const string XmlReferenceAttribute = "reference";
+		public const string XmlCountAttribute = "count";
+		public const string XmlBitsAttribute = "bits";
+		public const string XmlLengthAttribute = "length";
 
 		private ReClassNetProject project;
 

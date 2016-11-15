@@ -84,7 +84,11 @@ namespace ReClassNET.DataExchange
 				var converter = CustomNodeConvert.GetReadConverter(element);
 				if (converter != null)
 				{
-					yield return converter.CreateNodeFromElement(element, parent, project.Classes, logger);
+					BaseNode customNode;
+					if (converter.TryCreateNodeFromElement(element, parent, project.Classes, logger, out customNode))
+					{
+						yield return customNode;
+					}
 
 					continue;
 				}

@@ -78,7 +78,7 @@ namespace ReClassNET.DataExchange
 				string typeString;
 				if (!BuildInTypeToStringMap.TryGetValue(node.GetType(), out typeString))
 				{
-					logger.Log(LogLevel.Error, $"Skipping node with unknown type converter: {node.Name}");
+					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Name}");
 					logger.Log(LogLevel.Warning, node.GetType().ToString());
 
 					continue;

@@ -21,17 +21,19 @@ namespace ReClassNET.DataExchange
 		/// <returns>True if the instance can handle the node, false if not.</returns>
 		bool CanHandleNode(BaseNode node);
 
-		/// <summary>Creates a schema node from the xml element. This method gets only called if <see cref="CanHandleElement(XElement)"/> returned true.</summary>
-		/// <param name="element">The element to create the schema from.</param>
-		/// <param name="classes">The list of classes which correspond to the schema.</param>
+		/// <summary>Creates a node from the xml element. This method gets only called if <see cref="CanHandleElement(XElement)"/> returned true.</summary>
+		/// <param name="element">The element to create the node from.</param>
+		/// <param name="parent">The parent of the node.</param>
+		/// <param name="classes">The list of classes which correspond to the node.</param>
 		/// <param name="logger">The logger used to output messages.</param>
-		/// <returns>The schema node for the xml element.</returns>
-		BaseNode CreateNodeFromElement(XElement element, ClassNode parent, IEnumerable<ClassNode> classes, ILogger logger);
+		/// <param name="node">[out] The node for the xml element.</param>
+		/// <returns>True if a node was created, otherwise false.</returns>
+		bool TryCreateNodeFromElement(XElement element, ClassNode parent, IEnumerable<ClassNode> classes, ILogger logger, out BaseNode node);
 
-		/// <summary>Creates a xml element from the schema node. This method gets only called if <see cref="CanHandleSchema(SchemaCustomNode)"/> returned true.</summary>
-		/// <param name="node">The schema node to create the xml element from.</param>
+		/// <summary>Creates a xml element from the node. This method gets only called if <see cref="CanHandleNode(BaseNode node)"/> returned true.</summary>
+		/// <param name="node">The node to create the xml element from.</param>
 		/// <param name="logger">The logger used to output messages.</param>
-		/// <returns>The xml element for the schema node.</returns>
+		/// <returns>The xml element for the node.</returns>
 		XElement CreateElementFromNode(BaseNode node, ILogger logger);
 	}
 
@@ -52,7 +54,7 @@ namespace ReClassNET.DataExchange
 			throw new NotImplementedException();
 		}
 
-		public BaseNode CreateNodeFromElement(XElement element, ClassNode parent, IEnumerable<ClassNode> classes, ILogger logger)
+		public bool TryCreateNodeFromElement(XElement element, ClassNode parent, IEnumerable<ClassNode> classes, ILogger logger, out BaseNode node)
 		{
 			Contract.Requires(element != null);
 			Contract.Requires(CanHandleElement(element));
@@ -60,7 +62,6 @@ namespace ReClassNET.DataExchange
 			Contract.Requires(classes != null);
 			Contract.Requires(Contract.ForAll(classes, c => c != null));
 			Contract.Requires(logger != null);
-			Contract.Ensures(Contract.Result<BaseNode>() != null);
 
 			throw new NotImplementedException();
 		}
