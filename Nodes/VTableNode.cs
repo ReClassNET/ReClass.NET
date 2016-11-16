@@ -12,8 +12,6 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
 
-		protected override BaseNode CreateCloneInstance() => new VTableNode();
-
 		public override void Intialize()
 		{
 			InsertBytes(0, 10 * IntPtr.Size);

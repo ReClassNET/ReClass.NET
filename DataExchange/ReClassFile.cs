@@ -304,11 +304,6 @@ namespace ReClassNET.DataExchange
 			{
 				throw new NotImplementedException();
 			}
-
-			protected override BaseNode CreateCloneInstance()
-			{
-				throw new NotImplementedException();
-			}
 		}
 
 		#region ReClass 2011 / ReClass 2013

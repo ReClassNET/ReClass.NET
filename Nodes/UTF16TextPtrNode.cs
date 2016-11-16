@@ -6,8 +6,6 @@ namespace ReClassNET.Nodes
 {
 	public class UTF16TextPtrNode : BaseTextPtrNode
 	{
-		protected override BaseNode CreateCloneInstance() => new UTF16TextPtrNode();
-
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>

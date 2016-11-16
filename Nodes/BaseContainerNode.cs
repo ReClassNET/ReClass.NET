@@ -12,18 +12,6 @@ namespace ReClassNET.Nodes
 		/// <summary>The child nodes of the node.</summary>
 		public IEnumerable<BaseNode> Nodes => nodes;
 
-		public override BaseNode Clone()
-		{
-			var clone = (BaseContainerNode)base.Clone();
-
-			foreach (var node in Nodes)
-			{
-				clone.nodes.Add(node.Clone());
-			}
-
-			return clone;
-		}
-
 		/// <summary>Calculates the offset of every child node.</summary>
 		public void UpdateOffsets()
 		{

@@ -51,17 +51,6 @@ namespace ReClassNET.Nodes
 			Bits = IntPtr.Size * 8;
 		}
 
-		public override BaseNode Clone()
-		{
-			var clone = (BitFieldNode)base.Clone();
-
-			clone.Bits = Bits;
-
-			return clone;
-		}
-
-		protected override BaseNode CreateCloneInstance() => new BitFieldNode();
-
 		/// <summary>Initializes this object with a bit count which equals the other nodes memory size.</summary>
 		/// <param name="node">The node to copy from.</param>
 		public override void CopyFromNode(BaseNode node)

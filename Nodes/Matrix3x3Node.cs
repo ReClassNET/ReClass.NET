@@ -32,8 +32,6 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 9 * 4;
 
-		protected override BaseNode CreateCloneInstance() => new Matrix3x3Node();
-
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>

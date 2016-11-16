@@ -14,8 +14,6 @@ namespace ReClassNET.Nodes
 
 		public override bool PerformCycleCheck => true;
 
-		protected override BaseNode CreateCloneInstance() => new ClassPtrArrayNode();
-
 		public override void Intialize()
 		{
 			var node = ClassNode.Create();

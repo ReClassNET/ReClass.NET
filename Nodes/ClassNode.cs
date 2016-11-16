@@ -67,8 +67,6 @@ namespace ReClassNET.Nodes
 			return new ClassNode(true);
 		}
 
-		protected override BaseNode CreateCloneInstance() => new ClassNode(false);
-
 		public override void Intialize()
 		{
 			AddBytes(IntPtr.Size);

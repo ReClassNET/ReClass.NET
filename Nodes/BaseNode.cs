@@ -65,21 +65,6 @@ namespace ReClassNET.Nodes
 			levelsOpen[0] = true;
 		}
 
-		/// <summary>Makes a copy of this object.</summary>
-		/// <returns>A copy of this object.</returns>
-		public virtual BaseNode Clone()
-		{
-			var clone = CreateCloneInstance();
-
-			clone.Offset = Offset;
-			clone.Name = Name;
-			clone.Comment = Comment;
-
-			return clone;
-		}
-
-		protected abstract BaseNode CreateCloneInstance();
-
 		/// <summary>Clears the selection of the node.</summary>
 		public virtual void ClearSelection()
 		{

@@ -16,15 +16,6 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of one character in bytes.</summary>
 		public abstract int CharacterSize { get; }
 
-		public override BaseNode Clone()
-		{
-			var clone = (BaseTextNode)base.Clone();
-
-			clone.CharacterCount = CharacterCount;
-
-			return clone;
-		}
-
 		public override void CopyFromNode(BaseNode node)
 		{
 			CharacterCount = node.MemorySize / CharacterSize;

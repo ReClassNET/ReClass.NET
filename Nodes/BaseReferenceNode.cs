@@ -16,17 +16,7 @@ namespace ReClassNET.Nodes
 		/// <summary>True to perform class cycle checks when changing the inner node.</summary>
 		public abstract bool PerformCycleCheck { get; }
 
-		public override BaseNode Clone()
-		{
-			var clone = (BaseReferenceNode)base.Clone();
-
-			clone.InnerNode = (ClassNode)InnerNode.Clone();
-
-			return clone;
-		}
-
 		/// <summary>Changes the inner node.</summary>
-		/// <exception cref="ClassCycleException">Thrown when a class cycle is present.</exception>
 		/// <param name="node">The new node.</param>
 		public void ChangeInnerNode(ClassNode node)
 		{
@@ -34,14 +24,6 @@ namespace ReClassNET.Nodes
 
 			if (InnerNode != node)
 			{
-				/*if (PerformCycleCheck && ParentNode != null)
-				{
-					if (ClassUtil.IsCycleFree(ParentNode as ClassNode, node) == false)
-					{
-						throw new ClassCycleException();
-					}
-				}*/
-
 				InnerNode = node;
 
 				InnerNodeChanged?.Invoke(this);
@@ -49,12 +31,5 @@ namespace ReClassNET.Nodes
 				ParentNode?.ChildHasChanged(this);
 			}
 		}
-	}
-
-
-	/// <summary>Exception for signaling class cycle errors.</summary>
-	public class ClassCycleException : Exception
-	{
-
 	}
 }
