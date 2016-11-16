@@ -36,7 +36,7 @@ namespace ReClassNET.CodeGenerator
 		public string GenerateCode(IEnumerable<ClassNode> classes, ILogger logger)
 		{
 			var sb = new StringBuilder();
-			sb.AppendLine($"// Created with  {Constants.ApplicationName} by {Constants.Author}");
+			sb.AppendLine($"// Created with {Constants.ApplicationName} by {Constants.Author}");
 			sb.AppendLine();
 			sb.AppendLine("// Warning: The code doesn't contain arrays and instances!");
 			sb.AppendLine();
