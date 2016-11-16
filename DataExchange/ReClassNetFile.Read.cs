@@ -162,7 +162,7 @@ namespace ReClassNET.DataExchange
 				{
 					int length;
 					TryGetAttributeValue(element, XmlLengthAttribute, out length, logger);
-					textNode.CharacterCount = length;
+					textNode.Length = length;
 				}
 				var bitFieldNode = node as BitFieldNode;
 				if (bitFieldNode != null)

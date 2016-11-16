@@ -8,17 +8,17 @@ namespace ReClassNET.Nodes
 	[ContractClass(typeof(BaseTextNodeContract))]
 	public abstract class BaseTextNode : BaseNode
 	{
-		public int CharacterCount { get; set; }
+		public int Length { get; set; }
 
 		/// <summary>Size of the node in bytes.</summary>
-		public override int MemorySize => CharacterCount * CharacterSize;
+		public override int MemorySize => Length * CharacterSize;
 
 		/// <summary>Size of one character in bytes.</summary>
 		public abstract int CharacterSize { get; }
 
 		public override void CopyFromNode(BaseNode node)
 		{
-			CharacterCount = node.MemorySize / CharacterSize;
+			Length = node.MemorySize / CharacterSize;
 		}
 
 		protected int DrawText(ViewInfo view, int x, int y, string type, int length, string text)
@@ -69,7 +69,7 @@ namespace ReClassNET.Nodes
 				int val;
 				if (int.TryParse(spot.Text, out val) && val > 0)
 				{
-					CharacterCount = val;
+					Length = val;
 
 					ParentNode.ChildHasChanged(this);
 				}

@@ -170,7 +170,7 @@ namespace ReClassNET.CodeGenerator
 					int count = 0;
 					if (member is BaseTextNode)
 					{
-						count = ((BaseTextNode)member).CharacterCount;
+						count = ((BaseTextNode)member).Length;
 					}
 
 					yield return new MemberDefinition(member, type, count);

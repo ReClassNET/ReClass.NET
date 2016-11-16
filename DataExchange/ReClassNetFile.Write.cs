@@ -113,7 +113,7 @@ namespace ReClassNET.DataExchange
 				var textNode = node as BaseTextNode;
 				if (textNode != null)
 				{
-					element.SetAttributeValue(XmlLengthAttribute, textNode.CharacterCount);
+					element.SetAttributeValue(XmlLengthAttribute, textNode.Length);
 				}
 				var bitFieldNode = node as BitFieldNode;
 				if (bitFieldNode != null)

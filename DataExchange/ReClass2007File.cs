@@ -182,7 +182,7 @@ namespace ReClassNET.DataExchange
 				var textNode = node as BaseTextNode;
 				if (textNode != null)
 				{
-					textNode.CharacterCount = Math.Max(IntPtr.Size, Convert.ToInt32(row["length"]));
+					textNode.Length = Math.Max(IntPtr.Size, Convert.ToInt32(row["length"]));
 				}
 
 				yield return node;

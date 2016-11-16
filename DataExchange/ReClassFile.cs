@@ -262,7 +262,7 @@ namespace ReClassNET.DataExchange
 				{
 					int length;
 					TryGetAttributeValue(element, "Size", out length, logger);
-					textNode.CharacterCount = textNode is UTF16TextNode ? length / 2 : length;
+					textNode.Length = textNode is UTF16TextNode ? length / 2 : length;
 				}
 				var bitFieldNode = node as BitFieldNode;
 				if (bitFieldNode != null)
