@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
@@ -260,6 +261,7 @@ namespace ReClassNET.Util
 
 		#region Linq
 
+		[DebuggerStepThrough]
 		public static int FindIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
 		{
 			Contract.Requires(source != null);
@@ -278,6 +280,7 @@ namespace ReClassNET.Util
 			return -1;
 		}
 
+		[DebuggerStepThrough]
 		public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> func)
 		{
 			Contract.Requires(source != null);
@@ -289,11 +292,13 @@ namespace ReClassNET.Util
 			}
 		}
 
+		[DebuggerStepThrough]
 		public static IEnumerable<TSource> Yield<TSource>(this TSource item)
 		{
 			yield return item;
 		}
 
+		[DebuggerStepThrough]
 		public static IEnumerable<TSource> Traverse<TSource>(this IEnumerable<TSource> source, Func<TSource, IEnumerable<TSource>> childSelector)
 		{
 			Contract.Requires(source != null);
@@ -313,6 +318,7 @@ namespace ReClassNET.Util
 			}
 		}
 
+		[DebuggerStepThrough]
 		public static IEnumerable<TSource> SkipUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
 		{
 			Contract.Requires(source != null);
@@ -334,6 +340,7 @@ namespace ReClassNET.Util
 			}
 		}
 
+		[DebuggerStepThrough]
 		public static IEnumerable<TSource> TakeUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
 		{
 			Contract.Requires(source != null);
@@ -349,6 +356,7 @@ namespace ReClassNET.Util
 			}
 		}
 
+		[DebuggerStepThrough]
 		public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 		{
 			var knownKeys = new HashSet<TKey>();
@@ -359,6 +367,39 @@ namespace ReClassNET.Util
 					yield return element;
 				}
 			}
+		}
+
+		public static bool SequenceEqualsEx<T>(this IEnumerable<T> first, IEnumerable<T> second)
+		{
+			return SequenceEqualsEx(first, second, EqualityComparer<T>.Default);
+		}
+
+		public static bool SequenceEqualsEx<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
+		{
+			var counter = new Dictionary<T, int>(comparer);
+			foreach (var element in first)
+			{
+				if (counter.ContainsKey(element))
+				{
+					counter[element]++;
+				}
+				else
+				{
+					counter.Add(element, 1);
+				}
+			}
+			foreach (var element in second)
+			{
+				if (counter.ContainsKey(element))
+				{
+					counter[element]--;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			return counter.Values.All(c => c == 0);
 		}
 
 		#endregion

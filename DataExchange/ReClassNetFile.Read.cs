@@ -56,9 +56,12 @@ namespace ReClassNET.DataExchange
 							AddressFormula = element.Attribute(XmlAddressAttribute)?.Value ?? string.Empty
 						};
 
-						project.AddClass(node);
+						if (!project.ContainsClass(node.Uuid))
+						{
+							project.AddClass(node);
 
-						classes.Add(Tuple.Create(element, node));
+							classes.Add(Tuple.Create(element, node));
+						}
 					}
 
 					foreach (var t in classes)
@@ -184,27 +187,46 @@ namespace ReClassNET.DataExchange
 			}
 		}
 
-		public static List<BaseNode> ReadNodeElements(Stream input, ReClassNetProject project, ILogger logger)
+		public static Tuple<List<ClassNode>, List<BaseNode>> ReadNodes(Stream input, ReClassNetProject templateProject, ILogger logger)
 		{
 			Contract.Requires(input != null);
 			Contract.Requires(logger != null);
 
-			project = project ?? new ReClassNetProject();
-
-			var file = new ReClassNetFile(project);
-			file.Load(input, logger);
-
-			var nodes = new List<BaseNode>();
-
-			var classNode = project.Classes.FirstOrDefault(c => c.Name == SerialisationClassName);
-			if (classNode != null)
+			using (var project = new ReClassNetProject())
 			{
-				nodes.AddRange(classNode.Nodes);
+				if (templateProject != null)
+				{
+					templateProject.Classes.ForEach(project.AddClass);
+				}
 
-				project.Remove(classNode);
+				var file = new ReClassNetFile(project);
+				file.Load(input, logger);
+
+				var classes = new List<ClassNode>();
+
+				var nodes = new List<BaseNode>();
+
+				var serialisationClassNode = project.Classes.FirstOrDefault(c => c.Name == SerialisationClassName);
+				if (serialisationClassNode != null)
+				{
+					if (templateProject != null)
+					{
+						foreach (var classNode in project.Classes.Where(c => c != serialisationClassNode))
+						{
+							if (!templateProject.ContainsClass(classNode.Uuid))
+							{
+								classes.Add(classNode);
+							}
+						}
+					}
+
+					nodes.AddRange(serialisationClassNode.Nodes);
+
+					project.Remove(serialisationClassNode);
+				}
+
+				return Tuple.Create(classes, nodes);
 			}
-
-			return nodes;
 		}
 	}
 }

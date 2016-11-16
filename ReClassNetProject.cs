@@ -9,7 +9,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET
 {
-	public class ReClassNetProject
+	public class ReClassNetProject : IDisposable
 	{
 		public delegate void ClassesChangedEvent(ClassNode sender);
 		public event ClassesChangedEvent ClassAdded;
@@ -20,6 +20,14 @@ namespace ReClassNET
 		public IEnumerable<ClassNode> Classes => classes;
 
 		public string Path { get; set; }
+
+		public void Dispose()
+		{
+			Clear();
+
+			ClassAdded = null;
+			ClassRemoved = null;
+		}
 
 		public void AddClass(ClassNode node)
 		{

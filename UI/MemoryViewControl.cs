@@ -5,7 +5,6 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.AddressParser;
 using ReClassNET.DataExchange;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
@@ -590,7 +589,7 @@ namespace ReClassNET.UI
 
 			changeTypeToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
 
-			pasteNodesToolStripMenuItem.Enabled = count == 1 && ReClassClipboard.ContainsData(ReClassClipboard.Format.Nodes);
+			pasteNodesToolStripMenuItem.Enabled = count == 1 && ReClassClipboard.ContainsNodes;
 			removeToolStripMenuItem.Enabled = !nodeIsClass;
 
 			copyAddressToolStripMenuItem.Enabled = !nodeIsClass;
@@ -761,20 +760,28 @@ namespace ReClassNET.UI
 		{
 			if (selectedNodes.Count > 0)
 			{
-				ReClassClipboard.CopyNodes(selectedNodes.Select(h => h.Node), project.Classes, Program.Logger);
+				ReClassClipboard.Copy(selectedNodes.Select(h => h.Node), Program.Logger);
 			}
 		}
 
 		private void PasteNodeFromClipboardToSelection()
 		{
+			var result = ReClassClipboard.Paste(project, Program.Logger);
+			foreach (var classNode in result.Item1)
+			{
+				if (!project.ContainsClass(classNode.Uuid))
+				{
+					project.AddClass(classNode);
+				}
+			}
+
 			if (selectedNodes.Count == 1)
 			{
 				var selectedNode = selectedNodes.First().Node;
 				var parent = selectedNode.ParentNode as ClassNode;
 				if (parent != null)
 				{
-					var nodes = ReClassClipboard.PasteNodes(parent, project.Classes, Program.Logger);
-					foreach (var node in nodes)
+					foreach (var node in result.Item2)
 					{
 						if (IsCycleFree(parent, node))
 						{

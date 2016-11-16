@@ -131,17 +131,53 @@ namespace ReClassNET.DataExchange
 			Contract.Requires(nodes != null);
 			Contract.Requires(logger != null);
 
-			var project = new ReClassNetProject();
-
-			var tempClass = new ClassNode(false)
+			using (var project = new ReClassNetProject())
 			{
-				Name = SerialisationClassName
-			};
+				Action<BaseReferenceNode> recursiveAddReferences = null;
+				recursiveAddReferences = delegate (BaseReferenceNode referenceNode)
+				{
+					if (project.ContainsClass(referenceNode.InnerNode.Uuid))
+					{
+						return;
+					}
 
-			nodes.Select(n => n.Clone()).ForEach(tempClass.AddNode);
+					project.AddClass(referenceNode.InnerNode);
 
-			var file = new ReClassNetFile(project);
-			file.Save(output, logger);
+					foreach (var reference in referenceNode.InnerNode.Nodes.OfType<BaseReferenceNode>())
+					{
+						recursiveAddReferences(reference);
+					}
+				};
+
+				var serialisationClass = new ClassNode(false)
+				{
+					Name = SerialisationClassName
+				};
+
+				project.AddClass(serialisationClass);
+
+				foreach (var node in nodes)
+				{
+					var classNode = node as ClassNode;
+					if (classNode != null)
+					{
+						project.AddClass(classNode);
+
+						continue;
+					}
+
+					var referenceNode = node as BaseReferenceNode;
+					if (referenceNode != null)
+					{
+						recursiveAddReferences(referenceNode);
+					}
+
+					serialisationClass.AddNode(node);
+				}
+
+				var file = new ReClassNetFile(project);
+				file.Save(output, logger);
+			}
 		}
 	}
 }
