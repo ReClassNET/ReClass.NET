@@ -171,20 +171,12 @@ namespace ReClassNET.Forms
 
 		private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var ofd = new OpenFileDialog())
-			{
-				ofd.CheckFileExists = true;
-				ofd.Filter = $"All ReClass Types |*{ReClassNetFile.FileExtension};*{ReClassFile.FileExtension};*{ReClassQtFile.FileExtension};*{ReClass2007File.FileExtension}"
-					+ $"|{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}"
-					+ $"|{ReClassFile.FormatName} (*{ReClassFile.FileExtension})|*{ReClassFile.FileExtension}"
-					+ $"|{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}"
-					+ $"|{ReClass2007File.FormatName} (*{ReClass2007File.FileExtension})|*{ReClass2007File.FileExtension}";
+			SelectAndLoadFileFromPath(null);
+		}
 
-				if (ofd.ShowDialog() == DialogResult.OK)
-				{
-					LoadFileFromPath(ofd.FileName);
-				}
-			}
+		private void mergeWithProjectToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SelectAndLoadFileFromPath(CurrentProject);
 		}
 
 		private void clearProjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -396,7 +388,7 @@ namespace ReClassNET.Forms
 			var files = e.Data.GetData(DataFormats.FileDrop) as string[];
 			if (files != null && files.Any())
 			{
-				LoadFileFromPath(files.First());
+				LoadFileFromPath(files.First(), null);
 			}
 		}
 
@@ -435,9 +427,16 @@ namespace ReClassNET.Forms
 
 		#endregion
 
-		private void SetProject(ReClassNetProject newProject)
+		/// <summary>Sets the current project.</summary>
+		/// <param name="newProject">The new project.</param>
+		public void SetProject(ReClassNetProject newProject)
 		{
 			Contract.Requires(newProject != null);
+
+			if (currentProject == newProject)
+			{
+				return;
+			}
 
 			if (currentProject != null)
 			{
@@ -528,9 +527,29 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private void LoadFileFromPath(string filePath)
+		private void SelectAndLoadFileFromPath(ReClassNetProject project)
 		{
-			var loadProject = new ReClassNetProject();
+			using (var ofd = new OpenFileDialog())
+			{
+				ofd.CheckFileExists = true;
+				ofd.Filter = $"All ReClass Types |*{ReClassNetFile.FileExtension};*{ReClassFile.FileExtension};*{ReClassQtFile.FileExtension};*{ReClass2007File.FileExtension}"
+					+ $"|{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}"
+					+ $"|{ReClassFile.FormatName} (*{ReClassFile.FileExtension})|*{ReClassFile.FileExtension}"
+					+ $"|{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}"
+					+ $"|{ReClass2007File.FormatName} (*{ReClass2007File.FileExtension})|*{ReClass2007File.FileExtension}";
+
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					LoadFileFromPath(ofd.FileName, project);
+				}
+			}
+		}
+
+		private void LoadFileFromPath(string filePath, ReClassNetProject project)
+		{
+			Contract.Requires(filePath != null);
+
+			var loadProject = project ?? new ReClassNetProject();
 
 			IReClassImport import = null;
 			switch (Path.GetExtension(filePath))
@@ -559,13 +578,6 @@ namespace ReClassNET.Forms
 					import.Load(filePath, Program.Logger);
 
 					SetProject(loadProject);
-
-					/*var classes = schema.BuildNodes(Program.Logger);
-
-					ClassManager.Clear();
-					classes.ForEach(c => ClassManager.AddClass(c));
-
-					memoryViewControl.ClassNode = classes.FirstOrDefault();*/
 				}
 				catch (Exception ex)
 				{

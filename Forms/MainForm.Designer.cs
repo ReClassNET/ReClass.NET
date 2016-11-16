@@ -108,6 +108,7 @@
 			this.selectProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mergeWithProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -905,6 +906,7 @@
             this.selectProcessToolStripMenuItem,
             this.toolStripSeparator1,
             this.openProjectToolStripMenuItem,
+            this.mergeWithProjectToolStripMenuItem,
             this.clearProjectToolStripMenuItem,
             this.toolStripSeparator2,
             this.saveToolStripMenuItem,
@@ -939,6 +941,14 @@
 			this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
 			this.openProjectToolStripMenuItem.Text = "Open Project...";
 			this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
+			// 
+			// mergeWithProjectToolStripMenuItem
+			// 
+			this.mergeWithProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Folder_Add;
+			this.mergeWithProjectToolStripMenuItem.Name = "mergeWithProjectToolStripMenuItem";
+			this.mergeWithProjectToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.mergeWithProjectToolStripMenuItem.Text = "Merge with Project...";
+			this.mergeWithProjectToolStripMenuItem.Click += new System.EventHandler(this.mergeWithProjectToolStripMenuItem_Click);
 			// 
 			// clearProjectToolStripMenuItem
 			// 
@@ -1272,6 +1282,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
 		private System.Windows.Forms.ToolStripStatusLabel infoToolStripStatusLabel;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator19;
+		private System.Windows.Forms.ToolStripMenuItem mergeWithProjectToolStripMenuItem;
 	}
 }
 

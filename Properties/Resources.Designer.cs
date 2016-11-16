@@ -763,6 +763,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Folder_Add {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Folder_Add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Function_Type {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Function_Type", resourceCulture);
@@ -1131,7 +1141,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 2016/11/05 11:24:43
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2016/11/16 13:16:24
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {
