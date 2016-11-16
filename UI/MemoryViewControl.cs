@@ -589,6 +589,9 @@ namespace ReClassNET.UI
 
 			changeTypeToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
 
+			createClassFromNodesToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
+			dissectNodesToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
+
 			pasteNodesToolStripMenuItem.Enabled = count == 1 && ReClassClipboard.ContainsNodes;
 			removeToolStripMenuItem.Enabled = !nodeIsClass;
 
@@ -649,6 +652,28 @@ namespace ReClassNET.UI
 		private void pasteNodesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			PasteNodeFromClipboardToSelection();
+		}
+
+		private void createClassFromNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (selectedNodes.Count > 0 && !(selectedNodes[0].Node is ClassNode))
+			{
+				var parentNode = selectedNodes[0].Node.ParentNode as ClassNode;
+				if (parentNode != null)
+				{
+					var classNode = ClassNode.Create();
+					selectedNodes.Select(h => h.Node).ForEach(classNode.AddNode);
+
+					var classInstanceNode = new ClassInstanceNode();
+					classInstanceNode.ChangeInnerNode(classNode);
+
+					parentNode.InsertNode(selectedNodes[0].Node, classInstanceNode);
+
+					selectedNodes.Select(h => h.Node).ForEach(c => parentNode.RemoveNode(c));
+
+					ClearSelection();
+				}
+			}
 		}
 
 		private void dissectNodesToolStripMenuItem_Click(object sender, EventArgs e)
