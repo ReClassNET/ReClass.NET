@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Globalization;
+using System.Security.Principal;
 using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET
 {
@@ -33,6 +35,8 @@ namespace ReClassNET
 			designMode = false; // The designer doesn't call Main()
 
 			DpiUtil.ConfigureProcess();
+
+			EnableDebugPrivileges();
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
@@ -65,6 +69,27 @@ namespace ReClassNET
 #endif
 
 			Settings.Save(settings, Constants.SettingsFile);
+		}
+
+		private static bool EnableDebugPrivileges()
+		{
+			var result = false;
+
+			IntPtr token;
+			if (NativeMethods.OpenProcessToken(System.Diagnostics.Process.GetCurrentProcess().Handle, TokenAccessLevels.AllAccess, out token))
+			{
+				var privileges = new NativeMethods.TOKEN_PRIVILEGES();
+				privileges.PrivilegeCount = 1;
+				privileges.Luid.LowPart = 0x14;
+				privileges.Luid.HighPart = 0;
+				privileges.Attributes = 2;
+
+				result = NativeMethods.AdjustTokenPrivileges(token, false, ref privileges, 0, IntPtr.Zero, IntPtr.Zero);
+
+				NativeMethods.CloseHandle(token);
+			}
+
+			return result;
 		}
 
 		/// <summary>Shows the exception in a special form.</summary>

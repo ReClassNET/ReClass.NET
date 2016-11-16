@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 
 namespace ReClassNET.Util
@@ -81,6 +82,21 @@ namespace ReClassNET.Util
 			public string szTypeName;
 		};
 
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
+		public struct LUID
+		{
+			public uint LowPart;
+			public int HighPart;
+		}
+
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
+		public struct TOKEN_PRIVILEGES
+		{
+			public uint PrivilegeCount;
+			public LUID Luid;
+			public uint Attributes;
+		}
+
 		#endregion
 
 		#region Natives
@@ -94,24 +110,33 @@ namespace ReClassNET.Util
 		[DllImport("kernel32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
 		public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
 
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern bool CloseHandle(IntPtr hObject);
+
 		[DllImport("shell32.dll")]
 		public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
 
-		[DllImport("User32.dll")]
+		[DllImport("user32.dll")]
 		public static extern int DestroyIcon(IntPtr hIcon);
 
 		[DllImport("dbghelp.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 		static extern int UnDecorateSymbolName(string DecoratedName, StringBuilder UnDecoratedName, int UndecoratedLength, int Flags);
 
-		[DllImport("User32.dll")]
+		[DllImport("user32.dll")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool SetProcessDPIAware();
 
-		[DllImport("ShCore.dll")]
+		[DllImport("shcore.dll")]
 		internal static extern int SetProcessDpiAwareness([MarshalAs(UnmanagedType.U4)] ProcessDpiAwareness a);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GetProcessTimes(IntPtr handle, out long creation, out long exit, out long kernel, out long user);
+
+		[DllImport("advapi32.dll", SetLastError = true)]
+		public static extern bool OpenProcessToken(IntPtr ProcessHandle, TokenAccessLevels DesiredAccess, out IntPtr TokenHandle);
+
+		[DllImport("advapi32.dll", SetLastError = true)]
+		public static extern bool AdjustTokenPrivileges(IntPtr TokenHandle, [MarshalAs(UnmanagedType.Bool)]bool DisableAllPrivileges, ref TOKEN_PRIVILEGES NewState, uint Zero, IntPtr Null1, IntPtr Null2);
 
 		#endregion
 
