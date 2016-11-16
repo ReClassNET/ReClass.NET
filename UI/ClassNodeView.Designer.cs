@@ -40,6 +40,7 @@
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.expandAllClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.collapseAllClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.enableHierarchyViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.classContextMenuStrip.SuspendLayout();
 			this.rootContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -101,12 +102,13 @@
 			// rootContextMenuStrip
 			// 
 			this.rootContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.enableHierarchyViewToolStripMenuItem,
             this.autoExpandHierarchyViewToolStripMenuItem,
             this.toolStripSeparator2,
             this.expandAllClassesToolStripMenuItem,
             this.collapseAllClassesToolStripMenuItem});
 			this.rootContextMenuStrip.Name = "rootContextMenuStrip";
-			this.rootContextMenuStrip.Size = new System.Drawing.Size(221, 76);
+			this.rootContextMenuStrip.Size = new System.Drawing.Size(221, 120);
 			// 
 			// autoExpandHierarchyViewToolStripMenuItem
 			// 
@@ -136,6 +138,15 @@
 			this.collapseAllClassesToolStripMenuItem.Text = "Collapse all classes";
 			this.collapseAllClassesToolStripMenuItem.Click += new System.EventHandler(this.collapseAllClassesToolStripMenuItem_Click);
 			// 
+			// enableHierarchyViewToolStripMenuItem
+			// 
+			this.enableHierarchyViewToolStripMenuItem.Checked = true;
+			this.enableHierarchyViewToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.enableHierarchyViewToolStripMenuItem.Name = "enableHierarchyViewToolStripMenuItem";
+			this.enableHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.enableHierarchyViewToolStripMenuItem.Text = "Enable hierarchy view";
+			this.enableHierarchyViewToolStripMenuItem.Click += new System.EventHandler(this.enableHierarchyViewToolStripMenuItem_Click);
+			// 
 			// ClassNodeView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -161,5 +172,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem expandAllClassesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem collapseAllClassesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem enableHierarchyViewToolStripMenuItem;
 	}
 }

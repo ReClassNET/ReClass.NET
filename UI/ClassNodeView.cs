@@ -29,23 +29,27 @@ namespace ReClassNET.UI
 		{
 			public ClassNode ClassNode { get; }
 
+			private readonly ValueWrapper<bool> enableHierarchyView;
 			private readonly ValueWrapper<bool> autoExpand;
 
 			/// <summary>Constructor of the class.</summary>
 			/// <param name="node">The class node.</param>
 			/// <param name="autoExpand">The value if nodes should get expanded.</param>
-			public ClassTreeNode(ClassNode node, ValueWrapper<bool> autoExpand)
-				: this(node, autoExpand, null)
+			public ClassTreeNode(ClassNode node, ValueWrapper<bool> enableHierarchyView, ValueWrapper<bool> autoExpand)
+				: this(node, enableHierarchyView, autoExpand, null)
 			{
 				Contract.Requires(node != null);
+				Contract.Requires(enableHierarchyView != null);
 				Contract.Requires(autoExpand != null);
 			}
 
-			private ClassTreeNode(ClassNode node, ValueWrapper<bool> autoExpand, HashSet<ClassNode> seen)
+			private ClassTreeNode(ClassNode node, ValueWrapper<bool> enableHierarchyView, ValueWrapper<bool> autoExpand, HashSet<ClassNode> seen)
 			{
 				Contract.Requires(node != null);
+				Contract.Requires(enableHierarchyView != null);
 				Contract.Requires(autoExpand != null);
 
+				this.enableHierarchyView = enableHierarchyView;
 				this.autoExpand = autoExpand;
 
 				ClassNode = node;
@@ -86,19 +90,32 @@ namespace ReClassNET.UI
 			{
 				Contract.Requires(seen != null);
 
-				Nodes.OfType<ClassTreeNode>().ForEach(t => t.Dispose());
-				Nodes.Clear();
+				if (!enableHierarchyView.Value)
+				{
+					return;
+				}
 
-				foreach (var child in ClassNode.Nodes
+				var distinctClasses = ClassNode.Nodes
 					.OfType<BaseReferenceNode>()
 					.Select(r => r.InnerNode)
 					.OfType<ClassNode>()
-					.Distinct())
+					.Distinct()
+					.ToList();
+
+				if (distinctClasses.SequenceEqualsEx(Nodes.OfType<ClassTreeNode>().Select(t => t.ClassNode)))
+				{
+					return;
+				}
+
+				Nodes.OfType<ClassTreeNode>().ForEach(t => t.Dispose());
+				Nodes.Clear();
+
+				foreach (var child in distinctClasses)
 				{
 					var childSeen = new HashSet<ClassNode>(seen);
 					if (childSeen.Add(child))
 					{
-						Nodes.Add(new ClassTreeNode(child, autoExpand, childSeen));
+						Nodes.Add(new ClassTreeNode(child, enableHierarchyView, autoExpand, childSeen));
 					}
 				}
 
@@ -110,6 +127,7 @@ namespace ReClassNET.UI
 		}
 
 		private readonly TreeNode root;
+		private readonly ValueWrapper<bool> enableHierarchyView;
 		private readonly ValueWrapper<bool> autoExpand;
 
 		private ReClassNetProject project;
@@ -179,6 +197,7 @@ namespace ReClassNET.UI
 
 			DoubleBuffered = true;
 
+			enableHierarchyView = new ValueWrapper<bool>(true);
 			autoExpand = new ValueWrapper<bool>(false);
 
 			classesTreeView.ImageList = new ImageList();
@@ -287,6 +306,20 @@ namespace ReClassNET.UI
 			}
 		}
 
+		private void enableHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			enableHierarchyViewToolStripMenuItem.Checked = !enableHierarchyViewToolStripMenuItem.Checked;
+
+			enableHierarchyView.Value = enableHierarchyViewToolStripMenuItem.Checked;
+
+			var classes = root.Nodes.OfType<ClassTreeNode>().Select(t => t.ClassNode).ToList();
+
+			root.Nodes.OfType<ClassTreeNode>().ForEach(t => t.Dispose());
+			root.Nodes.Clear();
+
+			classes.ForEach(AddClass);
+		}
+
 		private void autoExpandHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			autoExpandHierarchyViewToolStripMenuItem.Checked = !autoExpandHierarchyViewToolStripMenuItem.Checked;
@@ -317,7 +350,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(node != null);
 
-			root.Nodes.Add(new ClassTreeNode(node, autoExpand));
+			root.Nodes.Add(new ClassTreeNode(node, enableHierarchyView, autoExpand));
 
 			classesTreeView.Sort();
 
