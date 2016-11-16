@@ -171,12 +171,44 @@ namespace ReClassNET.Forms
 
 		private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			SelectAndLoadFileFromPath(null);
+			try
+			{
+				var path = ShowOpenProjectFileDialog();
+				if (path != null)
+				{
+					var project = new ReClassNetProject();
+
+					LoadFileFromPath(path, ref project);
+
+					// If the file is a ReClass.NET file remember the path.
+					if (Path.GetExtension(path) == ReClassNetFile.FileExtension)
+					{
+						project.Path = path;
+					}
+
+					SetProject(project);
+				}
+			}
+			catch (Exception ex)
+			{
+				Program.Logger.Log(ex);
+			}
 		}
 
 		private void mergeWithProjectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			SelectAndLoadFileFromPath(CurrentProject);
+			try
+			{
+				var path = ShowOpenProjectFileDialog();
+				if (path != null)
+				{
+					LoadFileFromPath(path, ref currentProject);
+				}
+			}
+			catch (Exception ex)
+			{
+				Program.Logger.Log(ex);
+			}
 		}
 
 		private void clearProjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -388,7 +420,26 @@ namespace ReClassNET.Forms
 			var files = e.Data.GetData(DataFormats.FileDrop) as string[];
 			if (files != null && files.Any())
 			{
-				LoadFileFromPath(files.First(), null);
+				try
+				{
+					var path = files.First();
+
+					var project = new ReClassNetProject();
+
+					LoadFileFromPath(path, ref project);
+
+					// If the file is a ReClass.NET file remember the path.
+					if (Path.GetExtension(path) == ReClassNetFile.FileExtension)
+					{
+						project.Path = path;
+					}
+
+					SetProject(project);
+				}
+				catch (Exception ex)
+				{
+					Program.Logger.Log(ex);
+				}
 			}
 		}
 
@@ -527,7 +578,9 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private void SelectAndLoadFileFromPath(ReClassNetProject project)
+		/// <summary>Shows an <see cref="OpenFileDialog"/> with all valid file extensions.</summary>
+		/// <returns>The path to the selected file or null if no file was selected.</returns>
+		public static string ShowOpenProjectFileDialog()
 		{
 			using (var ofd = new OpenFileDialog())
 			{
@@ -540,32 +593,35 @@ namespace ReClassNET.Forms
 
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
-					LoadFileFromPath(ofd.FileName, project);
+					return ofd.FileName;
 				}
 			}
+
+			return null;
 		}
 
-		private void LoadFileFromPath(string filePath, ReClassNetProject project)
+		/// <summary>Loads the file into the given project.</summary>
+		/// <param name="filePath">Full pathname of the file.</param>
+		/// <param name="project">[in,out] The project.</param>
+		private void LoadFileFromPath(string filePath, ref ReClassNetProject project)
 		{
 			Contract.Requires(filePath != null);
-
-			var loadProject = project ?? new ReClassNetProject();
+			Contract.Requires(project != null);
 
 			IReClassImport import = null;
 			switch (Path.GetExtension(filePath))
 			{
 				case ReClassNetFile.FileExtension:
-					import = new ReClassNetFile(loadProject);
-					loadProject.Path = filePath;
+					import = new ReClassNetFile(project);
 					break;
 				case ReClassQtFile.FileExtension:
-					import = new ReClassQtFile(loadProject);
+					import = new ReClassQtFile(project);
 					break;
 				case ReClassFile.FileExtension:
-					import = new ReClassFile(loadProject);
+					import = new ReClassFile(project);
 					break;
 				case ReClass2007File.FileExtension:
-					import = new ReClass2007File(loadProject);
+					import = new ReClass2007File(project);
 					break;
 				default:
 					Program.Logger.Log(LogLevel.Error, $"The file '{filePath}' has an unknown type.");
@@ -573,17 +629,7 @@ namespace ReClassNET.Forms
 			}
 			if (import != null)
 			{
-				try
-				{
-					import.Load(filePath, Program.Logger);
-
-					SetProject(loadProject);
-				}
-				catch (Exception ex)
-				{
-					Program.Logger.Log(ex);
-				}
-				
+				import.Load(filePath, Program.Logger);
 			}
 		}
 	}
