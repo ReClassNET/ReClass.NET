@@ -1058,6 +1058,7 @@
 			this.loadSymbolsToolStripMenuItem.Name = "loadSymbolsToolStripMenuItem";
 			this.loadSymbolsToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
 			this.loadSymbolsToolStripMenuItem.Text = "Load all Symbols";
+			this.loadSymbolsToolStripMenuItem.Click += new System.EventHandler(this.loadSymbolsToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator4
 			// 

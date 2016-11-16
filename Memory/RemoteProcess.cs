@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using ReClassNET.AddressParser;
 using ReClassNET.SymbolReader;
@@ -528,45 +527,35 @@ namespace ReClassNET.Memory
 			return interpreter.Execute(operation, this);
 		}
 
-		/// <summary>Loads all symbols for the process modules.</summary>
-		public void LoadAllSymbols()
-		{
-			LoadAllSymbolsAsync(null, new CancellationToken()).Wait();
-		}
-
 		/// <summary>A callback which gets called for every module while loading symbols.</summary>
-		/// <param name="module">The current module.</param>
-		public delegate void LoadModuleSymbols(Module module);
+		/// <param name="current">The current module.</param>
+		public delegate bool LoadModuleSymbols(Module current, IEnumerable<Module> allModules);
 
-		/// <summary>Loads all symbols asynchronous.</summary>
-		/// <param name="callback">The callback is called for every module. The callback can be null.</param>
-		/// <param name="token">The token used to cancel the task.</param>
-		/// <returns>The task.</returns>
-		public Task LoadAllSymbolsAsync(LoadModuleSymbols callback, CancellationToken token)
+		/// <summary>Loads symbols for all process modules.</summary>
+		/// <param name="callback">The callback is called for every module.</param>
+		public void LoadAllSymbols(LoadModuleSymbols callback)
 		{
 			var copy = modules.ToList();
 
-			return Task.Run(() =>
+			foreach (var module in copy)
 			{
-				foreach (var module in copy)
+				try
 				{
-					if (token.IsCancellationRequested)
+					if (callback != null)
 					{
-						break;
+						if (!callback(module, copy))
+						{
+							break;
+						}
 					}
 
-					try
-					{
-						callback?.Invoke(module);
-
-						Symbols.LoadSymbolsForModule(module);
-					}
-					catch
-					{
-						//ignore
-					}
+					Symbols.LoadSymbolsForModule(module);
 				}
-			}, token);
+				catch (COMException)
+				{
+					// Ignore PDB not found errors.
+				}
+			}
 		}
 	}
 }

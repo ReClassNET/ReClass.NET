@@ -141,19 +141,7 @@ namespace ReClassNET.Forms
 					remoteProcess.UpdateProcessInformations();
 					if (pb.LoadSymbols)
 					{
-						loadSymbolsTaskToken = new CancellationTokenSource();
-						loadSymbolsTask = remoteProcess.LoadAllSymbolsAsync(m =>
-							{
-								Invoke((MethodInvoker)delegate ()
-								{
-									infoToolStripStatusLabel.Visible = true;
-									infoToolStripStatusLabel.Text = $"Loading symbols for module: {m.Name}";
-								});
-							}, loadSymbolsTaskToken.Token)
-							.ContinueWith(
-								t => { infoToolStripStatusLabel.Visible = false; },
-								TaskScheduler.FromCurrentSynchronizationContext()
-							);
+						LoadAllSymbolsForCurrentProcess();
 					}
 
 					Program.Settings.LastProcess = remoteProcess.Process.Name;
@@ -321,6 +309,11 @@ namespace ReClassNET.Forms
 					}
 				}
 			}
+		}
+
+		private void loadSymbolsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			LoadAllSymbolsForCurrentProcess();
 		}
 
 		private void cleanUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -631,6 +624,31 @@ namespace ReClassNET.Forms
 			{
 				import.Load(filePath, Program.Logger);
 			}
+		}
+
+		private void LoadAllSymbolsForCurrentProcess()
+		{
+			var progressDialog = new SymbolReaderProgressForm();
+			progressDialog.Show(this);
+
+			Enabled = false;
+
+			int index = 0;
+			remoteProcess.LoadAllSymbols((current, modules) =>
+			{
+				progressDialog.ProgressMaximum = modules.Count();
+				progressDialog.ProgressValue = ++index;
+
+				progressDialog.ProgressText = $"[{progressDialog.ProgressValue}/{progressDialog.ProgressMaximum}] {current.Name}";
+
+				Application.DoEvents();
+
+				return true;
+			});
+
+			Enabled = true;
+
+			progressDialog.Close();
 		}
 	}
 }

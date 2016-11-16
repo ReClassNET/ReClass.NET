@@ -152,6 +152,12 @@
     <Compile Include="Forms\InputBytesForm.Designer.cs">
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SymbolReaderProgressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SymbolReaderProgressForm.Designer.cs">
+      <DependentUpon>SymbolReaderProgressForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Memory\NodeDissector.cs" />
     <Compile Include="Memory\UnionDataType.cs" />
     <Compile Include="Nodes\ClassUtil.cs" />
@@ -350,6 +356,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputBytesForm.resx">
       <DependentUpon>InputBytesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SymbolReaderProgressForm.resx">
+      <DependentUpon>SymbolReaderProgressForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ClassNodeView.resx">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
