@@ -156,15 +156,17 @@ namespace ReClassNET.SymbolReader
 				// If symbol.name equals symbol.undecoratedName there is some extra stuff which can't get undecorated. Try to fix it.
 				if (symbol.name == symbol.undecoratedName)
 				{
-					if (symbol.name.StartsWith("@ILT+"))
+					var name = symbol.name;
+					if (name.StartsWith("@ILT+"))
 					{
-						var start = symbol.name.IndexOf('(');
+						var start = name.IndexOf('(');
 						if (start != -1)
 						{
-							var name = symbol.name.Substring(start + 1, symbol.name.Length - 1 - start - 1);
-							sb.Append(NativeMethods.UnDecorateSymbolName(name));
+							name = name.Substring(start + 1, name.Length - 1 - start - 1);
 						}
 					}
+
+					sb.Append(NativeMethods.UnDecorateSymbolName(name));
 				}
 				else
 				{
