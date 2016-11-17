@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
 
@@ -42,11 +43,11 @@ namespace ReClassNET.Memory
 			var data32 = memory.ReadObject<UInt32FloatData>(offset);
 
 			var raw = memory.ReadBytes(offset, node.MemorySize);
-			if (raw.InterpretAsUTF8().IsPrintableData())
+			if (raw.InterpretAsUTF8().IsLikelyPrintableData() >= 0.5f)
 			{
 				return typeof(UTF8TextNode);
 			}
-			else if (raw.InterpretAsUTF16().IsPrintableData())
+			else if (raw.InterpretAsUTF16().IsLikelyPrintableData() >= 0.5f)
 			{
 				return typeof(UTF16TextNode);
 			}
@@ -138,12 +139,12 @@ namespace ReClassNET.Memory
 					}
 
 					// Check if it is a string.
-					var data = memory.Process.ReadRemoteMemory(address, IntPtr.Size);
-					if (data.InterpretAsUTF8().IsPrintableData())
+					var data = memory.Process.ReadRemoteMemory(address, IntPtr.Size * 2);
+					if (data.Take(IntPtr.Size).InterpretAsUTF8().IsLikelyPrintableData() >= 0.5f)
 					{
 						return typeof(UTF8TextPtrNode);
 					}
-					else if (data.InterpretAsUTF16().IsPrintableData())
+					else if (data.InterpretAsUTF16().IsLikelyPrintableData() >= 0.5f)
 					{
 						return typeof(UTF16TextPtrNode);
 					}
