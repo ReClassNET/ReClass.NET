@@ -47,6 +47,16 @@ namespace ReClassNET.SymbolReader
 			GC.SuppressFinalize(this);
 		}
 
+		public static void TryResolveSymbolsForModule(RemoteProcess.Module module, string searchPath)
+		{
+			Contract.Requires(module != null);
+
+			using (var diaSource = new ComDisposableWrapper<DiaSource>(new DiaSource()))
+			{
+				diaSource.Interface.loadDataForExe(module.Path, searchPath, null);
+			}
+		}
+
 		public static SymbolReader FromModule(RemoteProcess.Module module, string searchPath)
 		{
 			Contract.Requires(module != null);

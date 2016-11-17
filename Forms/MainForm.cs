@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
@@ -108,14 +109,29 @@ namespace ReClassNET.Forms
 				if (loadSymbolsTask != null)
 				{
 					loadSymbolsTaskToken.Cancel();
-					await loadSymbolsTask;
+
+					try
+					{
+						await loadSymbolsTask;
+					}
+					catch
+					{
+
+					}
 
 					loadSymbolsTask = null;
 				}
 
 				if (updateProcessInformationsTask != null)
 				{
-					await updateProcessInformationsTask;
+					try
+					{
+						await updateProcessInformationsTask;
+					}
+					catch
+					{
+
+					}
 
 					updateProcessInformationsTask = null;
 				}
@@ -436,11 +452,20 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private void processUpdateTimer_Tick(object sender, EventArgs e)
+		private async void processUpdateTimer_Tick(object sender, EventArgs e)
 		{
 			if (updateProcessInformationsTask == null || updateProcessInformationsTask.IsCompleted)
 			{
-				updateProcessInformationsTask = remoteProcess.UpdateProcessInformationsAsync();
+				try
+				{
+					updateProcessInformationsTask = remoteProcess.UpdateProcessInformationsAsync();
+
+					await updateProcessInformationsTask;
+				}
+				catch
+				{
+
+				}
 			}
 		}
 
@@ -626,29 +651,38 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private void LoadAllSymbolsForCurrentProcess()
+		/// <summary>Loads all symbols for the current process and displays the progress status.</summary>
+		private async void LoadAllSymbolsForCurrentProcess()
 		{
-			var progressDialog = new SymbolReaderProgressForm();
-			progressDialog.Show(this);
+			if (loadSymbolsTask != null && !loadSymbolsTask.IsCompleted)
+			{
+				return;
+			}
 
-			Enabled = false;
+			infoToolStripStatusLabel.Visible = true;
 
 			int index = 0;
-			remoteProcess.LoadAllSymbols((current, modules) =>
+
+			var progress = new Progress<Tuple<RemoteProcess.Module, IEnumerable<RemoteProcess.Module>>>(
+				report =>
+				{
+					infoToolStripStatusLabel.Text = $"[{++index}/{report.Item2.Count()}] Loading symbols for module: {report.Item1.Name}";
+				}
+			);
+
+			loadSymbolsTaskToken = new CancellationTokenSource();
+			loadSymbolsTask = remoteProcess.LoadAllSymbolsAsync(progress, loadSymbolsTaskToken.Token);
+
+			try
 			{
-				progressDialog.ProgressMaximum = modules.Count();
-				progressDialog.ProgressValue = ++index;
+				await loadSymbolsTask;
+			}
+			catch
+			{
 
-				progressDialog.ProgressText = $"[{progressDialog.ProgressValue}/{progressDialog.ProgressMaximum}] {current.Name}";
+			}
 
-				Application.DoEvents();
-
-				return true;
-			});
-
-			Enabled = true;
-
-			progressDialog.Close();
+			infoToolStripStatusLabel.Visible = false;
 		}
 	}
 }

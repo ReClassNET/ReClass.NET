@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ReClassNET.AddressParser;
 using ReClassNET.SymbolReader;
@@ -527,35 +528,55 @@ namespace ReClassNET.Memory
 			return interpreter.Execute(operation, this);
 		}
 
-		/// <summary>A callback which gets called for every module while loading symbols.</summary>
-		/// <param name="current">The current module.</param>
-		public delegate bool LoadModuleSymbols(Module current, IEnumerable<Module> allModules);
-
-		/// <summary>Loads symbols for all process modules.</summary>
-		/// <param name="callback">The callback is called for every module.</param>
-		public void LoadAllSymbols(LoadModuleSymbols callback)
+		/// <summary>Loads all symbols asynchronous.</summary>
+		/// <param name="progress">The progress reporter is called for every module. Can be null.</param>
+		/// <param name="token">The token used to cancel the task.</param>
+		/// <returns>The task.</returns>
+		public Task LoadAllSymbolsAsync(IProgress<Tuple<Module, IEnumerable<Module>>> progress, CancellationToken token)
 		{
 			var copy = modules.ToList();
 
-			foreach (var module in copy)
-			{
-				try
+			// Try to resolve all symbols in a background thread. This can take a long time because symbols are downloaded from the internet.
+			// The COM objects used can only be used in the thread they are created so we can't use them...
+			// Thats why an other task loads the real symbols afterwards in the UI thread context.
+			return Task.Run(
+				() =>
 				{
-					if (callback != null)
+					foreach (var module in copy)
 					{
-						if (!callback(module, copy))
+						token.ThrowIfCancellationRequested();
+
+						progress?.Report(Tuple.Create<Module, IEnumerable<Module>>(module, copy));
+
+						Symbols.TryResolveSymbolsForModule(module);
+					}
+				},
+				token
+			)
+			.ContinueWith(
+				_ =>
+				{
+					foreach (var module in copy)
+					{
+						if (token.IsCancellationRequested)
 						{
 							break;
 						}
-					}
 
-					Symbols.LoadSymbolsForModule(module);
-				}
-				catch (COMException)
-				{
-					// Ignore PDB not found errors.
-				}
-			}
+						try
+						{
+							Symbols.LoadSymbolsForModule(module);
+						}
+						catch
+						{
+							//ignore
+						}
+					}
+				},
+				token,
+				TaskContinuationOptions.None,
+				TaskScheduler.FromCurrentSynchronizationContext()
+			);
 		}
 	}
 }

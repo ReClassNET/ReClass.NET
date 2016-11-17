@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Dia2Lib;
 using Microsoft.Win32;
 using ReClassNET.Memory;
+using ReClassNET.Util;
 
 namespace ReClassNET.SymbolReader
 {
@@ -50,15 +52,30 @@ namespace ReClassNET.SymbolReader
 
 	public class Symbols
 	{
+		private const string BlackListFile = "blacklist.txt";
+
 		public string SymbolCachePath { get; private set; } = "./SymbolsCache";
 
-		public string SymbolSearchPath => $"srv*{SymbolCachePath}*http://msdl.microsoft.com/download/symbols";
+		public string SymbolDownloadPath { get; set; } = "http://msdl.microsoft.com/download/symbols";
+
+		public string SymbolSearchPath => $"srv*{SymbolCachePath}*{SymbolDownloadPath}";
 
 		private readonly Dictionary<string, SymbolReader> symbolReaders = new Dictionary<string, SymbolReader>();
+
+		private readonly HashSet<string> moduleBlacklist = new HashSet<string>();
 
 		public Symbols()
 		{
 			ResolveSearchPath();
+
+			var blacklistPath = Path.Combine(SymbolCachePath, BlackListFile);
+
+			if (File.Exists(blacklistPath))
+			{
+				File.ReadAllLines(Path.Combine(SymbolCachePath, BlackListFile))
+					.Select(l => l.Trim().ToLower())
+					.ForEach(l => moduleBlacklist.Add(l));
+			}
 		}
 
 		private void ResolveSearchPath()
@@ -90,15 +107,45 @@ namespace ReClassNET.SymbolReader
 			}
 		}
 
+		public void TryResolveSymbolsForModule(RemoteProcess.Module module)
+		{
+			Contract.Requires(module != null);
+
+			var name = module.Name.ToLower();
+
+			lock (symbolReaders)
+			{
+				if (!moduleBlacklist.Contains(name))
+				{
+					try
+					{
+						SymbolReader.TryResolveSymbolsForModule(module, SymbolSearchPath);
+					}
+					catch
+					{
+						moduleBlacklist.Add(name);
+
+						File.WriteAllLines(
+							Path.Combine(SymbolCachePath, BlackListFile),
+							moduleBlacklist.ToArray()
+						);
+					}
+				}
+			}
+		}
+
 		public void LoadSymbolsForModule(RemoteProcess.Module module)
 		{
 			Contract.Requires(module != null);
 
-			var reader = SymbolReader.FromModule(module, SymbolSearchPath);
+			var moduleName = module.Name.ToLower();
 
 			lock (symbolReaders)
 			{
-				symbolReaders[module.Name.ToLower()] = reader;
+				if (!symbolReaders.ContainsKey(moduleName))
+				{
+					symbolReaders[moduleName] = SymbolReader.FromModule(module, SymbolSearchPath);
+				}
 			}
 		}
 
@@ -106,11 +153,14 @@ namespace ReClassNET.SymbolReader
 		{
 			Contract.Requires(path != null);
 
-			var reader = SymbolReader.FromDatabase(path);
+			var moduleName = Path.GetFileName(path).ToLower();
 
 			lock (symbolReaders)
 			{
-				symbolReaders[Path.GetFileName(path).ToLower()] = reader;
+				if (!symbolReaders.ContainsKey(moduleName))
+				{
+					symbolReaders[moduleName] = SymbolReader.FromDatabase(path);
+				}
 			}
 		}
 
