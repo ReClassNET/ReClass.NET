@@ -19,7 +19,10 @@ namespace ReClassNET.SymbolReader
 		{
 			if (obj != null)
 			{
-				Marshal.ReleaseComObject(obj);
+				if (disposing)
+				{
+					Marshal.ReleaseComObject(obj);
+				}
 
 				obj = null;
 			}
