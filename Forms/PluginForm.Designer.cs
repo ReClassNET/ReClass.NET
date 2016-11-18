@@ -390,6 +390,7 @@
 			this.getMoreLinkLabel.TabIndex = 1;
 			this.getMoreLinkLabel.TabStop = true;
 			this.getMoreLinkLabel.Text = "Get more plugins...";
+			this.getMoreLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.getMoreLinkLabel_LinkClicked);
 			// 
 			// closeButton
 			// 

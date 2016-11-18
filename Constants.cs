@@ -12,6 +12,8 @@
 
 		public const string HelpUrl = "https://github.com/KN4CK3R/ReClass.NET/issues";
 
+		public const string PluginUrl = "https://github.com/KN4CK3R/ReClass.NET#plugins";
+
 #if WIN64
 		public const string Platform = "x64";
 #else

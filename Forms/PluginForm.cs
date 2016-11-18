@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
@@ -97,6 +98,11 @@ namespace ReClassNET.Forms
 			{
 				nativeHelper.SetActiveNativeMethod(methodInfo);
 			}
+		}
+
+		private void getMoreLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Process.Start(Constants.PluginUrl);
 		}
 
 		#endregion
