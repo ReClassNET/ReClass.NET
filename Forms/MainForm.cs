@@ -56,7 +56,7 @@ namespace ReClassNET.Forms
 				{
 					var text = $"{sender.Process.Name} (PID: {sender.Process.Id})";
 
-					Text = $"{Constants.ApplicationName} {text}";
+					Text = $"{Constants.ApplicationName} - {text}";
 					processInfoToolStripStatusLabel.Text = text;
 				}
 			};
