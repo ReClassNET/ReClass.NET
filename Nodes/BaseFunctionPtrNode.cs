@@ -53,6 +53,29 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
+			if (Program.Settings.ShowCommentSymbol)
+			{
+#if WIN64
+				var value = view.Memory.ReadObject<UInt64FloatDoubleData>(Offset);
+#else
+				var value = view.Memory.ReadObject<UInt32FloatData>(Offset);
+#endif
+
+				var module = view.Memory.Process.GetModuleToPointer(value.IntPtr);
+				if (module != null)
+				{
+					var symbols = view.Memory.Process.Symbols.GetSymbolsForModule(module);
+					if (symbols != null)
+					{
+						var symbol = symbols.GetSymbolString(value.IntPtr, module);
+						if (!string.IsNullOrEmpty(symbol))
+						{
+							x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, symbol) + view.Font.Width;
+						}
+					}
+				}
+			}
+
 			if (levelsOpen[view.Level])
 			{
 				var ptr = view.Memory.ReadObject<IntPtr>(Offset);
