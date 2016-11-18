@@ -100,7 +100,7 @@ namespace ReClassNET.Nodes
 					memory.Process.NativeHelper.DisassembleRemoteCode(
 						memory.Process.Process.Handle,
 						address,
-						60,
+						200,
 #if WIN64
 						(a, l, i) => assembledCode.Add($"{a.ToString("X08")} {i}")
 #else
