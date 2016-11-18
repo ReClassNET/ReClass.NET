@@ -320,14 +320,8 @@ EXTERN_DLL_EXPORT VOID __stdcall DisassembleRemoteCode(HANDLE process, LPVOID ad
 	}
 
 	UIntPtr start = (UIntPtr)address;
-	UIntPtr end = start + length;
-	if (end <= start)
-	{
-		return;
-	}
 
-	DISASM disasm;
-	std::memset(&disasm, 0, sizeof(DISASM));
+	DISASM disasm = { };
 	disasm.Options = NasmSyntax + PrefixedNumeral;
 #ifdef _WIN64
 	disasm.Archi = 64;
@@ -338,12 +332,14 @@ EXTERN_DLL_EXPORT VOID __stdcall DisassembleRemoteCode(HANDLE process, LPVOID ad
 	std::vector<uint8_t> buffer(length);
 	readRemoteMemory(process, address, buffer.data(), buffer.size());
 
+	UIntPtr end = (UIntPtr)buffer.data() + length;
+
 	disasm.EIP = (UIntPtr)buffer.data();
 	disasm.VirtualAddr = start;
 
 	while (true)
 	{
-		disasm.SecurityBlock = ((UIntPtr)buffer.data() + buffer.size()) - disasm.EIP;
+		disasm.SecurityBlock = end - disasm.EIP;
 
 		auto disamLength = Disasm(&disasm);
 		if (disamLength == OUT_OF_BLOCK || disamLength == UNKNOWN_OPCODE)
@@ -354,7 +350,7 @@ EXTERN_DLL_EXPORT VOID __stdcall DisassembleRemoteCode(HANDLE process, LPVOID ad
 		callbackDisassembledCode((LPVOID)disasm.VirtualAddr, disamLength, disasm.CompleteInstr);
 
 		disasm.EIP += disamLength;
-		if (disasm.EIP >= end)
+		if (disasm.EIP >= end || buffer[disasm.EIP - (UIntPtr)buffer.data()] == 0xCC)
 		{
 			break;
 		}
