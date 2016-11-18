@@ -113,15 +113,21 @@ namespace ReClassNET.SymbolReader
 
 			var name = module.Name.ToLower();
 
+			bool isBlacklisted;
 			lock (symbolReaders)
 			{
-				if (!moduleBlacklist.Contains(name))
+				isBlacklisted = moduleBlacklist.Contains(name);
+			}
+
+			if (!isBlacklisted)
+			{
+				try
 				{
-					try
-					{
-						SymbolReader.TryResolveSymbolsForModule(module, SymbolSearchPath);
-					}
-					catch
+					SymbolReader.TryResolveSymbolsForModule(module, SymbolSearchPath);
+				}
+				catch
+				{
+					lock (symbolReaders)
 					{
 						moduleBlacklist.Add(name);
 
@@ -140,11 +146,19 @@ namespace ReClassNET.SymbolReader
 
 			var moduleName = module.Name.ToLower();
 
+			bool createNew;
 			lock (symbolReaders)
 			{
-				if (!symbolReaders.ContainsKey(moduleName))
+				createNew = !symbolReaders.ContainsKey(moduleName);
+			}
+
+			if (createNew)
+			{
+				var reader = SymbolReader.FromModule(module, SymbolSearchPath);
+				
+				lock(symbolReaders)
 				{
-					symbolReaders[moduleName] = SymbolReader.FromModule(module, SymbolSearchPath);
+					symbolReaders[moduleName] = reader;
 				}
 			}
 		}
@@ -155,11 +169,19 @@ namespace ReClassNET.SymbolReader
 
 			var moduleName = Path.GetFileName(path).ToLower();
 
+			bool createNew;
 			lock (symbolReaders)
 			{
-				if (!symbolReaders.ContainsKey(moduleName))
+				createNew = !symbolReaders.ContainsKey(moduleName);
+			}
+
+			if (createNew)
+			{
+				var reader = SymbolReader.FromDatabase(path);
+
+				lock (symbolReaders)
 				{
-					symbolReaders[moduleName] = SymbolReader.FromDatabase(path);
+					symbolReaders[moduleName] = reader;
 				}
 			}
 		}
