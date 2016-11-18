@@ -103,8 +103,9 @@ namespace ReClassNET.Forms
 			// and cancel all running tasks.
 			if (loadSymbolsTask != null || updateProcessInformationsTask != null)
 			{
-				Hide();
 				e.Cancel = true;
+
+				Hide();
 
 				if (loadSymbolsTask != null)
 				{
@@ -452,21 +453,14 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private async void processUpdateTimer_Tick(object sender, EventArgs e)
+		private void processUpdateTimer_Tick(object sender, EventArgs e)
 		{
-			if (updateProcessInformationsTask == null || updateProcessInformationsTask.IsCompleted)
+			if (updateProcessInformationsTask != null && !updateProcessInformationsTask.IsCompleted)
 			{
-				try
-				{
-					updateProcessInformationsTask = remoteProcess.UpdateProcessInformationsAsync();
-
-					await updateProcessInformationsTask;
-				}
-				catch
-				{
-
-				}
+				return;
 			}
+
+			updateProcessInformationsTask = remoteProcess.UpdateProcessInformationsAsync();
 		}
 
 		private void classesView_ClassSelected(object sender, ClassNode node)
@@ -652,7 +646,7 @@ namespace ReClassNET.Forms
 		}
 
 		/// <summary>Loads all symbols for the current process and displays the progress status.</summary>
-		private async void LoadAllSymbolsForCurrentProcess()
+		private void LoadAllSymbolsForCurrentProcess()
 		{
 			if (loadSymbolsTask != null && !loadSymbolsTask.IsCompleted)
 			{
@@ -671,18 +665,10 @@ namespace ReClassNET.Forms
 			);
 
 			loadSymbolsTaskToken = new CancellationTokenSource();
-			loadSymbolsTask = remoteProcess.LoadAllSymbolsAsync(progress, loadSymbolsTaskToken.Token);
 
-			try
-			{
-				await loadSymbolsTask;
-			}
-			catch
-			{
-
-			}
-
-			infoToolStripStatusLabel.Visible = false;
+			loadSymbolsTask = remoteProcess
+				.LoadAllSymbolsAsync(progress, loadSymbolsTaskToken.Token)
+				.ContinueWith(_ => infoToolStripStatusLabel.Visible = false, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}
 }

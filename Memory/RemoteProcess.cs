@@ -537,7 +537,7 @@ namespace ReClassNET.Memory
 			var copy = modules.ToList();
 
 			// Try to resolve all symbols in a background thread. This can take a long time because symbols are downloaded from the internet.
-			// The COM objects used can only be used in the thread they are created so we can't use them...
+			// The COM objects can only be used in the thread they were created so we can't use them.
 			// Thats why an other task loads the real symbols afterwards in the UI thread context.
 			return Task.Run(
 				() =>
@@ -558,10 +558,7 @@ namespace ReClassNET.Memory
 				{
 					foreach (var module in copy)
 					{
-						if (token.IsCancellationRequested)
-						{
-							break;
-						}
+						token.ThrowIfCancellationRequested();
 
 						try
 						{
