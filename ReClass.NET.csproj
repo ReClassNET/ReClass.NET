@@ -329,9 +329,9 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="UI\ShellIcon.cs" />
-    <Compile Include="SymbolReader\ComDisposableWrapper.cs" />
-    <Compile Include="SymbolReader\SymbolReader.cs" />
-    <Compile Include="SymbolReader\Symbols.cs" />
+    <Compile Include="Symbols\ComDisposableWrapper.cs" />
+    <Compile Include="Symbols\SymbolReader.cs" />
+    <Compile Include="Symbols\SymbolStore.cs" />
     <Compile Include="UI\GlobalWindowManager.cs" />
     <Compile Include="UI\SettingsCheckBox.cs">
       <SubType>Component</SubType>

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ReClassNET.AddressParser;
-using ReClassNET.SymbolReader;
+using ReClassNET.Symbols;
 using ReClassNET.Util;
 
 namespace ReClassNET.Memory
@@ -62,8 +62,8 @@ namespace ReClassNET.Memory
 
 		private readonly List<Section> sections = new List<Section>();
 
-		private readonly Symbols symbols = new Symbols();
-		public Symbols Symbols => symbols;
+		private readonly SymbolStore symbols = new SymbolStore();
+		public SymbolStore Symbols => symbols;
 
 		public bool IsValid => process != null && nativeHelper.IsProcessValid(process.Handle);
 

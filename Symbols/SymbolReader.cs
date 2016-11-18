@@ -5,7 +5,7 @@ using Dia2Lib;
 using ReClassNET.Memory;
 using ReClassNET.Util;
 
-namespace ReClassNET.SymbolReader
+namespace ReClassNET.Symbols
 {
 	public class SymbolReader : IDisposable
 	{

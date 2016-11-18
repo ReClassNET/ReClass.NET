@@ -2,7 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 
-namespace ReClassNET.SymbolReader
+namespace ReClassNET.Symbols
 {
 	class DisposableWrapper : IDisposable
 	{

@@ -9,7 +9,7 @@ using Microsoft.Win32;
 using ReClassNET.Memory;
 using ReClassNET.Util;
 
-namespace ReClassNET.SymbolReader
+namespace ReClassNET.Symbols
 {
 	class DiaUtil : IDisposable
 	{
@@ -50,7 +50,7 @@ namespace ReClassNET.SymbolReader
 		}
 	}
 
-	public class Symbols
+	public class SymbolStore
 	{
 		private const string BlackListFile = "blacklist.txt";
 
@@ -64,7 +64,7 @@ namespace ReClassNET.SymbolReader
 
 		private readonly HashSet<string> moduleBlacklist = new HashSet<string>();
 
-		public Symbols()
+		public SymbolStore()
 		{
 			ResolveSearchPath();
 
