@@ -175,8 +175,12 @@ namespace ReClassNET.SymbolReader
 							name = name.Substring(start + 1, name.Length - 1 - start - 1);
 						}
 					}
+					else if (!name.StartsWith("?"))
+					{
+						name = '?' + name;
+					}
 
-					sb.Append(NativeMethods.UnDecorateSymbolName(name));
+					sb.Append(NativeMethods.UnDecorateSymbolName(name).TrimStart('?', ' '));
 				}
 				else
 				{
