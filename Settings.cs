@@ -62,9 +62,9 @@ namespace ReClassNET
 
 		public bool ShowCommentPointer { get; set; } = true;
 
-		public bool ShowCommentRtti { get; set; } = false;
+		public bool ShowCommentRtti { get; set; } = true;
 
-		public bool ShowCommentSymbol { get; set; } = false;
+		public bool ShowCommentSymbol { get; set; } = true;
 
 		public bool ShowCommentString { get; set; } = true;
 
