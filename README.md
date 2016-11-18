@@ -5,7 +5,7 @@ This is a port of ReClass to the .NET platform with additional features.
 
 ## Features
 - Support for x86 / x64
-- File import for ReClass 2007-2016 and ReClass QT
+- File import from ReClass 2007-2016 and ReClass QT
 - Memory Nodes
  - Hex 8 / 16 / 32 / 64
  - Int 8 / 16 / 32 / 64
@@ -20,7 +20,7 @@ This is a port of ReClass to the .NET platform with additional features.
  - Function Pointer
 - Automatic Node Dissection
 - Highlight changed memory
-- Copy / Paste Support
+- Copy / Paste Support across ReClass.NET instances
 - Display types from Debug Symbols (*.pdb)
 - Display Runtime Type Informations (RTTI)
 - Control the remote process: start / stop / kill
@@ -48,6 +48,10 @@ Just download the [latest version](https://github.com/KN4CK3R/ReClass.NET/releas
 If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file.
 Compile the project and copy the dependencies to the output folder.
 
+## Videos
+
+[Youtube Playlist](https://www.youtube.com/playlist?list=PLO246BmtoITanq3ygMCL8_w0eov4D8hjk)
+
 ## Screenshots
 Process Selection  
 ![](https://abload.de/img/processgya2k.jpg)
@@ -65,3 +69,17 @@ Plugins
 
 Settings  
 ![](https://abload.de/img/settings8sz4b.jpg)
+
+## Authors / Special Thanks
+- [KN4CK3R](https://github.com/KN4CK3R)
+- DrUnKeN ChEeTaH
+- P47R!CK
+- DogMatt
+- [Dude719](https://github.com/dude719)
+- [IChooseYou](https://github.com/IChooseYou)
+- [stevemk14ebr](https://github.com/stevemk14ebr)
+- [Timboy67678](https://github.com/Timboy67678)
+- [DarthTon](https://github.com/DarthTon)
+- [ReUnioN](https://github.com/ReUnioN)
+- leveln
+- [buddyfavors](https://github.com/buddyfavors)
