@@ -66,7 +66,7 @@ namespace ReClassNET.Nodes
 						var symbol = symbols.GetSymbolString(value, module);
 						if (!string.IsNullOrEmpty(symbol))
 						{
-							x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, symbol) + view.Font.Width;
+							x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol) + view.Font.Width;
 						}
 					}
 				}

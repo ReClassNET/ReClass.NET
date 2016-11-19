@@ -381,6 +381,8 @@ namespace ReClassNET.UI
 					editBox.HotSpot = hotSpot;
 					editBox.Visible = true;
 
+					editBox.ReadOnly = hotSpot.Id == HotSpot.ReadOnlyId;
+
 					break;
 				}
 			}
@@ -566,11 +568,6 @@ namespace ReClassNET.UI
 			var hotspot = hotspotTextBox.HotSpot;
 			if (hotspot != null)
 			{
-				if (hotspot.Id == HotSpot.NameId && hotspot.Node is ClassNode)
-				{
-					// Check name
-				}
-
 				hotspot.Node.Update(hotspot);
 
 				Invalidate();

@@ -44,7 +44,7 @@ namespace ReClassNET.Nodes
 					var rtti = view.Memory.Process.ReadRemoteRuntimeTypeInformation(ivalue);
 					if (!string.IsNullOrEmpty(rtti))
 					{
-						x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, rtti) + view.Font.Width;
+						x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.ReadOnlyId, rtti) + view.Font.Width;
 					}
 				}
 
@@ -59,7 +59,7 @@ namespace ReClassNET.Nodes
 							var symbol = symbols.GetSymbolString(ivalue, module);
 							if (!string.IsNullOrEmpty(symbol))
 							{
-								x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, symbol) + view.Font.Width;
+								x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol) + view.Font.Width;
 							}
 						}
 					}
@@ -73,12 +73,12 @@ namespace ReClassNET.Nodes
 					if (data.Take(IntPtr.Size).InterpretAsUTF8().IsPrintableData())
 					{
 						var text = new string(Encoding.UTF8.GetChars(data).TakeWhile(c => c != 0).ToArray());
-						x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, $"'{text}'") + view.Font.Width;
+						x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.ReadOnlyId, $"'{text}'") + view.Font.Width;
 					}
 					else if(data.Take(IntPtr.Size * 2).InterpretAsUTF16().IsPrintableData())
 					{
 						var text = new string(Encoding.Unicode.GetChars(data).TakeWhile(c => c != 0).ToArray());
-						x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.NoneId, $"L'{text}'") + view.Font.Width;
+						x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.ReadOnlyId, $"L'{text}'") + view.Font.Width;
 					}
 				}
 
@@ -89,7 +89,7 @@ namespace ReClassNET.Nodes
 						var info = reader.ReadNodeInfo(this, ivalue, view.Memory);
 						if (info != null)
 						{
-							x = AddText(view, x, y, Program.Settings.PluginColor, HotSpot.NoneId, info) + view.Font.Width;
+							x = AddText(view, x, y, Program.Settings.PluginColor, HotSpot.ReadOnlyId, info) + view.Font.Width;
 						}
 					}
 				}

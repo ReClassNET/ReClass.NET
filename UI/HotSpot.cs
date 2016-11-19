@@ -27,6 +27,7 @@ namespace ReClassNET.UI
 		public const int AddressId = 100;
 		public const int NameId = 101;
 		public const int CommentId = 102;
+		public const int ReadOnlyId = 999;
 
 		public int Id { get; set; }
 		public HotSpotType Type { get; set; }
