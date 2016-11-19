@@ -35,6 +35,7 @@
 			this.pluginsDataGridView = new System.Windows.Forms.DataGridView();
 			this.iconColumn = new System.Windows.Forms.DataGridViewImageColumn();
 			this.nameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.descColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.versionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.authorColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.nativesTabPage = new System.Windows.Forms.TabPage();
@@ -118,10 +119,11 @@
 			this.pluginsDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
 			this.pluginsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.pluginsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.iconColumn,
-            this.nameColumn,
-            this.versionColumn,
-            this.authorColumn});
+			this.iconColumn,
+			this.nameColumn,
+			this.descColumn,
+			this.versionColumn,
+			this.authorColumn});
 			this.pluginsDataGridView.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pluginsDataGridView.Location = new System.Drawing.Point(3, 3);
 			this.pluginsDataGridView.MultiSelect = false;
@@ -146,11 +148,19 @@
 			// 
 			// nameColumn
 			// 
-			this.nameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.nameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
 			this.nameColumn.DataPropertyName = "Name";
 			this.nameColumn.HeaderText = "Name";
 			this.nameColumn.Name = "nameColumn";
 			this.nameColumn.ReadOnly = true;
+			// 
+			// descColumn
+			// 
+			this.descColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.descColumn.DataPropertyName = "Description";
+			this.descColumn.HeaderText = "Description";
+			this.descColumn.Name = "descColumn";
+			this.descColumn.ReadOnly = true;
 			// 
 			// versionColumn
 			// 
@@ -470,6 +480,7 @@
 		private System.Windows.Forms.ComboBox enumerateRemoteSectionsAndModulesComboBox;
 		private System.Windows.Forms.DataGridViewImageColumn iconColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn descColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn versionColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn authorColumn;
 		private System.Windows.Forms.Label label10;

@@ -35,15 +35,10 @@ namespace ReClassNET.Plugins
 			IsNative = versionInfo.ProductName == PluginNativeName;
 
 			FileVersion = (versionInfo.FileVersion ?? string.Empty).Trim();
-
-			Description = (versionInfo.Comments ?? string.Empty).Trim();
+			Description = (versionInfo.FileDescription ?? string.Empty).Trim();
 			Author = (versionInfo.CompanyName ?? string.Empty).Trim();
-
-			Name = (versionInfo.FileDescription ?? string.Empty).Trim();
-			if (Name == string.Empty)
-			{
-				Name = Path.GetFileNameWithoutExtension(FilePath);
-			}
+			Name = Path.GetFileNameWithoutExtension(FilePath);
+            
 		}
 	}
 }
