@@ -82,7 +82,7 @@ namespace ReClassNET.Nodes
 				{
 					y += view.Font.Height;
 
-					AddText(view, tx, y, Program.Settings.NameColor, -1, line);
+					AddText(view, tx, y, Program.Settings.NameColor, HotSpot.ReadOnlyId, line);
 				}
 			}
 
