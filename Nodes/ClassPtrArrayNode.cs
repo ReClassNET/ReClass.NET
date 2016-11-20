@@ -34,7 +34,7 @@ namespace ReClassNET.Nodes
 
 		protected override int DrawChild(ViewInfo view, int x, int y)
 		{
-			var ptr = view.Memory.ReadObject<IntPtr>(Offset + InnerNode.MemorySize * CurrentIndex);
+			var ptr = view.Memory.ReadObject<IntPtr>(Offset + IntPtr.Size * CurrentIndex);
 
 			memory.Size = InnerNode.MemorySize;
 			memory.Process = view.Memory.Process;
