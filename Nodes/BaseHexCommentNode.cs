@@ -15,17 +15,17 @@ namespace ReClassNET.Nodes
 
 			if (Program.Settings.ShowCommentFloat)
 			{
-				x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, $"({(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000})");
+				x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.ReadOnlyId, $"({(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000})");
 			}
 			if (Program.Settings.ShowCommentInteger)
 			{
 				if (ivalue == IntPtr.Zero)
 				{
-					x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, "(0)");
+					x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.ReadOnlyId, "(0)");
 				}
 				else
 				{
-					x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, $"({ivalue.ToInt64()}|0x{uvalue.ToUInt64():X})");
+					x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.ReadOnlyId, $"({ivalue.ToInt64()}|0x{uvalue.ToUInt64():X})");
 				}
 			}
 
