@@ -139,6 +139,11 @@ namespace ReClassNET.Forms
 
 				Close();
 			}
+
+			if (remoteProcess.Process != null)
+			{
+				remoteProcess.Process.Close();
+			}
 		}
 
 		#region Menustrip
