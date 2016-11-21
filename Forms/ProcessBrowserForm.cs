@@ -117,7 +117,6 @@ namespace ReClassNET
 			dt.Columns.Add("name", typeof(string));
 			dt.Columns.Add("id", typeof(int));
 			dt.Columns.Add("path", typeof(string));
-			dt.Columns.Add("create", typeof(DateTime));
 
 			nativeHelper.EnumerateProcesses((pid, path) =>
 			{
@@ -129,50 +128,15 @@ namespace ReClassNET
 					row["name"] = moduleName;
 					row["id"] = pid;
 					row["path"] = path;
-					row["create"] = GetProcessCreateTime((int)pid);
 					dt.Rows.Add(row);
 				}
 			});
 
-			dt.DefaultView.Sort = "create DESC";
+			dt.DefaultView.Sort = "name ASC";
 
 			processDataGridView.DataSource = dt;
 
 			ApplyFilter();
-		}
-
-		/// <summary>Query the time the process was created.</summary>
-		/// <param name="pid">The process id.</param>
-		/// <returns>The time the process was created or <see cref="DateTime.MinValue"/> if an error occurs.</returns>
-		private DateTime GetProcessCreateTime(int pid)
-		{
-			IntPtr handle = IntPtr.Zero;
-			try
-			{
-				handle = nativeHelper.OpenRemoteProcess((int)pid, NativeMethods.PROCESS_QUERY_LIMITED_INFORMATION);
-				if (!handle.IsNull())
-				{
-					long dummy;
-					long create;
-					if (NativeMethods.GetProcessTimes(handle, out create, out dummy, out dummy, out dummy))
-					{
-						return DateTime.FromFileTime(create);
-					}
-				}
-			}
-			catch
-			{
-
-			}
-			finally
-			{
-				if (!handle.IsNull())
-				{
-					nativeHelper.CloseRemoteProcess(handle);
-				}
-			}
-
-			return DateTime.MinValue;
 		}
 
 		private void ApplyFilter()
