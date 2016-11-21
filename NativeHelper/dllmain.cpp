@@ -375,32 +375,34 @@ EXTERN_DLL_EXPORT VOID __stdcall ControlRemoteProcess(HANDLE process, ControlRem
 	if (action == ControlRemoteProcessAction::Suspend || action == ControlRemoteProcessAction::Resume)
 	{
 		auto processId = GetProcessId(process);
-
-		auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
-		if (handle != INVALID_HANDLE_VALUE)
+		if (processId != 0)
 		{
-			auto fn = action == ControlRemoteProcessAction::Suspend ? SuspendThread : ResumeThread;
-
-			THREADENTRY32 te32 = {};
-			te32.dwSize = sizeof(THREADENTRY32);
-			if (Thread32First(handle, &te32))
+			auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+			if (handle != INVALID_HANDLE_VALUE)
 			{
-				do
+				auto fn = action == ControlRemoteProcessAction::Suspend ? SuspendThread : ResumeThread;
+
+				THREADENTRY32 te32 = {};
+				te32.dwSize = sizeof(THREADENTRY32);
+				if (Thread32First(handle, &te32))
 				{
-					if (te32.th32OwnerProcessID == processId)
+					do
 					{
-						auto threadHandle = OpenThread(THREAD_SUSPEND_RESUME, FALSE, te32.th32ThreadID);
-						if (threadHandle)
+						if (te32.th32OwnerProcessID == processId)
 						{
-							fn(threadHandle);
+							auto threadHandle = OpenThread(THREAD_SUSPEND_RESUME, FALSE, te32.th32ThreadID);
+							if (threadHandle)
+							{
+								fn(threadHandle);
 
-							CloseHandle(threadHandle);
+								CloseHandle(threadHandle);
+							}
 						}
-					}
-				} while (Thread32Next(handle, &te32));
-			}
+					} while (Thread32Next(handle, &te32));
+				}
 
-			CloseHandle(handle);
+				CloseHandle(handle);
+			}
 		}
 	}
 	else if (action == ControlRemoteProcessAction::Terminate)
