@@ -191,7 +191,7 @@ EXTERN_DLL_EXPORT VOID __stdcall EnumerateProcesses(EnumerateProcessCallback cal
 	lastError = GetLastError();
 }
 
-typedef VOID(__stdcall EnumerateRemoteSectionsCallback)(LPVOID baseAddress, SIZE_T regionSize, BYTE name[IMAGE_SIZEOF_SHORT_NAME + 2], DWORD state, DWORD protection, DWORD type, WCHAR modulePath[PATH_MAXIMUM_LENGTH]);
+typedef VOID(__stdcall EnumerateRemoteSectionsCallback)(LPVOID baseAddress, SIZE_T regionSize, WCHAR name[IMAGE_SIZEOF_SHORT_NAME + 1], DWORD state, DWORD protection, DWORD type, WCHAR modulePath[PATH_MAXIMUM_LENGTH]);
 typedef VOID(__stdcall EnumerateRemoteModulesCallback)(LPVOID baseAddress, SIZE_T regionSize, WCHAR modulePath[PATH_MAXIMUM_LENGTH]);
 
 EXTERN_DLL_EXPORT VOID __stdcall EnumerateRemoteSectionsAndModules(HANDLE process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
@@ -205,7 +205,7 @@ EXTERN_DLL_EXPORT VOID __stdcall EnumerateRemoteSectionsAndModules(HANDLE proces
 	{
 		LPVOID BaseAddress;
 		SIZE_T RegionSize;
-		BYTE Name[IMAGE_SIZEOF_SHORT_NAME + 2];
+		WCHAR Name[IMAGE_SIZEOF_SHORT_NAME + 1];
 		DWORD State;
 		DWORD Protection;
 		DWORD Type;
@@ -274,14 +274,19 @@ EXTERN_DLL_EXPORT VOID __stdcall EnumerateRemoteSectionsAndModules(HANDLE proces
 					readRemoteMemory(process, me32.modBaseAddr + DosHdr.e_lfanew + sizeof(IMAGE_NT_HEADERS), sectionHeaders.data(), NtHdr.FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER));
 					for (int i = 0; i < NtHdr.FileHeader.NumberOfSections; ++i)
 					{
-						auto&& section = sectionHeaders[i];
+						auto&& sectionHeader = sectionHeaders[i];
 
-						auto sectionAddress = (size_t)me32.modBaseAddr + section.VirtualAddress;
+						auto sectionAddress = (size_t)me32.modBaseAddr + sectionHeader.VirtualAddress;
 						for (auto j = it; j != std::end(sections); ++j)
 						{
 							if (sectionAddress >= (size_t)j->BaseAddress && sectionAddress < (size_t)j->BaseAddress + (size_t)j->RegionSize)
 							{
-								std::memcpy(j->Name, section.Name, IMAGE_SIZEOF_SHORT_NAME);
+								// Copy the name because it is not null padded.
+								char buffer[IMAGE_SIZEOF_SHORT_NAME + 1] = { 0 };
+								std::memcpy(buffer, sectionHeader.Name, IMAGE_SIZEOF_SHORT_NAME);
+
+								size_t convertedChars = 0;
+								mbstowcs_s(&convertedChars, j->Name, IMAGE_SIZEOF_SHORT_NAME, buffer, _TRUNCATE);
 								std::memcpy(j->ModulePath, me32.szExePath, sizeof(SectionInfo::ModulePath));
 								break;
 							}

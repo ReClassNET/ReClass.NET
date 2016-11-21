@@ -55,14 +55,14 @@ namespace ReClassNET.Memory
 
 		private delegate void CloseRemoteProcessDelegate(IntPtr process);
 
-		private delegate bool ReadRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, uint size);
+		private delegate bool ReadRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, int size);
 
-		private delegate bool WriteRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, uint size);
+		private delegate bool WriteRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, int size);
 
-		public delegate void EnumerateProcessCallback(uint pid, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
+		public delegate void EnumerateProcessCallback(int pid, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
 		private delegate void EnumerateProcessesDelegate(EnumerateProcessCallback callbackProcess);
 
-		public delegate void EnumerateRemoteSectionCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPStr)]string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
+		public delegate void EnumerateRemoteSectionCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPWStr)]string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
 		public delegate void EnumerateRemoteModuleCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
 		private delegate void EnumerateRemoteSectionsAndModulesDelegate(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule);
 
@@ -310,7 +310,7 @@ namespace ReClassNET.Memory
 			closeRemoteProcessDelegate(process);
 		}
 
-		public bool ReadRemoteMemory(IntPtr process, IntPtr address, byte[] buffer, uint size)
+		public bool ReadRemoteMemory(IntPtr process, IntPtr address, byte[] buffer, int size)
 		{
 			Contract.Requires(buffer != null);
 
@@ -321,7 +321,7 @@ namespace ReClassNET.Memory
 			return result;
 		}
 
-		public bool WriteRemoteMemory(IntPtr process, IntPtr address, byte[] buffer, uint size)
+		public bool WriteRemoteMemory(IntPtr process, IntPtr address, byte[] buffer, int size)
 		{
 			Contract.Requires(buffer != null);
 

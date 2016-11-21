@@ -92,7 +92,7 @@ namespace ReClassNET.Memory
 				return;
 			}
 
-			nativeHelper.ReadRemoteMemory(Process.Handle, address, data, (uint)data.Length);
+			nativeHelper.ReadRemoteMemory(Process.Handle, address, data, data.Length);
 		}
 
 		/// <summary>Reads <paramref name="size"/> bytes from the address in the remote process.</summary>
@@ -352,7 +352,7 @@ namespace ReClassNET.Memory
 				return false;
 			}
 
-			return nativeHelper.WriteRemoteMemory(Process.Handle, address, data, (uint)data.Length);
+			return nativeHelper.WriteRemoteMemory(Process.Handle, address, data, data.Length);
 		}
 
 		/// <summary>Writes the given <paramref name="value"/> to the <paramref name="address"/> in the remote process.</summary>
