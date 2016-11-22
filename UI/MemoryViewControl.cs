@@ -430,6 +430,13 @@ namespace ReClassNET.UI
 			}
 		}
 
+		protected override void OnScroll(ScrollEventArgs se)
+		{
+			base.OnScroll(se);
+
+			editBox.Visible = false;
+		}
+
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
 			if (editBox.Visible == false) // Only process keys if the edit field is not visible.
