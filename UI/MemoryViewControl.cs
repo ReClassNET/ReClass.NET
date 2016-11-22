@@ -572,10 +572,17 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			var hotspot = hotspotTextBox.HotSpot;
-			if (hotspot != null)
+			var hotSpot = hotspotTextBox.HotSpot;
+			if (hotSpot != null)
 			{
-				hotspot.Node.Update(hotspot);
+				try
+				{
+					hotSpot.Node.Update(hotSpot);
+				}
+				catch (Exception ex)
+				{
+					Program.Logger.Log(ex);
+				}
 
 				Invalidate();
 			}

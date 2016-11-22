@@ -108,15 +108,6 @@ namespace ReClassNET.UI
 		{
 			hotSpot.Text = Text.Trim();
 
-			try
-			{
-				hotSpot.Node.Update(hotSpot);
-			}
-			catch (Exception ex)
-			{
-				Program.Logger.Log(ex);
-			}
-
 			Committed?.Invoke(this, EventArgs.Empty);
 
 			Visible = false;
