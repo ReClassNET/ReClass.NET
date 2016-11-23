@@ -35,16 +35,16 @@
 			this.pathColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.filterCheckBox = new System.Windows.Forms.CheckBox();
 			this.refreshButton = new System.Windows.Forms.Button();
-			this.openProcessButton = new System.Windows.Forms.Button();
+			this.attachToProcessButton = new System.Windows.Forms.Button();
 			this.loadSymbolsCheckBox = new System.Windows.Forms.CheckBox();
-			this.searchGroupBox = new System.Windows.Forms.GroupBox();
+			this.filterGroupBox = new System.Windows.Forms.GroupBox();
 			this.previousProcessLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.filterTextBox = new System.Windows.Forms.TextBox();
 			this.bannerBox = new ReClassNET.UI.BannerBox();
 			((System.ComponentModel.ISupportInitialize)(this.processDataGridView)).BeginInit();
-			this.searchGroupBox.SuspendLayout();
+			this.filterGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -137,20 +137,20 @@
 			this.refreshButton.UseVisualStyleBackColor = true;
 			this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
 			// 
-			// openProcessButton
+			// attachToProcessButton
 			// 
-			this.openProcessButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+			this.attachToProcessButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.openProcessButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.openProcessButton.Image = global::ReClassNET.Properties.Resources.B16x16_Accept;
-			this.openProcessButton.Location = new System.Drawing.Point(12, 519);
-			this.openProcessButton.Name = "openProcessButton";
-			this.openProcessButton.Size = new System.Drawing.Size(549, 23);
-			this.openProcessButton.TabIndex = 3;
-			this.openProcessButton.Text = "Open Process";
-			this.openProcessButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.openProcessButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-			this.openProcessButton.UseVisualStyleBackColor = true;
+			this.attachToProcessButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.attachToProcessButton.Image = global::ReClassNET.Properties.Resources.B16x16_Accept;
+			this.attachToProcessButton.Location = new System.Drawing.Point(12, 519);
+			this.attachToProcessButton.Name = "attachToProcessButton";
+			this.attachToProcessButton.Size = new System.Drawing.Size(549, 23);
+			this.attachToProcessButton.TabIndex = 3;
+			this.attachToProcessButton.Text = "Attach to Process";
+			this.attachToProcessButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.attachToProcessButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+			this.attachToProcessButton.UseVisualStyleBackColor = true;
 			// 
 			// loadSymbolsCheckBox
 			// 
@@ -163,22 +163,22 @@
 			this.loadSymbolsCheckBox.Text = "Load Symbols";
 			this.loadSymbolsCheckBox.UseVisualStyleBackColor = true;
 			// 
-			// searchGroupBox
+			// filterGroupBox
 			// 
-			this.searchGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.filterGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.searchGroupBox.Controls.Add(this.previousProcessLinkLabel);
-			this.searchGroupBox.Controls.Add(this.label2);
-			this.searchGroupBox.Controls.Add(this.label1);
-			this.searchGroupBox.Controls.Add(this.filterCheckBox);
-			this.searchGroupBox.Controls.Add(this.refreshButton);
-			this.searchGroupBox.Controls.Add(this.filterTextBox);
-			this.searchGroupBox.Location = new System.Drawing.Point(12, 60);
-			this.searchGroupBox.Name = "searchGroupBox";
-			this.searchGroupBox.Size = new System.Drawing.Size(549, 133);
-			this.searchGroupBox.TabIndex = 5;
-			this.searchGroupBox.TabStop = false;
-			this.searchGroupBox.Text = "Search for Process";
+			this.filterGroupBox.Controls.Add(this.previousProcessLinkLabel);
+			this.filterGroupBox.Controls.Add(this.label2);
+			this.filterGroupBox.Controls.Add(this.label1);
+			this.filterGroupBox.Controls.Add(this.filterCheckBox);
+			this.filterGroupBox.Controls.Add(this.refreshButton);
+			this.filterGroupBox.Controls.Add(this.filterTextBox);
+			this.filterGroupBox.Location = new System.Drawing.Point(12, 60);
+			this.filterGroupBox.Name = "filterGroupBox";
+			this.filterGroupBox.Size = new System.Drawing.Size(549, 133);
+			this.filterGroupBox.TabIndex = 5;
+			this.filterGroupBox.TabStop = false;
+			this.filterGroupBox.Text = "Filter";
 			// 
 			// previousProcessLinkLabel
 			// 
@@ -225,19 +225,19 @@
 			this.bannerBox.Name = "bannerBox";
 			this.bannerBox.Size = new System.Drawing.Size(573, 48);
 			this.bannerBox.TabIndex = 6;
-			this.bannerBox.Text = "Select the process to open.";
-			this.bannerBox.Title = "Select Process";
+			this.bannerBox.Text = "Select the process to which ReClass.NET is to be attached.";
+			this.bannerBox.Title = "Attach to Process";
 			// 
 			// ProcessBrowserForm
 			// 
-			this.AcceptButton = this.openProcessButton;
+			this.AcceptButton = this.attachToProcessButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(573, 554);
 			this.Controls.Add(this.bannerBox);
-			this.Controls.Add(this.searchGroupBox);
+			this.Controls.Add(this.filterGroupBox);
 			this.Controls.Add(this.loadSymbolsCheckBox);
-			this.Controls.Add(this.openProcessButton);
+			this.Controls.Add(this.attachToProcessButton);
 			this.Controls.Add(this.processDataGridView);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
@@ -245,10 +245,10 @@
 			this.Name = "ProcessBrowserForm";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "ReClass.NET - Select Process";
+			this.Text = "ReClass.NET - Attach to Process";
 			((System.ComponentModel.ISupportInitialize)(this.processDataGridView)).EndInit();
-			this.searchGroupBox.ResumeLayout(false);
-			this.searchGroupBox.PerformLayout();
+			this.filterGroupBox.ResumeLayout(false);
+			this.filterGroupBox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -260,13 +260,13 @@
 		private System.Windows.Forms.DataGridView processDataGridView;
 		private System.Windows.Forms.CheckBox filterCheckBox;
 		private System.Windows.Forms.Button refreshButton;
-		private System.Windows.Forms.Button openProcessButton;
+		private System.Windows.Forms.Button attachToProcessButton;
 		private System.Windows.Forms.CheckBox loadSymbolsCheckBox;
 		private System.Windows.Forms.DataGridViewImageColumn iconColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn processNameColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn pidColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn pathColumn;
-		private System.Windows.Forms.GroupBox searchGroupBox;
+		private System.Windows.Forms.GroupBox filterGroupBox;
 		private System.Windows.Forms.LinkLabel previousProcessLinkLabel;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label1;
