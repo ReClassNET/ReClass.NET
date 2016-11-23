@@ -4,7 +4,7 @@
 	{
 		public const string ApplicationName = "ReClass.NET";
 
-		public const string ApplicationVersion = "1.0";
+		public const string ApplicationVersion = "1.0.1";
 
 		public const string Author = "KN4CK3R";
 
