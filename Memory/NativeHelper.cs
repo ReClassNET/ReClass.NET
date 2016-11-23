@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.InteropServices;
 using ReClassNET.Util;
+using System.IO;
 
 namespace ReClassNET.Memory
 {
@@ -109,7 +110,7 @@ namespace ReClassNET.Memory
 			nativeHelperHandle = NativeMethods.LoadLibrary(NativeHelperDll);
 			if (nativeHelperHandle.IsNull())
 			{
-				throw new Exception();
+				throw new FileNotFoundException(NativeHelperDll);
 			}
 
 			InintializeNativeModule(nativeHelperHandle);
