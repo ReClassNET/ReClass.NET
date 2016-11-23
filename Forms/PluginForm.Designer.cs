@@ -38,6 +38,8 @@
 			this.versionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.authorColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.nativesTabPage = new System.Windows.Forms.TabPage();
+			this.setAllComboBox = new System.Windows.Forms.ComboBox();
+			this.label11 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
 			this.controlRemoteProcessComboBox = new System.Windows.Forms.ComboBox();
 			this.label9 = new System.Windows.Forms.Label();
@@ -172,6 +174,8 @@
 			// 
 			// nativesTabPage
 			// 
+			this.nativesTabPage.Controls.Add(this.setAllComboBox);
+			this.nativesTabPage.Controls.Add(this.label11);
 			this.nativesTabPage.Controls.Add(this.label10);
 			this.nativesTabPage.Controls.Add(this.controlRemoteProcessComboBox);
 			this.nativesTabPage.Controls.Add(this.label9);
@@ -199,10 +203,28 @@
 			this.nativesTabPage.Text = "Native Helper";
 			this.nativesTabPage.UseVisualStyleBackColor = true;
 			// 
+			// setAllComboBox
+			// 
+			this.setAllComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.setAllComboBox.FormattingEnabled = true;
+			this.setAllComboBox.Location = new System.Drawing.Point(218, 63);
+			this.setAllComboBox.Name = "setAllComboBox";
+			this.setAllComboBox.Size = new System.Drawing.Size(161, 21);
+			this.setAllComboBox.TabIndex = 20;
+			this.setAllComboBox.SelectionChangeCommitted += new System.EventHandler(this.setAllComboBox_SelectionChangeCommitted);
+			// 
+			// label11
+			// 
+			this.label11.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.label11.Location = new System.Drawing.Point(13, 87);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(360, 2);
+			this.label11.TabIndex = 19;
+			// 
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(6, 268);
+			this.label10.Location = new System.Drawing.Point(6, 271);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(115, 13);
 			this.label10.TabIndex = 18;
@@ -212,7 +234,7 @@
 			// 
 			this.controlRemoteProcessComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.controlRemoteProcessComboBox.FormattingEnabled = true;
-			this.controlRemoteProcessComboBox.Location = new System.Drawing.Point(218, 265);
+			this.controlRemoteProcessComboBox.Location = new System.Drawing.Point(218, 268);
 			this.controlRemoteProcessComboBox.Name = "controlRemoteProcessComboBox";
 			this.controlRemoteProcessComboBox.Size = new System.Drawing.Size(161, 21);
 			this.controlRemoteProcessComboBox.TabIndex = 17;
@@ -221,7 +243,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(6, 241);
+			this.label9.Location = new System.Drawing.Point(6, 249);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(128, 13);
 			this.label9.TabIndex = 16;
@@ -231,7 +253,7 @@
 			// 
 			this.disassembleRemoteCodeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.disassembleRemoteCodeComboBox.FormattingEnabled = true;
-			this.disassembleRemoteCodeComboBox.Location = new System.Drawing.Point(218, 238);
+			this.disassembleRemoteCodeComboBox.Location = new System.Drawing.Point(218, 246);
 			this.disassembleRemoteCodeComboBox.Name = "disassembleRemoteCodeComboBox";
 			this.disassembleRemoteCodeComboBox.Size = new System.Drawing.Size(161, 21);
 			this.disassembleRemoteCodeComboBox.TabIndex = 15;
@@ -240,7 +262,7 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(6, 214);
+			this.label8.Location = new System.Drawing.Point(6, 227);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(106, 13);
 			this.label8.TabIndex = 14;
@@ -250,7 +272,7 @@
 			// 
 			this.writeRemoteMemoryComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.writeRemoteMemoryComboBox.FormattingEnabled = true;
-			this.writeRemoteMemoryComboBox.Location = new System.Drawing.Point(218, 211);
+			this.writeRemoteMemoryComboBox.Location = new System.Drawing.Point(218, 224);
 			this.writeRemoteMemoryComboBox.Name = "writeRemoteMemoryComboBox";
 			this.writeRemoteMemoryComboBox.Size = new System.Drawing.Size(161, 21);
 			this.writeRemoteMemoryComboBox.TabIndex = 13;
@@ -259,7 +281,7 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(6, 187);
+			this.label7.Location = new System.Drawing.Point(6, 205);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(107, 13);
 			this.label7.TabIndex = 12;
@@ -269,7 +291,7 @@
 			// 
 			this.readRemoteMemoryComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.readRemoteMemoryComboBox.FormattingEnabled = true;
-			this.readRemoteMemoryComboBox.Location = new System.Drawing.Point(218, 184);
+			this.readRemoteMemoryComboBox.Location = new System.Drawing.Point(218, 202);
 			this.readRemoteMemoryComboBox.Name = "readRemoteMemoryComboBox";
 			this.readRemoteMemoryComboBox.Size = new System.Drawing.Size(161, 21);
 			this.readRemoteMemoryComboBox.TabIndex = 11;
@@ -278,7 +300,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(6, 160);
+			this.label6.Location = new System.Drawing.Point(6, 183);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(108, 13);
 			this.label6.TabIndex = 10;
@@ -288,7 +310,7 @@
 			// 
 			this.closeRemoteProcessComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.closeRemoteProcessComboBox.FormattingEnabled = true;
-			this.closeRemoteProcessComboBox.Location = new System.Drawing.Point(218, 157);
+			this.closeRemoteProcessComboBox.Location = new System.Drawing.Point(218, 180);
 			this.closeRemoteProcessComboBox.Name = "closeRemoteProcessComboBox";
 			this.closeRemoteProcessComboBox.Size = new System.Drawing.Size(161, 21);
 			this.closeRemoteProcessComboBox.TabIndex = 9;
@@ -297,7 +319,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(6, 133);
+			this.label5.Location = new System.Drawing.Point(6, 161);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(108, 13);
 			this.label5.TabIndex = 8;
@@ -307,7 +329,7 @@
 			// 
 			this.openRemoteProcessComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.openRemoteProcessComboBox.FormattingEnabled = true;
-			this.openRemoteProcessComboBox.Location = new System.Drawing.Point(218, 130);
+			this.openRemoteProcessComboBox.Location = new System.Drawing.Point(218, 158);
 			this.openRemoteProcessComboBox.Name = "openRemoteProcessComboBox";
 			this.openRemoteProcessComboBox.Size = new System.Drawing.Size(161, 21);
 			this.openRemoteProcessComboBox.TabIndex = 7;
@@ -316,7 +338,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(6, 106);
+			this.label4.Location = new System.Drawing.Point(6, 139);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(76, 13);
 			this.label4.TabIndex = 6;
@@ -326,7 +348,7 @@
 			// 
 			this.isProcessValidComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.isProcessValidComboBox.FormattingEnabled = true;
-			this.isProcessValidComboBox.Location = new System.Drawing.Point(218, 103);
+			this.isProcessValidComboBox.Location = new System.Drawing.Point(218, 136);
 			this.isProcessValidComboBox.Name = "isProcessValidComboBox";
 			this.isProcessValidComboBox.Size = new System.Drawing.Size(161, 21);
 			this.isProcessValidComboBox.TabIndex = 5;
@@ -336,7 +358,7 @@
 			// 
 			this.enumerateProcessesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.enumerateProcessesComboBox.FormattingEnabled = true;
-			this.enumerateProcessesComboBox.Location = new System.Drawing.Point(218, 49);
+			this.enumerateProcessesComboBox.Location = new System.Drawing.Point(218, 92);
 			this.enumerateProcessesComboBox.Name = "enumerateProcessesComboBox";
 			this.enumerateProcessesComboBox.Size = new System.Drawing.Size(161, 21);
 			this.enumerateProcessesComboBox.TabIndex = 4;
@@ -345,7 +367,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(6, 79);
+			this.label3.Location = new System.Drawing.Point(6, 117);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(195, 13);
 			this.label3.TabIndex = 3;
@@ -354,7 +376,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(6, 52);
+			this.label2.Location = new System.Drawing.Point(6, 95);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(107, 13);
 			this.label2.TabIndex = 2;
@@ -364,7 +386,7 @@
 			// 
 			this.enumerateRemoteSectionsAndModulesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.enumerateRemoteSectionsAndModulesComboBox.FormattingEnabled = true;
-			this.enumerateRemoteSectionsAndModulesComboBox.Location = new System.Drawing.Point(218, 76);
+			this.enumerateRemoteSectionsAndModulesComboBox.Location = new System.Drawing.Point(218, 114);
 			this.enumerateRemoteSectionsAndModulesComboBox.Name = "enumerateRemoteSectionsAndModulesComboBox";
 			this.enumerateRemoteSectionsAndModulesComboBox.Size = new System.Drawing.Size(161, 21);
 			this.enumerateRemoteSectionsAndModulesComboBox.TabIndex = 1;
@@ -375,10 +397,11 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(6, 6);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(409, 26);
+			this.label1.Size = new System.Drawing.Size(409, 39);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Plugins can provide different methods how ReClass.NET accesses a remote process.\r" +
-    "\nYou can select these methods here:";
+    "\n\r\nWarning: You should detach from the current process before changing a functio" +
+    "n.";
 			// 
 			// getMoreLinkLabel
 			// 
@@ -475,5 +498,7 @@
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.ComboBox controlRemoteProcessComboBox;
 		private UI.BannerBox bannerBox;
+		private System.Windows.Forms.ComboBox setAllComboBox;
+		private System.Windows.Forms.Label label11;
 	}
 }

@@ -62,6 +62,13 @@ namespace ReClassNET.Forms
 			FillComboBox(writeRemoteMemoryComboBox, NativeHelper.RequestFunction.WriteRemoteMemory);
 			FillComboBox(disassembleRemoteCodeComboBox, NativeHelper.RequestFunction.DisassembleRemoteCode);
 			FillComboBox(controlRemoteProcessComboBox, NativeHelper.RequestFunction.ControlRemoteProcess);
+
+			setAllComboBox.DisplayMember = nameof(NativeHelper.MethodInfo.Provider);
+			setAllComboBox.DataSource = nativeHelper.MethodRegistry.Values
+				.SelectMany(l => l)
+				.Select(m => m.Provider)
+				.Distinct()
+				.ToList();
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -97,6 +104,39 @@ namespace ReClassNET.Forms
 			if (methodInfo != null)
 			{
 				nativeHelper.SetActiveNativeMethod(methodInfo);
+			}
+		}
+
+		private void setAllComboBox_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			var provider = setAllComboBox.SelectedItem as string;
+			if (provider == null)
+			{
+				return;
+			}
+
+			foreach (var cb in new[]
+			{
+				enumerateProcessesComboBox,
+				enumerateRemoteSectionsAndModulesComboBox,
+				isProcessValidComboBox,
+				openRemoteProcessComboBox,
+				closeRemoteProcessComboBox,
+				readRemoteMemoryComboBox,
+				writeRemoteMemoryComboBox,
+				disassembleRemoteCodeComboBox,
+				controlRemoteProcessComboBox
+			})
+			{
+				var method = cb.Items.OfType<NativeHelper.MethodInfo>().Where(m => m.Provider == provider).FirstOrDefault();
+				if (method != null)
+				{
+					if (cb.SelectedItem != method)
+					{
+						cb.SelectedItem = method;
+						nativeHelper.SetActiveNativeMethod(method);
+					}
+				}
 			}
 		}
 
