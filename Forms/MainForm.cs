@@ -148,16 +148,13 @@ namespace ReClassNET.Forms
 
 		#region Menustrip
 
-		private void selectProcessToolStripMenuItem_Click(object sender, EventArgs e)
+		private void attachToProcessToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using (var pb = new ProcessBrowserForm(nativeHelper, Program.Settings.LastProcess))
 			{
 				if (pb.ShowDialog() == DialogResult.OK)
 				{
-					if (remoteProcess.Process != null)
-					{
-						remoteProcess.Process.Close();
-					}
+					DetachFromCurrentProcess();
 
 					remoteProcess.Process = pb.SelectedProcess;
 					remoteProcess.UpdateProcessInformations();
@@ -169,6 +166,11 @@ namespace ReClassNET.Forms
 					Program.Settings.LastProcess = remoteProcess.Process.Name;
 				}
 			}
+		}
+
+		private void detachToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			DetachFromCurrentProcess();
 		}
 
 		private void newClassToolStripButton_Click(object sender, EventArgs e)
@@ -560,6 +562,16 @@ namespace ReClassNET.Forms
 			}
 
 			memoryViewControl.DeregisterNodeType(type);
+		}
+
+		/// <summary>Detach from current process.</summary>
+		private void DetachFromCurrentProcess()
+		{
+			if (remoteProcess.Process != null)
+			{
+				remoteProcess.Process.Close();
+				remoteProcess.Process = null;
+			}
 		}
 
 		/// <summary>Shows the code form with the given <paramref name="generator"/>.</summary>

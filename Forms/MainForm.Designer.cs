@@ -35,7 +35,7 @@
 			this.classesView = new ReClassNET.UI.ClassNodeView();
 			this.memoryViewControl = new ReClassNET.UI.MemoryViewControl();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
-			this.selectProcessToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.attachToProcessToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.openProjectToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -105,7 +105,8 @@
 			this.infoToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.selectProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.attachToProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.detachToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mergeWithProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -190,7 +191,7 @@
 			// toolStrip
 			// 
 			this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.selectProcessToolStripButton,
+            this.attachToProcessToolStripButton,
             this.toolStripSeparator6,
             this.openProjectToolStripButton,
             this.saveToolStripButton,
@@ -244,15 +245,15 @@
 			this.toolStrip.Size = new System.Drawing.Size(1141, 25);
 			this.toolStrip.TabIndex = 3;
 			// 
-			// selectProcessToolStripButton
+			// attachToProcessToolStripButton
 			// 
-			this.selectProcessToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.selectProcessToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
-			this.selectProcessToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.selectProcessToolStripButton.Name = "selectProcessToolStripButton";
-			this.selectProcessToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.selectProcessToolStripButton.ToolTipText = "Select Process...";
-			this.selectProcessToolStripButton.Click += new System.EventHandler(this.selectProcessToolStripMenuItem_Click);
+			this.attachToProcessToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.attachToProcessToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
+			this.attachToProcessToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.attachToProcessToolStripButton.Name = "attachToProcessToolStripButton";
+			this.attachToProcessToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.attachToProcessToolStripButton.ToolTipText = "Attach to Process...";
+			this.attachToProcessToolStripButton.Click += new System.EventHandler(this.attachToProcessToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator6
 			// 
@@ -903,7 +904,8 @@
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.selectProcessToolStripMenuItem,
+            this.attachToProcessToolStripMenuItem,
+            this.detachToolStripMenuItem,
             this.toolStripSeparator1,
             this.openProjectToolStripMenuItem,
             this.mergeWithProjectToolStripMenuItem,
@@ -920,13 +922,21 @@
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
 			// 
-			// selectProcessToolStripMenuItem
+			// attachToProcessToolStripMenuItem
 			// 
-			this.selectProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
-			this.selectProcessToolStripMenuItem.Name = "selectProcessToolStripMenuItem";
-			this.selectProcessToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
-			this.selectProcessToolStripMenuItem.Text = "Select Process...";
-			this.selectProcessToolStripMenuItem.Click += new System.EventHandler(this.selectProcessToolStripMenuItem_Click);
+			this.attachToProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
+			this.attachToProcessToolStripMenuItem.Name = "attachToProcessToolStripMenuItem";
+			this.attachToProcessToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.attachToProcessToolStripMenuItem.Text = "Attach to Process...";
+			this.attachToProcessToolStripMenuItem.Click += new System.EventHandler(this.attachToProcessToolStripMenuItem_Click);
+			// 
+			// detachToolStripMenuItem
+			// 
+			this.detachToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier_Remove;
+			this.detachToolStripMenuItem.Name = "detachToolStripMenuItem";
+			this.detachToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.detachToolStripMenuItem.Text = "Detach";
+			this.detachToolStripMenuItem.Click += new System.EventHandler(this.detachToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -1184,7 +1194,7 @@
 		private System.Windows.Forms.StatusStrip statusStrip;
 		private System.Windows.Forms.MenuStrip mainMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem selectProcessToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem attachToProcessToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem clearProjectToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem openProjectToolStripMenuItem;
@@ -1205,7 +1215,7 @@
 		private System.Windows.Forms.ToolStripMenuItem loadSymbolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStrip toolStrip;
-		private System.Windows.Forms.ToolStripButton selectProcessToolStripButton;
+		private System.Windows.Forms.ToolStripButton attachToProcessToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.SplitContainer splitContainer;
 		private System.Windows.Forms.ToolStripStatusLabel processInfoToolStripStatusLabel;
@@ -1284,6 +1294,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel infoToolStripStatusLabel;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator19;
 		private System.Windows.Forms.ToolStripMenuItem mergeWithProjectToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem detachToolStripMenuItem;
 	}
 }
 
