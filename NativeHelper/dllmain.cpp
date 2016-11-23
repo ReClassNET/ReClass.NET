@@ -344,7 +344,7 @@ EXTERN_DLL_EXPORT VOID __stdcall DisassembleRemoteCode(HANDLE process, LPVOID ad
 
 	while (true)
 	{
-		disasm.SecurityBlock = end - disasm.EIP;
+		disasm.SecurityBlock = (UInt32)(end - disasm.EIP);
 
 		auto disamLength = Disasm(&disasm);
 		if (disamLength == OUT_OF_BLOCK || disamLength == UNKNOWN_OPCODE)
