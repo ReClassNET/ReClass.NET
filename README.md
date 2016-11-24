@@ -52,9 +52,9 @@ Just download the [latest version](https://github.com/KN4CK3R/ReClass.NET/releas
 - The node window can be controlled with the keyboard too. Arrow keys can select other keys, combined with the shift key the nodes get selected. The menu key opens the context menu which itself can be controlled with the keyboard.
 - The memory address field of a class can contain a real formula not just a fixed address.  
   
-  **<Program.exe> + 0x123** will use the base address of Program.exe and add 0x123 to it.  
+  **\<Program.exe> + 0x123** will use the base address of Program.exe and add 0x123 to it.  
   **[0x4012ABDE]** will read the integer (4 byte on x86 / 8 byte on x64) from the address 0x4012ABDE and use this value as class address.  
-  **[<Program.exe> + 0xDE] - AB** will calculate the base address of Program.exe, add 0xDE to it, read the value from this address and finally sub 0xAB from it.  
+  **[\<Program.exe> + 0xDE] - AB** will use the base address of Program.exe, add 0xDE to it, read the value from this address and finally sub 0xAB from it.  
   
   Valid operations are read ([..]), add (+), sub (-), mul (*) and div (/). Please note that all operations are integer calculations.
 
