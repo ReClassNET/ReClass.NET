@@ -88,6 +88,8 @@
 			this.insert2048BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.insert4096BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.createClassFromNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
 			this.dissectNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.copyNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,8 +100,7 @@
 			this.repaintTimer = new System.Windows.Forms.Timer(this.components);
 			this.editBox = new ReClassNET.UI.HotSpotTextBox();
 			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.createClassFromNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+			this.boolToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.selectedNodeContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -120,7 +121,7 @@
             this.toolStripSeparator12,
             this.copyAddressToolStripMenuItem});
 			this.selectedNodeContextMenuStrip.Name = "selectedNodeContextMenuStrip";
-			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(205, 248);
+			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(205, 226);
 			this.selectedNodeContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.selectedNodeContextMenuStrip_Opening);
 			// 
 			// changeTypeToolStripMenuItem
@@ -141,6 +142,7 @@
             this.uInt16ToolStripMenuItem,
             this.uInt8ToolStripMenuItem,
             this.toolStripSeparator5,
+            this.boolToolStripMenuItem,
             this.bitsToolStripMenuItem,
             this.toolStripSeparator11,
             this.floatToolStripMenuItem,
@@ -656,6 +658,19 @@
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(201, 6);
 			// 
+			// createClassFromNodesToolStripMenuItem
+			// 
+			this.createClassFromNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
+			this.createClassFromNodesToolStripMenuItem.Name = "createClassFromNodesToolStripMenuItem";
+			this.createClassFromNodesToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+			this.createClassFromNodesToolStripMenuItem.Text = "Create Class from Nodes";
+			this.createClassFromNodesToolStripMenuItem.Click += new System.EventHandler(this.createClassFromNodesToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator13
+			// 
+			this.toolStripSeparator13.Name = "toolStripSeparator13";
+			this.toolStripSeparator13.Size = new System.Drawing.Size(201, 6);
+			// 
 			// dissectNodesToolStripMenuItem
 			// 
 			this.dissectNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Camera;
@@ -728,25 +743,21 @@
 			// 
 			this.toolTip.ShowAlways = true;
 			// 
-			// createClassFromNodesToolStripMenuItem
+			// boolToolStripMenuItem
 			// 
-			this.createClassFromNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
-			this.createClassFromNodesToolStripMenuItem.Name = "createClassFromNodesToolStripMenuItem";
-			this.createClassFromNodesToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-			this.createClassFromNodesToolStripMenuItem.Text = "Create Class from Nodes";
-			this.createClassFromNodesToolStripMenuItem.Click += new System.EventHandler(this.createClassFromNodesToolStripMenuItem_Click);
-			// 
-			// toolStripSeparator13
-			// 
-			this.toolStripSeparator13.Name = "toolStripSeparator13";
-			this.toolStripSeparator13.Size = new System.Drawing.Size(201, 6);
+			this.boolToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Bool;
+			this.boolToolStripMenuItem.Name = "boolToolStripMenuItem";
+			this.boolToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+			this.boolToolStripMenuItem.Text = "Bool";
+			this.boolToolStripMenuItem.Value = typeof(ReClassNET.Nodes.BoolNode);
+			this.boolToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
 			// 
 			// MemoryViewControl
 			// 
 			this.Controls.Add(this.editBox);
 			this.DoubleBuffered = true;
 			this.Name = "MemoryViewControl";
-			this.Size = new System.Drawing.Size(150, 138);
+			this.Size = new System.Drawing.Size(150, 134);
 			this.selectedNodeContextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -826,5 +837,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem createClassFromNodesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+		private UI.TypeToolStripMenuItem boolToolStripMenuItem;
 	}
 }

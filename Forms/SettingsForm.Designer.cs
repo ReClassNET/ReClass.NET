@@ -75,51 +75,53 @@
 			this.backgroundLabel = new System.Windows.Forms.Label();
 			this.backgroundColorBox = new ReClassNET.UI.ColorBox();
 			this.typeDefinitionsSettingsTabPage = new System.Windows.Forms.TabPage();
+			this.boolSettingsLabel = new System.Windows.Forms.Label();
+			this.boolSettingsTextBox = new ReClassNET.UI.SettingsTextBox();
 			this.label1 = new System.Windows.Forms.Label();
-			this.functionPtrLabel = new System.Windows.Forms.Label();
-			this.functionPtrTextBox = new ReClassNET.UI.SettingsTextBox();
-			this.utf16TextPtrLabel = new System.Windows.Forms.Label();
-			this.utf16TextPtrTextBox = new ReClassNET.UI.SettingsTextBox();
-			this.utf16TextLabel = new System.Windows.Forms.Label();
-			this.utf16TextTextBox = new ReClassNET.UI.SettingsTextBox();
-			this.utf8TextPtrLabel = new System.Windows.Forms.Label();
-			this.utf8TextPtrTextBox = new ReClassNET.UI.SettingsTextBox();
-			this.utf8TextLabel = new System.Windows.Forms.Label();
-			this.utf8TextTextBox = new ReClassNET.UI.SettingsTextBox();
-			this.matrix3x3Label = new System.Windows.Forms.Label();
-			this.matrix3x3TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.matrix3x4Label = new System.Windows.Forms.Label();
-			this.matrix3x4TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.matrix4x4Label = new System.Windows.Forms.Label();
-			this.matrix4x4TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.vector2Label = new System.Windows.Forms.Label();
-			this.vector2TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.vector3Label = new System.Windows.Forms.Label();
-			this.vector3TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.vector4Label = new System.Windows.Forms.Label();
-			this.vector4TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.doubleLabel = new System.Windows.Forms.Label();
-			this.doubleTextBox = new ReClassNET.UI.SettingsTextBox();
-			this.floatLabel = new System.Windows.Forms.Label();
-			this.floatTextBox = new ReClassNET.UI.SettingsTextBox();
-			this.uint64Label = new System.Windows.Forms.Label();
-			this.uint64TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.uint32Label = new System.Windows.Forms.Label();
-			this.uint32TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.uint16Label = new System.Windows.Forms.Label();
-			this.uint16TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.uint8Label = new System.Windows.Forms.Label();
-			this.uint8TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.int64Label = new System.Windows.Forms.Label();
-			this.int64TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.int32Label = new System.Windows.Forms.Label();
-			this.int32TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.int16Label = new System.Windows.Forms.Label();
-			this.int16TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.int8Label = new System.Windows.Forms.Label();
-			this.int8TextBox = new ReClassNET.UI.SettingsTextBox();
-			this.paddingLabel = new System.Windows.Forms.Label();
-			this.paddingTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.functionPtrSettingsLabel = new System.Windows.Forms.Label();
+			this.functionPtrSettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.utf16TextPtrSettingsLabel = new System.Windows.Forms.Label();
+			this.utf16TextPtrSettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.utf16TextSettingsLabel = new System.Windows.Forms.Label();
+			this.utf16TextSettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.utf8TextPtrSettingsLabel = new System.Windows.Forms.Label();
+			this.utf8TextPtrSettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.utf8TextSettingsLabel = new System.Windows.Forms.Label();
+			this.utf8TextSettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.matrix3x3SettingsLabel = new System.Windows.Forms.Label();
+			this.matrix3x3SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.matrix3x4SettingsLabel = new System.Windows.Forms.Label();
+			this.matrix3x4SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.matrix4x4SettingsLabel = new System.Windows.Forms.Label();
+			this.matrix4x4SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.vector2SettingsLabel = new System.Windows.Forms.Label();
+			this.vector2SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.vector3SettingsLabel = new System.Windows.Forms.Label();
+			this.vector3SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.vector4SettingsLabel = new System.Windows.Forms.Label();
+			this.vector4SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.doubleSettingsLabel = new System.Windows.Forms.Label();
+			this.doubleSettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.floatSettingsLabel = new System.Windows.Forms.Label();
+			this.floatSettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.uint64SettingsLabel = new System.Windows.Forms.Label();
+			this.uint64SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.uint32SettingsLabel = new System.Windows.Forms.Label();
+			this.uint32SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.uint16SettingsLabel = new System.Windows.Forms.Label();
+			this.uint16SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.uint8SettingsLabel = new System.Windows.Forms.Label();
+			this.uint8SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.int64SettingsLabel = new System.Windows.Forms.Label();
+			this.int64SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.int32SettingsLabel = new System.Windows.Forms.Label();
+			this.int32SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.int16SettingsLabel = new System.Windows.Forms.Label();
+			this.int16SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.int8SettingsLabel = new System.Windows.Forms.Label();
+			this.int8SettingsTextBox = new ReClassNET.UI.SettingsTextBox();
+			this.paddingSettingsLabel = new System.Windows.Forms.Label();
+			this.paddingSettingsTextBox = new ReClassNET.UI.SettingsTextBox();
 			this.bannerBox = new ReClassNET.UI.BannerBox();
 			this.settingsTabControl.SuspendLayout();
 			this.generalSettingsTabPage.SuspendLayout();
@@ -592,51 +594,53 @@
 			// 
 			// typeDefinitionsSettingsTabPage
 			// 
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.boolSettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.boolSettingsTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.label1);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.functionPtrLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.functionPtrTextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf16TextPtrLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf16TextPtrTextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf16TextLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf16TextTextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf8TextPtrLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf8TextPtrTextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf8TextLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf8TextTextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x3Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x3TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x4Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x4TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix4x4Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix4x4TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector2Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector2TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector3Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector3TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector4Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector4TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.doubleLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.doubleTextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.floatLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.floatTextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint64Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint64TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint32Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint32TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint16Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint16TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint8Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint8TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int64Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int64TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int32Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int32TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int16Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int16TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int8Label);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int8TextBox);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.paddingLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.paddingTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.functionPtrSettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.functionPtrSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf16TextPtrSettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf16TextPtrSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf16TextSettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf16TextSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf8TextPtrSettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf8TextPtrSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf8TextSettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf8TextSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x3SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x3SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x4SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x4SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix4x4SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix4x4SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector2SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector2SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector3SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector3SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector4SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector4SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.doubleSettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.doubleSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.floatSettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.floatSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint64SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint64SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint32SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint32SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint16SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint16SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint8SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint8SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int64SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int64SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int32SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int32SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int16SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int16SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int8SettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int8SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.paddingSettingsLabel);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.paddingSettingsTextBox);
 			this.typeDefinitionsSettingsTabPage.Location = new System.Drawing.Point(4, 22);
 			this.typeDefinitionsSettingsTabPage.Name = "typeDefinitionsSettingsTabPage";
 			this.typeDefinitionsSettingsTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -644,6 +648,22 @@
 			this.typeDefinitionsSettingsTabPage.TabIndex = 2;
 			this.typeDefinitionsSettingsTabPage.Text = "Type Definitions";
 			this.typeDefinitionsSettingsTabPage.UseVisualStyleBackColor = true;
+			// 
+			// boolSettingsLabel
+			// 
+			this.boolSettingsLabel.AutoSize = true;
+			this.boolSettingsLabel.Location = new System.Drawing.Point(6, 57);
+			this.boolSettingsLabel.Name = "boolSettingsLabel";
+			this.boolSettingsLabel.Size = new System.Drawing.Size(31, 13);
+			this.boolSettingsLabel.TabIndex = 46;
+			this.boolSettingsLabel.Text = "Bool:";
+			// 
+			// boolSettingsTextBox
+			// 
+			this.boolSettingsTextBox.Location = new System.Drawing.Point(98, 54);
+			this.boolSettingsTextBox.Name = "boolSettingsTextBox";
+			this.boolSettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.boolSettingsTextBox.TabIndex = 45;
 			// 
 			// label1
 			// 
@@ -654,357 +674,357 @@
 			this.label1.TabIndex = 44;
 			this.label1.Text = "These types are used to generate the code:";
 			// 
-			// functionPtrLabel
-			// 
-			this.functionPtrLabel.AutoSize = true;
-			this.functionPtrLabel.Location = new System.Drawing.Point(254, 295);
-			this.functionPtrLabel.Name = "functionPtrLabel";
-			this.functionPtrLabel.Size = new System.Drawing.Size(87, 13);
-			this.functionPtrLabel.TabIndex = 43;
-			this.functionPtrLabel.Text = "Function Pointer:";
+			// functionPtrSettingsLabel
+			// 
+			this.functionPtrSettingsLabel.AutoSize = true;
+			this.functionPtrSettingsLabel.Location = new System.Drawing.Point(254, 277);
+			this.functionPtrSettingsLabel.Name = "functionPtrSettingsLabel";
+			this.functionPtrSettingsLabel.Size = new System.Drawing.Size(87, 13);
+			this.functionPtrSettingsLabel.TabIndex = 43;
+			this.functionPtrSettingsLabel.Text = "Function Pointer:";
 			// 
-			// functionPtrTextBox
-			// 
-			this.functionPtrTextBox.Location = new System.Drawing.Point(346, 292);
-			this.functionPtrTextBox.Name = "functionPtrTextBox";
-			this.functionPtrTextBox.Size = new System.Drawing.Size(120, 20);
-			this.functionPtrTextBox.TabIndex = 42;
+			// functionPtrSettingsTextBox
+			// 
+			this.functionPtrSettingsTextBox.Location = new System.Drawing.Point(346, 274);
+			this.functionPtrSettingsTextBox.Name = "functionPtrSettingsTextBox";
+			this.functionPtrSettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.functionPtrSettingsTextBox.TabIndex = 42;
 			// 
-			// utf16TextPtrLabel
-			// 
-			this.utf16TextPtrLabel.AutoSize = true;
-			this.utf16TextPtrLabel.Location = new System.Drawing.Point(254, 269);
-			this.utf16TextPtrLabel.Name = "utf16TextPtrLabel";
-			this.utf16TextPtrLabel.Size = new System.Drawing.Size(79, 13);
-			this.utf16TextPtrLabel.TabIndex = 41;
-			this.utf16TextPtrLabel.Text = "UTF16 Pointer:";
+			// utf16TextPtrSettingsLabel
+			// 
+			this.utf16TextPtrSettingsLabel.AutoSize = true;
+			this.utf16TextPtrSettingsLabel.Location = new System.Drawing.Point(254, 255);
+			this.utf16TextPtrSettingsLabel.Name = "utf16TextPtrSettingsLabel";
+			this.utf16TextPtrSettingsLabel.Size = new System.Drawing.Size(79, 13);
+			this.utf16TextPtrSettingsLabel.TabIndex = 41;
+			this.utf16TextPtrSettingsLabel.Text = "UTF16 Pointer:";
 			// 
-			// utf16TextPtrTextBox
-			// 
-			this.utf16TextPtrTextBox.Location = new System.Drawing.Point(346, 266);
-			this.utf16TextPtrTextBox.Name = "utf16TextPtrTextBox";
-			this.utf16TextPtrTextBox.Size = new System.Drawing.Size(120, 20);
-			this.utf16TextPtrTextBox.TabIndex = 40;
+			// utf16TextPtrSettingsTextBox
+			// 
+			this.utf16TextPtrSettingsTextBox.Location = new System.Drawing.Point(346, 252);
+			this.utf16TextPtrSettingsTextBox.Name = "utf16TextPtrSettingsTextBox";
+			this.utf16TextPtrSettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.utf16TextPtrSettingsTextBox.TabIndex = 40;
 			// 
-			// utf16TextLabel
-			// 
-			this.utf16TextLabel.AutoSize = true;
-			this.utf16TextLabel.Location = new System.Drawing.Point(254, 243);
-			this.utf16TextLabel.Name = "utf16TextLabel";
-			this.utf16TextLabel.Size = new System.Drawing.Size(43, 13);
-			this.utf16TextLabel.TabIndex = 39;
-			this.utf16TextLabel.Text = "UTF16:";
+			// utf16TextSettingsLabel
+			// 
+			this.utf16TextSettingsLabel.AutoSize = true;
+			this.utf16TextSettingsLabel.Location = new System.Drawing.Point(254, 233);
+			this.utf16TextSettingsLabel.Name = "utf16TextSettingsLabel";
+			this.utf16TextSettingsLabel.Size = new System.Drawing.Size(43, 13);
+			this.utf16TextSettingsLabel.TabIndex = 39;
+			this.utf16TextSettingsLabel.Text = "UTF16:";
 			// 
-			// utf16TextTextBox
-			// 
-			this.utf16TextTextBox.Location = new System.Drawing.Point(346, 240);
-			this.utf16TextTextBox.Name = "utf16TextTextBox";
-			this.utf16TextTextBox.Size = new System.Drawing.Size(120, 20);
-			this.utf16TextTextBox.TabIndex = 38;
+			// utf16TextSettingsTextBox
+			// 
+			this.utf16TextSettingsTextBox.Location = new System.Drawing.Point(346, 230);
+			this.utf16TextSettingsTextBox.Name = "utf16TextSettingsTextBox";
+			this.utf16TextSettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.utf16TextSettingsTextBox.TabIndex = 38;
 			// 
-			// utf8TextPtrLabel
-			// 
-			this.utf8TextPtrLabel.AutoSize = true;
-			this.utf8TextPtrLabel.Location = new System.Drawing.Point(254, 217);
-			this.utf8TextPtrLabel.Name = "utf8TextPtrLabel";
-			this.utf8TextPtrLabel.Size = new System.Drawing.Size(73, 13);
-			this.utf8TextPtrLabel.TabIndex = 37;
-			this.utf8TextPtrLabel.Text = "UTF8 Pointer:";
+			// utf8TextPtrSettingsLabel
+			// 
+			this.utf8TextPtrSettingsLabel.AutoSize = true;
+			this.utf8TextPtrSettingsLabel.Location = new System.Drawing.Point(254, 211);
+			this.utf8TextPtrSettingsLabel.Name = "utf8TextPtrSettingsLabel";
+			this.utf8TextPtrSettingsLabel.Size = new System.Drawing.Size(73, 13);
+			this.utf8TextPtrSettingsLabel.TabIndex = 37;
+			this.utf8TextPtrSettingsLabel.Text = "UTF8 Pointer:";
 			// 
-			// utf8TextPtrTextBox
-			// 
-			this.utf8TextPtrTextBox.Location = new System.Drawing.Point(346, 214);
-			this.utf8TextPtrTextBox.Name = "utf8TextPtrTextBox";
-			this.utf8TextPtrTextBox.Size = new System.Drawing.Size(120, 20);
-			this.utf8TextPtrTextBox.TabIndex = 36;
+			// utf8TextPtrSettingsTextBox
+			// 
+			this.utf8TextPtrSettingsTextBox.Location = new System.Drawing.Point(346, 208);
+			this.utf8TextPtrSettingsTextBox.Name = "utf8TextPtrSettingsTextBox";
+			this.utf8TextPtrSettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.utf8TextPtrSettingsTextBox.TabIndex = 36;
 			// 
-			// utf8TextLabel
-			// 
-			this.utf8TextLabel.AutoSize = true;
-			this.utf8TextLabel.Location = new System.Drawing.Point(254, 191);
-			this.utf8TextLabel.Name = "utf8TextLabel";
-			this.utf8TextLabel.Size = new System.Drawing.Size(37, 13);
-			this.utf8TextLabel.TabIndex = 35;
-			this.utf8TextLabel.Text = "UTF8:";
+			// utf8TextSettingsLabel
+			// 
+			this.utf8TextSettingsLabel.AutoSize = true;
+			this.utf8TextSettingsLabel.Location = new System.Drawing.Point(254, 189);
+			this.utf8TextSettingsLabel.Name = "utf8TextSettingsLabel";
+			this.utf8TextSettingsLabel.Size = new System.Drawing.Size(37, 13);
+			this.utf8TextSettingsLabel.TabIndex = 35;
+			this.utf8TextSettingsLabel.Text = "UTF8:";
 			// 
-			// utf8TextTextBox
-			// 
-			this.utf8TextTextBox.Location = new System.Drawing.Point(346, 188);
-			this.utf8TextTextBox.Name = "utf8TextTextBox";
-			this.utf8TextTextBox.Size = new System.Drawing.Size(120, 20);
-			this.utf8TextTextBox.TabIndex = 34;
+			// utf8TextSettingsTextBox
+			// 
+			this.utf8TextSettingsTextBox.Location = new System.Drawing.Point(346, 186);
+			this.utf8TextSettingsTextBox.Name = "utf8TextSettingsTextBox";
+			this.utf8TextSettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.utf8TextSettingsTextBox.TabIndex = 34;
 			// 
-			// matrix3x3Label
-			// 
-			this.matrix3x3Label.AutoSize = true;
-			this.matrix3x3Label.Location = new System.Drawing.Point(254, 113);
-			this.matrix3x3Label.Name = "matrix3x3Label";
-			this.matrix3x3Label.Size = new System.Drawing.Size(64, 13);
-			this.matrix3x3Label.TabIndex = 33;
-			this.matrix3x3Label.Text = "Matrix (3x3):";
+			// matrix3x3SettingsLabel
+			// 
+			this.matrix3x3SettingsLabel.AutoSize = true;
+			this.matrix3x3SettingsLabel.Location = new System.Drawing.Point(254, 123);
+			this.matrix3x3SettingsLabel.Name = "matrix3x3SettingsLabel";
+			this.matrix3x3SettingsLabel.Size = new System.Drawing.Size(64, 13);
+			this.matrix3x3SettingsLabel.TabIndex = 33;
+			this.matrix3x3SettingsLabel.Text = "Matrix (3x3):";
 			// 
-			// matrix3x3TextBox
-			// 
-			this.matrix3x3TextBox.Location = new System.Drawing.Point(346, 110);
-			this.matrix3x3TextBox.Name = "matrix3x3TextBox";
-			this.matrix3x3TextBox.Size = new System.Drawing.Size(120, 20);
-			this.matrix3x3TextBox.TabIndex = 32;
+			// matrix3x3SettingsTextBox
+			// 
+			this.matrix3x3SettingsTextBox.Location = new System.Drawing.Point(346, 120);
+			this.matrix3x3SettingsTextBox.Name = "matrix3x3SettingsTextBox";
+			this.matrix3x3SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.matrix3x3SettingsTextBox.TabIndex = 32;
 			// 
-			// matrix3x4Label
-			// 
-			this.matrix3x4Label.AutoSize = true;
-			this.matrix3x4Label.Location = new System.Drawing.Point(254, 139);
-			this.matrix3x4Label.Name = "matrix3x4Label";
-			this.matrix3x4Label.Size = new System.Drawing.Size(64, 13);
-			this.matrix3x4Label.TabIndex = 31;
-			this.matrix3x4Label.Text = "Matrix (3x4):";
+			// matrix3x4SettingsLabel
+			// 
+			this.matrix3x4SettingsLabel.AutoSize = true;
+			this.matrix3x4SettingsLabel.Location = new System.Drawing.Point(254, 145);
+			this.matrix3x4SettingsLabel.Name = "matrix3x4SettingsLabel";
+			this.matrix3x4SettingsLabel.Size = new System.Drawing.Size(64, 13);
+			this.matrix3x4SettingsLabel.TabIndex = 31;
+			this.matrix3x4SettingsLabel.Text = "Matrix (3x4):";
 			// 
-			// matrix3x4TextBox
-			// 
-			this.matrix3x4TextBox.Location = new System.Drawing.Point(346, 136);
-			this.matrix3x4TextBox.Name = "matrix3x4TextBox";
-			this.matrix3x4TextBox.Size = new System.Drawing.Size(120, 20);
-			this.matrix3x4TextBox.TabIndex = 30;
+			// matrix3x4SettingsTextBox
+			// 
+			this.matrix3x4SettingsTextBox.Location = new System.Drawing.Point(346, 142);
+			this.matrix3x4SettingsTextBox.Name = "matrix3x4SettingsTextBox";
+			this.matrix3x4SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.matrix3x4SettingsTextBox.TabIndex = 30;
 			// 
-			// matrix4x4Label
-			// 
-			this.matrix4x4Label.AutoSize = true;
-			this.matrix4x4Label.Location = new System.Drawing.Point(254, 165);
-			this.matrix4x4Label.Name = "matrix4x4Label";
-			this.matrix4x4Label.Size = new System.Drawing.Size(64, 13);
-			this.matrix4x4Label.TabIndex = 29;
-			this.matrix4x4Label.Text = "Matrix (4x4):";
+			// matrix4x4SettingsLabel
+			// 
+			this.matrix4x4SettingsLabel.AutoSize = true;
+			this.matrix4x4SettingsLabel.Location = new System.Drawing.Point(254, 167);
+			this.matrix4x4SettingsLabel.Name = "matrix4x4SettingsLabel";
+			this.matrix4x4SettingsLabel.Size = new System.Drawing.Size(64, 13);
+			this.matrix4x4SettingsLabel.TabIndex = 29;
+			this.matrix4x4SettingsLabel.Text = "Matrix (4x4):";
 			// 
-			// matrix4x4TextBox
-			// 
-			this.matrix4x4TextBox.Location = new System.Drawing.Point(346, 162);
-			this.matrix4x4TextBox.Name = "matrix4x4TextBox";
-			this.matrix4x4TextBox.Size = new System.Drawing.Size(120, 20);
-			this.matrix4x4TextBox.TabIndex = 28;
+			// matrix4x4SettingsTextBox
+			// 
+			this.matrix4x4SettingsTextBox.Location = new System.Drawing.Point(346, 164);
+			this.matrix4x4SettingsTextBox.Name = "matrix4x4SettingsTextBox";
+			this.matrix4x4SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.matrix4x4SettingsTextBox.TabIndex = 28;
 			// 
-			// vector2Label
-			// 
-			this.vector2Label.AutoSize = true;
-			this.vector2Label.Location = new System.Drawing.Point(254, 35);
-			this.vector2Label.Name = "vector2Label";
-			this.vector2Label.Size = new System.Drawing.Size(47, 13);
-			this.vector2Label.TabIndex = 27;
-			this.vector2Label.Text = "Vector2:";
+			// vector2SettingsLabel
+			// 
+			this.vector2SettingsLabel.AutoSize = true;
+			this.vector2SettingsLabel.Location = new System.Drawing.Point(254, 57);
+			this.vector2SettingsLabel.Name = "vector2SettingsLabel";
+			this.vector2SettingsLabel.Size = new System.Drawing.Size(47, 13);
+			this.vector2SettingsLabel.TabIndex = 27;
+			this.vector2SettingsLabel.Text = "Vector2:";
 			// 
-			// vector2TextBox
-			// 
-			this.vector2TextBox.Location = new System.Drawing.Point(346, 32);
-			this.vector2TextBox.Name = "vector2TextBox";
-			this.vector2TextBox.Size = new System.Drawing.Size(120, 20);
-			this.vector2TextBox.TabIndex = 26;
+			// vector2SettingsTextBox
+			// 
+			this.vector2SettingsTextBox.Location = new System.Drawing.Point(346, 54);
+			this.vector2SettingsTextBox.Name = "vector2SettingsTextBox";
+			this.vector2SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.vector2SettingsTextBox.TabIndex = 26;
 			// 
-			// vector3Label
-			// 
-			this.vector3Label.AutoSize = true;
-			this.vector3Label.Location = new System.Drawing.Point(254, 61);
-			this.vector3Label.Name = "vector3Label";
-			this.vector3Label.Size = new System.Drawing.Size(47, 13);
-			this.vector3Label.TabIndex = 25;
-			this.vector3Label.Text = "Vector3:";
+			// vector3SettingsLabel
+			// 
+			this.vector3SettingsLabel.AutoSize = true;
+			this.vector3SettingsLabel.Location = new System.Drawing.Point(254, 79);
+			this.vector3SettingsLabel.Name = "vector3SettingsLabel";
+			this.vector3SettingsLabel.Size = new System.Drawing.Size(47, 13);
+			this.vector3SettingsLabel.TabIndex = 25;
+			this.vector3SettingsLabel.Text = "Vector3:";
 			// 
-			// vector3TextBox
-			// 
-			this.vector3TextBox.Location = new System.Drawing.Point(346, 58);
-			this.vector3TextBox.Name = "vector3TextBox";
-			this.vector3TextBox.Size = new System.Drawing.Size(120, 20);
-			this.vector3TextBox.TabIndex = 24;
+			// vector3SettingsTextBox
+			// 
+			this.vector3SettingsTextBox.Location = new System.Drawing.Point(346, 76);
+			this.vector3SettingsTextBox.Name = "vector3SettingsTextBox";
+			this.vector3SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.vector3SettingsTextBox.TabIndex = 24;
 			// 
-			// vector4Label
-			// 
-			this.vector4Label.AutoSize = true;
-			this.vector4Label.Location = new System.Drawing.Point(254, 87);
-			this.vector4Label.Name = "vector4Label";
-			this.vector4Label.Size = new System.Drawing.Size(47, 13);
-			this.vector4Label.TabIndex = 23;
-			this.vector4Label.Text = "Vector4:";
+			// vector4SettingsLabel
+			// 
+			this.vector4SettingsLabel.AutoSize = true;
+			this.vector4SettingsLabel.Location = new System.Drawing.Point(254, 101);
+			this.vector4SettingsLabel.Name = "vector4SettingsLabel";
+			this.vector4SettingsLabel.Size = new System.Drawing.Size(47, 13);
+			this.vector4SettingsLabel.TabIndex = 23;
+			this.vector4SettingsLabel.Text = "Vector4:";
 			// 
-			// vector4TextBox
-			// 
-			this.vector4TextBox.Location = new System.Drawing.Point(346, 84);
-			this.vector4TextBox.Name = "vector4TextBox";
-			this.vector4TextBox.Size = new System.Drawing.Size(120, 20);
-			this.vector4TextBox.TabIndex = 22;
+			// vector4SettingsTextBox
+			// 
+			this.vector4SettingsTextBox.Location = new System.Drawing.Point(346, 98);
+			this.vector4SettingsTextBox.Name = "vector4SettingsTextBox";
+			this.vector4SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.vector4SettingsTextBox.TabIndex = 22;
 			// 
-			// doubleLabel
-			// 
-			this.doubleLabel.AutoSize = true;
-			this.doubleLabel.Location = new System.Drawing.Point(6, 295);
-			this.doubleLabel.Name = "doubleLabel";
-			this.doubleLabel.Size = new System.Drawing.Size(44, 13);
-			this.doubleLabel.TabIndex = 21;
-			this.doubleLabel.Text = "Double:";
+			// doubleSettingsLabel
+			// 
+			this.doubleSettingsLabel.AutoSize = true;
+			this.doubleSettingsLabel.Location = new System.Drawing.Point(6, 277);
+			this.doubleSettingsLabel.Name = "doubleSettingsLabel";
+			this.doubleSettingsLabel.Size = new System.Drawing.Size(44, 13);
+			this.doubleSettingsLabel.TabIndex = 21;
+			this.doubleSettingsLabel.Text = "Double:";
 			// 
-			// doubleTextBox
-			// 
-			this.doubleTextBox.Location = new System.Drawing.Point(98, 292);
-			this.doubleTextBox.Name = "doubleTextBox";
-			this.doubleTextBox.Size = new System.Drawing.Size(120, 20);
-			this.doubleTextBox.TabIndex = 20;
+			// doubleSettingsTextBox
+			// 
+			this.doubleSettingsTextBox.Location = new System.Drawing.Point(98, 274);
+			this.doubleSettingsTextBox.Name = "doubleSettingsTextBox";
+			this.doubleSettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.doubleSettingsTextBox.TabIndex = 20;
 			// 
-			// floatLabel
-			// 
-			this.floatLabel.AutoSize = true;
-			this.floatLabel.Location = new System.Drawing.Point(6, 269);
-			this.floatLabel.Name = "floatLabel";
-			this.floatLabel.Size = new System.Drawing.Size(33, 13);
-			this.floatLabel.TabIndex = 19;
-			this.floatLabel.Text = "Float:";
+			// floatSettingsLabel
+			// 
+			this.floatSettingsLabel.AutoSize = true;
+			this.floatSettingsLabel.Location = new System.Drawing.Point(6, 255);
+			this.floatSettingsLabel.Name = "floatSettingsLabel";
+			this.floatSettingsLabel.Size = new System.Drawing.Size(33, 13);
+			this.floatSettingsLabel.TabIndex = 19;
+			this.floatSettingsLabel.Text = "Float:";
 			// 
-			// floatTextBox
-			// 
-			this.floatTextBox.Location = new System.Drawing.Point(98, 266);
-			this.floatTextBox.Name = "floatTextBox";
-			this.floatTextBox.Size = new System.Drawing.Size(120, 20);
-			this.floatTextBox.TabIndex = 18;
+			// floatSettingsTextBox
+			// 
+			this.floatSettingsTextBox.Location = new System.Drawing.Point(98, 252);
+			this.floatSettingsTextBox.Name = "floatSettingsTextBox";
+			this.floatSettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.floatSettingsTextBox.TabIndex = 18;
 			// 
-			// uint64Label
-			// 
-			this.uint64Label.AutoSize = true;
-			this.uint64Label.Location = new System.Drawing.Point(6, 243);
-			this.uint64Label.Name = "uint64Label";
-			this.uint64Label.Size = new System.Drawing.Size(42, 13);
-			this.uint64Label.TabIndex = 17;
-			this.uint64Label.Text = "UInt64:";
+			// uint64SettingsLabel
+			// 
+			this.uint64SettingsLabel.AutoSize = true;
+			this.uint64SettingsLabel.Location = new System.Drawing.Point(6, 233);
+			this.uint64SettingsLabel.Name = "uint64SettingsLabel";
+			this.uint64SettingsLabel.Size = new System.Drawing.Size(42, 13);
+			this.uint64SettingsLabel.TabIndex = 17;
+			this.uint64SettingsLabel.Text = "UInt64:";
 			// 
-			// uint64TextBox
-			// 
-			this.uint64TextBox.Location = new System.Drawing.Point(98, 240);
-			this.uint64TextBox.Name = "uint64TextBox";
-			this.uint64TextBox.Size = new System.Drawing.Size(120, 20);
-			this.uint64TextBox.TabIndex = 16;
+			// uint64SettingsTextBox
+			// 
+			this.uint64SettingsTextBox.Location = new System.Drawing.Point(98, 230);
+			this.uint64SettingsTextBox.Name = "uint64SettingsTextBox";
+			this.uint64SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.uint64SettingsTextBox.TabIndex = 16;
 			// 
-			// uint32Label
-			// 
-			this.uint32Label.AutoSize = true;
-			this.uint32Label.Location = new System.Drawing.Point(6, 217);
-			this.uint32Label.Name = "uint32Label";
-			this.uint32Label.Size = new System.Drawing.Size(42, 13);
-			this.uint32Label.TabIndex = 15;
-			this.uint32Label.Text = "UInt32:";
+			// uint32SettingsLabel
+			// 
+			this.uint32SettingsLabel.AutoSize = true;
+			this.uint32SettingsLabel.Location = new System.Drawing.Point(6, 211);
+			this.uint32SettingsLabel.Name = "uint32SettingsLabel";
+			this.uint32SettingsLabel.Size = new System.Drawing.Size(42, 13);
+			this.uint32SettingsLabel.TabIndex = 15;
+			this.uint32SettingsLabel.Text = "UInt32:";
 			// 
-			// uint32TextBox
-			// 
-			this.uint32TextBox.Location = new System.Drawing.Point(98, 214);
-			this.uint32TextBox.Name = "uint32TextBox";
-			this.uint32TextBox.Size = new System.Drawing.Size(120, 20);
-			this.uint32TextBox.TabIndex = 14;
+			// uint32SettingsTextBox
+			// 
+			this.uint32SettingsTextBox.Location = new System.Drawing.Point(98, 208);
+			this.uint32SettingsTextBox.Name = "uint32SettingsTextBox";
+			this.uint32SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.uint32SettingsTextBox.TabIndex = 14;
 			// 
-			// uint16Label
-			// 
-			this.uint16Label.AutoSize = true;
-			this.uint16Label.Location = new System.Drawing.Point(6, 191);
-			this.uint16Label.Name = "uint16Label";
-			this.uint16Label.Size = new System.Drawing.Size(42, 13);
-			this.uint16Label.TabIndex = 13;
-			this.uint16Label.Text = "UInt16:";
+			// uint16SettingsLabel
+			// 
+			this.uint16SettingsLabel.AutoSize = true;
+			this.uint16SettingsLabel.Location = new System.Drawing.Point(6, 189);
+			this.uint16SettingsLabel.Name = "uint16SettingsLabel";
+			this.uint16SettingsLabel.Size = new System.Drawing.Size(42, 13);
+			this.uint16SettingsLabel.TabIndex = 13;
+			this.uint16SettingsLabel.Text = "UInt16:";
 			// 
-			// uint16TextBox
-			// 
-			this.uint16TextBox.Location = new System.Drawing.Point(98, 188);
-			this.uint16TextBox.Name = "uint16TextBox";
-			this.uint16TextBox.Size = new System.Drawing.Size(120, 20);
-			this.uint16TextBox.TabIndex = 12;
-			// 
-			// uint8Label
-			// 
-			this.uint8Label.AutoSize = true;
-			this.uint8Label.Location = new System.Drawing.Point(6, 165);
-			this.uint8Label.Name = "uint8Label";
-			this.uint8Label.Size = new System.Drawing.Size(36, 13);
-			this.uint8Label.TabIndex = 11;
-			this.uint8Label.Text = "UInt8:";
-			// 
-			// uint8TextBox
-			// 
-			this.uint8TextBox.Location = new System.Drawing.Point(98, 162);
-			this.uint8TextBox.Name = "uint8TextBox";
-			this.uint8TextBox.Size = new System.Drawing.Size(120, 20);
-			this.uint8TextBox.TabIndex = 10;
-			// 
-			// int64Label
-			// 
-			this.int64Label.AutoSize = true;
-			this.int64Label.Location = new System.Drawing.Point(6, 139);
-			this.int64Label.Name = "int64Label";
-			this.int64Label.Size = new System.Drawing.Size(34, 13);
-			this.int64Label.TabIndex = 9;
-			this.int64Label.Text = "Int64:";
-			// 
-			// int64TextBox
-			// 
-			this.int64TextBox.Location = new System.Drawing.Point(98, 136);
-			this.int64TextBox.Name = "int64TextBox";
-			this.int64TextBox.Size = new System.Drawing.Size(120, 20);
-			this.int64TextBox.TabIndex = 8;
-			// 
-			// int32Label
-			// 
-			this.int32Label.AutoSize = true;
-			this.int32Label.Location = new System.Drawing.Point(6, 113);
-			this.int32Label.Name = "int32Label";
-			this.int32Label.Size = new System.Drawing.Size(34, 13);
-			this.int32Label.TabIndex = 7;
-			this.int32Label.Text = "Int32:";
-			// 
-			// int32TextBox
-			// 
-			this.int32TextBox.Location = new System.Drawing.Point(98, 110);
-			this.int32TextBox.Name = "int32TextBox";
-			this.int32TextBox.Size = new System.Drawing.Size(120, 20);
-			this.int32TextBox.TabIndex = 6;
-			// 
-			// int16Label
-			// 
-			this.int16Label.AutoSize = true;
-			this.int16Label.Location = new System.Drawing.Point(6, 87);
-			this.int16Label.Name = "int16Label";
-			this.int16Label.Size = new System.Drawing.Size(34, 13);
-			this.int16Label.TabIndex = 5;
-			this.int16Label.Text = "Int16:";
-			// 
-			// int16TextBox
-			// 
-			this.int16TextBox.Location = new System.Drawing.Point(98, 84);
-			this.int16TextBox.Name = "int16TextBox";
-			this.int16TextBox.Size = new System.Drawing.Size(120, 20);
-			this.int16TextBox.TabIndex = 4;
-			// 
-			// int8Label
-			// 
-			this.int8Label.AutoSize = true;
-			this.int8Label.Location = new System.Drawing.Point(6, 61);
-			this.int8Label.Name = "int8Label";
-			this.int8Label.Size = new System.Drawing.Size(28, 13);
-			this.int8Label.TabIndex = 3;
-			this.int8Label.Text = "Int8:";
-			// 
-			// int8TextBox
-			// 
-			this.int8TextBox.Location = new System.Drawing.Point(98, 58);
-			this.int8TextBox.Name = "int8TextBox";
-			this.int8TextBox.Size = new System.Drawing.Size(120, 20);
-			this.int8TextBox.TabIndex = 2;
-			// 
-			// paddingLabel
-			// 
-			this.paddingLabel.AutoSize = true;
-			this.paddingLabel.Location = new System.Drawing.Point(6, 35);
-			this.paddingLabel.Name = "paddingLabel";
-			this.paddingLabel.Size = new System.Drawing.Size(49, 13);
-			this.paddingLabel.TabIndex = 1;
-			this.paddingLabel.Text = "Padding:";
-			// 
-			// paddingTextBox
-			// 
-			this.paddingTextBox.Location = new System.Drawing.Point(98, 32);
-			this.paddingTextBox.Name = "paddingTextBox";
-			this.paddingTextBox.Size = new System.Drawing.Size(120, 20);
-			this.paddingTextBox.TabIndex = 0;
+			// uint16SettingsTextBox
+			// 
+			this.uint16SettingsTextBox.Location = new System.Drawing.Point(98, 186);
+			this.uint16SettingsTextBox.Name = "uint16SettingsTextBox";
+			this.uint16SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.uint16SettingsTextBox.TabIndex = 12;
+			// 
+			// uint8SettingsLabel
+			// 
+			this.uint8SettingsLabel.AutoSize = true;
+			this.uint8SettingsLabel.Location = new System.Drawing.Point(6, 167);
+			this.uint8SettingsLabel.Name = "uint8SettingsLabel";
+			this.uint8SettingsLabel.Size = new System.Drawing.Size(36, 13);
+			this.uint8SettingsLabel.TabIndex = 11;
+			this.uint8SettingsLabel.Text = "UInt8:";
+			// 
+			// uint8SettingsTextBox
+			// 
+			this.uint8SettingsTextBox.Location = new System.Drawing.Point(98, 164);
+			this.uint8SettingsTextBox.Name = "uint8SettingsTextBox";
+			this.uint8SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.uint8SettingsTextBox.TabIndex = 10;
+			// 
+			// int64SettingsLabel
+			// 
+			this.int64SettingsLabel.AutoSize = true;
+			this.int64SettingsLabel.Location = new System.Drawing.Point(6, 145);
+			this.int64SettingsLabel.Name = "int64SettingsLabel";
+			this.int64SettingsLabel.Size = new System.Drawing.Size(34, 13);
+			this.int64SettingsLabel.TabIndex = 9;
+			this.int64SettingsLabel.Text = "Int64:";
+			// 
+			// int64SettingsTextBox
+			// 
+			this.int64SettingsTextBox.Location = new System.Drawing.Point(98, 142);
+			this.int64SettingsTextBox.Name = "int64SettingsTextBox";
+			this.int64SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.int64SettingsTextBox.TabIndex = 8;
+			// 
+			// int32SettingsLabel
+			// 
+			this.int32SettingsLabel.AutoSize = true;
+			this.int32SettingsLabel.Location = new System.Drawing.Point(6, 123);
+			this.int32SettingsLabel.Name = "int32SettingsLabel";
+			this.int32SettingsLabel.Size = new System.Drawing.Size(34, 13);
+			this.int32SettingsLabel.TabIndex = 7;
+			this.int32SettingsLabel.Text = "Int32:";
+			// 
+			// int32SettingsTextBox
+			// 
+			this.int32SettingsTextBox.Location = new System.Drawing.Point(98, 120);
+			this.int32SettingsTextBox.Name = "int32SettingsTextBox";
+			this.int32SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.int32SettingsTextBox.TabIndex = 6;
+			// 
+			// int16SettingsLabel
+			// 
+			this.int16SettingsLabel.AutoSize = true;
+			this.int16SettingsLabel.Location = new System.Drawing.Point(6, 101);
+			this.int16SettingsLabel.Name = "int16SettingsLabel";
+			this.int16SettingsLabel.Size = new System.Drawing.Size(34, 13);
+			this.int16SettingsLabel.TabIndex = 5;
+			this.int16SettingsLabel.Text = "Int16:";
+			// 
+			// int16SettingsTextBox
+			// 
+			this.int16SettingsTextBox.Location = new System.Drawing.Point(98, 98);
+			this.int16SettingsTextBox.Name = "int16SettingsTextBox";
+			this.int16SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.int16SettingsTextBox.TabIndex = 4;
+			// 
+			// int8SettingsLabel
+			// 
+			this.int8SettingsLabel.AutoSize = true;
+			this.int8SettingsLabel.Location = new System.Drawing.Point(6, 79);
+			this.int8SettingsLabel.Name = "int8SettingsLabel";
+			this.int8SettingsLabel.Size = new System.Drawing.Size(28, 13);
+			this.int8SettingsLabel.TabIndex = 3;
+			this.int8SettingsLabel.Text = "Int8:";
+			// 
+			// int8SettingsTextBox
+			// 
+			this.int8SettingsTextBox.Location = new System.Drawing.Point(98, 76);
+			this.int8SettingsTextBox.Name = "int8SettingsTextBox";
+			this.int8SettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.int8SettingsTextBox.TabIndex = 2;
+			// 
+			// paddingSettingsLabel
+			// 
+			this.paddingSettingsLabel.AutoSize = true;
+			this.paddingSettingsLabel.Location = new System.Drawing.Point(6, 35);
+			this.paddingSettingsLabel.Name = "paddingSettingsLabel";
+			this.paddingSettingsLabel.Size = new System.Drawing.Size(49, 13);
+			this.paddingSettingsLabel.TabIndex = 1;
+			this.paddingSettingsLabel.Text = "Padding:";
+			// 
+			// paddingSettingsTextBox
+			// 
+			this.paddingSettingsTextBox.Location = new System.Drawing.Point(98, 32);
+			this.paddingSettingsTextBox.Name = "paddingSettingsTextBox";
+			this.paddingSettingsTextBox.Size = new System.Drawing.Size(120, 20);
+			this.paddingSettingsTextBox.TabIndex = 0;
 			// 
 			// bannerBox
 			// 
@@ -1096,52 +1116,54 @@
 		private UI.ColorBox nodeIndexColorBox;
 		private System.Windows.Forms.Label nodePluginLabel;
 		private UI.ColorBox nodePluginColorBox;
-		private System.Windows.Forms.Label floatLabel;
-		private UI.SettingsTextBox floatTextBox;
-		private System.Windows.Forms.Label uint64Label;
-		private UI.SettingsTextBox uint64TextBox;
-		private System.Windows.Forms.Label uint32Label;
-		private UI.SettingsTextBox uint32TextBox;
-		private System.Windows.Forms.Label uint16Label;
-		private UI.SettingsTextBox uint16TextBox;
-		private System.Windows.Forms.Label uint8Label;
-		private UI.SettingsTextBox uint8TextBox;
-		private System.Windows.Forms.Label int64Label;
-		private UI.SettingsTextBox int64TextBox;
-		private System.Windows.Forms.Label int32Label;
-		private UI.SettingsTextBox int32TextBox;
-		private System.Windows.Forms.Label int16Label;
-		private UI.SettingsTextBox int16TextBox;
-		private System.Windows.Forms.Label int8Label;
-		private UI.SettingsTextBox int8TextBox;
-		private System.Windows.Forms.Label paddingLabel;
-		private UI.SettingsTextBox paddingTextBox;
-		private System.Windows.Forms.Label functionPtrLabel;
-		private UI.SettingsTextBox functionPtrTextBox;
-		private System.Windows.Forms.Label utf16TextPtrLabel;
-		private UI.SettingsTextBox utf16TextPtrTextBox;
-		private System.Windows.Forms.Label utf16TextLabel;
-		private UI.SettingsTextBox utf16TextTextBox;
-		private System.Windows.Forms.Label utf8TextPtrLabel;
-		private UI.SettingsTextBox utf8TextPtrTextBox;
-		private System.Windows.Forms.Label utf8TextLabel;
-		private UI.SettingsTextBox utf8TextTextBox;
-		private System.Windows.Forms.Label matrix3x3Label;
-		private UI.SettingsTextBox matrix3x3TextBox;
-		private System.Windows.Forms.Label matrix3x4Label;
-		private UI.SettingsTextBox matrix3x4TextBox;
-		private System.Windows.Forms.Label matrix4x4Label;
-		private UI.SettingsTextBox matrix4x4TextBox;
-		private System.Windows.Forms.Label vector2Label;
-		private UI.SettingsTextBox vector2TextBox;
-		private System.Windows.Forms.Label vector3Label;
-		private UI.SettingsTextBox vector3TextBox;
-		private System.Windows.Forms.Label vector4Label;
-		private UI.SettingsTextBox vector4TextBox;
-		private System.Windows.Forms.Label doubleLabel;
-		private UI.SettingsTextBox doubleTextBox;
+		private System.Windows.Forms.Label floatSettingsLabel;
+		private UI.SettingsTextBox floatSettingsTextBox;
+		private System.Windows.Forms.Label uint64SettingsLabel;
+		private UI.SettingsTextBox uint64SettingsTextBox;
+		private System.Windows.Forms.Label uint32SettingsLabel;
+		private UI.SettingsTextBox uint32SettingsTextBox;
+		private System.Windows.Forms.Label uint16SettingsLabel;
+		private UI.SettingsTextBox uint16SettingsTextBox;
+		private System.Windows.Forms.Label uint8SettingsLabel;
+		private UI.SettingsTextBox uint8SettingsTextBox;
+		private System.Windows.Forms.Label int64SettingsLabel;
+		private UI.SettingsTextBox int64SettingsTextBox;
+		private System.Windows.Forms.Label int32SettingsLabel;
+		private UI.SettingsTextBox int32SettingsTextBox;
+		private System.Windows.Forms.Label int16SettingsLabel;
+		private UI.SettingsTextBox int16SettingsTextBox;
+		private System.Windows.Forms.Label int8SettingsLabel;
+		private UI.SettingsTextBox int8SettingsTextBox;
+		private System.Windows.Forms.Label paddingSettingsLabel;
+		private UI.SettingsTextBox paddingSettingsTextBox;
+		private System.Windows.Forms.Label functionPtrSettingsLabel;
+		private UI.SettingsTextBox functionPtrSettingsTextBox;
+		private System.Windows.Forms.Label utf16TextPtrSettingsLabel;
+		private UI.SettingsTextBox utf16TextPtrSettingsTextBox;
+		private System.Windows.Forms.Label utf16TextSettingsLabel;
+		private UI.SettingsTextBox utf16TextSettingsTextBox;
+		private System.Windows.Forms.Label utf8TextPtrSettingsLabel;
+		private UI.SettingsTextBox utf8TextPtrSettingsTextBox;
+		private System.Windows.Forms.Label utf8TextSettingsLabel;
+		private UI.SettingsTextBox utf8TextSettingsTextBox;
+		private System.Windows.Forms.Label matrix3x3SettingsLabel;
+		private UI.SettingsTextBox matrix3x3SettingsTextBox;
+		private System.Windows.Forms.Label matrix3x4SettingsLabel;
+		private UI.SettingsTextBox matrix3x4SettingsTextBox;
+		private System.Windows.Forms.Label matrix4x4SettingsLabel;
+		private UI.SettingsTextBox matrix4x4SettingsTextBox;
+		private System.Windows.Forms.Label vector2SettingsLabel;
+		private UI.SettingsTextBox vector2SettingsTextBox;
+		private System.Windows.Forms.Label vector3SettingsLabel;
+		private UI.SettingsTextBox vector3SettingsTextBox;
+		private System.Windows.Forms.Label vector4SettingsLabel;
+		private UI.SettingsTextBox vector4SettingsTextBox;
+		private System.Windows.Forms.Label doubleSettingsLabel;
+		private UI.SettingsTextBox doubleSettingsTextBox;
 		private System.Windows.Forms.GroupBox nodeColorGroupBox;
 		private System.Windows.Forms.Label label1;
 		private UI.BannerBox bannerBox;
+		private System.Windows.Forms.Label boolSettingsLabel;
+		private UI.SettingsTextBox boolSettingsTextBox;
 	}
 }

@@ -14,6 +14,7 @@ namespace ReClassNET.CodeGenerator
 		{
 			[typeof(DoubleNode)] = "double",
 			[typeof(FloatNode)] = "float",
+			[typeof(BoolNode)] = "bool",
 			[typeof(Int8Node)] = "sbyte",
 			[typeof(Int16Node)] = "short",
 			[typeof(Int32Node)] = "int",

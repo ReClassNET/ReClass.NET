@@ -12,6 +12,7 @@ namespace ReClassNET.CodeGenerator
 	{
 		private readonly Dictionary<Type, string> typeToTypedefMap = new Dictionary<Type, string>
 		{
+			[typeof(BoolNode)] = Program.Settings.TypeBool,
 			[typeof(DoubleNode)] = Program.Settings.TypeDouble,
 			[typeof(FloatNode)] = Program.Settings.TypeFloat,
 			[typeof(FunctionPtrNode)] = Program.Settings.TypeFunctionPtr,

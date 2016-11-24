@@ -193,6 +193,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Button_Bool {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Button_Bool", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Button_Class_Add {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Button_Class_Add", resourceCulture);
@@ -1151,7 +1161,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 2016/11/22 22:00:32
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2016/11/23 19:07:45
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {

@@ -128,6 +128,8 @@ namespace ReClassNET
 
 		public string TypePadding { get; set; } = "char";
 
+		public string TypeBool { get; set; } = "bool";
+
 		public string TypeInt8 { get; set; } = "int8_t";
 		public string TypeInt16 { get; set; } = "int16_t";
 		public string TypeInt32 { get; set; } = "int32_t";
