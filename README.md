@@ -10,6 +10,7 @@ This is a port of ReClass to the .NET platform with additional features.
  - Hex 8 / 16 / 32 / 64
  - Int 8 / 16 / 32 / 64
  - UInt 8 / 16 / 32 / 64
+ - Bool
  - Bits ![](https://abload.de/img/bitsnhlql.jpg)
  - Float / Double
  - Vector 2 / 3 / 4
@@ -26,6 +27,7 @@ This is a port of ReClass to the .NET platform with additional features.
 - Control the remote process: start / stop / kill
 - Process Selection Dialog with filtering
 - Memory Viewer
+- Class address calculator
 - Code Generator (C++ / C#)
 - Plugin Support
  - Plugins can be written in different languages (example: C++, C++/CLI, C#)
@@ -37,12 +39,24 @@ This is a port of ReClass to the .NET platform with additional features.
 ## Plugins
 - [Sample Plugins](https://github.com/KN4CK3R/ReClass.NET-SamplePlugin)
 - [Frostbite Plugin](https://github.com/KN4CK3R/ReClass.NET-FrostbitePlugin)
+- [MemoryPipe Plugin](https://github.com/KN4CK3R/ReClass.NET-MemoryPipePlugin)
 
 To install a plugin just copy it in the "Plugins" folder.
 If you want to develop your own plugin just learn from the code of the [Sample Plugins](https://github.com/KN4CK3R/ReClass.NET-SamplePlugin) and [Frostbite Plugin](https://github.com/KN4CK3R/ReClass.NET-FrostbitePlugin) repositories. If you have developed a nice plugin, leave me a message and I will add it to the list above.
 
 ## Installation
 Just download the [latest version](https://github.com/KN4CK3R/ReClass.NET/releases) and start the x86 / x64 version.
+
+## Tips
+- Lots of elements have a context menu. Just right-click it and see what you can do there.
+- The node window can be controlled with the keyboard too. Arrow keys can select other keys, combined with the shift key the nodes get selected. The menu key opens the context menu which itself can be controlled with the keyboard.
+- The memory address field of a class can contain a real formula not just a fixed address.  
+  
+  **<Program.exe> + 0x123** will use the base address of Program.exe and add 0x123 to it.  
+  **[0x4012ABDE]** will read the integer (4 byte on x86 / 8 byte on x64) from the address 0x4012ABDE and use this value as class address.  
+  **[<Program.exe> + 0xDE] - AB** will calculate the base address of Program.exe, add 0xDE to it, read the value from this address and finally sub 0xAB from it.  
+  
+  Valid operations are read ([..]), add (+), sub (-), mul (*) and div (/). Please note that all operations are integer calculations.
 
 ## Compiling
 If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file.
