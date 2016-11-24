@@ -50,6 +50,7 @@ namespace ReClassNET.Forms
 			{
 				if (sender.Process == null)
 				{
+					Text = Constants.ApplicationName;
 					processInfoToolStripStatusLabel.Text = "No process selected";
 				}
 				else
