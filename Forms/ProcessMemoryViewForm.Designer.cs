@@ -37,14 +37,13 @@
 			this.createClassAtAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.regionsGroupBox = new System.Windows.Forms.GroupBox();
 			this.sectionsDataGridView = new System.Windows.Forms.DataGridView();
+			this.bannerBox1 = new ReClassNET.UI.BannerBox();
 			this.addressColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.sizeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.nameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.protectionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.stateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.typeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.moduleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.bannerBox1 = new ReClassNET.UI.BannerBox();
 			this.contextMenuStrip.SuspendLayout();
 			this.regionsGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).BeginInit();
@@ -109,7 +108,6 @@
             this.sizeColumn,
             this.nameColumn,
             this.protectionColumn,
-            this.stateColumn,
             this.typeColumn,
             this.moduleColumn});
 			this.sectionsDataGridView.Location = new System.Drawing.Point(6, 19);
@@ -123,6 +121,17 @@
 			this.sectionsDataGridView.TabIndex = 0;
 			this.sectionsDataGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.sectionsDataGridView_CellMouseDoubleClick);
 			this.sectionsDataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.sectionsDataGridView_CellMouseDown);
+			// 
+			// bannerBox1
+			// 
+			this.bannerBox1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.bannerBox1.Icon = global::ReClassNET.Properties.Resources.B32x32_Magnifier;
+			this.bannerBox1.Location = new System.Drawing.Point(0, 0);
+			this.bannerBox1.Name = "bannerBox1";
+			this.bannerBox1.Size = new System.Drawing.Size(834, 48);
+			this.bannerBox1.TabIndex = 2;
+			this.bannerBox1.Text = "View all memory regions mapped in the process.";
+			this.bannerBox1.Title = "Memory Viewer";
 			// 
 			// addressColumn
 			// 
@@ -163,15 +172,6 @@
 			this.protectionColumn.ReadOnly = true;
 			this.protectionColumn.Width = 80;
 			// 
-			// stateColumn
-			// 
-			this.stateColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.stateColumn.DataPropertyName = "state";
-			this.stateColumn.HeaderText = "State";
-			this.stateColumn.Name = "stateColumn";
-			this.stateColumn.ReadOnly = true;
-			this.stateColumn.Width = 57;
-			// 
 			// typeColumn
 			// 
 			this.typeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -188,17 +188,6 @@
 			this.moduleColumn.HeaderText = "Module";
 			this.moduleColumn.Name = "moduleColumn";
 			this.moduleColumn.ReadOnly = true;
-			// 
-			// bannerBox1
-			// 
-			this.bannerBox1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.bannerBox1.Icon = global::ReClassNET.Properties.Resources.B32x32_Magnifier;
-			this.bannerBox1.Location = new System.Drawing.Point(0, 0);
-			this.bannerBox1.Name = "bannerBox1";
-			this.bannerBox1.Size = new System.Drawing.Size(834, 48);
-			this.bannerBox1.TabIndex = 2;
-			this.bannerBox1.Text = "View all memory regions mapped in the process.";
-			this.bannerBox1.Title = "Memory Viewer";
 			// 
 			// ProcessMemoryViewer
 			// 
@@ -222,18 +211,17 @@
 		#endregion
 
 		private System.Windows.Forms.DataGridView sectionsDataGridView;
-		private System.Windows.Forms.DataGridViewTextBoxColumn addressColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn sizeColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn protectionColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn stateColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn typeColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn moduleColumn;
 		private System.Windows.Forms.GroupBox regionsGroupBox;
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem setCurrentClassAddressToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem createClassAtAddressToolStripMenuItem;
 		private UI.BannerBox bannerBox1;
+		private System.Windows.Forms.DataGridViewTextBoxColumn addressColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn sizeColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn protectionColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn typeColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn moduleColumn;
 	}
 }

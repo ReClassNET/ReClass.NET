@@ -30,22 +30,22 @@ namespace ReClassNET
 			if (process.IsValid)
 			{
 				DataTable dt = new DataTable();
-				dt.Columns.Add("address", typeof(long));
-				dt.Columns.Add("size", typeof(long));
+				dt.Columns.Add("address", typeof(string));
+				dt.Columns.Add("address_val", typeof(IntPtr));
+				dt.Columns.Add("size", typeof(ulong));
 				dt.Columns.Add("name", typeof(string));
 				dt.Columns.Add("protection", typeof(string));
-				dt.Columns.Add("state", typeof(string));
 				dt.Columns.Add("type", typeof(string));
 				dt.Columns.Add("module", typeof(string));
 
 				process.NativeHelper.EnumerateRemoteSectionsAndModules(process.Process.Handle, delegate (IntPtr baseAddress, IntPtr regionSize, string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, string modulePath)
 				{
 					var row = dt.NewRow();
-					row["address"] = baseAddress.ToInt64();
-					row["size"] = regionSize.ToInt64();
+					row["address"] = baseAddress.ToString("X");
+					row["address_val"] = baseAddress;
+					row["size"] = (ulong)regionSize.ToInt64();
 					row["name"] = name;
 					row["protection"] = protection.ToString();
-					row["state"] = state.ToString();
 					row["type"] = type.ToString();
 					row["module"] = Path.GetFileName(modulePath);
 					dt.Rows.Add(row);
@@ -122,7 +122,7 @@ namespace ReClassNET
 			var row = sectionsDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView;
 			if (row != null)
 			{
-				return (IntPtr)(long)row["address"];
+				return (IntPtr)row["address_val"];
 			}
 			return IntPtr.Zero;
 		}
