@@ -41,8 +41,8 @@ namespace ReClassNET.Memory
 		public enum SectionCategory
 		{
 			Unknown,
-			Code,
-			Data
+			CODE,
+			DATA
 		}
 
 		public class Section
@@ -377,10 +377,7 @@ namespace ReClassNET.Memory
 		{
 			lock (sections)
 			{
-				return sections
-					.Where(s => s.Category != SectionCategory.Unknown)
-					.Where(s => address.InRange(s.Start, s.End))
-					.FirstOrDefault();
+				return sections.BinaryFind(s => address.CompareToRange(s.Start, s.End));
 			}
 		}
 
@@ -388,9 +385,7 @@ namespace ReClassNET.Memory
 		{
 			lock (modules)
 			{
-				return modules
-					.Where(m => address.InRange(m.Start, m.End))
-					.FirstOrDefault();
+				return modules.BinaryFind(m => address.CompareToRange(m.Start, m.End));
 			}
 		}
 
@@ -412,7 +407,14 @@ namespace ReClassNET.Memory
 			var section = GetSectionToPointer(address);
 			if (section != null)
 			{
-				return $"<{section.Category}>{section.ModuleName}.{address.ToString("X")}";
+				if (section.Category != SectionCategory.Unknown)
+				{
+					return $"<{section.Category}>{section.ModuleName}.{address.ToString("X")}";
+				}
+				else if (section.Type == NativeMethods.TypeEnum.MEM_PRIVATE)
+				{
+					return $"<HEAP>{address.ToString("X")}";
+				}
 			}
 			var module = GetModuleToPointer(address);
 			if (module != null)
@@ -470,13 +472,13 @@ namespace ReClassNET.Memory
 						{
 							case ".text":
 							case "code":
-								section.Category = SectionCategory.Code;
+								section.Category = SectionCategory.CODE;
 								break;
 							case ".data":
 							case "data":
 							case ".rdata":
 							case ".idata":
-								section.Category = SectionCategory.Data;
+								section.Category = SectionCategory.DATA;
 								break;
 						}
 						newSections.Add(section);
@@ -492,6 +494,9 @@ namespace ReClassNET.Memory
 						});
 					}
 				);
+
+				newModules.Sort((m1, m2) => m1.Start.CompareTo(m2.Start));
+				newSections.Sort((s1, s2) => s1.Start.CompareTo(s2.Start));
 
 				lock (modules)
 				{

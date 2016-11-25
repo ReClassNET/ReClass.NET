@@ -129,6 +129,26 @@ namespace ReClassNET.Util
 #endif
 		}
 
+		[Pure]
+		public static int CompareTo(this IntPtr lhs, IntPtr rhs)
+		{
+#if WIN64
+			return ((ulong)lhs.ToInt64()).CompareTo((ulong)rhs.ToInt64());
+#else
+			return ((uint)lhs.ToInt32()).CompareTo((uint)rhs.ToInt32());
+#endif
+		}
+
+		[Pure]
+		public static int CompareToRange(this IntPtr address, IntPtr start, IntPtr end)
+		{
+			if (InRange(address, start, end))
+			{
+				return 0;
+			}
+			return CompareTo(address, start);
+		}
+
 		#endregion
 
 		#region String
@@ -255,6 +275,36 @@ namespace ReClassNET.Util
 			{
 				return diff / (Math.Abs(val) + Math.Abs(other)) < epsilon;
 			}
+		}
+
+		#endregion
+
+		#region List
+
+		public static T BinaryFind<T>(this IList<T> tf, Func<T, int> comparer)
+		{
+			var lo = 0;
+			var hi = tf.Count - 1;
+
+			while (lo <= hi)
+			{
+				var median = lo + (hi - lo >> 1);
+				var num = comparer(tf[median]);
+				if (num == 0)
+				{
+					return tf[median];
+				}
+				if (num > 0)
+				{
+					lo = median + 1;
+				}
+				else
+				{
+					hi = median - 1;
+				}
+			}
+
+			return default(T);
 		}
 
 		#endregion
