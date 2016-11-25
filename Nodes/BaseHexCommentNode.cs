@@ -36,7 +36,8 @@ namespace ReClassNET.Nodes
 
 				if (Program.Settings.ShowCommentPointer)
 				{
-					x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, $"-> {namedAddress}") + view.Font.Width;
+					x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, "->") + view.Font.Width;
+					x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.ReadOnlyId, namedAddress) + view.Font.Width;
 				}
 
 				if (Program.Settings.ShowCommentRtti)
