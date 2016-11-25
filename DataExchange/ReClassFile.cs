@@ -192,7 +192,7 @@ namespace ReClassNET.DataExchange
 
 						paddingNode.Comment = node.Comment;
 
-						size -= node.MemorySize;
+						size -= paddingNode.MemorySize;
 
 						yield return paddingNode;
 					}
