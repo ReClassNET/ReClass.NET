@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ReClassNET.Memory;
 using ReClassNET.UI;
@@ -92,9 +93,9 @@ namespace ReClassNET.Nodes
 			return h;
 		}
 
-		public override bool ReplaceChildNode(int index, BaseNode node) => false;
+		public override bool ReplaceChildNode(int index, Type nodeType, ref List<BaseNode> createdNodes) => false;
 
-		public override void InsertBytes(int index, int size)
+		public override void InsertBytes(int index, int size, ref List<BaseNode> createdNodes)
 		{
 			if (index < 0 || index > nodes.Count || size == 0)
 			{
@@ -117,6 +118,8 @@ namespace ReClassNET.Nodes
 				};
 
 				nodes.Insert(index, node);
+
+				createdNodes?.Add(node);
 
 				offset += node.MemorySize;
 				size -= node.MemorySize;

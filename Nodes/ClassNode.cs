@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
@@ -180,9 +181,9 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		public override void InsertBytes(int index, int size)
+		public override void InsertBytes(int index, int size, ref List<BaseNode> createdNodes)
 		{
-			base.InsertBytes(index, size);
+			base.InsertBytes(index, size, ref createdNodes);
 
 			ChildHasChanged(null);
 		}
@@ -211,12 +212,12 @@ namespace ReClassNET.Nodes
 			return removed;
 		}
 
-		public override bool ReplaceChildNode(int index, BaseNode node)
+		public override bool ReplaceChildNode(int index, Type nodeType, ref List<BaseNode> createdNodes)
 		{
-			var replaced = base.ReplaceChildNode(index, node);
+			var replaced = base.ReplaceChildNode(index, nodeType, ref createdNodes);
 			if (replaced)
 			{
-				ChildHasChanged(node);
+				ChildHasChanged(null); //TODO
 			}
 			return replaced;
 		}
