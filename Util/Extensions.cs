@@ -69,9 +69,9 @@ namespace ReClassNET.Util
 		public static bool MayBeValid(this IntPtr ptr)
 		{
 #if WIN64
-			return ptr.InRange((IntPtr)0x10000, (IntPtr)unchecked((long)0x000F000000000000));
+			return ptr.InRange((IntPtr)0x10000, (IntPtr)unchecked((long)0x00FF000000000000));
 #else
-			return ptr.InRange((IntPtr)0x10000, (IntPtr)unchecked((int)0xFFF00000));
+			return ptr.InRange((IntPtr)0x10000, (IntPtr)unchecked((int)0xFFFFF000));
 #endif
 		}
 
