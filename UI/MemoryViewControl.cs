@@ -276,7 +276,12 @@ namespace ReClassNET.UI
 										foreach (var spot in containerNode.Nodes
 											.SkipWhile(n => n != first.Node)
 											.TakeUntil(n => n == last.Node)
-											.Select(n => new HotSpot { Address = containerNode.Offset.Add(n.Offset), Node = n }))
+											.Select(n => new HotSpot
+											{
+												Address = containerNode.Offset.Add(n.Offset),
+												Node = n,
+												Memory = first.Memory
+											}))
 										{
 											spot.Node.IsSelected = true;
 											selectedNodes.Add(spot);
@@ -404,7 +409,7 @@ namespace ReClassNET.UI
 				{
 					if (spot.Rect.Contains(toolTipPosition))
 					{
-						var text = spot.Node.GetToolTipText(spot, Memory);
+						var text = spot.Node.GetToolTipText(spot, spot.Memory);
 						if (!string.IsNullOrEmpty(text))
 						{
 							toolTip.Show(text, this, toolTipPosition.OffsetEx(16, 16));
@@ -511,7 +516,12 @@ namespace ReClassNET.UI
 							foreach (var spot in containerNode.Nodes
 								.SkipWhile(n => n != first.Node)
 								.TakeUntil(n => n == last.Node)
-								.Select(n => new HotSpot { Address = containerNode.Offset.Add(n.Offset), Node = n }))
+								.Select(n => new HotSpot
+								{
+									Address = containerNode.Offset.Add(n.Offset),
+									Node = n,
+									Memory = toSelect.Memory
+								}))
 							{
 								spot.Node.IsSelected = true;
 								selectedNodes.Add(spot);
@@ -692,7 +702,10 @@ namespace ReClassNET.UI
 			var hexNodes = selectedNodes.Where(h => h.Node is BaseHexNode);
 			if (hexNodes.Any())
 			{
-				NodeDissector.DissectNodes(hexNodes.Select(h => (BaseHexNode)h.Node), Memory);
+				foreach (var g in hexNodes.GroupBy(n => n.Node.ParentNode))
+				{
+					NodeDissector.DissectNodes(g.Select(h => (BaseHexNode)h.Node), g.First().Memory);
+				}
 
 				ClearSelection();
 			}
@@ -764,11 +777,17 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private static IEnumerable<HotSpot> RecursiveReplaceNodes(BaseContainerNode parentNode, Type type, IEnumerable<BaseNode> nodesToReplace)
+		/// <summary>Recursive replace all splitted nodes.</summary>
+		/// <param name="parentNode">The parent node.</param>
+		/// <param name="type">The node type.</param>
+		/// <param name="nodesToReplace">The nodes to replace.</param>
+		/// <returns>The new nodes.</returns>
+		private static IEnumerable<BaseNode> RecursiveReplaceNodes(BaseContainerNode parentNode, Type type, IEnumerable<BaseNode> nodesToReplace)
 		{
 			Contract.Requires(parentNode != null);
 			Contract.Requires(type != null);
 			Contract.Requires(nodesToReplace != null);
+			Contract.Ensures(Contract.Result<IEnumerable<HotSpot>>() != null);
 
 			foreach (var nodeToReplace in nodesToReplace)
 			{
@@ -779,17 +798,13 @@ namespace ReClassNET.UI
 
 					node.IsSelected = true;
 
-					yield return new HotSpot
-					{
-						Address = node.ParentNode.Offset.Add(node.Offset),
-						Node = node
-					};
+					yield return node;
 
 					if (temp.Count > 1)
 					{
-						foreach (var hs in RecursiveReplaceNodes(parentNode, type, temp))
+						foreach (var n in RecursiveReplaceNodes(parentNode, type, temp.Skip(1)))
 						{
-							yield return hs;
+							yield return n;
 						}
 					}
 				}
@@ -817,6 +832,7 @@ namespace ReClassNET.UI
 
 						var hotspot = new HotSpot
 						{
+							Memory = selected.Memory,
 							Address = node.ParentNode.Offset.Add(node.Offset),
 							Node = node
 						};
@@ -835,7 +851,15 @@ namespace ReClassNET.UI
 						// If the block contains more than one node and the replaced node decomposed to more than one node replace the new nodes to.
 						if (selectedPartition.Count > 1 && createdNodes.Count > 1)
 						{
-							newSelected.AddRange(RecursiveReplaceNodes(selected.Node.ParentNode, type, createdNodes.Skip(1)));
+							newSelected.AddRange(
+								RecursiveReplaceNodes(selected.Node.ParentNode, type, createdNodes.Skip(1))
+									.Select(n => new HotSpot
+									{
+										Memory = selected.Memory,
+										Address = n.ParentNode.Offset.Add(n.Offset),
+										Node = n
+									})
+							);
 						}
 					}
 				}
