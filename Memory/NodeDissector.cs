@@ -43,11 +43,11 @@ namespace ReClassNET.Memory
 			var data32 = memory.ReadObject<UInt32FloatData>(offset);
 
 			var raw = memory.ReadBytes(offset, node.MemorySize);
-			if (raw.InterpretAsUTF8().IsLikelyPrintableData() >= 0.5f)
+			if (raw.InterpretAsUTF8().IsLikelyPrintableData() >= 0.75f)
 			{
 				return typeof(UTF8TextNode);
 			}
-			else if (raw.InterpretAsUTF16().IsLikelyPrintableData() >= 0.5f)
+			else if (raw.InterpretAsUTF16().IsLikelyPrintableData() >= 0.75f)
 			{
 				return typeof(UTF16TextNode);
 			}
@@ -120,7 +120,7 @@ namespace ReClassNET.Memory
 				{
 					return typeof(FunctionPtrNode);
 				}
-				else if (section.Category == RemoteProcess.SectionCategory.DATA) // If the section contains data, it is at least a pointer to a class or something.
+				else if (section.Category == RemoteProcess.SectionCategory.DATA || section.Category == RemoteProcess.SectionCategory.HEAP) // If the section contains data, it is at least a pointer to a class or something.
 				{
 					// Check if it is a vtable. Check if the first 3 values are pointers to a code section.
 					bool valid = true;
@@ -140,11 +140,11 @@ namespace ReClassNET.Memory
 
 					// Check if it is a string.
 					var data = memory.Process.ReadRemoteMemory(address, IntPtr.Size * 2);
-					if (data.Take(IntPtr.Size).InterpretAsUTF8().IsLikelyPrintableData() >= 0.5f)
+					if (data.Take(IntPtr.Size).InterpretAsUTF8().IsLikelyPrintableData() >= 07.5f)
 					{
 						return typeof(UTF8TextPtrNode);
 					}
-					else if (data.InterpretAsUTF16().IsLikelyPrintableData() >= 0.5f)
+					else if (data.InterpretAsUTF16().IsLikelyPrintableData() >= 0.75f)
 					{
 						return typeof(UTF16TextPtrNode);
 					}

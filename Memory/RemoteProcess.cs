@@ -42,7 +42,8 @@ namespace ReClassNET.Memory
 		{
 			Unknown,
 			CODE,
-			DATA
+			DATA,
+			HEAP
 		}
 
 		public class Section
@@ -407,11 +408,12 @@ namespace ReClassNET.Memory
 			var section = GetSectionToPointer(address);
 			if (section != null)
 			{
-				if (section.Category != SectionCategory.Unknown)
+				if (section.Category == SectionCategory.CODE || section.Category == SectionCategory.DATA)
 				{
+					// Code and Data sections belong to a module.
 					return $"<{section.Category}>{section.ModuleName}.{address.ToString("X")}";
 				}
-				else if (section.Type == NativeMethods.TypeEnum.MEM_PRIVATE)
+				else if (section.Category == SectionCategory.HEAP)
 				{
 					return $"<HEAP>{address.ToString("X")}";
 				}
@@ -466,7 +468,8 @@ namespace ReClassNET.Memory
 							Protection = protection,
 							Type = type,
 							ModulePath = modulePath,
-							ModuleName = Path.GetFileName(modulePath)
+							ModuleName = Path.GetFileName(modulePath),
+							Category = type == NativeMethods.TypeEnum.MEM_PRIVATE ? SectionCategory.HEAP : SectionCategory.Unknown
 						};
 						switch (section.Name)
 						{
