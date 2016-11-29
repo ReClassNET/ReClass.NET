@@ -10,7 +10,7 @@ namespace ReClassNET.Nodes
 	public abstract class BaseFunctionPtrNode : BaseNode
 	{
 		private IntPtr address = IntPtr.Zero;
-		private readonly List<string> assembledCode = new List<string>();
+		private readonly List<string> disassembledCode = new List<string>();
 
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
@@ -21,7 +21,7 @@ namespace ReClassNET.Nodes
 
 			DisassembleRemoteCode(memory, ptr);
 
-			return string.Join("\n", assembledCode);
+			return string.Join("\n", disassembledCode);
 		}
 
 		protected int Draw(ViewInfo view, int x, int y, string type, string name)
@@ -78,7 +78,7 @@ namespace ReClassNET.Nodes
 
 				DisassembleRemoteCode(view.Memory, ptr);
 
-				foreach (var line in assembledCode)
+				foreach (var line in disassembledCode)
 				{
 					y += view.Font.Height;
 
@@ -99,7 +99,7 @@ namespace ReClassNET.Nodes
 			var h = view.Font.Height;
 			if (levelsOpen[view.Level])
 			{
-				h += assembledCode.Count * view.Font.Height;
+				h += disassembledCode.Count * view.Font.Height;
 			}
 			return h;
 		}
@@ -110,7 +110,7 @@ namespace ReClassNET.Nodes
 
 			if (this.address != address)
 			{
-				assembledCode.Clear();
+				disassembledCode.Clear();
 
 				this.address = address;
 
@@ -121,9 +121,9 @@ namespace ReClassNET.Nodes
 						address,
 						200,
 #if WIN64
-						(a, l, i) => assembledCode.Add($"{a.ToString("X08")} {i}")
+						(a, l, i) => disassembledCode.Add($"{a.ToString("X08")} {i}")
 #else
-						(a, l, i) => assembledCode.Add($"{a.ToString("X04")} {i}")
+						(a, l, i) => disassembledCode.Add($"{a.ToString("X04")} {i}")
 #endif
 					);
 				}
