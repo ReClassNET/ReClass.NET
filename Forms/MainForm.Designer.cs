@@ -75,6 +75,7 @@
 			this.uint16ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
 			this.uint8ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
 			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+			this.boolToolStripButton = new ReClassNET.UI.TypeToolStripButton();
 			this.bitFieldToolStripButton = new ReClassNET.UI.TypeToolStripButton();
 			this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
 			this.floatToolStripButton = new ReClassNET.UI.TypeToolStripButton();
@@ -99,6 +100,7 @@
 			this.ptrArrayToolStripButton = new ReClassNET.UI.TypeToolStripButton();
 			this.vtableToolStripButton = new ReClassNET.UI.TypeToolStripButton();
 			this.fnPtrToolStripButton = new ReClassNET.UI.TypeToolStripButton();
+			this.fnTypeToolStripButton = new ReClassNET.UI.TypeToolStripButton();
 			this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.processInfoToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -135,7 +137,6 @@
 			this.generateCSharpCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.boolToolStripButton = new UI.TypeToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
@@ -241,6 +242,7 @@
             this.ptrArrayToolStripButton,
             this.vtableToolStripButton,
             this.fnPtrToolStripButton,
+            this.fnTypeToolStripButton,
             this.toolStripSeparator19});
 			this.toolStrip.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip.Name = "toolStrip";
@@ -629,6 +631,17 @@
 			this.toolStripSeparator11.Name = "toolStripSeparator11";
 			this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
 			// 
+			// boolToolStripButton
+			// 
+			this.boolToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.boolToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Bool;
+			this.boolToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.boolToolStripButton.Name = "boolToolStripButton";
+			this.boolToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.boolToolStripButton.ToolTipText = "Bool";
+			this.boolToolStripButton.Value = typeof(ReClassNET.Nodes.BoolNode);
+			this.boolToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
+			// 
 			// bitFieldToolStripButton
 			// 
 			this.bitFieldToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -862,6 +875,17 @@
 			this.fnPtrToolStripButton.ToolTipText = "Pointer to a function";
 			this.fnPtrToolStripButton.Value = typeof(ReClassNET.Nodes.FunctionPtrNode);
 			this.fnPtrToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
+			// 
+			// fnTypeToolStripButton
+			// 
+			this.fnTypeToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.fnTypeToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Function;
+			this.fnTypeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.fnTypeToolStripButton.Name = "fnTypeToolStripButton";
+			this.fnTypeToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.fnTypeToolStripButton.ToolTipText = "Function";
+			this.fnTypeToolStripButton.Value = typeof(ReClassNET.Nodes.FunctionNode);
+			this.fnTypeToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
 			// 
 			// toolStripSeparator19
 			// 
@@ -1157,17 +1181,6 @@
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
-			// boolToolStripButton
-			// 
-			this.boolToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.boolToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Bool;
-			this.boolToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.boolToolStripButton.Name = "boolToolStripButton";
-			this.boolToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.boolToolStripButton.ToolTipText = "Bool";
-			this.boolToolStripButton.Value = typeof(ReClassNET.Nodes.BoolNode);
-			this.boolToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
 			// MainForm
 			// 
 			this.AllowDrop = true;
@@ -1309,6 +1322,7 @@
 		private System.Windows.Forms.ToolStripMenuItem mergeWithProjectToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem detachToolStripMenuItem;
 		private UI.TypeToolStripButton boolToolStripButton;
+		private UI.TypeToolStripButton fnTypeToolStripButton;
 	}
 }
 
