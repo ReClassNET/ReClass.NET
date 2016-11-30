@@ -48,7 +48,7 @@ namespace ReClassNET.CodeGenerator
 			sb.AppendLine(
 				string.Join(
 					"\n\n",
-					OrderByInheritance(classes).Select(c =>
+					OrderByInheritance(classes.Where(c => c.Nodes.All(n => !(n is FunctionNode)))).Select(c =>
 					{
 						var csb = new StringBuilder();
 						csb.Append($"class {c.Name}");
@@ -74,7 +74,7 @@ namespace ReClassNET.CodeGenerator
 						csb.AppendLine(
 							string.Join(
 								"\n",
-								YieldMemberDefinitions(c.Nodes.Skip(skipFirstMember ? 1 : 0), logger)
+								YieldMemberDefinitions(c.Nodes.Skip(skipFirstMember ? 1 : 0).Where(n => !(n is FunctionNode)), logger)
 									.Select(m => MemberDefinitionToString(m))
 									.Select(s => "\t" + s)
 							)
@@ -88,6 +88,18 @@ namespace ReClassNET.CodeGenerator
 								string.Join(
 									"\n",
 									vtables.SelectMany(vt => vt.Nodes).OfType<VMethodNode>().Select(m => $"\tvirtual void {m.MethodName}();")
+								)
+							);
+						}
+
+						var functions = classes.SelectMany(c2 => c2.Nodes).OfType<FunctionNode>().Where(f => f.BelongsToClass == c);
+						if (functions.Any())
+						{
+							csb.AppendLine();
+							csb.AppendLine(
+								string.Join(
+									"\n",
+									functions.Select(f => $"\t{f.Signature} {{ }}")
 								)
 							);
 						}

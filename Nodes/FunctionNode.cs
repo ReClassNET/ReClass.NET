@@ -13,7 +13,7 @@ namespace ReClassNET.Nodes
 		private IntPtr address = IntPtr.Zero;
 		private readonly List<string> instructions = new List<string>();
 
-		private string signature = "void function()";
+		public string Signature { get; set; } = "void function()";
 
 		public ClassNode BelongsToClass { get; set; }
 
@@ -64,7 +64,7 @@ namespace ReClassNET.Nodes
 			{
 				y += view.Font.Height;
 				x = AddText(view, tx, y, Program.Settings.TypeColor, HotSpot.NoneId, "Signature:") + view.Font.Width;
-				x = AddText(view, x, y, Program.Settings.ValueColor, 0, signature);
+				x = AddText(view, x, y, Program.Settings.ValueColor, 0, Signature);
 
 				y += view.Font.Height;
 				x = AddText(view, tx, y, Program.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
@@ -103,7 +103,7 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id == 0) // Signature
 			{
-				signature = spot.Text;
+				Signature = spot.Text;
 			}
 			else if (spot.Id == 1)
 			{
