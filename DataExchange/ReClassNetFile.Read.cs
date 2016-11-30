@@ -171,6 +171,17 @@ namespace ReClassNET.DataExchange
 					TryGetAttributeValue(element, XmlBitsAttribute, out bits, logger);
 					bitFieldNode.Bits = bits;
 				}
+				var functionNode = node as FunctionNode;
+				if (functionNode != null)
+				{
+					functionNode.Signature = element.Attribute(XmlSignatureAttribute)?.Value ?? string.Empty;
+
+					var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
+					if (project.ContainsClass(reference))
+					{
+						functionNode.BelongsToClass = project.GetClassByUuid(reference);
+					}
+				}
 
 				yield return node;
 			}

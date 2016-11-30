@@ -120,6 +120,13 @@ namespace ReClassNET.DataExchange
 				{
 					element.SetAttributeValue(XmlBitsAttribute, bitFieldNode.Bits);
 				}
+				var functionNode = node as FunctionNode;
+				if (functionNode != null)
+				{
+					var uuid = functionNode.BelongsToClass == null ? NodeUuid.Zero : functionNode.BelongsToClass.Uuid;
+					element.SetAttributeValue(XmlReferenceAttribute, uuid.ToBase64String());
+					element.SetAttributeValue(XmlSignatureAttribute, functionNode.Signature);
+				}
 
 				yield return element;
 			}
