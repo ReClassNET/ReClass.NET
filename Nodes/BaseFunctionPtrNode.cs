@@ -10,7 +10,7 @@ namespace ReClassNET.Nodes
 	public abstract class BaseFunctionPtrNode : BaseNode
 	{
 		private IntPtr address = IntPtr.Zero;
-		private readonly List<string> disassembledCode = new List<string>();
+		private readonly List<string> instructions = new List<string>();
 
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
@@ -21,7 +21,7 @@ namespace ReClassNET.Nodes
 
 			DisassembleRemoteCode(memory, ptr);
 
-			return string.Join("\n", disassembledCode);
+			return string.Join("\n", instructions);
 		}
 
 		protected int Draw(ViewInfo view, int x, int y, string type, string name)
@@ -42,9 +42,10 @@ namespace ReClassNET.Nodes
 			x += TextPadding;
 
 			x = AddIcon(view, x, y, Icons.Function, -1, HotSpotType.None);
-			x = AddAddressOffset(view, x, y);
 
 			var tx = x;
+
+			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
 			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, name) + view.Font.Width;
@@ -78,7 +79,7 @@ namespace ReClassNET.Nodes
 
 				DisassembleRemoteCode(view.Memory, ptr);
 
-				foreach (var line in disassembledCode)
+				foreach (var line in instructions)
 				{
 					y += view.Font.Height;
 
@@ -99,7 +100,7 @@ namespace ReClassNET.Nodes
 			var h = view.Font.Height;
 			if (levelsOpen[view.Level])
 			{
-				h += disassembledCode.Count * view.Font.Height;
+				h += instructions.Count * view.Font.Height;
 			}
 			return h;
 		}
@@ -110,7 +111,7 @@ namespace ReClassNET.Nodes
 
 			if (this.address != address)
 			{
-				disassembledCode.Clear();
+				instructions.Clear();
 
 				this.address = address;
 
@@ -121,9 +122,9 @@ namespace ReClassNET.Nodes
 						address,
 						200,
 #if WIN64
-						(a, l, i) => disassembledCode.Add($"{a.ToString("X08")} {i}")
+						(a, l, i) => instructions.Add($"{a.ToString("X08")} {i}")
 #else
-						(a, l, i) => disassembledCode.Add($"{a.ToString("X04")} {i}")
+						(a, l, i) => instructions.Add($"{a.ToString("X04")} {i}")
 #endif
 					);
 				}

@@ -323,10 +323,50 @@ namespace ReClassNET.UI
 						}
 						else if (hotSpot.Type == HotSpotType.ChangeType)
 						{
+							IEnumerable<TypeToolStripMenuItem> items = null;
+
+							var functionNode = hitObject as FunctionNode;
+							if (functionNode != null)
+							{
+								var noneClass = new ClassNode(false)
+								{
+									Name = "None"
+								};
+
+								EventHandler handler = (sender2, e2) =>
+								{
+									var classNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
+									if (classNode == null)
+									{
+										return;
+									}
+
+									if (classNode == noneClass)
+									{
+										classNode = null;
+									}
+
+									functionNode.BelongsToClass = classNode;
+								};
+
+								items = noneClass.Yield()
+									.Concat(project.Classes.OrderBy(c => c.Name))
+									.Select(c =>
+									{
+										var b = new TypeToolStripMenuItem
+										{
+											Text = c.Name,
+											Tag = c
+										};
+										b.Click += handler;
+										return b;
+									});
+							}
+
 							var refNode = hitObject as BaseReferenceNode;
 							if (refNode != null)
 							{
-								EventHandler changeInnerType = (sender2, e2) =>
+								EventHandler handler = (sender2, e2) =>
 								{
 									var classNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
 									if (classNode == null)
@@ -340,9 +380,7 @@ namespace ReClassNET.UI
 									}
 								};
 
-								var menu = new ContextMenuStrip();
-								menu.Items.AddRange(
-									project.Classes
+								items = project.Classes
 									.OrderBy(c => c.Name)
 									.Select(c =>
 									{
@@ -351,11 +389,15 @@ namespace ReClassNET.UI
 											Text = c.Name,
 											Tag = c
 										};
-										b.Click += changeInnerType;
+										b.Click += handler;
 										return b;
-									})
-									.ToArray()
-								);
+									});
+							}
+
+							if (items != null)
+							{
+								var menu = new ContextMenuStrip();
+								menu.Items.AddRange(items.ToArray());
 								menu.Show(this, e.Location);
 							}
 						}
