@@ -582,7 +582,7 @@ namespace ReClassNET.UI
 					// If no node is selected, try to select the first one.
 					var selection = hotSpots
 						.Where(h => h.Type == HotSpotType.Select)
-						.Where(h => !(h.Node is ClassNode))
+						.WhereNot(h => h.Node is ClassNode)
 						.FirstOrDefault();
 					if (selection != null)
 					{
@@ -861,7 +861,7 @@ namespace ReClassNET.UI
 			var newSelected = new List<HotSpot>(selectedNodes.Count);
 
 			// Group the selected nodes in continues selected blocks.
-			foreach (var selectedPartition in PartitionSelectedNodes(selectedNodes.Where(s => !(s.Node is ClassNode))))
+			foreach (var selectedPartition in PartitionSelectedNodes(selectedNodes.WhereNot(s => s.Node is ClassNode)))
 			{
 				foreach (var selected in selectedPartition)
 				{
@@ -928,7 +928,7 @@ namespace ReClassNET.UI
 
 		private void RemoveSelectedNodes()
 		{
-			selectedNodes.Where(h => !(h.Node is ClassNode)).ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
+			selectedNodes.WhereNot(h => h.Node is ClassNode).ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
 
 			selectedNodes.Clear();
 

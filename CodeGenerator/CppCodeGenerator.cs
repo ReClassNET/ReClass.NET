@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
+using ReClassNET.Util;
 
 namespace ReClassNET.CodeGenerator
 {
@@ -48,7 +49,7 @@ namespace ReClassNET.CodeGenerator
 			sb.AppendLine(
 				string.Join(
 					"\n\n",
-					OrderByInheritance(classes.Where(c => c.Nodes.All(n => !(n is FunctionNode)))).Select(c =>
+					OrderByInheritance(classes.Where(c => c.Nodes.None(n => n is FunctionNode))).Select(c =>
 					{
 						var csb = new StringBuilder();
 						csb.Append($"class {c.Name}");
@@ -74,7 +75,7 @@ namespace ReClassNET.CodeGenerator
 						csb.AppendLine(
 							string.Join(
 								"\n",
-								YieldMemberDefinitions(c.Nodes.Skip(skipFirstMember ? 1 : 0).Where(n => !(n is FunctionNode)), logger)
+								YieldMemberDefinitions(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
 									.Select(m => MemberDefinitionToString(m))
 									.Select(s => "\t" + s)
 							)
@@ -157,7 +158,7 @@ namespace ReClassNET.CodeGenerator
 			int fill = 0;
 			int fillStart = 0;
 
-			foreach (var member in members.Where(m => !(m is VTableNode)))
+			foreach (var member in members.WhereNot(m => m is VTableNode))
 			{
 				if (member is BaseHexNode)
 				{
