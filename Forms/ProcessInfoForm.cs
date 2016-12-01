@@ -152,10 +152,11 @@ namespace ReClassNET.Forms
 
 		private void dumpToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			bool isModule;
 			string fileName = string.Empty;
 			string initialDirectory = string.Empty;
 			IntPtr address;
-			IntPtr size;
+			int size;
 
 			if (GetToolStripSourceControl(sender) == modulesDataGridView)
 			{
@@ -165,10 +166,11 @@ namespace ReClassNET.Forms
 					return;
 				}
 
+				isModule = true;
 				fileName = $"{Path.GetFileNameWithoutExtension(module.Name)}_Dumped{Path.GetExtension(module.Name)}";
 				initialDirectory = Path.GetDirectoryName(module.Path);
 				address = module.Start;
-				size = module.Size;
+				size = module.Size.ToInt32();
 			}
 			else
 			{
@@ -178,22 +180,32 @@ namespace ReClassNET.Forms
 					return;
 				}
 
+				isModule = false;
 				fileName = $"Section_{section.Start.ToString("X")}_{section.End.ToString("X")}.dat";
 				address = section.Start;
-				size = section.Size;
+				size = section.Size.ToInt32();
 			}
 
 			using (var sfd = new SaveFileDialog())
 			{
 				sfd.FileName = fileName;
+				sfd.Filter = "All|*.*";
 				sfd.InitialDirectory = initialDirectory;
 
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
-					var data = process.ReadRemoteMemory(address, size.ToInt32());
-					using (var bw = new BinaryWriter(sfd.OpenFile()))
+					var dumper = new Dumper(process);
+
+					using (var stream = sfd.OpenFile())
 					{
-						bw.Write(data);
+						if (isModule)
+						{
+							dumper.DumpModule(address, size, stream);
+						}
+						else
+						{
+							dumper.DumpSection(address, size, stream);
+						}
 					}
 				}
 			}

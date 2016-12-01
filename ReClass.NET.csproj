@@ -154,6 +154,7 @@
     </Compile>
     <Compile Include="Memory\Module.cs" />
     <Compile Include="Memory\NodeDissector.cs" />
+    <Compile Include="Memory\Dumper.cs" />
     <Compile Include="Memory\Section.cs" />
     <Compile Include="Memory\UnionDataType.cs" />
     <Compile Include="Nodes\BoolNode.cs" />
