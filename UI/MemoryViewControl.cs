@@ -72,6 +72,9 @@ namespace ReClassNET.UI
 
 		public event EventHandler SelectionChanged;
 
+		/// <summary>The context menu of a node.</summary>
+		public ContextMenuStrip NodeContextMenu => selectedNodeContextMenuStrip;
+
 		public MemoryViewControl()
 		{
 			InitializeComponent();
