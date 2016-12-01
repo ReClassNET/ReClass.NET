@@ -316,6 +316,24 @@ namespace ReClassNET.Util
 		#region Linq
 
 		[DebuggerStepThrough]
+		public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		{
+			Contract.Requires(source != null);
+			Contract.Requires(predicate != null);
+
+			return !source.Any(predicate);
+		}
+
+		[DebuggerStepThrough]
+		public static IEnumerable<TSource> WhereNot<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		{
+			Contract.Requires(source != null);
+			Contract.Requires(predicate != null);
+
+			return source.Where(item => predicate(item) == false);
+		}
+
+		[DebuggerStepThrough]
 		public static int FindIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
 		{
 			Contract.Requires(source != null);

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
+using ReClassNET.Util;
 
 namespace ReClassNET.CodeGenerator
 {
@@ -84,7 +85,7 @@ namespace ReClassNET.CodeGenerator
 			Contract.Ensures(Contract.Result<IEnumerable<MemberDefinition>>() != null);
 			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<MemberDefinition>>(), d => d != null));
 
-			foreach (var member in members.Where(n => !(n is BaseHexNode)))
+			foreach (var member in members.WhereNot(n => n is BaseHexNode))
 			{
 				if (member is BitFieldNode)
 				{

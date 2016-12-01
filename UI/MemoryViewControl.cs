@@ -328,10 +328,50 @@ namespace ReClassNET.UI
 						}
 						else if (hotSpot.Type == HotSpotType.ChangeType)
 						{
+							IEnumerable<TypeToolStripMenuItem> items = null;
+
+							var functionNode = hitObject as FunctionNode;
+							if (functionNode != null)
+							{
+								var noneClass = new ClassNode(false)
+								{
+									Name = "None"
+								};
+
+								EventHandler handler = (sender2, e2) =>
+								{
+									var classNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
+									if (classNode == null)
+									{
+										return;
+									}
+
+									if (classNode == noneClass)
+									{
+										classNode = null;
+									}
+
+									functionNode.BelongsToClass = classNode;
+								};
+
+								items = noneClass.Yield()
+									.Concat(project.Classes.OrderBy(c => c.Name))
+									.Select(c =>
+									{
+										var b = new TypeToolStripMenuItem
+										{
+											Text = c.Name,
+											Tag = c
+										};
+										b.Click += handler;
+										return b;
+									});
+							}
+
 							var refNode = hitObject as BaseReferenceNode;
 							if (refNode != null)
 							{
-								EventHandler changeInnerType = (sender2, e2) =>
+								EventHandler handler = (sender2, e2) =>
 								{
 									var classNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
 									if (classNode == null)
@@ -345,9 +385,7 @@ namespace ReClassNET.UI
 									}
 								};
 
-								var menu = new ContextMenuStrip();
-								menu.Items.AddRange(
-									project.Classes
+								items = project.Classes
 									.OrderBy(c => c.Name)
 									.Select(c =>
 									{
@@ -356,11 +394,15 @@ namespace ReClassNET.UI
 											Text = c.Name,
 											Tag = c
 										};
-										b.Click += changeInnerType;
+										b.Click += handler;
 										return b;
-									})
-									.ToArray()
-								);
+									});
+							}
+
+							if (items != null)
+							{
+								var menu = new ContextMenuStrip();
+								menu.Items.AddRange(items.ToArray());
 								menu.Show(this, e.Location);
 							}
 						}
@@ -553,7 +595,7 @@ namespace ReClassNET.UI
 					// If no node is selected, try to select the first one.
 					var selection = hotSpots
 						.Where(h => h.Type == HotSpotType.Select)
-						.Where(h => !(h.Node is ClassNode))
+						.WhereNot(h => h.Node is ClassNode)
 						.FirstOrDefault();
 					if (selection != null)
 					{
@@ -832,7 +874,7 @@ namespace ReClassNET.UI
 			var newSelected = new List<HotSpot>(selectedNodes.Count);
 
 			// Group the selected nodes in continues selected blocks.
-			foreach (var selectedPartition in PartitionSelectedNodes(selectedNodes.Where(s => !(s.Node is ClassNode))))
+			foreach (var selectedPartition in PartitionSelectedNodes(selectedNodes.WhereNot(s => s.Node is ClassNode)))
 			{
 				foreach (var selected in selectedPartition)
 				{
@@ -899,7 +941,7 @@ namespace ReClassNET.UI
 
 		private void RemoveSelectedNodes()
 		{
-			selectedNodes.Where(h => !(h.Node is ClassNode)).ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
+			selectedNodes.WhereNot(h => h.Node is ClassNode).ForEach(h => h.Node.ParentNode.RemoveNode(h.Node));
 
 			selectedNodes.Clear();
 

@@ -79,7 +79,7 @@ namespace ReClassNET.Memory
 		{
 			Contract.Requires(offset >= 0);
 
-			if (Offset + offset > data.Length)
+			if (Offset + offset >= data.Length)
 			{
 				return 0;
 			}
@@ -148,6 +148,11 @@ namespace ReClassNET.Memory
 			if (Offset + offset + length > data.Length)
 			{
 				length = Math.Max(data.Length - Offset - offset, 0);
+			}
+
+			if (length <= 0)
+			{
+				return string.Empty;
 			}
 
 			var sb = new StringBuilder(length);

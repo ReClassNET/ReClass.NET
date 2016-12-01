@@ -381,7 +381,8 @@ namespace ReClassNET.DataExchange
 			typeof(UTF8TextPtrNode),
 			typeof(UTF16TextPtrNode),
 			typeof(BitFieldNode),
-			typeof(UInt64Node)
+			typeof(UInt64Node),
+			typeof(FunctionNode)
 		};
 
 		#endregion
