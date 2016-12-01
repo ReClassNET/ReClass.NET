@@ -7,7 +7,6 @@ using System.Linq;
 using System.Xml.Linq;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange
 {
@@ -46,6 +45,7 @@ namespace ReClassNET.DataExchange
 		private IEnumerable<XElement> CreateClassElements(IEnumerable<ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(classes != null);
+			Contract.Requires(Contract.ForAll(classes, c => c != null));
 			Contract.Requires(logger != null);
 			Contract.Ensures(Contract.Result<IEnumerable<XElement>>() != null);
 
@@ -62,6 +62,7 @@ namespace ReClassNET.DataExchange
 		private IEnumerable<XElement> CreateNodeElements(IEnumerable<BaseNode> nodes, ILogger logger)
 		{
 			Contract.Requires(nodes != null);
+			Contract.Requires(Contract.ForAll(nodes, n => n != null));
 			Contract.Requires(logger != null);
 			Contract.Ensures(Contract.Result<IEnumerable<XElement>>() != null);
 
@@ -136,6 +137,7 @@ namespace ReClassNET.DataExchange
 		{
 			Contract.Requires(output != null);
 			Contract.Requires(nodes != null);
+			Contract.Requires(Contract.ForAll(nodes, n => n != null));
 			Contract.Requires(logger != null);
 
 			using (var project = new ReClassNetProject())

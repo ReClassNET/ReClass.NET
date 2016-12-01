@@ -311,12 +311,17 @@ namespace ReClassNET.Memory
 			closeRemoteProcessDelegate(process);
 		}
 
-		public bool ReadRemoteMemory(IntPtr process, IntPtr address, byte[] buffer, int size)
+		public bool ReadRemoteMemory(IntPtr process, IntPtr address, byte[] buffer, int offset, int length)
 		{
 			Contract.Requires(buffer != null);
 
+			if (offset + length > buffer.Length)
+			{
+				throw new ArgumentOutOfRangeException("offset + length");
+			}
+
 			GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-			var result = readRemoteMemoryDelegate(process, address, handle.AddrOfPinnedObject(), size);
+			var result = readRemoteMemoryDelegate(process, address, handle.AddrOfPinnedObject() + offset, length);
 			handle.Free();
 
 			return result;

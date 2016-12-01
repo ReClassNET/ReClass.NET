@@ -10,7 +10,7 @@ namespace ReClassNET.Memory
 	{
 		public RemoteProcess Process { get; set; }
 
-		private byte[] data = new byte[0];
+		private byte[] data;
 
 		public int Size
 		{
@@ -28,6 +28,12 @@ namespace ReClassNET.Memory
 		}
 
 		public int Offset { get; set; }
+
+		[ContractInvariantMethod]
+		private void ObjectInvariants()
+		{
+			Contract.Invariant(data != null);
+		}
 
 		public MemoryBuffer()
 		{
@@ -57,11 +63,15 @@ namespace ReClassNET.Memory
 
 		public void Update(IntPtr address)
 		{
+			Contract.Requires(Process != null);
+
 			Process.ReadRemoteMemoryIntoBuffer(address, ref data);
 		}
 
 		public byte ReadByte(IntPtr offset)
 		{
+			Contract.Requires(offset.ToInt32() >= 0);
+
 			return ReadByte(offset.ToInt32());
 		}
 
@@ -69,7 +79,7 @@ namespace ReClassNET.Memory
 		{
 			Contract.Requires(offset >= 0);
 
-			if (Offset + offset > data.Length)
+			if (Offset + offset >= data.Length)
 			{
 				return 0;
 			}
@@ -95,6 +105,8 @@ namespace ReClassNET.Memory
 
 		public T ReadObject<T>(IntPtr offset) where T : struct
 		{
+			Contract.Requires(offset.ToInt32() >= 0);
+
 			return ReadObject<T>(offset.ToInt32());
 		}
 
@@ -108,14 +120,19 @@ namespace ReClassNET.Memory
 			}
 
 			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			var obj = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject() + Offset + offset, typeof(T));
+			var obj = Marshal.PtrToStructure(handle.AddrOfPinnedObject() + Offset + offset, typeof(T));
 			handle.Free();
 
-			return obj;
+			if (obj == null)
+			{
+				return default(T);
+			}
+			return (T)obj;
 		}
 
 		public string ReadPrintableASCIIString(IntPtr offset, int length)
 		{
+			Contract.Requires(offset.ToInt32() >= 0);
 			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 
@@ -130,7 +147,12 @@ namespace ReClassNET.Memory
 
 			if (Offset + offset + length > data.Length)
 			{
-				length = data.Length - Offset - offset;
+				length = Math.Max(data.Length - Offset - offset, 0);
+			}
+
+			if (length <= 0)
+			{
+				return string.Empty;
 			}
 
 			var sb = new StringBuilder(length);
@@ -167,6 +189,7 @@ namespace ReClassNET.Memory
 
 		public string ReadUTF8String(IntPtr offset, int length)
 		{
+			Contract.Requires(offset.ToInt32() >= 0);
 			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 
@@ -175,6 +198,7 @@ namespace ReClassNET.Memory
 
 		public string ReadUTF16String(IntPtr offset, int length)
 		{
+			Contract.Requires(offset.ToInt32() >= 0);
 			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 
@@ -183,6 +207,7 @@ namespace ReClassNET.Memory
 
 		public string ReadUTF32String(IntPtr offset, int length)
 		{
+			Contract.Requires(offset.ToInt32() >= 0);
 			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -144,6 +145,9 @@ namespace ReClassNET.Util
 
 		public static string UnDecorateSymbolName(string decoratedName)
 		{
+			Contract.Requires(decoratedName != null);
+			Contract.Ensures(Contract.Result<string>() != null);
+
 			var sb = new StringBuilder(255);
 			if (UnDecorateSymbolName(decoratedName, sb, sb.Capacity, /*UNDNAME_NAME_ONLY*/0x1000) != 0)
 			{

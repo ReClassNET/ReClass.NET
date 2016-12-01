@@ -51,20 +51,38 @@ namespace ReClassNET.Memory
 		/// <summary>Reads remote memory from the address into the buffer.</summary>
 		/// <param name="address">The address to read from.</param>
 		/// <param name="data">[out] The data buffer to fill. If the remote process is not valid, the buffer will get filled with zeros.</param>
-		public void ReadRemoteMemoryIntoBuffer(IntPtr address, ref byte[] data)
+		public bool ReadRemoteMemoryIntoBuffer(IntPtr address, ref byte[] buffer)
 		{
-			Contract.Requires(data != null);
+			Contract.Requires(buffer != null);
+			Contract.Ensures(Contract.ValueAtReturn(out buffer) != null);
+
+			return ReadRemoteMemoryIntoBuffer(address, ref buffer, 0, buffer.Length);
+		}
+
+		/// <summary>Reads remote memory from the address into the buffer.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <param name="data">[out] The data buffer to fill. If the remote process is not valid, the buffer will get filled with zeros.</param>
+		/// <param name="offset">The offset in the data.</param>
+		/// <param name="length">The number of bytes to read.</param>
+		public bool ReadRemoteMemoryIntoBuffer(IntPtr address, ref byte[] buffer, int offset, int length)
+		{
+			Contract.Requires(buffer != null);
+			Contract.Requires(offset >= 0);
+			Contract.Requires(length >= 0);
+			Contract.Requires(offset + length <= buffer.Length);
+			Contract.Ensures(Contract.ValueAtReturn(out buffer) != null);
+			Contract.EndContractBlock();
 
 			if (!IsValid)
 			{
 				Process = null;
 
-				data.FillWithZero();
+				buffer.FillWithZero();
 
-				return;
+				return false;
 			}
 
-			nativeHelper.ReadRemoteMemory(Process.Handle, address, data, data.Length);
+			return nativeHelper.ReadRemoteMemory(Process.Handle, address, buffer, offset, length);
 		}
 
 		/// <summary>Reads <paramref name="size"/> bytes from the address in the remote process.</summary>
@@ -139,6 +157,7 @@ namespace ReClassNET.Memory
 		public string ReadRemoteUTF8StringUntilFirstNullCharacter(IntPtr address, int length)
 		{
 			Contract.Requires(length >= 0);
+			Contract.Ensures(Contract.Result<string>() != null);
 
 			var data = ReadRemoteMemory(address, length);
 
@@ -407,6 +426,8 @@ namespace ReClassNET.Memory
 		/// <returns>The Task.</returns>
 		public Task UpdateProcessInformationsAsync()
 		{
+			Contract.Ensures(Contract.Result<Task>() != null);
+
 			if (!IsValid)
 			{
 				lock(modules)

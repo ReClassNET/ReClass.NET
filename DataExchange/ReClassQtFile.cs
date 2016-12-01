@@ -14,7 +14,7 @@ namespace ReClassNET.DataExchange
 		public const string FormatName = "ReClassQt File";
 		public const string FileExtension = ".reclassqt";
 
-		private ReClassNetProject project;
+		private readonly ReClassNetProject project;
 
 		public ReClassQtFile(ReClassNetProject project)
 		{
@@ -107,6 +107,7 @@ namespace ReClassNET.DataExchange
 		private IEnumerable<BaseNode> ReadNodeElements(IEnumerable<XElement> elements, ClassNode parent, IReadOnlyDictionary<string, ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(elements != null);
+			Contract.Requires(Contract.ForAll(elements, e => e != null));
 			Contract.Requires(parent != null);
 			Contract.Requires(logger != null);
 

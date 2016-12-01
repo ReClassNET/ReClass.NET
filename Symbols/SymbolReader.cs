@@ -79,6 +79,8 @@ namespace ReClassNET.Symbols
 
 		private void CreateSession()
 		{
+			Contract.Ensures(diaSession != null);
+
 			IDiaSession session;
 			diaSource.Interface.openSession(out session);
 

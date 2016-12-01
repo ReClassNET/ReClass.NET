@@ -41,7 +41,7 @@ namespace ReClassNET.Util
 				{
 					if (rk != null)
 					{
-						string str = rk.GetValue("CurrentMajorVersionNumber", string.Empty).ToString();
+						var str = rk.GetValue("CurrentMajorVersionNumber", string.Empty)?.ToString();
 						uint u;
 						if (uint.TryParse(str, out u))
 						{

@@ -39,7 +39,7 @@ namespace ReClassNET.DataExchange
 		public const string XmlLengthAttribute = "length";
 		public const string XmlSignatureAttribute = "signature";
 
-		private ReClassNetProject project;
+		private readonly ReClassNetProject project;
 
 		public ReClassNetFile(ReClassNetProject project)
 		{

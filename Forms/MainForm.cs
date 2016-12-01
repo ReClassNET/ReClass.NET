@@ -37,6 +37,10 @@ namespace ReClassNET.Forms
 		public MainForm(NativeHelper nativeHelper)
 		{
 			Contract.Requires(nativeHelper != null);
+			Contract.Ensures(remoteProcess != null);
+			Contract.Ensures(memory != null);
+			Contract.Ensures(pluginManager != null);
+			Contract.Ensures(currentProject != null);
 
 			this.nativeHelper = nativeHelper;
 
@@ -637,6 +641,7 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(filePath != null);
 			Contract.Requires(project != null);
+			Contract.Ensures(Contract.ValueAtReturn(out project) != null);
 
 			IReClassImport import = null;
 			switch (Path.GetExtension(filePath))

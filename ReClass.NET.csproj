@@ -68,7 +68,7 @@
     <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
-    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <CodeContractsAnalysisWarningLevel>3</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -154,10 +154,12 @@
     </Compile>
     <Compile Include="Memory\Module.cs" />
     <Compile Include="Memory\NodeDissector.cs" />
+    <Compile Include="Memory\Dumper.cs" />
     <Compile Include="Memory\Section.cs" />
     <Compile Include="Memory\UnionDataType.cs" />
     <Compile Include="Nodes\BoolNode.cs" />
     <Compile Include="Nodes\ClassUtil.cs" />
+    <Compile Include="Nodes\FunctionNode.cs" />
     <Compile Include="Nodes\NodeUuid.cs" />
     <Compile Include="ReClassNetProject.cs" />
     <Compile Include="UI\BannerBox.cs">
@@ -254,7 +256,7 @@
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LogLevel.cs" />
     <Compile Include="Logger\NullLogger.cs" />
-    <Compile Include="Memory\Memory.cs" />
+    <Compile Include="Memory\MemoryBuffer.cs" />
     <Compile Include="UI\MemoryViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -737,6 +739,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Button_Bool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Function.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" />

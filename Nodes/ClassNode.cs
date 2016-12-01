@@ -25,7 +25,7 @@ namespace ReClassNET.Nodes
 			get { return uuid; }
 			set
 			{
-				Contract.Requires(uuid != null);
+				Contract.Requires(value != null);
 
 				uuid = value;
 			}
@@ -65,6 +65,8 @@ namespace ReClassNET.Nodes
 
 		public static ClassNode Create()
 		{
+			Contract.Ensures(Contract.Result<ClassNode>() != null);
+
 			return new ClassNode(true);
 		}
 
@@ -170,6 +172,7 @@ namespace ReClassNET.Nodes
 		public void UpdateAddress(MemoryBuffer memory)
 		{
 			Contract.Requires(memory != null);
+			Contract.Requires(memory.Process != null);
 
 			try
 			{

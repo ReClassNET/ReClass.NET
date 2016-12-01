@@ -12,6 +12,7 @@ namespace ReClassNET.Memory
 		public static void DissectNodes(IEnumerable<BaseHexNode> nodes, MemoryBuffer memory)
 		{
 			Contract.Requires(nodes != null);
+			Contract.Requires(Contract.ForAll(nodes, n => n != null));
 			Contract.Requires(memory != null);
 
 			foreach (var node in nodes)

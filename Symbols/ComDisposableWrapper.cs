@@ -8,6 +8,12 @@ namespace ReClassNET.Symbols
 	{
 		protected object obj;
 
+		[ContractInvariantMethod]
+		private void ObjectInvariants()
+		{
+			Contract.Invariant(obj != null);
+		}
+
 		public DisposableWrapper(object obj)
 		{
 			Contract.Requires(obj != null);
@@ -17,14 +23,9 @@ namespace ReClassNET.Symbols
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (obj != null)
+			if (disposing)
 			{
-				if (disposing)
-				{
-					Marshal.ReleaseComObject(obj);
-				}
-
-				obj = null;
+				Marshal.ReleaseComObject(obj);
 			}
 		}
 

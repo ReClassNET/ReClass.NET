@@ -29,6 +29,7 @@ namespace ReClassNET.Forms
 			public PluginInfoRow(PluginInfo plugin)
 			{
 				Contract.Requires(plugin != null);
+				Contract.Ensures(this.plugin != null);
 
 				this.plugin = plugin;
 			}

@@ -215,6 +215,7 @@ namespace ReClassNET.Util
 		public static string LimitLength(this string s, int length)
 		{
 			Contract.Requires(s != null);
+			Contract.Ensures(Contract.Result<string>() != null);
 
 			if (s.Length <= length)
 			{
@@ -281,18 +282,21 @@ namespace ReClassNET.Util
 
 		#region List
 
-		public static T BinaryFind<T>(this IList<T> tf, Func<T, int> comparer)
+		public static T BinaryFind<T>(this IList<T> source, Func<T, int> comparer)
 		{
+			Contract.Requires(source != null);
+			Contract.Requires(comparer != null);
+
 			var lo = 0;
-			var hi = tf.Count - 1;
+			var hi = source.Count - 1;
 
 			while (lo <= hi)
 			{
 				var median = lo + (hi - lo >> 1);
-				var num = comparer(tf[median]);
+				var num = comparer(source[median]);
 				if (num == 0)
 				{
-					return tf[median];
+					return source[median];
 				}
 				if (num > 0)
 				{
@@ -363,6 +367,8 @@ namespace ReClassNET.Util
 		[DebuggerStepThrough]
 		public static IEnumerable<TSource> Yield<TSource>(this TSource item)
 		{
+			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
+
 			yield return item;
 		}
 
@@ -371,6 +377,7 @@ namespace ReClassNET.Util
 		{
 			Contract.Requires(source != null);
 			Contract.Requires(childSelector != null);
+			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
 
 			var stack = new Stack<TSource>(source);
 			while (stack.Any())
@@ -391,6 +398,7 @@ namespace ReClassNET.Util
 		{
 			Contract.Requires(source != null);
 			Contract.Requires(predicate != null);
+			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
 
 			using (var iterator = source.GetEnumerator())
 			{
@@ -413,6 +421,7 @@ namespace ReClassNET.Util
 		{
 			Contract.Requires(source != null);
 			Contract.Requires(predicate != null);
+			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
 
 			foreach (var item in source)
 			{
@@ -427,6 +436,10 @@ namespace ReClassNET.Util
 		[DebuggerStepThrough]
 		public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 		{
+			Contract.Requires(source != null);
+			Contract.Requires(keySelector != null);
+			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
+
 			var knownKeys = new HashSet<TKey>();
 			foreach (var element in source)
 			{
@@ -439,11 +452,18 @@ namespace ReClassNET.Util
 
 		public static bool SequenceEqualsEx<T>(this IEnumerable<T> first, IEnumerable<T> second)
 		{
+			Contract.Requires(first != null);
+			Contract.Requires(second != null);
+
 			return SequenceEqualsEx(first, second, EqualityComparer<T>.Default);
 		}
 
 		public static bool SequenceEqualsEx<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
 		{
+			Contract.Requires(first != null);
+			Contract.Requires(second != null);
+			Contract.Requires(comparer != null);
+
 			var counter = new Dictionary<T, int>(comparer);
 			foreach (var element in first)
 			{

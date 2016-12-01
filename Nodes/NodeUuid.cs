@@ -50,7 +50,6 @@ namespace ReClassNET.Nodes
 		/// <param name="valueBytes">Initial value of the <see cref="NodeUuid"/> object.</param>
 		public NodeUuid(byte[] valueBytes)
 		{
-			Contract.Requires(uuidBytes == null);
 			Contract.Requires(valueBytes != null);
 			Contract.Requires(valueBytes.Length == UuidSize);
 			Contract.Ensures(uuidBytes != null);
@@ -84,7 +83,6 @@ namespace ReClassNET.Nodes
 		/// <returns>Returns <c>true</c> if a random UUID has been generated, otherwise it returns <c>false</c>.</returns>
 		private void CreateNew()
 		{
-			Contract.Requires(uuidBytes == null);
 			Contract.Ensures(uuidBytes != null);
 
 			while (true)
@@ -108,7 +106,6 @@ namespace ReClassNET.Nodes
 		/// <param name="uuidBytes">Initial value of the <see cref="NodeUuid"/> object.</param>
 		private void SetValue(byte[] valueBytes)
 		{
-			Contract.Requires(uuidBytes == null);
 			Contract.Requires(valueBytes != null);
 			Contract.Requires(valueBytes.Length == UuidSize);
 			Contract.Ensures(uuidBytes != null);
@@ -121,7 +118,6 @@ namespace ReClassNET.Nodes
 		/// <summary>Sets the UUID to zero.</summary>
 		private void SetZero()
 		{
-			Contract.Requires(uuidBytes == null);
 			Contract.Ensures(uuidBytes != null);
 
 			uuidBytes = new byte[UuidSize];
@@ -169,8 +165,6 @@ namespace ReClassNET.Nodes
 
 		public int CompareTo(NodeUuid other)
 		{
-			Contract.Requires(other != null);
-
 			for (int i = 0; i < UuidSize; ++i)
 			{
 				if (uuidBytes[i] < other.uuidBytes[i])

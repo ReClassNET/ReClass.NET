@@ -193,6 +193,8 @@ namespace ReClassNET.UI
 
 		public ClassNodeView()
 		{
+			Contract.Ensures(root != null);
+
 			InitializeComponent();
 
 			DoubleBuffered = true;

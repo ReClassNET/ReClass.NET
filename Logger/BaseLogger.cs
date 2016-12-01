@@ -12,15 +12,11 @@ namespace ReClassNET.Logger
 
 		public void Log(Exception ex)
 		{
-			Contract.Requires(ex != null);
-
 			Log(LogLevel.Error, ExceptionMessageBox.GetMessageText(ex), ex);
 		}
 
 		public void Log(LogLevel level, string message)
 		{
-			Contract.Requires(message != null);
-
 			Log(level, message, null);
 		}
 
