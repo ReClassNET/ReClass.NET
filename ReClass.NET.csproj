@@ -255,7 +255,7 @@
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LogLevel.cs" />
     <Compile Include="Logger\NullLogger.cs" />
-    <Compile Include="Memory\Memory.cs" />
+    <Compile Include="Memory\MemoryBuffer.cs" />
     <Compile Include="UI\MemoryViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
