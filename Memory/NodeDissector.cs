@@ -116,18 +116,18 @@ namespace ReClassNET.Memory
 			var section = memory.Process.GetSectionToPointer(address);
 			if (section != null) // If the address points to a section it's valid memory.
 			{
-				if (section.Category == RemoteProcess.SectionCategory.CODE) // If the section contains code, it should be a function pointer.
+				if (section.Category == SectionCategory.CODE) // If the section contains code, it should be a function pointer.
 				{
 					return typeof(FunctionPtrNode);
 				}
-				else if (section.Category == RemoteProcess.SectionCategory.DATA || section.Category == RemoteProcess.SectionCategory.HEAP) // If the section contains data, it is at least a pointer to a class or something.
+				else if (section.Category == SectionCategory.DATA || section.Category == SectionCategory.HEAP) // If the section contains data, it is at least a pointer to a class or something.
 				{
 					// Check if it is a vtable. Check if the first 3 values are pointers to a code section.
 					bool valid = true;
 					for (var i = 0; i < 3; ++i)
 					{
 						var pointee = memory.Process.ReadRemoteObject<IntPtr>(address);
-						if (memory.Process.GetSectionToPointer(pointee)?.Category != RemoteProcess.SectionCategory.CODE)
+						if (memory.Process.GetSectionToPointer(pointee)?.Category != SectionCategory.CODE)
 						{
 							valid = false;
 							break;

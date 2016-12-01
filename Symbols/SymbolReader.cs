@@ -47,7 +47,7 @@ namespace ReClassNET.Symbols
 			GC.SuppressFinalize(this);
 		}
 
-		public static void TryResolveSymbolsForModule(RemoteProcess.Module module, string searchPath)
+		public static void TryResolveSymbolsForModule(Module module, string searchPath)
 		{
 			Contract.Requires(module != null);
 
@@ -57,7 +57,7 @@ namespace ReClassNET.Symbols
 			}
 		}
 
-		public static SymbolReader FromModule(RemoteProcess.Module module, string searchPath)
+		public static SymbolReader FromModule(Module module, string searchPath)
 		{
 			Contract.Requires(module != null);
 
@@ -85,7 +85,7 @@ namespace ReClassNET.Symbols
 			diaSession = new ComDisposableWrapper<IDiaSession>(session);
 		}
 
-		public string GetSymbolString(IntPtr address, RemoteProcess.Module module)
+		public string GetSymbolString(IntPtr address, Module module)
 		{
 			Contract.Requires(module != null);
 

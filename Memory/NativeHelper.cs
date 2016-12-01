@@ -343,6 +343,54 @@ namespace ReClassNET.Memory
 			enumerateRemoteSectionsAndModulesDelegate(process, callbackSection, callbackModule);
 		}
 
+		public void EnumerateRemoteSectionsAndModules(IntPtr process, Action<Section> callbackSection, Action<Module> callbackModule)
+		{
+			var c1 = callbackSection == null ? (EnumerateRemoteSectionCallback)null : delegate (IntPtr baseAddress, IntPtr regionSize, string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, string modulePath)
+			{
+				var section = new Section
+				{
+					Start = baseAddress,
+					End = baseAddress.Add(regionSize),
+					Size = regionSize,
+					Name = name,
+					State = state,
+					Protection = protection,
+					Type = type,
+					ModulePath = modulePath,
+					ModuleName = Path.GetFileName(modulePath),
+					Category = type == NativeMethods.TypeEnum.MEM_PRIVATE ? SectionCategory.HEAP : SectionCategory.Unknown
+				};
+				switch (section.Name)
+				{
+					case ".text":
+					case "code":
+						section.Category = SectionCategory.CODE;
+						break;
+					case ".data":
+					case "data":
+					case ".rdata":
+					case ".idata":
+						section.Category = SectionCategory.DATA;
+						break;
+				}
+				callbackSection(section);
+			};
+			
+			var c2 = callbackModule == null ? (EnumerateRemoteModuleCallback)null : delegate (IntPtr baseAddress, IntPtr size, string modulePath)
+			{
+				callbackModule(new Module
+				{
+					Start = baseAddress,
+					End = baseAddress.Add(size),
+					Size = size,
+					Path = modulePath,
+					Name = Path.GetFileName(modulePath)
+				});
+			};
+
+			EnumerateRemoteSectionsAndModules(process, c1, c2);
+		}
+
 		public void DisassembleRemoteCode(IntPtr process, IntPtr address, int length, DisassembleRemoteCodeCallback remoteCodeCallback)
 		{
 			disassembleRemoteCodeDelegate(process, address, length, remoteCodeCallback);

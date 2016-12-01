@@ -152,7 +152,9 @@
     <Compile Include="Forms\InputBytesForm.Designer.cs">
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Memory\Module.cs" />
     <Compile Include="Memory\NodeDissector.cs" />
+    <Compile Include="Memory\Section.cs" />
     <Compile Include="Memory\UnionDataType.cs" />
     <Compile Include="Nodes\BoolNode.cs" />
     <Compile Include="Nodes\ClassUtil.cs" />

@@ -30,35 +30,6 @@ namespace ReClassNET.Memory
 
 		private readonly Dictionary<IntPtr, string> rttiCache = new Dictionary<IntPtr, string>();
 
-		public class Module
-		{
-			public IntPtr Start;
-			public IntPtr End;
-			public string Name;
-			public string Path;
-		}
-
-		public enum SectionCategory
-		{
-			Unknown,
-			CODE,
-			DATA,
-			HEAP
-		}
-
-		public class Section
-		{
-			public IntPtr Start;
-			public IntPtr End;
-			public string Name;
-			public SectionCategory Category;
-			public NativeMethods.StateEnum State;
-			public NativeMethods.AllocationProtectEnum Protection;
-			public NativeMethods.TypeEnum Type;
-			public string ModuleName;
-			public string ModulePath;
-		}
-
 		private readonly List<Module> modules = new List<Module>();
 
 		private readonly List<Section> sections = new List<Section>();
@@ -455,48 +426,7 @@ namespace ReClassNET.Memory
 				var newModules = new List<Module>();
 				var newSections = new List<Section>();
 
-				nativeHelper.EnumerateRemoteSectionsAndModules(
-					process.Handle,
-					delegate (IntPtr baseAddress, IntPtr regionSize, string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, string modulePath)
-					{
-						var section = new Section
-						{
-							Start = baseAddress,
-							End = baseAddress.Add(regionSize),
-							Name = name,
-							State = state,
-							Protection = protection,
-							Type = type,
-							ModulePath = modulePath,
-							ModuleName = Path.GetFileName(modulePath),
-							Category = type == NativeMethods.TypeEnum.MEM_PRIVATE ? SectionCategory.HEAP : SectionCategory.Unknown
-						};
-						switch (section.Name)
-						{
-							case ".text":
-							case "code":
-								section.Category = SectionCategory.CODE;
-								break;
-							case ".data":
-							case "data":
-							case ".rdata":
-							case ".idata":
-								section.Category = SectionCategory.DATA;
-								break;
-						}
-						newSections.Add(section);
-					},
-					delegate (IntPtr baseAddress, IntPtr regionSize, string modulePath)
-					{
-						newModules.Add(new Module
-						{
-							Start = baseAddress,
-							End = baseAddress.Add(regionSize),
-							Path = modulePath,
-							Name = Path.GetFileName(modulePath)
-						});
-					}
-				);
+				nativeHelper.EnumerateRemoteSectionsAndModules(process.Handle, newSections.Add, newModules.Add);
 
 				newModules.Sort((m1, m2) => m1.Start.CompareTo(m2.Start));
 				newSections.Sort((s1, s2) => s1.Start.CompareTo(s2.Start));

@@ -107,7 +107,7 @@ namespace ReClassNET.Symbols
 			}
 		}
 
-		public void TryResolveSymbolsForModule(RemoteProcess.Module module)
+		public void TryResolveSymbolsForModule(Module module)
 		{
 			Contract.Requires(module != null);
 
@@ -140,7 +140,7 @@ namespace ReClassNET.Symbols
 			}
 		}
 
-		public void LoadSymbolsForModule(RemoteProcess.Module module)
+		public void LoadSymbolsForModule(Module module)
 		{
 			Contract.Requires(module != null);
 
@@ -186,7 +186,7 @@ namespace ReClassNET.Symbols
 			}
 		}
 
-		public SymbolReader GetSymbolsForModule(RemoteProcess.Module module)
+		public SymbolReader GetSymbolsForModule(Module module)
 		{
 			Contract.Requires(module != null);
 
