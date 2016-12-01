@@ -293,7 +293,7 @@ namespace ReClassNET.Forms
 
 		private void memoryViewerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			new ProcessMemoryViewer(remoteProcess, classesView).Show();
+			new ProcessInfoForm(remoteProcess, classesView).Show();
 		}
 
 		private void ControlRemoteProcessToolStripMenuItem_Click(object sender, EventArgs e)
@@ -675,7 +675,7 @@ namespace ReClassNET.Forms
 
 			int index = 0;
 
-			var progress = new Progress<Tuple<RemoteProcess.Module, IEnumerable<RemoteProcess.Module>>>(
+			var progress = new Progress<Tuple<Module, IEnumerable<Module>>>(
 				report =>
 				{
 					infoToolStripStatusLabel.Text = $"[{++index}/{report.Item2.Count()}] Loading symbols for module: {report.Item1.Name}";

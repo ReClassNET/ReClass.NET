@@ -310,11 +310,11 @@
     <Compile Include="Forms\ProcessBrowserForm.Designer.cs">
       <DependentUpon>ProcessBrowserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProcessMemoryViewForm.cs">
+    <Compile Include="Forms\ProcessInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ProcessMemoryViewForm.Designer.cs">
-      <DependentUpon>ProcessMemoryViewForm.cs</DependentUpon>
+    <Compile Include="Forms\ProcessInfoForm.Designer.cs">
+      <DependentUpon>ProcessInfoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Nodes\VMethodNode.cs" />
     <Compile Include="Nodes\VTableNode.cs" />
@@ -377,8 +377,8 @@
     <EmbeddedResource Include="Forms\ProcessBrowserForm.resx">
       <DependentUpon>ProcessBrowserForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ProcessMemoryViewForm.resx">
-      <DependentUpon>ProcessMemoryViewForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ProcessInfoForm.resx">
+      <DependentUpon>ProcessInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>

@@ -4,19 +4,17 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.Forms;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
-namespace ReClassNET
+namespace ReClassNET.Forms
 {
-	public partial class ProcessMemoryViewer : IconForm
+	public partial class ProcessInfoForm : IconForm
 	{
 		private readonly ClassNodeView classesView;
 
-		public ProcessMemoryViewer(RemoteProcess process, ClassNodeView classesView)
+		public ProcessInfoForm(RemoteProcess process, ClassNodeView classesView)
 		{
 			Contract.Requires(process != null);
 			Contract.Requires(classesView != null);
