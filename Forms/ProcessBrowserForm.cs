@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.Forms;
 using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
-namespace ReClassNET
+namespace ReClassNET.Forms
 {
 	public partial class ProcessBrowserForm : IconForm
 	{

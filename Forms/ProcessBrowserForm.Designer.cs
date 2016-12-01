@@ -1,4 +1,4 @@
-﻿namespace ReClassNET
+﻿namespace ReClassNET.Forms
 {
 	partial class ProcessBrowserForm
 	{
