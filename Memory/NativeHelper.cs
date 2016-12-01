@@ -315,7 +315,7 @@ namespace ReClassNET.Memory
 		{
 			Contract.Requires(buffer != null);
 
-			if (offset + length >= buffer.Length)
+			if (offset + length > buffer.Length)
 			{
 				throw new ArgumentOutOfRangeException("offset + length");
 			}

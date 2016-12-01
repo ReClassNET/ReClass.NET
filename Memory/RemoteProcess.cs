@@ -68,7 +68,7 @@ namespace ReClassNET.Memory
 			Contract.Requires(buffer != null);
 			Contract.Requires(offset >= 0);
 			Contract.Requires(length >= 0);
-			Contract.Requires(offset + length < buffer.Length);
+			Contract.Requires(offset + length <= buffer.Length);
 
 			if (!IsValid)
 			{
