@@ -12,45 +12,69 @@ namespace ReClassNET.Forms
 {
 	public partial class ProcessInfoForm : IconForm
 	{
+		private readonly RemoteProcess process;
 		private readonly ClassNodeView classesView;
+
+		/// <summary>The context menu of the sections grid view.</summary>
+		public ContextMenuStrip GridContextMenu => sectionContextMenuStrip;
 
 		public ProcessInfoForm(RemoteProcess process, ClassNodeView classesView)
 		{
 			Contract.Requires(process != null);
 			Contract.Requires(classesView != null);
 
+			this.process = process;
 			this.classesView = classesView;
 
 			InitializeComponent();
 
+			modulesDataGridView.AutoGenerateColumns = false;
 			sectionsDataGridView.AutoGenerateColumns = false;
 
 			if (process.IsValid)
 			{
-				DataTable dt = new DataTable();
-				dt.Columns.Add("address", typeof(string));
-				dt.Columns.Add("address_val", typeof(IntPtr));
-				dt.Columns.Add("size", typeof(ulong));
-				dt.Columns.Add("name", typeof(string));
-				dt.Columns.Add("protection", typeof(string));
-				dt.Columns.Add("type", typeof(string));
-				dt.Columns.Add("module", typeof(string));
+				var sections = new DataTable();
+				sections.Columns.Add("address", typeof(string));
+				sections.Columns.Add("size", typeof(ulong));
+				sections.Columns.Add("name", typeof(string));
+				sections.Columns.Add("protection", typeof(string));
+				sections.Columns.Add("type", typeof(string));
+				sections.Columns.Add("module", typeof(string));
+				sections.Columns.Add("section", typeof(Section));
 
-				process.NativeHelper.EnumerateRemoteSectionsAndModules(process.Process.Handle, delegate (IntPtr baseAddress, IntPtr regionSize, string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, string modulePath)
-				{
-					var row = dt.NewRow();
-					row["address"] = baseAddress.ToString("X");
-					row["address_val"] = baseAddress;
-					row["size"] = (ulong)regionSize.ToInt64();
-					row["name"] = name;
-					row["protection"] = protection.ToString();
-					row["type"] = type.ToString();
-					row["module"] = Path.GetFileName(modulePath);
-					dt.Rows.Add(row);
-				},
-				null);
+				var modules = new DataTable();
+				modules.Columns.Add("address", typeof(string));
+				modules.Columns.Add("size", typeof(ulong));
+				modules.Columns.Add("path", typeof(string));
+				modules.Columns.Add("module", typeof(Module));
 
-				sectionsDataGridView.DataSource = dt;
+				process.NativeHelper.EnumerateRemoteSectionsAndModules(
+					process.Process.Handle,
+					delegate (Section section)
+					{
+						var row = sections.NewRow();
+						row["address"] = section.Start.ToString("X");
+						row["size"] = (ulong)section.Size.ToInt64();
+						row["name"] = section.Name;
+						row["protection"] = section.Protection.ToString();
+						row["type"] = section.Type.ToString();
+						row["module"] = section.ModuleName;
+						row["section"] = section;
+						sections.Rows.Add(row);
+					},
+					delegate (Module module)
+					{
+						var row = modules.NewRow();
+						row["address"] = module.Start.ToString("X");
+						row["size"] = (ulong)module.Size.ToInt64();
+						row["path"] = module.Path;
+						row["module"] = module;
+						modules.Rows.Add(row);
+					}
+				);
+
+				sectionsDataGridView.DataSource = sections;
+				modulesDataGridView.DataSource = modules;
 			}
 		}
 
@@ -70,59 +94,143 @@ namespace ReClassNET.Forms
 
 		#region Event Handler
 
-		private void sectionsDataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+		private void SelectRow_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
 		{
+			var dgv = sender as DataGridView;
+			if (dgv == null)
+			{
+				return;
+			}
+
 			if (e.Button == MouseButtons.Right)
 			{
 				int row = e.RowIndex;
 				if (e.RowIndex != -1)
 				{
-					sectionsDataGridView.Rows[row].Selected = true;
+					dgv.Rows[row].Selected = true;
 				}
 			}
 		}
 
 		private void setCurrentClassAddressToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var address = GetSelectedRegionAddress();
-			if (address != IntPtr.Zero)
+			var classNode = classesView.SelectedClass;
+			if (classNode == null)
 			{
-				var node = classesView.SelectedClass;
-				if (node != null)
-				{
-					node.Address = address;
-				}
+				return;
 			}
+
+			IntPtr address;
+			if (GetToolStripSourceControl(sender) == modulesDataGridView)
+			{
+				address = GetSelectedModule()?.Start ?? IntPtr.Zero;
+			}
+			else
+			{
+				address = GetSelectedSection()?.Start ?? IntPtr.Zero;
+			}
+
+			classNode.Address = address;
 		}
 
 		private void createClassAtAddressToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var address = GetSelectedRegionAddress();
-			if (address != IntPtr.Zero)
-			{
-				var node = ClassNode.Create();
-				node.Address = address;
-				node.AddBytes(64);
+			var node = ClassNode.Create();
+			node.AddBytes(64);
 
-				classesView.SelectedClass = node;
+			if (GetToolStripSourceControl(sender) == modulesDataGridView)
+			{
+				node.Address = GetSelectedModule()?.Start ?? IntPtr.Zero;
+			}
+			else
+			{
+				node.Address = GetSelectedSection()?.Start ?? IntPtr.Zero;
+			}
+
+			classesView.SelectedClass = node;
+		}
+
+		private void dumpToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			string fileName = string.Empty;
+			string initialDirectory = string.Empty;
+			IntPtr address;
+			IntPtr size;
+
+			if (GetToolStripSourceControl(sender) == modulesDataGridView)
+			{
+				var module = GetSelectedModule();
+				if (module == null)
+				{
+					return;
+				}
+
+				fileName = $"{Path.GetFileNameWithoutExtension(module.Name)}_Dumped{Path.GetExtension(module.Name)}";
+				initialDirectory = Path.GetDirectoryName(module.Path);
+				address = module.Start;
+				size = module.Size;
+			}
+			else
+			{
+				var section = GetSelectedSection();
+				if (section == null)
+				{
+					return;
+				}
+
+				fileName = $"Section_{section.Start.ToString("X")}_{section.End.ToString("X")}.dat";
+				address = section.Start;
+				size = section.Size;
+			}
+
+			using (var sfd = new SaveFileDialog())
+			{
+				sfd.FileName = fileName;
+				sfd.InitialDirectory = initialDirectory;
+
+				if (sfd.ShowDialog() == DialogResult.OK)
+				{
+					var data = process.ReadRemoteMemory(address, size.ToInt32());
+					using (var bw = new BinaryWriter(sfd.OpenFile()))
+					{
+						bw.Write(data);
+					}
+				}
 			}
 		}
 
 		private void sectionsDataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
 			setCurrentClassAddressToolStripMenuItem_Click(sender, e);
+
+			Close();
 		}
 
 		#endregion
 
-		private IntPtr GetSelectedRegionAddress()
+		private Control GetToolStripSourceControl(object sender)
+		{
+			return ((sender as ToolStripMenuItem)?.GetCurrentParent() as ContextMenuStrip)?.SourceControl;
+		}
+
+		private Module GetSelectedModule()
+		{
+			var row = modulesDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView;
+			if (row != null)
+			{
+				return row["module"] as Module;
+			}
+			return null;
+		}
+
+		private Section GetSelectedSection()
 		{
 			var row = sectionsDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView;
 			if (row != null)
 			{
-				return (IntPtr)row["address_val"];
+				return row["section"] as Section;
 			}
-			return IntPtr.Zero;
+			return null;
 		}
 	}
 }
