@@ -38,7 +38,7 @@ namespace ReClassNET.DataExchange
 		public const string XmlBitsAttribute = "bits";
 		public const string XmlLengthAttribute = "length";
 
-		private ReClassNetProject project;
+		private readonly ReClassNetProject project;
 
 		public ReClassNetFile(ReClassNetProject project)
 		{

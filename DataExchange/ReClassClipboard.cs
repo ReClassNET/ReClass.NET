@@ -40,7 +40,7 @@ namespace ReClassNET.DataExchange
 		{
 			Contract.Requires(templateProject != null);
 			Contract.Requires(logger != null);
-			Contract.Ensures(Contract.Result<List<BaseNode>>() != null);
+			Contract.Ensures(Contract.Result<Tuple<List<ClassNode>, List<BaseNode>>>() != null);
 
 			var classes = new List<ClassNode>();
 			var nodes = new List<BaseNode>();

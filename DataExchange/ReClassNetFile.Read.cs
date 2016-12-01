@@ -23,6 +23,9 @@ namespace ReClassNET.DataExchange
 
 		public void Load(Stream input, ILogger logger)
 		{
+			Contract.Requires(input != null);
+			Contract.Requires(logger != null);
+
 			using (var archive = new ZipArchive(input, ZipArchiveMode.Read))
 			{
 				var dataEntry = archive.GetEntry(DataFileName);
@@ -79,6 +82,7 @@ namespace ReClassNET.DataExchange
 		private IEnumerable<BaseNode> ReadNodeElements(IEnumerable<XElement> elements, ClassNode parent, ILogger logger)
 		{
 			Contract.Requires(elements != null);
+			Contract.Requires(Contract.ForAll(elements, e => e != null));
 			Contract.Requires(parent != null);
 			Contract.Requires(logger != null);
 
@@ -178,6 +182,10 @@ namespace ReClassNET.DataExchange
 
 		private static void TryGetAttributeValue(XElement element, string attribute, out int val, ILogger logger)
 		{
+			Contract.Requires(element != null);
+			Contract.Requires(attribute != null);
+			Contract.Requires(logger != null);
+
 			if (!int.TryParse(element.Attribute(attribute)?.Value, out val))
 			{
 				val = 0;
@@ -191,6 +199,7 @@ namespace ReClassNET.DataExchange
 		{
 			Contract.Requires(input != null);
 			Contract.Requires(logger != null);
+			Contract.Ensures(Contract.Result<Tuple<List<ClassNode>, List<BaseNode>>>() != null);
 
 			using (var project = new ReClassNetProject())
 			{

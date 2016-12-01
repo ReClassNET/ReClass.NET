@@ -54,6 +54,7 @@ namespace ReClassNET.Memory
 		public bool ReadRemoteMemoryIntoBuffer(IntPtr address, ref byte[] buffer)
 		{
 			Contract.Requires(buffer != null);
+			Contract.Ensures(Contract.ValueAtReturn(out buffer) != null);
 
 			return ReadRemoteMemoryIntoBuffer(address, ref buffer, 0, buffer.Length);
 		}
@@ -69,6 +70,8 @@ namespace ReClassNET.Memory
 			Contract.Requires(offset >= 0);
 			Contract.Requires(length >= 0);
 			Contract.Requires(offset + length <= buffer.Length);
+			Contract.Ensures(Contract.ValueAtReturn(out buffer) != null);
+			Contract.EndContractBlock();
 
 			if (!IsValid)
 			{
@@ -154,6 +157,7 @@ namespace ReClassNET.Memory
 		public string ReadRemoteUTF8StringUntilFirstNullCharacter(IntPtr address, int length)
 		{
 			Contract.Requires(length >= 0);
+			Contract.Ensures(Contract.Result<string>() != null);
 
 			var data = ReadRemoteMemory(address, length);
 
@@ -422,6 +426,8 @@ namespace ReClassNET.Memory
 		/// <returns>The Task.</returns>
 		public Task UpdateProcessInformationsAsync()
 		{
+			Contract.Ensures(Contract.Result<Task>() != null);
+
 			if (!IsValid)
 			{
 				lock(modules)

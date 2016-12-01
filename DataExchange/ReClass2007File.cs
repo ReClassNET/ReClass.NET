@@ -36,7 +36,7 @@ namespace ReClassNET.DataExchange
 			typeof(FunctionPtrNode)
 		};
 
-		private ReClassNetProject project;
+		private readonly ReClassNetProject project;
 
 		public ReClass2007File(ReClassNetProject project)
 		{
@@ -193,6 +193,7 @@ namespace ReClassNET.DataExchange
 		{
 			Contract.Requires(connection != null);
 			Contract.Requires(query != null);
+			Contract.Ensures(Contract.Result<IEnumerable<DataRow>>() != null);
 
 			using (var adapter = new SQLiteDataAdapter(query, connection))
 			{

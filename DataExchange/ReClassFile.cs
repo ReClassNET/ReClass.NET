@@ -15,7 +15,7 @@ namespace ReClassNET.DataExchange
 		public const string FormatName = "ReClass File";
 		public const string FileExtension = ".reclass";
 
-		private ReClassNetProject project;
+		private readonly ReClassNetProject project;
 
 		public ReClassFile(ReClassNetProject project)
 		{

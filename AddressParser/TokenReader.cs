@@ -46,7 +46,7 @@ namespace ReClassNET.AddressParser
 					}
 					++i;
 
-					tokens.Add(new Token { TokenType = TokenType.ModuleOffset, Value = buffer });
+					tokens.Add(new Token(TokenType.ModuleOffset, buffer));
 					isFormulaSubPart = false;
 
 					if (i == characters.Length)
@@ -77,7 +77,7 @@ namespace ReClassNET.AddressParser
 						var address = (IntPtr)unchecked((int)offsetValue);
 #endif
 
-						tokens.Add(new Token { TokenType = TokenType.Offset, Value = address });
+						tokens.Add(new Token(TokenType.Offset, address));
 						isFormulaSubPart = false;
 					}
 					else
@@ -99,15 +99,15 @@ namespace ReClassNET.AddressParser
 					case '-':
 					case '*':
 					case '/':
-						tokens.Add(new Token { TokenType = TokenType.Operation, Value = characters[i] });
+						tokens.Add(new Token(TokenType.Operation, characters[i]));
 						isFormulaSubPart = true;
 						break;
 					case '[':
-						tokens.Add(new Token { TokenType = TokenType.LeftBracket, Value = characters[i] });
+						tokens.Add(new Token(TokenType.LeftBracket, characters[i]));
 						isFormulaSubPart = true;
 						break;
 					case ']':
-						tokens.Add(new Token { TokenType = TokenType.RightBracket, Value = characters[i] });
+						tokens.Add(new Token(TokenType.RightBracket, characters[i]));
 						isFormulaSubPart = false;
 						break;
 					default:

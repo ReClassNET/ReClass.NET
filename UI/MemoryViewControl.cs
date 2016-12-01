@@ -211,6 +211,8 @@ namespace ReClassNET.UI
 
 		protected override void OnMouseClick(MouseEventArgs e)
 		{
+			Contract.Requires(e != null);
+
 			editBox.Visible = false;
 
 			foreach (var hotSpot in hotSpots)
@@ -377,6 +379,8 @@ namespace ReClassNET.UI
 
 		protected override void OnMouseDoubleClick(MouseEventArgs e)
 		{
+			Contract.Requires(e != null);
+
 			base.OnMouseDoubleClick(e);
 
 			editBox.Visible = false;
@@ -399,6 +403,8 @@ namespace ReClassNET.UI
 		private Point toolTipPosition;
 		protected override void OnMouseHover(EventArgs e)
 		{
+			Contract.Requires(e != null);
+
 			base.OnMouseHover(e);
 
 			if (selectedNodes.Count > 1)
@@ -426,6 +432,8 @@ namespace ReClassNET.UI
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
+			Contract.Requires(e != null);
+
 			base.OnMouseMove(e);
 
 			if (e.Location != toolTipPosition)
@@ -438,9 +446,11 @@ namespace ReClassNET.UI
 			}
 		}
 
-		protected override void OnScroll(ScrollEventArgs se)
+		protected override void OnScroll(ScrollEventArgs e)
 		{
-			base.OnScroll(se);
+			Contract.Requires(e != null);
+
+			base.OnScroll(e);
 
 			editBox.Visible = false;
 		}
@@ -790,7 +800,7 @@ namespace ReClassNET.UI
 			Contract.Requires(parentNode != null);
 			Contract.Requires(type != null);
 			Contract.Requires(nodesToReplace != null);
-			Contract.Ensures(Contract.Result<IEnumerable<HotSpot>>() != null);
+			Contract.Ensures(Contract.Result<IEnumerable<BaseNode>>() != null);
 
 			foreach (var nodeToReplace in nodesToReplace)
 			{

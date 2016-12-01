@@ -11,6 +11,7 @@ namespace ReClassNET.Memory
 		public Dumper(RemoteProcess process)
 		{
 			Contract.Requires(process != null);
+			Contract.Ensures(this.process != null);
 
 			this.process = process;
 		}
@@ -21,6 +22,7 @@ namespace ReClassNET.Memory
 		/// <param name="stream">The stream to dump to.</param>
 		public void DumpSection(IntPtr address, int size, Stream stream)
 		{
+			Contract.Requires(size >= 0);
 			Contract.Requires(stream != null);
 
 			var data = process.ReadRemoteMemory(address, size);
@@ -34,6 +36,7 @@ namespace ReClassNET.Memory
 		/// <param name="stream">The stream to dump to.</param>
 		public void DumpModule(IntPtr address, int size, Stream stream)
 		{
+			Contract.Requires(size >= 0);
 			Contract.Requires(stream != null);
 
 			var data = process.ReadRemoteMemory(address, size);

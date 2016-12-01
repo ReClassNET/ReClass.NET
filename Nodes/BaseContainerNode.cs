@@ -7,6 +7,12 @@ namespace ReClassNET.Nodes
 {
 	public abstract class BaseContainerNode : BaseNode
 	{
+		[ContractInvariantMethod]
+		private void ObjectInvariants()
+		{
+			Contract.Invariant(nodes != null);
+		}
+
 		protected readonly List<BaseNode> nodes = new List<BaseNode>();
 
 		/// <summary>The child nodes of the node.</summary>
@@ -37,6 +43,7 @@ namespace ReClassNET.Nodes
 		public bool ReplaceChildNode(BaseNode child, Type nodeType)
 		{
 			Contract.Requires(nodeType != null);
+			Contract.Requires(nodeType.IsSubclassOf(typeof(BaseNode)));
 
 			List<BaseNode> dummy = null;
 			return ReplaceChildNode(child, nodeType, ref dummy);
@@ -46,6 +53,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(child != null);
 			Contract.Requires(nodeType != null);
+			Contract.Requires(nodeType.IsSubclassOf(typeof(BaseNode)));
 
 			return ReplaceChildNode(FindNodeIndex(child), nodeType, ref createdNodes);
 		}
@@ -178,7 +186,13 @@ namespace ReClassNET.Nodes
 
 		public virtual void InsertNode(BaseNode position, BaseNode node)
 		{
-			InsertNode(FindNodeIndex(position), node);
+			var index = FindNodeIndex(position);
+			if (index == -1)
+			{
+				throw new ArgumentException();
+			}
+
+			InsertNode(index, node);
 		}
 
 		public virtual void InsertNode(int index, BaseNode node)

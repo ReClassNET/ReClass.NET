@@ -110,6 +110,7 @@ namespace ReClassNET.Symbols
 		public void TryResolveSymbolsForModule(Module module)
 		{
 			Contract.Requires(module != null);
+			Contract.Requires(module.Name != null);
 
 			var name = module.Name.ToLower();
 
@@ -143,6 +144,7 @@ namespace ReClassNET.Symbols
 		public void LoadSymbolsForModule(Module module)
 		{
 			Contract.Requires(module != null);
+			Contract.Requires(module.Name != null);
 
 			var moduleName = module.Name.ToLower();
 
@@ -189,6 +191,7 @@ namespace ReClassNET.Symbols
 		public SymbolReader GetSymbolsForModule(Module module)
 		{
 			Contract.Requires(module != null);
+			Contract.Requires(module.Name != null);
 
 			var name = module.Name.ToLower();
 
