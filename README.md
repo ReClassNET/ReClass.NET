@@ -29,6 +29,7 @@ This is a port of ReClass to the .NET platform with additional features.
 - Memory Viewer
 - Class address calculator
 - Code Generator (C++ / C#)
+- Module / Section Dumper
 - Plugin Support
  - Plugins can be written in different languages (example: C++, C++/CLI, C#)
  - Plugins can provide custom methods to access an other process (example: use a driver)
