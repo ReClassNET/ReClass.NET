@@ -11,7 +11,7 @@ namespace ReClassNET.Nodes
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x, int y)
 		{
-			return Draw(view, x, y, "Function", Name);
+			return Draw(view, x, y, "FunctionPtr", Name);
 		}
 	}
 }

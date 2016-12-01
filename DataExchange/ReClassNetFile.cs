@@ -37,6 +37,7 @@ namespace ReClassNET.DataExchange
 		public const string XmlCountAttribute = "count";
 		public const string XmlBitsAttribute = "bits";
 		public const string XmlLengthAttribute = "length";
+		public const string XmlSignatureAttribute = "signature";
 
 		private ReClassNetProject project;
 
@@ -49,6 +50,7 @@ namespace ReClassNET.DataExchange
 
 		private static Dictionary<string, Type> BuildInStringToTypeMap = new Type[]
 		{
+			typeof(BoolNode),
 			typeof(BitFieldNode),
 			typeof(ClassInstanceArrayNode),
 			typeof(ClassInstanceNode),
@@ -56,6 +58,7 @@ namespace ReClassNET.DataExchange
 			typeof(ClassPtrNode),
 			typeof(DoubleNode),
 			typeof(FloatNode),
+			typeof(FunctionNode),
 			typeof(FunctionPtrNode),
 			typeof(Hex8Node),
 			typeof(Hex16Node),
