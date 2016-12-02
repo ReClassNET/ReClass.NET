@@ -1,4 +1,5 @@
-﻿using ReClassNET.Memory;
+﻿using System;
+using ReClassNET.Memory;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -7,6 +8,15 @@ namespace ReClassNET.Nodes
 	{
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 4;
+
+		public override bool UseMemoryPreviewToolTip(HotSpot spot, MemoryBuffer memory, out IntPtr address)
+		{
+			var value = memory.ReadObject<UInt32FloatData>(Offset);
+
+			address = value.IntPtr;
+
+			return memory.Process.GetNamedAddress(value.IntPtr) != null;
+		}
 
 		/// <summary>Gets informations about this node to show in a tool tip.</summary>
 		/// <param name="spot">The spot.</param>

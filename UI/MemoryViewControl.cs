@@ -87,6 +87,7 @@ namespace ReClassNET.UI
 			};
 
 			editBox.Font = font;
+			memoryPreviewToolTip.Font = font;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -452,7 +453,7 @@ namespace ReClassNET.UI
 			if (selectedNodes.Count > 1)
 			{
 				var memorySize = selectedNodes.Select(h => h.Node.MemorySize).Sum();
-				toolTip.Show($"{selectedNodes.Count} Nodes selected, {memorySize} bytes", this, toolTipPosition.OffsetEx(16, 16));
+				nodeInfoToolTip.Show($"{selectedNodes.Count} Nodes selected, {memorySize} bytes", this, toolTipPosition.OffsetEx(16, 16));
 			}
 			else
 			{
@@ -460,10 +461,20 @@ namespace ReClassNET.UI
 				{
 					if (spot.Rect.Contains(toolTipPosition))
 					{
-						var text = spot.Node.GetToolTipText(spot, spot.Memory);
-						if (!string.IsNullOrEmpty(text))
+						IntPtr previewAddress;
+						if (spot.Node.UseMemoryPreviewToolTip(spot, spot.Memory, out previewAddress))
 						{
-							toolTip.Show(text, this, toolTipPosition.OffsetEx(16, 16));
+							memoryPreviewToolTip.UpdateMemory(spot.Memory.Process, previewAddress);
+
+							memoryPreviewToolTip.Show("<>", this, toolTipPosition.OffsetEx(16, 16));
+						}
+						else
+						{
+							var text = spot.Node.GetToolTipText(spot, spot.Memory);
+							if (!string.IsNullOrEmpty(text))
+							{
+								nodeInfoToolTip.Show(text, this, toolTipPosition.OffsetEx(16, 16));
+							}
 						}
 
 						return;
@@ -482,7 +493,8 @@ namespace ReClassNET.UI
 			{
 				toolTipPosition = e.Location;
 
-				toolTip.Hide(this);
+				nodeInfoToolTip.Hide(this);
+				memoryPreviewToolTip.Hide(this);
 
 				ResetMouseEventArgs();
 			}

@@ -72,6 +72,7 @@
 			this.arrayOfPointersToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.vTablePointerToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.functionPointerToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
+			this.functionToolStripMenuItem = new ReClassNET.UI.TypeToolStripMenuItem();
 			this.addBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.add4BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.add8BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
@@ -100,8 +101,8 @@
 			this.copyAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.repaintTimer = new System.Windows.Forms.Timer(this.components);
 			this.editBox = new ReClassNET.UI.HotSpotTextBox();
-			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.functionToolStripMenuItem = new UI.TypeToolStripMenuItem();
+			this.nodeInfoToolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.memoryPreviewToolTip = new ReClassNET.UI.MemoryPreviewToolTip();
 			this.selectedNodeContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -122,7 +123,7 @@
             this.toolStripSeparator12,
             this.copyAddressToolStripMenuItem});
 			this.selectedNodeContextMenuStrip.Name = "selectedNodeContextMenuStrip";
-			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(205, 248);
+			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(205, 226);
 			this.selectedNodeContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.selectedNodeContextMenuStrip_Opening);
 			// 
 			// changeTypeToolStripMenuItem
@@ -759,16 +760,20 @@
 			this.editBox.Visible = false;
 			this.editBox.Committed += new System.EventHandler(this.editBox_Committed);
 			// 
-			// toolTip
+			// nodeInfoToolTip
 			// 
-			this.toolTip.ShowAlways = true;
+			this.nodeInfoToolTip.ShowAlways = true;
+			// 
+			// memoryPreviewToolTip
+			// 
+			this.memoryPreviewToolTip.ShowAlways = true;
 			// 
 			// MemoryViewControl
 			// 
 			this.Controls.Add(this.editBox);
 			this.DoubleBuffered = true;
 			this.Name = "MemoryViewControl";
-			this.Size = new System.Drawing.Size(150, 921);
+			this.Size = new System.Drawing.Size(150, 162);
 			this.selectedNodeContextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -800,7 +805,7 @@
 		private System.Windows.Forms.ToolStripMenuItem copyAddressToolStripMenuItem;
 		private System.Windows.Forms.Timer repaintTimer;
 		private HotSpotTextBox editBox;
-		private System.Windows.Forms.ToolTip toolTip;
+		private System.Windows.Forms.ToolTip nodeInfoToolTip;
 		private UI.TypeToolStripMenuItem hex64ToolStripMenuItem;
 		private UI.TypeToolStripMenuItem hex32ToolStripMenuItem;
 		private UI.TypeToolStripMenuItem hex16ToolStripMenuItem;
@@ -850,5 +855,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
 		private UI.TypeToolStripMenuItem boolToolStripMenuItem;
 		private UI.TypeToolStripMenuItem functionToolStripMenuItem;
+		private MemoryPreviewToolTip memoryPreviewToolTip;
 	}
 }

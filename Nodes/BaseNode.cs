@@ -97,6 +97,16 @@ namespace ReClassNET.Nodes
 
 		}
 
+		public virtual bool UseMemoryPreviewToolTip(HotSpot spot, MemoryBuffer memory, out IntPtr address)
+		{
+			Contract.Requires(spot != null);
+			Contract.Requires(memory != null);
+
+			address = IntPtr.Zero;
+
+			return false;
+		}
+
 		/// <summary>Gets informations about this node to show in a tool tip.</summary>
 		/// <param name="spot">The spot.</param>
 		/// <param name="memory">The process memory.</param>

@@ -218,6 +218,9 @@
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ISettingsBindable.cs" />
+    <Compile Include="UI\MemoryPreviewToolTip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\MemoryViewControl.Designer.cs">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
