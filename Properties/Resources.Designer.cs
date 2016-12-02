@@ -633,6 +633,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Category {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Category", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Chart_Delete {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Chart_Delete", resourceCulture);
@@ -726,6 +736,16 @@ namespace ReClassNET.Properties {
         internal static System.Drawing.Bitmap B16x16_Double_Type {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Double_Type", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Drive_Go {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Drive_Go", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -953,6 +973,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Page_White_Stack {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Page_White_Stack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Pdb {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Pdb", resourceCulture);
@@ -1171,7 +1201,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 2016/11/29 22:59:59
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2016/12/02 13:06:20
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {

@@ -29,11 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-			this.sectionContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.setCurrentClassAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.createClassAtAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,32 +43,34 @@
 			this.typeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.moduleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.bannerBox1 = new ReClassNET.UI.BannerBox();
-			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.tabControl = new System.Windows.Forms.TabControl();
 			this.modulesTabPage = new System.Windows.Forms.TabPage();
 			this.modulesDataGridView = new System.Windows.Forms.DataGridView();
+			this.moduleIconDataGridViewImageColumn = new System.Windows.Forms.DataGridViewImageColumn();
+			this.moduleNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.moduleAddressDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.moduleSizeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.modulePathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.sectionsTabPage = new System.Windows.Forms.TabPage();
-			this.sectionContextMenuStrip.SuspendLayout();
+			this.contextMenuStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox1)).BeginInit();
-			this.tabControl1.SuspendLayout();
+			this.tabControl.SuspendLayout();
 			this.modulesTabPage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.modulesDataGridView)).BeginInit();
 			this.sectionsTabPage.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// sectionContextMenuStrip
+			// contextMenuStrip
 			// 
-			this.sectionContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.setCurrentClassAddressToolStripMenuItem,
             this.toolStripSeparator1,
             this.createClassAtAddressToolStripMenuItem,
             this.toolStripSeparator2,
             this.dumpToolStripMenuItem});
-			this.sectionContextMenuStrip.Name = "contextMenuStrip";
-			this.sectionContextMenuStrip.Size = new System.Drawing.Size(203, 82);
+			this.contextMenuStrip.Name = "contextMenuStrip";
+			this.contextMenuStrip.Size = new System.Drawing.Size(203, 104);
 			// 
 			// setCurrentClassAddressToolStripMenuItem
 			// 
@@ -102,6 +100,7 @@
 			// 
 			// dumpToolStripMenuItem
 			// 
+			this.dumpToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Drive_Go;
 			this.dumpToolStripMenuItem.Name = "dumpToolStripMenuItem";
 			this.dumpToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
 			this.dumpToolStripMenuItem.Text = "Dump...";
@@ -127,7 +126,7 @@
 			this.sectionsDataGridView.Name = "sectionsDataGridView";
 			this.sectionsDataGridView.ReadOnly = true;
 			this.sectionsDataGridView.RowHeadersVisible = false;
-			this.sectionsDataGridView.RowTemplate.ContextMenuStrip = this.sectionContextMenuStrip;
+			this.sectionsDataGridView.RowTemplate.ContextMenuStrip = this.contextMenuStrip;
 			this.sectionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.sectionsDataGridView.Size = new System.Drawing.Size(796, 386);
 			this.sectionsDataGridView.TabIndex = 0;
@@ -136,20 +135,17 @@
 			// 
 			// addressColumn
 			// 
+			this.addressColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
 			this.addressColumn.DataPropertyName = "address";
-			dataGridViewCellStyle1.Format = "X";
-			this.addressColumn.DefaultCellStyle = dataGridViewCellStyle1;
 			this.addressColumn.HeaderText = "Address";
 			this.addressColumn.Name = "addressColumn";
 			this.addressColumn.ReadOnly = true;
+			this.addressColumn.Width = 70;
 			// 
 			// sizeColumn
 			// 
 			this.sizeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
 			this.sizeColumn.DataPropertyName = "size";
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle2.Format = "X";
-			this.sizeColumn.DefaultCellStyle = dataGridViewCellStyle2;
 			this.sizeColumn.HeaderText = "Size";
 			this.sizeColumn.Name = "sizeColumn";
 			this.sizeColumn.ReadOnly = true;
@@ -201,15 +197,18 @@
 			this.bannerBox1.Text = "View informations about the current process.";
 			this.bannerBox1.Title = "Process Informations";
 			// 
-			// tabControl1
+			// tabControl
 			// 
-			this.tabControl1.Controls.Add(this.modulesTabPage);
-			this.tabControl1.Controls.Add(this.sectionsTabPage);
-			this.tabControl1.Location = new System.Drawing.Point(12, 60);
-			this.tabControl1.Name = "tabControl1";
-			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(810, 418);
-			this.tabControl1.TabIndex = 3;
+			this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.tabControl.Controls.Add(this.modulesTabPage);
+			this.tabControl.Controls.Add(this.sectionsTabPage);
+			this.tabControl.Location = new System.Drawing.Point(12, 60);
+			this.tabControl.Name = "tabControl";
+			this.tabControl.SelectedIndex = 0;
+			this.tabControl.Size = new System.Drawing.Size(810, 418);
+			this.tabControl.TabIndex = 3;
 			// 
 			// modulesTabPage
 			// 
@@ -230,6 +229,8 @@
 			this.modulesDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
 			this.modulesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.modulesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.moduleIconDataGridViewImageColumn,
+            this.moduleNameDataGridViewTextBoxColumn,
             this.moduleAddressDataGridViewTextBoxColumn,
             this.moduleSizeDataGridViewTextBoxColumn,
             this.modulePathDataGridViewTextBoxColumn});
@@ -239,28 +240,45 @@
 			this.modulesDataGridView.Name = "modulesDataGridView";
 			this.modulesDataGridView.ReadOnly = true;
 			this.modulesDataGridView.RowHeadersVisible = false;
-			this.modulesDataGridView.RowTemplate.ContextMenuStrip = this.sectionContextMenuStrip;
+			this.modulesDataGridView.RowTemplate.ContextMenuStrip = this.contextMenuStrip;
 			this.modulesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.modulesDataGridView.Size = new System.Drawing.Size(796, 386);
 			this.modulesDataGridView.TabIndex = 1;
 			this.modulesDataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.SelectRow_CellMouseDown);
 			// 
+			// moduleIconDataGridViewImageColumn
+			// 
+			this.moduleIconDataGridViewImageColumn.DataPropertyName = "icon";
+			this.moduleIconDataGridViewImageColumn.HeaderText = "";
+			this.moduleIconDataGridViewImageColumn.MinimumWidth = 18;
+			this.moduleIconDataGridViewImageColumn.Name = "moduleIconDataGridViewImageColumn";
+			this.moduleIconDataGridViewImageColumn.ReadOnly = true;
+			this.moduleIconDataGridViewImageColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.moduleIconDataGridViewImageColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+			this.moduleIconDataGridViewImageColumn.Width = 18;
+			// 
+			// moduleNameDataGridViewTextBoxColumn
+			// 
+			this.moduleNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.moduleNameDataGridViewTextBoxColumn.DataPropertyName = "name";
+			this.moduleNameDataGridViewTextBoxColumn.HeaderText = "Module";
+			this.moduleNameDataGridViewTextBoxColumn.Name = "moduleNameDataGridViewTextBoxColumn";
+			this.moduleNameDataGridViewTextBoxColumn.ReadOnly = true;
+			this.moduleNameDataGridViewTextBoxColumn.Width = 67;
+			// 
 			// moduleAddressDataGridViewTextBoxColumn
 			// 
+			this.moduleAddressDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
 			this.moduleAddressDataGridViewTextBoxColumn.DataPropertyName = "address";
-			dataGridViewCellStyle3.Format = "X";
-			this.moduleAddressDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle3;
 			this.moduleAddressDataGridViewTextBoxColumn.HeaderText = "Address";
 			this.moduleAddressDataGridViewTextBoxColumn.Name = "moduleAddressDataGridViewTextBoxColumn";
 			this.moduleAddressDataGridViewTextBoxColumn.ReadOnly = true;
+			this.moduleAddressDataGridViewTextBoxColumn.Width = 70;
 			// 
 			// moduleSizeDataGridViewTextBoxColumn
 			// 
 			this.moduleSizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
 			this.moduleSizeDataGridViewTextBoxColumn.DataPropertyName = "size";
-			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle4.Format = "X";
-			this.moduleSizeDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
 			this.moduleSizeDataGridViewTextBoxColumn.HeaderText = "Size";
 			this.moduleSizeDataGridViewTextBoxColumn.Name = "moduleSizeDataGridViewTextBoxColumn";
 			this.moduleSizeDataGridViewTextBoxColumn.ReadOnly = true;
@@ -282,24 +300,24 @@
 			this.sectionsTabPage.Padding = new System.Windows.Forms.Padding(3);
 			this.sectionsTabPage.Size = new System.Drawing.Size(802, 392);
 			this.sectionsTabPage.TabIndex = 0;
-			this.sectionsTabPage.Text = "Memory Regions";
+			this.sectionsTabPage.Text = "Sections";
 			this.sectionsTabPage.UseVisualStyleBackColor = true;
 			// 
-			// ProcessMemoryViewForm
+			// ProcessInfoForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(834, 490);
-			this.Controls.Add(this.tabControl1);
+			this.Controls.Add(this.tabControl);
 			this.Controls.Add(this.bannerBox1);
 			this.MinimumSize = new System.Drawing.Size(586, 320);
-			this.Name = "ProcessMemoryViewForm";
+			this.Name = "ProcessInfoForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "ReClass.NET - Memory Viewer";
-			this.sectionContextMenuStrip.ResumeLayout(false);
+			this.Text = "ReClass.NET - Process Informations";
+			this.contextMenuStrip.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox1)).EndInit();
-			this.tabControl1.ResumeLayout(false);
+			this.tabControl.ResumeLayout(false);
 			this.modulesTabPage.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.modulesDataGridView)).EndInit();
 			this.sectionsTabPage.ResumeLayout(false);
@@ -310,25 +328,27 @@
 		#endregion
 
 		private System.Windows.Forms.DataGridView sectionsDataGridView;
-		private System.Windows.Forms.ContextMenuStrip sectionContextMenuStrip;
+		private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem setCurrentClassAddressToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem createClassAtAddressToolStripMenuItem;
 		private UI.BannerBox bannerBox1;
+		private System.Windows.Forms.TabControl tabControl;
+		private System.Windows.Forms.TabPage modulesTabPage;
+		private System.Windows.Forms.DataGridView modulesDataGridView;
+		private System.Windows.Forms.TabPage sectionsTabPage;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem dumpToolStripMenuItem;
+		private System.Windows.Forms.DataGridViewImageColumn moduleIconDataGridViewImageColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn moduleNameDataGridViewTextBoxColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn moduleAddressDataGridViewTextBoxColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn moduleSizeDataGridViewTextBoxColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn modulePathDataGridViewTextBoxColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn addressColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn sizeColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn protectionColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn typeColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn moduleColumn;
-		private System.Windows.Forms.TabControl tabControl1;
-		private System.Windows.Forms.TabPage modulesTabPage;
-		private System.Windows.Forms.DataGridView modulesDataGridView;
-		private System.Windows.Forms.DataGridViewTextBoxColumn moduleAddressDataGridViewTextBoxColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn moduleSizeDataGridViewTextBoxColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn modulePathDataGridViewTextBoxColumn;
-		private System.Windows.Forms.TabPage sectionsTabPage;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem dumpToolStripMenuItem;
 	}
 }

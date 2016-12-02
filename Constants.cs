@@ -16,8 +16,12 @@
 
 #if WIN64
 		public const string Platform = "x64";
+
+		public const string StringHexFormat = "X016";
 #else
 		public const string Platform = "x86";
+
+		public const string StringHexFormat = "X08";
 #endif
 
 		public const string SettingsFile = "settings.xml";

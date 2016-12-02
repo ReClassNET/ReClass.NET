@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -16,7 +17,7 @@ namespace ReClassNET.Forms
 		private readonly ClassNodeView classesView;
 
 		/// <summary>The context menu of the sections grid view.</summary>
-		public ContextMenuStrip GridContextMenu => sectionContextMenuStrip;
+		public ContextMenuStrip GridContextMenu => contextMenuStrip;
 
 		public ProcessInfoForm(RemoteProcess process, ClassNodeView classesView)
 		{
@@ -28,6 +29,12 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
+			tabControl.ImageList = new ImageList();
+			tabControl.ImageList.Images.Add(Properties.Resources.B16x16_Category);
+			tabControl.ImageList.Images.Add(Properties.Resources.B16x16_Page_White_Stack);
+			modulesTabPage.ImageIndex = 0;
+			sectionsTabPage.ImageIndex = 1;
+
 			modulesDataGridView.AutoGenerateColumns = false;
 			sectionsDataGridView.AutoGenerateColumns = false;
 
@@ -35,7 +42,7 @@ namespace ReClassNET.Forms
 			{
 				var sections = new DataTable();
 				sections.Columns.Add("address", typeof(string));
-				sections.Columns.Add("size", typeof(ulong));
+				sections.Columns.Add("size", typeof(string));
 				sections.Columns.Add("name", typeof(string));
 				sections.Columns.Add("protection", typeof(string));
 				sections.Columns.Add("type", typeof(string));
@@ -43,8 +50,10 @@ namespace ReClassNET.Forms
 				sections.Columns.Add("section", typeof(Section));
 
 				var modules = new DataTable();
+				modules.Columns.Add("icon", typeof(Icon));
+				modules.Columns.Add("name", typeof(string));
 				modules.Columns.Add("address", typeof(string));
-				modules.Columns.Add("size", typeof(ulong));
+				modules.Columns.Add("size", typeof(string));
 				modules.Columns.Add("path", typeof(string));
 				modules.Columns.Add("module", typeof(Module));
 
@@ -53,8 +62,8 @@ namespace ReClassNET.Forms
 					delegate (Section section)
 					{
 						var row = sections.NewRow();
-						row["address"] = section.Start.ToString("X");
-						row["size"] = (ulong)section.Size.ToInt64();
+						row["address"] = section.Start.ToString(Constants.StringHexFormat);
+						row["size"] = section.Size.ToString(Constants.StringHexFormat);
 						row["name"] = section.Name;
 						row["protection"] = section.Protection.ToString();
 						row["type"] = section.Type.ToString();
@@ -65,8 +74,10 @@ namespace ReClassNET.Forms
 					delegate (Module module)
 					{
 						var row = modules.NewRow();
-						row["address"] = module.Start.ToString("X");
-						row["size"] = (ulong)module.Size.ToInt64();
+						row["icon"] = ShellIcon.GetSmallIcon(module.Path);
+						row["name"] = module.Name;
+						row["address"] = module.Start.ToString(Constants.StringHexFormat);
+						row["size"] = module.Size.ToString(Constants.StringHexFormat);
 						row["path"] = module.Path;
 						row["module"] = module;
 						modules.Rows.Add(row);
@@ -196,16 +207,25 @@ namespace ReClassNET.Forms
 				{
 					var dumper = new Dumper(process);
 
-					using (var stream = sfd.OpenFile())
+					try
 					{
-						if (isModule)
+						using (var stream = sfd.OpenFile())
 						{
-							dumper.DumpModule(address, size, stream);
+							if (isModule)
+							{
+								dumper.DumpModule(address, size, stream);
+							}
+							else
+							{
+								dumper.DumpSection(address, size, stream);
+							}
+
+							MessageBox.Show("Module successfully dumped.", "ReClass.NET", MessageBoxButtons.OK, MessageBoxIcon.Information);
 						}
-						else
-						{
-							dumper.DumpSection(address, size, stream);
-						}
+					}
+					catch (Exception ex)
+					{
+						Program.ShowException(ex);
 					}
 				}
 			}
