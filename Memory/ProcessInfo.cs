@@ -6,6 +6,8 @@ namespace ReClassNET.Memory
 {
 	public class ProcessInfo : IDisposable
 	{
+		private readonly object sync = new object();
+
 		private readonly NativeHelper nativeHelper;
 
 		private IntPtr handle;
@@ -37,7 +39,13 @@ namespace ReClassNET.Memory
 		{
 			if (handle.IsNull())
 			{
-				handle = nativeHelper.OpenRemoteProcess(Id, NativeMethods.PROCESS_ALL_ACCESS);
+				lock (sync)
+				{
+					if (handle.IsNull())
+					{
+						handle = nativeHelper.OpenRemoteProcess(Id, NativeMethods.PROCESS_ALL_ACCESS);
+					}
+				}
 			}
 			return handle;
 		}
@@ -46,9 +54,15 @@ namespace ReClassNET.Memory
 		{
 			if (!handle.IsNull())
 			{
-				nativeHelper.CloseRemoteProcess(handle);
+				lock (sync)
+				{
+					if (!handle.IsNull())
+					{
+						nativeHelper.CloseRemoteProcess(handle);
 
-				handle = IntPtr.Zero;
+						handle = IntPtr.Zero;
+					}
+				}
 			}
 		}
 	}
