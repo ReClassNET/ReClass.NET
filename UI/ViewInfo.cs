@@ -7,6 +7,8 @@ namespace ReClassNET.UI
 {
 	public class ViewInfo
 	{
+		public Settings Settings { get; set; }
+
 		public Graphics Context { get; set; }
 		public FontEx Font { get; set; }
 
@@ -23,6 +25,7 @@ namespace ReClassNET.UI
 		{
 			return new ViewInfo
 			{
+				Settings = Settings,
 				Context = Context,
 				Font = Font,
 				Memory = Memory,

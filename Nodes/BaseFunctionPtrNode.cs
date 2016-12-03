@@ -47,14 +47,14 @@ namespace ReClassNET.Nodes
 
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, name) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, name) + view.Font.Width;
 
 			x = AddOpenClose(view, x, y) + view.Font.Width;
 
 			x = AddComment(view, x, y);
 
-			if (Program.Settings.ShowCommentSymbol)
+			if (view.Settings.ShowCommentSymbol)
 			{
 				var value = view.Memory.ReadObject<IntPtr>(Offset);
 
@@ -67,7 +67,7 @@ namespace ReClassNET.Nodes
 						var symbol = symbols.GetSymbolString(value, module);
 						if (!string.IsNullOrEmpty(symbol))
 						{
-							x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol) + view.Font.Width;
+							x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol) + view.Font.Width;
 						}
 					}
 				}
@@ -83,7 +83,7 @@ namespace ReClassNET.Nodes
 				{
 					y += view.Font.Height;
 
-					AddText(view, tx, y, Program.Settings.NameColor, HotSpot.ReadOnlyId, line);
+					AddText(view, tx, y, view.Settings.NameColor, HotSpot.ReadOnlyId, line);
 				}
 			}
 

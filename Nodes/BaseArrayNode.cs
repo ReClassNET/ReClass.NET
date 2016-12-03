@@ -30,19 +30,19 @@ namespace ReClassNET.Nodes
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name);
-			x = AddText(view, x, y, Program.Settings.IndexColor, HotSpot.NoneId, "[");
-			x = AddText(view, x, y, Program.Settings.IndexColor, 0, Count.ToString());
-			x = AddText(view, x, y, Program.Settings.IndexColor, HotSpot.NoneId, "]");
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "[");
+			x = AddText(view, x, y, view.Settings.IndexColor, 0, Count.ToString());
+			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "]");
 
 			x = AddIcon(view, x, y, Icons.LeftArrow, 2, HotSpotType.Click);
-			x = AddText(view, x, y, Program.Settings.IndexColor, HotSpot.NoneId, "(");
-			x = AddText(view, x, y, Program.Settings.IndexColor, 1, CurrentIndex.ToString());
-			x = AddText(view, x, y, Program.Settings.IndexColor, HotSpot.NoneId, ")");
+			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "(");
+			x = AddText(view, x, y, view.Settings.IndexColor, 1, CurrentIndex.ToString());
+			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, ")");
 			x = AddIcon(view, x, y, Icons.RightArrow, 3, HotSpotType.Click);
 
-			x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name} Size={MemorySize}>");
+			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name} Size={MemorySize}>");
 			x = AddIcon(view, x + 2, y, Icons.Change, 4, exchange);
 
 			x += view.Font.Width;

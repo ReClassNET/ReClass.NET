@@ -27,12 +27,12 @@ namespace ReClassNET.Nodes
 
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, "Bool") + view.Font.Width;
-			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
-			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, "=") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Bool") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "=") + view.Font.Width;
 
 			var value = view.Memory.ReadByte(Offset);
-			x = AddText(view, x, y, Program.Settings.ValueColor, 0, value == 0 ? "false" : "true") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.ValueColor, 0, value == 0 ? "false" : "true") + view.Font.Width;
 
 			AddComment(view, x, y);
 

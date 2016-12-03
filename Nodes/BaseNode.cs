@@ -233,17 +233,17 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view.Context != null);
 			Contract.Requires(view.Font != null);
 
-			if (Program.Settings.ShowNodeOffset)
+			if (view.Settings.ShowNodeOffset)
 			{
-				x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, $"{Offset.ToInt32():X04}") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"{Offset.ToInt32():X04}") + view.Font.Width;
 			}
 
-			if (Program.Settings.ShowNodeAddress)
+			if (view.Settings.ShowNodeAddress)
 			{
 #if WIN32
-				x = AddText(view, x, y, Program.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt32():X08}") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt32():X08}") + view.Font.Width;
 #else
-				x = AddText(view, x, y, Program.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt64():X016}") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.AddressColor, HotSpot.AddressId, $"{view.Address.Add(Offset).ToInt64():X016}") + view.Font.Width;
 #endif
 			}
 
@@ -267,7 +267,7 @@ namespace ReClassNET.Nodes
 
 			if (IsSelected)
 			{
-				using (var brush = new SolidBrush(Program.Settings.SelectedColor))
+				using (var brush = new SolidBrush(view.Settings.SelectedColor))
 				{
 					view.Context.FillRectangle(brush, 0, y, view.ClientArea.Right, height);
 				}
@@ -374,8 +374,8 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view.Context != null);
 			Contract.Requires(view.Font != null);
 
-			x = AddText(view, x, y, Program.Settings.CommentColor, HotSpot.NoneId, "//");
-			x = AddText(view, x, y, Program.Settings.CommentColor, HotSpot.CommentId, Comment) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.CommentColor, HotSpot.NoneId, "//");
+			x = AddText(view, x, y, view.Settings.CommentColor, HotSpot.CommentId, Comment) + view.Font.Width;
 
 			return x;
 		}
@@ -390,7 +390,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
 
-			using (var brush = new SolidBrush(IsSelected ? Program.Settings.SelectedColor : Program.Settings.HiddenColor))
+			using (var brush = new SolidBrush(IsSelected ? view.Settings.SelectedColor : view.Settings.HiddenColor))
 			{
 				view.Context.FillRectangle(brush, 0, y, view.ClientArea.Right, 1);
 			}

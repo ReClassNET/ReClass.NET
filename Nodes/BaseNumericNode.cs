@@ -35,10 +35,10 @@ namespace ReClassNET.Nodes
 			x = AddIcon(view, x, y, icon, HotSpot.NoneId, HotSpotType.None);
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
-			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, "=") + view.Font.Width;
-			x = AddText(view, x, y, Program.Settings.ValueColor, 0, value) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "=") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.ValueColor, 0, value) + view.Font.Width;
 
 			AddComment(view, x, y);
 

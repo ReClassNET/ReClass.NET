@@ -35,8 +35,8 @@ namespace ReClassNET.Nodes
 
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name);
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
 			x = AddOpenClose(view, x, y);
 
 			x += view.Font.Width;
@@ -72,8 +72,8 @@ namespace ReClassNET.Nodes
 			x = AddIcon(view, x, y, Icons.Vector, HotSpot.NoneId, HotSpotType.None);
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name);
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
 			x = AddOpenClose(view, x, y);
 
 			if (levelsOpen[view.Level])

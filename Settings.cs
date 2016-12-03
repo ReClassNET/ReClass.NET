@@ -159,6 +159,8 @@ namespace ReClassNET
 		public string TypeUTF32PtrText { get; set; } = "char32_t*";
 
 		public string TypeFunctionPtr { get; set; } = "void*";
+
+		public Settings Clone() => MemberwiseClone() as Settings;
 	}
 
 	public class XmlColorWrapper : IXmlSerializable

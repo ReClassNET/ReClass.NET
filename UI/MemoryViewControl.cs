@@ -160,6 +160,7 @@ namespace ReClassNET.UI
 
 			var view = new ViewInfo
 			{
+				Settings = Program.Settings,
 				Context = e.Graphics,
 				Font = font,
 				Address = ClassNode.Offset,

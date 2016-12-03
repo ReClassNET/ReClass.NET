@@ -14,6 +14,9 @@ namespace ReClassNET.UI
 {
 	public class MemoryPreviewToolTip : ToolTip
 	{
+		private const int ToolTipWidth = 1000 + ToolTipPadding;
+		private const int ToolTipPadding = 4;
+
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public FontEx Font
@@ -60,17 +63,22 @@ namespace ReClassNET.UI
 
 		private void OnPopup(object sender, PopupEventArgs e)
 		{
-			size.Width = 604;
-			size.Height = nodes.Select(n => n.CalculateHeight(viewInfo)).Sum() + 4;
+			size.Width = ToolTipWidth;
+			size.Height = nodes.Select(n => n.CalculateHeight(viewInfo)).Sum() + ToolTipPadding;
 
 			e.ToolTipSize = size;
 
-			viewInfo.ClientArea = new Rectangle(2, 2, size.Width - 4, size.Height - 4);
+			viewInfo.ClientArea = new Rectangle(ToolTipPadding / 2, ToolTipPadding / 2, size.Width - ToolTipPadding, size.Height - ToolTipPadding);
 		}
 
 		private void OnDraw(object sender, DrawToolTipEventArgs e)
 		{
 			viewInfo.HotSpots.Clear();
+
+			// Some settings are not usefull for the preview.
+			viewInfo.Settings = Program.Settings.Clone();
+			viewInfo.Settings.ShowNodeAddress = false;
+			viewInfo.Settings.HighlightChangedValues = false;
 
 			viewInfo.Context = e.Graphics;
 

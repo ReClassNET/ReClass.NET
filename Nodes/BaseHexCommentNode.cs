@@ -13,19 +13,19 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
-			if (Program.Settings.ShowCommentFloat)
+			if (view.Settings.ShowCommentFloat)
 			{
-				x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.ReadOnlyId, $"({(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000})");
+				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, $"({(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000})");
 			}
-			if (Program.Settings.ShowCommentInteger)
+			if (view.Settings.ShowCommentInteger)
 			{
 				if (ivalue == IntPtr.Zero)
 				{
-					x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.ReadOnlyId, "(0)");
+					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, "(0)");
 				}
 				else
 				{
-					x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.ReadOnlyId, $"({ivalue.ToInt64()}|0x{uvalue.ToUInt64():X})");
+					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, $"({ivalue.ToInt64()}|0x{uvalue.ToUInt64():X})");
 				}
 			}
 
@@ -34,22 +34,22 @@ namespace ReClassNET.Nodes
 			{
 				x += view.Font.Width;
 
-				if (Program.Settings.ShowCommentPointer)
+				if (view.Settings.ShowCommentPointer)
 				{
-					x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.NoneId, "->") + view.Font.Width;
-					x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.ReadOnlyId, namedAddress) + view.Font.Width;
+					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, "->") + view.Font.Width;
+					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, namedAddress) + view.Font.Width;
 				}
 
-				if (Program.Settings.ShowCommentRtti)
+				if (view.Settings.ShowCommentRtti)
 				{
 					var rtti = view.Memory.Process.ReadRemoteRuntimeTypeInformation(ivalue);
 					if (!string.IsNullOrEmpty(rtti))
 					{
-						x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.ReadOnlyId, rtti) + view.Font.Width;
+						x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, rtti) + view.Font.Width;
 					}
 				}
 
-				if (Program.Settings.ShowCommentSymbol)
+				if (view.Settings.ShowCommentSymbol)
 				{
 					var module = view.Memory.Process.GetModuleToPointer(ivalue);
 					if (module != null)
@@ -60,13 +60,13 @@ namespace ReClassNET.Nodes
 							var symbol = symbols.GetSymbolString(ivalue, module);
 							if (!string.IsNullOrEmpty(symbol))
 							{
-								x = AddText(view, x, y, Program.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol) + view.Font.Width;
+								x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol) + view.Font.Width;
 							}
 						}
 					}
 				}
 
-				if (Program.Settings.ShowCommentString)
+				if (view.Settings.ShowCommentString)
 				{
 					var data = view.Memory.Process.ReadRemoteMemory(ivalue, 64);
 
@@ -74,23 +74,23 @@ namespace ReClassNET.Nodes
 					if (data.Take(IntPtr.Size).InterpretAsUTF8().IsPrintableData())
 					{
 						var text = new string(Encoding.UTF8.GetChars(data).TakeWhile(c => c != 0).ToArray());
-						x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.ReadOnlyId, $"'{text}'") + view.Font.Width;
+						x = AddText(view, x, y, view.Settings.TextColor, HotSpot.ReadOnlyId, $"'{text}'") + view.Font.Width;
 					}
 					else if(data.Take(IntPtr.Size * 2).InterpretAsUTF16().IsPrintableData())
 					{
 						var text = new string(Encoding.Unicode.GetChars(data).TakeWhile(c => c != 0).ToArray());
-						x = AddText(view, x, y, Program.Settings.TextColor, HotSpot.ReadOnlyId, $"L'{text}'") + view.Font.Width;
+						x = AddText(view, x, y, view.Settings.TextColor, HotSpot.ReadOnlyId, $"L'{text}'") + view.Font.Width;
 					}
 				}
 
-				if (Program.Settings.ShowCommentPluginInfo)
+				if (view.Settings.ShowCommentPluginInfo)
 				{
 					foreach (var reader in NodeInfoReader)
 					{
 						var info = reader.ReadNodeInfo(this, ivalue, view.Memory);
 						if (info != null)
 						{
-							x = AddText(view, x, y, Program.Settings.PluginColor, HotSpot.ReadOnlyId, info) + view.Font.Width;
+							x = AddText(view, x, y, view.Settings.PluginColor, HotSpot.ReadOnlyId, info) + view.Font.Width;
 						}
 					}
 				}

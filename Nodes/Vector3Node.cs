@@ -30,13 +30,13 @@ namespace ReClassNET.Nodes
 			{
 				var value = view.Memory.ReadObject<Vector3Data>(Offset);
 
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, "(");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 0, $"{value.X:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 1, $"{value.Y:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 2, $"{value.Z:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, ")");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "(");
+				x = AddText(view, x, y, view.Settings.ValueColor, 0, $"{value.X:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 1, $"{value.Y:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 2, $"{value.Z:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ")");
 			});
 		}
 

@@ -109,8 +109,8 @@ namespace ReClassNET.Nodes
 
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, "Bits") + view.Font.Width;
-			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Bits") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 
 			x = AddOpenClose(view, x, y) + view.Font.Width;
 
@@ -121,7 +121,7 @@ namespace ReClassNET.Nodes
 				var rect = new Rectangle(x + i * view.Font.Width, y, view.Font.Width, view.Font.Height);
 				AddHotSpot(view, rect, string.Empty, i, HotSpotType.Edit);
 			}
-			x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, ConvertValueToBitString(view.Memory)) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, ConvertValueToBitString(view.Memory)) + view.Font.Width;
 
 			x += view.Font.Width;
 
@@ -133,7 +133,7 @@ namespace ReClassNET.Nodes
 
 				var format = new StringFormat(StringFormatFlags.DirectionVertical);
 
-				using (var brush = new SolidBrush(Program.Settings.ValueColor))
+				using (var brush = new SolidBrush(view.Settings.ValueColor))
 				{
 					view.Context.DrawString("1", view.Font.Font, brush, tx + (bits - 1) * view.Font.Width + 1, y, format);
 

@@ -49,8 +49,8 @@ namespace ReClassNET.Nodes
 
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, Program.Settings.TypeColor, HotSpot.NoneId, "Function") + view.Font.Width;
-			x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Function") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 
 			x = AddOpenClose(view, x, y) + view.Font.Width;
 
@@ -63,12 +63,12 @@ namespace ReClassNET.Nodes
 			if (levelsOpen[view.Level])
 			{
 				y += view.Font.Height;
-				x = AddText(view, tx, y, Program.Settings.TypeColor, HotSpot.NoneId, "Signature:") + view.Font.Width;
-				x = AddText(view, x, y, Program.Settings.ValueColor, 0, Signature);
+				x = AddText(view, tx, y, view.Settings.TypeColor, HotSpot.NoneId, "Signature:") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.ValueColor, 0, Signature);
 
 				y += view.Font.Height;
-				x = AddText(view, tx, y, Program.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
-				x = AddText(view, x, y, Program.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>");
+				x = AddText(view, tx, y, view.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
+				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>");
 				x = AddIcon(view, x, y, Icons.Change, 1, HotSpotType.ChangeType);
 
 				y += view.Font.Height;
@@ -76,7 +76,7 @@ namespace ReClassNET.Nodes
 				{
 					y += view.Font.Height;
 
-					AddText(view, tx, y, Program.Settings.NameColor, HotSpot.ReadOnlyId, line);
+					AddText(view, tx, y, view.Settings.NameColor, HotSpot.ReadOnlyId, line);
 				}
 			}
 

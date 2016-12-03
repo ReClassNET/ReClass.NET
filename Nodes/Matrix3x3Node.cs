@@ -45,33 +45,33 @@ namespace ReClassNET.Nodes
 
 				y += view.Font.Height;
 				x = defaultX;
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, "|");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 0, $"{value._11,14:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 1, $"{value._12,14:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 2, $"{value._13,14:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.ValueColor, 0, $"{value._11,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 1, $"{value._12,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 2, $"{value._13,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
 				x = defaultX;
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, "|");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 3, $"{value._21,14:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 4, $"{value._22,14:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 5, $"{value._23,14:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.ValueColor, 3, $"{value._21,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 4, $"{value._22,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 5, $"{value._23,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
 				x = defaultX;
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, "|");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 6, $"{value._31,14:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 7, $"{value._32,14:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, Program.Settings.ValueColor, 8, $"{value._33,14:0.000}");
-				x = AddText(view, x, y, Program.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.ValueColor, 6, $"{value._31,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 7, $"{value._32,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(view, x, y, view.Settings.ValueColor, 8, $"{value._33,14:0.000}");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 			});
 		}
 
