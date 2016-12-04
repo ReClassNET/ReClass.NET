@@ -6,7 +6,6 @@ using System.Linq;
 using ReClassNET.AddressParser;
 using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -15,6 +14,12 @@ namespace ReClassNET.Nodes
 	public class ClassNode : BaseContainerNode
 	{
 		public static event ClassCreatedEventHandler ClassCreated;
+
+#if WIN64
+		public static IntPtr DefaultAddress = (IntPtr)0x140000000;
+#else
+		public static IntPtr DefaultAddress = (IntPtr)0x400000;
+#endif
 
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
@@ -44,32 +49,25 @@ namespace ReClassNET.Nodes
 		public string AddressFormula { get; set; }
 
 		public event NodeEventHandler NodesChanged;
-	
+
+		internal ClassNode(bool notifyClassCreated)
+			: this(notifyClassCreated, DefaultAddress)
+		{
+
+		}
+
 		internal ClassNode(bool notifyClassCreated, IntPtr address)
 		{
 			Contract.Ensures(AddressFormula != null);
 
 			Uuid = new NodeUuid(true);
 
-			if (address == IntPtr.Zero)
-			{
-#if WIN64
-				Address = (IntPtr)0x140000000;
-#else
-				Address = (IntPtr)0x400000;
-#endif
-			}
-			else
-				Address = address;
+			Address = address;
+
 			if (notifyClassCreated)
 			{
 				ClassCreated?.Invoke(this);
 			}
-		}
-
-		internal ClassNode(bool notifyClassCreated) : this(notifyClassCreated, IntPtr.Zero)
-		{
-
 		}
 
 		public static ClassNode Create(IntPtr address)
@@ -81,7 +79,7 @@ namespace ReClassNET.Nodes
 
 		public static ClassNode Create()
 		{
-			return Create(IntPtr.Zero);
+			return Create(DefaultAddress);
 		}
 
 		public override void Intialize()
