@@ -159,16 +159,19 @@ namespace ReClassNET.Forms
 			{
 				if (pb.ShowDialog() == DialogResult.OK)
 				{
-					DetachFromCurrentProcess();
-
-					remoteProcess.Process = pb.SelectedProcess;
-					remoteProcess.UpdateProcessInformations();
-					if (pb.LoadSymbols)
+					if (pb.SelectedProcess != null)
 					{
-						LoadAllSymbolsForCurrentProcess();
-					}
+						DetachFromCurrentProcess();
 
-					Program.Settings.LastProcess = remoteProcess.Process.Name;
+						remoteProcess.Process = pb.SelectedProcess;
+						remoteProcess.UpdateProcessInformations();
+						if (pb.LoadSymbols)
+						{
+							LoadAllSymbolsForCurrentProcess();
+						}
+
+						Program.Settings.LastProcess = remoteProcess.Process.Name;
+					}
 				}
 			}
 		}
@@ -180,7 +183,8 @@ namespace ReClassNET.Forms
 
 		private void newClassToolStripButton_Click(object sender, EventArgs e)
 		{
-			var node = ClassNode.Create();
+			var Address = remoteProcess.IsValid ? remoteProcess.GetModuleByName(remoteProcess.Process.Name).Start : IntPtr.Zero;
+			var node = ClassNode.Create(Address);
 			node.AddBytes(64);
 
 			classesView.SelectedClass = node;
