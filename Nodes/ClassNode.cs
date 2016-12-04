@@ -44,30 +44,44 @@ namespace ReClassNET.Nodes
 		public string AddressFormula { get; set; }
 
 		public event NodeEventHandler NodesChanged;
-
-		internal ClassNode(bool notifyClassCreated)
+	
+		internal ClassNode(bool notifyClassCreated, IntPtr address)
 		{
 			Contract.Ensures(AddressFormula != null);
 
 			Uuid = new NodeUuid(true);
 
+			if (address == IntPtr.Zero)
+			{
 #if WIN64
-			Address = (IntPtr)0x140000000;
+				Address = (IntPtr)0x140000000;
 #else
-			Address = (IntPtr)0x400000;
+				Address = (IntPtr)0x400000;
 #endif
-
+			}
+			else
+				Address = address;
 			if (notifyClassCreated)
 			{
 				ClassCreated?.Invoke(this);
 			}
 		}
 
-		public static ClassNode Create()
+		internal ClassNode(bool notifyClassCreated) : this(notifyClassCreated, IntPtr.Zero)
+		{
+
+		}
+
+		public static ClassNode Create(IntPtr address)
 		{
 			Contract.Ensures(Contract.Result<ClassNode>() != null);
 
-			return new ClassNode(true);
+			return new ClassNode(true, address);
+		}
+
+		public static ClassNode Create()
+		{
+			return Create(IntPtr.Zero);
 		}
 
 		public override void Intialize()
