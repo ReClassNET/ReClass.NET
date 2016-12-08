@@ -1,7 +1,6 @@
 LIBRARY
 EXPORTS
 	Initialize
-	GetLastErrorCode
 	IsProcessValid
 	OpenRemoteProcess
 	CloseRemoteProcess

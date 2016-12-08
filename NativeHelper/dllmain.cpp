@@ -31,12 +31,6 @@ EXTERN_DLL_EXPORT VOID __stdcall Initialize(RequestFunctionPtrCallback requestCa
 	requestFunction = requestCallback;
 }
 
-DWORD lastError = 0;
-EXTERN_DLL_EXPORT DWORD __stdcall GetLastErrorCode()
-{
-	return lastError;
-}
-
 EXTERN_DLL_EXPORT BOOL __stdcall IsProcessValid(HANDLE process)
 {
 	if (!process)
@@ -64,14 +58,11 @@ EXTERN_DLL_EXPORT VOID __stdcall CloseRemoteProcess(HANDLE process)
 
 EXTERN_DLL_EXPORT BOOL __stdcall ReadRemoteMemory(HANDLE process, LPCVOID address, LPVOID buffer, SIZE_T size)
 {
-	if (ReadProcessMemory(process, address, buffer, size, nullptr))
+	SIZE_T numberOfBytesRead;
+	if (ReadProcessMemory(process, address, buffer, size, &numberOfBytesRead) && size == numberOfBytesRead)
 	{
-		lastError = 0;
-
 		return TRUE;
 	}
-
-	lastError = GetLastError();
 
 	return FALSE;
 }
@@ -81,17 +72,17 @@ EXTERN_DLL_EXPORT BOOL __stdcall WriteRemoteMemory(HANDLE process, LPVOID addres
 	DWORD oldProtect;
 	if (VirtualProtectEx(process, address, size, PAGE_EXECUTE_READWRITE, &oldProtect))
 	{
-		if (WriteProcessMemory(process, address, buffer, size, nullptr))
+		SIZE_T numberOfBytesWritten;
+		if (WriteProcessMemory(process, address, buffer, size, &numberOfBytesWritten))
 		{
 			VirtualProtectEx(process, address, size, oldProtect, nullptr);
 
-			lastError = 0;
-
-			return TRUE;
+			if (size == numberOfBytesWritten)
+			{
+				return TRUE;
+			}
 		}
 	}
-
-	lastError = GetLastError();
 
 	return FALSE;
 }
@@ -182,13 +173,7 @@ EXTERN_DLL_EXPORT VOID __stdcall EnumerateProcesses(EnumerateProcessCallback cal
 		}
 
 		CloseHandle(handle);
-
-		lastError = 0;
-
-		return;
 	}
-
-	lastError = GetLastError();
 }
 
 typedef VOID(__stdcall EnumerateRemoteSectionsCallback)(LPVOID baseAddress, SIZE_T regionSize, WCHAR name[IMAGE_SIZEOF_SHORT_NAME + 1], DWORD state, DWORD protection, DWORD type, WCHAR modulePath[PATH_MAXIMUM_LENGTH]);
@@ -297,13 +282,7 @@ EXTERN_DLL_EXPORT VOID __stdcall EnumerateRemoteSectionsAndModules(HANDLE proces
 				callbackSection(section.BaseAddress, section.RegionSize, section.Name, section.State, section.Protection, section.Type, section.ModulePath);
 			}
 		}
-
-		lastError = 0;
-
-		return;
 	}
-
-	lastError = GetLastError();
 }
 
 typedef VOID(__stdcall DisassembleRemoteCodeCallback)(LPVOID address, DWORD length, CHAR instruction[64]);
