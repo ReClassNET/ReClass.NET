@@ -51,18 +51,12 @@ namespace ReClassNET.Nodes
 		public event NodeEventHandler NodesChanged;
 
 		internal ClassNode(bool notifyClassCreated)
-			: this(notifyClassCreated, DefaultAddress)
-		{
-
-		}
-
-		internal ClassNode(bool notifyClassCreated, IntPtr address)
 		{
 			Contract.Ensures(AddressFormula != null);
 
 			Uuid = new NodeUuid(true);
 
-			Address = address;
+			Address = DefaultAddress;
 
 			if (notifyClassCreated)
 			{
@@ -70,16 +64,11 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		public static ClassNode Create(IntPtr address)
+		public static ClassNode Create()
 		{
 			Contract.Ensures(Contract.Result<ClassNode>() != null);
 
-			return new ClassNode(true, address);
-		}
-
-		public static ClassNode Create()
-		{
-			return Create(DefaultAddress);
+			return new ClassNode(true);
 		}
 
 		public override void Intialize()

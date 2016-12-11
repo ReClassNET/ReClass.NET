@@ -183,9 +183,14 @@ namespace ReClassNET.Forms
 
 		private void newClassToolStripButton_Click(object sender, EventArgs e)
 		{
-			var address = remoteProcess.GetModuleByName(remoteProcess.Process?.Name)?.Start ?? IntPtr.Zero;
-			var node = ClassNode.Create(address);
+			var node = ClassNode.Create();
 			node.AddBytes(64);
+
+			var mainModule = remoteProcess.GetModuleByName(remoteProcess.Process?.Name);
+			if (mainModule != null)
+			{
+				node.Address = mainModule.Start;
+			}
 
 			classesView.SelectedClass = node;
 		}
