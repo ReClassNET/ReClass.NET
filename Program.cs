@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Forms;
 using ReClassNET.Logger;
-using ReClassNET.Memory;
+using ReClassNET.Native;
 using ReClassNET.UI;
 using ReClassNET.Util;
 

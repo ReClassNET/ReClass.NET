@@ -158,6 +158,7 @@
     <Compile Include="Memory\Dumper.cs" />
     <Compile Include="Memory\Section.cs" />
     <Compile Include="Memory\UnionDataType.cs" />
+    <Compile Include="Native\NativeDataExchange.cs" />
     <Compile Include="Nodes\BoolNode.cs" />
     <Compile Include="Nodes\ClassUtil.cs" />
     <Compile Include="Nodes\FunctionNode.cs" />
@@ -264,7 +265,7 @@
     <Compile Include="UI\MemoryViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Memory\NativeHelper.cs" />
+    <Compile Include="Native\NativeHelper.cs" />
     <Compile Include="Util\NativeMethods.cs" />
     <Compile Include="Nodes\ClassInstanceArrayNode.cs" />
     <Compile Include="Nodes\BaseArrayNode.cs" />

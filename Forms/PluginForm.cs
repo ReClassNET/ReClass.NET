@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Memory;
+using ReClassNET.Native;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
 
@@ -54,15 +55,15 @@ namespace ReClassNET.Forms
 
 			// Native Methods Tab
 
-			FillComboBox(enumerateProcessesComboBox, NativeHelper.RequestFunction.EnumerateProcesses);
-			FillComboBox(enumerateRemoteSectionsAndModulesComboBox, NativeHelper.RequestFunction.EnumerateRemoteSectionsAndModules);
-			FillComboBox(isProcessValidComboBox, NativeHelper.RequestFunction.IsProcessValid);
-			FillComboBox(openRemoteProcessComboBox, NativeHelper.RequestFunction.OpenRemoteProcess);
-			FillComboBox(closeRemoteProcessComboBox, NativeHelper.RequestFunction.CloseRemoteProcess);
-			FillComboBox(readRemoteMemoryComboBox, NativeHelper.RequestFunction.ReadRemoteMemory);
-			FillComboBox(writeRemoteMemoryComboBox, NativeHelper.RequestFunction.WriteRemoteMemory);
-			FillComboBox(disassembleRemoteCodeComboBox, NativeHelper.RequestFunction.DisassembleCode);
-			FillComboBox(controlRemoteProcessComboBox, NativeHelper.RequestFunction.ControlRemoteProcess);
+			FillComboBox(enumerateProcessesComboBox, RequestFunction.EnumerateProcesses);
+			FillComboBox(enumerateRemoteSectionsAndModulesComboBox, RequestFunction.EnumerateRemoteSectionsAndModules);
+			FillComboBox(isProcessValidComboBox, RequestFunction.IsProcessValid);
+			FillComboBox(openRemoteProcessComboBox, RequestFunction.OpenRemoteProcess);
+			FillComboBox(closeRemoteProcessComboBox, RequestFunction.CloseRemoteProcess);
+			FillComboBox(readRemoteMemoryComboBox, RequestFunction.ReadRemoteMemory);
+			FillComboBox(writeRemoteMemoryComboBox, RequestFunction.WriteRemoteMemory);
+			FillComboBox(disassembleRemoteCodeComboBox, RequestFunction.DisassembleCode);
+			FillComboBox(controlRemoteProcessComboBox, RequestFunction.ControlRemoteProcess);
 
 			setAllComboBox.DisplayMember = nameof(NativeHelper.MethodInfo.Provider);
 			setAllComboBox.DataSource = nativeHelper.MethodRegistry.Values
@@ -148,7 +149,7 @@ namespace ReClassNET.Forms
 
 		#endregion
 
-		private void FillComboBox(ComboBox cb, NativeHelper.RequestFunction method)
+		private void FillComboBox(ComboBox cb, RequestFunction method)
 		{
 			Contract.Requires(cb != null);
 

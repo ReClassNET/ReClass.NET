@@ -5,9 +5,9 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
-using ReClassNET.Memory;
-using ReClassNET.Util;
 using ReClassNET.Logger;
+using ReClassNET.Native;
+using ReClassNET.Util;
 
 namespace ReClassNET.Plugins
 {

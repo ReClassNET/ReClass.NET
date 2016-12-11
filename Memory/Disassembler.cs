@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
+using ReClassNET.Native;
 using ReClassNET.Util;
 
 namespace ReClassNET.Memory
@@ -23,7 +24,7 @@ namespace ReClassNET.Memory
 				var end = eip + length;
 				var virtualAddress = address;
 
-				var instruction = new NativeHelper.InstructionData();
+				var instruction = new InstructionData();
 				while (true)
 				{
 					if (!process.NativeHelper.DisassembleCode(eip, end.Sub(eip).ToInt32(), virtualAddress, out instruction))

@@ -4,40 +4,14 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using ReClassNET.Memory;
 using ReClassNET.Util;
 
-namespace ReClassNET.Memory
+namespace ReClassNET.Native
 {
-	public enum ProcessAccess
-	{
-		Read,
-		Write,
-		Full
-	};
-
-	public enum ControlRemoteProcessAction
-	{
-		Suspend,
-		Resume,
-		Terminate
-	}
-
 	public class NativeHelper : IDisposable
 	{
 		private const string NativeHelperDll = "NativeHelper.dll";
-
-		public enum RequestFunction
-		{
-			IsProcessValid,
-			OpenRemoteProcess,
-			CloseRemoteProcess,
-			ReadRemoteMemory,
-			WriteRemoteMemory,
-			EnumerateProcesses,
-			EnumerateRemoteSectionsAndModules,
-			DisassembleCode,
-			ControlRemoteProcess
-		}
 
 		public class MethodInfo
 		{
@@ -75,37 +49,6 @@ namespace ReClassNET.Memory
 		public delegate bool EnumerateProcessCallback(ref EnumerateProcessData data);
 		private delegate void EnumerateProcessesDelegate(EnumerateProcessCallback callbackProcess);
 
-		
-
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct EnumerateRemoteSectionData
-		{
-			public IntPtr BaseAddress;
-
-			public IntPtr Size;
-
-			public SectionType Type;
-
-			public SectionProtection Protection;
-
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-			public string Name;
-
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-			public string ModulePath;
-		}
-
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct EnumerateRemoteModuleData
-		{
-			public IntPtr BaseAddress;
-
-			public IntPtr Size;
-
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-			public string Path;
-		}
-
 		public delegate void EnumerateRemoteSectionCallback(ref EnumerateRemoteSectionData data);
 		public delegate void EnumerateRemoteModuleCallback(ref EnumerateRemoteModuleData data);
 		private delegate void EnumerateRemoteSectionsAndModulesDelegate(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule);
@@ -113,8 +56,6 @@ namespace ReClassNET.Memory
 		private delegate bool DisassembleCodeDelegate(IntPtr address, IntPtr length, IntPtr virtualAddress, out InstructionData instruction);
 
 		private delegate void ControlRemoteProcessDelegate(IntPtr process, ControlRemoteProcessAction action);
-
-		#endregion
 
 		private IntPtr fnIsProcessValid;
 		private IsProcessValidDelegate isProcessValidDelegate;
@@ -136,6 +77,8 @@ namespace ReClassNET.Memory
 		private ControlRemoteProcessDelegate controlRemoteProcessDelegate;
 
 		private readonly RequestFunctionPtrCallback requestFunctionPtrReference;
+
+		#endregion
 
 		private bool disposedValue = false;
 
@@ -374,15 +317,6 @@ namespace ReClassNET.Memory
 			return result;
 		}
 
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct EnumerateProcessData
-		{
-			public IntPtr Id;
-
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-			public string Path;
-		};
-
 		public void EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 		{
 			enumerateProcessesDelegate(callbackProcess);
@@ -439,15 +373,6 @@ namespace ReClassNET.Memory
 
 			EnumerateRemoteSectionsAndModules(process, c1, c2);
 		}
-
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct InstructionData
-		{
-			public int Length;
-
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
-			public string Instruction;
-		};
 
 		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, out InstructionData instruction)
 		{

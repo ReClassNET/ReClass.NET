@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Memory;
+using ReClassNET.Native;
 using ReClassNET.UI;
 
 namespace ReClassNET.Forms
@@ -115,7 +116,7 @@ namespace ReClassNET.Forms
 			dt.Columns.Add("id", typeof(IntPtr));
 			dt.Columns.Add("path", typeof(string));
 
-			nativeHelper.EnumerateProcesses(delegate (ref NativeHelper.EnumerateProcessData data)
+			nativeHelper.EnumerateProcesses(delegate (ref EnumerateProcessData data)
 			{
 				var moduleName = Path.GetFileName(data.Path);
 				if (!filterCheckBox.Checked || !CommonProcesses.Contains(moduleName.ToLower()))

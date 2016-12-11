@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using ReClassNET.Native;
 using ReClassNET.Util;
 
 namespace ReClassNET.Memory

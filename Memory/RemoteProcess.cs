@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ReClassNET.AddressParser;
+using ReClassNET.Native;
 using ReClassNET.Symbols;
 using ReClassNET.Util;
 

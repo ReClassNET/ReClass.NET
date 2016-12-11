@@ -11,6 +11,7 @@ using ReClassNET.CodeGenerator;
 using ReClassNET.DataExchange;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
+using ReClassNET.Native;
 using ReClassNET.Nodes;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
