@@ -380,7 +380,7 @@ namespace ReClassNET.Memory
 			public IntPtr Id;
 
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-			public string ModulePath;
+			public string Path;
 		};
 
 		public void EnumerateProcesses(EnumerateProcessCallback callbackProcess)

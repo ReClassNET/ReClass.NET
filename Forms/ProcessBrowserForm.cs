@@ -117,14 +117,14 @@ namespace ReClassNET.Forms
 
 			nativeHelper.EnumerateProcesses(delegate (ref NativeHelper.EnumerateProcessData data)
 			{
-				var moduleName = Path.GetFileName(data.ModulePath);
+				var moduleName = Path.GetFileName(data.Path);
 				if (!filterCheckBox.Checked || !CommonProcesses.Contains(moduleName.ToLower()))
 				{
 					var row = dt.NewRow();
-					row["icon"] = ShellIcon.GetSmallIcon(data.ModulePath);
+					row["icon"] = ShellIcon.GetSmallIcon(data.Path);
 					row["name"] = moduleName;
 					row["id"] = data.Id;
-					row["path"] = data.ModulePath;
+					row["path"] = data.Path;
 					dt.Rows.Add(row);
 				}
 
