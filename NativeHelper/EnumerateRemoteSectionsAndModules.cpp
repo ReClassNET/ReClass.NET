@@ -1,0 +1,145 @@
+#include <windows.h>
+#include <tlhelp32.h>
+#include <vector>
+#include <algorithm>
+
+#include "NativeHelper.hpp"
+
+void __stdcall EnumerateRemoteSectionsAndModules(HANDLE process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
+{
+	if (callbackSection == nullptr && callbackModule == nullptr)
+	{
+		return;
+	}
+
+	std::vector<EnumerateRemoteSectionData> sections;
+
+	MEMORY_BASIC_INFORMATION memInfo = { 0 };
+	memInfo.RegionSize = 0x1000;
+	size_t address = 0;
+	while (VirtualQueryEx(process, (LPCVOID)address, &memInfo, sizeof(MEMORY_BASIC_INFORMATION)) != 0 && address + memInfo.RegionSize > address)
+	{
+		if (memInfo.State == MEM_COMMIT)
+		{
+			EnumerateRemoteSectionData section = {};
+			section.BaseAddress = memInfo.BaseAddress;
+			section.Size = memInfo.RegionSize;
+			
+			switch (memInfo.Protect & 0xFF)
+			{
+			case PAGE_EXECUTE:
+				section.Protection = SectionProtection::Execute;
+				break;
+			case PAGE_EXECUTE_READ:
+				section.Protection = SectionProtection::Execute | SectionProtection::Read;
+				break;
+			case PAGE_EXECUTE_READWRITE:
+			case PAGE_EXECUTE_WRITECOPY:
+				section.Protection = SectionProtection::Execute | SectionProtection::Read | SectionProtection::Write;
+				break;
+			case PAGE_NOACCESS:
+				section.Protection = SectionProtection::NoAccess;
+				break;
+			case PAGE_READONLY:
+				section.Protection = SectionProtection::Read;
+				break;
+			case PAGE_READWRITE:
+			case PAGE_WRITECOPY:
+				section.Protection = SectionProtection::Read | SectionProtection::Write;
+				break;
+			}
+			if ((memInfo.Protect & PAGE_GUARD) == PAGE_GUARD)
+			{
+				section.Protection |= SectionProtection::Guard;
+			}
+			
+			switch (memInfo.Type)
+			{
+			case MEM_IMAGE:
+				section.Type = SectionType::Image;
+				break;
+			case MEM_MAPPED:
+				section.Type = SectionType::Mapped;
+				break;
+			case MEM_PRIVATE:
+				section.Type = SectionType::Private;
+				break;
+			}
+
+			sections.push_back(std::move(section));
+		}
+		address = (size_t)memInfo.BaseAddress + memInfo.RegionSize;
+	}
+
+	auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetProcessId(process));
+	if (handle != INVALID_HANDLE_VALUE)
+	{
+		MODULEENTRY32W me32 = {};
+		me32.dwSize = sizeof(MODULEENTRY32W);
+		if (Module32FirstW(handle, &me32))
+		{
+			auto readRemoteMemory = reinterpret_cast<ReadRemoteMemory_Delegate>(requestFunction(RequestFunction::ReadRemoteMemory));
+
+			do
+			{
+				if (callbackModule != nullptr)
+				{
+					EnumerateRemoteModuleData data = {};
+					data.BaseAddress = me32.modBaseAddr;
+					data.Size = me32.modBaseSize;
+					std::memcpy(data.Path, me32.szExePath, std::min(MAX_PATH, PATH_MAXIMUM_LENGTH));
+
+					callbackModule(&data);
+				}
+
+				if (callbackSection != nullptr)
+				{
+					auto it = std::lower_bound(std::begin(sections), std::end(sections), (LPVOID)me32.modBaseAddr, [&sections](const auto& lhs, const LPVOID& rhs)
+					{
+						return lhs.BaseAddress < rhs;
+					});
+
+					IMAGE_DOS_HEADER DosHdr = {};
+					IMAGE_NT_HEADERS NtHdr = {};
+
+					readRemoteMemory(process, me32.modBaseAddr, &DosHdr, sizeof(IMAGE_DOS_HEADER));
+					readRemoteMemory(process, me32.modBaseAddr + DosHdr.e_lfanew, &NtHdr, sizeof(IMAGE_NT_HEADERS));
+
+					std::vector<IMAGE_SECTION_HEADER> sectionHeaders(NtHdr.FileHeader.NumberOfSections);
+					readRemoteMemory(process, me32.modBaseAddr + DosHdr.e_lfanew + sizeof(IMAGE_NT_HEADERS), sectionHeaders.data(), NtHdr.FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER));
+					for (int i = 0; i < NtHdr.FileHeader.NumberOfSections; ++i)
+					{
+						auto&& sectionHeader = sectionHeaders[i];
+
+						auto sectionAddress = (size_t)me32.modBaseAddr + sectionHeader.VirtualAddress;
+						for (auto j = it; j != std::end(sections); ++j)
+						{
+							if (sectionAddress >= (size_t)j->BaseAddress && sectionAddress < (size_t)j->BaseAddress + (size_t)j->Size)
+							{
+								// Copy the name because it is not null padded.
+								char buffer[IMAGE_SIZEOF_SHORT_NAME + 1] = { 0 };
+								std::memcpy(buffer, sectionHeader.Name, IMAGE_SIZEOF_SHORT_NAME);
+
+								size_t convertedChars = 0;
+								mbstowcs_s(&convertedChars, j->Name, IMAGE_SIZEOF_SHORT_NAME, buffer, _TRUNCATE);
+								std::memcpy(j->ModulePath, me32.szExePath, std::min(MAX_PATH, PATH_MAXIMUM_LENGTH));
+								break;
+							}
+						}
+
+					}
+				}
+			} while (Module32NextW(handle, &me32));
+		}
+
+		CloseHandle(handle);
+
+		if (callbackSection != nullptr)
+		{
+			for (auto&& section : sections)
+			{
+				callbackSection(&section);
+			}
+		}
+	}
+}

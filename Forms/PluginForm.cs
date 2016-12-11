@@ -61,7 +61,7 @@ namespace ReClassNET.Forms
 			FillComboBox(closeRemoteProcessComboBox, NativeHelper.RequestFunction.CloseRemoteProcess);
 			FillComboBox(readRemoteMemoryComboBox, NativeHelper.RequestFunction.ReadRemoteMemory);
 			FillComboBox(writeRemoteMemoryComboBox, NativeHelper.RequestFunction.WriteRemoteMemory);
-			FillComboBox(disassembleRemoteCodeComboBox, NativeHelper.RequestFunction.DisassembleRemoteCode);
+			FillComboBox(disassembleRemoteCodeComboBox, NativeHelper.RequestFunction.DisassembleCode);
 			FillComboBox(controlRemoteProcessComboBox, NativeHelper.RequestFunction.ControlRemoteProcess);
 
 			setAllComboBox.DisplayMember = nameof(NativeHelper.MethodInfo.Provider);

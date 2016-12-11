@@ -1,13 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using ReClassNET.Util;
-using System.IO;
 
 namespace ReClassNET.Memory
 {
+	public enum ProcessAccess
+	{
+		Read,
+		Write,
+		Full
+	};
+
+	public enum ControlRemoteProcessAction
+	{
+		Suspend,
+		Resume,
+		Terminate
+	}
+
 	public class NativeHelper : IDisposable
 	{
 		private const string NativeHelperDll = "NativeHelper.dll";
@@ -21,7 +35,7 @@ namespace ReClassNET.Memory
 			WriteRemoteMemory,
 			EnumerateProcesses,
 			EnumerateRemoteSectionsAndModules,
-			DisassembleRemoteCode,
+			DisassembleCode,
 			ControlRemoteProcess
 		}
 
@@ -48,34 +62,56 @@ namespace ReClassNET.Memory
 		public delegate IntPtr RequestFunctionPtrCallback(RequestFunction request);
 		private delegate void InitializeDelegate(RequestFunctionPtrCallback requestCallback);
 
-		//private delegate int GetLastErrorDelegate();
-
 		private delegate bool IsProcessValidDelegate(IntPtr process);
 
-		private delegate IntPtr OpenRemoteProcessDelegate(int pid, int desiredAccess);
+		private delegate IntPtr OpenRemoteProcessDelegate(IntPtr pid, ProcessAccess desiredAccess);
 
 		private delegate void CloseRemoteProcessDelegate(IntPtr process);
 
-		private delegate bool ReadRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, int size);
+		private delegate bool ReadRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, IntPtr size);
 
-		private delegate bool WriteRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, int size);
+		private delegate bool WriteRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, IntPtr size);
 
-		public delegate void EnumerateProcessCallback(int pid, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
+		public delegate bool EnumerateProcessCallback(ref EnumerateProcessData data);
 		private delegate void EnumerateProcessesDelegate(EnumerateProcessCallback callbackProcess);
 
-		public delegate void EnumerateRemoteSectionCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPWStr)]string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
-		public delegate void EnumerateRemoteModuleCallback(IntPtr baseAddress, IntPtr regionSize, [MarshalAs(UnmanagedType.LPWStr)]string modulePath);
+		
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct EnumerateRemoteSectionData
+		{
+			public IntPtr BaseAddress;
+
+			public IntPtr Size;
+
+			public SectionType Type;
+
+			public SectionProtection Protection;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+			public string Name;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+			public string ModulePath;
+		}
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct EnumerateRemoteModuleData
+		{
+			public IntPtr BaseAddress;
+
+			public IntPtr Size;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+			public string Path;
+		}
+
+		public delegate void EnumerateRemoteSectionCallback(ref EnumerateRemoteSectionData data);
+		public delegate void EnumerateRemoteModuleCallback(ref EnumerateRemoteModuleData data);
 		private delegate void EnumerateRemoteSectionsAndModulesDelegate(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule);
 
-		public delegate void DisassembleRemoteCodeCallback(IntPtr address, int length, [MarshalAs(UnmanagedType.LPStr)]string instruction);
-		private delegate void DisassembleRemoteCodeDelegate(IntPtr process, IntPtr address, int length, DisassembleRemoteCodeCallback callbackDisassembledCode);
+		private delegate bool DisassembleCodeDelegate(IntPtr address, IntPtr length, IntPtr virtualAddress, out InstructionData instruction);
 
-		public enum ControlRemoteProcessAction
-		{
-			Suspend,
-			Resume,
-			Terminate
-		}
 		private delegate void ControlRemoteProcessDelegate(IntPtr process, ControlRemoteProcessAction action);
 
 		#endregion
@@ -94,8 +130,8 @@ namespace ReClassNET.Memory
 		private EnumerateProcessesDelegate enumerateProcessesDelegate;
 		private IntPtr fnEnumerateRemoteSectionsAndModules;
 		private EnumerateRemoteSectionsAndModulesDelegate enumerateRemoteSectionsAndModulesDelegate;
-		private IntPtr fnDisassembleRemoteCode;
-		private DisassembleRemoteCodeDelegate disassembleRemoteCodeDelegate;
+		private IntPtr fnDisassembleCode;
+		private DisassembleCodeDelegate disassembleCodeDelegate;
 		private IntPtr fnControlRemoteProcess;
 		private ControlRemoteProcessDelegate controlRemoteProcessDelegate;
 
@@ -124,7 +160,7 @@ namespace ReClassNET.Memory
 			SetActiveNativeMethod(methodRegistry[RequestFunction.WriteRemoteMemory].First());
 			SetActiveNativeMethod(methodRegistry[RequestFunction.EnumerateProcesses].First());
 			SetActiveNativeMethod(methodRegistry[RequestFunction.EnumerateRemoteSectionsAndModules].First());
-			SetActiveNativeMethod(methodRegistry[RequestFunction.DisassembleRemoteCode].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.DisassembleCode].First());
 			SetActiveNativeMethod(methodRegistry[RequestFunction.ControlRemoteProcess].First());
 		}
 
@@ -193,7 +229,7 @@ namespace ReClassNET.Memory
 				RequestFunction.WriteRemoteMemory,
 				RequestFunction.EnumerateProcesses,
 				RequestFunction.EnumerateRemoteSectionsAndModules,
-				RequestFunction.DisassembleRemoteCode,
+				RequestFunction.DisassembleCode,
 				RequestFunction.ControlRemoteProcess
 			})
 			{
@@ -254,9 +290,9 @@ namespace ReClassNET.Memory
 					fnWriteRemoteMemory = methodInfo.FunctionPtr;
 					writeRemoteMemoryDelegate = Marshal.GetDelegateForFunctionPointer<WriteRemoteMemoryDelegate>(fnWriteRemoteMemory);
 					break;
-				case RequestFunction.DisassembleRemoteCode:
-					fnDisassembleRemoteCode = methodInfo.FunctionPtr;
-					disassembleRemoteCodeDelegate = Marshal.GetDelegateForFunctionPointer<DisassembleRemoteCodeDelegate>(fnDisassembleRemoteCode);
+				case RequestFunction.DisassembleCode:
+					fnDisassembleCode = methodInfo.FunctionPtr;
+					disassembleCodeDelegate = Marshal.GetDelegateForFunctionPointer<DisassembleCodeDelegate>(fnDisassembleCode);
 					break;
 				case RequestFunction.ControlRemoteProcess:
 					fnControlRemoteProcess = methodInfo.FunctionPtr;
@@ -285,8 +321,8 @@ namespace ReClassNET.Memory
 					return fnEnumerateProcesses;
 				case RequestFunction.EnumerateRemoteSectionsAndModules:
 					return fnEnumerateRemoteSectionsAndModules;
-				case RequestFunction.DisassembleRemoteCode:
-					return fnDisassembleRemoteCode;
+				case RequestFunction.DisassembleCode:
+					return fnDisassembleCode;
 				case RequestFunction.ControlRemoteProcess:
 					return fnControlRemoteProcess;
 			}
@@ -301,7 +337,7 @@ namespace ReClassNET.Memory
 			return isProcessValidDelegate(process);
 		}
 
-		public IntPtr OpenRemoteProcess(int pid, int desiredAccess)
+		public IntPtr OpenRemoteProcess(IntPtr pid, ProcessAccess desiredAccess)
 		{
 			return openRemoteProcessDelegate(pid, desiredAccess);
 		}
@@ -321,7 +357,7 @@ namespace ReClassNET.Memory
 			}
 
 			GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-			var result = readRemoteMemoryDelegate(process, address, handle.AddrOfPinnedObject() + offset, length);
+			var result = readRemoteMemoryDelegate(process, address, handle.AddrOfPinnedObject() + offset, (IntPtr)length);
 			handle.Free();
 
 			return result;
@@ -332,11 +368,20 @@ namespace ReClassNET.Memory
 			Contract.Requires(buffer != null);
 
 			GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-			var result = writeRemoteMemoryDelegate(process, address, handle.AddrOfPinnedObject(), size);
+			var result = writeRemoteMemoryDelegate(process, address, handle.AddrOfPinnedObject(), (IntPtr)size);
 			handle.Free();
 
 			return result;
 		}
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct EnumerateProcessData
+		{
+			public IntPtr Id;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+			public string ModulePath;
+		};
 
 		public void EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 		{
@@ -350,20 +395,19 @@ namespace ReClassNET.Memory
 
 		public void EnumerateRemoteSectionsAndModules(IntPtr process, Action<Section> callbackSection, Action<Module> callbackModule)
 		{
-			var c1 = callbackSection == null ? (EnumerateRemoteSectionCallback)null : delegate (IntPtr baseAddress, IntPtr regionSize, string name, NativeMethods.StateEnum state, NativeMethods.AllocationProtectEnum protection, NativeMethods.TypeEnum type, string modulePath)
+			var c1 = callbackSection == null ? (EnumerateRemoteSectionCallback)null : delegate (ref EnumerateRemoteSectionData data)
 			{
 				var section = new Section
 				{
-					Start = baseAddress,
-					End = baseAddress.Add(regionSize),
-					Size = regionSize,
-					Name = name,
-					State = state,
-					Protection = protection,
-					Type = type,
-					ModulePath = modulePath,
-					ModuleName = Path.GetFileName(modulePath),
-					Category = type == NativeMethods.TypeEnum.MEM_PRIVATE ? SectionCategory.HEAP : SectionCategory.Unknown
+					Start = data.BaseAddress,
+					End = data.BaseAddress.Add(data.Size),
+					Size = data.Size,
+					Name = data.Name,
+					Protection = data.Protection,
+					Type = data.Type,
+					ModulePath = data.ModulePath,
+					ModuleName = Path.GetFileName(data.ModulePath),
+					Category = data.Type == SectionType.Private ? SectionCategory.HEAP : SectionCategory.Unknown
 				};
 				switch (section.Name)
 				{
@@ -381,24 +425,33 @@ namespace ReClassNET.Memory
 				callbackSection(section);
 			};
 			
-			var c2 = callbackModule == null ? (EnumerateRemoteModuleCallback)null : delegate (IntPtr baseAddress, IntPtr size, string modulePath)
+			var c2 = callbackModule == null ? (EnumerateRemoteModuleCallback)null : delegate (ref EnumerateRemoteModuleData data)
 			{
 				callbackModule(new Module
 				{
-					Start = baseAddress,
-					End = baseAddress.Add(size),
-					Size = size,
-					Path = modulePath,
-					Name = Path.GetFileName(modulePath)
+					Start = data.BaseAddress,
+					End = data.BaseAddress.Add(data.Size),
+					Size = data.Size,
+					Path = data.Path,
+					Name = Path.GetFileName(data.Path)
 				});
 			};
 
 			EnumerateRemoteSectionsAndModules(process, c1, c2);
 		}
 
-		public void DisassembleRemoteCode(IntPtr process, IntPtr address, int length, DisassembleRemoteCodeCallback remoteCodeCallback)
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct InstructionData
 		{
-			disassembleRemoteCodeDelegate(process, address, length, remoteCodeCallback);
+			public int Length;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+			public string Instruction;
+		};
+
+		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, out InstructionData instruction)
+		{
+			return disassembleCodeDelegate(address, (IntPtr)length, virtualAddress, out instruction);
 		}
 
 		public void ControlRemoteProcess(IntPtr process, ControlRemoteProcessAction action)

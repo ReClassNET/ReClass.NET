@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;
@@ -117,14 +118,13 @@ namespace ReClassNET.Nodes
 
 				if (!address.IsNull() && memory.Process.IsValid)
 				{
-					memory.Process.NativeHelper.DisassembleRemoteCode(
-						memory.Process.Process.Handle,
-						address,
-						200,
+					var disassembler = new Disassembler();
+					instructions.AddRange(
+						disassembler.DisassembleRemoteCode(memory.Process, address, 200)
 #if WIN64
-						(a, l, i) => instructions.Add($"{a.ToString("X08")} {i}")
+							.Select(i => $"{i.Address.ToString("X08")} {i.Instruction}")
 #else
-						(a, l, i) => instructions.Add($"{a.ToString("X04")} {i}")
+							.Select(i => $"{i.Address.ToString("X04")} {i.Instruction}")
 #endif
 					);
 				}

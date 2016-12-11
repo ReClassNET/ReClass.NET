@@ -311,14 +311,14 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			var action = NativeHelper.ControlRemoteProcessAction.Terminate;
+			var action = ControlRemoteProcessAction.Terminate;
 			if (sender == resumeProcessToolStripMenuItem)
 			{
-				action = NativeHelper.ControlRemoteProcessAction.Resume;
+				action = ControlRemoteProcessAction.Resume;
 			}
 			else if (sender == suspendProcessToolStripMenuItem)
 			{
-				action = NativeHelper.ControlRemoteProcessAction.Suspend;
+				action = ControlRemoteProcessAction.Suspend;
 			}
 
 			nativeHelper.ControlRemoteProcess(remoteProcess.Process.Handle, action);

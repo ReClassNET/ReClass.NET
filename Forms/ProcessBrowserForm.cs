@@ -30,7 +30,7 @@ namespace ReClassNET.Forms
 				var row = (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)?.Row;
 				if (row != null)
 				{
-					return new ProcessInfo(nativeHelper, row.Field<int>("id"), row.Field<string>("name"), row.Field<string>("path"));
+					return new ProcessInfo(nativeHelper, row.Field<IntPtr>("id"), row.Field<string>("name"), row.Field<string>("path"));
 				}
 				return null;
 			}
@@ -112,21 +112,23 @@ namespace ReClassNET.Forms
 			var dt = new DataTable();
 			dt.Columns.Add("icon", typeof(Icon));
 			dt.Columns.Add("name", typeof(string));
-			dt.Columns.Add("id", typeof(int));
+			dt.Columns.Add("id", typeof(IntPtr));
 			dt.Columns.Add("path", typeof(string));
 
-			nativeHelper.EnumerateProcesses((pid, path) =>
+			nativeHelper.EnumerateProcesses(delegate (ref NativeHelper.EnumerateProcessData data)
 			{
-				var moduleName = Path.GetFileName(path);
+				var moduleName = Path.GetFileName(data.ModulePath);
 				if (!filterCheckBox.Checked || !CommonProcesses.Contains(moduleName.ToLower()))
 				{
 					var row = dt.NewRow();
-					row["icon"] = ShellIcon.GetSmallIcon(path);
+					row["icon"] = ShellIcon.GetSmallIcon(data.ModulePath);
 					row["name"] = moduleName;
-					row["id"] = pid;
-					row["path"] = path;
+					row["id"] = data.Id;
+					row["path"] = data.ModulePath;
 					dt.Rows.Add(row);
 				}
+
+				return true;
 			});
 
 			dt.DefaultView.Sort = "name ASC";

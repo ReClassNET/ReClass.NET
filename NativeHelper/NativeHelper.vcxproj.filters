@@ -2,9 +2,50 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="beaengine\src\BeaEngine.c" />
+    <ClCompile Include="beaengine\src\BeaEngine.c">
+      <Filter>Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="CloseRemoteProcess.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlRemoteProcess.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="DisassembleCode.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="EnumerateProcesses.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="EnumerateRemoteSectionsAndModules.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="IsProcessValid.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenRemoteProcess.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadRemoteMemory.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="WriteRemoteMemory.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="exports.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Dependencies">
+      <UniqueIdentifier>{9285bf7e-f1bc-42eb-b760-942eeefb0133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Functions">
+      <UniqueIdentifier>{b74771cf-fe41-431f-b0fe-91f421240d53}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ReClassNET_Plugin.hpp" />
+    <ClInclude Include="NativeHelper.hpp" />
   </ItemGroup>
 </Project>

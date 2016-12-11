@@ -1,5 +1,4 @@
 ﻿using System;
-using ReClassNET.Util;
 
 namespace ReClassNET.Memory
 {
@@ -11,6 +10,27 @@ namespace ReClassNET.Memory
 		HEAP
 	}
 
+	[Flags]
+	public enum SectionProtection
+	{
+		NoAccess = 0,
+
+		Read = 1,
+		Write = 2,
+		Execute = 4,
+
+		Guard = 8
+	}
+
+	public enum SectionType
+	{
+		Unknown,
+
+		Private,
+		Mapped,
+		Image
+	}
+
 	public class Section
 	{
 		public IntPtr Start;
@@ -18,9 +38,8 @@ namespace ReClassNET.Memory
 		public IntPtr Size;
 		public string Name;
 		public SectionCategory Category;
-		public NativeMethods.StateEnum State;
-		public NativeMethods.AllocationProtectEnum Protection;
-		public NativeMethods.TypeEnum Type;
+		public SectionProtection Protection;
+		public SectionType Type;
 		public string ModuleName;
 		public string ModulePath;
 	}

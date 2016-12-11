@@ -152,6 +152,7 @@
     <Compile Include="Forms\InputBytesForm.Designer.cs">
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Memory\Disassembler.cs" />
     <Compile Include="Memory\Module.cs" />
     <Compile Include="Memory\NodeDissector.cs" />
     <Compile Include="Memory\Dumper.cs" />

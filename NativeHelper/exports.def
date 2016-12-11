@@ -8,5 +8,5 @@ EXPORTS
 	WriteRemoteMemory
 	EnumerateProcesses
 	EnumerateRemoteSectionsAndModules
-	DisassembleRemoteCode
+	DisassembleCode
 	ControlRemoteProcess

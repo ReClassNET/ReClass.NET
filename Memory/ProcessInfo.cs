@@ -12,12 +12,12 @@ namespace ReClassNET.Memory
 
 		private IntPtr handle;
 
-		public int Id { get; }
+		public IntPtr Id { get; }
 		public IntPtr Handle => Open();
 		public string Name { get; }
 		public string Path { get; }
 
-		public ProcessInfo(NativeHelper nativeHelper, int id, string name, string path)
+		public ProcessInfo(NativeHelper nativeHelper, IntPtr id, string name, string path)
 		{
 			Contract.Requires(nativeHelper != null);
 			Contract.Requires(name != null);
@@ -43,7 +43,7 @@ namespace ReClassNET.Memory
 				{
 					if (handle.IsNull())
 					{
-						handle = nativeHelper.OpenRemoteProcess(Id, NativeMethods.PROCESS_ALL_ACCESS);
+						handle = nativeHelper.OpenRemoteProcess(Id, ProcessAccess.Full);
 					}
 				}
 			}
