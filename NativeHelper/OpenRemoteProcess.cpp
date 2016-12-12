@@ -2,7 +2,7 @@
 
 #include "NativeHelper.hpp"
 
-RC_Pointer __stdcall OpenRemoteProcess(RC_Pointer processId, ProcessAccess desiredAccess)
+RC_Pointer __stdcall OpenRemoteProcess(RC_Pointer id, ProcessAccess desiredAccess)
 {
 	DWORD access = PROCESS_QUERY_INFORMATION | SYNCHRONIZE;
 	switch (desiredAccess)
@@ -18,7 +18,7 @@ RC_Pointer __stdcall OpenRemoteProcess(RC_Pointer processId, ProcessAccess desir
 			break;
 	}
 
-	auto handle = OpenProcess(access, FALSE, (DWORD)processId);
+	auto handle = OpenProcess(access, FALSE, (DWORD)id);
 
 	if (handle == nullptr || handle == INVALID_HANDLE_VALUE)
 	{

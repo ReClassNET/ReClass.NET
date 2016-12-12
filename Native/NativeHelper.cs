@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using ReClassNET.Debugger;
 using ReClassNET.Memory;
 using ReClassNET.Util;
 
@@ -57,6 +58,12 @@ namespace ReClassNET.Native
 
 		private delegate void ControlRemoteProcessDelegate(IntPtr process, ControlRemoteProcessAction action);
 
+		private delegate bool DebuggerAttachToProcessDelegate(IntPtr id);
+		private delegate void DebuggerDetachFromProcessDelegate(IntPtr id);
+		private delegate bool DebuggerWaitForDebugEventDelegate(ref DebugEvent e);
+		private delegate void DebuggerContinueEventDelegate(ref DebugEvent e);
+		private delegate bool DebuggerSetHardwareBreakpointDelegate(IntPtr id, IntPtr address, HardwareBreakpointRegister register, HardwareBreakpointType type, HardwareBreakpointSize size, bool set);
+
 		private IntPtr fnIsProcessValid;
 		private IsProcessValidDelegate isProcessValidDelegate;
 		private IntPtr fnOpenRemoteProcess;
@@ -75,6 +82,16 @@ namespace ReClassNET.Native
 		private DisassembleCodeDelegate disassembleCodeDelegate;
 		private IntPtr fnControlRemoteProcess;
 		private ControlRemoteProcessDelegate controlRemoteProcessDelegate;
+		private IntPtr fnDebuggerAttachToProcess;
+		private DebuggerAttachToProcessDelegate debuggerAttachToProcessDelegate;
+		private IntPtr fnDebuggerDetachFromProcess;
+		private DebuggerDetachFromProcessDelegate debuggerDetachFromProcessDelegate;
+		private IntPtr fnDebuggerWaitForDebugEvent;
+		private DebuggerWaitForDebugEventDelegate debuggerWaitForDebugEventDelegate;
+		private IntPtr fnDebuggerContinueEvent;
+		private DebuggerContinueEventDelegate debuggerContinueEventDelegate;
+		private IntPtr fnDebuggerSetHardwareBreakpoint;
+		private DebuggerSetHardwareBreakpointDelegate debuggerSetHardwareBreakpointDelegate;
 
 		private readonly RequestFunctionPtrCallback requestFunctionPtrReference;
 
@@ -105,6 +122,11 @@ namespace ReClassNET.Native
 			SetActiveNativeMethod(methodRegistry[RequestFunction.EnumerateRemoteSectionsAndModules].First());
 			SetActiveNativeMethod(methodRegistry[RequestFunction.DisassembleCode].First());
 			SetActiveNativeMethod(methodRegistry[RequestFunction.ControlRemoteProcess].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.DebuggerAttachToProcess].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.DebuggerDetachFromProcess].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.DebuggerWaitForDebugEvent].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.DebuggerContinueEvent].First());
+			SetActiveNativeMethod(methodRegistry[RequestFunction.DebuggerSetHardwareBreakpoint].First());
 		}
 
 		#region IDisposable Support
@@ -173,7 +195,12 @@ namespace ReClassNET.Native
 				RequestFunction.EnumerateProcesses,
 				RequestFunction.EnumerateRemoteSectionsAndModules,
 				RequestFunction.DisassembleCode,
-				RequestFunction.ControlRemoteProcess
+				RequestFunction.ControlRemoteProcess,
+				RequestFunction.DebuggerAttachToProcess,
+				RequestFunction.DebuggerDetachFromProcess,
+				RequestFunction.DebuggerWaitForDebugEvent,
+				RequestFunction.DebuggerContinueEvent,
+				RequestFunction.DebuggerSetHardwareBreakpoint
 			})
 			{
 				var functionPtr = NativeMethods.GetProcAddress(module, method.ToString());
@@ -241,6 +268,26 @@ namespace ReClassNET.Native
 					fnControlRemoteProcess = methodInfo.FunctionPtr;
 					controlRemoteProcessDelegate = Marshal.GetDelegateForFunctionPointer<ControlRemoteProcessDelegate>(fnControlRemoteProcess);
 					break;
+				case RequestFunction.DebuggerAttachToProcess:
+					fnDebuggerAttachToProcess = methodInfo.FunctionPtr;
+					debuggerAttachToProcessDelegate = Marshal.GetDelegateForFunctionPointer<DebuggerAttachToProcessDelegate>(fnDebuggerAttachToProcess);
+					break;
+				case RequestFunction.DebuggerDetachFromProcess:
+					fnDebuggerDetachFromProcess = methodInfo.FunctionPtr;
+					debuggerDetachFromProcessDelegate = Marshal.GetDelegateForFunctionPointer<DebuggerDetachFromProcessDelegate>(fnDebuggerDetachFromProcess);
+					break;
+				case RequestFunction.DebuggerWaitForDebugEvent:
+					fnDebuggerWaitForDebugEvent = methodInfo.FunctionPtr;
+					debuggerWaitForDebugEventDelegate = Marshal.GetDelegateForFunctionPointer<DebuggerWaitForDebugEventDelegate>(fnDebuggerWaitForDebugEvent);
+					break;
+				case RequestFunction.DebuggerContinueEvent:
+					fnDebuggerContinueEvent = methodInfo.FunctionPtr;
+					debuggerContinueEventDelegate = Marshal.GetDelegateForFunctionPointer<DebuggerContinueEventDelegate>(fnDebuggerContinueEvent);
+					break;
+				case RequestFunction.DebuggerSetHardwareBreakpoint:
+					fnDebuggerSetHardwareBreakpoint = methodInfo.FunctionPtr;
+					debuggerSetHardwareBreakpointDelegate = Marshal.GetDelegateForFunctionPointer<DebuggerSetHardwareBreakpointDelegate>(fnDebuggerSetHardwareBreakpoint);
+					break;
 			}
 		}
 
@@ -268,6 +315,16 @@ namespace ReClassNET.Native
 					return fnDisassembleCode;
 				case RequestFunction.ControlRemoteProcess:
 					return fnControlRemoteProcess;
+				case RequestFunction.DebuggerAttachToProcess:
+					return fnDebuggerAttachToProcess;
+				case RequestFunction.DebuggerDetachFromProcess:
+					return fnDebuggerDetachFromProcess;
+				case RequestFunction.DebuggerWaitForDebugEvent:
+					return fnDebuggerWaitForDebugEvent;
+				case RequestFunction.DebuggerContinueEvent:
+					return fnDebuggerContinueEvent;
+				case RequestFunction.DebuggerSetHardwareBreakpoint:
+					return fnDebuggerSetHardwareBreakpoint;
 			}
 
 			throw new ArgumentException(nameof(request));
@@ -382,6 +439,31 @@ namespace ReClassNET.Native
 		public void ControlRemoteProcess(IntPtr process, ControlRemoteProcessAction action)
 		{
 			controlRemoteProcessDelegate(process, action);
+		}
+
+		public bool DebuggerAttachToProcess(IntPtr id)
+		{
+			return debuggerAttachToProcessDelegate(id);
+		}
+
+		public void DebuggerDetachFromProcess(IntPtr id)
+		{
+			debuggerDetachFromProcessDelegate(id);
+		}
+
+		public bool DebuggerWaitForDebugEvent(ref DebugEvent e)
+		{
+			return debuggerWaitForDebugEventDelegate(ref e);
+		}
+
+		public void DebuggerContinueEvent(ref DebugEvent e)
+		{
+			debuggerContinueEventDelegate(ref e);
+		}
+
+		public bool DebuggerSetHardwareBreakpoint(IntPtr id, HardwareBreakpoint hwbp, bool set)
+		{
+			return debuggerSetHardwareBreakpointDelegate(id, hwbp.Address, hwbp.Register, hwbp.Type, hwbp.Size, set);
 		}
 
 		#endregion

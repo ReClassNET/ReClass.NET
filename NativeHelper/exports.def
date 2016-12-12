@@ -10,3 +10,8 @@ EXPORTS
 	EnumerateRemoteSectionsAndModules
 	DisassembleCode
 	ControlRemoteProcess
+	DebuggerAttachToProcess
+	DebuggerDetachFromProcess
+	DebuggerWaitForDebugEvent
+	DebuggerContinueEvent
+	DebuggerSetHardwareBreakpoint

@@ -146,13 +146,17 @@
     <Compile Include="DataExchange\ReClassClipboard.cs" />
     <Compile Include="DataExchange\ReClassNetFile.Read.cs" />
     <Compile Include="DataExchange\ReClassNetFile.Write.cs" />
+    <Compile Include="Debugger\HardwareBreakpoint.cs" />
+    <Compile Include="Debugger\SoftwareBreakpoint.cs" />
     <Compile Include="Forms\InputBytesForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\InputBytesForm.Designer.cs">
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Debugger\RemoteDebugger.cs" />
     <Compile Include="Memory\Disassembler.cs" />
+    <Compile Include="Debugger\IBreakpoint.cs" />
     <Compile Include="Memory\Module.cs" />
     <Compile Include="Memory\NodeDissector.cs" />
     <Compile Include="Memory\Dumper.cs" />

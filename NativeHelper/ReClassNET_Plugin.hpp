@@ -24,7 +24,12 @@ enum class RequestFunction
 	EnumerateProcesses,
 	EnumerateRemoteSectionsAndModules,
 	DisassembleCode,
-	ControlRemoteProcess
+	ControlRemoteProcess,
+	DebuggerAttachToProcess,
+	DebuggerDetachFromProcess,
+	DebuggerWaitForDebugEvent,
+	DebuggerContinueEvent,
+	DebuggerSetHardwareBreakpoint
 };
 
 enum class ProcessAccess
@@ -77,6 +82,48 @@ enum class ControlRemoteProcessAction
 	Terminate
 };
 
+enum class HardwareBreakpointRegister
+{
+	InvalidRegister,
+
+	Dr0,
+	Dr1,
+	Dr2,
+	Dr3
+};
+
+enum class HardwareBreakpointType
+{
+	Access,
+	ReadWrite,
+	Write,
+};
+
+enum class HardwareBreakpointSize
+{
+	Size1,
+	Size2,
+	Size4,
+	Size8
+};
+
+enum class DebugEventType
+{
+	CreateProcess,
+	ExitProcess,
+	CreateThread,
+	ExitThread,
+	LoadDll,
+	UnloadDll,
+	Exception
+};
+
+enum class ContinueStatus
+{
+	Continue,
+
+};
+
 // Structures
 
 struct EnumerateProcessData
@@ -108,6 +155,105 @@ struct EnumerateRemoteModuleData
 	RC_UnicodeChar Path[PATH_MAXIMUM_LENGTH];
 };
 
+struct CreateProcessDebugInfo
+{
+	RC_Pointer FileHandle;
+	RC_Pointer ProcessHandle;
+};
+
+struct ExitProcessDebugInfo
+{
+	RC_Size ExitCode;
+};
+
+struct CreateThreadDebugInfo
+{
+	RC_Pointer ThreadHandle;
+};
+
+struct ExitThreadDebugInfo
+{
+	RC_Size ExitCode;
+};
+
+struct LoadDllDebugInfo
+{
+	RC_Pointer FileHandle;
+	RC_Pointer BaseOfDll;
+};
+
+struct UnloadDllDebugInfo
+{
+	RC_Pointer BaseOfDll;
+};
+
+struct ExceptionDebugInfo
+{
+	RC_Size ExceptionCode;
+	RC_Size ExceptionFlags;
+	RC_Pointer ExceptionAddress;
+
+	HardwareBreakpointRegister CausedBy;
+
+	bool IsFirstChance;
+
+	struct RegisterInfo
+	{
+#ifdef _WIN64
+		RC_Pointer Rax;
+		RC_Pointer Rbx;
+		RC_Pointer Rcx;
+		RC_Pointer Rdx;
+		RC_Pointer Rdi;
+		RC_Pointer Rsi;
+		RC_Pointer Rsp;
+		RC_Pointer Rbp;
+		RC_Pointer Rip;
+
+		RC_Pointer R8;
+		RC_Pointer R9;
+		RC_Pointer R10;
+		RC_Pointer R11;
+		RC_Pointer R12;
+		RC_Pointer R13;
+		RC_Pointer R14;
+		RC_Pointer R15;
+#else
+		RC_Pointer Eax;
+		RC_Pointer Ebx;
+		RC_Pointer Ecx;
+		RC_Pointer Edx;
+		RC_Pointer Edi;
+		RC_Pointer Esi;
+		RC_Pointer Esp;
+		RC_Pointer Ebp;
+		RC_Pointer Eip;
+#endif
+	};
+	RegisterInfo Registers;
+};
+
+struct DebugEvent
+{
+	ContinueStatus ContinueStatus;
+
+	RC_Pointer ProcessId;
+	RC_Pointer ThreadId;
+
+	DebugEventType Type;
+
+	union
+	{
+		CreateProcessDebugInfo CreateProcessInfo;
+		ExitProcessDebugInfo ExitProcessInfo;
+		CreateThreadDebugInfo CreateThreadInfo;
+		ExitThreadDebugInfo ExitThreadInfo;
+		LoadDllDebugInfo LoadDllInfo;
+		UnloadDllDebugInfo UnloadDllInfo;
+		ExceptionDebugInfo ExceptionInfo;
+	};
+};
+
 // Callbacks
 
 typedef RC_Pointer(__stdcall *RequestFunctionPtrCallback)(RequestFunction request);
@@ -121,7 +267,7 @@ typedef void(__stdcall EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData
 
 typedef bool(__stdcall *IsProcessValid_Delegate)(RC_Pointer handle);
 
-typedef RC_Pointer(__stdcall *OpenRemoteProcess_Delegate)(RC_Size processId, ProcessAccess desiredAccess);
+typedef RC_Pointer(__stdcall *OpenRemoteProcess_Delegate)(RC_Size id, ProcessAccess desiredAccess);
 
 typedef void(__stdcall *CloseRemoteProcess_Delegate)(RC_Pointer handle);
 
@@ -136,3 +282,13 @@ typedef void(__stdcall *EnumerateRemoteSectionsAndModules_Delegate)(RC_Pointer h
 typedef bool(__stdcall *DisassembleCode_Delegate)(RC_Pointer address, RC_Size length, RC_Pointer virtualAddress, InstructionData* instruction);
 
 typedef void(__stdcall *ControlRemoteProcess_Delegate)(RC_Pointer handle, ControlRemoteProcessAction action);
+
+typedef bool(__stdcall *DebuggerAttachToProcess_Delegate)(RC_Pointer id);
+
+typedef void(__stdcall *DebuggerDetachFromProcess_Delegate)(RC_Pointer id);
+
+typedef bool(__stdcall *DebuggerWaitForDebugEvent_Delegate)(DebugEvent* info);
+
+typedef void(__stdcall *DebuggerContinueEvent_Delegate)(DebugEvent* evt);
+
+typedef bool(__stdcall *DebuggerSetHardwareBreakpoint_Delegate)(RC_Pointer processId, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointType type, HardwareBreakpointSize size, bool set);

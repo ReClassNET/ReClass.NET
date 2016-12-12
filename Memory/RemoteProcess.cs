@@ -8,25 +8,22 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ReClassNET.AddressParser;
+using ReClassNET.Debugger;
 using ReClassNET.Native;
 using ReClassNET.Symbols;
 using ReClassNET.Util;
 
 namespace ReClassNET.Memory
 {
+	public delegate void UnderlayingProcessChangedEvent(RemoteProcess sender);
+
 	public class RemoteProcess : IDisposable
 	{
 		private readonly object processSync = new object();
 
 		private readonly NativeHelper nativeHelper;
-		public NativeHelper NativeHelper => nativeHelper;
 
-		private ProcessInfo process;
-		private IntPtr handle;
-		public ProcessInfo UnderlayingProcess => process;
-
-		public delegate void RemoteProcessChangedEvent(RemoteProcess sender);
-		public event RemoteProcessChangedEvent ProcessChanged;
+		private readonly RemoteDebugger debugger;
 
 		private readonly Dictionary<IntPtr, string> rttiCache = new Dictionary<IntPtr, string>();
 
@@ -35,6 +32,18 @@ namespace ReClassNET.Memory
 		private readonly List<Section> sections = new List<Section>();
 
 		private readonly SymbolStore symbols = new SymbolStore();
+
+		private ProcessInfo process;
+		private IntPtr handle;
+
+		public event UnderlayingProcessChangedEvent ProcessChanged;
+
+		public NativeHelper NativeHelper => nativeHelper;
+
+		public RemoteDebugger Debugger => debugger;
+
+		public ProcessInfo UnderlayingProcess => process;
+
 		public SymbolStore Symbols => symbols;
 
 		public bool IsValid => process != null && nativeHelper.IsProcessValid(handle);
@@ -44,6 +53,8 @@ namespace ReClassNET.Memory
 			Contract.Requires(nativeHelper != null);
 
 			this.nativeHelper = nativeHelper;
+
+			debugger = new RemoteDebugger(this);
 		}
 
 		public void Dispose()
@@ -51,6 +62,8 @@ namespace ReClassNET.Memory
 			Close();
 		}
 
+		/// <summary>Opens the given process to gather informations from.</summary>
+		/// <param name="info">The process information.</param>
 		public void Open(ProcessInfo info)
 		{
 			Contract.Requires(info != null);
@@ -72,13 +85,14 @@ namespace ReClassNET.Memory
 			}
 		}
 
+		/// <summary>Closes the underlaying process. If the debugger is attached, it will automaticly detached.</summary>
 		public void Close()
 		{
 			if (process != null)
 			{
 				lock (processSync)
 				{
-					//detach debugger, remove breakpoints
+					debugger.Detach();
 
 					nativeHelper.CloseRemoteProcess(handle);
 

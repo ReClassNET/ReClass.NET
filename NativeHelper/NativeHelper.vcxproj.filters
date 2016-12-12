@@ -32,6 +32,9 @@
     <ClCompile Include="WriteRemoteMemory.cpp">
       <Filter>Functions</Filter>
     </ClCompile>
+    <ClCompile Include="Debugger.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="exports.def" />

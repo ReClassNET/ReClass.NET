@@ -6,7 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.DataExchange;
+using ReClassNET.Debugger;
 using ReClassNET.Memory;
+using ReClassNET.Native;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
 
@@ -1025,6 +1027,43 @@ namespace ReClassNET.UI
 			}
 
 			return true;
+		}
+
+		private void findOutWhatAccessesThisAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			/*var address = selectedNodes.First().Address;
+
+			var dbg = Memory.Process.Debugger;
+			if (dbg.Attach())
+			{
+				System.Diagnostics.Debug.WriteLine("Attached");
+
+				dbg.SetBreakpoint(new HardwareBreakpoint(selectedNodes.First().Address, HardwareBreakpointRegister.Dr0, HardwareBreakpointType.Write, HardwareBreakpointSize.Size4));
+				dbg.SetBreakpoint(new HardwareBreakpoint(selectedNodes.First().Address + 0xC, HardwareBreakpointRegister.Dr3, HardwareBreakpointType.Write, HardwareBreakpointSize.Size4));
+
+				var ev = new DebugEvent();
+				bool running = true;
+				while (running)
+				{
+					if (dbg.WaitForDebugEvent(ref ev))
+					{
+						System.Diagnostics.Debug.WriteLine(ev.Header.Type);
+
+						if (ev.Header.Type == DebugEventType.Exception)
+						{
+							System.Diagnostics.Debug.WriteLine($"Caused by: {ev.Data.ExceptionInfo.CausedBy}");
+						}
+						else if (ev.Header.Type == DebugEventType.ExitProcess)
+						{
+							running = false;
+						}
+
+						ev.Header.ContinueStatus = 0x00010002;
+
+						dbg.ContinueEvent(ref ev);
+					}
+				}
+			}*/
 		}
 	}
 }
