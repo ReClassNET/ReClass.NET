@@ -31,7 +31,7 @@ namespace ReClassNET.Forms
 				var row = (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)?.Row;
 				if (row != null)
 				{
-					return new ProcessInfo(nativeHelper, row.Field<IntPtr>("id"), row.Field<string>("name"), row.Field<string>("path"));
+					return new ProcessInfo(row.Field<IntPtr>("id"), row.Field<string>("name"), row.Field<string>("path"));
 				}
 				return null;
 			}

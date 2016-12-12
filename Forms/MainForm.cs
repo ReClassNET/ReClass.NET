@@ -53,14 +53,14 @@ namespace ReClassNET.Forms
 			remoteProcess = new RemoteProcess(nativeHelper);
 			remoteProcess.ProcessChanged += delegate (RemoteProcess sender)
 			{
-				if (sender.Process == null)
+				if (!sender.IsValid)
 				{
 					Text = Constants.ApplicationName;
 					processInfoToolStripStatusLabel.Text = "No process selected";
 				}
 				else
 				{
-					var text = $"{sender.Process.Name} (PID: {sender.Process.Id})";
+					var text = $"{sender.UnderlayingProcess.Name} (PID: {sender.UnderlayingProcess.Id.ToString()})";
 
 					Text = $"{Constants.ApplicationName} - {text}";
 					processInfoToolStripStatusLabel.Text = text;
@@ -146,10 +146,7 @@ namespace ReClassNET.Forms
 				Close();
 			}
 
-			if (remoteProcess.Process != null)
-			{
-				remoteProcess.Process.Close();
-			}
+			remoteProcess.Dispose();
 		}
 
 		#region Menustrip
@@ -162,16 +159,16 @@ namespace ReClassNET.Forms
 				{
 					if (pb.SelectedProcess != null)
 					{
-						DetachFromCurrentProcess();
+						remoteProcess.Close();
 
-						remoteProcess.Process = pb.SelectedProcess;
+						remoteProcess.Open(pb.SelectedProcess);
 						remoteProcess.UpdateProcessInformations();
 						if (pb.LoadSymbols)
 						{
 							LoadAllSymbolsForCurrentProcess();
 						}
 
-						Program.Settings.LastProcess = remoteProcess.Process.Name;
+						Program.Settings.LastProcess = remoteProcess.UnderlayingProcess.Name;
 					}
 				}
 			}
@@ -179,7 +176,7 @@ namespace ReClassNET.Forms
 
 		private void detachToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			DetachFromCurrentProcess();
+			remoteProcess.Close();
 		}
 
 		private void newClassToolStripButton_Click(object sender, EventArgs e)
@@ -187,7 +184,7 @@ namespace ReClassNET.Forms
 			var node = ClassNode.Create();
 			node.AddBytes(64);
 
-			var mainModule = remoteProcess.GetModuleByName(remoteProcess.Process?.Name);
+			var mainModule = remoteProcess.GetModuleByName(remoteProcess.UnderlayingProcess?.Name);
 			if (mainModule != null)
 			{
 				node.Address = mainModule.Start;
@@ -327,7 +324,7 @@ namespace ReClassNET.Forms
 				action = ControlRemoteProcessAction.Suspend;
 			}
 
-			nativeHelper.ControlRemoteProcess(remoteProcess.Process.Handle, action);
+			remoteProcess.ControlRemoteProcess(action);
 		}
 
 		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)
@@ -577,16 +574,6 @@ namespace ReClassNET.Forms
 			}
 
 			memoryViewControl.DeregisterNodeType(type);
-		}
-
-		/// <summary>Detach from current process.</summary>
-		private void DetachFromCurrentProcess()
-		{
-			if (remoteProcess.Process != null)
-			{
-				remoteProcess.Process.Close();
-				remoteProcess.Process = null;
-			}
 		}
 
 		/// <summary>Shows the code form with the given <paramref name="generator"/>.</summary>

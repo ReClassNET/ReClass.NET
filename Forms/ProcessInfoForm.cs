@@ -57,8 +57,7 @@ namespace ReClassNET.Forms
 				modules.Columns.Add("path", typeof(string));
 				modules.Columns.Add("module", typeof(Module));
 
-				process.NativeHelper.EnumerateRemoteSectionsAndModules(
-					process.Process.Handle,
+				process.EnumerateRemoteSectionsAndModules(
 					delegate (Section section)
 					{
 						var row = sections.NewRow();
