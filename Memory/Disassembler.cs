@@ -57,6 +57,77 @@ namespace ReClassNET.Memory
 
 			return instructions;
 		}
+
+		public DisassembledInstruction GetPreviousInstruction(RemoteProcess process, IntPtr address)
+		{
+			var buffer = process.ReadRemoteMemory(address - 80, 80);
+
+			var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+			try
+			{
+				var eip = handle.AddrOfPinnedObject();
+				var end = eip + 80;
+				var virtualAddress = address;
+
+				var instruction = new InstructionData();
+
+				var x = GetPreviousInstructionHelper(process, end, 80, ref instruction);
+				if (x != end)
+				{
+					x = GetPreviousInstructionHelper(process, end, 40, ref instruction);
+					if (x != end)
+					{
+						x = GetPreviousInstructionHelper(process, end, 20, ref instruction);
+						if (x != end)
+						{
+							x = GetPreviousInstructionHelper(process, end, 10, ref instruction);
+							if (x != end)
+							{
+								for (var i = 1; i < 20; ++i)
+								{
+									x = end - i;
+									if (process.NativeHelper.DisassembleCode(x, end.Sub(x).ToInt32(), virtualAddress, out instruction))
+									{
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				return new DisassembledInstruction
+				{
+					Address = address - instruction.Length,
+					Length = instruction.Length,
+					Instruction = instruction.Instruction
+				};
+			}
+			finally
+			{
+				if (handle.IsAllocated)
+				{
+					handle.Free();
+				}
+			}
+		}
+
+		private IntPtr GetPreviousInstructionHelper(RemoteProcess process, IntPtr address, int distance, ref InstructionData instruction)
+		{
+			var x = address - distance;
+			while (x.CompareTo(address) == -1) // aka x < address
+			{
+				if (process.NativeHelper.DisassembleCode(x, address.Sub(x).ToInt32(), IntPtr.Zero, out instruction))
+				{
+					x += instruction.Length;
+				}
+				else
+				{
+					break;
+				}
+			}
+			return x;
+		}
 	}
 
 	public class DisassembledInstruction
