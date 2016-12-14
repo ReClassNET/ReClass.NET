@@ -128,6 +128,17 @@ namespace ReClassNET.Util
 
 		[Pure]
 		[DebuggerStepThrough]
+		public static int Mod(this IntPtr lhs, int mod)
+		{
+#if WIN64
+			return (int)(lhs.ToInt64() % mod);
+#else
+			return lhs.ToInt32() % mod;
+#endif
+		}
+
+		[Pure]
+		[DebuggerStepThrough]
 		public static bool InRange(this IntPtr address, IntPtr start, IntPtr end)
 		{
 #if WIN64
