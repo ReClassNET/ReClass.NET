@@ -19,9 +19,17 @@ namespace ReClassNET.Memory
 			this.nativeHelper = nativeHelper;
 		}
 
+		/// <summary>
+		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="lenght"/>) in the remote process.
+		/// </summary>
+		/// <param name="process">The process to read from.</param>
+		/// <param name="address">The address of the code.</param>
+		/// <param name="length">The length of the code.</param>
+		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
 		public List<DisassembledInstruction> RemoteDisassembleCode(RemoteProcess process, IntPtr address, int length)
 		{
 			Contract.Requires(process != null);
+			Contract.Ensures(Contract.Result<List<DisassembledInstruction>>() != null);
 
 			var buffer = process.ReadRemoteMemory(address, length);
 
@@ -39,9 +47,16 @@ namespace ReClassNET.Memory
 			}
 		}
 
+		/// <summary>
+		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="lenght"/>).
+		/// </summary>
+		/// <param name="address">The address of the code.</param>
+		/// <param name="length">The length of the code.</param>
+		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
+		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
 		public IEnumerable<DisassembledInstruction> DisassembleCode(IntPtr address, int length, IntPtr virtualAddress)
 		{
-			var instructions = new List<DisassembledInstruction>();
+			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
 
 			var eip = address;
 			var end = address + length;
@@ -62,14 +77,22 @@ namespace ReClassNET.Memory
 					Instruction = instruction.Instruction
 				};
 
-				eip = eip + instruction.Length;
-				virtualAddress = virtualAddress + instruction.Length;
+				eip += instruction.Length;
+				virtualAddress += instruction.Length;
 			}
 		}
 
+		/// <summary>
+		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="lenght"/>) in the remote process until the first 0xCC instruction.
+		/// </summary>
+		/// <param name="process">The process to read from.</param>
+		/// <param name="address">The address of the code.</param>
+		/// <param name="length">The length of the code.</param>
+		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
 		public List<DisassembledInstruction> RemoteDisassembleFunction(RemoteProcess process, IntPtr address, int length)
 		{
 			Contract.Requires(process != null);
+			Contract.Ensures(Contract.Result<List<DisassembledInstruction>>() != null);
 
 			var buffer = process.ReadRemoteMemory(address, length);
 
@@ -87,57 +110,36 @@ namespace ReClassNET.Memory
 			}
 		}
 
+		/// <summary>
+		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="lenght"/>) until the first 0xCC instruction.
+		/// </summary>
+		/// <param name="address">The address of the code.</param>
+		/// <param name="length">The length of the code.</param>
+		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
+		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
 		public IEnumerable<DisassembledInstruction> DisassembleFunction(IntPtr address, int length, IntPtr virtualAddress)
 		{
+			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
+
 			// Read until first CC.
 			return DisassembleCode(address, length, virtualAddress)
 				.TakeUntil(i => i.Length == 1 && i.Data[0] == 0xCC);
 		}
 
-		public DisassembledInstruction GetPreviousInstruction(RemoteProcess process, IntPtr address)
+		/// <summary>
+		/// Disassembles the instruction prior to the given address.
+		/// </summary>
+		/// <param name="process">The process to read from.</param>
+		/// <param name="address">The address of the code.</param>
+		/// <returns>The prior instruction.</returns>
+		public DisassembledInstruction RemoteGetPreviousInstruction(RemoteProcess process, IntPtr address)
 		{
 			var buffer = process.ReadRemoteMemory(address - 80, 80);
 
 			var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 			try
 			{
-				var eip = handle.AddrOfPinnedObject();
-				var end = eip + 80;
-				var virtualAddress = address;
-
-				var instruction = new InstructionData();
-
-				var x = GetPreviousInstructionHelper(process, end, 80, ref instruction);
-				if (x != end)
-				{
-					x = GetPreviousInstructionHelper(process, end, 40, ref instruction);
-					if (x != end)
-					{
-						x = GetPreviousInstructionHelper(process, end, 20, ref instruction);
-						if (x != end)
-						{
-							x = GetPreviousInstructionHelper(process, end, 10, ref instruction);
-							if (x != end)
-							{
-								for (var i = 1; i < 20; ++i)
-								{
-									x = end - i;
-									if (process.NativeHelper.DisassembleCode(x, end.Sub(x).ToInt32(), virtualAddress, out instruction))
-									{
-										break;
-									}
-								}
-							}
-						}
-					}
-				}
-
-				return new DisassembledInstruction
-				{
-					Address = address - instruction.Length,
-					Length = instruction.Length,
-					Instruction = instruction.Instruction
-				};
+				return GetPreviousInstruction(handle.AddrOfPinnedObject(), address);
 			}
 			finally
 			{
@@ -148,14 +150,55 @@ namespace ReClassNET.Memory
 			}
 		}
 
-		private IntPtr GetPreviousInstructionHelper(RemoteProcess process, IntPtr address, int distance, ref InstructionData instruction)
+		private DisassembledInstruction GetPreviousInstruction(IntPtr address, IntPtr virtualAddress)
+		{
+			var end = address + 80;
+
+			var instruction = new InstructionData();
+
+			var x = GetPreviousInstructionHelper(end, 80, virtualAddress, ref instruction);
+			if (x != end)
+			{
+				x = GetPreviousInstructionHelper(end, 40, virtualAddress, ref instruction);
+				if (x != end)
+				{
+					x = GetPreviousInstructionHelper(end, 20, virtualAddress, ref instruction);
+					if (x != end)
+					{
+						x = GetPreviousInstructionHelper(end, 10, virtualAddress, ref instruction);
+						if (x != end)
+						{
+							for (var i = 1; i < 20; ++i)
+							{
+								x = end - i;
+								if (nativeHelper.DisassembleCode(x, end.Sub(x).ToInt32(), virtualAddress, out instruction))
+								{
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return new DisassembledInstruction
+			{
+				Address = address - instruction.Length,
+				Length = instruction.Length,
+				Instruction = instruction.Instruction
+			};
+		}
+
+		private IntPtr GetPreviousInstructionHelper(IntPtr address, int distance, IntPtr virtualAddress, ref InstructionData instruction)
 		{
 			var x = address - distance;
+			var y = virtualAddress - distance;
 			while (x.CompareTo(address) == -1) // aka x < address
 			{
-				if (process.NativeHelper.DisassembleCode(x, address.Sub(x).ToInt32(), IntPtr.Zero, out instruction))
+				if (nativeHelper.DisassembleCode(x, address.Sub(x).ToInt32(), y, out instruction))
 				{
 					x += instruction.Length;
+					y += instruction.Length;
 				}
 				else
 				{
