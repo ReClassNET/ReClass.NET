@@ -128,8 +128,6 @@ namespace ReClassNET.Forms
 					row["path"] = data.Path;
 					dt.Rows.Add(row);
 				}
-
-				return true;
 			});
 
 			dt.DefaultView.Sort = "name ASC";
