@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Windows.Forms;
+using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
@@ -22,6 +23,22 @@ namespace ReClassNET.Forms
 			FormatLabelText(newSizeLabel, currentSize);
 		}
 
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			GlobalWindowManager.AddWindow(this);
+		}
+
+		protected override void OnFormClosed(FormClosedEventArgs e)
+		{
+			base.OnFormClosed(e);
+
+			GlobalWindowManager.RemoveWindow(this);
+		}
+
+		#region Event Handler
+
 		private void hexRadioButton_CheckedChanged(object sender, EventArgs e)
 		{
 			bytesNumericUpDown.Hexadecimal = hexRadioButton.Checked;
@@ -31,6 +48,8 @@ namespace ReClassNET.Forms
 		{
 			FormatLabelText(newSizeLabel, currentSize + Bytes);
 		}
+
+		#endregion
 
 		private void FormatLabelText(Label label, int size)
 		{
