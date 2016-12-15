@@ -118,14 +118,10 @@ namespace ReClassNET.Nodes
 
 				if (!address.IsNull() && memory.Process.IsValid)
 				{
-					var disassembler = new Disassembler();
+					var disassembler = new Disassembler(memory.Process.NativeHelper);
 					instructions.AddRange(
-						disassembler.DisassembleRemoteCode(memory.Process, address, 200)
-#if WIN64
-							.Select(i => $"{i.Address.ToString("X08")} {i.Instruction}")
-#else
-							.Select(i => $"{i.Address.ToString("X04")} {i.Instruction}")
-#endif
+						disassembler.RemoteDisassembleFunction(memory.Process, address, 200)
+							.Select(i => $"{i.Address.ToString(Constants.StringHexFormat)} {i.Instruction}")
 					);
 				}
 			}

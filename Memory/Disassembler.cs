@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Runtime.InteropServices;
 using ReClassNET.Native;
 using ReClassNET.Util;
@@ -9,43 +10,25 @@ namespace ReClassNET.Memory
 {
 	public class Disassembler
 	{
-		public List<DisassembledInstruction> DisassembleRemoteCode(RemoteProcess process, IntPtr address, int length)
+		private readonly NativeHelper nativeHelper;
+
+		public Disassembler(NativeHelper nativeHelper)
+		{
+			Contract.Requires(nativeHelper != null);
+
+			this.nativeHelper = nativeHelper;
+		}
+
+		public List<DisassembledInstruction> RemoteDisassembleCode(RemoteProcess process, IntPtr address, int length)
 		{
 			Contract.Requires(process != null);
-
-			var instructions = new List<DisassembledInstruction>();
 
 			var buffer = process.ReadRemoteMemory(address, length);
 
 			var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 			try
 			{
-				var eip = handle.AddrOfPinnedObject();
-				var end = eip + length;
-				var virtualAddress = address;
-
-				var instruction = new InstructionData();
-				while (true)
-				{
-					if (!process.NativeHelper.DisassembleCode(eip, end.Sub(eip).ToInt32(), virtualAddress, out instruction))
-					{
-						break;
-					}
-
-					instructions.Add(new DisassembledInstruction
-					{
-						Address = virtualAddress,
-						Length = instruction.Length,
-						Instruction = instruction.Instruction
-					});
-
-					eip = eip + instruction.Length;
-					if (eip.CompareTo(end) >= 0 || buffer[eip.Sub(handle.AddrOfPinnedObject()).ToInt32()] == 0xCC)
-					{
-						break;
-					}
-					virtualAddress = virtualAddress + instruction.Length;
-				}
+				return DisassembleCode(handle.AddrOfPinnedObject(), length, address).ToList();
 			}
 			finally
 			{
@@ -54,8 +37,61 @@ namespace ReClassNET.Memory
 					handle.Free();
 				}
 			}
+		}
 
-			return instructions;
+		public IEnumerable<DisassembledInstruction> DisassembleCode(IntPtr address, int length, IntPtr virtualAddress)
+		{
+			var instructions = new List<DisassembledInstruction>();
+
+			var eip = address;
+			var end = address + length;
+
+			var instruction = new InstructionData();
+			while (eip.CompareTo(end) == -1)
+			{
+				if (!nativeHelper.DisassembleCode(eip, end.Sub(eip).ToInt32(), virtualAddress, out instruction))
+				{
+					break;
+				}
+
+				yield return new DisassembledInstruction
+				{
+					Address = virtualAddress,
+					Length = instruction.Length,
+					Data = instruction.Data,
+					Instruction = instruction.Instruction
+				};
+
+				eip = eip + instruction.Length;
+				virtualAddress = virtualAddress + instruction.Length;
+			}
+		}
+
+		public List<DisassembledInstruction> RemoteDisassembleFunction(RemoteProcess process, IntPtr address, int length)
+		{
+			Contract.Requires(process != null);
+
+			var buffer = process.ReadRemoteMemory(address, length);
+
+			var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+			try
+			{
+				return DisassembleFunction(handle.AddrOfPinnedObject(), length, address).ToList();
+			}
+			finally
+			{
+				if (handle.IsAllocated)
+				{
+					handle.Free();
+				}
+			}
+		}
+
+		public IEnumerable<DisassembledInstruction> DisassembleFunction(IntPtr address, int length, IntPtr virtualAddress)
+		{
+			// Read until first CC.
+			return DisassembleCode(address, length, virtualAddress)
+				.TakeUntil(i => i.Length == 1 && i.Data[0] == 0xCC);
 		}
 
 		public DisassembledInstruction GetPreviousInstruction(RemoteProcess process, IntPtr address)
@@ -134,6 +170,9 @@ namespace ReClassNET.Memory
 	{
 		public IntPtr Address;
 		public int Length;
+		public byte[] Data;
 		public string Instruction;
+
+		public override string ToString() => $"{Address.ToString(Constants.StringHexFormat)} - {Instruction}";
 	}
 }

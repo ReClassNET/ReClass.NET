@@ -122,16 +122,12 @@ namespace ReClassNET.Nodes
 				{
 					memorySize = 0;
 
-					var disassembler = new Disassembler();
-					foreach (var instruction in disassembler.DisassembleRemoteCode(memory.Process, address, 4096))
+					var disassembler = new Disassembler(memory.Process.NativeHelper);
+					foreach (var instruction in disassembler.RemoteDisassembleFunction(memory.Process, address, 4096))
 					{
 						memorySize += instruction.Length;
 
-#if WIN64
-						instructions.Add($"{instruction.Address.ToString("X08")} {instruction.Instruction}");
-#else
-						instructions.Add($"{instruction.Address.ToString("X04")} {instruction.Instruction}");
-#endif
+						instructions.Add($"{instruction.Address.ToString(Constants.StringHexFormat)} {instruction.Instruction}");
 					}
 
 					ParentNode?.ChildHasChanged(this);

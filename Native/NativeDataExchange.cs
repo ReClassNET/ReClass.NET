@@ -105,6 +105,9 @@ namespace ReClassNET.Native
 	{
 		public int Length;
 
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 15)]
+		public byte[] Data;
+
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
 		public string Instruction;
 	};
@@ -196,10 +199,16 @@ namespace ReClassNET.Native
 		public RegisterInfo Registers;
 	}
 
+	public enum DebugContinueStatus
+	{
+		Handled,
+		NotHandled
+	}
+
 	[StructLayout(LayoutKind.Sequential)]
 	public struct DebugEventHeader
 	{
-		public int ContinueStatus;
+		public DebugContinueStatus ContinueStatus;
 
 		public IntPtr ProcessId;
 		public IntPtr ThreadId;

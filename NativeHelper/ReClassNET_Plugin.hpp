@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <cstdint>
 
 // Types
 
@@ -82,6 +83,12 @@ enum class ControlRemoteProcessAction
 	Terminate
 };
 
+enum DebugContinueStatus
+{
+	Handled,
+	NotHandled
+};
+
 enum class HardwareBreakpointRegister
 {
 	InvalidRegister,
@@ -92,19 +99,19 @@ enum class HardwareBreakpointRegister
 	Dr3
 };
 
-enum class HardwareBreakpointType
+enum class HardwareBreakpointTrigger
 {
+	Execute,
 	Access,
-	ReadWrite,
 	Write,
 };
 
 enum class HardwareBreakpointSize
 {
-	Size1,
-	Size2,
-	Size4,
-	Size8
+	Size1 = 1,
+	Size2 = 2,
+	Size4 = 4,
+	Size8 = 8
 };
 
 enum class DebugEventType
@@ -118,12 +125,6 @@ enum class DebugEventType
 	Exception
 };
 
-enum class ContinueStatus
-{
-	Continue,
-
-};
-
 // Structures
 
 struct EnumerateProcessData
@@ -135,6 +136,7 @@ struct EnumerateProcessData
 struct InstructionData
 {
 	int Length;
+	uint8_t Data[15];
 	RC_UnicodeChar Instruction[64];
 };
 
@@ -235,7 +237,7 @@ struct ExceptionDebugInfo
 
 struct DebugEvent
 {
-	ContinueStatus ContinueStatus;
+	DebugContinueStatus ContinueStatus;
 
 	RC_Pointer ProcessId;
 	RC_Pointer ThreadId;
@@ -287,8 +289,8 @@ typedef bool(__stdcall *DebuggerAttachToProcess_Delegate)(RC_Pointer id);
 
 typedef void(__stdcall *DebuggerDetachFromProcess_Delegate)(RC_Pointer id);
 
-typedef bool(__stdcall *DebuggerWaitForDebugEvent_Delegate)(DebugEvent* info);
+typedef bool(__stdcall *DebuggerWaitForDebugEvent_Delegate)(DebugEvent* evt, int timeoutInMilliseconds);
 
 typedef void(__stdcall *DebuggerContinueEvent_Delegate)(DebugEvent* evt);
 
-typedef bool(__stdcall *DebuggerSetHardwareBreakpoint_Delegate)(RC_Pointer processId, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointType type, HardwareBreakpointSize size, bool set);
+typedef bool(__stdcall *DebuggerSetHardwareBreakpoint_Delegate)(RC_Pointer processId, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set);

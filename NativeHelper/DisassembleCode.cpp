@@ -23,6 +23,7 @@ bool __stdcall DisassembleCode(RC_Pointer address, RC_Size length, RC_Pointer vi
 	}
 
 	instruction->Length = disamLength;
+	std::memcpy(instruction->Data, address, disamLength);
 	MultiByteToWideChar(0, 0, disasm.CompleteInstr, -1, instruction->Instruction, 64);
 
 	return true;
