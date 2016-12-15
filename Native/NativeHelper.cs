@@ -37,32 +37,43 @@ namespace ReClassNET.Native
 		public delegate IntPtr RequestFunctionPtrCallback(RequestFunction request);
 		private delegate void InitializeDelegate(RequestFunctionPtrCallback requestCallback);
 
+		[return: MarshalAs(UnmanagedType.I1)]
 		private delegate bool IsProcessValidDelegate(IntPtr process);
 
 		private delegate IntPtr OpenRemoteProcessDelegate(IntPtr pid, ProcessAccess desiredAccess);
 
 		private delegate void CloseRemoteProcessDelegate(IntPtr process);
 
+		[return: MarshalAs(UnmanagedType.I1)]
 		private delegate bool ReadRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, IntPtr size);
 
+		[return: MarshalAs(UnmanagedType.I1)]
 		private delegate bool WriteRemoteMemoryDelegate(IntPtr process, IntPtr address, IntPtr buffer, IntPtr size);
 
-		public delegate bool EnumerateProcessCallback(ref EnumerateProcessData data);
+		public delegate void EnumerateProcessCallback(ref EnumerateProcessData data);
 		private delegate void EnumerateProcessesDelegate(EnumerateProcessCallback callbackProcess);
 
 		public delegate void EnumerateRemoteSectionCallback(ref EnumerateRemoteSectionData data);
 		public delegate void EnumerateRemoteModuleCallback(ref EnumerateRemoteModuleData data);
 		private delegate void EnumerateRemoteSectionsAndModulesDelegate(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule);
 
+		[return: MarshalAs(UnmanagedType.I1)]
 		private delegate bool DisassembleCodeDelegate(IntPtr address, IntPtr length, IntPtr virtualAddress, out InstructionData instruction);
 
 		private delegate void ControlRemoteProcessDelegate(IntPtr process, ControlRemoteProcessAction action);
 
+		[return: MarshalAs(UnmanagedType.I1)]
 		private delegate bool DebuggerAttachToProcessDelegate(IntPtr id);
+
 		private delegate void DebuggerDetachFromProcessDelegate(IntPtr id);
-		private delegate bool DebuggerWaitForDebugEventDelegate(ref DebugEvent e);
+
+		[return: MarshalAs(UnmanagedType.I1)]
+		private delegate bool DebuggerWaitForDebugEventDelegate(ref DebugEvent e, int timeoutInMilliseconds);
+
 		private delegate void DebuggerContinueEventDelegate(ref DebugEvent e);
-		private delegate bool DebuggerSetHardwareBreakpointDelegate(IntPtr id, IntPtr address, HardwareBreakpointRegister register, HardwareBreakpointType type, HardwareBreakpointSize size, bool set);
+
+		[return: MarshalAs(UnmanagedType.I1)]
+		private delegate bool DebuggerSetHardwareBreakpointDelegate(IntPtr id, IntPtr address, HardwareBreakpointRegister register, HardwareBreakpointTrigger trigger, HardwareBreakpointSize size, [param: MarshalAs(UnmanagedType.I1)] bool set);
 
 		private IntPtr fnIsProcessValid;
 		private IsProcessValidDelegate isProcessValidDelegate;
@@ -431,9 +442,13 @@ namespace ReClassNET.Native
 			EnumerateRemoteSectionsAndModules(process, c1, c2);
 		}
 
+		private readonly object sync = new object();
 		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, out InstructionData instruction)
 		{
-			return disassembleCodeDelegate(address, (IntPtr)length, virtualAddress, out instruction);
+			lock (sync)
+			{
+				return disassembleCodeDelegate(address, (IntPtr)length, virtualAddress, out instruction);
+			}
 		}
 
 		public void ControlRemoteProcess(IntPtr process, ControlRemoteProcessAction action)
@@ -451,9 +466,9 @@ namespace ReClassNET.Native
 			debuggerDetachFromProcessDelegate(id);
 		}
 
-		public bool DebuggerWaitForDebugEvent(ref DebugEvent e)
+		public bool DebuggerWaitForDebugEvent(ref DebugEvent e, int timeoutInMilliseconds)
 		{
-			return debuggerWaitForDebugEventDelegate(ref e);
+			return debuggerWaitForDebugEventDelegate(ref e, timeoutInMilliseconds);
 		}
 
 		public void DebuggerContinueEvent(ref DebugEvent e)
@@ -463,7 +478,7 @@ namespace ReClassNET.Native
 
 		public bool DebuggerSetHardwareBreakpoint(IntPtr id, HardwareBreakpoint hwbp, bool set)
 		{
-			return debuggerSetHardwareBreakpointDelegate(id, hwbp.Address, hwbp.Register, hwbp.Type, hwbp.Size, set);
+			return debuggerSetHardwareBreakpointDelegate(id, hwbp.Address, hwbp.Register, hwbp.Trigger, hwbp.Size, set);
 		}
 
 		#endregion

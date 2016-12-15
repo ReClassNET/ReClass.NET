@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
+using ReClassNET.Forms;
 using ReClassNET.Memory;
 using ReClassNET.Native;
+using ReClassNET.Util;
 
 namespace ReClassNET.Debugger
 {
-	public class RemoteDebugger
+	public partial class RemoteDebugger
 	{
-		private readonly object sync = new object();
+		private readonly object syncBreakpoint = new object();
 
 		private readonly RemoteProcess process;
 
 		private readonly HashSet<IBreakpoint> breakpoints = new HashSet<IBreakpoint>();
-
-		public bool IsAttached { get; private set; }
 
 		public RemoteDebugger(RemoteProcess process)
 		{
@@ -23,79 +24,26 @@ namespace ReClassNET.Debugger
 			this.process = process;
 		}
 
-		public bool Attach()
+		public void AddBreakpoint(IBreakpoint breakpoint)
 		{
-			if (!process.IsValid)
-			{
-				return false;
-			}
+			Contract.Requires(breakpoint != null);
 
-			lock (sync)
+			lock (syncBreakpoint)
 			{
-				if (IsAttached)
+				if (!breakpoints.Add(breakpoint))
 				{
-					throw new InvalidOperationException();
+					throw new BreakpointAlreadySetException(breakpoint);
 				}
 
-				IsAttached = process.NativeHelper.DebuggerAttachToProcess(process.UnderlayingProcess.Id);
-
-				return IsAttached;
+				breakpoint.Set(process);
 			}
-		}
-
-		public void Detach()
-		{
-			lock (sync)
-			{
-				if (!IsAttached)
-				{
-					return;
-				}
-
-				foreach (var bp in breakpoints)
-				{
-					bp.Remove(process);
-				}
-				breakpoints.Clear();
-
-				process.NativeHelper.DebuggerDetachFromProcess(process.UnderlayingProcess.Id);
-
-				IsAttached = false;
-			}
-		}
-
-		public bool WaitForDebugEvent(ref DebugEvent e)
-		{
-			return process.NativeHelper.DebuggerWaitForDebugEvent(ref e);
-		}
-
-		public void ContinueEvent(ref DebugEvent e)
-		{
-			process.NativeHelper.DebuggerContinueEvent(ref e);
-		}
-
-		public bool SetBreakpoint(IBreakpoint bp)
-		{
-			Contract.Requires(bp != null);
-
-			lock (sync)
-			{
-				if (!breakpoints.Add(bp))
-				{
-					return false;
-				}
-
-				bp.Set(process);
-			}
-
-			return true;
 		}
 
 		public void RemoveBreakpoint(IBreakpoint bp)
 		{
 			Contract.Requires(bp != null);
 
-			lock (sync)
+			lock (syncBreakpoint)
 			{
 				if (breakpoints.Remove(bp))
 				{
@@ -103,5 +51,172 @@ namespace ReClassNET.Debugger
 				}
 			}
 		}
+
+		public void FindWhatAccessesAddress(IntPtr address, int size)
+		{
+			FindCodeByBreakpoint(address, size, HardwareBreakpointTrigger.Access);
+		}
+
+		public void FindWhatWritesToAddress(IntPtr address, int size)
+		{
+			FindCodeByBreakpoint(address, size, HardwareBreakpointTrigger.Write);
+		}
+
+		public void FindCodeByBreakpoint(IntPtr address, int size, HardwareBreakpointTrigger trigger)
+		{
+			var register = GetUsableDebugRegister();
+			if (register == HardwareBreakpointRegister.InvalidRegister)
+			{
+				throw new NoHardwareBreakpointAvailableException();
+			}
+
+			var breakpointList = SplitBreakpoint(address, size);
+
+			var fcf = new FoundCodeForm(process, breakpointList[0].Address, trigger);
+
+			var breakpoints = new List<IBreakpoint>();
+			fcf.Stop += (sender, e) =>
+			{
+				lock (breakpoints)
+				{
+					foreach (var bp in breakpoints)
+					{
+						RemoveBreakpoint(bp);
+					}
+
+					breakpoints.Clear();
+				}
+			};
+
+			BreakpointHandler handler = delegate (IBreakpoint bp, ref DebugEvent evt)
+			{
+				fcf.AddRecord(evt.Data.ExceptionInfo);
+			};
+
+			var breakpoint = new HardwareBreakpoint(breakpointList[0].Address, register, trigger, (HardwareBreakpointSize)breakpointList[0].Size, handler);
+			try
+			{
+				AddBreakpoint(breakpoint);
+				breakpoints.Add(breakpoint);
+
+				fcf.Show();
+			}
+			catch
+			{
+				fcf.Dispose();
+
+				throw;
+			}
+
+			if (breakpointList.Count > 1)
+			{
+				foreach (var split in breakpointList.Skip(1))
+				{
+					register = GetUsableDebugRegister();
+					if (register == HardwareBreakpointRegister.InvalidRegister)
+					{
+						break;
+					}
+
+					breakpoint = new HardwareBreakpoint(split.Address, register, trigger, (HardwareBreakpointSize)split.Size, handler);
+					AddBreakpoint(breakpoint);
+					breakpoints.Add(breakpoint);
+				}
+			}
+		}
+
+		private List<BreakpointSplit> SplitBreakpoint(IntPtr address, int size)
+		{
+			var splits = new List<BreakpointSplit>();
+
+			while (size > 0)
+			{
+#if WIN64
+				if (size >= 8)
+				{
+					if (address.Mod(8) == 0)
+					{
+						splits.Add(new BreakpointSplit { Address = address, Size = 8 });
+
+						address += 8;
+						size -= 8;
+
+						continue;
+					}
+				}
+#endif
+				if (size >= 4)
+				{
+					if (address.Mod(4) == 0)
+					{
+						splits.Add(new BreakpointSplit { Address = address, Size = 4 });
+
+						address += 4;
+						size -= 4;
+
+						continue;
+					}
+				}
+				if (size >= 2)
+				{
+					if (address.Mod(2) == 0)
+					{
+						splits.Add(new BreakpointSplit { Address = address, Size = 2 });
+
+						address += 2;
+						size -= 2;
+
+						continue;
+					}
+				}
+				if (size >= 1)
+				{
+					splits.Add(new BreakpointSplit { Address = address, Size = 1 });
+
+					address += 1;
+					size -= 1;
+
+					continue;
+				}
+			}
+
+			return splits;
+		}
+
+		private HardwareBreakpointRegister GetUsableDebugRegister()
+		{
+			var all = new HashSet<HardwareBreakpointRegister>()
+			{
+				HardwareBreakpointRegister.Dr0,
+				HardwareBreakpointRegister.Dr1,
+				HardwareBreakpointRegister.Dr2,
+				HardwareBreakpointRegister.Dr3
+			};
+
+			lock (syncBreakpoint)
+			{
+				foreach (var bp in breakpoints)
+				{
+					var hwbp = bp as HardwareBreakpoint;
+					if (hwbp != null)
+					{
+						all.Remove(hwbp.Register);
+					}
+				}
+			}
+
+			if (all.Count > 0)
+			{
+				return all.First();
+			}
+
+			return HardwareBreakpointRegister.InvalidRegister;
+		}
+	}
+
+	class BreakpointSplit
+	{
+		public IntPtr Address;
+		public int Size;
 	}
 }

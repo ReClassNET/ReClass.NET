@@ -20,7 +20,7 @@ namespace ReClassNET.Memory
 		}
 
 		/// <summary>
-		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="lenght"/>) in the remote process.
+		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="length"/>) in the remote process.
 		/// </summary>
 		/// <param name="process">The process to read from.</param>
 		/// <param name="address">The address of the code.</param>
@@ -48,7 +48,7 @@ namespace ReClassNET.Memory
 		}
 
 		/// <summary>
-		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="lenght"/>).
+		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="length"/>).
 		/// </summary>
 		/// <param name="address">The address of the code.</param>
 		/// <param name="length">The length of the code.</param>
@@ -64,7 +64,8 @@ namespace ReClassNET.Memory
 			var instruction = new InstructionData();
 			while (eip.CompareTo(end) == -1)
 			{
-				if (!nativeHelper.DisassembleCode(eip, end.Sub(eip).ToInt32(), virtualAddress, out instruction))
+				var res = nativeHelper.DisassembleCode(eip, end.Sub(eip).ToInt32(), virtualAddress, out instruction);
+				if (!res)
 				{
 					break;
 				}
@@ -83,7 +84,7 @@ namespace ReClassNET.Memory
 		}
 
 		/// <summary>
-		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="lenght"/>) in the remote process until the first 0xCC instruction.
+		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="length"/>) in the remote process until the first 0xCC instruction.
 		/// </summary>
 		/// <param name="process">The process to read from.</param>
 		/// <param name="address">The address of the code.</param>
@@ -111,7 +112,7 @@ namespace ReClassNET.Memory
 		}
 
 		/// <summary>
-		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="lenght"/>) until the first 0xCC instruction.
+		/// Disassembles the code in the given range (<paramref name="address"/>, <paramref name="length"/>) until the first 0xCC instruction.
 		/// </summary>
 		/// <param name="address">The address of the code.</param>
 		/// <param name="length">The length of the code.</param>
@@ -123,7 +124,7 @@ namespace ReClassNET.Memory
 
 			// Read until first CC.
 			return DisassembleCode(address, length, virtualAddress)
-				.TakeUntil(i => i.Length == 1 && i.Data[0] == 0xCC);
+				.TakeWhile(i => !(i.Length == 1 && i.Data[0] == 0xCC));
 		}
 
 		/// <summary>
@@ -134,7 +135,7 @@ namespace ReClassNET.Memory
 		/// <returns>The prior instruction.</returns>
 		public DisassembledInstruction RemoteGetPreviousInstruction(RemoteProcess process, IntPtr address)
 		{
-			var buffer = process.ReadRemoteMemory(address - 80, 80);
+			var buffer = process.ReadRemoteMemory(address - 80, 95);
 
 			var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 			try
@@ -183,7 +184,7 @@ namespace ReClassNET.Memory
 
 			return new DisassembledInstruction
 			{
-				Address = address - instruction.Length,
+				Address = virtualAddress - instruction.Length,
 				Length = instruction.Length,
 				Instruction = instruction.Instruction
 			};

@@ -146,8 +146,18 @@
     <Compile Include="DataExchange\ReClassClipboard.cs" />
     <Compile Include="DataExchange\ReClassNetFile.Read.cs" />
     <Compile Include="DataExchange\ReClassNetFile.Write.cs" />
+    <Compile Include="Debugger\BreakpointAlreadySetException.cs" />
     <Compile Include="Debugger\HardwareBreakpoint.cs" />
+    <Compile Include="Debugger\NoHardwareBreakpointAvailableException.cs" />
+    <Compile Include="Debugger\RemoteDebugger.Extensions.cs" />
+    <Compile Include="Debugger\RemoteDebugger.Thread.cs" />
     <Compile Include="Debugger\SoftwareBreakpoint.cs" />
+    <Compile Include="Forms\FoundCodeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FoundCodeForm.Designer.cs">
+      <DependentUpon>FoundCodeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InputBytesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -362,6 +372,9 @@
     <EmbeddedResource Include="Forms\CodeForm.resx">
       <DependentUpon>CodeForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FoundCodeForm.resx">
+      <DependentUpon>FoundCodeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputBytesForm.resx">
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -399,6 +412,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Compile Include="Debugger\RemoteDebugger.Handler.cs" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -760,6 +774,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Drive_Go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Find_Access.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Find_Write.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" />

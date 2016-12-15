@@ -722,29 +722,6 @@ namespace ReClassNET.UI
 			ReplaceSelectedNodesWithType(item.Value);
 		}
 
-		private void removeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			RemoveSelectedNodes();
-		}
-
-		private void copyAddressToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (selectedNodes.Count > 0)
-			{
-				Clipboard.SetText(selectedNodes.First().Address.ToString("X"));
-			}
-		}
-
-		private void copyNodeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			CopySelectedNodesToClipboard();
-		}
-
-		private void pasteNodesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			PasteNodeFromClipboardToSelection();
-		}
-
 		private void createClassFromNodesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (selectedNodes.Count > 0 && !(selectedNodes[0].Node is ClassNode))
@@ -778,6 +755,39 @@ namespace ReClassNET.UI
 				}
 
 				ClearSelection();
+			}
+		}
+
+		private void findOutWhatAccessesThisAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			FindWhatInteractsWithSelectedNode(false);
+		}
+
+		private void findOutWhatWritesToThisAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			FindWhatInteractsWithSelectedNode(true);
+		}
+
+		private void copyNodeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CopySelectedNodesToClipboard();
+		}
+
+		private void pasteNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PasteNodeFromClipboardToSelection();
+		}
+
+		private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			RemoveSelectedNodes();
+		}
+
+		private void copyAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (selectedNodes.Count > 0)
+			{
+				Clipboard.SetText(selectedNodes.First().Address.ToString("X"));
 			}
 		}
 
@@ -1029,41 +1039,26 @@ namespace ReClassNET.UI
 			return true;
 		}
 
-		private void findOutWhatAccessesThisAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		private void FindWhatInteractsWithSelectedNode(bool writeOnly)
 		{
-			/*var address = selectedNodes.First().Address;
-
-			var dbg = Memory.Process.Debugger;
-			if (dbg.Attach())
+			var selectedNode = selectedNodes.FirstOrDefault();
+			if (selectedNode == null)
 			{
-				System.Diagnostics.Debug.WriteLine("Attached");
+				return;
+			}
 
-				dbg.SetBreakpoint(new HardwareBreakpoint(selectedNodes.First().Address, HardwareBreakpointRegister.Dr0, HardwareBreakpointType.Write, HardwareBreakpointSize.Size4));
-				dbg.SetBreakpoint(new HardwareBreakpoint(selectedNodes.First().Address + 0xC, HardwareBreakpointRegister.Dr3, HardwareBreakpointType.Write, HardwareBreakpointSize.Size4));
-
-				var ev = new DebugEvent();
-				bool running = true;
-				while (running)
+			var debugger = Memory.Process.Debugger;
+			if (debugger.AskUserAndStartDebugger())
+			{
+				if (writeOnly)
 				{
-					if (dbg.WaitForDebugEvent(ref ev))
-					{
-						System.Diagnostics.Debug.WriteLine(ev.Header.Type);
-
-						if (ev.Header.Type == DebugEventType.Exception)
-						{
-							System.Diagnostics.Debug.WriteLine($"Caused by: {ev.Data.ExceptionInfo.CausedBy}");
-						}
-						else if (ev.Header.Type == DebugEventType.ExitProcess)
-						{
-							running = false;
-						}
-
-						ev.Header.ContinueStatus = 0x00010002;
-
-						dbg.ContinueEvent(ref ev);
-					}
+					debugger.FindWhatWritesToAddress(selectedNode.Address, selectedNode.Node.MemorySize);
 				}
-			}*/
+				else
+				{
+					debugger.FindWhatAccessesAddress(selectedNode.Address, selectedNode.Node.MemorySize);
+				}
+			}
 		}
 	}
 }

@@ -92,7 +92,7 @@ namespace ReClassNET.Memory
 			{
 				lock (processSync)
 				{
-					debugger.Detach();
+					debugger.Terminate();
 
 					nativeHelper.CloseRemoteProcess(handle);
 

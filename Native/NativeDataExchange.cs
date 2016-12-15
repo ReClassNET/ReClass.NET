@@ -59,7 +59,7 @@ namespace ReClassNET.Native
 	#region Structs
 
 	/// <summary>Used by <see cref="NativeHelper.EnumerateProcesses(NativeHelper.EnumerateProcessCallback)"/>.</summary>
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
 	public struct EnumerateProcessData
 	{
 		public IntPtr Id;
@@ -69,7 +69,7 @@ namespace ReClassNET.Native
 	};
 
 	/// <summary>Used by <see cref="NativeHelper.EnumerateRemoteSectionsAndModules(IntPtr, NativeHelper.EnumerateRemoteSectionCallback, NativeHelper.EnumerateRemoteModuleCallback)"/>.</summary>
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
 	public struct EnumerateRemoteSectionData
 	{
 		public IntPtr BaseAddress;
@@ -88,7 +88,7 @@ namespace ReClassNET.Native
 	}
 
 	/// <summary>Used by <see cref="NativeHelper.EnumerateRemoteSectionsAndModules(IntPtr, NativeHelper.EnumerateRemoteSectionCallback, NativeHelper.EnumerateRemoteModuleCallback)"/>.</summary>
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
 	public struct EnumerateRemoteModuleData
 	{
 		public IntPtr BaseAddress;
@@ -100,7 +100,7 @@ namespace ReClassNET.Native
 	}
 
 	/// <summary>Used by <see cref="NativeHelper.DisassembleCode(IntPtr, int, IntPtr, out InstructionData)"/>.</summary>
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
 	public struct InstructionData
 	{
 		public int Length;
@@ -112,7 +112,7 @@ namespace ReClassNET.Native
 		public string Instruction;
 	};
 
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct CreateProcessDebugInfo
 	{
 		public IntPtr FileHandle;
@@ -120,25 +120,25 @@ namespace ReClassNET.Native
 		public IntPtr ProcessHandle;
 	};
 
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct ExitProcessDebugInfo
 	{
 		public IntPtr ExitCode;
 	};
 
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct CreateThreadDebugInfo
 	{
 		public IntPtr ThreadHandle;
 	};
 
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct ExitThreadDebugInfo
 	{
 		public IntPtr ExitCode;
 	};
 
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct LoadDllDebugInfo
 	{
 		public IntPtr FileHandle;
@@ -146,13 +146,13 @@ namespace ReClassNET.Native
 		public IntPtr BaseOfDll;
 	};
 
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct UnloadDllDebugInfo
 	{
 		public IntPtr BaseOfDll;
 	};
 
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct ExceptionDebugInfo
 	{
 		public IntPtr ExceptionCode;
@@ -161,7 +161,7 @@ namespace ReClassNET.Native
 		public HardwareBreakpointRegister CausedBy;
 		public bool IsFirstChance;
 
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public struct RegisterInfo
 		{
 #if WIN64
@@ -205,7 +205,7 @@ namespace ReClassNET.Native
 		NotHandled
 	}
 
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct DebugEventHeader
 	{
 		public DebugContinueStatus ContinueStatus;
@@ -216,7 +216,7 @@ namespace ReClassNET.Native
 		public DebugEventType Type;
 	}
 
-	[StructLayout(LayoutKind.Explicit)]
+	[StructLayout(LayoutKind.Explicit, Pack = 1)]
 	public struct DebugEventUnion
 	{
 		[FieldOffset(0)]
@@ -235,7 +235,7 @@ namespace ReClassNET.Native
 		public ExceptionDebugInfo ExceptionInfo;
 	}
 
-	[StructLayout(LayoutKind.Explicit)]
+	[StructLayout(LayoutKind.Explicit, Pack = 1)]
 	public struct DebugEvent
 	{
 		[FieldOffset(0)]
