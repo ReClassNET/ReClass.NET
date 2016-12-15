@@ -1,5 +1,7 @@
 ﻿using System;
 using ReClassNET.Memory;
+using ReClassNET.Native;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Debugger
 {
@@ -9,9 +11,15 @@ namespace ReClassNET.Debugger
 
 		private byte orig;
 
-		public SoftwareBreakpoint(IntPtr address)
+		private readonly BreakpointHandler handler;
+
+		public SoftwareBreakpoint(IntPtr address, BreakpointHandler handler)
 		{
+			Contract.Requires(handler != null);
+
 			Address = address;
+
+			this.handler = handler;
 		}
 
 		public bool Set(RemoteProcess process)
@@ -29,6 +37,11 @@ namespace ReClassNET.Debugger
 		public void Remove(RemoteProcess process)
 		{
 			process.WriteRemoteMemory(Address, new byte[] { orig });
+		}
+
+		public void Handler(ref DebugEvent evt)
+		{
+			handler?.Invoke(this, ref evt);
 		}
 
 		public override bool Equals(object obj)

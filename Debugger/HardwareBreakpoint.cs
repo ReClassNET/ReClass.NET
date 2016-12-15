@@ -1,5 +1,7 @@
 ﻿using System;
 using ReClassNET.Memory;
+using ReClassNET.Native;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Debugger
 {
@@ -13,30 +15,34 @@ namespace ReClassNET.Debugger
 		Dr3
 	}
 
-	public enum HardwareBreakpointType
+	public enum HardwareBreakpointTrigger
 	{
+		Execute,
 		Access,
-		ReadWrite,
 		Write,
 	}
 
 	public enum HardwareBreakpointSize
 	{
-		Size1,
-		Size2,
-		Size4,
-		Size8
+		Size1 = 1,
+		Size2 = 2,
+		Size4 = 4,
+		Size8 = 8
 	}
 
 	public sealed class HardwareBreakpoint : IBreakpoint
 	{
 		public IntPtr Address { get; }
 		public HardwareBreakpointRegister Register { get; }
-		public HardwareBreakpointType Type { get; }
+		public HardwareBreakpointTrigger Trigger { get; }
 		public HardwareBreakpointSize Size { get; }
 
-		public HardwareBreakpoint(IntPtr address, HardwareBreakpointRegister register, HardwareBreakpointType type, HardwareBreakpointSize size)
+		private readonly BreakpointHandler handler;
+
+		public HardwareBreakpoint(IntPtr address, HardwareBreakpointRegister register, HardwareBreakpointTrigger trigger, HardwareBreakpointSize size, BreakpointHandler handler)
 		{
+			Contract.Requires(handler != null);
+
 			if (register == HardwareBreakpointRegister.InvalidRegister)
 			{
 				throw new InvalidOperationException();
@@ -44,8 +50,10 @@ namespace ReClassNET.Debugger
 
 			Address = address;
 			Register = register;
-			Type = type;
+			Trigger = trigger;
 			Size = size;
+
+			this.handler = handler;
 		}
 
 		public bool Set(RemoteProcess process)
@@ -58,6 +66,11 @@ namespace ReClassNET.Debugger
 			process.NativeHelper.DebuggerSetHardwareBreakpoint(process.UnderlayingProcess.Id, this, false);
 		}
 
+		public void Handler(ref DebugEvent evt)
+		{
+			handler?.Invoke(this, ref evt);
+		}
+
 		public override bool Equals(object obj)
 		{
 			var hwbp = obj as HardwareBreakpoint;
@@ -66,13 +79,13 @@ namespace ReClassNET.Debugger
 				return false;
 			}
 
-			// Two hardware breakpoints are equal if the address and type are equal.
-			return Address == hwbp.Address && Type == hwbp.Type;
+			// Two hardware breakpoints are equal if they use the same register.
+			return Register == hwbp.Register;
 		}
 
 		public override int GetHashCode()
 		{
-			return (Address.GetHashCode() * 17) ^ Type.GetHashCode();
+			return Register.GetHashCode();
 		}
 	}
 }
