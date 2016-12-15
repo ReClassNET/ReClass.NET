@@ -127,6 +127,8 @@ enum class DebugEventType
 
 // Structures
 
+#pragma pack(push, 1)
+
 struct EnumerateProcessData
 {
 	RC_Size Id;
@@ -255,6 +257,8 @@ struct DebugEvent
 		ExceptionDebugInfo ExceptionInfo;
 	};
 };
+
+#pragma pack(pop)
 
 // Callbacks
 

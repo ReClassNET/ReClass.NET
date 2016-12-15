@@ -20,59 +20,59 @@ void __stdcall DebuggerDetachFromProcess(RC_Pointer id)
 	DebugActiveProcessStop((DWORD)id);
 }
 
-bool __stdcall DebuggerWaitForDebugEvent(DebugEvent* info)
+bool __stdcall DebuggerWaitForDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 {
-	DEBUG_EVENT evt = { };
-	if (!WaitForDebugEvent(&evt, INFINITE))
+	DEBUG_EVENT _evt = { };
+	if (!WaitForDebugEvent(&_evt, timeoutInMilliseconds))
 	{
 		return false;
 	}
 
-	info->ProcessId = (RC_Pointer)evt.dwProcessId;
-	info->ThreadId = (RC_Pointer)evt.dwThreadId;
+	evt->ProcessId = (RC_Pointer)_evt.dwProcessId;
+	evt->ThreadId = (RC_Pointer)_evt.dwThreadId;
 
-	switch (evt.dwDebugEventCode)
+	switch (_evt.dwDebugEventCode)
 	{
 	case CREATE_PROCESS_DEBUG_EVENT:
-		info->Type = DebugEventType::CreateProcess;
-		info->CreateProcessInfo.FileHandle = evt.u.CreateProcessInfo.hFile;
-		info->CreateProcessInfo.ProcessHandle = evt.u.CreateProcessInfo.hProcess;
+		evt->Type = DebugEventType::CreateProcess;
+		evt->CreateProcessInfo.FileHandle = _evt.u.CreateProcessInfo.hFile;
+		evt->CreateProcessInfo.ProcessHandle = _evt.u.CreateProcessInfo.hProcess;
 		break;
 	case EXIT_PROCESS_DEBUG_EVENT:
-		info->Type = DebugEventType::ExitProcess;
-		info->ExitProcessInfo.ExitCode = evt.u.ExitProcess.dwExitCode;
+		evt->Type = DebugEventType::ExitProcess;
+		evt->ExitProcessInfo.ExitCode = _evt.u.ExitProcess.dwExitCode;
 		break;
 	case CREATE_THREAD_DEBUG_EVENT:
-		info->Type = DebugEventType::CreateThread;
-		info->CreateThreadInfo.ThreadHandle = evt.u.CreateThread.hThread;
+		evt->Type = DebugEventType::CreateThread;
+		evt->CreateThreadInfo.ThreadHandle = _evt.u.CreateThread.hThread;
 		break;
 	case EXIT_THREAD_DEBUG_EVENT:
-		info->Type = DebugEventType::ExitThread;
-		info->ExitThreadInfo.ExitCode = evt.u.ExitProcess.dwExitCode;
+		evt->Type = DebugEventType::ExitThread;
+		evt->ExitThreadInfo.ExitCode = _evt.u.ExitProcess.dwExitCode;
 		break;
 	case LOAD_DLL_DEBUG_EVENT:
-		info->Type = DebugEventType::LoadDll;
-		info->LoadDllInfo.FileHandle = evt.u.LoadDll.hFile;
-		info->LoadDllInfo.BaseOfDll = evt.u.LoadDll.lpBaseOfDll;
+		evt->Type = DebugEventType::LoadDll;
+		evt->LoadDllInfo.FileHandle = _evt.u.LoadDll.hFile;
+		evt->LoadDllInfo.BaseOfDll = _evt.u.LoadDll.lpBaseOfDll;
 		break;
 	case UNLOAD_DLL_DEBUG_EVENT:
-		info->Type = DebugEventType::UnloadDll;
-		info->UnloadDllInfo.BaseOfDll = evt.u.UnloadDll.lpBaseOfDll;
+		evt->Type = DebugEventType::UnloadDll;
+		evt->UnloadDllInfo.BaseOfDll = _evt.u.UnloadDll.lpBaseOfDll;
 		break;
 	case OUTPUT_DEBUG_STRING_EVENT:
 		break;
 	case EXCEPTION_DEBUG_EVENT:
-		info->Type = DebugEventType::Exception;
+		evt->Type = DebugEventType::Exception;
 
-		auto& exception = evt.u.Exception;
+		auto& exception = _evt.u.Exception;
 
 		// Copy basic informations.
-		info->ExceptionInfo.IsFirstChance = exception.dwFirstChance != 0;
-		info->ExceptionInfo.ExceptionAddress = exception.ExceptionRecord.ExceptionAddress;
-		info->ExceptionInfo.ExceptionCode = exception.ExceptionRecord.ExceptionCode;
-		info->ExceptionInfo.ExceptionFlags = exception.ExceptionRecord.ExceptionFlags;
+		evt->ExceptionInfo.IsFirstChance = exception.dwFirstChance != 0;
+		evt->ExceptionInfo.ExceptionAddress = exception.ExceptionRecord.ExceptionAddress;
+		evt->ExceptionInfo.ExceptionCode = exception.ExceptionRecord.ExceptionCode;
+		evt->ExceptionInfo.ExceptionFlags = exception.ExceptionRecord.ExceptionFlags;
 
-		auto handle = OpenThread(THREAD_GET_CONTEXT, FALSE, evt.dwThreadId);
+		auto handle = OpenThread(THREAD_GET_CONTEXT, FALSE, _evt.dwThreadId);
 
 		CONTEXT ctx = { };
 		ctx.ContextFlags = CONTEXT_CONTROL | CONTEXT_INTEGER | CONTEXT_DEBUG_REGISTERS;
@@ -81,27 +81,27 @@ bool __stdcall DebuggerWaitForDebugEvent(DebugEvent* info)
 		// Check if breakpoint was a hardware breakpoint.
 		if (ctx.Dr6 & 0b0001)
 		{
-			info->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr0;
+			evt->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr0;
 		}
 		else if (ctx.Dr6 & 0b0010)
 		{
-			info->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr1;
+			evt->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr1;
 		}
 		else if (ctx.Dr6 & 0b0100)
 		{
-			info->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr2;
+			evt->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr2;
 		}
 		else if (ctx.Dr6 & 0b1000)
 		{
-			info->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr3;
+			evt->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr3;
 		}
 		else
 		{
-			info->ExceptionInfo.CausedBy = HardwareBreakpointRegister::InvalidRegister;
+			evt->ExceptionInfo.CausedBy = HardwareBreakpointRegister::InvalidRegister;
 		}
 
 		// Copy registers.
-		auto& reg = info->ExceptionInfo.Registers;
+		auto& reg = evt->ExceptionInfo.Registers;
 #ifdef _WIN64
 		reg.Rax = (RC_Pointer)ctx.Rax;
 		reg.Rbx = (RC_Pointer)ctx.Rbx;
@@ -143,10 +143,21 @@ bool __stdcall DebuggerWaitForDebugEvent(DebugEvent* info)
 
 void __stdcall DebuggerContinueEvent(DebugEvent* evt)
 {
-	ContinueDebugEvent((DWORD)evt->ProcessId, (DWORD)evt->ThreadId, (DWORD)evt->ContinueStatus);
+	DWORD continueStatus = 0;
+	switch (evt->ContinueStatus)
+	{
+	case DebugContinueStatus::Handled:
+		continueStatus = DBG_CONTINUE;
+		break;
+	case DebugContinueStatus::NotHandled:
+		continueStatus = DBG_EXCEPTION_NOT_HANDLED;
+		break;
+	}
+
+	ContinueDebugEvent((DWORD)evt->ProcessId, (DWORD)evt->ThreadId, continueStatus);
 }
 
-bool __stdcall DebuggerSetHardwareBreakpoint(RC_Pointer processId, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointType type, HardwareBreakpointSize size, bool set)
+bool __stdcall DebuggerSetHardwareBreakpoint(RC_Pointer processId, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
 {
 	if (reg == HardwareBreakpointRegister::InvalidRegister)
 	{
@@ -161,11 +172,11 @@ bool __stdcall DebuggerSetHardwareBreakpoint(RC_Pointer processId, RC_Pointer ad
 	{
 		addressValue = (decltype(CONTEXT::Dr0))address;
 
-		if (type == HardwareBreakpointType::Access)
+		if (type == HardwareBreakpointTrigger::Execute)
 			typeValue = 0;
-		else if (type == HardwareBreakpointType::ReadWrite)
+		else if (type == HardwareBreakpointTrigger::Access)
 			typeValue = 3;
-		else if (type == HardwareBreakpointType::Write)
+		else if (type == HardwareBreakpointTrigger::Write)
 			typeValue = 1;
 
 		if (size == HardwareBreakpointSize::Size1)
