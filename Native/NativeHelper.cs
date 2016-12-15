@@ -442,13 +442,9 @@ namespace ReClassNET.Native
 			EnumerateRemoteSectionsAndModules(process, c1, c2);
 		}
 
-		private readonly object sync = new object();
 		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, out InstructionData instruction)
 		{
-			lock (sync)
-			{
-				return disassembleCodeDelegate(address, (IntPtr)length, virtualAddress, out instruction);
-			}
+			return disassembleCodeDelegate(address, (IntPtr)length, virtualAddress, out instruction);
 		}
 
 		public void ControlRemoteProcess(IntPtr process, ControlRemoteProcessAction action)
