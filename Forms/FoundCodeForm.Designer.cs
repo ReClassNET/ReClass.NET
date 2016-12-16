@@ -32,9 +32,10 @@
 			this.foundCodeDataGridView = new System.Windows.Forms.DataGridView();
 			this.counterDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.instructionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.infoTextBox = new System.Windows.Forms.TextBox();
 			this.stopButton = new System.Windows.Forms.Button();
 			this.closeButton = new System.Windows.Forms.Button();
-			this.infoTextBox = new System.Windows.Forms.TextBox();
+			this.createFunctionButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
@@ -44,7 +45,9 @@
 			// 
 			// splitContainer
 			// 
-			this.splitContainer.Dock = System.Windows.Forms.DockStyle.Left;
+			this.splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.splitContainer.Location = new System.Drawing.Point(0, 0);
 			this.splitContainer.Name = "splitContainer";
 			this.splitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -98,29 +101,6 @@
 			this.instructionDataGridViewTextBoxColumn.Name = "instructionDataGridViewTextBoxColumn";
 			this.instructionDataGridViewTextBoxColumn.ReadOnly = true;
 			// 
-			// stopButton
-			// 
-			this.stopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.stopButton.Location = new System.Drawing.Point(541, 391);
-			this.stopButton.Name = "stopButton";
-			this.stopButton.Size = new System.Drawing.Size(75, 23);
-			this.stopButton.TabIndex = 1;
-			this.stopButton.Text = "Stop";
-			this.stopButton.UseVisualStyleBackColor = true;
-			this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
-			// 
-			// closeButton
-			// 
-			this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.closeButton.Location = new System.Drawing.Point(541, 391);
-			this.closeButton.Name = "closeButton";
-			this.closeButton.Size = new System.Drawing.Size(75, 23);
-			this.closeButton.TabIndex = 2;
-			this.closeButton.Text = "Close";
-			this.closeButton.UseVisualStyleBackColor = true;
-			this.closeButton.Visible = false;
-			this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
-			// 
 			// infoTextBox
 			// 
 			this.infoTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -132,16 +112,52 @@
 			this.infoTextBox.Size = new System.Drawing.Size(476, 222);
 			this.infoTextBox.TabIndex = 0;
 			// 
+			// stopButton
+			// 
+			this.stopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.stopButton.Location = new System.Drawing.Point(489, 53);
+			this.stopButton.Name = "stopButton";
+			this.stopButton.Size = new System.Drawing.Size(86, 35);
+			this.stopButton.TabIndex = 1;
+			this.stopButton.Text = "Stop";
+			this.stopButton.UseVisualStyleBackColor = true;
+			this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+			// 
+			// closeButton
+			// 
+			this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.closeButton.Location = new System.Drawing.Point(489, 53);
+			this.closeButton.Name = "closeButton";
+			this.closeButton.Size = new System.Drawing.Size(86, 35);
+			this.closeButton.TabIndex = 2;
+			this.closeButton.Text = "Close";
+			this.closeButton.UseVisualStyleBackColor = true;
+			this.closeButton.Visible = false;
+			this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+			// 
+			// createFunctionButton
+			// 
+			this.createFunctionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.createFunctionButton.Location = new System.Drawing.Point(489, 12);
+			this.createFunctionButton.Name = "createFunctionButton";
+			this.createFunctionButton.Size = new System.Drawing.Size(86, 35);
+			this.createFunctionButton.TabIndex = 3;
+			this.createFunctionButton.Text = "Create Function Node";
+			this.createFunctionButton.UseVisualStyleBackColor = true;
+			this.createFunctionButton.Click += new System.EventHandler(this.createFunctionButton_Click);
+			// 
 			// FoundCodeForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(628, 426);
+			this.ClientSize = new System.Drawing.Size(587, 426);
+			this.Controls.Add(this.createFunctionButton);
 			this.Controls.Add(this.closeButton);
 			this.Controls.Add(this.stopButton);
 			this.Controls.Add(this.splitContainer);
+			this.MinimumSize = new System.Drawing.Size(603, 464);
 			this.Name = "FoundCodeForm";
-			this.Text = "FoundCodeForm";
+			this.Text = "<>";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FoundCodeForm_FormClosed);
 			this.splitContainer.Panel1.ResumeLayout(false);
 			this.splitContainer.Panel2.ResumeLayout(false);
@@ -162,5 +178,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn instructionDataGridViewTextBoxColumn;
 		private System.Windows.Forms.Button closeButton;
 		private System.Windows.Forms.TextBox infoTextBox;
+		private System.Windows.Forms.Button createFunctionButton;
 	}
 }

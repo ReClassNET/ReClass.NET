@@ -35,6 +35,8 @@ namespace ReClassNET.Forms
 		private Task loadSymbolsTask;
 		private CancellationTokenSource loadSymbolsTaskToken;
 
+		public ClassNodeView ClassView => classesView;
+
 		public MainForm(NativeHelper nativeHelper)
 		{
 			Contract.Requires(nativeHelper != null);

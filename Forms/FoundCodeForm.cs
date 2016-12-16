@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -9,6 +8,7 @@ using System.Windows.Forms;
 using ReClassNET.Debugger;
 using ReClassNET.Memory;
 using ReClassNET.Native;
+using ReClassNET.Nodes;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -27,6 +27,7 @@ namespace ReClassNET.Forms
 		private readonly RemoteProcess process;
 		
 		private DataTable data;
+		private volatile bool acceptNewRecords = true;
 
 		public event StopEventHandler Stop;
 
@@ -74,76 +75,9 @@ namespace ReClassNET.Forms
 
 		#region Event Handler
 
-		#endregion
-
-		public void AddRecord(ExceptionDebugInfo? context)
-		{
-			if (context == null)
-			{
-				return;
-			}
-			if (IsDisposed)
-			{
-				return;
-			}
-
-			if (InvokeRequired)
-			{
-				Invoke((MethodInvoker)(() => AddRecord(context)));
-
-				return;
-			}
-
-			var row = data.AsEnumerable().FirstOrDefault(r => r.Field<FoundCodeInfo>("info").DebugInfo.ExceptionAddress == context.Value.ExceptionAddress);
-			if (row != null)
-			{
-				row["counter"] = row.Field<int>("counter") + 1;
-			}
-			else
-			{
-				var disassembler = new Disassembler(process.NativeHelper);
-				var causedByInstruction = disassembler.RemoteGetPreviousInstruction(process, context.Value.ExceptionAddress);
-
-				var instructions = new DisassembledInstruction[5];
-				instructions[2] = causedByInstruction;
-				instructions[1] = disassembler.RemoteGetPreviousInstruction(process, instructions[2].Address);
-				instructions[0] = disassembler.RemoteGetPreviousInstruction(process, instructions[1].Address);
-
-				var nextInstructions = disassembler.RemoteDisassembleCode(process, context.Value.ExceptionAddress, 30);
-				for (var i = 0; i < 2; ++i)
-				{
-					instructions[3 + i] = nextInstructions[i];
-				}
-
-				row = data.NewRow();
-				row["counter"] = 1;
-				row["instruction"] = causedByInstruction.Instruction;
-				row["info"] = new FoundCodeInfo
-				{
-					DebugInfo = context.Value,
-					Instructions = instructions
-				};
-				data.Rows.Add(row);
-			}
-		}
-
 		private void foundCodeDataGridView_SelectionChanged(object sender, EventArgs e)
 		{
-			var row = foundCodeDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
-			if (row == null)
-			{
-				infoTextBox.Text = string.Empty;
-
-				return;
-			}
-
-			var view = row.DataBoundItem as DataRowView;
-			if (view == null)
-			{
-				return;
-			}
-
-			var info = view["info"] as FoundCodeInfo;
+			var info = GetSelectedInfo();
 			if (info == null)
 			{
 				return;
@@ -202,12 +136,40 @@ namespace ReClassNET.Forms
 
 		private void FoundCodeForm_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			Stop?.Invoke(this, EventArgs.Empty);
+			StopRecording();
+		}
+
+		private void createFunctionButton_Click(object sender, EventArgs e)
+		{
+			var info = GetSelectedInfo();
+			if (info == null)
+			{
+				return;
+			}
+
+			var disassembler = new Disassembler(process.NativeHelper);
+			var functionStartAddress = disassembler.RemoteGetFunctionStartAddress(process, info.DebugInfo.ExceptionAddress);
+			if (functionStartAddress.IsNull())
+			{
+				MessageBox.Show("Could not find the start of the function. Aborting.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+				return;
+			}
+
+			var node = ClassNode.Create();
+			node.Address = functionStartAddress;
+			node.AddNode(new FunctionNode
+			{
+				Comment = info.Instructions[2].Instruction
+			});
+
+			var mainForm = Application.OpenForms[0] as MainForm;
+			mainForm.ClassView.SelectedClass = node;
 		}
 
 		private void stopButton_Click(object sender, EventArgs e)
 		{
-			Stop?.Invoke(this, EventArgs.Empty);
+			StopRecording();
 
 			stopButton.Visible = false;
 			closeButton.Visible = true;
@@ -216,6 +178,81 @@ namespace ReClassNET.Forms
 		private void closeButton_Click(object sender, EventArgs e)
 		{
 			Close();
+		}
+
+		#endregion
+
+		private FoundCodeInfo GetSelectedInfo()
+		{
+			var row = foundCodeDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
+			if (row != null)
+			{
+				var view = row.DataBoundItem as DataRowView;
+				if (view != null)
+				{
+					return view["info"] as FoundCodeInfo;
+				}
+			}
+
+			return null;
+		}
+
+		private void StopRecording()
+		{
+			acceptNewRecords = false;
+
+			Stop?.Invoke(this, EventArgs.Empty);
+		}
+
+		public void AddRecord(ExceptionDebugInfo? context)
+		{
+			if (context == null)
+			{
+				return;
+			}
+			if (!acceptNewRecords)
+			{
+				return;
+			}
+
+			if (InvokeRequired)
+			{
+				Invoke((MethodInvoker)(() => AddRecord(context)));
+
+				return;
+			}
+
+			var row = data.AsEnumerable().FirstOrDefault(r => r.Field<FoundCodeInfo>("info").DebugInfo.ExceptionAddress == context.Value.ExceptionAddress);
+			if (row != null)
+			{
+				row["counter"] = row.Field<int>("counter") + 1;
+			}
+			else
+			{
+				var disassembler = new Disassembler(process.NativeHelper);
+				var causedByInstruction = disassembler.RemoteGetPreviousInstruction(process, context.Value.ExceptionAddress);
+
+				var instructions = new DisassembledInstruction[5];
+				instructions[2] = causedByInstruction;
+				instructions[1] = disassembler.RemoteGetPreviousInstruction(process, instructions[2].Address);
+				instructions[0] = disassembler.RemoteGetPreviousInstruction(process, instructions[1].Address);
+
+				int i = 3;
+				foreach (var instruction in disassembler.RemoteDisassembleCode(process, context.Value.ExceptionAddress, 30).Take(2))
+				{
+					instructions[i++] = instruction;
+				}
+
+				row = data.NewRow();
+				row["counter"] = 1;
+				row["instruction"] = causedByInstruction.Instruction;
+				row["info"] = new FoundCodeInfo
+				{
+					DebugInfo = context.Value,
+					Instructions = instructions
+				};
+				data.Rows.Add(row);
+			}
 		}
 	}
 }
