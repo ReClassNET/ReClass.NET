@@ -324,17 +324,17 @@ char MasmPrefixes[nbMemoryTypes][16] = {
 char NasmPrefixes[nbMemoryTypes][8] = {
     "byte ",      /* GV.MemDecoration == 1 */
     "word ",      /* GV.MemDecoration == 2 */
-    " ",     /* GV.MemDecoration == 3 */
+    "",     /* GV.MemDecoration == 3 */
     "qword ",     /* GV.MemDecoration == 4 */
-    " ",          /* GV.MemDecoration == 5 (multibytes) */
+    "",          /* GV.MemDecoration == 5 (multibytes) */
     "tword ",     /* GV.MemDecoration == 6 */
-    " ",          /* GV.MemDecoration == 7 (fword) */
-    " ",          /* GV.MemDecoration == 8 (dqword) */
-    " ",      /* GV.MemDecoration == 9 */
-    " ",       /* GV.MemDecoration == 10 */
-    " ",       /* GV.MemDecoration == 11 */
-    " ",       /* GV.MemDecoration == 12 */
-    " "       /* GV.MemDecoration == 13 */
+    "",          /* GV.MemDecoration == 7 (fword) */
+    "",          /* GV.MemDecoration == 8 (dqword) */
+    "",      /* GV.MemDecoration == 9 */
+    "",       /* GV.MemDecoration == 10 */
+    "",       /* GV.MemDecoration == 11 */
+    "",       /* GV.MemDecoration == 12 */
+    ""       /* GV.MemDecoration == 13 */
 };
 
 
