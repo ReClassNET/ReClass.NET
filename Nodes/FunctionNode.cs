@@ -123,7 +123,7 @@ namespace ReClassNET.Nodes
 					memorySize = 0;
 
 					var disassembler = new Disassembler(memory.Process.NativeHelper);
-					foreach (var instruction in disassembler.RemoteDisassembleFunction(memory.Process, address, 4096))
+					foreach (var instruction in disassembler.RemoteDisassembleFunction(memory.Process, address, 8192))
 					{
 						memorySize += instruction.Length;
 
