@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Text;
 using Dia2Lib;
 using ReClassNET.Memory;
+using ReClassNET.Native;
 using ReClassNET.Util;
 
 namespace ReClassNET.Symbols
@@ -182,7 +183,7 @@ namespace ReClassNET.Symbols
 						name = '?' + name;
 					}
 
-					sb.Append(NativeMethods.UnDecorateSymbolName(name).TrimStart('?', ' '));
+					sb.Append(NativeMethods.UndecorateSymbolName(name).TrimStart('?', ' '));
 				}
 				else
 				{

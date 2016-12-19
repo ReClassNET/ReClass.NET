@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Memory;
+using ReClassNET.Native;
 using ReClassNET.Nodes;
 using ReClassNET.UI;
 
@@ -73,7 +74,7 @@ namespace ReClassNET.Forms
 					delegate (Module module)
 					{
 						var row = modules.NewRow();
-						row["icon"] = ShellIcon.GetSmallIcon(module.Path);
+						row["icon"] = NativeMethods.GetIconForFile(module.Path);
 						row["name"] = module.Name;
 						row["address"] = module.Start.ToString(Constants.StringHexFormat);
 						row["size"] = module.Size.ToString(Constants.StringHexFormat);

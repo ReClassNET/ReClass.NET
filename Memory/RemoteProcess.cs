@@ -291,7 +291,7 @@ namespace ReClassNET.Memory
 									var name = ReadRemoteUTF8StringUntilFirstNullCharacter(typeDescriptorPtr + 0x0C, 60);
 									if (name.EndsWith("@@"))
 									{
-										name = NativeMethods.UnDecorateSymbolName("?" + name);
+										name = NativeMethods.UndecorateSymbolName("?" + name);
 									}
 
 									sb.Append(name);
@@ -358,7 +358,7 @@ namespace ReClassNET.Memory
 
 										if (name.EndsWith("@@"))
 										{
-											name = NativeMethods.UnDecorateSymbolName("?" + name);
+											name = NativeMethods.UndecorateSymbolName("?" + name);
 										}
 
 										sb.Append(name);

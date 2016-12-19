@@ -122,7 +122,7 @@ namespace ReClassNET.Forms
 				if (!filterCheckBox.Checked || !CommonProcesses.Contains(moduleName.ToLower()))
 				{
 					var row = dt.NewRow();
-					row["icon"] = ShellIcon.GetSmallIcon(data.Path);
+					row["icon"] = NativeMethods.GetIconForFile(data.Path);
 					row["name"] = moduleName;
 					row["id"] = data.Id;
 					row["path"] = data.Path;

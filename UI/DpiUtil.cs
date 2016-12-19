@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using ReClassNET.Util;
+using ReClassNET.Native;
 
 namespace ReClassNET.UI
 {
@@ -70,14 +70,7 @@ namespace ReClassNET.UI
 		{
 			try
 			{
-				if (WinUtil.IsAtLeastWindows10)
-				{
-					NativeMethods.SetProcessDpiAwareness(NativeMethods.ProcessDpiAwareness.SystemAware);
-				}
-				else if (WinUtil.IsAtLeastWindowsVista)
-				{
-					NativeMethods.SetProcessDPIAware();
-				}
+				NativeMethods.SetProcessDpiAwareness();
 			}
 			catch
 			{

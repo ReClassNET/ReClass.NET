@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Globalization;
-using System.Security.Principal;
 using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Native;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET
 {
@@ -36,7 +34,7 @@ namespace ReClassNET
 
 			DpiUtil.ConfigureProcess();
 
-			EnableDebugPrivileges();
+			NativeMethods.EnableDebugPrivileges();
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
@@ -45,7 +43,14 @@ namespace ReClassNET
 
 			settings = Settings.Load(Constants.SettingsFile);
 			logger = new GuiLogger();
-#if RELEASE
+#if DEBUG
+			using (var nativeHelper = new NativeHelper())
+			{
+				mainForm = new MainForm(nativeHelper);
+
+				Application.Run(mainForm);
+			}
+#else
 			try
 			{
 				using (var nativeHelper = new NativeHelper())
@@ -59,37 +64,9 @@ namespace ReClassNET
 			{
 				ShowException(ex);
 			}
-#else
-			using (var nativeHelper = new NativeHelper())
-			{
-				mainForm = new MainForm(nativeHelper);
-
-				Application.Run(mainForm);
-			}
 #endif
 
 			Settings.Save(settings, Constants.SettingsFile);
-		}
-
-		private static bool EnableDebugPrivileges()
-		{
-			var result = false;
-
-			IntPtr token;
-			if (NativeMethods.OpenProcessToken(System.Diagnostics.Process.GetCurrentProcess().Handle, TokenAccessLevels.AllAccess, out token))
-			{
-				var privileges = new NativeMethods.TOKEN_PRIVILEGES();
-				privileges.PrivilegeCount = 1;
-				privileges.Luid.LowPart = 0x14;
-				privileges.Luid.HighPart = 0;
-				privileges.Attributes = 2;
-
-				result = NativeMethods.AdjustTokenPrivileges(token, false, ref privileges, 0, IntPtr.Zero, IntPtr.Zero);
-
-				NativeMethods.CloseHandle(token);
-			}
-
-			return result;
 		}
 
 		/// <summary>Shows the exception in a special form.</summary>
