@@ -5,11 +5,15 @@ using ReClassNET.Native;
 
 namespace ReClassNET.Core
 {
+	public delegate void EnumerateProcessCallback(ref EnumerateProcessData data);
+	public delegate void EnumerateRemoteSectionCallback(ref EnumerateRemoteSectionData data);
+	public delegate void EnumerateRemoteModuleCallback(ref EnumerateRemoteModuleData data);
+
 	public interface ICoreProcessFunctions
 	{
-		void EnumerateProcesses(Action<Tuple<IntPtr, string>> callbackProcess);
+		void EnumerateProcesses(EnumerateProcessCallback callbackProcess);
 
-		void EnumerateRemoteSectionsAndModules(IntPtr process, Action<Section> callbackSection, Action<Module> callbackModule);
+		void EnumerateRemoteSectionsAndModules(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule);
 
 		IntPtr OpenRemoteProcess(IntPtr pid, ProcessAccess desiredAccess);
 

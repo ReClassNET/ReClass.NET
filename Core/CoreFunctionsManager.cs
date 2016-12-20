@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Linq;
 using ReClassNET.Debugger;
 using ReClassNET.Memory;
@@ -93,12 +94,45 @@ namespace ReClassNET.Core
 
 		public void EnumerateProcesses(Action<Tuple<IntPtr, string>> callbackProcess)
 		{
-			currentFunctions.EnumerateProcesses(callbackProcess);
+			var c = callbackProcess == null ? null : (EnumerateProcessCallback)delegate (ref EnumerateProcessData data)
+			{
+				callbackProcess(Tuple.Create(data.Id, data.Path));
+			};
+
+			currentFunctions.EnumerateProcesses(c);
 		}
 
 		public void EnumerateRemoteSectionsAndModules(IntPtr process, Action<Section> callbackSection, Action<Module> callbackModule)
 		{
-			currentFunctions.EnumerateRemoteSectionsAndModules(process, callbackSection, callbackModule);
+			var c1 = callbackSection == null ? null : (EnumerateRemoteSectionCallback)delegate (ref EnumerateRemoteSectionData data)
+			{
+				callbackSection(new Section
+				{
+					Start = data.BaseAddress,
+					End = data.BaseAddress.Add(data.Size),
+					Size = data.Size,
+					Name = data.Name,
+					Protection = data.Protection,
+					Type = data.Type,
+					ModulePath = data.ModulePath,
+					ModuleName = Path.GetFileName(data.ModulePath),
+					Category = data.Category
+				});
+			};
+
+			var c2 = callbackModule == null ? null : (EnumerateRemoteModuleCallback)delegate (ref EnumerateRemoteModuleData data)
+			{
+				callbackModule(new Module
+				{
+					Start = data.BaseAddress,
+					End = data.BaseAddress.Add(data.Size),
+					Size = data.Size,
+					Path = data.Path,
+					Name = Path.GetFileName(data.Path)
+				});
+			};
+
+			currentFunctions.EnumerateRemoteSectionsAndModules(process, c1, c2);
 		}
 
 		public IntPtr OpenRemoteProcess(IntPtr pid, ProcessAccess desiredAccess)

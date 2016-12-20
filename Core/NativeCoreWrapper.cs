@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Runtime.InteropServices;
 using ReClassNET.Debugger;
-using ReClassNET.Memory;
 using ReClassNET.Native;
 using ReClassNET.Util;
 
@@ -12,49 +10,8 @@ namespace ReClassNET.Core
 	{
 		#region Native Delegates
 
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
-		private struct EnumerateProcessData
-		{
-			public IntPtr Id;
-
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-			public string Path;
-		};
-
-		private delegate void EnumerateProcessCallback(ref EnumerateProcessData data);
 		private delegate void EnumerateProcessesDelegate([MarshalAs(UnmanagedType.FunctionPtr)] EnumerateProcessCallback callbackProcess);
 
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
-		private struct EnumerateRemoteSectionData
-		{
-			public IntPtr BaseAddress;
-
-			public IntPtr Size;
-
-			public SectionType Type;
-
-			public SectionProtection Protection;
-
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-			public string Name;
-
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-			public string ModulePath;
-		}
-
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
-		private struct EnumerateRemoteModuleData
-		{
-			public IntPtr BaseAddress;
-
-			public IntPtr Size;
-
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-			public string Path;
-		}
-
-		private delegate void EnumerateRemoteSectionCallback(ref EnumerateRemoteSectionData data);
-		private delegate void EnumerateRemoteModuleCallback(ref EnumerateRemoteModuleData data);
 		private delegate void EnumerateRemoteSectionsAndModulesDelegate(IntPtr process, [MarshalAs(UnmanagedType.FunctionPtr)] EnumerateRemoteSectionCallback callbackSection, [MarshalAs(UnmanagedType.FunctionPtr)] EnumerateRemoteModuleCallback callbackModule);
 
 		[return: MarshalAs(UnmanagedType.I1)]
@@ -133,61 +90,14 @@ namespace ReClassNET.Core
 			return Marshal.GetDelegateForFunctionPointer<TDelegate>(address);
 		}
 
-		public void EnumerateProcesses(Action<Tuple<IntPtr, string>> callbackProcess)
+		public void EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 		{
-			var c = callbackProcess == null ? null : (EnumerateProcessCallback)delegate (ref EnumerateProcessData data)
-			{
-				callbackProcess(Tuple.Create(data.Id, data.Path));
-			};
-
-			enumerateProcessesDelegate(c);
+			enumerateProcessesDelegate(callbackProcess);
 		}
 
-		public void EnumerateRemoteSectionsAndModules(IntPtr process, Action<Section> callbackSection, Action<Module> callbackModule)
+		public void EnumerateRemoteSectionsAndModules(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule)
 		{
-			var c1 = callbackSection == null ? null : (EnumerateRemoteSectionCallback)delegate (ref EnumerateRemoteSectionData data)
-			{
-				var section = new Section
-				{
-					Start = data.BaseAddress,
-					End = data.BaseAddress.Add(data.Size),
-					Size = data.Size,
-					Name = data.Name,
-					Protection = data.Protection,
-					Type = data.Type,
-					ModulePath = data.ModulePath,
-					ModuleName = Path.GetFileName(data.ModulePath),
-					Category = data.Type == SectionType.Private ? SectionCategory.HEAP : SectionCategory.Unknown
-				};
-				switch (section.Name)
-				{
-					case ".text":
-					case "code":
-						section.Category = SectionCategory.CODE;
-						break;
-					case ".data":
-					case "data":
-					case ".rdata":
-					case ".idata":
-						section.Category = SectionCategory.DATA;
-						break;
-				}
-				callbackSection(section);
-			};
-
-			var c2 = callbackModule == null ? null : (EnumerateRemoteModuleCallback)delegate (ref EnumerateRemoteModuleData data)
-			{
-				callbackModule(new Module
-				{
-					Start = data.BaseAddress,
-					End = data.BaseAddress.Add(data.Size),
-					Size = data.Size,
-					Path = data.Path,
-					Name = Path.GetFileName(data.Path)
-				});
-			};
-
-			enumerateRemoteSectionsAndModulesDelegate(process, c1, c2);
+			enumerateRemoteSectionsAndModulesDelegate(process, callbackSection, callbackModule);
 		}
 
 		public IntPtr OpenRemoteProcess(IntPtr pid, ProcessAccess desiredAccess)

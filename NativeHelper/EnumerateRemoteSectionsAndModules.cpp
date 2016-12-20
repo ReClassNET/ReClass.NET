@@ -66,6 +66,8 @@ void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRe
 				break;
 			}
 
+			section.Category = section.Type == SectionType::Private ? SectionCategory::HEAP : SectionCategory::Unknown;
+
 			sections.push_back(std::move(section));
 		}
 		address = (size_t)memInfo.BaseAddress + memInfo.RegionSize;
@@ -117,6 +119,15 @@ void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRe
 								// Copy the name because it is not null padded.
 								char buffer[IMAGE_SIZEOF_SHORT_NAME + 1] = { 0 };
 								std::memcpy(buffer, sectionHeader.Name, IMAGE_SIZEOF_SHORT_NAME);
+
+								if (std::strcmp(buffer, ".text") == 0 || std::strcmp(buffer, "code") == 0)
+								{
+									j->Category = SectionCategory::CODE;
+								}
+								else if (std::strcmp(buffer, ".data") == 0 || std::strcmp(buffer, "data") == 0 || std::strcmp(buffer, ".rdata") == 0 || std::strcmp(buffer, ".idata") == 0)
+								{
+									j->Category = SectionCategory::DATA;
+								}
 
 								size_t convertedChars = 0;
 								mbstowcs_s(&convertedChars, j->Name, IMAGE_SIZEOF_SHORT_NAME, buffer, _TRUNCATE);

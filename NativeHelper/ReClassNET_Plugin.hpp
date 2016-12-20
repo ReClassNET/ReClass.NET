@@ -58,6 +58,14 @@ enum class SectionType
 	Image
 };
 
+enum SectionCategory
+{
+	Unknown,
+	CODE,
+	DATA,
+	HEAP
+};
+
 enum class ControlRemoteProcessAction
 {
 	Suspend,
@@ -65,7 +73,7 @@ enum class ControlRemoteProcessAction
 	Terminate
 };
 
-enum DebugContinueStatus
+enum class DebugContinueStatus
 {
 	Handled,
 	NotHandled
@@ -129,6 +137,7 @@ struct EnumerateRemoteSectionData
 	RC_Pointer BaseAddress;
 	RC_Size Size;
 	SectionType Type;
+	SectionCategory Category;
 	SectionProtection Protection;
 	RC_UnicodeChar Name[16];
 	RC_UnicodeChar ModulePath[PATH_MAXIMUM_LENGTH];
