@@ -58,7 +58,7 @@ enum class SectionType
 	Image
 };
 
-enum SectionCategory
+enum class SectionCategory
 {
 	Unknown,
 	CODE,
