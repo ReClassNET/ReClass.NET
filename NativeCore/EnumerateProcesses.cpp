@@ -2,7 +2,7 @@
 #include <tlhelp32.h>
 #include <Psapi.h>
 
-#include "NativeHelper.hpp"
+#include "NativeCore.hpp"
 
 enum class Platform
 {

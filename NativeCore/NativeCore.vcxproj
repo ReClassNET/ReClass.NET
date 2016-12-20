@@ -174,7 +174,7 @@
     <None Include="exports.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NativeHelper.hpp" />
+    <ClInclude Include="NativeCore.hpp" />
     <ClInclude Include="ReClassNET_Plugin.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <tlhelp32.h>
 
-#include "ReClassNET_Plugin.hpp"
+#include "NativeCore.hpp"
 
 bool __stdcall AttachDebuggerToProcess(RC_Pointer id)
 {

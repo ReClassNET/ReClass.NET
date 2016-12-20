@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <tlhelp32.h>
 
-#include "NativeHelper.hpp"
+#include "NativeCore.hpp"
 
 void __stdcall ControlRemoteProcess(RC_Pointer handle, ControlRemoteProcessAction action)
 {

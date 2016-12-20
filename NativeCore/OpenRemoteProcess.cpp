@@ -1,6 +1,6 @@
 #include <windows.h>
 
-#include "NativeHelper.hpp"
+#include "NativeCore.hpp"
 
 RC_Pointer __stdcall OpenRemoteProcess(RC_Pointer id, ProcessAccess desiredAccess)
 {

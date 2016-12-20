@@ -1,6 +1,6 @@
 #include <windows.h>
 
-#include "NativeHelper.hpp"
+#include "NativeCore.hpp"
 
 bool __stdcall ReadRemoteMemory(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int offset, int size)
 {

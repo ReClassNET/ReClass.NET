@@ -1,6 +1,6 @@
 #include <windows.h>
 
-#include "NativeHelper.hpp"
+#include "NativeCore.hpp"
 
 void __stdcall CloseRemoteProcess(RC_Pointer handle)
 {

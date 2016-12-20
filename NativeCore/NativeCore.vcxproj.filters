@@ -48,6 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ReClassNET_Plugin.hpp" />
-    <ClInclude Include="NativeHelper.hpp" />
+    <ClInclude Include="NativeCore.hpp" />
   </ItemGroup>
 </Project>

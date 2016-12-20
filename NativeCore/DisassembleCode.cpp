@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <beaengine/BeaEngine.h>
 
-#include "NativeHelper.hpp"
+#include "NativeCore.hpp"
 
 bool __stdcall DisassembleCode(RC_Pointer address, RC_Size length, RC_Pointer virtualAddress, InstructionData* instruction)
 {

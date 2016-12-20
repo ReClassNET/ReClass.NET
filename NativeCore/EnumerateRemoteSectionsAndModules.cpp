@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "NativeHelper.hpp"
+#include "NativeCore.hpp"
 
 void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
 {

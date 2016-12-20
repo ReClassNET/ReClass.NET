@@ -1,6 +1,6 @@
 #include <windows.h>
 
-#include "NativeHelper.hpp"
+#include "NativeCore.hpp"
 
 bool __stdcall IsProcessValid(RC_Pointer handle)
 {
