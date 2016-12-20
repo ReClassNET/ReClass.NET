@@ -3,7 +3,7 @@
 
 #include "ReClassNET_Plugin.hpp"
 
-bool __stdcall DebuggerAttachToProcess(RC_Pointer id)
+bool __stdcall AttachDebuggerToProcess(RC_Pointer id)
 {
 	if (!DebugActiveProcess((DWORD)id))
 	{
@@ -15,12 +15,12 @@ bool __stdcall DebuggerAttachToProcess(RC_Pointer id)
 	return true;
 }
 
-void __stdcall DebuggerDetachFromProcess(RC_Pointer id)
+void __stdcall DetachDebuggerFromProcess(RC_Pointer id)
 {
 	DebugActiveProcessStop((DWORD)id);
 }
 
-bool __stdcall DebuggerWaitForDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
+bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 {
 	DEBUG_EVENT _evt = { };
 	if (!WaitForDebugEvent(&_evt, timeoutInMilliseconds))
@@ -141,7 +141,7 @@ bool __stdcall DebuggerWaitForDebugEvent(DebugEvent* evt, int timeoutInMilliseco
 	return true;
 }
 
-void __stdcall DebuggerContinueEvent(DebugEvent* evt)
+void __stdcall HandleDebugEvent(DebugEvent* evt)
 {
 	DWORD continueStatus = 0;
 	switch (evt->ContinueStatus)
@@ -157,7 +157,7 @@ void __stdcall DebuggerContinueEvent(DebugEvent* evt)
 	ContinueDebugEvent((DWORD)evt->ProcessId, (DWORD)evt->ThreadId, continueStatus);
 }
 
-bool __stdcall DebuggerSetHardwareBreakpoint(RC_Pointer processId, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
+bool __stdcall SetHardwareBreakpoint(RC_Pointer processId, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
 {
 	if (reg == HardwareBreakpointRegister::InvalidRegister)
 	{

@@ -5,8 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.Memory;
-using ReClassNET.Native;
+using ReClassNET.Core;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
 
@@ -15,9 +14,9 @@ namespace ReClassNET.Forms
 	public partial class PluginForm : IconForm
 	{
 		private readonly PluginManager pluginManager;
-		private readonly NativeHelper nativeHelper;
+		private readonly CoreFunctionsManager coreFunctions;
 
-		class PluginInfoRow
+		private class PluginInfoRow
 		{
 			private readonly PluginInfo plugin;
 
@@ -36,13 +35,13 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		internal PluginForm(PluginManager pluginManager, NativeHelper nativeHelper)
+		internal PluginForm(PluginManager pluginManager, CoreFunctionsManager coreFunctions)
 		{
 			Contract.Requires(pluginManager != null);
-			Contract.Requires(nativeHelper != null);
+			Contract.Requires(coreFunctions != null);
 
 			this.pluginManager = pluginManager;
-			this.nativeHelper = nativeHelper;
+			this.coreFunctions = coreFunctions;
 
 			InitializeComponent();
 
@@ -55,22 +54,7 @@ namespace ReClassNET.Forms
 
 			// Native Methods Tab
 
-			FillComboBox(enumerateProcessesComboBox, RequestFunction.EnumerateProcesses);
-			FillComboBox(enumerateRemoteSectionsAndModulesComboBox, RequestFunction.EnumerateRemoteSectionsAndModules);
-			FillComboBox(isProcessValidComboBox, RequestFunction.IsProcessValid);
-			FillComboBox(openRemoteProcessComboBox, RequestFunction.OpenRemoteProcess);
-			FillComboBox(closeRemoteProcessComboBox, RequestFunction.CloseRemoteProcess);
-			FillComboBox(readRemoteMemoryComboBox, RequestFunction.ReadRemoteMemory);
-			FillComboBox(writeRemoteMemoryComboBox, RequestFunction.WriteRemoteMemory);
-			FillComboBox(disassembleRemoteCodeComboBox, RequestFunction.DisassembleCode);
-			FillComboBox(controlRemoteProcessComboBox, RequestFunction.ControlRemoteProcess);
-
-			setAllComboBox.DisplayMember = nameof(NativeHelper.MethodInfo.Provider);
-			setAllComboBox.DataSource = nativeHelper.MethodRegistry.Values
-				.SelectMany(l => l)
-				.Select(m => m.Provider)
-				.Distinct()
-				.ToList();
+			functionsProvidersComboBox.Items.AddRange(coreFunctions.FunctionProviders.ToArray());
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -94,52 +78,15 @@ namespace ReClassNET.Forms
 			UpdatePluginDescription();
 		}
 
-		private void NativeMethodComboBox_SelectionChangeCommitted(object sender, EventArgs e)
+		private void functionsProvidersComboBox_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			var cb = sender as ComboBox;
-			if (cb == null)
-			{
-				return;
-			}
-
-			var methodInfo = cb.SelectedItem as NativeHelper.MethodInfo;
-			if (methodInfo != null)
-			{
-				nativeHelper.SetActiveNativeMethod(methodInfo);
-			}
-		}
-
-		private void setAllComboBox_SelectionChangeCommitted(object sender, EventArgs e)
-		{
-			var provider = setAllComboBox.SelectedItem as string;
+			var provider = functionsProvidersComboBox.SelectedItem as string;
 			if (provider == null)
 			{
 				return;
 			}
 
-			foreach (var cb in new[]
-			{
-				enumerateProcessesComboBox,
-				enumerateRemoteSectionsAndModulesComboBox,
-				isProcessValidComboBox,
-				openRemoteProcessComboBox,
-				closeRemoteProcessComboBox,
-				readRemoteMemoryComboBox,
-				writeRemoteMemoryComboBox,
-				disassembleRemoteCodeComboBox,
-				controlRemoteProcessComboBox
-			})
-			{
-				var method = cb.Items.OfType<NativeHelper.MethodInfo>().Where(m => m.Provider == provider).FirstOrDefault();
-				if (method != null)
-				{
-					if (cb.SelectedItem != method)
-					{
-						cb.SelectedItem = method;
-						nativeHelper.SetActiveNativeMethod(method);
-					}
-				}
-			}
+			coreFunctions.SetActiveFunctionsProvider(provider);
 		}
 
 		private void getMoreLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -148,19 +95,6 @@ namespace ReClassNET.Forms
 		}
 
 		#endregion
-
-		private void FillComboBox(ComboBox cb, RequestFunction method)
-		{
-			Contract.Requires(cb != null);
-
-			var methods = nativeHelper.MethodRegistry[method];
-
-			var selectedFnPtr = nativeHelper.RequestFunctionPtr(method);
-
-			cb.DisplayMember = nameof(NativeHelper.MethodInfo.Provider);
-			cb.DataSource = methods;
-			cb.SelectedIndex = methods.FindIndex(m => m.FunctionPtr == selectedFnPtr);
-		}
 
 		private void UpdatePluginDescription()
 		{

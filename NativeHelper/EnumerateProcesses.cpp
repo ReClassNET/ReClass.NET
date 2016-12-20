@@ -56,14 +56,10 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 		pe32.dwSize = sizeof(PROCESSENTRY32W);
 		if (Process32FirstW(handle, &pe32))
 		{
-			auto isProcessValid = reinterpret_cast<IsProcessValid_Delegate>(requestFunction(RequestFunction::IsProcessValid));
-			auto openRemoteProcess = reinterpret_cast<OpenRemoteProcess_Delegate>(requestFunction(RequestFunction::OpenRemoteProcess));
-			auto closeRemoteProcess = reinterpret_cast<CloseRemoteProcess_Delegate>(requestFunction(RequestFunction::CloseRemoteProcess));
-
 			do
 			{
-				auto process = openRemoteProcess(pe32.th32ProcessID, ProcessAccess::Read);
-				if (isProcessValid(process))
+				auto process = OpenRemoteProcess((RC_Pointer)pe32.th32ProcessID, ProcessAccess::Read);
+				if (IsProcessValid(process))
 				{
 					auto platform = GetProcessPlatform(process);
 #ifdef _WIN64
@@ -79,7 +75,7 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 						callbackProcess(&data);
 					}
 
-					closeRemoteProcess(process);
+					CloseRemoteProcess(process);
 				}
 			} while (Process32NextW(handle, &pe32));
 		}

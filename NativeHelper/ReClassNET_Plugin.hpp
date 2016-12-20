@@ -15,24 +15,6 @@ const int PATH_MAXIMUM_LENGTH = 260;
 
 // Enumerations
 
-enum class RequestFunction
-{
-	IsProcessValid,
-	OpenRemoteProcess,
-	CloseRemoteProcess,
-	ReadRemoteMemory,
-	WriteRemoteMemory,
-	EnumerateProcesses,
-	EnumerateRemoteSectionsAndModules,
-	DisassembleCode,
-	ControlRemoteProcess,
-	DebuggerAttachToProcess,
-	DebuggerDetachFromProcess,
-	DebuggerWaitForDebugEvent,
-	DebuggerContinueEvent,
-	DebuggerSetHardwareBreakpoint
-};
-
 enum class ProcessAccess
 {
 	Read,
@@ -262,39 +244,7 @@ struct DebugEvent
 
 // Callbacks
 
-typedef RC_Pointer(__stdcall *RequestFunctionPtrCallback)(RequestFunction request);
-
 typedef void(__stdcall *EnumerateProcessCallback)(EnumerateProcessData* data);
 
 typedef void(__stdcall EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
 typedef void(__stdcall EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
-
-// Delegates
-
-typedef bool(__stdcall *IsProcessValid_Delegate)(RC_Pointer handle);
-
-typedef RC_Pointer(__stdcall *OpenRemoteProcess_Delegate)(RC_Size id, ProcessAccess desiredAccess);
-
-typedef void(__stdcall *CloseRemoteProcess_Delegate)(RC_Pointer handle);
-
-typedef bool(__stdcall *ReadRemoteMemory_Delegate)(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, RC_Size size);
-
-typedef bool(__stdcall *WriteRemoteMemory_Delegate)(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, RC_Size size);
-
-typedef void(__stdcall *EnumerateProcesses_Delegate)(EnumerateProcessCallback callbackProcess);
-
-typedef void(__stdcall *EnumerateRemoteSectionsAndModules_Delegate)(RC_Pointer handle, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule);
-
-typedef bool(__stdcall *DisassembleCode_Delegate)(RC_Pointer address, RC_Size length, RC_Pointer virtualAddress, InstructionData* instruction);
-
-typedef void(__stdcall *ControlRemoteProcess_Delegate)(RC_Pointer handle, ControlRemoteProcessAction action);
-
-typedef bool(__stdcall *DebuggerAttachToProcess_Delegate)(RC_Pointer id);
-
-typedef void(__stdcall *DebuggerDetachFromProcess_Delegate)(RC_Pointer id);
-
-typedef bool(__stdcall *DebuggerWaitForDebugEvent_Delegate)(DebugEvent* evt, int timeoutInMilliseconds);
-
-typedef void(__stdcall *DebuggerContinueEvent_Delegate)(DebugEvent* evt);
-
-typedef bool(__stdcall *DebuggerSetHardwareBreakpoint_Delegate)(RC_Pointer processId, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set);

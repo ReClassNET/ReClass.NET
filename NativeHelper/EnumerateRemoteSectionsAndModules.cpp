@@ -5,7 +5,7 @@
 
 #include "NativeHelper.hpp"
 
-void __stdcall EnumerateRemoteSectionsAndModules(HANDLE process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
+void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
 {
 	if (callbackSection == nullptr && callbackModule == nullptr)
 	{
@@ -78,8 +78,6 @@ void __stdcall EnumerateRemoteSectionsAndModules(HANDLE process, EnumerateRemote
 		me32.dwSize = sizeof(MODULEENTRY32W);
 		if (Module32FirstW(handle, &me32))
 		{
-			auto readRemoteMemory = reinterpret_cast<ReadRemoteMemory_Delegate>(requestFunction(RequestFunction::ReadRemoteMemory));
-
 			do
 			{
 				if (callbackModule != nullptr)
@@ -102,11 +100,11 @@ void __stdcall EnumerateRemoteSectionsAndModules(HANDLE process, EnumerateRemote
 					IMAGE_DOS_HEADER DosHdr = {};
 					IMAGE_NT_HEADERS NtHdr = {};
 
-					readRemoteMemory(process, me32.modBaseAddr, &DosHdr, sizeof(IMAGE_DOS_HEADER));
-					readRemoteMemory(process, me32.modBaseAddr + DosHdr.e_lfanew, &NtHdr, sizeof(IMAGE_NT_HEADERS));
+					ReadRemoteMemory(process, me32.modBaseAddr, &DosHdr, 0, sizeof(IMAGE_DOS_HEADER));
+					ReadRemoteMemory(process, me32.modBaseAddr + DosHdr.e_lfanew, &NtHdr, 0, sizeof(IMAGE_NT_HEADERS));
 
 					std::vector<IMAGE_SECTION_HEADER> sectionHeaders(NtHdr.FileHeader.NumberOfSections);
-					readRemoteMemory(process, me32.modBaseAddr + DosHdr.e_lfanew + sizeof(IMAGE_NT_HEADERS), sectionHeaders.data(), NtHdr.FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER));
+					ReadRemoteMemory(process, me32.modBaseAddr + DosHdr.e_lfanew + sizeof(IMAGE_NT_HEADERS), sectionHeaders.data(), 0, NtHdr.FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER));
 					for (int i = 0; i < NtHdr.FileHeader.NumberOfSections; ++i)
 					{
 						auto&& sectionHeader = sectionHeaders[i];

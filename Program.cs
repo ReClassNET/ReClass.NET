@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
+using ReClassNET.Core;
 using ReClassNET.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Native;
@@ -44,16 +45,16 @@ namespace ReClassNET
 			settings = Settings.Load(Constants.SettingsFile);
 			logger = new GuiLogger();
 #if DEBUG
-			using (var nativeHelper = new NativeHelper())
+			using (var coreFunctions = new CoreFunctionsManager())
 			{
-				mainForm = new MainForm(nativeHelper);
+				mainForm = new MainForm(coreFunctions);
 
 				Application.Run(mainForm);
 			}
 #else
 			try
 			{
-				using (var nativeHelper = new NativeHelper())
+				using (var nativeHelper = new CoreFunctionsManager())
 				{
 					mainForm = new MainForm(nativeHelper);
 

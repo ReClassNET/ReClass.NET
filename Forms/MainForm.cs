@@ -8,10 +8,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.CodeGenerator;
+using ReClassNET.Core;
 using ReClassNET.DataExchange;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
-using ReClassNET.Native;
 using ReClassNET.Nodes;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
@@ -21,7 +21,7 @@ namespace ReClassNET.Forms
 {
 	public partial class MainForm : IconForm
 	{
-		private readonly NativeHelper nativeHelper;
+		private readonly CoreFunctionsManager coreFunctions;
 
 		private readonly RemoteProcess remoteProcess;
 		private readonly MemoryBuffer memory;
@@ -37,22 +37,22 @@ namespace ReClassNET.Forms
 
 		public ClassNodeView ClassView => classesView;
 
-		public MainForm(NativeHelper nativeHelper)
+		public MainForm(CoreFunctionsManager coreFunctions)
 		{
-			Contract.Requires(nativeHelper != null);
+			Contract.Requires(coreFunctions != null);
 			Contract.Ensures(remoteProcess != null);
 			Contract.Ensures(memory != null);
 			Contract.Ensures(pluginManager != null);
 			Contract.Ensures(currentProject != null);
 
-			this.nativeHelper = nativeHelper;
+			this.coreFunctions = coreFunctions;
 
 			InitializeComponent();
 
 			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true);
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(false);
 
-			remoteProcess = new RemoteProcess(nativeHelper);
+			remoteProcess = new RemoteProcess(coreFunctions);
 			remoteProcess.ProcessChanged += delegate (RemoteProcess sender)
 			{
 				if (!sender.IsValid)
@@ -76,7 +76,7 @@ namespace ReClassNET.Forms
 
 			memoryViewControl.Memory = memory;
 
-			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess, Program.Logger), nativeHelper);
+			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess, Program.Logger), coreFunctions);
 
 			SetProject(new ReClassNetProject());
 
@@ -155,7 +155,7 @@ namespace ReClassNET.Forms
 
 		private void attachToProcessToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var pb = new ProcessBrowserForm(nativeHelper, Program.Settings.LastProcess))
+			using (var pb = new ProcessBrowserForm(coreFunctions, Program.Settings.LastProcess))
 			{
 				if (pb.ShowDialog() == DialogResult.OK)
 				{
@@ -293,7 +293,7 @@ namespace ReClassNET.Forms
 
 		private void pluginsToolStripButton_Click(object sender, EventArgs e)
 		{
-			using (var pf = new PluginForm(pluginManager, nativeHelper))
+			using (var pf = new PluginForm(pluginManager, coreFunctions))
 			{
 				pf.ShowDialog();
 			}

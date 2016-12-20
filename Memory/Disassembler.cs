@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.InteropServices;
-using ReClassNET.Native;
+using ReClassNET.Core;
 using ReClassNET.Util;
 
 namespace ReClassNET.Memory
 {
 	public class Disassembler
 	{
-		private readonly NativeHelper nativeHelper;
+		private readonly CoreFunctionsManager coreFunctions;
 
-		public Disassembler(NativeHelper nativeHelper)
+		public Disassembler(CoreFunctionsManager coreFunctions)
 		{
-			Contract.Requires(nativeHelper != null);
+			Contract.Requires(coreFunctions != null);
 
-			this.nativeHelper = nativeHelper;
+			this.coreFunctions = coreFunctions;
 		}
 
 		/// <summary>Disassembles the code in the given range (<paramref name="address"/>, <paramref name="length"/>) in the remote process.</summary>
@@ -60,7 +60,7 @@ namespace ReClassNET.Memory
 			var instruction = new InstructionData();
 			while (eip.CompareTo(end) == -1)
 			{
-				var res = nativeHelper.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, virtualAddress, out instruction);
+				var res = coreFunctions.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, virtualAddress, out instruction);
 				if (!res)
 				{
 					break;
@@ -166,7 +166,7 @@ namespace ReClassNET.Memory
 							for (var i = 1; i < 15; ++i)
 							{
 								x = address + 65 + i;
-								if (nativeHelper.DisassembleCode(x, end.Sub(x).ToInt32() + 1, virtualAddress, out instruction))
+								if (coreFunctions.DisassembleCode(x, end.Sub(x).ToInt32() + 1, virtualAddress, out instruction))
 								{
 									if (x + instruction.Length == end)
 									{
@@ -194,7 +194,7 @@ namespace ReClassNET.Memory
 			var y = virtualAddress - distance;
 			while (x.CompareTo(address) == -1) // aka x < address
 			{
-				if (nativeHelper.DisassembleCode(x, address.Sub(x).ToInt32() + 1, y, out instruction))
+				if (coreFunctions.DisassembleCode(x, address.Sub(x).ToInt32() + 1, y, out instruction))
 				{
 					x += instruction.Length;
 					y += instruction.Length;
@@ -224,7 +224,7 @@ namespace ReClassNET.Memory
 					return IntPtr.Zero;
 				}
 
-				for (var o = BufferLength + 4; o >= 0; --o)
+				for (var o = BufferLength + 4; o > 0; --o)
 				{
 					// Search for two CC in a row.
 					if (buffer[o] == 0xCC && buffer[o - 1] == 0xCC)

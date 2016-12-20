@@ -163,7 +163,6 @@
     <ClCompile Include="ControlRemoteProcess.cpp" />
     <ClCompile Include="Debugger.cpp" />
     <ClCompile Include="DisassembleCode.cpp" />
-    <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="EnumerateProcesses.cpp" />
     <ClCompile Include="EnumerateRemoteSectionsAndModules.cpp" />
     <ClCompile Include="IsProcessValid.cpp" />

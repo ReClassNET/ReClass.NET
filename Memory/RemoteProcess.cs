@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ReClassNET.AddressParser;
+using ReClassNET.Core;
 using ReClassNET.Debugger;
 using ReClassNET.Native;
 using ReClassNET.Symbols;
@@ -21,7 +21,7 @@ namespace ReClassNET.Memory
 	{
 		private readonly object processSync = new object();
 
-		private readonly NativeHelper nativeHelper;
+		private readonly CoreFunctionsManager coreFunctions;
 
 		private readonly RemoteDebugger debugger;
 
@@ -38,7 +38,7 @@ namespace ReClassNET.Memory
 
 		public event UnderlayingProcessChangedEvent ProcessChanged;
 
-		public NativeHelper NativeHelper => nativeHelper;
+		public CoreFunctionsManager CoreFunctions => coreFunctions;
 
 		public RemoteDebugger Debugger => debugger;
 
@@ -46,13 +46,13 @@ namespace ReClassNET.Memory
 
 		public SymbolStore Symbols => symbols;
 
-		public bool IsValid => process != null && nativeHelper.IsProcessValid(handle);
+		public bool IsValid => process != null && coreFunctions.IsProcessValid(handle);
 
-		public RemoteProcess(NativeHelper nativeHelper)
+		public RemoteProcess(CoreFunctionsManager coreFunctions)
 		{
-			Contract.Requires(nativeHelper != null);
+			Contract.Requires(coreFunctions != null);
 
-			this.nativeHelper = nativeHelper;
+			this.coreFunctions = coreFunctions;
 
 			debugger = new RemoteDebugger(this);
 		}
@@ -78,7 +78,7 @@ namespace ReClassNET.Memory
 
 					process = info;
 
-					handle = nativeHelper.OpenRemoteProcess(process.Id, ProcessAccess.Full);
+					handle = coreFunctions.OpenRemoteProcess(process.Id, ProcessAccess.Full);
 				}
 
 				ProcessChanged?.Invoke(this);
@@ -94,7 +94,7 @@ namespace ReClassNET.Memory
 				{
 					debugger.Terminate();
 
-					nativeHelper.CloseRemoteProcess(handle);
+					coreFunctions.CloseRemoteProcess(handle);
 
 					handle = IntPtr.Zero;
 
@@ -141,7 +141,7 @@ namespace ReClassNET.Memory
 				return false;
 			}
 
-			return nativeHelper.ReadRemoteMemory(handle, address, buffer, offset, length);
+			return coreFunctions.ReadRemoteMemory(handle, address, ref buffer, offset, length);
 		}
 
 		/// <summary>Reads <paramref name="size"/> bytes from the address in the remote process.</summary>
@@ -402,7 +402,7 @@ namespace ReClassNET.Memory
 				return false;
 			}
 
-			return nativeHelper.WriteRemoteMemory(handle, address, data, data.Length);
+			return coreFunctions.WriteRemoteMemory(handle, address, ref data, 0, data.Length);
 		}
 
 		/// <summary>Writes the given <paramref name="value"/> to the <paramref name="address"/> in the remote process.</summary>
@@ -482,7 +482,7 @@ namespace ReClassNET.Memory
 				return;
 			}
 
-			nativeHelper.EnumerateRemoteSectionsAndModules(handle, callbackSection, callbackModule);
+			coreFunctions.EnumerateRemoteSectionsAndModules(handle, callbackSection, callbackModule);
 		}
 
 		/// <summary>Updates the process informations.</summary>
@@ -611,7 +611,7 @@ namespace ReClassNET.Memory
 				return;
 			}
 
-			nativeHelper.ControlRemoteProcess(handle, action);
+			coreFunctions.ControlRemoteProcess(handle, action);
 		}
 	}
 }

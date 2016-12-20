@@ -2,8 +2,10 @@
 
 #include "NativeHelper.hpp"
 
-bool __stdcall WriteRemoteMemory(RC_Pointer process, RC_Pointer address, RC_Pointer buffer, RC_Size size)
+bool __stdcall WriteRemoteMemory(RC_Pointer process, RC_Pointer address, RC_Pointer buffer, int offset, int size)
 {
+	buffer = (RC_Pointer)((uintptr_t)buffer + offset);
+
 	DWORD oldProtect;
 	if (VirtualProtectEx(process, address, size, PAGE_EXECUTE_READWRITE, &oldProtect))
 	{

@@ -7,7 +7,6 @@ using System.Text;
 using System.Windows.Forms;
 using ReClassNET.Debugger;
 using ReClassNET.Memory;
-using ReClassNET.Native;
 using ReClassNET.Nodes;
 using ReClassNET.UI;
 using ReClassNET.Util;
@@ -147,7 +146,7 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			var disassembler = new Disassembler(process.NativeHelper);
+			var disassembler = new Disassembler(process.CoreFunctions);
 			var functionStartAddress = disassembler.RemoteGetFunctionStartAddress(process, info.DebugInfo.ExceptionAddress);
 			if (functionStartAddress.IsNull())
 			{
@@ -229,7 +228,7 @@ namespace ReClassNET.Forms
 			}
 			else
 			{
-				var disassembler = new Disassembler(process.NativeHelper);
+				var disassembler = new Disassembler(process.CoreFunctions);
 				var causedByInstruction = disassembler.RemoteGetPreviousInstruction(process, context.Value.ExceptionAddress);
 
 				var instructions = new DisassembledInstruction[5];

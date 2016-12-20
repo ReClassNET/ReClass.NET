@@ -118,7 +118,7 @@ namespace ReClassNET.Nodes
 
 				if (!address.IsNull() && memory.Process.IsValid)
 				{
-					var disassembler = new Disassembler(memory.Process.NativeHelper);
+					var disassembler = new Disassembler(memory.Process.CoreFunctions);
 					instructions.AddRange(
 						disassembler.RemoteDisassembleFunction(memory.Process, address, 200)
 							.Select(i => $"{i.Address.ToString(Constants.StringHexFormat)} {i.Instruction}")

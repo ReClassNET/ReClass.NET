@@ -1,6 +1,5 @@
 LIBRARY
 EXPORTS
-	Initialize
 	IsProcessValid
 	OpenRemoteProcess
 	CloseRemoteProcess
@@ -10,8 +9,8 @@ EXPORTS
 	EnumerateRemoteSectionsAndModules
 	DisassembleCode
 	ControlRemoteProcess
-	DebuggerAttachToProcess
-	DebuggerDetachFromProcess
-	DebuggerWaitForDebugEvent
-	DebuggerContinueEvent
-	DebuggerSetHardwareBreakpoint
+	AttachDebuggerToProcess
+	DetachDebuggerFromProcess
+	AwaitDebugEvent
+	HandleDebugEvent
+	SetHardwareBreakpoint

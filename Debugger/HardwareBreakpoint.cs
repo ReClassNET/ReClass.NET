@@ -1,7 +1,6 @@
 ﻿using System;
-using ReClassNET.Memory;
-using ReClassNET.Native;
 using System.Diagnostics.Contracts;
+using ReClassNET.Memory;
 
 namespace ReClassNET.Debugger
 {
@@ -58,12 +57,12 @@ namespace ReClassNET.Debugger
 
 		public bool Set(RemoteProcess process)
 		{
-			return process.NativeHelper.DebuggerSetHardwareBreakpoint(process.UnderlayingProcess.Id, this, true);
+			return process.CoreFunctions.SetHardwareBreakpoint(process.UnderlayingProcess.Id, Address, Register, Trigger, Size, true);
 		}
 
 		public void Remove(RemoteProcess process)
 		{
-			process.NativeHelper.DebuggerSetHardwareBreakpoint(process.UnderlayingProcess.Id, this, false);
+			process.CoreFunctions.SetHardwareBreakpoint(process.UnderlayingProcess.Id, Address, Register, Trigger, Size, false);
 		}
 
 		public void Handler(ref DebugEvent evt)

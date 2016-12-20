@@ -38,30 +38,12 @@
 			this.versionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.authorColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.nativesTabPage = new System.Windows.Forms.TabPage();
-			this.setAllComboBox = new System.Windows.Forms.ComboBox();
-			this.label11 = new System.Windows.Forms.Label();
-			this.label10 = new System.Windows.Forms.Label();
-			this.controlRemoteProcessComboBox = new System.Windows.Forms.ComboBox();
-			this.label9 = new System.Windows.Forms.Label();
-			this.disassembleRemoteCodeComboBox = new System.Windows.Forms.ComboBox();
-			this.label8 = new System.Windows.Forms.Label();
-			this.writeRemoteMemoryComboBox = new System.Windows.Forms.ComboBox();
-			this.label7 = new System.Windows.Forms.Label();
-			this.readRemoteMemoryComboBox = new System.Windows.Forms.ComboBox();
-			this.label6 = new System.Windows.Forms.Label();
-			this.closeRemoteProcessComboBox = new System.Windows.Forms.ComboBox();
-			this.label5 = new System.Windows.Forms.Label();
-			this.openRemoteProcessComboBox = new System.Windows.Forms.ComboBox();
-			this.label4 = new System.Windows.Forms.Label();
-			this.isProcessValidComboBox = new System.Windows.Forms.ComboBox();
-			this.enumerateProcessesComboBox = new System.Windows.Forms.ComboBox();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.enumerateRemoteSectionsAndModulesComboBox = new System.Windows.Forms.ComboBox();
+			this.functionsProvidersComboBox = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.getMoreLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.closeButton = new System.Windows.Forms.Button();
 			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.label2 = new System.Windows.Forms.Label();
 			this.tabControl.SuspendLayout();
 			this.pluginsTabPage.SuspendLayout();
 			this.descriptionGroupBox.SuspendLayout();
@@ -174,26 +156,8 @@
 			// 
 			// nativesTabPage
 			// 
-			this.nativesTabPage.Controls.Add(this.setAllComboBox);
-			this.nativesTabPage.Controls.Add(this.label11);
-			this.nativesTabPage.Controls.Add(this.label10);
-			this.nativesTabPage.Controls.Add(this.controlRemoteProcessComboBox);
-			this.nativesTabPage.Controls.Add(this.label9);
-			this.nativesTabPage.Controls.Add(this.disassembleRemoteCodeComboBox);
-			this.nativesTabPage.Controls.Add(this.label8);
-			this.nativesTabPage.Controls.Add(this.writeRemoteMemoryComboBox);
-			this.nativesTabPage.Controls.Add(this.label7);
-			this.nativesTabPage.Controls.Add(this.readRemoteMemoryComboBox);
-			this.nativesTabPage.Controls.Add(this.label6);
-			this.nativesTabPage.Controls.Add(this.closeRemoteProcessComboBox);
-			this.nativesTabPage.Controls.Add(this.label5);
-			this.nativesTabPage.Controls.Add(this.openRemoteProcessComboBox);
-			this.nativesTabPage.Controls.Add(this.label4);
-			this.nativesTabPage.Controls.Add(this.isProcessValidComboBox);
-			this.nativesTabPage.Controls.Add(this.enumerateProcessesComboBox);
-			this.nativesTabPage.Controls.Add(this.label3);
 			this.nativesTabPage.Controls.Add(this.label2);
-			this.nativesTabPage.Controls.Add(this.enumerateRemoteSectionsAndModulesComboBox);
+			this.nativesTabPage.Controls.Add(this.functionsProvidersComboBox);
 			this.nativesTabPage.Controls.Add(this.label1);
 			this.nativesTabPage.Location = new System.Drawing.Point(4, 22);
 			this.nativesTabPage.Name = "nativesTabPage";
@@ -203,194 +167,15 @@
 			this.nativesTabPage.Text = "Native Helper";
 			this.nativesTabPage.UseVisualStyleBackColor = true;
 			// 
-			// setAllComboBox
+			// functionsProvidersComboBox
 			// 
-			this.setAllComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.setAllComboBox.FormattingEnabled = true;
-			this.setAllComboBox.Location = new System.Drawing.Point(218, 63);
-			this.setAllComboBox.Name = "setAllComboBox";
-			this.setAllComboBox.Size = new System.Drawing.Size(161, 21);
-			this.setAllComboBox.TabIndex = 20;
-			this.setAllComboBox.SelectionChangeCommitted += new System.EventHandler(this.setAllComboBox_SelectionChangeCommitted);
-			// 
-			// label11
-			// 
-			this.label11.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.label11.Location = new System.Drawing.Point(13, 87);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(360, 2);
-			this.label11.TabIndex = 19;
-			// 
-			// label10
-			// 
-			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(6, 271);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(115, 13);
-			this.label10.TabIndex = 18;
-			this.label10.Text = "ControlRemoteProcess";
-			// 
-			// controlRemoteProcessComboBox
-			// 
-			this.controlRemoteProcessComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.controlRemoteProcessComboBox.FormattingEnabled = true;
-			this.controlRemoteProcessComboBox.Location = new System.Drawing.Point(218, 268);
-			this.controlRemoteProcessComboBox.Name = "controlRemoteProcessComboBox";
-			this.controlRemoteProcessComboBox.Size = new System.Drawing.Size(161, 21);
-			this.controlRemoteProcessComboBox.TabIndex = 17;
-			this.controlRemoteProcessComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
-			// 
-			// label9
-			// 
-			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(6, 249);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(128, 13);
-			this.label9.TabIndex = 16;
-			this.label9.Text = "DisassembleRemoteCode";
-			// 
-			// disassembleRemoteCodeComboBox
-			// 
-			this.disassembleRemoteCodeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.disassembleRemoteCodeComboBox.FormattingEnabled = true;
-			this.disassembleRemoteCodeComboBox.Location = new System.Drawing.Point(218, 246);
-			this.disassembleRemoteCodeComboBox.Name = "disassembleRemoteCodeComboBox";
-			this.disassembleRemoteCodeComboBox.Size = new System.Drawing.Size(161, 21);
-			this.disassembleRemoteCodeComboBox.TabIndex = 15;
-			this.disassembleRemoteCodeComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
-			// 
-			// label8
-			// 
-			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(6, 227);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(106, 13);
-			this.label8.TabIndex = 14;
-			this.label8.Text = "WriteRemoteMemory";
-			// 
-			// writeRemoteMemoryComboBox
-			// 
-			this.writeRemoteMemoryComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.writeRemoteMemoryComboBox.FormattingEnabled = true;
-			this.writeRemoteMemoryComboBox.Location = new System.Drawing.Point(218, 224);
-			this.writeRemoteMemoryComboBox.Name = "writeRemoteMemoryComboBox";
-			this.writeRemoteMemoryComboBox.Size = new System.Drawing.Size(161, 21);
-			this.writeRemoteMemoryComboBox.TabIndex = 13;
-			this.writeRemoteMemoryComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(6, 205);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(107, 13);
-			this.label7.TabIndex = 12;
-			this.label7.Text = "ReadRemoteMemory";
-			// 
-			// readRemoteMemoryComboBox
-			// 
-			this.readRemoteMemoryComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.readRemoteMemoryComboBox.FormattingEnabled = true;
-			this.readRemoteMemoryComboBox.Location = new System.Drawing.Point(218, 202);
-			this.readRemoteMemoryComboBox.Name = "readRemoteMemoryComboBox";
-			this.readRemoteMemoryComboBox.Size = new System.Drawing.Size(161, 21);
-			this.readRemoteMemoryComboBox.TabIndex = 11;
-			this.readRemoteMemoryComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(6, 183);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(108, 13);
-			this.label6.TabIndex = 10;
-			this.label6.Text = "CloseRemoteProcess";
-			// 
-			// closeRemoteProcessComboBox
-			// 
-			this.closeRemoteProcessComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.closeRemoteProcessComboBox.FormattingEnabled = true;
-			this.closeRemoteProcessComboBox.Location = new System.Drawing.Point(218, 180);
-			this.closeRemoteProcessComboBox.Name = "closeRemoteProcessComboBox";
-			this.closeRemoteProcessComboBox.Size = new System.Drawing.Size(161, 21);
-			this.closeRemoteProcessComboBox.TabIndex = 9;
-			this.closeRemoteProcessComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(6, 161);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(108, 13);
-			this.label5.TabIndex = 8;
-			this.label5.Text = "OpenRemoteProcess";
-			// 
-			// openRemoteProcessComboBox
-			// 
-			this.openRemoteProcessComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.openRemoteProcessComboBox.FormattingEnabled = true;
-			this.openRemoteProcessComboBox.Location = new System.Drawing.Point(218, 158);
-			this.openRemoteProcessComboBox.Name = "openRemoteProcessComboBox";
-			this.openRemoteProcessComboBox.Size = new System.Drawing.Size(161, 21);
-			this.openRemoteProcessComboBox.TabIndex = 7;
-			this.openRemoteProcessComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(6, 139);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(76, 13);
-			this.label4.TabIndex = 6;
-			this.label4.Text = "IsProcessValid";
-			// 
-			// isProcessValidComboBox
-			// 
-			this.isProcessValidComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.isProcessValidComboBox.FormattingEnabled = true;
-			this.isProcessValidComboBox.Location = new System.Drawing.Point(218, 136);
-			this.isProcessValidComboBox.Name = "isProcessValidComboBox";
-			this.isProcessValidComboBox.Size = new System.Drawing.Size(161, 21);
-			this.isProcessValidComboBox.TabIndex = 5;
-			this.isProcessValidComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
-			// 
-			// enumerateProcessesComboBox
-			// 
-			this.enumerateProcessesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.enumerateProcessesComboBox.FormattingEnabled = true;
-			this.enumerateProcessesComboBox.Location = new System.Drawing.Point(218, 92);
-			this.enumerateProcessesComboBox.Name = "enumerateProcessesComboBox";
-			this.enumerateProcessesComboBox.Size = new System.Drawing.Size(161, 21);
-			this.enumerateProcessesComboBox.TabIndex = 4;
-			this.enumerateProcessesComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(6, 117);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(195, 13);
-			this.label3.TabIndex = 3;
-			this.label3.Text = "EnumerateRemoteSectionsAndModules";
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(6, 95);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(107, 13);
-			this.label2.TabIndex = 2;
-			this.label2.Text = "EnumerateProcesses";
-			// 
-			// enumerateRemoteSectionsAndModulesComboBox
-			// 
-			this.enumerateRemoteSectionsAndModulesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.enumerateRemoteSectionsAndModulesComboBox.FormattingEnabled = true;
-			this.enumerateRemoteSectionsAndModulesComboBox.Location = new System.Drawing.Point(218, 114);
-			this.enumerateRemoteSectionsAndModulesComboBox.Name = "enumerateRemoteSectionsAndModulesComboBox";
-			this.enumerateRemoteSectionsAndModulesComboBox.Size = new System.Drawing.Size(161, 21);
-			this.enumerateRemoteSectionsAndModulesComboBox.TabIndex = 1;
-			this.enumerateRemoteSectionsAndModulesComboBox.SelectionChangeCommitted += new System.EventHandler(this.NativeMethodComboBox_SelectionChangeCommitted);
+			this.functionsProvidersComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.functionsProvidersComboBox.FormattingEnabled = true;
+			this.functionsProvidersComboBox.Location = new System.Drawing.Point(110, 63);
+			this.functionsProvidersComboBox.Name = "functionsProvidersComboBox";
+			this.functionsProvidersComboBox.Size = new System.Drawing.Size(305, 21);
+			this.functionsProvidersComboBox.TabIndex = 20;
+			this.functionsProvidersComboBox.SelectionChangeCommitted += new System.EventHandler(this.functionsProvidersComboBox_SelectionChangeCommitted);
 			// 
 			// label1
 			// 
@@ -437,6 +222,15 @@
 			this.bannerBox.Text = "Here you can configure all loaded ReClass.NET plugins.";
 			this.bannerBox.Title = "Plugins";
 			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(6, 66);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(98, 13);
+			this.label2.TabIndex = 21;
+			this.label2.Text = "Functions Provider:";
+			// 
 			// PluginForm
 			// 
 			this.AcceptButton = this.closeButton;
@@ -475,30 +269,12 @@
 		private System.Windows.Forms.Button closeButton;
 		private System.Windows.Forms.Label descriptionLabel;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.ComboBox disassembleRemoteCodeComboBox;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.ComboBox writeRemoteMemoryComboBox;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.ComboBox readRemoteMemoryComboBox;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.ComboBox closeRemoteProcessComboBox;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.ComboBox openRemoteProcessComboBox;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.ComboBox isProcessValidComboBox;
-		private System.Windows.Forms.ComboBox enumerateProcessesComboBox;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.ComboBox enumerateRemoteSectionsAndModulesComboBox;
 		private System.Windows.Forms.DataGridViewImageColumn iconColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn versionColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn authorColumn;
-		private System.Windows.Forms.Label label10;
-		private System.Windows.Forms.ComboBox controlRemoteProcessComboBox;
 		private UI.BannerBox bannerBox;
-		private System.Windows.Forms.ComboBox setAllComboBox;
-		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.ComboBox functionsProvidersComboBox;
+		private System.Windows.Forms.Label label2;
 	}
 }

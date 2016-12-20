@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using ReClassNET.Core;
 using ReClassNET.Memory;
 using ReClassNET.Native;
 using ReClassNET.UI;
@@ -21,7 +22,7 @@ namespace ReClassNET.Forms
 			"smss.exe", "csrss.exe", "lsass.exe", "winlogon.exe", "wininit.exe", "dwm.exe"
 		};
 
-		private readonly NativeHelper nativeHelper;
+		private readonly CoreFunctionsManager coreFunctions;
 
 		/// <summary>Gets the selected process.</summary>
 		public ProcessInfo SelectedProcess
@@ -40,11 +41,11 @@ namespace ReClassNET.Forms
 		/// <summary>Gets if symbols should get loaded.</summary>
 		public bool LoadSymbols => loadSymbolsCheckBox.Checked;
 
-		public ProcessBrowserForm(NativeHelper nativeHelper, string previousProcess)
+		public ProcessBrowserForm(CoreFunctionsManager coreFunctions, string previousProcess)
 		{
-			Contract.Requires(nativeHelper != null);
+			Contract.Requires(coreFunctions != null);
 
-			this.nativeHelper = nativeHelper;
+			this.coreFunctions = coreFunctions;
 
 			InitializeComponent();
 
@@ -116,16 +117,16 @@ namespace ReClassNET.Forms
 			dt.Columns.Add("id", typeof(IntPtr));
 			dt.Columns.Add("path", typeof(string));
 
-			nativeHelper.EnumerateProcesses(delegate (ref EnumerateProcessData data)
+			coreFunctions.EnumerateProcesses(data =>
 			{
-				var moduleName = Path.GetFileName(data.Path);
+				var moduleName = Path.GetFileName(data.Item2);
 				if (!filterCheckBox.Checked || !CommonProcesses.Contains(moduleName.ToLower()))
 				{
 					var row = dt.NewRow();
-					row["icon"] = NativeMethods.GetIconForFile(data.Path);
+					row["icon"] = NativeMethods.GetIconForFile(data.Item2);
 					row["name"] = moduleName;
-					row["id"] = data.Id;
-					row["path"] = data.Path;
+					row["id"] = data.Item1;
+					row["path"] = data.Item2;
 					dt.Rows.Add(row);
 				}
 			});

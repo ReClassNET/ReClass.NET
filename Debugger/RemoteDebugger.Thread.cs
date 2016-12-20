@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Threading;
-using ReClassNET.Native;
 
 namespace ReClassNET.Debugger
 {
@@ -49,24 +48,24 @@ namespace ReClassNET.Debugger
 		{
 			try
 			{
-				if (!process.NativeHelper.DebuggerAttachToProcess(process.UnderlayingProcess.Id))
+				if (!process.CoreFunctions.AttachDebuggerToProcess(process.UnderlayingProcess.Id))
 				{
 					return;
 				}
 
 				isAttached = true;
 
-				var ev = new DebugEvent();
+				var evt = new DebugEvent();
 				running = true;
 				while (running)
 				{
-					if (process.NativeHelper.DebuggerWaitForDebugEvent(ref ev, 100))
+					if (process.CoreFunctions.AwaitDebugEvent(ref evt, 100))
 					{
-						ev.Header.ContinueStatus = DebugContinueStatus.Handled;
+						evt.Header.ContinueStatus = DebugContinueStatus.Handled;
 
-						if (HandleEvent(ref ev))
+						if (HandleEvent(ref evt))
 						{
-							process.NativeHelper.DebuggerContinueEvent(ref ev);
+							process.CoreFunctions.HandleDebugEvent(ref evt);
 						}
 						else
 						{
@@ -79,7 +78,7 @@ namespace ReClassNET.Debugger
 					}
 				}
 
-				process.NativeHelper.DebuggerDetachFromProcess(process.UnderlayingProcess.Id);
+				process.CoreFunctions.DetachDebuggerFromProcess(process.UnderlayingProcess.Id);
 			}
 			finally
 			{
