@@ -157,7 +157,7 @@ void __stdcall HandleDebugEvent(DebugEvent* evt)
 	ContinueDebugEvent((DWORD)evt->ProcessId, (DWORD)evt->ThreadId, continueStatus);
 }
 
-bool __stdcall SetHardwareBreakpoint(RC_Pointer processId, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
+bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
 {
 	if (reg == HardwareBreakpointRegister::InvalidRegister)
 	{
@@ -204,7 +204,7 @@ bool __stdcall SetHardwareBreakpoint(RC_Pointer processId, RC_Pointer address, H
 		{
 			do
 			{
-				if (pe32.th32OwnerProcessID == (DWORD)processId)
+				if (pe32.th32OwnerProcessID == (DWORD)id)
 				{
 					auto handle = OpenThread(THREAD_SUSPEND_RESUME | THREAD_GET_CONTEXT | THREAD_SET_CONTEXT, FALSE, pe32.th32ThreadID);
 
