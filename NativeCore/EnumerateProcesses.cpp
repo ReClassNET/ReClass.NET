@@ -70,7 +70,7 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 					{
 						EnumerateProcessData data;
 						data.Id = pe32.th32ProcessID;
-						GetModuleFileNameExW(process, nullptr, data.ModulePath, PATH_MAXIMUM_LENGTH);
+						GetModuleFileNameExW(process, nullptr, (LPWSTR)data.ModulePath, PATH_MAXIMUM_LENGTH);
 
 						callbackProcess(&data);
 					}

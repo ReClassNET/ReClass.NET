@@ -129,9 +129,9 @@ void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRe
 									j->Category = SectionCategory::DATA;
 								}
 
-								size_t convertedChars = 0;
-								mbstowcs_s(&convertedChars, j->Name, IMAGE_SIZEOF_SHORT_NAME, buffer, _TRUNCATE);
+								MultiByteToUnicode(buffer, j->Name, IMAGE_SIZEOF_SHORT_NAME);
 								std::memcpy(j->ModulePath, me32.szExePath, std::min(MAX_PATH, PATH_MAXIMUM_LENGTH));
+
 								break;
 							}
 						}

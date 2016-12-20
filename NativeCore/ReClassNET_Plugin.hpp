@@ -1,13 +1,15 @@
 #pragma once
 
 #include <type_traits>
+#include <algorithm>
 #include <cstdint>
+#include <codecvt>
 
 // Types
 
 using RC_Pointer = void*;
 using RC_Size = size_t;
-using RC_UnicodeChar = wchar_t;
+using RC_UnicodeChar = char16_t;
 
 // Constants
 
@@ -257,3 +259,18 @@ typedef void(__stdcall *EnumerateProcessCallback)(EnumerateProcessData* data);
 
 typedef void(__stdcall EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
 typedef void(__stdcall EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
+
+// Helpers
+
+inline void MultiByteToUnicode(const char* src, RC_UnicodeChar* dst, int size)
+{
+#if _MSC_VER == 1900
+	// VS Bug: https://connect.microsoft.com/VisualStudio/feedback/details/1348277/link-error-when-using-std-codecvt-utf8-utf16-char16-t
+	
+	auto temp = std::wstring_convert<std::codecvt_utf8_utf16<int16_t>, int16_t>{}.from_bytes(src);
+#else
+	auto temp = std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}.from_bytes(src);
+#endif
+
+	std::memcpy(dst, temp.c_str(), std::min<int>(temp.length(), size) * sizeof(char16_t));
+}

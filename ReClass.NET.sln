@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReClass.NET", "ReClass.NET.
 		{22CA6FDB-7622-4F94-8FC2-2E7AB481C86F} = {22CA6FDB-7622-4F94-8FC2-2E7AB481C86F}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NativeHelper", "NativeHelper\NativeHelper.vcxproj", "{22CA6FDB-7622-4F94-8FC2-2E7AB481C86F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NativeCore", "NativeCore\NativeCore.vcxproj", "{22CA6FDB-7622-4F94-8FC2-2E7AB481C86F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
