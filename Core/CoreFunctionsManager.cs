@@ -12,8 +12,8 @@ namespace ReClassNET.Core
 {
 	public class CoreFunctionsManager : IDisposable
 	{
-		private const string CoreFunctionsModuleWindows = "NativeHelper.dll";
-		private const string CoreFunctionsModuleUnix = "NativeHelper.so";
+		private const string CoreFunctionsModuleWindows = "NativeCore.dll";
+		private const string CoreFunctionsModuleUnix = "NativeCore.so";
 
 		private readonly Dictionary<string, ICoreProcessFunctions> functionsRegistry = new Dictionary<string, ICoreProcessFunctions>();
 
