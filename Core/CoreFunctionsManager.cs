@@ -27,15 +27,13 @@ namespace ReClassNET.Core
 
 		public CoreFunctionsManager()
 		{
-			internalCoreFunctionsHandle = NativeMethods.LoadLibrary(
-				NativeMethods.IsUnix()
-				? CoreFunctionsModuleUnix
-				: CoreFunctionsModuleWindows
-			);
+			var libraryName = NativeMethods.IsUnix() ? CoreFunctionsModuleUnix : CoreFunctionsModuleWindows;
+
+			internalCoreFunctionsHandle = NativeMethods.LoadLibrary("./" + libraryName);
 
 			if (internalCoreFunctionsHandle.IsNull())
 			{
-				throw new Exception();
+				throw new FileNotFoundException(libraryName);
 			}
 
 			internalCoreFunctions = new InternalCoreFunctions(internalCoreFunctionsHandle);
