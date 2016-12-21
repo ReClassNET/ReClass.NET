@@ -15,7 +15,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Memory
 {
-	public delegate void UnderlayingProcessChangedEvent(RemoteProcess sender);
+	public delegate void RemoteProcessEvent(RemoteProcess sender);
 
 	public class RemoteProcess : IDisposable
 	{
@@ -36,7 +36,14 @@ namespace ReClassNET.Memory
 		private ProcessInfo process;
 		private IntPtr handle;
 
-		public event UnderlayingProcessChangedEvent ProcessChanged;
+		/// <summary>Event which gets invoked when a process was opened.</summary>
+		public event RemoteProcessEvent ProcessAttached;
+
+		/// <summary>Event which gets invoked before a process gets closed.</summary>
+		public event RemoteProcessEvent ProcessClosing;
+
+		/// <summary>Event which gets invoked after a process was closed.</summary>
+		public event RemoteProcessEvent ProcessClosed;
 
 		public CoreFunctionsManager CoreFunctions => coreFunctions;
 
@@ -81,7 +88,7 @@ namespace ReClassNET.Memory
 					handle = coreFunctions.OpenRemoteProcess(process.Id, ProcessAccess.Full);
 				}
 
-				ProcessChanged?.Invoke(this);
+				ProcessAttached?.Invoke(this);
 			}
 		}
 
@@ -90,6 +97,8 @@ namespace ReClassNET.Memory
 		{
 			if (process != null)
 			{
+				ProcessClosing?.Invoke(this);
+
 				lock (processSync)
 				{
 					debugger.Terminate();
@@ -101,7 +110,7 @@ namespace ReClassNET.Memory
 					process = null;
 				}
 
-				ProcessChanged?.Invoke(this);
+				ProcessClosed?.Invoke(this);
 			}
 		}
 

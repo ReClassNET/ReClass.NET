@@ -53,20 +53,17 @@ namespace ReClassNET.Forms
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(false);
 
 			remoteProcess = new RemoteProcess(coreFunctions);
-			remoteProcess.ProcessChanged += delegate (RemoteProcess sender)
+			remoteProcess.ProcessAttached += (sender) =>
 			{
-				if (!sender.IsValid)
-				{
-					Text = Constants.ApplicationName;
-					processInfoToolStripStatusLabel.Text = "No process selected";
-				}
-				else
-				{
-					var text = $"{sender.UnderlayingProcess.Name} (PID: {sender.UnderlayingProcess.Id.ToString()})";
+				var text = $"{sender.UnderlayingProcess.Name} (PID: {sender.UnderlayingProcess.Id.ToString()})";
 
-					Text = $"{Constants.ApplicationName} - {text}";
-					processInfoToolStripStatusLabel.Text = text;
-				}
+				Text = $"{Constants.ApplicationName} - {text}";
+				processInfoToolStripStatusLabel.Text = text;
+			};
+			remoteProcess.ProcessClosed += (sender) =>
+			{
+				Text = Constants.ApplicationName;
+				processInfoToolStripStatusLabel.Text = "No process selected";
 			};
 
 			memory = new MemoryBuffer
