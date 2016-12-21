@@ -85,7 +85,7 @@ namespace ReClassNET.Core
 			var address = NativeMethods.GetProcAddress(handle, function);
 			if (address.IsNull())
 			{
-				throw new Exception();
+				throw new Exception($"Function '{function}' not found.");
 			}
 			return Marshal.GetDelegateForFunctionPointer<TDelegate>(address);
 		}
