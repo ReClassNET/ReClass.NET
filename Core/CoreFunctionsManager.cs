@@ -92,11 +92,11 @@ namespace ReClassNET.Core
 
 		#region Plugin Functions
 
-		public void EnumerateProcesses(Action<Tuple<IntPtr, string>> callbackProcess)
+		public void EnumerateProcesses(Action<ProcessInfo> callbackProcess)
 		{
 			var c = callbackProcess == null ? null : (EnumerateProcessCallback)delegate (ref EnumerateProcessData data)
 			{
-				callbackProcess(Tuple.Create(data.Id, data.Path));
+				callbackProcess(new ProcessInfo(data.Id, data.Path));
 			};
 
 			currentFunctions.EnumerateProcesses(c);

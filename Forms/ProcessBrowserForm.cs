@@ -29,12 +29,9 @@ namespace ReClassNET.Forms
 		{
 			get
 			{
-				var row = (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)?.Row;
-				if (row != null)
-				{
-					return new ProcessInfo(row.Field<IntPtr>("id"), row.Field<string>("name"), row.Field<string>("path"));
-				}
-				return null;
+				return (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)
+					?.Row
+					?.Field<ProcessInfo>("info");
 			}
 		}
 
@@ -116,17 +113,18 @@ namespace ReClassNET.Forms
 			dt.Columns.Add("name", typeof(string));
 			dt.Columns.Add("id", typeof(IntPtr));
 			dt.Columns.Add("path", typeof(string));
+			dt.Columns.Add("info", typeof(ProcessInfo));
 
-			coreFunctions.EnumerateProcesses(data =>
+			coreFunctions.EnumerateProcesses(p =>
 			{
-				var moduleName = Path.GetFileName(data.Item2);
-				if (!filterCheckBox.Checked || !CommonProcesses.Contains(moduleName.ToLower()))
+				if (!filterCheckBox.Checked || !CommonProcesses.Contains(p.Name.ToLower()))
 				{
 					var row = dt.NewRow();
-					row["icon"] = NativeMethods.GetIconForFile(data.Item2);
-					row["name"] = moduleName;
-					row["id"] = data.Item1;
-					row["path"] = data.Item2;
+					row["icon"] = NativeMethods.GetIconForFile(p.Path);
+					row["name"] = p.Name;
+					row["id"] = p.Id;
+					row["path"] = p.Path;
+					row["info"] = p;
 					dt.Rows.Add(row);
 				}
 			});

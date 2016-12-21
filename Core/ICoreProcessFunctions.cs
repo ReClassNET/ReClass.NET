@@ -1,7 +1,5 @@
 ﻿using System;
 using ReClassNET.Debugger;
-using ReClassNET.Memory;
-using ReClassNET.Native;
 
 namespace ReClassNET.Core
 {
