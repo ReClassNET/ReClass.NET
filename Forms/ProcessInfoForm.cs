@@ -39,6 +39,12 @@ namespace ReClassNET.Forms
 			modulesDataGridView.AutoGenerateColumns = false;
 			sectionsDataGridView.AutoGenerateColumns = false;
 
+			// TODO: Workaround, Mono can't display a DataGridViewImageColumn.
+			if (NativeMethods.IsUnix())
+			{
+				moduleIconDataGridViewImageColumn.Visible = false;
+			}
+
 			if (process.IsValid)
 			{
 				var sections = new DataTable();
