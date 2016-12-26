@@ -4,6 +4,9 @@
     <Filter Include="Functions">
       <UniqueIdentifier>{32941fcb-69a5-43e7-86ba-38eb1ece3de9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dependencies">
+      <UniqueIdentifier>{eaf85ecc-eda1-49c6-a3be-14f2f8f4002c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CloseRemoteProcess.cpp">
@@ -35,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="WriteRemoteMemory.cpp">
       <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\beaengine\src\BeaEngine.c">
+      <Filter>Dependencies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

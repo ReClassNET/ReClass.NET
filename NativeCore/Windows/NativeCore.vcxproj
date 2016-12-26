@@ -73,25 +73,25 @@
     <LinkIncremental>true</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
     <OutDir>$(SolutionDir)bin\$(PlatformTarget)\$(Configuration)\</OutDir>
-    <IncludePath>.\beaengine\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
     <OutDir>$(SolutionDir)bin\$(PlatformTarget)\$(Configuration)\</OutDir>
-    <IncludePath>.\beaengine\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
     <OutDir>$(SolutionDir)bin\$(PlatformTarget)\$(Configuration)\</OutDir>
-    <IncludePath>.\beaengine\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
     <OutDir>$(SolutionDir)bin\$(PlatformTarget)\$(Configuration)\</OutDir>
-    <IncludePath>.\beaengine\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -158,7 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="beaengine\src\BeaEngine.c" />
+    <ClCompile Include="..\Dependencies\beaengine\src\BeaEngine.c" />
     <ClCompile Include="CloseRemoteProcess.cpp" />
     <ClCompile Include="ControlRemoteProcess.cpp" />
     <ClCompile Include="Debugger.cpp" />

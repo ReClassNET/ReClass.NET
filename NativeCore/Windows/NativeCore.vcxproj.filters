@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="beaengine\src\BeaEngine.c">
-      <Filter>Dependencies</Filter>
-    </ClCompile>
     <ClCompile Include="CloseRemoteProcess.cpp">
       <Filter>Functions</Filter>
     </ClCompile>
@@ -33,6 +30,9 @@
     </ClCompile>
     <ClCompile Include="Debugger.cpp">
       <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\beaengine\src\BeaEngine.c">
+      <Filter>Dependencies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

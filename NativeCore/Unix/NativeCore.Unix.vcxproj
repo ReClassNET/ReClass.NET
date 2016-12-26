@@ -91,6 +91,20 @@
     <TargetExt>.so</TargetExt>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="..\Dependencies\beaengine\src\BeaEngine.c">
+      <RemoteFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/home/kn4ck3r/projects/Dependencies/beaengine/src/BeaEngine.c</RemoteFile>
+      <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</RemoteCopyFile>
+      <RemoteFile Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">/home/kn4ck3r/projects/Dependencies/beaengine/src/BeaEngine.c</RemoteFile>
+      <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">false</RemoteCopyFile>
+      <RemoteFile Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">/home/kn4ck3r/projects/Dependencies/beaengine/src/BeaEngine.c</RemoteFile>
+      <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">false</RemoteCopyFile>
+      <RemoteFile Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">/home/kn4ck3r/projects/Dependencies/beaengine/src/BeaEngine.c</RemoteFile>
+      <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">false</RemoteCopyFile>
+      <RemoteFile Condition="'$(Configuration)|$(Platform)'=='Release|x86'">/home/kn4ck3r/projects/Dependencies/beaengine/src/BeaEngine.c</RemoteFile>
+      <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Release|x86'">false</RemoteCopyFile>
+      <RemoteFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/home/kn4ck3r/projects/Dependencies/beaengine/src/BeaEngine.c</RemoteFile>
+      <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</RemoteCopyFile>
+    </ClCompile>
     <ClCompile Include="CloseRemoteProcess.cpp" />
     <ClCompile Include="ControlRemoteProcess.cpp" />
     <ClCompile Include="Debugger.cpp" />
@@ -111,18 +125,25 @@
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
     </ClCompile>
+    <Link>
+      <LibraryDependencies>boost_system;boost_filesystem</LibraryDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
     </ClCompile>
+    <Link>
+      <LibraryDependencies>boost_system;boost_filesystem</LibraryDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
-      <AdditionalIncludeDirectories>$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NATIVE_CORE_64</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
@@ -133,19 +154,36 @@
     <ClCompile>
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
+      <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NATIVE_CORE_64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <Link>
+      <LibraryDependencies>boost_system;boost_filesystem</LibraryDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <ClCompile>
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
+      <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <Link>
+      <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
+      <LibraryDependencies>boost_system;boost_filesystem</LibraryDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <ClCompile>
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
+      <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <Link>
+      <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
+      <LibraryDependencies>boost_system;boost_filesystem</LibraryDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
