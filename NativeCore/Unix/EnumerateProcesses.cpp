@@ -1,20 +1,9 @@
 //#include <experimental/filesystem>
 #include <boost/filesystem.hpp>
 #include <sstream>
+#include <fstream>
 
 #include "NativeCore.hpp"
-
-//using fs = std::experimental::filesystem;
-//using sys = std;
-/*using fs = boost::filesystem;
-using sys = boost::system;*/
-
-enum class Platform
-{
-	Unknown,
-	X86,
-	X64
-};
 
 bool is_number(const std::string& s)
 {
@@ -31,6 +20,40 @@ T parse_type(const std::string& s)
 	T val;
 	ss >> val;
 	return val;
+}
+
+enum class Platform
+{
+	Unknown,
+	X86,
+	X64
+};
+
+Platform GetProcessPlatform(const std::string& auxvPath)
+{
+	auto platform = Platform::Unknown;
+
+	std::ifstream file(auxvPath);
+	if (file)
+	{
+		char buffer[16];
+		while (true)
+		{
+			file.read(buffer, 16);
+
+			if (!file)
+			{
+				return Platform::X64;
+			}
+
+			if (buffer[4] != 0 || buffer[5] != 0 || buffer[6] != 0 || buffer[7] != 0)
+			{
+				return Platform::X86;
+			}
+		}
+	}
+
+	return platform;
 }
 
 extern "C" void EnumerateProcesses(EnumerateProcessCallback callbackProcess)
@@ -69,13 +92,21 @@ extern "C" void EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 
 						if (!ec)
 						{
-							//auto elfHeader = processPath / "";
+							auto auxvPath = processPath / "auxv";
+							
+							auto platform = GetProcessPlatform(auxvPath.string());
+#ifdef NATIVE_CORE_64
+							if (platform == Platform::X64)
+#else
+							if (platform == Platform::X86)
+#endif
+							{
+								EnumerateProcessData data = {};
+								data.Id = pid;
+								MultiByteToUnicode(e.string().c_str(), data.ModulePath, PATH_MAXIMUM_LENGTH);
 
-							EnumerateProcessData data = {};
-							data.Id = pid;
-							MultiByteToUnicode(e.string().c_str(), data.ModulePath, PATH_MAXIMUM_LENGTH);
-
-							callbackProcess(&data);
+								callbackProcess(&data);
+							}
 						}
 					}
 				}
