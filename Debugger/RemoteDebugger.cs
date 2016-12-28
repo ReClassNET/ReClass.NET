@@ -4,7 +4,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using ReClassNET.Forms;
 using ReClassNET.Memory;
-using ReClassNET.Native;
 using ReClassNET.Util;
 
 namespace ReClassNET.Debugger
@@ -90,7 +89,7 @@ namespace ReClassNET.Debugger
 
 			BreakpointHandler handler = delegate (IBreakpoint bp, ref DebugEvent evt)
 			{
-				fcf.AddRecord(evt.Data.ExceptionInfo);
+				fcf.AddRecord(evt.ExceptionInfo);
 			};
 
 			var breakpoint = new HardwareBreakpoint(breakpointList[0].Address, register, trigger, (HardwareBreakpointSize)breakpointList[0].Size, handler);

@@ -28,42 +28,20 @@ bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 		return false;
 	}
 
+	auto result = false;
+
 	evt->ProcessId = (RC_Pointer)_evt.dwProcessId;
 	evt->ThreadId = (RC_Pointer)_evt.dwThreadId;
 
 	switch (_evt.dwDebugEventCode)
 	{
 	case CREATE_PROCESS_DEBUG_EVENT:
-		evt->Type = DebugEventType::CreateProcess;
-		evt->CreateProcessInfo.FileHandle = _evt.u.CreateProcessInfo.hFile;
-		evt->CreateProcessInfo.ProcessHandle = _evt.u.CreateProcessInfo.hProcess;
-		break;
-	case EXIT_PROCESS_DEBUG_EVENT:
-		evt->Type = DebugEventType::ExitProcess;
-		evt->ExitProcessInfo.ExitCode = _evt.u.ExitProcess.dwExitCode;
-		break;
-	case CREATE_THREAD_DEBUG_EVENT:
-		evt->Type = DebugEventType::CreateThread;
-		evt->CreateThreadInfo.ThreadHandle = _evt.u.CreateThread.hThread;
-		break;
-	case EXIT_THREAD_DEBUG_EVENT:
-		evt->Type = DebugEventType::ExitThread;
-		evt->ExitThreadInfo.ExitCode = _evt.u.ExitProcess.dwExitCode;
+		CloseHandle(_evt.u.CreateProcessInfo.hFile);
 		break;
 	case LOAD_DLL_DEBUG_EVENT:
-		evt->Type = DebugEventType::LoadDll;
-		evt->LoadDllInfo.FileHandle = _evt.u.LoadDll.hFile;
-		evt->LoadDllInfo.BaseOfDll = _evt.u.LoadDll.lpBaseOfDll;
-		break;
-	case UNLOAD_DLL_DEBUG_EVENT:
-		evt->Type = DebugEventType::UnloadDll;
-		evt->UnloadDllInfo.BaseOfDll = _evt.u.UnloadDll.lpBaseOfDll;
-		break;
-	case OUTPUT_DEBUG_STRING_EVENT:
+		CloseHandle(_evt.u.LoadDll.hFile);
 		break;
 	case EXCEPTION_DEBUG_EVENT:
-		evt->Type = DebugEventType::Exception;
-
 		auto& exception = _evt.u.Exception;
 
 		// Copy basic informations.
@@ -135,10 +113,16 @@ bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 
 		CloseHandle(handle);
 
+		result = true;
 		break;
 	}
 
-	return true;
+	if (result == false)
+	{
+		ContinueDebugEvent(_evt.dwProcessId, _evt.dwThreadId, DBG_CONTINUE);
+	}
+
+	return result;
 }
 
 void __stdcall HandleDebugEvent(DebugEvent* evt)
@@ -198,15 +182,15 @@ bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, Hardware
 	auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 	if (handle != INVALID_HANDLE_VALUE)
 	{
-		THREADENTRY32 pe32 = {};
-		pe32.dwSize = sizeof(THREADENTRY32);
-		if (Thread32First(handle, &pe32))
+		THREADENTRY32 te32 = {};
+		te32.dwSize = sizeof(THREADENTRY32);
+		if (Thread32First(handle, &te32))
 		{
 			do
 			{
-				if (pe32.th32OwnerProcessID == (DWORD)id)
+				if (te32.th32OwnerProcessID == (DWORD)id)
 				{
-					auto handle = OpenThread(THREAD_SUSPEND_RESUME | THREAD_GET_CONTEXT | THREAD_SET_CONTEXT, FALSE, pe32.th32ThreadID);
+					auto handle = OpenThread(THREAD_SUSPEND_RESUME | THREAD_GET_CONTEXT | THREAD_SET_CONTEXT, FALSE, te32.th32ThreadID);
 
 					SuspendThread(handle);
 
@@ -246,7 +230,7 @@ bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, Hardware
 
 					CloseHandle(handle);
 				}
-			} while (Thread32Next(handle, &pe32));
+			} while (Thread32Next(handle, &te32));
 		}
 
 		CloseHandle(handle);

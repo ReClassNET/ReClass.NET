@@ -4,8 +4,6 @@
 #include <algorithm>
 #include <cstdint>
 #include <codecvt>
-#include <locale>
-#include <cstring>
 
 // Types
 
@@ -49,7 +47,7 @@ inline SectionProtection& operator|=(SectionProtection& lhs, SectionProtection r
 	using T = std::underlying_type_t<SectionProtection>;
 
 	lhs = static_cast<SectionProtection>(static_cast<T>(lhs) | static_cast<T>(rhs));
-	
+
 	return lhs;
 }
 
@@ -108,17 +106,6 @@ enum class HardwareBreakpointSize
 	Size8 = 8
 };
 
-enum class DebugEventType
-{
-	CreateProcess,
-	ExitProcess,
-	CreateThread,
-	ExitThread,
-	LoadDll,
-	UnloadDll,
-	Exception
-};
-
 // Structures
 
 #pragma pack(push, 1)
@@ -152,38 +139,6 @@ struct EnumerateRemoteModuleData
 	RC_Pointer BaseAddress;
 	RC_Size Size;
 	RC_UnicodeChar Path[PATH_MAXIMUM_LENGTH];
-};
-
-struct CreateProcessDebugInfo
-{
-	RC_Pointer FileHandle;
-	RC_Pointer ProcessHandle;
-};
-
-struct ExitProcessDebugInfo
-{
-	RC_Size ExitCode;
-};
-
-struct CreateThreadDebugInfo
-{
-	RC_Pointer ThreadHandle;
-};
-
-struct ExitThreadDebugInfo
-{
-	RC_Size ExitCode;
-};
-
-struct LoadDllDebugInfo
-{
-	RC_Pointer FileHandle;
-	RC_Pointer BaseOfDll;
-};
-
-struct UnloadDllDebugInfo
-{
-	RC_Pointer BaseOfDll;
 };
 
 struct ExceptionDebugInfo
@@ -239,28 +194,17 @@ struct DebugEvent
 	RC_Pointer ProcessId;
 	RC_Pointer ThreadId;
 
-	DebugEventType Type;
-
-	union
-	{
-		CreateProcessDebugInfo CreateProcessInfo;
-		ExitProcessDebugInfo ExitProcessInfo;
-		CreateThreadDebugInfo CreateThreadInfo;
-		ExitThreadDebugInfo ExitThreadInfo;
-		LoadDllDebugInfo LoadDllInfo;
-		UnloadDllDebugInfo UnloadDllInfo;
-		ExceptionDebugInfo ExceptionInfo;
-	};
+	ExceptionDebugInfo ExceptionInfo;
 };
 
 #pragma pack(pop)
 
 // Callbacks
 
-typedef void(EnumerateProcessCallback)(EnumerateProcessData* data);
+typedef void(__stdcall *EnumerateProcessCallback)(EnumerateProcessData* data);
 
-typedef void(EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
-typedef void(EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
+typedef void(__stdcall EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
+typedef void(__stdcall EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
 
 // Helpers
 
@@ -268,7 +212,7 @@ inline void MultiByteToUnicode(const char* src, RC_UnicodeChar* dst, int size)
 {
 #if _MSC_VER == 1900
 	// VS Bug: https://connect.microsoft.com/VisualStudio/feedback/details/1348277/link-error-when-using-std-codecvt-utf8-utf16-char16-t
-	
+
 	auto temp = std::wstring_convert<std::codecvt_utf8_utf16<int16_t>, int16_t>{}.from_bytes(src);
 #else
 	auto temp = std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}.from_bytes(src);

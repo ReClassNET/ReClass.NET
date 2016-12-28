@@ -3,64 +3,16 @@ using System.Runtime.InteropServices;
 
 namespace ReClassNET.Debugger
 {
-	public enum DebugEventType
-	{
-		CreateProcess,
-		ExitProcess,
-		CreateThread,
-		ExitThread,
-		LoadDll,
-		UnloadDll,
-		Exception
-	}
-
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct CreateProcessDebugInfo
-	{
-		public IntPtr FileHandle;
-
-		public IntPtr ProcessHandle;
-	};
-
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct ExitProcessDebugInfo
-	{
-		public IntPtr ExitCode;
-	};
-
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct CreateThreadDebugInfo
-	{
-		public IntPtr ThreadHandle;
-	};
-
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct ExitThreadDebugInfo
-	{
-		public IntPtr ExitCode;
-	};
-
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct LoadDllDebugInfo
-	{
-		public IntPtr FileHandle;
-
-		public IntPtr BaseOfDll;
-	};
-
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct UnloadDllDebugInfo
-	{
-		public IntPtr BaseOfDll;
-	};
-
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct ExceptionDebugInfo
 	{
 		public IntPtr ExceptionCode;
 		public IntPtr ExceptionFlags;
 		public IntPtr ExceptionAddress;
+
 		public HardwareBreakpointRegister CausedBy;
+
+		[MarshalAs(UnmanagedType.I1)]
 		public bool IsFirstChance;
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -108,46 +60,13 @@ namespace ReClassNET.Debugger
 	}
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct DebugEventHeader
+	public struct DebugEvent
 	{
 		public DebugContinueStatus ContinueStatus;
 
 		public IntPtr ProcessId;
 		public IntPtr ThreadId;
 
-		public DebugEventType Type;
-	}
-
-	[StructLayout(LayoutKind.Explicit, Pack = 1)]
-	public struct DebugEventUnion
-	{
-		[FieldOffset(0)]
-		public CreateProcessDebugInfo CreateProcessInfo;
-		[FieldOffset(0)]
-		public ExitProcessDebugInfo ExitProcessInfo;
-		[FieldOffset(0)]
-		public CreateThreadDebugInfo CreateThreadInfo;
-		[FieldOffset(0)]
-		public ExitThreadDebugInfo ExitThreadInfo;
-		[FieldOffset(0)]
-		public LoadDllDebugInfo LoadDllInfo;
-		[FieldOffset(0)]
-		public UnloadDllDebugInfo UnloadDllInfo;
-		[FieldOffset(0)]
 		public ExceptionDebugInfo ExceptionInfo;
-	}
-
-	[StructLayout(LayoutKind.Explicit, Pack = 1)]
-	public struct DebugEvent
-	{
-		[FieldOffset(0)]
-		public DebugEventHeader Header;
-
-#if WIN64
-		[FieldOffset(24)]
-#else
-		[FieldOffset(16)]
-#endif
-		public DebugEventUnion Data;
 	}
 }

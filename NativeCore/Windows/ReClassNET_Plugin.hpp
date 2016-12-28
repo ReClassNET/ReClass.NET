@@ -106,17 +106,6 @@ enum class HardwareBreakpointSize
 	Size8 = 8
 };
 
-enum class DebugEventType
-{
-	CreateProcess,
-	ExitProcess,
-	CreateThread,
-	ExitThread,
-	LoadDll,
-	UnloadDll,
-	Exception
-};
-
 // Structures
 
 #pragma pack(push, 1)
@@ -150,38 +139,6 @@ struct EnumerateRemoteModuleData
 	RC_Pointer BaseAddress;
 	RC_Size Size;
 	RC_UnicodeChar Path[PATH_MAXIMUM_LENGTH];
-};
-
-struct CreateProcessDebugInfo
-{
-	RC_Pointer FileHandle;
-	RC_Pointer ProcessHandle;
-};
-
-struct ExitProcessDebugInfo
-{
-	RC_Size ExitCode;
-};
-
-struct CreateThreadDebugInfo
-{
-	RC_Pointer ThreadHandle;
-};
-
-struct ExitThreadDebugInfo
-{
-	RC_Size ExitCode;
-};
-
-struct LoadDllDebugInfo
-{
-	RC_Pointer FileHandle;
-	RC_Pointer BaseOfDll;
-};
-
-struct UnloadDllDebugInfo
-{
-	RC_Pointer BaseOfDll;
 };
 
 struct ExceptionDebugInfo
@@ -237,18 +194,7 @@ struct DebugEvent
 	RC_Pointer ProcessId;
 	RC_Pointer ThreadId;
 
-	DebugEventType Type;
-
-	union
-	{
-		CreateProcessDebugInfo CreateProcessInfo;
-		ExitProcessDebugInfo ExitProcessInfo;
-		CreateThreadDebugInfo CreateThreadInfo;
-		ExitThreadDebugInfo ExitThreadInfo;
-		LoadDllDebugInfo LoadDllInfo;
-		UnloadDllDebugInfo UnloadDllInfo;
-		ExceptionDebugInfo ExceptionInfo;
-	};
+	ExceptionDebugInfo ExceptionInfo;
 };
 
 #pragma pack(pop)

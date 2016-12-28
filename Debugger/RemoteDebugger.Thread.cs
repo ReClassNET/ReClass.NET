@@ -56,25 +56,24 @@ namespace ReClassNET.Debugger
 				isAttached = true;
 
 				var evt = new DebugEvent();
+
 				running = true;
 				while (running)
 				{
 					if (process.CoreFunctions.AwaitDebugEvent(ref evt, 100))
 					{
-						evt.Header.ContinueStatus = DebugContinueStatus.Handled;
+						evt.ContinueStatus = DebugContinueStatus.Handled;
 
-						if (HandleEvent(ref evt))
-						{
-							process.CoreFunctions.HandleDebugEvent(ref evt);
-						}
-						else
-						{
-							Terminate(false);
-						}
+						HandleExceptionEvent(ref evt);
+
+						process.CoreFunctions.HandleDebugEvent(ref evt);
 					}
 					else
 					{
-
+						if (!process.IsValid)
+						{
+							Terminate(false);
+						}
 					}
 				}
 
