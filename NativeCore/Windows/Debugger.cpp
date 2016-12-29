@@ -45,7 +45,6 @@ bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 		auto& exception = _evt.u.Exception;
 
 		// Copy basic informations.
-		evt->ExceptionInfo.IsFirstChance = exception.dwFirstChance != 0;
 		evt->ExceptionInfo.ExceptionAddress = exception.ExceptionRecord.ExceptionAddress;
 		evt->ExceptionInfo.ExceptionCode = exception.ExceptionRecord.ExceptionCode;
 		evt->ExceptionInfo.ExceptionFlags = exception.ExceptionRecord.ExceptionFlags;

@@ -149,8 +149,6 @@ struct ExceptionDebugInfo
 
 	HardwareBreakpointRegister CausedBy;
 
-	bool IsFirstChance;
-
 	struct RegisterInfo
 	{
 #ifdef _WIN64

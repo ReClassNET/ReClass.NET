@@ -12,9 +12,6 @@ namespace ReClassNET.Debugger
 
 		public HardwareBreakpointRegister CausedBy;
 
-		[MarshalAs(UnmanagedType.I1)]
-		public bool IsFirstChance;
-
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public struct RegisterInfo
 		{
