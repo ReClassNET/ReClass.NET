@@ -132,8 +132,7 @@
       <CppLanguageStandard>c++1y</CppLanguageStandard>
     </ClCompile>
     <Link>
-      <LibraryDependencies>
-      </LibraryDependencies>
+      <LibraryDependencies>stdc++fs</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -142,8 +141,7 @@
       <CppLanguageStandard>c++1y</CppLanguageStandard>
     </ClCompile>
     <Link>
-      <LibraryDependencies>
-      </LibraryDependencies>
+      <LibraryDependencies>stdc++fs</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -155,9 +153,8 @@
       <AdditionalOptions>-m64 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
-      <LibraryDependencies>
-      </LibraryDependencies>
+      <AdditionalOptions>-m64 %(AdditionalOptions)</AdditionalOptions>
+      <LibraryDependencies>stdc++fs</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -169,8 +166,8 @@
       <AdditionalOptions>-m64 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <LibraryDependencies>
-      </LibraryDependencies>
+      <LibraryDependencies>stdc++fs</LibraryDependencies>
+      <AdditionalOptions>-m64 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
@@ -182,8 +179,7 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
-      <LibraryDependencies>
-      </LibraryDependencies>
+      <LibraryDependencies>stdc++fs</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
@@ -195,8 +191,7 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
-      <LibraryDependencies>
-      </LibraryDependencies>
+      <LibraryDependencies>stdc++fs</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
