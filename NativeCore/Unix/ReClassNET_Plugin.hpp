@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cstdint>
 #include <codecvt>
+#include <locale>
+#include <cstring>
 
 // Types
 
@@ -199,10 +201,10 @@ struct DebugEvent
 
 // Callbacks
 
-typedef void(__stdcall *EnumerateProcessCallback)(EnumerateProcessData* data);
+typedef void(EnumerateProcessCallback)(EnumerateProcessData* data);
 
-typedef void(__stdcall EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
-typedef void(__stdcall EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
+typedef void(EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
+typedef void(EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
 
 // Helpers
 
