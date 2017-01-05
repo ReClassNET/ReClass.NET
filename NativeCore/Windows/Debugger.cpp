@@ -3,6 +3,55 @@
 
 #include "NativeCore.hpp"
 
+struct DebugRegister6
+{
+	union
+	{
+		uintptr_t Value;
+		struct
+		{
+			unsigned DR0 : 1;
+			unsigned DR1 : 1;
+			unsigned DR2 : 1;
+			unsigned DR3 : 1;
+			unsigned Reserved : 9;
+			unsigned BD : 1;
+			unsigned BS : 1;
+			unsigned BT : 1;
+		};
+	};
+};
+
+struct DebugRegister7
+{
+	union
+	{
+		uintptr_t Value;
+		struct
+		{
+			unsigned G0 : 1;
+			unsigned L0 : 1;
+			unsigned G1 : 1;
+			unsigned L1 : 1;
+			unsigned G2 : 1;
+			unsigned L2 : 1;
+			unsigned G3 : 1;
+			unsigned L3 : 1;
+			unsigned GE : 1;
+			unsigned LE : 1;
+			unsigned Reserved : 6;
+			unsigned RW0 : 2;
+			unsigned Len0 : 2;
+			unsigned RW1 : 2;
+			unsigned Len1 : 2;
+			unsigned RW2 : 2;
+			unsigned Len2 : 2;
+			unsigned RW3 : 2;
+			unsigned Len3 : 2;
+		};
+	};
+};
+
 bool __stdcall AttachDebuggerToProcess(RC_Pointer id)
 {
 	if (!DebugActiveProcess((DWORD)id))
@@ -55,20 +104,23 @@ bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 		ctx.ContextFlags = CONTEXT_CONTROL | CONTEXT_INTEGER | CONTEXT_DEBUG_REGISTERS;
 		GetThreadContext(handle, &ctx);
 
+		DebugRegister6 dr6;
+		dr6.Value = ctx.Dr6;
+
 		// Check if breakpoint was a hardware breakpoint.
-		if (ctx.Dr6 & 0b0001)
+		if (dr6.DR0)
 		{
 			evt->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr0;
 		}
-		else if (ctx.Dr6 & 0b0010)
+		else if (dr6.DR1)
 		{
 			evt->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr1;
 		}
-		else if (ctx.Dr6 & 0b0100)
+		else if (dr6.DR2)
 		{
 			evt->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr2;
 		}
-		else if (ctx.Dr6 & 0b1000)
+		else if (dr6.DR3)
 		{
 			evt->ExceptionInfo.CausedBy = HardwareBreakpointRegister::Dr3;
 		}
@@ -148,35 +200,29 @@ bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, Hardware
 	}
 
 	decltype(CONTEXT::Dr0) addressValue = 0;
-	int typeValue = 0;
-	int sizeValue = 0;
+	int accessValue = 0;
+	int lengthValue = 0;
 
 	if (set)
 	{
 		addressValue = (decltype(CONTEXT::Dr0))address;
 
 		if (type == HardwareBreakpointTrigger::Execute)
-			typeValue = 0;
+			accessValue = 0;
 		else if (type == HardwareBreakpointTrigger::Access)
-			typeValue = 3;
+			accessValue = 3;
 		else if (type == HardwareBreakpointTrigger::Write)
-			typeValue = 1;
+			accessValue = 1;
 
 		if (size == HardwareBreakpointSize::Size1)
-			sizeValue = 0;
+			lengthValue = 0;
 		else if (size == HardwareBreakpointSize::Size2)
-			sizeValue = 1;
+			lengthValue = 1;
 		else if (size == HardwareBreakpointSize::Size4)
-			sizeValue = 3;
+			lengthValue = 3;
 		else if (size == HardwareBreakpointSize::Size8)
-			sizeValue = 2;
+			lengthValue = 2;
 	}
-	
-	auto SetBits = [](DWORD_PTR& dw, int lowBit, int bits, int newValue)
-	{
-		DWORD_PTR mask = (1 << bits) - 1;
-		dw = (dw & ~(mask << lowBit)) | (newValue << lowBit);
-	};
 
 	auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 	if (handle != INVALID_HANDLE_VALUE)
@@ -197,31 +243,38 @@ bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, Hardware
 					ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
 					GetThreadContext(handle, &ctx);
 
-					int index = 0;
+					DebugRegister7 dr7;
+					dr7.Value = ctx.Dr7;
 
 					switch (reg)
 					{
 					case HardwareBreakpointRegister::Dr0:
-						index = 0;
 						ctx.Dr0 = addressValue;
+						dr7.G0 = true;
+						dr7.RW0 = accessValue;
+						dr7.Len0 = lengthValue;
 						break;
 					case HardwareBreakpointRegister::Dr1:
-						index = 1;
 						ctx.Dr1 = addressValue;
+						dr7.G1 = true;
+						dr7.RW1 = accessValue;
+						dr7.Len1 = lengthValue;
 						break;
 					case HardwareBreakpointRegister::Dr2:
-						index = 2;
 						ctx.Dr2 = addressValue;
+						dr7.G2 = true;
+						dr7.RW2 = accessValue;
+						dr7.Len2 = lengthValue;
 						break;
 					case HardwareBreakpointRegister::Dr3:
-						index = 3;
 						ctx.Dr3 = addressValue;
+						dr7.G3 = true;
+						dr7.RW3 = accessValue;
+						dr7.Len3 = lengthValue;
 						break;
 					}
 
-					SetBits(ctx.Dr7, 16 + index * 4, 2, typeValue);
-					SetBits(ctx.Dr7, 18 + index * 4, 2, sizeValue);
-					SetBits(ctx.Dr7, index * 2, 1, set ? 1 : 0);
+					ctx.Dr7 = dr7.Value;
 
 					SetThreadContext(handle, &ctx);
 
