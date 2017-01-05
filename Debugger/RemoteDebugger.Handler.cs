@@ -4,7 +4,6 @@
 	{
 		private void HandleExceptionEvent(ref DebugEvent evt)
 		{
-			IBreakpoint current = null;
 			lock (syncBreakpoint)
 			{
 				var causedBy = evt.ExceptionInfo.CausedBy;
@@ -16,7 +15,7 @@
 					{
 						if (causedBy == hwbp.Register)
 						{
-							current.Handler(ref evt);
+							hwbp.Handler(ref evt);
 
 							break;
 						}
