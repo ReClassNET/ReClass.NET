@@ -153,7 +153,7 @@ struct ExceptionDebugInfo
 
 	struct RegisterInfo
 	{
-#ifdef _WIN64
+#ifdef RECLASSNET64
 		RC_Pointer Rax;
 		RC_Pointer Rbx;
 		RC_Pointer Rcx;
@@ -197,14 +197,56 @@ struct DebugEvent
 	ExceptionDebugInfo ExceptionInfo;
 };
 
+struct DebugRegister6
+{
+	union
+	{
+		uintptr_t Value;
+		struct
+		{
+			unsigned DR0 : 1;
+			unsigned DR1 : 1;
+			unsigned DR2 : 1;
+			unsigned DR3 : 1;
+			unsigned Reserved : 9;
+			unsigned BD : 1;
+			unsigned BS : 1;
+			unsigned BT : 1;
+		};
+	};
+};
+
+struct DebugRegister7
+{
+	union
+	{
+		uintptr_t Value;
+		struct
+		{
+			unsigned G0 : 1;
+			unsigned L0 : 1;
+			unsigned G1 : 1;
+			unsigned L1 : 1;
+			unsigned G2 : 1;
+			unsigned L2 : 1;
+			unsigned G3 : 1;
+			unsigned L3 : 1;
+			unsigned GE : 1;
+			unsigned LE : 1;
+			unsigned Reserved : 6;
+			unsigned RW0 : 2;
+			unsigned Len0 : 2;
+			unsigned RW1 : 2;
+			unsigned Len1 : 2;
+			unsigned RW2 : 2;
+			unsigned Len2 : 2;
+			unsigned RW3 : 2;
+			unsigned Len3 : 2;
+		};
+	};
+};
+
 #pragma pack(pop)
-
-// Callbacks
-
-typedef void(EnumerateProcessCallback)(EnumerateProcessData* data);
-
-typedef void(EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
-typedef void(EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
 
 // Helpers
 

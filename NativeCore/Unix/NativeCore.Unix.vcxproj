@@ -149,7 +149,7 @@
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
       <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NATIVE_CORE_64</PreprocessorDefinitions>
+      <PreprocessorDefinitions>RECLASSNET64</PreprocessorDefinitions>
       <AdditionalOptions>-m64 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -162,7 +162,7 @@
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
       <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NATIVE_CORE_64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>RECLASSNET64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>-m64 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -176,6 +176,7 @@
       <CppLanguageStandard>c++1y</CppLanguageStandard>
       <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>RECLASSNET32</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
@@ -188,6 +189,7 @@
       <CppLanguageStandard>c++1y</CppLanguageStandard>
       <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>RECLASSNET32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>

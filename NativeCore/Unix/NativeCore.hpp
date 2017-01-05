@@ -1,6 +1,14 @@
 #pragma once
 
+#include <string>
+#include <sstream>
+
 #include "ReClassNET_Plugin.hpp"
+
+typedef void(EnumerateProcessCallback)(EnumerateProcessData* data);
+
+typedef void(EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
+typedef void(EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
 
 extern "C"
 {
@@ -21,4 +29,21 @@ extern "C"
 	bool AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds);
 	void HandleDebugEvent(DebugEvent* evt);
 	bool SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set);
+}
+
+inline bool is_number(const std::string& s)
+{
+	auto it = s.begin();
+	for (; it != s.end() && std::isdigit(*it); ++it);
+	return !s.empty() && it == s.end();
+}
+
+template<typename T>
+inline T parse_type(const std::string& s)
+{
+	std::stringstream ss(s);
+
+	T val;
+	ss >> val;
+	return val;
 }

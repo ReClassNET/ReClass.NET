@@ -45,23 +45,6 @@ fs::path my_read_symlink(const fs::path& p, std::error_code& ec)
 
 #endif
 
-bool is_number(const std::string& s)
-{
-	auto it = s.begin();
-	for (; it != s.end() && std::isdigit(*it); ++it);
-	return !s.empty() && it == s.end();
-}
-
-template<typename T>
-T parse_type(const std::string& s)
-{
-	std::stringstream ss(s);
-
-	T val;
-	ss >> val;
-	return val;
-}
-
 enum class Platform
 {
 	Unknown,
