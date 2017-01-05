@@ -3,7 +3,7 @@
 #include <string>
 #include <sstream>
 
-#include "ReClassNET_Plugin.hpp"
+#include "../ReClassNET_Plugin.hpp"
 
 typedef void(EnumerateProcessCallback)(EnumerateProcessData* data);
 

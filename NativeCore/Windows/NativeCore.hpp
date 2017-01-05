@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ReClassNET_Plugin.hpp"
+#include "../ReClassNET_Plugin.hpp"
 
 typedef void(__stdcall *EnumerateProcessCallback)(EnumerateProcessData* data);
 

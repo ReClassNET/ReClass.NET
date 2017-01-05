@@ -47,7 +47,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ReClassNET_Plugin.hpp" />
     <ClInclude Include="NativeCore.hpp" />
+    <ClInclude Include="..\ReClassNET_Plugin.hpp" />
   </ItemGroup>
 </Project>

@@ -3,55 +3,6 @@
 
 #include "NativeCore.hpp"
 
-struct DebugRegister6
-{
-	union
-	{
-		uintptr_t Value;
-		struct
-		{
-			unsigned DR0 : 1;
-			unsigned DR1 : 1;
-			unsigned DR2 : 1;
-			unsigned DR3 : 1;
-			unsigned Reserved : 9;
-			unsigned BD : 1;
-			unsigned BS : 1;
-			unsigned BT : 1;
-		};
-	};
-};
-
-struct DebugRegister7
-{
-	union
-	{
-		uintptr_t Value;
-		struct
-		{
-			unsigned G0 : 1;
-			unsigned L0 : 1;
-			unsigned G1 : 1;
-			unsigned L1 : 1;
-			unsigned G2 : 1;
-			unsigned L2 : 1;
-			unsigned G3 : 1;
-			unsigned L3 : 1;
-			unsigned GE : 1;
-			unsigned LE : 1;
-			unsigned Reserved : 6;
-			unsigned RW0 : 2;
-			unsigned Len0 : 2;
-			unsigned RW1 : 2;
-			unsigned Len1 : 2;
-			unsigned RW2 : 2;
-			unsigned Len2 : 2;
-			unsigned RW3 : 2;
-			unsigned Len3 : 2;
-		};
-	};
-};
-
 bool __stdcall AttachDebuggerToProcess(RC_Pointer id)
 {
 	if (!DebugActiveProcess((DWORD)id))

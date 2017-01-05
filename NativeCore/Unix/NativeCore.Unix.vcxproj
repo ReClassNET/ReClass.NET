@@ -123,8 +123,8 @@
     <ClCompile Include="WriteRemoteMemory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\ReClassNET_Plugin.hpp" />
     <ClInclude Include="NativeCore.hpp" />
-    <ClInclude Include="ReClassNET_Plugin.hpp" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
