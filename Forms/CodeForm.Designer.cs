@@ -28,23 +28,10 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.codeWebBrowser = new System.Windows.Forms.WebBrowser();
 			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.codeRichTextBox = new System.Windows.Forms.RichTextBox();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// codeWebBrowser
-			// 
-			this.codeWebBrowser.AllowNavigation = false;
-			this.codeWebBrowser.AllowWebBrowserDrop = false;
-			this.codeWebBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.codeWebBrowser.IsWebBrowserContextMenuEnabled = false;
-			this.codeWebBrowser.Location = new System.Drawing.Point(0, 48);
-			this.codeWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-			this.codeWebBrowser.Name = "codeWebBrowser";
-			this.codeWebBrowser.ScriptErrorsSuppressed = true;
-			this.codeWebBrowser.Size = new System.Drawing.Size(629, 390);
-			this.codeWebBrowser.TabIndex = 1;
 			// 
 			// bannerBox
 			// 
@@ -57,12 +44,22 @@
 			this.bannerBox.Text = "The classes transformed into source code.";
 			this.bannerBox.Title = "Code Generator";
 			// 
+			// codeRichTextBox
+			// 
+			this.codeRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.codeRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.codeRichTextBox.Location = new System.Drawing.Point(0, 48);
+			this.codeRichTextBox.Name = "codeRichTextBox";
+			this.codeRichTextBox.Size = new System.Drawing.Size(629, 390);
+			this.codeRichTextBox.TabIndex = 3;
+			this.codeRichTextBox.Text = "";
+			// 
 			// CodeForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(629, 438);
-			this.Controls.Add(this.codeWebBrowser);
+			this.Controls.Add(this.codeRichTextBox);
 			this.Controls.Add(this.bannerBox);
 			this.MinimumSize = new System.Drawing.Size(350, 185);
 			this.Name = "CodeForm";
@@ -74,7 +71,7 @@
 		}
 
 		#endregion
-		private System.Windows.Forms.WebBrowser codeWebBrowser;
 		private UI.BannerBox bannerBox;
+		private System.Windows.Forms.RichTextBox codeRichTextBox;
 	}
 }
