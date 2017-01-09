@@ -217,6 +217,8 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(e != null);
 
+			bool invalidate = false;
+
 			editBox.Visible = false;
 
 			foreach (var hotSpot in hotSpots)
@@ -230,10 +232,18 @@ namespace ReClassNET.UI
 						if (hotSpot.Type == HotSpotType.OpenClose)
 						{
 							hitObject.ToggleLevelOpen(hotSpot.Level);
+
+							invalidate = true;
+
+							break;
 						}
 						else if (hotSpot.Type == HotSpotType.Click)
 						{
 							hitObject.Update(hotSpot);
+
+							invalidate = true;
+
+							break;
 						}
 						else if (hotSpot.Type == HotSpotType.Select)
 						{
@@ -321,14 +331,22 @@ namespace ReClassNET.UI
 
 								selectedNodeContextMenuStrip.Show(this, e.Location);
 							}
+
+							invalidate = true;
 						}
 						else if (hotSpot.Type == HotSpotType.Drop)
 						{
 							selectedNodeContextMenuStrip.Show(this, e.Location);
+
+							break;
 						}
 						else if (hotSpot.Type == HotSpotType.Delete)
 						{
 							RemoveSelectedNodes();
+
+							invalidate = true;
+
+							break;
 						}
 						else if (hotSpot.Type == HotSpotType.ChangeType)
 						{
@@ -409,15 +427,20 @@ namespace ReClassNET.UI
 								menu.Items.AddRange(items.ToArray());
 								menu.Show(this, e.Location);
 							}
+
+							break;
 						}
 					}
 					catch (Exception ex)
 					{
 						Program.Logger.Log(ex);
 					}
-
-					Invalidate();
 				}
+			}
+
+			if (invalidate)
+			{
+				Invalidate();
 			}
 
 			base.OnMouseClick(e);
