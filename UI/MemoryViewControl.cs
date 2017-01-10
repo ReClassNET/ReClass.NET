@@ -298,7 +298,8 @@ namespace ReClassNET.UI
 											{
 												Address = containerNode.Offset.Add(n.Offset),
 												Node = n,
-												Memory = first.Memory
+												Memory = first.Memory,
+												Level = first.Level
 											}))
 										{
 											spot.Node.IsSelected = true;
@@ -477,7 +478,7 @@ namespace ReClassNET.UI
 
 			if (selectedNodes.Count > 1)
 			{
-				var memorySize = selectedNodes.Select(h => h.Node.MemorySize).Sum();
+				var memorySize = selectedNodes.Sum(h => h.Node.MemorySize);
 				nodeInfoToolTip.Show($"{selectedNodes.Count} Nodes selected, {memorySize} bytes", this, toolTipPosition.OffsetEx(16, 16));
 			}
 			else
@@ -596,7 +597,7 @@ namespace ReClassNET.UI
 							isAtEnd = toSelect != null && toSelect == temp.FirstOrDefault();
 						}
 
-						if (toSelect != null)
+						if (toSelect != null && !(toSelect.Node is ClassNode))
 						{
 							if (modifier != Keys.Shift)
 							{
@@ -620,7 +621,8 @@ namespace ReClassNET.UI
 								{
 									Address = containerNode.Offset.Add(n.Offset),
 									Node = n,
-									Memory = toSelect.Memory
+									Memory = toSelect.Memory,
+									Level = toSelect.Level
 								}))
 							{
 								spot.Node.IsSelected = true;
@@ -637,6 +639,14 @@ namespace ReClassNET.UI
 							Invalidate();
 
 							return true;
+						}
+					}
+					else if (key == Keys.Left || key == Keys.Right)
+					{
+						if (selectedNodes.Count == 1)
+						{
+							var selected = selectedNodes[0];
+							selected.Node.ToggleLevelOpen(selected.Level);
 						}
 					}
 				}
@@ -972,7 +982,8 @@ namespace ReClassNET.UI
 									{
 										Memory = selected.Memory,
 										Address = n.ParentNode.Offset.Add(n.Offset),
-										Node = n
+										Node = n,
+										Level = selected.Level
 									})
 							);
 						}
