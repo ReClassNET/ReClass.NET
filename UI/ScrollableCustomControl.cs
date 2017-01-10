@@ -120,10 +120,10 @@ namespace ReClassNET.UI
 			switch (type)
 			{
 				case ScrollEventType.SmallDecrement:
-					newValue = oldValue - scrollProperties.SmallChange;
+					newValue = oldValue - (ModifierKeys == Keys.Control ? 1 : scrollProperties.SmallChange);
 					break;
 				case ScrollEventType.SmallIncrement:
-					newValue = oldValue + scrollProperties.SmallChange;
+					newValue = oldValue + (ModifierKeys == Keys.Control ? 1 : scrollProperties.SmallChange);
 					break;
 				case ScrollEventType.LargeDecrement:
 					newValue = oldValue - scrollProperties.LargeChange;
