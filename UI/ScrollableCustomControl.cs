@@ -142,6 +142,22 @@ namespace ReClassNET.UI
 			SetValue(type, scrollProperties, newValue);
 		}
 
+		public void DoScroll(ScrollOrientation orientation, int amount)
+		{
+			if (orientation == ScrollOrientation.VerticalScroll && VerticalScroll.Enabled == false)
+			{
+				return;
+			}
+			if (orientation == ScrollOrientation.HorizontalScroll && HorizontalScroll.Enabled == false)
+			{
+				return;
+			}
+
+			var scrollProperties = orientation == ScrollOrientation.VerticalScroll ? (ScrollProperties)VerticalScroll : (ScrollProperties)HorizontalScroll;
+
+			SetValue(ScrollEventType.ThumbPosition, scrollProperties, scrollProperties.Value + amount);
+		}
+
 		private void ProcessMessage(ref Message msg, ScrollProperties scrollProperties)
 		{
 			Contract.Requires(scrollProperties != null);

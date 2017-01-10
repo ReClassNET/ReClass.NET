@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using ReClassNET.DataExchange;
 using ReClassNET.Debugger;
 using ReClassNET.Memory;
-using ReClassNET.Native;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
 
@@ -572,21 +571,29 @@ namespace ReClassNET.UI
 					else if (key == Keys.Down || key == Keys.Up)
 					{
 						HotSpot toSelect = null;
+						bool isAtEnd = false;
+
+						var query = hotSpots
+							.Where(h => h.Type == HotSpotType.Select)
+							.Where(h => h.Node.ParentNode == selectionCaret.Node.ParentNode);
+
 						if (key == Keys.Down)
 						{
-							toSelect = hotSpots
+							var temp = query
 								.SkipUntil(h => h.Node == selectionCaret.Node)
-								.Where(h => h.Type == HotSpotType.Select)
-								.Where(h => h.Node.ParentNode == selectionCaret.Node.ParentNode)
-								.FirstOrDefault();
+								.ToList();
+
+							toSelect = temp.FirstOrDefault();
+							isAtEnd = toSelect != null && toSelect == temp.LastOrDefault();
 						}
 						else
 						{
-							toSelect = hotSpots
+							var temp = query
 								.TakeWhile(h => h.Node != selectionCaret.Node)
-								.Where(h => h.Type == HotSpotType.Select)
-								.Where(h => h.Node.ParentNode == selectionCaret.Node.ParentNode)
-								.LastOrDefault();
+								.ToList();
+
+							toSelect = temp.LastOrDefault();
+							isAtEnd = toSelect != null && toSelect == temp.FirstOrDefault();
 						}
 
 						if (toSelect != null)
@@ -621,6 +628,11 @@ namespace ReClassNET.UI
 							}
 
 							OnSelectionChanged();
+
+							if (isAtEnd)
+							{
+								DoScroll(ScrollOrientation.VerticalScroll, key == Keys.Down ? 1 : - 1);
+							}
 
 							Invalidate();
 
