@@ -158,6 +158,14 @@ namespace ReClassNET.Nodes
 			levelsOpen[level] = !levelsOpen[level];
 		}
 
+		/// <summary>Sets the specific level.</summary>
+		/// <param name="level">The level to set.</param>
+		/// <param name="open">True to open.</param>
+		internal void SetLevelOpen(int level, bool open)
+		{
+			levelsOpen[level] = open;
+		}
+
 		/// <summary>Adds a <see cref="HotSpot"/> the user can interact with.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="spot">The spot.</param>

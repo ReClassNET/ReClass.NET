@@ -646,7 +646,8 @@ namespace ReClassNET.UI
 						if (selectedNodes.Count == 1)
 						{
 							var selected = selectedNodes[0];
-							selected.Node.ToggleLevelOpen(selected.Level);
+
+							selected.Node.SetLevelOpen(selected.Level, key == Keys.Right);
 						}
 					}
 				}
