@@ -707,8 +707,8 @@ size_t __bea_callspec__ CopyFormattedNumber(PDISASM pMyDisasm, char* pBuffer, co
     else {
         (void) sprintf (pBuffer+i, pFormat, MyNumber);
         i += strlen(pBuffer);
-        (void) strcpy(pBuffer+i, "h");
-        i++;
+        /*(void) strcpy(pBuffer+i, "h");
+        i++;*/
     }
     return i;
 }
