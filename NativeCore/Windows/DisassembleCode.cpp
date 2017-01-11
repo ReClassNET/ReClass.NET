@@ -8,7 +8,7 @@
 bool __stdcall DisassembleCode(RC_Pointer address, RC_Size length, RC_Pointer virtualAddress, InstructionData* instruction)
 {
 	DISASM disasm = {};
-	disasm.Options = NasmSyntax + PrefixedNumeral;
+	disasm.Options = NasmSyntax;
 #ifdef _WIN64
 	disasm.Archi = 64;
 #endif

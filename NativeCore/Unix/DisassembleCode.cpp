@@ -7,7 +7,7 @@
 extern "C" bool DisassembleCode(RC_Pointer address, RC_Size length, RC_Pointer virtualAddress, InstructionData* instruction)
 {
 	DISASM disasm = {};
-	disasm.Options = NasmSyntax + PrefixedNumeral;
+	disasm.Options = NasmSyntax;
 #ifdef NATIVE_CORE_64
 	disasm.Archi = 64;
 #endif
