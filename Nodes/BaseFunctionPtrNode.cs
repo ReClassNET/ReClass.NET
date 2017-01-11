@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using ReClassNET.Memory;
@@ -8,11 +7,8 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	public abstract class BaseFunctionPtrNode : BaseNode
+	public abstract class BaseFunctionPtrNode : BaseFunctionNode
 	{
-		private IntPtr address = IntPtr.Zero;
-		private readonly List<string> instructions = new List<string>();
-
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
 
@@ -22,7 +18,7 @@ namespace ReClassNET.Nodes
 
 			DisassembleRemoteCode(memory, ptr);
 
-			return string.Join("\n", instructions);
+			return string.Join("\n", instructions.Select(i => i.Instruction));
 		}
 
 		protected int Draw(ViewInfo view, int x, int y, string type, string name)
@@ -80,12 +76,7 @@ namespace ReClassNET.Nodes
 
 				DisassembleRemoteCode(view.Memory, ptr);
 
-				foreach (var line in instructions)
-				{
-					y += view.Font.Height;
-
-					AddText(view, tx, y, view.Settings.NameColor, HotSpot.ReadOnlyId, line);
-				}
+				y = DrawInstructions(view, tx, y);
 			}
 
 			return y + view.Font.Height;
@@ -118,11 +109,8 @@ namespace ReClassNET.Nodes
 
 				if (!address.IsNull() && memory.Process.IsValid)
 				{
-					var disassembler = new Disassembler(memory.Process.CoreFunctions);
-					instructions.AddRange(
-						disassembler.RemoteDisassembleFunction(memory.Process, address, 200)
-							.Select(i => $"{i.Address.ToString(Constants.StringHexFormat)} {i.Instruction}")
-					);
+					int unused;
+					DisassembleRemoteCode(memory, address, out unused);
 				}
 			}
 		}

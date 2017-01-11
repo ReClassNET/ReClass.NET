@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using ReClassNET.Memory;
@@ -8,11 +7,8 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	public class FunctionNode : BaseNode
+	public class FunctionNode : BaseFunctionNode
 	{
-		private IntPtr address = IntPtr.Zero;
-		private readonly List<string> instructions = new List<string>();
-
 		public string Signature { get; set; } = "void function()";
 
 		public ClassNode BelongsToClass { get; set; }
@@ -25,7 +21,7 @@ namespace ReClassNET.Nodes
 		{
 			DisassembleRemoteCode(memory, spot.Address);
 
-			return string.Join("\n", instructions);
+			return string.Join("\n", instructions.Select(i => i.Instruction));
 		}
 
 		public override int Draw(ViewInfo view, int x, int y)
@@ -71,13 +67,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>");
 				x = AddIcon(view, x, y, Icons.Change, 1, HotSpotType.ChangeType);
 
-				y += view.Font.Height;
-				foreach (var line in instructions)
-				{
-					y += view.Font.Height;
-
-					AddText(view, tx, y, view.Settings.NameColor, HotSpot.ReadOnlyId, line);
-				}
+				y = DrawInstructions(view, tx, y + 4) + 4;
 			}
 
 			return y + view.Font.Height;
@@ -120,18 +110,10 @@ namespace ReClassNET.Nodes
 
 				if (!address.IsNull() && memory.Process.IsValid)
 				{
-					memorySize = 0;
-
-					var disassembler = new Disassembler(memory.Process.CoreFunctions);
-					foreach (var instruction in disassembler.RemoteDisassembleFunction(memory.Process, address, 8192))
-					{
-						memorySize += instruction.Length;
-
-						instructions.Add($"{instruction.Address.ToString(Constants.StringHexFormat)} {instruction.Instruction}");
-					}
-
-					ParentNode?.ChildHasChanged(this);
+					DisassembleRemoteCode(memory, address, out memorySize);
 				}
+
+				ParentNode?.ChildHasChanged(this);
 			}
 		}
 	}

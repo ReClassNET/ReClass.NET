@@ -181,6 +181,7 @@
     <Compile Include="Native\INativeMethods.cs" />
     <Compile Include="Native\NativeMethods.Unix.cs" />
     <Compile Include="Native\NativeMethods.Windows.cs" />
+    <Compile Include="Nodes\BaseFunctionNode.cs" />
     <Compile Include="Nodes\BoolNode.cs" />
     <Compile Include="Nodes\ClassUtil.cs" />
     <Compile Include="Nodes\FunctionNode.cs" />
