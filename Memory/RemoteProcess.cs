@@ -175,9 +175,9 @@ namespace ReClassNET.Memory
 		{
 			var data = ReadRemoteMemory(address, Marshal.SizeOf<T>());
 
-			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			var obj = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
-			handle.Free();
+			var gcHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
+			var obj = (T)Marshal.PtrToStructure(gcHandle.AddrOfPinnedObject(), typeof(T));
+			gcHandle.Free();
 
 			return obj;
 		}
@@ -423,9 +423,9 @@ namespace ReClassNET.Memory
 		{
 			var data = new byte[Marshal.SizeOf<T>()];
 
-			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			Marshal.StructureToPtr(value, handle.AddrOfPinnedObject(), false);
-			handle.Free();
+			var gcHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
+			Marshal.StructureToPtr(value, gcHandle.AddrOfPinnedObject(), false);
+			gcHandle.Free();
 
 			return WriteRemoteMemory(address, data);
 		}

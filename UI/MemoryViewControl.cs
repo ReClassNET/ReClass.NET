@@ -362,18 +362,18 @@ namespace ReClassNET.UI
 
 								EventHandler handler = (sender2, e2) =>
 								{
-									var classNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
-									if (classNode == null)
+									var selectedClassNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
+									if (selectedClassNode == null)
 									{
 										return;
 									}
 
-									if (classNode == noneClass)
+									if (selectedClassNode == noneClass)
 									{
-										classNode = null;
+										selectedClassNode = null;
 									}
 
-									functionNode.BelongsToClass = classNode;
+									functionNode.BelongsToClass = selectedClassNode;
 								};
 
 								items = noneClass.Yield()
@@ -395,15 +395,15 @@ namespace ReClassNET.UI
 							{
 								EventHandler handler = (sender2, e2) =>
 								{
-									var classNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
-									if (classNode == null)
+									var selectedClassNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
+									if (selectedClassNode == null)
 									{
 										return;
 									}
 
-									if (IsCycleFree(refNode.ParentNode as ClassNode, classNode))
+									if (IsCycleFree(refNode.ParentNode as ClassNode, selectedClassNode))
 									{
-										refNode.ChangeInnerNode(classNode);
+										refNode.ChangeInnerNode(selectedClassNode);
 									}
 								};
 
@@ -775,11 +775,11 @@ namespace ReClassNET.UI
 				var parentNode = selectedNodes[0].Node.ParentNode as ClassNode;
 				if (parentNode != null)
 				{
-					var classNode = ClassNode.Create();
-					selectedNodes.Select(h => h.Node).ForEach(classNode.AddNode);
+					var newClassNode = ClassNode.Create();
+					selectedNodes.Select(h => h.Node).ForEach(newClassNode.AddNode);
 
 					var classInstanceNode = new ClassInstanceNode();
-					classInstanceNode.ChangeInnerNode(classNode);
+					classInstanceNode.ChangeInnerNode(newClassNode);
 
 					parentNode.InsertNode(selectedNodes[0].Node, classInstanceNode);
 
@@ -1035,11 +1035,11 @@ namespace ReClassNET.UI
 		private void PasteNodeFromClipboardToSelection()
 		{
 			var result = ReClassClipboard.Paste(project, Program.Logger);
-			foreach (var classNode in result.Item1)
+			foreach (var pastedClassNode in result.Item1)
 			{
-				if (!project.ContainsClass(classNode.Uuid))
+				if (!project.ContainsClass(pastedClassNode.Uuid))
 				{
-					project.AddClass(classNode);
+					project.AddClass(pastedClassNode);
 				}
 			}
 
