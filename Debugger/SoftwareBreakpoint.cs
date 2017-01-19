@@ -36,7 +36,7 @@ namespace ReClassNET.Debugger
 
 		public void Remove(RemoteProcess process)
 		{
-			process.WriteRemoteMemory(Address, new byte[] { orig });
+			process.WriteRemoteMemory(Address, new[] { orig });
 		}
 
 		public void Handler(ref DebugEvent evt)

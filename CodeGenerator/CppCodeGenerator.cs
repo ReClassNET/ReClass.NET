@@ -43,13 +43,15 @@ namespace ReClassNET.CodeGenerator
 
 		public string GenerateCode(IEnumerable<ClassNode> classes, ILogger logger)
 		{
+			var classNodes = classes as IList<ClassNode> ?? classes.ToList();
+
 			var sb = new StringBuilder();
 			sb.AppendLine($"// Created with {Constants.ApplicationName} by {Constants.Author}");
 			sb.AppendLine();
 			sb.AppendLine(
 				string.Join(
 					"\n\n",
-					OrderByInheritance(classes.Where(c => c.Nodes.None(n => n is FunctionNode))).Select(c =>
+					OrderByInheritance(classNodes.Where(c => c.Nodes.None(n => n is FunctionNode))).Select(c =>
 					{
 						var csb = new StringBuilder();
 						csb.Append($"class {c.Name}");
@@ -81,26 +83,26 @@ namespace ReClassNET.CodeGenerator
 							)
 						);
 
-						var vtables = c.Nodes.OfType<VTableNode>();
-						if (vtables.Any())
+						var vTableNodes = c.Nodes.OfType<VTableNode>().ToList();
+						if (vTableNodes.Any())
 						{
 							csb.AppendLine();
 							csb.AppendLine(
 								string.Join(
 									"\n",
-									vtables.SelectMany(vt => vt.Nodes).OfType<VMethodNode>().Select(m => $"\tvirtual void {m.MethodName}();")
+									vTableNodes.SelectMany(vt => vt.Nodes).OfType<VMethodNode>().Select(m => $"\tvirtual void {m.MethodName}();")
 								)
 							);
 						}
 
-						var functions = classes.SelectMany(c2 => c2.Nodes).OfType<FunctionNode>().Where(f => f.BelongsToClass == c);
-						if (functions.Any())
+						var functionNodes = classNodes.SelectMany(c2 => c2.Nodes).OfType<FunctionNode>().Where(f => f.BelongsToClass == c).ToList();
+						if (functionNodes.Any())
 						{
 							csb.AppendLine();
 							csb.AppendLine(
 								string.Join(
 									"\n",
-									functions.Select(f => $"\t{f.Signature} {{ }}")
+									functionNodes.Select(f => $"\t{f.Signature} {{ }}")
 								)
 							);
 						}
@@ -139,7 +141,7 @@ namespace ReClassNET.CodeGenerator
 
 			foreach (var referenceNode in node.Nodes.OfType<BaseReferenceNode>())
 			{
-				foreach (var referencedNode in YieldReversedHierarchy(referenceNode.InnerNode as ClassNode, alreadySeen))
+				foreach (var referencedNode in YieldReversedHierarchy(referenceNode.InnerNode, alreadySeen))
 				{
 					yield return referencedNode;
 				}
@@ -181,11 +183,7 @@ namespace ReClassNET.CodeGenerator
 				string type;
 				if (typeToTypedefMap.TryGetValue(member.GetType(), out type))
 				{
-					int count = 0;
-					if (member is BaseTextNode)
-					{
-						count = ((BaseTextNode)member).Length;
-					}
+					var count = (member as BaseTextNode)?.Length ?? 0;
 
 					yield return new MemberDefinition(member, type, count);
 				}
@@ -257,10 +255,7 @@ namespace ReClassNET.CodeGenerator
 			{
 				return $"{member.Type} {member.Name}[{member.ArrayCount}]; //0x{member.Offset:X04} {member.Comment}".Trim();
 			}
-			else
-			{
-				return $"{member.Type} {member.Name}; //0x{member.Offset:X04} {member.Comment}".Trim();
-			}
+			return $"{member.Type} {member.Name}; //0x{member.Offset:X04} {member.Comment}".Trim();
 		}
 	}
 }

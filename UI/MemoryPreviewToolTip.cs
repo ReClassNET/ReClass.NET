@@ -37,7 +37,7 @@ namespace ReClassNET.UI
 
 		private readonly ViewInfo viewInfo;
 
-		private Size size = new Size();
+		private Size size;
 
 		public MemoryPreviewToolTip()
 		{

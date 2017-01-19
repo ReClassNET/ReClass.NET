@@ -15,7 +15,7 @@ namespace ReClassNET.Plugins
 	{
 		private readonly List<PluginInfo> plugins = new List<PluginInfo>();
 
-		private readonly IPluginHost host = null;
+		private readonly IPluginHost host;
 		private readonly CoreFunctionsManager coreFunctions;
 
 		public PluginManager(IPluginHost host, CoreFunctionsManager coreFunctions)

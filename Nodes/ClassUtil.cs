@@ -34,16 +34,11 @@ namespace ReClassNET.Nodes
 				.Traverse(
 					c => c.Nodes
 					.Where(n => n is ClassInstanceNode || n is ClassInstanceArrayNode)
-					.Select(n => ((BaseReferenceNode)n).InnerNode as ClassNode)
+					.Select(n => ((BaseReferenceNode)n).InnerNode)
 				)
 			);
 
-			if (!IsCycleFree(parent, toCheck, classes))
-			{
-				return false;
-			}
-
-			return true;
+			return IsCycleFree(parent, toCheck, classes);
 		}
 
 		private static bool IsCycleFree(ClassNode root, HashSet<ClassNode> seen, IEnumerable<ClassNode> classes)
@@ -58,15 +53,15 @@ namespace ReClassNET.Nodes
 				return false;
 			}
 
-			foreach (var cls in classes/*.Except(seen)*/)
+			var classNodes = classes as IList<ClassNode> ?? classes.ToList();
+			foreach (var cls in classNodes/*.Except(seen)*/)
 			{
 				if (cls.Nodes
 					.OfType<BaseReferenceNode>()
 					.Where(n => n is ClassInstanceNode || n is ClassInstanceArrayNode)
-					.Where(n => n.InnerNode == root)
-					.Any())
+					.Any(n => n.InnerNode == root))
 				{
-					if (!IsCycleFree(cls, seen, classes))
+					if (!IsCycleFree(cls, seen, classNodes))
 					{
 						return false;
 					}

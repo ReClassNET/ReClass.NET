@@ -87,13 +87,13 @@ namespace ReClassNET.CodeGenerator
 
 			foreach (var member in members.WhereNot(n => n is BaseHexNode))
 			{
-				if (member is BitFieldNode)
+				var bitFieldNode = member as BitFieldNode;
+				if (bitFieldNode != null)
 				{
 					string type;
-					switch (((BitFieldNode)member).Bits)
+					switch (bitFieldNode.Bits)
 					{
 						default:
-						case 8:
 							type = typeToTypedefMap[typeof(UInt8Node)];
 							break;
 						case 16:

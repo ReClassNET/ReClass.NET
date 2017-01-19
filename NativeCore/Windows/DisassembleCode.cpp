@@ -1,6 +1,4 @@
 #include <windows.h>
-#include <vector>
-#include <cstdint>
 #include <beaengine/BeaEngine.h>
 
 #include "NativeCore.hpp"

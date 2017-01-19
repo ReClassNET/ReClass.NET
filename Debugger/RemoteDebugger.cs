@@ -174,8 +174,6 @@ namespace ReClassNET.Debugger
 
 					address += 1;
 					size -= 1;
-
-					continue;
 				}
 			}
 

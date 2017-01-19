@@ -74,13 +74,14 @@ namespace ReClassNET.Nodes
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected byte.</summary>
 		/// <param name="spot">The spot.</param>
-		public void Update(HotSpot spot, int length)
+		/// <param name="maxId">The highest spot id.</param>
+		public void Update(HotSpot spot, int maxId)
 		{
 			Contract.Requires(spot != null);
 
 			base.Update(spot);
 
-			if (spot.Id >= 0 && spot.Id < length)
+			if (spot.Id >= 0 && spot.Id < maxId)
 			{
 				byte val;
 				if (byte.TryParse(spot.Text, NumberStyles.HexNumber, null, out val))

@@ -24,7 +24,6 @@ namespace ReClassNET.Forms
 		private readonly CoreFunctionsManager coreFunctions;
 
 		private readonly RemoteProcess remoteProcess;
-		private readonly MemoryBuffer memory;
 
 		private readonly PluginManager pluginManager;
 
@@ -41,7 +40,6 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(coreFunctions != null);
 			Contract.Ensures(remoteProcess != null);
-			Contract.Ensures(memory != null);
 			Contract.Ensures(pluginManager != null);
 			Contract.Ensures(currentProject != null);
 
@@ -66,12 +64,10 @@ namespace ReClassNET.Forms
 				processInfoToolStripStatusLabel.Text = "No process selected";
 			};
 
-			memory = new MemoryBuffer
+			memoryViewControl.Memory = new MemoryBuffer
 			{
 				Process = remoteProcess
 			};
-
-			memoryViewControl.Memory = memory;
 
 			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess, Program.Logger), coreFunctions);
 
@@ -95,7 +91,7 @@ namespace ReClassNET.Forms
 
 			GlobalWindowManager.RemoveWindow(this);
 
-			base.OnClosed(e);
+			base.OnFormClosed(e);
 		}
 
 		#region Event Handler

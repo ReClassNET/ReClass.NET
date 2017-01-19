@@ -10,7 +10,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange
 {
-	partial class ReClassFile : IReClassImport
+	class ReClassFile : IReClassImport
 	{
 		public const string FormatName = "ReClass File";
 		public const string FileExtension = ".reclass";

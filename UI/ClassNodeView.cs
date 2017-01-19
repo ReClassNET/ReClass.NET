@@ -34,6 +34,7 @@ namespace ReClassNET.UI
 
 			/// <summary>Constructor of the class.</summary>
 			/// <param name="node">The class node.</param>
+			/// <param name="enableHierarchyView">The value if the hierarchy view is enabled.</param>
 			/// <param name="autoExpand">The value if nodes should get expanded.</param>
 			public ClassTreeNode(ClassNode node, ValueWrapper<bool> enableHierarchyView, ValueWrapper<bool> autoExpand)
 				: this(node, enableHierarchyView, autoExpand, null)
@@ -98,7 +99,6 @@ namespace ReClassNET.UI
 				var distinctClasses = ClassNode.Nodes
 					.OfType<BaseReferenceNode>()
 					.Select(r => r.InnerNode)
-					.OfType<ClassNode>()
 					.Distinct()
 					.ToList();
 

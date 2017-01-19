@@ -22,8 +22,8 @@ namespace ReClassNET.UI
 		private readonly List<HotSpot> hotSpots = new List<HotSpot>();
 		private readonly List<HotSpot> selectedNodes = new List<HotSpot>();
 
-		private HotSpot selectionCaret = null;
-		private HotSpot selectionAnchor = null;
+		private HotSpot selectionCaret;
+		private HotSpot selectionAnchor;
 
 		private readonly FontEx font;
 
@@ -36,10 +36,7 @@ namespace ReClassNET.UI
 			{
 				Contract.Requires(value != null);
 
-				if (project != value)
-				{
-					project = value;
-				}
+				project = value;
 			}
 		}
 
@@ -792,7 +789,7 @@ namespace ReClassNET.UI
 
 		private void dissectNodesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var hexNodes = selectedNodes.Where(h => h.Node is BaseHexNode);
+			var hexNodes = selectedNodes.Where(h => h.Node is BaseHexNode).ToList();
 			if (hexNodes.Any())
 			{
 				foreach (var g in hexNodes.GroupBy(n => n.Node.ParentNode))

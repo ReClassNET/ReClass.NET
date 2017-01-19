@@ -11,7 +11,7 @@ namespace ReClassNET.Debugger
 		private Thread thread;
 
 		private volatile bool running = true;
-		private volatile bool isAttached = false;
+		private volatile bool isAttached;
 
 		public bool IsAttached => isAttached;
 

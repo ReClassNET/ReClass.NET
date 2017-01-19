@@ -11,7 +11,7 @@ namespace ReClassNET.UI
 	{
 		private const int StdDpi = 96;
 
-		private static bool initialized = false;
+		private static bool initialized;
 
 		private static int dpiX = StdDpi;
 		private static int dpiY = StdDpi;
@@ -60,8 +60,8 @@ namespace ReClassNET.UI
 
 			}
 
-			scaleX = (double)dpiX / (double)StdDpi;
-			scaleY = (double)dpiY / (double)StdDpi;
+			scaleX = dpiX / (double)StdDpi;
+			scaleY = dpiY / (double)StdDpi;
 
 			initialized = true;
 		}

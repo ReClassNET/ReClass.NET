@@ -14,28 +14,28 @@ namespace ReClassNET.Symbols
 {
 	class DiaUtil : IDisposable
 	{
-		public readonly IDiaDataSource _IDiaDataSource;
-		public readonly IDiaSession _IDiaSession;
+		public readonly IDiaDataSource diaDataSource;
+		public readonly IDiaSession diaSession;
 
 		public DiaUtil(string pdbName)
 		{
 			Contract.Requires(pdbName != null);
 
-			_IDiaDataSource = new DiaSource();
-			_IDiaDataSource.loadDataFromPdb(pdbName);
-			_IDiaDataSource.openSession(out _IDiaSession);
+			diaDataSource = new DiaSource();
+			diaDataSource.loadDataFromPdb(pdbName);
+			diaDataSource.openSession(out diaSession);
 		}
 
-		private bool disposedValue = false;
+		private bool isDisposed;
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposedValue)
+			if (!isDisposed)
 			{
-				Marshal.ReleaseComObject(_IDiaSession);
-				Marshal.ReleaseComObject(_IDiaDataSource);
+				Marshal.ReleaseComObject(diaSession);
+				Marshal.ReleaseComObject(diaDataSource);
 
-				disposedValue = true;
+				isDisposed = true;
 			}
 		}
 

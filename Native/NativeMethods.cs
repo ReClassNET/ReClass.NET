@@ -20,7 +20,7 @@ namespace ReClassNET.Native
 			}
 		}
 
-		private static bool? isUnix = null;
+		private static bool? isUnix;
 		public static bool IsUnix()
 		{
 			if (isUnix.HasValue)
@@ -35,7 +35,7 @@ namespace ReClassNET.Native
 			return isUnix.Value;
 		}
 
-		private static PlatformID? plattformId = null;
+		private static PlatformID? plattformId;
 		public static PlatformID GetPlatformID()
 		{
 			if (plattformId.HasValue)

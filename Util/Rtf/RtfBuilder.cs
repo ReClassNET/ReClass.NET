@@ -274,7 +274,7 @@ namespace ReClassNET.Util.Rtf
 			sb.AppendFormat(@"\fs{0} ", DefaultFontSize);
 			sb.AppendLine();
 
-			sb.Append(buffer.ToString());
+			sb.Append(buffer);
 			sb.Append("}");
 
 			return sb.ToString();
