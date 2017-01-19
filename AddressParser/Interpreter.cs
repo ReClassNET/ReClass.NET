@@ -14,13 +14,16 @@ namespace ReClassNET.AddressParser
 			Contract.Requires(operation != null);
 			Contract.Requires(process != null);
 
-			if (operation is OffsetOperation)
+			var offsetOperation = operation as OffsetOperation;
+			if (offsetOperation != null)
 			{
-				return ((OffsetOperation)operation).Value;
+				return offsetOperation.Value;
 			}
-			else if (operation is ModuleOffsetOperation)
+
+			var moduleOffsetOperation = operation as ModuleOffsetOperation;
+			if (moduleOffsetOperation != null)
 			{
-				var module = process.GetModuleByName(((ModuleOffsetOperation)operation).Name);
+				var module = process.GetModuleByName(moduleOffsetOperation.Name);
 				if (module != null)
 				{
 					return module.Start;
@@ -28,29 +31,39 @@ namespace ReClassNET.AddressParser
 
 				return IntPtr.Zero;
 			}
-			else if (operation is AdditionOperation)
+
+			var additionOperation = operation as AdditionOperation;
+			if (additionOperation != null)
 			{
-				var addition = (AdditionOperation)operation;
+				var addition = additionOperation;
 				return Execute(addition.Argument1, process).Add(Execute(addition.Argument2, process));
 			}
-			else if (operation is SubtractionOperation)
+
+			var subtractionOperation = operation as SubtractionOperation;
+			if (subtractionOperation != null)
 			{
-				var addition = (SubtractionOperation)operation;
+				var addition = subtractionOperation;
 				return Execute(addition.Argument1, process).Sub(Execute(addition.Argument2, process));
 			}
-			else if (operation is MultiplicationOperation)
+
+			var multiplicationOperation = operation as MultiplicationOperation;
+			if (multiplicationOperation != null)
 			{
-				var multiplication = (MultiplicationOperation)operation;
+				var multiplication = multiplicationOperation;
 				return Execute(multiplication.Argument1, process).Mul(Execute(multiplication.Argument2, process));
 			}
-			else if (operation is DivisionOperation)
+
+			var divisionOperation = operation as DivisionOperation;
+			if (divisionOperation != null)
 			{
-				var division = (DivisionOperation)operation;
+				var division = divisionOperation;
 				return Execute(division.Dividend, process).Div(Execute(division.Divisor, process));
 			}
-			else if (operation is ReadPointerOperation)
+
+			var pointerOperation = operation as ReadPointerOperation;
+			if (pointerOperation != null)
 			{
-				return process.ReadRemoteObject<IntPtr>(Execute(((ReadPointerOperation)operation).Argument, process));
+				return process.ReadRemoteObject<IntPtr>(Execute(pointerOperation.Argument, process));
 			}
 
 			throw new ArgumentException($"Unsupported operation '{operation.GetType().FullName}'.");

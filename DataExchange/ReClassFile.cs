@@ -106,7 +106,7 @@ namespace ReClassNET.DataExchange
 					part = part.Substring(1);
 				}
 
-				if (part.Contains(".exe") || part.Contains(".dll"))
+				if (isModule)
 				{
 					part = $"<{part}>";
 				}

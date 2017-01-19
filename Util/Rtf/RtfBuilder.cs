@@ -209,7 +209,7 @@ namespace ReClassNET.Util.Rtf
 				using (new RtfFormatWrapper(this))
 				{
 					value = EscapeString(value);
-					if (value.IndexOf(Environment.NewLine) >= 0)
+					if (value.IndexOf(Environment.NewLine, StringComparison.Ordinal) >= 0)
 					{
 						var lines = value.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
