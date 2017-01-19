@@ -872,29 +872,31 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(selection != null);
 
-			var it = selection.GetEnumerator();
-			if (!it.MoveNext())
+			List<HotSpot> partition;
+			using (var it = selection.GetEnumerator())
 			{
-				yield break;
-			}
-
-			var partition = new List<HotSpot>();
-			partition.Add(it.Current);
-
-			var last = it.Current;
-
-			while (it.MoveNext())
-			{
-				if (it.Current.Address != last.Address + last.Node.MemorySize)
+				if (!it.MoveNext())
 				{
-					yield return partition;
-
-					partition = new List<HotSpot>();
+					yield break;
 				}
 
-				partition.Add(it.Current);
+				partition = new List<HotSpot> { it.Current };
 
-				last = it.Current;
+				var last = it.Current;
+
+				while (it.MoveNext())
+				{
+					if (it.Current.Address != last.Address + last.Node.MemorySize)
+					{
+						yield return partition;
+
+						partition = new List<HotSpot>();
+					}
+
+					partition.Add(it.Current);
+
+					last = it.Current;
+				}
 			}
 
 			if (partition.Count != 0)
