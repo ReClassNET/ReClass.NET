@@ -25,7 +25,7 @@ namespace ReClassNET.Nodes
 		}
 
 		private byte[] uuidBytes;
-		private readonly int uuidHash = 0;
+		private readonly int uuidHash;
 
 		/// <summary>Get the 16 UUID bytes.</summary>
 		public byte[] UuidBytes => uuidBytes;
