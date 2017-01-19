@@ -10,14 +10,14 @@ void __stdcall ControlRemoteProcess(RC_Pointer handle, ControlRemoteProcessActio
 		auto processId = GetProcessId(handle);
 		if (processId != 0)
 		{
-			auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
-			if (handle != INVALID_HANDLE_VALUE)
+			auto snapshotHandle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+			if (snapshotHandle != INVALID_HANDLE_VALUE)
 			{
 				auto fn = action == ControlRemoteProcessAction::Suspend ? SuspendThread : ResumeThread;
 
 				THREADENTRY32 te32 = {};
 				te32.dwSize = sizeof(THREADENTRY32);
-				if (Thread32First(handle, &te32))
+				if (Thread32First(snapshotHandle, &te32))
 				{
 					do
 					{
@@ -31,10 +31,10 @@ void __stdcall ControlRemoteProcess(RC_Pointer handle, ControlRemoteProcessActio
 								CloseHandle(threadHandle);
 							}
 						}
-					} while (Thread32Next(handle, &te32));
+					} while (Thread32Next(snapshotHandle, &te32));
 				}
 
-				CloseHandle(handle);
+				CloseHandle(snapshotHandle);
 			}
 		}
 	}
