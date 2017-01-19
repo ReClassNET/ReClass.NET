@@ -709,7 +709,7 @@ namespace ReClassNET.UI
 
 		private void selectedNodeContextMenuStrip_Opening(object sender, CancelEventArgs e)
 		{
-			var count = selectedNodes.Count();
+			var count = selectedNodes.Count;
 			var node = selectedNodes.Select(s => s.Node).FirstOrDefault();
 
 			var nodeIsClass = node is ClassNode;

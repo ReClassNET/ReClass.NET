@@ -11,7 +11,7 @@ namespace ReClassNET.Nodes
 {
 	public delegate void NodeEventHandler(BaseNode sender);
 
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
 	[ContractClass(typeof(BaseNodeContract))]
 	public abstract class BaseNode
 	{

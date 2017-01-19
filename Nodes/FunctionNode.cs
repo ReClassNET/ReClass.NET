@@ -83,7 +83,7 @@ namespace ReClassNET.Nodes
 			var h = view.Font.Height;
 			if (levelsOpen[view.Level])
 			{
-				h += instructions.Count() * view.Font.Height;
+				h += instructions.Count * view.Font.Height;
 			}
 			return h;
 		}
