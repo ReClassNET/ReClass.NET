@@ -8,7 +8,7 @@ namespace ReClassNET.Core
 		[return: MarshalAs(UnmanagedType.I1)]
 		private delegate bool DisassembleCodeDelegate(IntPtr address, IntPtr length, IntPtr virtualAddress, out InstructionData instruction);
 
-		private DisassembleCodeDelegate disassembleCodeDelegate;
+		private readonly DisassembleCodeDelegate disassembleCodeDelegate;
 
 		public InternalCoreFunctions(IntPtr handle)
 			: base(handle)

@@ -6,7 +6,7 @@ namespace ReClassNET.Native
 {
 	public static class NativeMethods
 	{
-		private static INativeMethods nativeMethods;
+		private static readonly INativeMethods nativeMethods;
 
 		static NativeMethods()
 		{

@@ -9,29 +9,29 @@ namespace ReClassNET.Nodes
 		struct Matrix3x4Data
 		{
 			[FieldOffset(0)]
-			public float _11;
+			public readonly float _11;
 			[FieldOffset(4)]
-			public float _12;
+			public readonly float _12;
 			[FieldOffset(8)]
-			public float _13;
+			public readonly float _13;
 			[FieldOffset(12)]
-			public float _14;
+			public readonly float _14;
 			[FieldOffset(16)]
-			public float _21;
+			public readonly float _21;
 			[FieldOffset(20)]
-			public float _22;
+			public readonly float _22;
 			[FieldOffset(24)]
-			public float _23;
+			public readonly float _23;
 			[FieldOffset(28)]
-			public float _24;
+			public readonly float _24;
 			[FieldOffset(32)]
-			public float _31;
+			public readonly float _31;
 			[FieldOffset(36)]
-			public float _32;
+			public readonly float _32;
 			[FieldOffset(40)]
-			public float _33;
+			public readonly float _33;
 			[FieldOffset(44)]
-			public float _34;
+			public readonly float _34;
 		}
 
 		/// <summary>Size of the node in bytes.</summary>
@@ -82,7 +82,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 10, $"{value._33,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 11, $"{value._34,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 			});
 		}
 

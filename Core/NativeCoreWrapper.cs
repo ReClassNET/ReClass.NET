@@ -42,19 +42,19 @@ namespace ReClassNET.Core
 		[return: MarshalAs(UnmanagedType.I1)]
 		private delegate bool SetHardwareBreakpointDelegate(IntPtr id, IntPtr address, HardwareBreakpointRegister register, HardwareBreakpointTrigger trigger, HardwareBreakpointSize size, [param: MarshalAs(UnmanagedType.I1)] bool set);
 
-		private EnumerateProcessesDelegate enumerateProcessesDelegate;
-		private EnumerateRemoteSectionsAndModulesDelegate enumerateRemoteSectionsAndModulesDelegate;
-		private OpenRemoteProcessDelegate openRemoteProcessDelegate;
-		private IsProcessValidDelegate isProcessValidDelegate;
-		private CloseRemoteProcessDelegate closeRemoteProcessDelegate;
-		private ReadRemoteMemoryDelegate readRemoteMemoryDelegate;
-		private WriteRemoteMemoryDelegate writeRemoteMemoryDelegate;
-		private ControlRemoteProcessDelegate controlRemoteProcessDelegate;
-		private AttachDebuggerToProcessDelegate attachDebuggerToProcessDelegate;
-		private DetachDebuggerFromProcessDelegate detachDebuggerFromProcessDelegate;
-		private AwaitDebugEventDelegate awaitDebugEventDelegate;
-		private HandleDebugEventDelegate handleDebugEventDelegate;
-		private SetHardwareBreakpointDelegate setHardwareBreakpointDelegate;
+		private readonly EnumerateProcessesDelegate enumerateProcessesDelegate;
+		private readonly EnumerateRemoteSectionsAndModulesDelegate enumerateRemoteSectionsAndModulesDelegate;
+		private readonly OpenRemoteProcessDelegate openRemoteProcessDelegate;
+		private readonly IsProcessValidDelegate isProcessValidDelegate;
+		private readonly CloseRemoteProcessDelegate closeRemoteProcessDelegate;
+		private readonly ReadRemoteMemoryDelegate readRemoteMemoryDelegate;
+		private readonly WriteRemoteMemoryDelegate writeRemoteMemoryDelegate;
+		private readonly ControlRemoteProcessDelegate controlRemoteProcessDelegate;
+		private readonly AttachDebuggerToProcessDelegate attachDebuggerToProcessDelegate;
+		private readonly DetachDebuggerFromProcessDelegate detachDebuggerFromProcessDelegate;
+		private readonly AwaitDebugEventDelegate awaitDebugEventDelegate;
+		private readonly HandleDebugEventDelegate handleDebugEventDelegate;
+		private readonly SetHardwareBreakpointDelegate setHardwareBreakpointDelegate;
 
 		#endregion
 

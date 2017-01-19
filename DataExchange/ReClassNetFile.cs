@@ -48,7 +48,7 @@ namespace ReClassNET.DataExchange
 			this.project = project;
 		}
 
-		private static Dictionary<string, Type> BuildInStringToTypeMap = new Type[]
+		private static readonly Dictionary<string, Type> BuildInStringToTypeMap = new[]
 		{
 			typeof(BoolNode),
 			typeof(BitFieldNode),
@@ -86,6 +86,6 @@ namespace ReClassNET.DataExchange
 			typeof(Vector4Node),
 			typeof(VTableNode)
 		}.ToDictionary(t => t.Name, t => t);
-		private static Dictionary<Type, string> BuildInTypeToStringMap = BuildInStringToTypeMap.ToDictionary(kv => kv.Value, kv => kv.Key);
+		private static readonly Dictionary<Type, string> BuildInTypeToStringMap = BuildInStringToTypeMap.ToDictionary(kv => kv.Value, kv => kv.Key);
 	}
 }

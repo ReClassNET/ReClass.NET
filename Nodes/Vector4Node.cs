@@ -9,13 +9,13 @@ namespace ReClassNET.Nodes
 		struct Vector4Data
 		{
 			[FieldOffset(0)]
-			public float X;
+			public readonly float X;
 			[FieldOffset(4)]
-			public float Y;
+			public readonly float Y;
 			[FieldOffset(8)]
-			public float Z;
+			public readonly float Z;
 			[FieldOffset(12)]
-			public float W;
+			public readonly float W;
 		}
 
 		/// <summary>Size of the node in bytes.</summary>

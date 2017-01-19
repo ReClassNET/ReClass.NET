@@ -117,8 +117,7 @@ namespace ReClassNET
 		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color CustomColor { get; set; } = Color.FromArgb(64, 128, 64);
 
-		private static Color[] highlightColors = new Color[]
-		{
+		private static readonly Color[] highlightColors = {
 			Color.Aqua, Color.Aquamarine, Color.Blue, Color.BlueViolet, Color.Chartreuse, Color.Crimson, Color.LawnGreen, Color.Magenta
 		};
 		[XmlIgnore]
