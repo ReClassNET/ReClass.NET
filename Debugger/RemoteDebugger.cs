@@ -73,17 +73,17 @@ namespace ReClassNET.Debugger
 
 			var fcf = new FoundCodeForm(process, breakpointList[0].Address, trigger);
 
-			var breakpoints = new List<IBreakpoint>();
+			var localBreakpoints = new List<IBreakpoint>();
 			fcf.Stop += (sender, e) =>
 			{
-				lock (breakpoints)
+				lock (localBreakpoints)
 				{
-					foreach (var bp in breakpoints)
+					foreach (var bp in localBreakpoints)
 					{
 						RemoveBreakpoint(bp);
 					}
 
-					breakpoints.Clear();
+					localBreakpoints.Clear();
 				}
 			};
 
@@ -96,7 +96,7 @@ namespace ReClassNET.Debugger
 			try
 			{
 				AddBreakpoint(breakpoint);
-				breakpoints.Add(breakpoint);
+				localBreakpoints.Add(breakpoint);
 
 				fcf.Show();
 			}
@@ -119,7 +119,7 @@ namespace ReClassNET.Debugger
 
 					breakpoint = new HardwareBreakpoint(split.Address, register, trigger, (HardwareBreakpointSize)split.Size, handler);
 					AddBreakpoint(breakpoint);
-					breakpoints.Add(breakpoint);
+					localBreakpoints.Add(breakpoint);
 				}
 			}
 		}
