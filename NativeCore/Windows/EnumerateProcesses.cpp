@@ -58,7 +58,7 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 		{
 			do
 			{
-				auto process = OpenRemoteProcess((RC_Pointer)pe32.th32ProcessID, ProcessAccess::Read);
+				auto process = OpenRemoteProcess(reinterpret_cast<RC_Pointer>(pe32.th32ProcessID), ProcessAccess::Read);
 				if (IsProcessValid(process))
 				{
 					auto platform = GetProcessPlatform(process);
@@ -70,7 +70,7 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 					{
 						EnumerateProcessData data;
 						data.Id = pe32.th32ProcessID;
-						GetModuleFileNameExW(process, nullptr, (LPWSTR)data.ModulePath, PATH_MAXIMUM_LENGTH);
+						GetModuleFileNameExW(process, nullptr, reinterpret_cast<LPWSTR>(data.ModulePath), PATH_MAXIMUM_LENGTH);
 
 						callbackProcess(&data);
 					}

@@ -17,7 +17,7 @@ void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRe
 	MEMORY_BASIC_INFORMATION memInfo = { 0 };
 	memInfo.RegionSize = 0x1000;
 	size_t address = 0;
-	while (VirtualQueryEx(process, (LPCVOID)address, &memInfo, sizeof(MEMORY_BASIC_INFORMATION)) != 0 && address + memInfo.RegionSize > address)
+	while (VirtualQueryEx(process, reinterpret_cast<LPCVOID>(address), &memInfo, sizeof(MEMORY_BASIC_INFORMATION)) != 0 && address + memInfo.RegionSize > address)
 	{
 		if (memInfo.State == MEM_COMMIT)
 		{
@@ -70,7 +70,7 @@ void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRe
 
 			sections.push_back(std::move(section));
 		}
-		address = (size_t)memInfo.BaseAddress + memInfo.RegionSize;
+		address = reinterpret_cast<size_t>(memInfo.BaseAddress) + memInfo.RegionSize;
 	}
 
 	auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetProcessId(process));
@@ -94,7 +94,7 @@ void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRe
 
 				if (callbackSection != nullptr)
 				{
-					auto it = std::lower_bound(std::begin(sections), std::end(sections), (LPVOID)me32.modBaseAddr, [&sections](const auto& lhs, const LPVOID& rhs)
+					auto it = std::lower_bound(std::begin(sections), std::end(sections), static_cast<LPVOID>(me32.modBaseAddr), [&sections](const auto& lhs, const LPVOID& rhs)
 					{
 						return lhs.BaseAddress < rhs;
 					});
@@ -107,14 +107,14 @@ void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRe
 
 					std::vector<IMAGE_SECTION_HEADER> sectionHeaders(NtHdr.FileHeader.NumberOfSections);
 					ReadRemoteMemory(process, me32.modBaseAddr + DosHdr.e_lfanew + sizeof(IMAGE_NT_HEADERS), sectionHeaders.data(), 0, NtHdr.FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER));
-					for (int i = 0; i < NtHdr.FileHeader.NumberOfSections; ++i)
+					for (auto i = 0; i < NtHdr.FileHeader.NumberOfSections; ++i)
 					{
 						auto&& sectionHeader = sectionHeaders[i];
 
-						auto sectionAddress = (size_t)me32.modBaseAddr + sectionHeader.VirtualAddress;
+						auto sectionAddress = reinterpret_cast<size_t>(me32.modBaseAddr) + sectionHeader.VirtualAddress;
 						for (auto j = it; j != std::end(sections); ++j)
 						{
-							if (sectionAddress >= (size_t)j->BaseAddress && sectionAddress < (size_t)j->BaseAddress + (size_t)j->Size)
+							if (sectionAddress >= reinterpret_cast<size_t>(j->BaseAddress) && sectionAddress < reinterpret_cast<size_t>(j->BaseAddress) + static_cast<size_t>(j->Size))
 							{
 								// Copy the name because it is not null padded.
 								char buffer[IMAGE_SIZEOF_SHORT_NAME + 1] = { 0 };

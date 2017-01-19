@@ -5,5 +5,5 @@
 
 extern "C" bool IsProcessValid(RC_Pointer handle)
 {
-	return kill((pid_t)(intptr_t)handle, 0) == 0;
+	return kill(static_cast<pid_t>(reinterpret_cast<intptr_t>(handle)), 0) == 0;
 }

@@ -4,7 +4,7 @@
 
 bool __stdcall WriteRemoteMemory(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int offset, int size)
 {
-	buffer = (RC_Pointer)((uintptr_t)buffer + offset);
+	buffer = reinterpret_cast<RC_Pointer>(reinterpret_cast<uintptr_t>(buffer) + offset);
 
 	DWORD oldProtect;
 	if (VirtualProtectEx(handle, address, size, PAGE_EXECUTE_READWRITE, &oldProtect))

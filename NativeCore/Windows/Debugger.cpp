@@ -5,7 +5,7 @@
 
 bool __stdcall AttachDebuggerToProcess(RC_Pointer id)
 {
-	if (!DebugActiveProcess((DWORD)id))
+	if (!DebugActiveProcess(reinterpret_cast<DWORD>(id)))
 	{
 		return false;
 	}
@@ -17,7 +17,7 @@ bool __stdcall AttachDebuggerToProcess(RC_Pointer id)
 
 void __stdcall DetachDebuggerFromProcess(RC_Pointer id)
 {
-	DebugActiveProcessStop((DWORD)id);
+	DebugActiveProcessStop(reinterpret_cast<DWORD>(id));
 }
 
 bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
@@ -30,8 +30,8 @@ bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 
 	auto result = false;
 
-	evt->ProcessId = (RC_Pointer)_evt.dwProcessId;
-	evt->ThreadId = (RC_Pointer)_evt.dwThreadId;
+	evt->ProcessId = reinterpret_cast<RC_Pointer>(_evt.dwProcessId);
+	evt->ThreadId = reinterpret_cast<RC_Pointer>(_evt.dwThreadId);
 
 	switch (_evt.dwDebugEventCode)
 	{
@@ -83,34 +83,34 @@ bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 		// Copy registers.
 		auto& reg = evt->ExceptionInfo.Registers;
 #ifdef _WIN64
-		reg.Rax = (RC_Pointer)ctx.Rax;
-		reg.Rbx = (RC_Pointer)ctx.Rbx;
-		reg.Rcx = (RC_Pointer)ctx.Rcx;
-		reg.Rdx = (RC_Pointer)ctx.Rdx;
-		reg.Rdi = (RC_Pointer)ctx.Rdi;
-		reg.Rsi = (RC_Pointer)ctx.Rsi;
-		reg.Rsp = (RC_Pointer)ctx.Rsp;
-		reg.Rbp = (RC_Pointer)ctx.Rbp;
-		reg.Rip = (RC_Pointer)ctx.Rip;
+		reg.Rax = reinterpret_cast<RC_Pointer>(ctx.Rax);
+		reg.Rbx = reinterpret_cast<RC_Pointer>(ctx.Rbx);
+		reg.Rcx = reinterpret_cast<RC_Pointer>(ctx.Rcx);
+		reg.Rdx = reinterpret_cast<RC_Pointer>(ctx.Rdx);
+		reg.Rdi = reinterpret_cast<RC_Pointer>(ctx.Rdi);
+		reg.Rsi = reinterpret_cast<RC_Pointer>(ctx.Rsi);
+		reg.Rsp = reinterpret_cast<RC_Pointer>(ctx.Rsp);
+		reg.Rbp = reinterpret_cast<RC_Pointer>(ctx.Rbp);
+		reg.Rip = reinterpret_cast<RC_Pointer>(ctx.Rip);
 
-		reg.R8 = (RC_Pointer)ctx.R8;
-		reg.R9 = (RC_Pointer)ctx.R9;
-		reg.R10 = (RC_Pointer)ctx.R10;
-		reg.R11 = (RC_Pointer)ctx.R11;
-		reg.R12 = (RC_Pointer)ctx.R12;
-		reg.R13 = (RC_Pointer)ctx.R13;
-		reg.R14 = (RC_Pointer)ctx.R14;
-		reg.R15 = (RC_Pointer)ctx.R15;
+		reg.R8 = reinterpret_cast<RC_Pointer>(ctx.R8);
+		reg.R9 = reinterpret_cast<RC_Pointer>(ctx.R9);
+		reg.R10 = reinterpret_cast<RC_Pointer>(ctx.R10);
+		reg.R11 = reinterpret_cast<RC_Pointer>(ctx.R11);
+		reg.R12 = reinterpret_cast<RC_Pointer>(ctx.R12);
+		reg.R13 = reinterpret_cast<RC_Pointer>(ctx.R13);
+		reg.R14 = reinterpret_cast<RC_Pointer>(ctx.R14);
+		reg.R15 = reinterpret_cast<RC_Pointer>(ctx.R15);
 #else
-		reg.Eax = (RC_Pointer)ctx.Eax;
-		reg.Ebx = (RC_Pointer)ctx.Ebx;
-		reg.Ecx = (RC_Pointer)ctx.Ecx;
-		reg.Edx = (RC_Pointer)ctx.Edx;
-		reg.Edi = (RC_Pointer)ctx.Edi;
-		reg.Esi = (RC_Pointer)ctx.Esi;
-		reg.Esp = (RC_Pointer)ctx.Esp;
-		reg.Ebp = (RC_Pointer)ctx.Ebp;
-		reg.Eip = (RC_Pointer)ctx.Eip;
+		reg.Eax = reinterpret_cast<RC_Pointer>(ctx.Eax);
+		reg.Ebx = reinterpret_cast<RC_Pointer>(ctx.Ebx);
+		reg.Ecx = reinterpret_cast<RC_Pointer>(ctx.Ecx);
+		reg.Edx = reinterpret_cast<RC_Pointer>(ctx.Edx);
+		reg.Edi = reinterpret_cast<RC_Pointer>(ctx.Edi);
+		reg.Esi = reinterpret_cast<RC_Pointer>(ctx.Esi);
+		reg.Esp = reinterpret_cast<RC_Pointer>(ctx.Esp);
+		reg.Ebp = reinterpret_cast<RC_Pointer>(ctx.Ebp);
+		reg.Eip = reinterpret_cast<RC_Pointer>(ctx.Eip);
 #endif
 
 		CloseHandle(handle);
@@ -140,7 +140,7 @@ void __stdcall HandleDebugEvent(DebugEvent* evt)
 		break;
 	}
 
-	ContinueDebugEvent((DWORD)evt->ProcessId, (DWORD)evt->ThreadId, continueStatus);
+	ContinueDebugEvent(reinterpret_cast<DWORD>(evt->ProcessId), reinterpret_cast<DWORD>(evt->ThreadId), continueStatus);
 }
 
 bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
@@ -156,7 +156,7 @@ bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, Hardware
 
 	if (set)
 	{
-		addressValue = (decltype(CONTEXT::Dr0))address;
+		addressValue = reinterpret_cast<decltype(CONTEXT::Dr0)>(address);
 
 		if (type == HardwareBreakpointTrigger::Execute)
 			accessValue = 0;
@@ -175,24 +175,24 @@ bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, Hardware
 			lengthValue = 2;
 	}
 
-	auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
-	if (handle != INVALID_HANDLE_VALUE)
+	auto snapshotHandle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+	if (snapshotHandle != INVALID_HANDLE_VALUE)
 	{
 		THREADENTRY32 te32 = {};
 		te32.dwSize = sizeof(THREADENTRY32);
-		if (Thread32First(handle, &te32))
+		if (Thread32First(snapshotHandle, &te32))
 		{
 			do
 			{
-				if (te32.th32OwnerProcessID == (DWORD)id)
+				if (te32.th32OwnerProcessID == reinterpret_cast<DWORD>(id))
 				{
-					auto handle = OpenThread(THREAD_SUSPEND_RESUME | THREAD_GET_CONTEXT | THREAD_SET_CONTEXT, FALSE, te32.th32ThreadID);
+					auto threadHandle = OpenThread(THREAD_SUSPEND_RESUME | THREAD_GET_CONTEXT | THREAD_SET_CONTEXT, FALSE, te32.th32ThreadID);
 
-					SuspendThread(handle);
+					SuspendThread(threadHandle);
 
 					CONTEXT ctx = { 0 };
 					ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
-					GetThreadContext(handle, &ctx);
+					GetThreadContext(threadHandle, &ctx);
 
 					DebugRegister7 dr7;
 					dr7.Value = ctx.Dr7;
@@ -227,16 +227,16 @@ bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, Hardware
 
 					ctx.Dr7 = dr7.Value;
 
-					SetThreadContext(handle, &ctx);
+					SetThreadContext(threadHandle, &ctx);
 
-					ResumeThread(handle);
+					ResumeThread(threadHandle);
 
-					CloseHandle(handle);
+					CloseHandle(threadHandle);
 				}
-			} while (Thread32Next(handle, &te32));
+			} while (Thread32Next(snapshotHandle, &te32));
 		}
 
-		CloseHandle(handle);
+		CloseHandle(snapshotHandle);
 	}
 
 	return true;

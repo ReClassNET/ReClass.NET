@@ -11,9 +11,9 @@ extern "C" bool DisassembleCode(RC_Pointer address, RC_Size length, RC_Pointer v
 #ifdef NATIVE_CORE_64
 	disasm.Archi = 64;
 #endif
-	disasm.VirtualAddr = (UInt64)virtualAddress;
-	disasm.EIP = (UIntPtr)address;
-	disasm.SecurityBlock = (UInt32)length;
+	disasm.VirtualAddr = reinterpret_cast<UInt64>(virtualAddress);
+	disasm.EIP = reinterpret_cast<UIntPtr>(address);
+	disasm.SecurityBlock = static_cast<UInt32>(length);
 
 	auto disamLength = Disasm(&disasm);
 	if (disamLength == OUT_OF_BLOCK || disamLength == UNKNOWN_OPCODE)

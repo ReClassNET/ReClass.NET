@@ -14,7 +14,7 @@ int ualarm(unsigned int milliseconds)
 {
 	struct itimerval nval = { 0 };
 	nval.it_value.tv_sec = milliseconds / 1000;
-	nval.it_value.tv_usec = (long int)(milliseconds % 1000) * 1000;
+	nval.it_value.tv_usec = static_cast<long int>(milliseconds % 1000) * 1000;
 	struct itimerval oval;
 	if (setitimer(ITIMER_REAL, &nval, &oval) < 0)
 		return 0;
@@ -55,11 +55,11 @@ extern "C" bool AttachDebuggerToProcess(RC_Pointer id)
 {
 	//TODO: Attach to all threads.
 
-	ptrace(PTRACE_ATTACH, (pid_t)(intptr_t)id, nullptr, nullptr);
+	ptrace(PTRACE_ATTACH, static_cast<pid_t>(reinterpret_cast<intptr_t>(id)), nullptr, nullptr);
 	
 	waitpid(-1, nullptr, 0);
 
-	ptrace(PTRACE_CONT, (pid_t)(intptr_t)id, nullptr, nullptr);
+	ptrace(PTRACE_CONT, static_cast<pid_t>(reinterpret_cast<intptr_t>(id)), nullptr, nullptr);
 
 	return false;
 }
@@ -68,7 +68,7 @@ extern "C" void DetachDebuggerFromProcess(RC_Pointer id)
 {
 	//TODO: Detach to all threads.
 
-	ptrace(PTRACE_DETACH, (pid_t)(intptr_t)id, nullptr, nullptr);
+	ptrace(PTRACE_DETACH, static_cast<pid_t>(reinterpret_cast<intptr_t>(id)), nullptr, nullptr);
 }
 
 extern "C" bool AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
@@ -87,7 +87,7 @@ extern "C" bool AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 
 	if (tid > 0)
 	{
-		evt->ThreadId = (RC_Pointer)(intptr_t)tid;
+		evt->ThreadId = reinterpret_cast<RC_Pointer>(static_cast<intptr_t>(tid));
 
 		siginfo_t si;
 		if (ptrace(PTRACE_GETSIGINFO, tid, nullptr, &si) == 0)
@@ -125,34 +125,34 @@ extern "C" bool AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 					// Copy registers.
 					auto& reg = evt->ExceptionInfo.Registers;
 #ifdef __x86_64__
-					reg.Rax = (RC_Pointer)regs.rax;
-					reg.Rbx = (RC_Pointer)regs.rbx;
-					reg.Rcx = (RC_Pointer)regs.rcx;
-					reg.Rdx = (RC_Pointer)regs.rdx;
-					reg.Rdi = (RC_Pointer)regs.rdi;
-					reg.Rsi = (RC_Pointer)regs.rsi;
-					reg.Rsp = (RC_Pointer)regs.rsp;
-					reg.Rbp = (RC_Pointer)regs.rbp;
-					reg.Rip = (RC_Pointer)regs.rip;
+					reg.Rax = static_cast<RC_Pointer>(regs.rax);
+					reg.Rbx = static_cast<RC_Pointer>(regs.rbx);
+					reg.Rcx = static_cast<RC_Pointer>(regs.rcx);
+					reg.Rdx = static_cast<RC_Pointer>(regs.rdx);
+					reg.Rdi = static_cast<RC_Pointer>(regs.rdi);
+					reg.Rsi = static_cast<RC_Pointer>(regs.rsi);
+					reg.Rsp = static_cast<RC_Pointer>(regs.rsp);
+					reg.Rbp = static_cast<RC_Pointer>(regs.rbp);
+					reg.Rip = static_cast<RC_Pointer>(regs.rip);
 
-					reg.R8 = (RC_Pointer)regs.r8;
-					reg.R9 = (RC_Pointer)regs.r9;
-					reg.R10 = (RC_Pointer)regs.r10;
-					reg.R11 = (RC_Pointer)regs.r11;
-					reg.R12 = (RC_Pointer)regs.r12;
-					reg.R13 = (RC_Pointer)regs.r13;
-					reg.R14 = (RC_Pointer)regs.r14;
-					reg.R15 = (RC_Pointer)regs.r15;
+					reg.R8 = static_cast<RC_Pointer>(regs.r8);
+					reg.R9 = static_cast<RC_Pointer>(regs.r9);
+					reg.R10 = static_cast<RC_Pointer>(regs.r10);
+					reg.R11 = static_cast<RC_Pointer>(regs.r11);
+					reg.R12 = static_cast<RC_Pointer>(regs.r12);
+					reg.R13 = static_cast<RC_Pointer>(regs.r13);
+					reg.R14 = static_cast<RC_Pointer>(regs.r14);
+					reg.R15 = static_cast<RC_Pointer>(regs.r15);
 #else
-					reg.Eax = (RC_Pointer)regs.eax;
-					reg.Ebx = (RC_Pointer)regs.ebx;
-					reg.Ecx = (RC_Pointer)regs.ecx;
-					reg.Edx = (RC_Pointer)regs.edx;
-					reg.Edi = (RC_Pointer)regs.edi;
-					reg.Esi = (RC_Pointer)regs.esi;
-					reg.Esp = (RC_Pointer)regs.esp;
-					reg.Ebp = (RC_Pointer)regs.ebp;
-					reg.Eip = (RC_Pointer)regs.eip;
+					reg.Eax = static_cast<RC_Pointer>(regs.eax);
+					reg.Ebx = static_cast<RC_Pointer>(regs.ebx);
+					reg.Ecx = static_cast<RC_Pointer>(regs.ecx);
+					reg.Edx = static_cast<RC_Pointer>(regs.edx);
+					reg.Edi = static_cast<RC_Pointer>(regs.edi);
+					reg.Esi = static_cast<RC_Pointer>(regs.esi);
+					reg.Esp = static_cast<RC_Pointer>(regs.esp);
+					reg.Ebp = static_cast<RC_Pointer>(regs.ebp);
+					reg.Eip = static_cast<RC_Pointer>(regs.eip);
 #endif
 
 					result = true;
@@ -171,7 +171,7 @@ extern "C" bool AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 
 extern "C" void HandleDebugEvent(DebugEvent* evt)
 {
-	auto tid = (pid_t)(intptr_t)evt->ThreadId;
+	auto tid = static_cast<pid_t>(reinterpret_cast<intptr_t>(evt->ThreadId));
 
 	siginfo_t si;
 	if (ptrace(PTRACE_GETSIGINFO, tid, 0, &si) == 0)
@@ -204,12 +204,12 @@ extern "C" bool SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, Hardwar
 	}
 
 	intptr_t addressValue = 0;
-	int accessValue = 0;
-	int lengthValue = 0;
+	auto accessValue = 0;
+	auto lengthValue = 0;
 
 	if (set)
 	{
-		addressValue = (intptr_t)address;
+		addressValue = reinterpret_cast<intptr_t>(address);
 
 		if (type == HardwareBreakpointTrigger::Execute)
 			accessValue = 0;
@@ -228,7 +228,7 @@ extern "C" bool SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, Hardwar
 			lengthValue = 2;
 	}
 
-	auto tasksPath = fs::path("/proc") / std::to_string((intptr_t)id) / "task";
+	auto tasksPath = fs::path("/proc") / std::to_string(reinterpret_cast<intptr_t>(id)) / "task";
 	if (fs::is_directory(tasksPath))
 	{
 		for (auto& d : fs::directory_iterator(tasksPath))

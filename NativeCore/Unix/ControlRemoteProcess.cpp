@@ -15,5 +15,5 @@ extern "C" void ControlRemoteProcess(RC_Pointer handle, ControlRemoteProcessActi
 		signal = SIGCONT;
 	}
 
-	kill((pid_t)(intptr_t)handle, signal);
+	kill(static_cast<pid_t>(reinterpret_cast<intptr_t>(handle)), signal);
 }

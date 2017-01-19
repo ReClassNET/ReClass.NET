@@ -50,7 +50,7 @@ extern "C" void EnumerateRemoteSectionsAndModules(RC_Pointer handle, EnumerateRe
 		RC_UnicodeChar Path[PATH_MAXIMUM_LENGTH] = {};
 	};
 
-	std::ifstream input(((std::stringstream&)(std::stringstream() << "/proc/" << (intptr_t)handle << "/maps")).str());
+	std::ifstream input(static_cast<std::stringstream&>(std::stringstream() << "/proc/" << (intptr_t)handle << "/maps").str());
 
 	std::unordered_map<int, ModuleInfo> modules;
 
@@ -69,7 +69,7 @@ extern "C" void EnumerateRemoteSectionsAndModules(RC_Pointer handle, EnumerateRe
 		ss >> std::hex >> start >> skip<char> >> end >> skip<char> >> protection >> skip<char> >> offset >> dev1 >> skip<char> >> dev2 >> std::dec >> inode >> std::skipws >> path;
 
 		EnumerateRemoteSectionData section = {};
-		section.BaseAddress = (RC_Pointer)start;
+		section.BaseAddress = reinterpret_cast<RC_Pointer>(start);
 		section.Size = end - start;
 		section.Protection = protection;
 
@@ -119,7 +119,7 @@ extern "C" void EnumerateRemoteSectionsAndModules(RC_Pointer handle, EnumerateRe
 		for (auto&& kv : modules)
 		{
 			EnumerateRemoteModuleData module = {};
-			module.BaseAddress = (RC_Pointer)kv.second.Start;
+			module.BaseAddress = reinterpret_cast<RC_Pointer>(kv.second.Start);
 			module.Size = kv.second.End - kv.second.Start;
 			std::memcpy(module.Path, kv.second.Path, PATH_MAXIMUM_LENGTH);
 

@@ -29,7 +29,7 @@ fs::path my_read_symlink(const fs::path& p, std::error_code& ec)
 		}
 		else
 		{
-			if (result != (ssize_t)temp.size())
+			if (result != static_cast<ssize_t>(temp.size()))
 			{
 				symlink_path = fs::path(std::string(temp.begin(), temp.begin() + result));
 

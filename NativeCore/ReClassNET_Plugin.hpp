@@ -260,5 +260,5 @@ inline void MultiByteToUnicode(const char* src, RC_UnicodeChar* dst, int size)
 	auto temp = std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}.from_bytes(src);
 #endif
 
-	std::memcpy(dst, temp.c_str(), std::min<int>((int)temp.length(), size) * sizeof(char16_t));
+	std::memcpy(dst, temp.c_str(), std::min<int>(static_cast<int>(temp.length()), size) * sizeof(char16_t));
 }
