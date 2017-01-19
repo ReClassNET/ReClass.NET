@@ -59,13 +59,10 @@ namespace ReClassNET.Nodes
 				if (module != null)
 				{
 					var symbols = view.Memory.Process.Symbols.GetSymbolsForModule(module);
-					if (symbols != null)
+					var symbol = symbols?.GetSymbolString(value, module);
+					if (!string.IsNullOrEmpty(symbol))
 					{
-						var symbol = symbols.GetSymbolString(value, module);
-						if (!string.IsNullOrEmpty(symbol))
-						{
-							x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol) + view.Font.Width;
-						}
+						AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol);
 					}
 				}
 			}

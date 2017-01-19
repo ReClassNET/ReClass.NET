@@ -142,7 +142,7 @@ namespace ReClassNET.Nodes
 
 			while (size != 0)
 			{
-				BaseNode node = null;
+				BaseNode node;
 #if WIN64
 				if (size >= 8)
 				{

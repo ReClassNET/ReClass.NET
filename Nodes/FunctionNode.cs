@@ -50,7 +50,7 @@ namespace ReClassNET.Nodes
 
 			x = AddOpenClose(view, x, y) + view.Font.Width;
 
-			x = AddComment(view, x, y);
+			AddComment(view, x, y);
 
 			var ptr = view.Address.Add(Offset);
 
@@ -60,12 +60,12 @@ namespace ReClassNET.Nodes
 			{
 				y += view.Font.Height;
 				x = AddText(view, tx, y, view.Settings.TypeColor, HotSpot.NoneId, "Signature:") + view.Font.Width;
-				x = AddText(view, x, y, view.Settings.ValueColor, 0, Signature);
+				AddText(view, x, y, view.Settings.ValueColor, 0, Signature);
 
 				y += view.Font.Height;
 				x = AddText(view, tx, y, view.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
 				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>");
-				x = AddIcon(view, x, y, Icons.Change, 1, HotSpotType.ChangeType);
+				AddIcon(view, x, y, Icons.Change, 1, HotSpotType.ChangeType);
 
 				y = DrawInstructions(view, tx, y + 4) + 4;
 			}

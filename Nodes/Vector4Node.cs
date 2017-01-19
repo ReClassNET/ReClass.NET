@@ -23,8 +23,8 @@ namespace ReClassNET.Nodes
 
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
+		/// <param name="x2">The x coordinate.</param>
+		/// <param name="y2">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x2, int y2)
 		{

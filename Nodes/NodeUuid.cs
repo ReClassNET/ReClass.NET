@@ -103,7 +103,7 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Sets the UUID to the given value.</summary>
-		/// <param name="uuidBytes">Initial value of the <see cref="NodeUuid"/> object.</param>
+		/// <param name="valueBytes">Initial value of the <see cref="NodeUuid"/> object.</param>
 		private void SetValue(byte[] valueBytes)
 		{
 			Contract.Requires(valueBytes != null);
@@ -135,7 +135,7 @@ namespace ReClassNET.Nodes
 				return false;
 			}
 
-			for (int i = 0; i < UuidSize; ++i)
+			for (var i = 0; i < UuidSize; ++i)
 			{
 				if (uuidBytes[i] != other.uuidBytes[i])
 				{
@@ -165,7 +165,7 @@ namespace ReClassNET.Nodes
 
 		public int CompareTo(NodeUuid other)
 		{
-			for (int i = 0; i < UuidSize; ++i)
+			for (var i = 0; i < UuidSize; ++i)
 			{
 				if (uuidBytes[i] < other.uuidBytes[i])
 				{

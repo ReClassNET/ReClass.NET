@@ -66,7 +66,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 2, $"{value._13,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 3, $"{value._14,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
 				x = defaultX;
@@ -78,7 +78,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 6, $"{value._23,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 7, $"{value._24,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
 				x = defaultX;
@@ -90,7 +90,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 10, $"{value._33,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 11, $"{value._34,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
 				x = defaultX;
@@ -102,7 +102,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 14, $"{value._43,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 15, $"{value._44,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 			});
 		}
 

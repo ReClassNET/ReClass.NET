@@ -104,9 +104,10 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Class") + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"[{MemorySize}]") + view.Font.Width;
-			x = AddComment(view, x, y);
+			AddComment(view, x, y);
 
 			y += view.Font.Height;
+
 			if (levelsOpen[view.Level])
 			{
 				var nv = view.Clone();

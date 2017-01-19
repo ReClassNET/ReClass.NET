@@ -280,7 +280,7 @@ namespace ReClassNET.Nodes
 			AddHotSpot(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), string.Empty, -1, HotSpotType.Select);
 		}
 
-		/// <summary>Draws an icon and adds a <see cref="HotSpot"/> if <paramref name="hitId"/> is not <see cref="HotSpot.NoneId"/>.</summary>
+		/// <summary>Draws an icon and adds a <see cref="HotSpot"/> if <paramref name="id"/> is not <see cref="HotSpot.NoneId"/>.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
