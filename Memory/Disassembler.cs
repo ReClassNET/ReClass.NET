@@ -57,9 +57,9 @@ namespace ReClassNET.Memory
 			var eip = address;
 			var end = address + length;
 
-			InstructionData instruction;
 			while (eip.CompareTo(end) == -1)
 			{
+				InstructionData instruction;
 				var res = coreFunctions.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, virtualAddress, out instruction);
 				if (!res)
 				{
