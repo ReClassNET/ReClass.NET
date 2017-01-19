@@ -5,12 +5,12 @@ namespace ReClassNET.Nodes
 {
 	public abstract class BaseMatrixNode : BaseNode
 	{
-		public BaseMatrixNode()
+		protected BaseMatrixNode()
 		{
 			levelsOpen.DefaultValue = true;
 		}
 
-		protected delegate void DrawMatrixValues(ref int x, ref int y, int defaultX);
+		protected delegate void DrawMatrixValues(int x, ref int y);
 
 		protected int DrawMatrixType(ViewInfo view, int x, int y, string type, DrawMatrixValues drawValues)
 		{
@@ -45,7 +45,7 @@ namespace ReClassNET.Nodes
 
 			if (levelsOpen[view.Level])
 			{
-				drawValues(ref x, ref y, tx);
+				drawValues(tx, ref y);
 			}
 
 			return y + view.Font.Height;

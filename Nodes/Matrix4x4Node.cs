@@ -47,17 +47,17 @@ namespace ReClassNET.Nodes
 
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
+		/// <param name="x2">The x coordinate.</param>
+		/// <param name="y2">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x2, int y2)
 		{
-			return DrawMatrixType(view, x2, y2, "Matrix (4x4)", (ref int x, ref int y, int defaultX) =>
+			return DrawMatrixType(view, x2, y2, "Matrix (4x4)", (int defaultX, ref int y) =>
 			{
 				var value = view.Memory.ReadObject<Matrix4x4Data>(Offset);
 
 				y += view.Font.Height;
-				x = defaultX;
+				var x = defaultX;
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 				x = AddText(view, x, y, view.Settings.ValueColor, 0, $"{value._11,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");

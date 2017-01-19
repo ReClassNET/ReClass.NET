@@ -39,17 +39,17 @@ namespace ReClassNET.Nodes
 
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
+		/// <param name="x2">The x coordinate.</param>
+		/// <param name="y2">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
 		public override int Draw(ViewInfo view, int x2, int y2)
 		{
-			return DrawMatrixType(view, x2, y2, "Matrix (3x4)", (ref int x, ref int y, int defaultX) =>
+			return DrawMatrixType(view, x2, y2, "Matrix (3x4)", (int defaultX, ref int y) =>
 			{
 				var value = view.Memory.ReadObject<Matrix3x4Data>(Offset);
 
 				y += view.Font.Height;
-				x = defaultX;
+				var x = defaultX;
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 				x = AddText(view, x, y, view.Settings.ValueColor, 0, $"{value._11,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
@@ -58,7 +58,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 2, $"{value._13,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 3, $"{value._14,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
 				x = defaultX;
@@ -70,7 +70,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 6, $"{value._23,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 7, $"{value._24,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
 
 				y += view.Font.Height;
 				x = defaultX;
