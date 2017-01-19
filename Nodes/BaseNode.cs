@@ -63,7 +63,7 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Constructor which sets a unique <see cref="Name"/>.</summary>
-		public BaseNode()
+		protected BaseNode()
 		{
 			Contract.Ensures(name != null);
 			Contract.Ensures(comment != null);

@@ -13,7 +13,7 @@ namespace ReClassNET.Nodes
 		public static DateTime CurrentHighlightTime;
 		public static readonly TimeSpan HightlightDuration = TimeSpan.FromSeconds(1);
 
-		public BaseHexNode()
+		protected BaseHexNode()
 		{
 			Contract.Ensures(buffer != null);
 
