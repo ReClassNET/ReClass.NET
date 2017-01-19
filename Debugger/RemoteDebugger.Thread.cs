@@ -33,8 +33,10 @@ namespace ReClassNET.Debugger
 
 				if (queryAttach())
 				{
-					thread = new Thread(Run);
-					thread.IsBackground = true;
+					thread = new Thread(Run)
+					{
+						IsBackground = true
+					};
 					thread.Start();
 
 					return true;

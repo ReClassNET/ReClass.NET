@@ -118,11 +118,16 @@ namespace ReClassNET.Native
 			IntPtr token;
 			if (OpenProcessToken(System.Diagnostics.Process.GetCurrentProcess().Handle, TokenAccessLevels.AllAccess, out token))
 			{
-				var privileges = new TOKEN_PRIVILEGES();
-				privileges.PrivilegeCount = 1;
-				privileges.Luid.LowPart = 0x14;
-				privileges.Luid.HighPart = 0;
-				privileges.Attributes = 2;
+				var privileges = new TOKEN_PRIVILEGES
+				{
+					PrivilegeCount = 1,
+					Luid =
+					{
+						LowPart = 0x14,
+						HighPart = 0
+					},
+					Attributes = 2
+				};
 
 				AdjustTokenPrivileges(token, false, ref privileges, 0, IntPtr.Zero, IntPtr.Zero);
 
