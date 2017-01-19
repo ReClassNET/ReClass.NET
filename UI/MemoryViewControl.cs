@@ -173,7 +173,7 @@ namespace ReClassNET.UI
 			};
 
 			var scrollY = VerticalScroll.Value * font.Height;
-			int maxY = 0;
+			int maxY;
 			try
 			{
 				BaseHexNode.CurrentHighlightTime = DateTime.Now;
@@ -550,13 +550,13 @@ namespace ReClassNET.UI
 
 						return true;
 					}
-					else if (key == Keys.Menu)
+					if (key == Keys.Menu)
 					{
 						selectedNodeContextMenuStrip.Show(this, 10, 10);
 
 						return true;
 					}
-					else if (modifier == Keys.Control && (key == Keys.C || key == Keys.V))
+					if (modifier == Keys.Control && (key == Keys.C || key == Keys.V))
 					{
 						if (key == Keys.C)
 						{
@@ -569,10 +569,10 @@ namespace ReClassNET.UI
 
 						return true;
 					}
-					else if (key == Keys.Down || key == Keys.Up)
+					if (key == Keys.Down || key == Keys.Up)
 					{
-						HotSpot toSelect = null;
-						bool isAtEnd = false;
+						HotSpot toSelect;
+						bool isAtEnd;
 
 						var query = hotSpots
 							.Where(h => h.Type == HotSpotType.Select)

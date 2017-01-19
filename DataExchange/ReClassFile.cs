@@ -169,7 +169,7 @@ namespace ReClassNET.DataExchange
 
 					while (size != 0)
 					{
-						BaseNode paddingNode = null;
+						BaseNode paddingNode;
 #if WIN64
 						if (size >= 8)
 						{
@@ -203,7 +203,7 @@ namespace ReClassNET.DataExchange
 				var referenceNode = node as BaseReferenceNode;
 				if (referenceNode != null)
 				{
-					string reference = null;
+					string reference;
 					if (referenceNode is ClassInstanceArrayNode)
 					{
 						reference = element.Element("Array")?.Attribute("Name")?.Value;

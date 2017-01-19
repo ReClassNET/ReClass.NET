@@ -31,7 +31,7 @@ namespace ReClassNET.UI
 
 			var bannerId = $"{bannerWidth}x{bannerHeight}:{title}:{text}";
 
-			Image image = null;
+			Image image;
 			if (skipCache || !imageCache.TryGetValue(bannerId, out image))
 			{
 				image = new Bitmap(bannerWidth, bannerHeight, PixelFormat.Format24bppRgb);
@@ -46,12 +46,11 @@ namespace ReClassNET.UI
 					}
 
 					int wIconScaled = StdIconDim;
-					int hIconScaled = StdIconDim;
 					if (icon != null)
 					{
-						float iconRel = (float)icon.Width / (float)icon.Height;
-						wIconScaled = (int)Math.Round(DpiScaleFloat(iconRel * (float)StdIconDim, bannerHeight));
-						hIconScaled = DpiScaleInt(StdIconDim, bannerHeight);
+						var iconRel = icon.Width / (float)icon.Height;
+						wIconScaled = (int)Math.Round(DpiScaleFloat(iconRel * StdIconDim, bannerHeight));
+						var hIconScaled = DpiScaleInt(StdIconDim, bannerHeight);
 
 						int yIcon = (bannerHeight - hIconScaled) / 2;
 						if (hIconScaled == icon.Height)

@@ -12,26 +12,20 @@ namespace ReClassNET
 {
 	static class Program
 	{
-		private static Settings settings;
-		private static ILogger logger;
-		private static Random random = new Random();
-		private static MainForm mainForm;
-		private static bool designMode = true;
+		public static Settings Settings { get; private set; }
 
-		public static Settings Settings => settings;
+		public static ILogger Logger { get; private set; }
 
-		public static ILogger Logger => logger;
+		public static Random GlobalRandom { get; } = new Random();
 
-		public static Random GlobalRandom => random;
+		public static MainForm MainForm { get; private set; }
 
-		public static MainForm MainForm => mainForm;
-
-		public static bool DesignMode => designMode;
+		public static bool DesignMode { get; private set; } = true;
 
 		[STAThread]
 		static void Main()
 		{
-			designMode = false; // The designer doesn't call Main()
+			DesignMode = false; // The designer doesn't call Main()
 
 			DpiUtil.ConfigureProcess();
 
@@ -42,14 +36,14 @@ namespace ReClassNET
 
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-			settings = Settings.Load(Constants.SettingsFile);
-			logger = new GuiLogger();
+			Settings = Settings.Load(Constants.SettingsFile);
+			Logger = new GuiLogger();
 #if DEBUG
 			using (var coreFunctions = new CoreFunctionsManager())
 			{
-				mainForm = new MainForm(coreFunctions);
+				MainForm = new MainForm(coreFunctions);
 
-				Application.Run(mainForm);
+				Application.Run(MainForm);
 			}
 #else
 			try
@@ -67,7 +61,7 @@ namespace ReClassNET
 			}
 #endif
 
-			Settings.Save(settings, Constants.SettingsFile);
+			Settings.Save(Settings, Constants.SettingsFile);
 		}
 
 		/// <summary>Shows the exception in a special form.</summary>
@@ -76,9 +70,11 @@ namespace ReClassNET
 		{
 			ex.HelpLink = Constants.HelpUrl;
 
-			var msg = new ExceptionMessageBox(ex);
-			msg.ShowToolBar = true;
-			msg.Symbol = ExceptionMessageBoxSymbol.Error;
+			var msg = new ExceptionMessageBox(ex)
+			{
+				ShowToolBar = true,
+				Symbol = ExceptionMessageBoxSymbol.Error
+			};
 			msg.Show(null);
 		}
 	}

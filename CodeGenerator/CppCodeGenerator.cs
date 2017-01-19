@@ -76,7 +76,7 @@ namespace ReClassNET.CodeGenerator
 							string.Join(
 								"\n",
 								YieldMemberDefinitions(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
-									.Select(m => MemberDefinitionToString(m))
+									.Select(MemberDefinitionToString)
 									.Select(s => "\t" + s)
 							)
 						);

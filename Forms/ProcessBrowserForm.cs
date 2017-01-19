@@ -25,15 +25,9 @@ namespace ReClassNET.Forms
 		private readonly CoreFunctionsManager coreFunctions;
 
 		/// <summary>Gets the selected process.</summary>
-		public ProcessInfo SelectedProcess
-		{
-			get
-			{
-				return (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)
-					?.Row
-					?.Field<ProcessInfo>("info");
-			}
-		}
+		public ProcessInfo SelectedProcess => (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)
+			?.Row
+			?.Field<ProcessInfo>("info");
 
 		/// <summary>Gets if symbols should get loaded.</summary>
 		public bool LoadSymbols => loadSymbolsCheckBox.Checked;

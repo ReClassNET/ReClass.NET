@@ -89,12 +89,11 @@ namespace ReClassNET.AddressParser
 
 		private void PopOperations(bool untillLeftBracket)
 		{
-			Operation lastOperation = null;
 			while (operatorStack.Count > 0 && operatorStack.Peek().TokenType != TokenType.LeftBracket)
 			{
 				var token = operatorStack.Pop();
 
-				lastOperation = ConvertOperation(token);
+				var lastOperation = ConvertOperation(token);
 
 				resultStack.Push(lastOperation);
 			}

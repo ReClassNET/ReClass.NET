@@ -69,7 +69,7 @@ namespace ReClassNET.Plugins
 
 			foreach (var fi in files)
 			{
-				FileVersionInfo fvi = null;
+				FileVersionInfo fvi;
 				try
 				{
 					fvi = FileVersionInfo.GetVersionInfo(fi.FullName);

@@ -170,8 +170,8 @@ namespace ReClassNET.Forms
 		private void dumpToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			bool isModule;
-			string fileName = string.Empty;
-			string initialDirectory = string.Empty;
+			string fileName;
+			var initialDirectory = string.Empty;
 			IntPtr address;
 			int size;
 

@@ -17,7 +17,6 @@ namespace ReClassNET.Util
 			return 0xFFFFFF & color.ToArgb();
 		}
 
-		[Pure]
 		[DebuggerStepThrough]
 		public static void FillWithZero(this byte[] b)
 		{

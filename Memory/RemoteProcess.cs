@@ -118,7 +118,7 @@ namespace ReClassNET.Memory
 
 		/// <summary>Reads remote memory from the address into the buffer.</summary>
 		/// <param name="address">The address to read from.</param>
-		/// <param name="data">[out] The data buffer to fill. If the remote process is not valid, the buffer will get filled with zeros.</param>
+		/// <param name="buffer">[out] The data buffer to fill. If the remote process is not valid, the buffer will get filled with zeros.</param>
 		public bool ReadRemoteMemoryIntoBuffer(IntPtr address, ref byte[] buffer)
 		{
 			Contract.Requires(buffer != null);
@@ -129,7 +129,7 @@ namespace ReClassNET.Memory
 
 		/// <summary>Reads remote memory from the address into the buffer.</summary>
 		/// <param name="address">The address to read from.</param>
-		/// <param name="data">[out] The data buffer to fill. If the remote process is not valid, the buffer will get filled with zeros.</param>
+		/// <param name="buffer">[out] The data buffer to fill. If the remote process is not valid, the buffer will get filled with zeros.</param>
 		/// <param name="offset">The offset in the data.</param>
 		/// <param name="length">The number of bytes to read.</param>
 		public bool ReadRemoteMemoryIntoBuffer(IntPtr address, ref byte[] buffer, int offset, int length)
@@ -255,7 +255,7 @@ namespace ReClassNET.Memory
 		{
 			if (address.MayBeValid())
 			{
-				string rtti = null;
+				string rtti;
 				if (!rttiCache.TryGetValue(address, out rtti))
 				{
 					var objectLocatorPtr = ReadRemoteObject<IntPtr>(address - IntPtr.Size);
