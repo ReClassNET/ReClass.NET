@@ -19,14 +19,7 @@ namespace ReClassNET.Nodes
 			}
 			if (view.Settings.ShowCommentInteger)
 			{
-				if (ivalue == IntPtr.Zero)
-				{
-					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, "(0)");
-				}
-				else
-				{
-					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, $"({ivalue.ToInt64()}|0x{uvalue.ToUInt64():X})");
-				}
+				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, ivalue == IntPtr.Zero ? "(0)" : $"({ivalue.ToInt64()}|0x{uvalue.ToUInt64():X})");
 			}
 
 			var namedAddress = view.Memory.Process.GetNamedAddress(ivalue);
