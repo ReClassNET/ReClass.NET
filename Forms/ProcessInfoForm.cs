@@ -254,21 +254,13 @@ namespace ReClassNET.Forms
 		private Module GetSelectedModule()
 		{
 			var row = modulesDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView;
-			if (row != null)
-			{
-				return row["module"] as Module;
-			}
-			return null;
+			return row?["module"] as Module;
 		}
 
 		private Section GetSelectedSection()
 		{
 			var row = sectionsDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView;
-			if (row != null)
-			{
-				return row["section"] as Section;
-			}
-			return null;
+			return row?["section"] as Section;
 		}
 	}
 }

@@ -214,10 +214,7 @@ namespace ReClassNET.DataExchange
 
 			using (var project = new ReClassNetProject())
 			{
-				if (templateProject != null)
-				{
-					templateProject.Classes.ForEach(project.AddClass);
-				}
+				templateProject?.Classes.ForEach(project.AddClass);
 
 				var file = new ReClassNetFile(project);
 				file.Load(input, logger);

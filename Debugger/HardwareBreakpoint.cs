@@ -73,13 +73,9 @@ namespace ReClassNET.Debugger
 		public override bool Equals(object obj)
 		{
 			var hwbp = obj as HardwareBreakpoint;
-			if (hwbp == null)
-			{
-				return false;
-			}
 
 			// Two hardware breakpoints are equal if they use the same register.
-			return Register == hwbp.Register;
+			return hwbp?.Register == Register;
 		}
 
 		public override int GetHashCode()

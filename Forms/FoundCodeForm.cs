@@ -184,16 +184,8 @@ namespace ReClassNET.Forms
 		private FoundCodeInfo GetSelectedInfo()
 		{
 			var row = foundCodeDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
-			if (row != null)
-			{
-				var view = row.DataBoundItem as DataRowView;
-				if (view != null)
-				{
-					return view["info"] as FoundCodeInfo;
-				}
-			}
-
-			return null;
+			var view = row?.DataBoundItem as DataRowView;
+			return view?["info"] as FoundCodeInfo;
 		}
 
 		private void StopRecording()

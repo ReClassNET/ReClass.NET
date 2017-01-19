@@ -96,18 +96,15 @@ namespace ReClassNET.Symbols
 					{
 						using (var debuggerKey = vsKey.OpenSubKey($@"{subKeyName}\Debugger"))
 						{
-							if (debuggerKey != null)
+							var symbolCacheDir = debuggerKey?.GetValue("SymbolCacheDir") as string;
+							if (symbolCacheDir != null)
 							{
-								var symbolCacheDir = debuggerKey.GetValue("SymbolCacheDir") as string;
-								if (symbolCacheDir != null)
+								if (Directory.Exists(symbolCacheDir))
 								{
-									if (Directory.Exists(symbolCacheDir))
-									{
-										SymbolCachePath = symbolCacheDir;
-									}
-
-									return;
+									SymbolCachePath = symbolCacheDir;
 								}
+
+								return;
 							}
 						}
 					}

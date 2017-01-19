@@ -11,14 +11,11 @@
 				foreach (var bp in breakpoints)
 				{
 					var hwbp = bp as HardwareBreakpoint;
-					if (hwbp != null)
+					if (hwbp?.Register == causedBy)
 					{
-						if (causedBy == hwbp.Register)
-						{
-							hwbp.Handler(ref evt);
+						hwbp.Handler(ref evt);
 
-							break;
-						}
+						break;
 					}
 				}
 			}

@@ -107,10 +107,7 @@ namespace ReClassNET.Debugger
 			{
 				lock (syncThread)
 				{
-					if (thread != null)
-					{
-						thread.Join();
-					}
+					thread?.Join();
 				}
 			}
 		}

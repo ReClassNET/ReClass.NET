@@ -654,10 +654,7 @@ namespace ReClassNET.Forms
 					Program.Logger.Log(LogLevel.Error, $"The file '{filePath}' has an unknown type.");
 					break;
 			}
-			if (import != null)
-			{
-				import.Load(filePath, Program.Logger);
-			}
+			import?.Load(filePath, Program.Logger);
 		}
 
 		/// <summary>Loads all symbols for the current process and displays the progress status.</summary>

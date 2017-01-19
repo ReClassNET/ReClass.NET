@@ -282,10 +282,7 @@ namespace ReClassNET.UI
 		private void renameClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			var treeNode = classesTreeView.SelectedNode;
-			if (treeNode != null)
-			{
-				treeNode.BeginEdit();
-			}
+			treeNode?.BeginEdit();
 		}
 
 		private void classesTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)

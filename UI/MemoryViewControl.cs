@@ -690,12 +690,8 @@ namespace ReClassNET.UI
 		private void editBox_Committed(object sender, EventArgs e)
 		{
 			var hotspotTextBox = sender as HotSpotTextBox;
-			if (hotspotTextBox == null)
-			{
-				return;
-			}
 
-			var hotSpot = hotspotTextBox.HotSpot;
+			var hotSpot = hotspotTextBox?.HotSpot;
 			if (hotSpot != null)
 			{
 				try
