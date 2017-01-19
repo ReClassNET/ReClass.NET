@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
-using ReClassNET.UI;
 
-namespace ReClassNET
+namespace ReClassNET.UI
 {
 	public class Icons
 	{
