@@ -293,20 +293,20 @@ namespace ReClassNET.Util.Rtf
 				{
 					var sb = new StringBuilder();
 
-					for (int i = 0; i < value.Length; i++)
+					foreach (var c in value)
 					{
-						if (value[i] <= 255)
+						if (c <= 255)
 						{
-							sb.Append(value[i]);
+							sb.Append(c);
 						}
-						else if (value[i] == '\t')
+						else if (c == '\t')
 						{
 							sb.Append(@"\tab");
 						}
 						else
 						{
 							sb.Append(@"\u");
-							sb.Append((int)value[i]);
+							sb.Append((int)c);
 							sb.Append("?");
 						}
 					}
