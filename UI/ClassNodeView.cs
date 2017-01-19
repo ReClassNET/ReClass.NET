@@ -182,7 +182,7 @@ namespace ReClassNET.UI
 					selectedClass = value;
 					if (selectedClass != null)
 					{
-						classesTreeView.SelectedNode = root.Nodes.Cast<TreeNode>().Where(n => n.Tag == selectedClass).FirstOrDefault();
+						classesTreeView.SelectedNode = root.Nodes.Cast<TreeNode>().FirstOrDefault(n => n.Tag == selectedClass);
 					}
 
 					SelectionChanged?.Invoke(this, selectedClass);
@@ -385,7 +385,7 @@ namespace ReClassNET.UI
 		/// <returns>The found class tree node.</returns>
 		private ClassTreeNode FindClassTreeNode(ClassNode node)
 		{
-			return root.Nodes.OfType<ClassTreeNode>().Where(t => t.ClassNode == node).FirstOrDefault();
+			return root.Nodes.OfType<ClassTreeNode>().FirstOrDefault(t => t.ClassNode == node);
 		}
 	}
 }

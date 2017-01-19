@@ -120,7 +120,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(type != null);
 
-			var item = changeTypeToolStripMenuItem.DropDownItems.OfType<TypeToolStripMenuItem>().Where(i => i.Value == type).FirstOrDefault();
+			var item = changeTypeToolStripMenuItem.DropDownItems.OfType<TypeToolStripMenuItem>().FirstOrDefault(i => i.Value == type);
 			if (item != null)
 			{
 				item.Click -= memoryTypeToolStripMenuItem_Click;
@@ -267,7 +267,7 @@ namespace ReClassNET.UI
 									}
 									else
 									{
-										selectedNodes.Remove(selectedNodes.Where(c => c.Node == hitObject).FirstOrDefault());
+										selectedNodes.Remove(selectedNodes.FirstOrDefault(c => c.Node == hitObject));
 									}
 
 									OnSelectionChanged();

@@ -561,7 +561,7 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(type != null);
 
-			var item = toolStrip.Items.OfType<TypeToolStripButton>().Where(i => i.Value == type).FirstOrDefault();
+			var item = toolStrip.Items.OfType<TypeToolStripButton>().FirstOrDefault(i => i.Value == type);
 			if (item != null)
 			{
 				item.Click -= memoryTypeToolStripButton_Click;

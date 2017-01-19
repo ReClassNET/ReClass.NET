@@ -56,7 +56,7 @@ namespace ReClassNET.CodeGenerator
 		{
 			Contract.Requires(node != null);
 
-			return generators.Where(c => c.CanGenerateCode(node, language)).FirstOrDefault();
+			return generators.FirstOrDefault(c => c.CanGenerateCode(node, language));
 		}
 	}
 }

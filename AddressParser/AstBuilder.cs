@@ -163,7 +163,7 @@ namespace ReClassNET.AddressParser
 		{
 			if (resultStack.Count > 1)
 			{
-				var offset = resultStack.Skip(1).Where(o => o is OffsetOperation).FirstOrDefault() as OffsetOperation;
+				var offset = resultStack.Skip(1).FirstOrDefault(o => o is OffsetOperation) as OffsetOperation;
 				if (offset != null)
 				{
 					throw new ParseException($"Unexpected offset '{offset.Value}' found.");

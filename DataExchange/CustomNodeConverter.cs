@@ -99,14 +99,14 @@ namespace ReClassNET.DataExchange
 		{
 			Contract.Requires(element != null);
 
-			return converters.Where(c => c.CanHandleElement(element)).FirstOrDefault();
+			return converters.FirstOrDefault(c => c.CanHandleElement(element));
 		}
 
 		public static ICustomNodeConverter GetWriteConverter(BaseNode node)
 		{
 			Contract.Requires(node != null);
 
-			return converters.Where(c => c.CanHandleNode(node)).FirstOrDefault();
+			return converters.FirstOrDefault(c => c.CanHandleNode(node));
 		}
 	}
 }

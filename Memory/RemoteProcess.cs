@@ -453,8 +453,7 @@ namespace ReClassNET.Memory
 			lock (modules)
 			{
 				return modules
-					.Where(m => m.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
-					.FirstOrDefault();
+					.FirstOrDefault(m => m.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 			}
 		}
 
