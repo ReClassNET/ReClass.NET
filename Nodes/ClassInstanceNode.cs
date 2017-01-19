@@ -1,5 +1,4 @@
-﻿using System;
-using ReClassNET.UI;
+﻿using ReClassNET.UI;
 using ReClassNET.Util;
 
 namespace ReClassNET.Nodes

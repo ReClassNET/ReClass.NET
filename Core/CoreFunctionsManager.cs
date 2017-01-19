@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
 using ReClassNET.Debugger;
 using ReClassNET.Memory;
 using ReClassNET.Native;

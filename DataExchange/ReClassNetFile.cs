@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Xml.Linq;
-using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange
 {

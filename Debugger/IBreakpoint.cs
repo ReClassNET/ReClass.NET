@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using ReClassNET.Memory;
-using ReClassNET.Native;
 
 namespace ReClassNET.Debugger
 {
