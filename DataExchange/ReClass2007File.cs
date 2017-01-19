@@ -72,8 +72,8 @@ namespace ReClassNET.DataExchange
 						Query(connection, $"SELECT variable, comment FROM class{id} WHERE type = 16")
 							.Select(e => new VMethodNode
 							{
-								Name = Convert.ToString(e["variable"]) ?? string.Empty,
-								Comment = Convert.ToString(e["comment"]) ?? string.Empty
+								Name = Convert.ToString(e["variable"]),
+								Comment = Convert.ToString(e["comment"])
 							})
 							.ForEach(vtableNode.AddNode);
 
@@ -146,8 +146,8 @@ namespace ReClassNET.DataExchange
 					continue;
 				}
 
-				node.Name = Convert.ToString(row["variable"]) ?? string.Empty;
-				node.Comment = Convert.ToString(row["comment"]) ?? string.Empty;
+				node.Name = Convert.ToString(row["variable"]);
+				node.Comment = Convert.ToString(row["comment"]);
 
 				var referenceNode = node as BaseReferenceNode;
 				if (referenceNode != null)
