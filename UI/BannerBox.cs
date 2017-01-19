@@ -74,14 +74,11 @@ namespace ReClassNET.UI
 
 				image = BannerFactory.CreateBanner(Width, DefaultBannerHeight, icon, title, text, true);
 
-				if (oldImage != null)
-				{
-					oldImage.Dispose();
-				}
+				oldImage?.Dispose();
 
 				Invalidate();
 			}
-			catch (Exception)
+			catch
 			{
 
 			}

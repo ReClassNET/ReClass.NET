@@ -27,7 +27,14 @@ namespace ReClassNET
 		{
 			DesignMode = false; // The designer doesn't call Main()
 
-			DpiUtil.ConfigureProcess();
+			try
+			{
+				DpiUtil.ConfigureProcess();
+			}
+			catch
+			{
+				
+			}
 
 			NativeMethods.EnableDebugPrivileges();
 

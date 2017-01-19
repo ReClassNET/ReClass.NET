@@ -68,14 +68,7 @@ namespace ReClassNET.UI
 
 		public static void ConfigureProcess()
 		{
-			try
-			{
-				NativeMethods.SetProcessDpiAwareness();
-			}
-			catch
-			{
-
-			}
+			NativeMethods.SetProcessDpiAwareness();
 		}
 
 		public static int ScaleIntX(int i)

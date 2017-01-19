@@ -64,7 +64,6 @@ namespace ReClassNET.Memory
 #endif
 			}
 
-			if (is4ByteAligned)
 			{
 #if WIN32
 				var pointerType = GuessPointerType(data32.IntPtr, memory);

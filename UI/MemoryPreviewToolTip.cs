@@ -57,8 +57,8 @@ namespace ReClassNET.UI
 				Classes = new List<ClassNode>()
 			};
 
-			Popup += new PopupEventHandler(OnPopup);
-			Draw += new DrawToolTipEventHandler(OnDraw);
+			Popup += OnPopup;
+			Draw += OnDraw;
 		}
 
 		private void OnPopup(object sender, PopupEventArgs e)

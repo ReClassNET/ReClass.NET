@@ -41,7 +41,7 @@ namespace ReClassNET.Nodes
 
 			x += view.Font.Width;
 
-			x = AddComment(view, x, y);
+			AddComment(view, x, y);
 
 			if (levelsOpen[view.Level])
 			{
