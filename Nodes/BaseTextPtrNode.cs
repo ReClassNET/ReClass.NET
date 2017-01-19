@@ -13,8 +13,10 @@ namespace ReClassNET.Nodes
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
+		/// <param name="type">The name of the type.</param>
+		/// <param name="text">The text.</param>
 		/// <returns>The height the node occupies.</returns>
-		public int DrawText(ViewInfo view, int x, int y, string type, int length, string text)
+		public int DrawText(ViewInfo view, int x, int y, string type, string text)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
