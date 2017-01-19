@@ -573,7 +573,11 @@ namespace ReClassNET.Memory
 		/// <returns>The task.</returns>
 		public Task LoadAllSymbolsAsync(IProgress<Tuple<Module, IEnumerable<Module>>> progress, CancellationToken token)
 		{
-			var copy = modules.ToList();
+			List<Module> copy;
+			lock (modules)
+			{
+				copy = modules.ToList();
+			}
 
 			// Try to resolve all symbols in a background thread. This can take a long time because symbols are downloaded from the internet.
 			// The COM objects can only be used in the thread they were created so we can't use them.
