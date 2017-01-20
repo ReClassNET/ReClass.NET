@@ -36,6 +36,8 @@ namespace ReClassNET.Forms
 
 		public ClassNodeView ClassView => classesView;
 
+		public MenuStrip MainMenu => mainMenuStrip;
+
 		public MainForm(CoreFunctionsManager coreFunctions)
 		{
 			Contract.Requires(coreFunctions != null);
