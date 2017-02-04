@@ -36,11 +36,13 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.removeUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.rootContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.enableHierarchyViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.autoExpandHierarchyViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.expandAllClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.collapseAllClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.enableHierarchyViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.addNewClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.classContextMenuStrip.SuspendLayout();
 			this.rootContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -106,9 +108,20 @@
             this.autoExpandHierarchyViewToolStripMenuItem,
             this.toolStripSeparator2,
             this.expandAllClassesToolStripMenuItem,
-            this.collapseAllClassesToolStripMenuItem});
+            this.collapseAllClassesToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.addNewClassToolStripMenuItem});
 			this.rootContextMenuStrip.Name = "rootContextMenuStrip";
-			this.rootContextMenuStrip.Size = new System.Drawing.Size(221, 120);
+			this.rootContextMenuStrip.Size = new System.Drawing.Size(221, 148);
+			// 
+			// enableHierarchyViewToolStripMenuItem
+			// 
+			this.enableHierarchyViewToolStripMenuItem.Checked = true;
+			this.enableHierarchyViewToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.enableHierarchyViewToolStripMenuItem.Name = "enableHierarchyViewToolStripMenuItem";
+			this.enableHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.enableHierarchyViewToolStripMenuItem.Text = "Enable hierarchy view";
+			this.enableHierarchyViewToolStripMenuItem.Click += new System.EventHandler(this.enableHierarchyViewToolStripMenuItem_Click);
 			// 
 			// autoExpandHierarchyViewToolStripMenuItem
 			// 
@@ -138,14 +151,18 @@
 			this.collapseAllClassesToolStripMenuItem.Text = "Collapse all classes";
 			this.collapseAllClassesToolStripMenuItem.Click += new System.EventHandler(this.collapseAllClassesToolStripMenuItem_Click);
 			// 
-			// enableHierarchyViewToolStripMenuItem
+			// toolStripSeparator3
 			// 
-			this.enableHierarchyViewToolStripMenuItem.Checked = true;
-			this.enableHierarchyViewToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.enableHierarchyViewToolStripMenuItem.Name = "enableHierarchyViewToolStripMenuItem";
-			this.enableHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-			this.enableHierarchyViewToolStripMenuItem.Text = "Enable hierarchy view";
-			this.enableHierarchyViewToolStripMenuItem.Click += new System.EventHandler(this.enableHierarchyViewToolStripMenuItem_Click);
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(217, 6);
+			// 
+			// addNewClassToolStripMenuItem
+			// 
+			this.addNewClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
+			this.addNewClassToolStripMenuItem.Name = "addNewClassToolStripMenuItem";
+			this.addNewClassToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.addNewClassToolStripMenuItem.Text = "Add new class";
+			this.addNewClassToolStripMenuItem.Click += new System.EventHandler(this.addNewClassToolStripMenuItem_Click);
 			// 
 			// ClassNodeView
 			// 
@@ -173,5 +190,7 @@
 		private System.Windows.Forms.ToolStripMenuItem expandAllClassesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem collapseAllClassesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem enableHierarchyViewToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripMenuItem addNewClassToolStripMenuItem;
 	}
 }

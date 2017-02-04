@@ -340,6 +340,11 @@ namespace ReClassNET.UI
 			root.Nodes.Cast<TreeNode>().ForEach(n => n.Collapse());
 		}
 
+		private void addNewClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Program.MainForm?.CreateNewDefaultClass();
+		}
+
 		#endregion
 
 		/// <summary>Adds the class to the view.</summary>

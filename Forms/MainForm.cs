@@ -178,16 +178,7 @@ namespace ReClassNET.Forms
 
 		private void newClassToolStripButton_Click(object sender, EventArgs e)
 		{
-			var node = ClassNode.Create();
-			node.AddBytes(64);
-
-			var mainModule = remoteProcess.GetModuleByName(remoteProcess.UnderlayingProcess?.Name);
-			if (mainModule != null)
-			{
-				node.Address = mainModule.Start;
-			}
-
-			classesView.SelectedClass = node;
+			CreateNewDefaultClass();
 		}
 
 		private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -505,6 +496,21 @@ namespace ReClassNET.Forms
 		}
 
 		#endregion
+
+		/// <summary>Creates a new default class.</summary>
+		public void CreateNewDefaultClass()
+		{
+			var node = ClassNode.Create();
+			node.AddBytes(64);
+
+			var mainModule = remoteProcess.GetModuleByName(remoteProcess.UnderlayingProcess?.Name);
+			if (mainModule != null)
+			{
+				node.Address = mainModule.Start;
+			}
+
+			classesView.SelectedClass = node;
+		}
 
 		/// <summary>Sets the current project.</summary>
 		/// <param name="newProject">The new project.</param>
