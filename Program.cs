@@ -57,9 +57,9 @@ namespace ReClassNET
 			{
 				using (var nativeHelper = new CoreFunctionsManager())
 				{
-					mainForm = new MainForm(nativeHelper);
+					MainForm = new MainForm(nativeHelper);
 
-					Application.Run(mainForm);
+					Application.Run(MainForm);
 				}
 			}
 			catch (Exception ex)
