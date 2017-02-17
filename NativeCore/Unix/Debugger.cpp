@@ -124,35 +124,35 @@ extern "C" bool AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 
 					// Copy registers.
 					auto& reg = evt->ExceptionInfo.Registers;
-#ifdef __x86_64__
-					reg.Rax = static_cast<RC_Pointer>(regs.rax);
-					reg.Rbx = static_cast<RC_Pointer>(regs.rbx);
-					reg.Rcx = static_cast<RC_Pointer>(regs.rcx);
-					reg.Rdx = static_cast<RC_Pointer>(regs.rdx);
-					reg.Rdi = static_cast<RC_Pointer>(regs.rdi);
-					reg.Rsi = static_cast<RC_Pointer>(regs.rsi);
-					reg.Rsp = static_cast<RC_Pointer>(regs.rsp);
-					reg.Rbp = static_cast<RC_Pointer>(regs.rbp);
-					reg.Rip = static_cast<RC_Pointer>(regs.rip);
+#ifdef RECLASSNET64
+					reg.Rax = reinterpret_cast<RC_Pointer>(regs.rax);
+					reg.Rbx = reinterpret_cast<RC_Pointer>(regs.rbx);
+					reg.Rcx = reinterpret_cast<RC_Pointer>(regs.rcx);
+					reg.Rdx = reinterpret_cast<RC_Pointer>(regs.rdx);
+					reg.Rdi = reinterpret_cast<RC_Pointer>(regs.rdi);
+					reg.Rsi = reinterpret_cast<RC_Pointer>(regs.rsi);
+					reg.Rsp = reinterpret_cast<RC_Pointer>(regs.rsp);
+					reg.Rbp = reinterpret_cast<RC_Pointer>(regs.rbp);
+					reg.Rip = reinterpret_cast<RC_Pointer>(regs.rip);
 
-					reg.R8 = static_cast<RC_Pointer>(regs.r8);
-					reg.R9 = static_cast<RC_Pointer>(regs.r9);
-					reg.R10 = static_cast<RC_Pointer>(regs.r10);
-					reg.R11 = static_cast<RC_Pointer>(regs.r11);
-					reg.R12 = static_cast<RC_Pointer>(regs.r12);
-					reg.R13 = static_cast<RC_Pointer>(regs.r13);
-					reg.R14 = static_cast<RC_Pointer>(regs.r14);
-					reg.R15 = static_cast<RC_Pointer>(regs.r15);
+					reg.R8 = reinterpret_cast<RC_Pointer>(regs.r8);
+					reg.R9 = reinterpret_cast<RC_Pointer>(regs.r9);
+					reg.R10 = reinterpret_cast<RC_Pointer>(regs.r10);
+					reg.R11 = reinterpret_cast<RC_Pointer>(regs.r11);
+					reg.R12 = reinterpret_cast<RC_Pointer>(regs.r12);
+					reg.R13 = reinterpret_cast<RC_Pointer>(regs.r13);
+					reg.R14 = reinterpret_cast<RC_Pointer>(regs.r14);
+					reg.R15 = reinterpret_cast<RC_Pointer>(regs.r15);
 #else
-					reg.Eax = static_cast<RC_Pointer>(regs.eax);
-					reg.Ebx = static_cast<RC_Pointer>(regs.ebx);
-					reg.Ecx = static_cast<RC_Pointer>(regs.ecx);
-					reg.Edx = static_cast<RC_Pointer>(regs.edx);
-					reg.Edi = static_cast<RC_Pointer>(regs.edi);
-					reg.Esi = static_cast<RC_Pointer>(regs.esi);
-					reg.Esp = static_cast<RC_Pointer>(regs.esp);
-					reg.Ebp = static_cast<RC_Pointer>(regs.ebp);
-					reg.Eip = static_cast<RC_Pointer>(regs.eip);
+					reg.Eax = reinterpret_cast<RC_Pointer>(regs.eax);
+					reg.Ebx = reinterpret_cast<RC_Pointer>(regs.ebx);
+					reg.Ecx = reinterpret_cast<RC_Pointer>(regs.ecx);
+					reg.Edx = reinterpret_cast<RC_Pointer>(regs.edx);
+					reg.Edi = reinterpret_cast<RC_Pointer>(regs.edi);
+					reg.Esi = reinterpret_cast<RC_Pointer>(regs.esi);
+					reg.Esp = reinterpret_cast<RC_Pointer>(regs.esp);
+					reg.Ebp = reinterpret_cast<RC_Pointer>(regs.ebp);
+					reg.Eip = reinterpret_cast<RC_Pointer>(regs.eip);
 #endif
 
 					result = true;

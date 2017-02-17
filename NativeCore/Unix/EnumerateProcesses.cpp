@@ -114,7 +114,7 @@ extern "C" void EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 							auto auxvPath = processPath / "auxv";
 
 							auto platform = GetProcessPlatform(auxvPath.string());
-#ifdef NATIVE_CORE_64
+#ifdef RECLASSNET64
 							if (platform == Platform::X64)
 #else
 							if (platform == Platform::X86)

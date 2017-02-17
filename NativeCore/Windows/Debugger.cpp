@@ -82,7 +82,7 @@ bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 
 		// Copy registers.
 		auto& reg = evt->ExceptionInfo.Registers;
-#ifdef _WIN64
+#ifdef RECLASSNET64
 		reg.Rax = reinterpret_cast<RC_Pointer>(ctx.Rax);
 		reg.Rbx = reinterpret_cast<RC_Pointer>(ctx.Rbx);
 		reg.Rcx = reinterpret_cast<RC_Pointer>(ctx.Rcx);

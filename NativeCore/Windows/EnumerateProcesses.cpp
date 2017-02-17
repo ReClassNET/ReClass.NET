@@ -33,7 +33,7 @@ Platform GetProcessPlatform(HANDLE process)
 				return isWow64 ? Platform::X86 : Platform::X64;
 			}
 
-#ifdef _WIN64
+#ifdef RECLASSNET64
 			return Platform::X64;
 #else
 			return Platform::X86;
@@ -62,7 +62,7 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 				if (IsProcessValid(process))
 				{
 					auto platform = GetProcessPlatform(process);
-#ifdef _WIN64
+#ifdef RECLASSNET64
 					if (platform == Platform::X64)
 #else
 					if (platform == Platform::X86)

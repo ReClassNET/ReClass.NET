@@ -8,7 +8,7 @@ extern "C" bool DisassembleCode(RC_Pointer address, RC_Size length, RC_Pointer v
 {
 	DISASM disasm = {};
 	disasm.Options = NasmSyntax;
-#ifdef NATIVE_CORE_64
+#ifdef RECLASSNET64
 	disasm.Archi = 64;
 #endif
 	disasm.VirtualAddr = reinterpret_cast<UInt64>(virtualAddress);
