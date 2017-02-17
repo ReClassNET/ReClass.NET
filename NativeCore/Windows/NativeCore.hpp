@@ -21,6 +21,6 @@ void __stdcall ControlRemoteProcess(RC_Pointer handle, ControlRemoteProcessActio
 
 bool __stdcall AttachDebuggerToProcess(RC_Pointer id);
 void __stdcall DetachDebuggerFromProcess(RC_Pointer id);
-bool __stdcall AwaitForDebugEvent(DebugEvent* evt, int timeoutInMilliseconds);
+bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds);
 void __stdcall HandleDebugEvent(DebugEvent* evt);
 bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set);
