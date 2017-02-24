@@ -50,7 +50,7 @@ namespace ReClassNET.CodeGenerator
 			sb.AppendLine();
 			sb.AppendLine(
 				string.Join(
-					"\n\n",
+					Environment.NewLine + Environment.NewLine,
 					OrderByInheritance(classNodes.Where(c => c.Nodes.None(n => n is FunctionNode))).Select(c =>
 					{
 						var csb = new StringBuilder();
@@ -76,7 +76,7 @@ namespace ReClassNET.CodeGenerator
 						csb.AppendLine("public:");
 						csb.AppendLine(
 							string.Join(
-								"\n",
+								Environment.NewLine,
 								YieldMemberDefinitions(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
 									.Select(MemberDefinitionToString)
 									.Select(s => "\t" + s)
@@ -89,7 +89,7 @@ namespace ReClassNET.CodeGenerator
 							csb.AppendLine();
 							csb.AppendLine(
 								string.Join(
-									"\n",
+									Environment.NewLine,
 									vTableNodes.SelectMany(vt => vt.Nodes).OfType<VMethodNode>().Select(m => $"\tvirtual void {m.MethodName}();")
 								)
 							);
@@ -101,7 +101,7 @@ namespace ReClassNET.CodeGenerator
 							csb.AppendLine();
 							csb.AppendLine(
 								string.Join(
-									"\n",
+									Environment.NewLine,
 									functionNodes.Select(f => $"\t{f.Signature} {{ }}")
 								)
 							);

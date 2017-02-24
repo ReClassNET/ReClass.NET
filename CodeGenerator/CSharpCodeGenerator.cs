@@ -47,7 +47,7 @@ namespace ReClassNET.CodeGenerator
 
 			sb.Append(
 				string.Join(
-					"\n\n",
+					Environment.NewLine + Environment.NewLine,
 					classes.Select(c =>
 					{
 						var csb = new StringBuilder();
@@ -64,9 +64,9 @@ namespace ReClassNET.CodeGenerator
 
 						csb.AppendLine(
 							string.Join(
-								"\n\n",
+								Environment.NewLine + Environment.NewLine,
 								YieldMemberDefinitions(c.Nodes, logger)
-									.Select(m => $"\t{GetFieldDecorator(m)}\n\t{GetFieldDefinition(m)}")
+									.Select(m => $"\t{GetFieldDecorator(m)}{Environment.NewLine}\t{GetFieldDefinition(m)}")
 							)
 						);
 						csb.Append("}");
