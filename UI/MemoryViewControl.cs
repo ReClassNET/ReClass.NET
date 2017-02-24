@@ -398,7 +398,7 @@ namespace ReClassNET.UI
 										return;
 									}
 
-									if (IsCycleFree(refNode.ParentNode as ClassNode, selectedClassNode))
+									if (!refNode.PerformCycleCheck || IsCycleFree(refNode.ParentNode as ClassNode, selectedClassNode))
 									{
 										refNode.ChangeInnerNode(selectedClassNode);
 									}
