@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
 	public abstract class BaseHexNode : BaseNode
 	{
-		private readonly byte[] buffer;
-		private DateTime highlightUntil;
-		private readonly Dictionary<IntPtr, Tuple<byte[], DateTime>> highlightHistory;
-
 		public static DateTime CurrentHighlightTime;
 		public static readonly TimeSpan HightlightDuration = TimeSpan.FromSeconds(1);
+
+		private static readonly Dictionary<IntPtr, ValueTypeWrapper<DateTime>> highlight = new Dictionary<IntPtr, ValueTypeWrapper<DateTime>>();
+
+		private readonly byte[] buffer;
 
 		protected BaseHexNode()
 		{
 			Contract.Ensures(buffer != null);
 
 			buffer = new byte[MemorySize];
-			highlightHistory = new Dictionary<IntPtr, Tuple<byte[], DateTime>>();
 		}
 
 		protected int Draw(ViewInfo view, int x, int y, string text, int length)
@@ -47,9 +47,35 @@ namespace ReClassNET.Nodes
 
 			view.Memory.ReadBytes(Offset, buffer);
 
-			var color = view.Settings.HighlightChangedValues && view.Memory.HasChanged(Offset, MemorySize)
-				? view.Settings.HighlightColor
-				: view.Settings.HexColor;
+			var color = view.Settings.HexColor;
+			if (view.Settings.HighlightChangedValues)
+			{
+				var address = view.Address.Add(Offset);
+
+				ValueTypeWrapper<DateTime> until;
+				if (highlight.TryGetValue(address, out until))
+				{
+					if (until.Value >= CurrentHighlightTime)
+					{
+						color = view.Settings.HighlightColor;
+
+						if (view.Memory.HasChanged(Offset, MemorySize))
+						{
+							until.Value = CurrentHighlightTime.Add(HightlightDuration);
+						}
+					}
+					else
+					{
+						highlight.Remove(address);
+					}
+				}
+				else if (view.Memory.HasChanged(Offset, MemorySize))
+				{
+					highlight.Add(address, CurrentHighlightTime.Add(HightlightDuration));
+
+					color = view.Settings.HighlightColor;
+				}
+			}
 
 			for (var i = 0; i < length; ++i)
 			{
