@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using ReClassNET.UI;
@@ -9,6 +10,7 @@ namespace ReClassNET.Nodes
 	{
 		private readonly byte[] buffer;
 		private DateTime highlightUntil;
+		private readonly Dictionary<IntPtr, Tuple<byte[], DateTime>> highlightHistory;
 
 		public static DateTime CurrentHighlightTime;
 		public static readonly TimeSpan HightlightDuration = TimeSpan.FromSeconds(1);
@@ -18,6 +20,7 @@ namespace ReClassNET.Nodes
 			Contract.Ensures(buffer != null);
 
 			buffer = new byte[MemorySize];
+			highlightHistory = new Dictionary<IntPtr, Tuple<byte[], DateTime>>();
 		}
 
 		protected int Draw(ViewInfo view, int x, int y, string text, int length)
@@ -42,24 +45,15 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text);
 			}
 
-			var color = view.Settings.HighlightChangedValues && highlightUntil > CurrentHighlightTime ? view.Settings.HighlightColor : view.Settings.HexColor;
-			var changed = false;
+			view.Memory.ReadBytes(Offset, buffer);
+
+			var color = view.Settings.HighlightChangedValues && view.Memory.HasChanged(Offset, MemorySize)
+				? view.Settings.HighlightColor
+				: view.Settings.HexColor;
+
 			for (var i = 0; i < length; ++i)
 			{
-				var b = view.Memory.ReadByte(Offset + i);
-				if (buffer[i] != b)
-				{
-					changed = true;
-
-					buffer[i] = b;
-				}
-
-				x = AddText(view, x, y, color, i, $"{b:X02}") + view.Font.Width;
-			}
-
-			if (changed)
-			{
-				highlightUntil = CurrentHighlightTime.Add(HightlightDuration);
+				x = AddText(view, x, y, color, i, $"{buffer[i]:X02}") + view.Font.Width;
 			}
 
 			AddComment(view, x, y);
