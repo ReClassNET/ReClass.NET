@@ -11,31 +11,19 @@ namespace ReClassNET.UI
 {
 	public partial class ClassNodeView : UserControl
 	{
-		/// <summary>A wrapper for non reference types.</summary>
-		/// <typeparam name="T">Generic type parameter.</typeparam>
-		private class ValueWrapper<T> where T : struct
-		{
-			public ValueWrapper(T value)
-			{
-				Value = value;
-			}
-
-			public T Value { get; set; }
-		}
-
 		/// <summary>A custom tree node for class nodes with hierarchical structure.</summary>
 		private class ClassTreeNode : TreeNode, IDisposable
 		{
 			public ClassNode ClassNode { get; }
 
-			private readonly ValueWrapper<bool> enableHierarchyView;
-			private readonly ValueWrapper<bool> autoExpand;
+			private readonly ValueTypeWrapper<bool> enableHierarchyView;
+			private readonly ValueTypeWrapper<bool> autoExpand;
 
 			/// <summary>Constructor of the class.</summary>
 			/// <param name="node">The class node.</param>
 			/// <param name="enableHierarchyView">The value if the hierarchy view is enabled.</param>
 			/// <param name="autoExpand">The value if nodes should get expanded.</param>
-			public ClassTreeNode(ClassNode node, ValueWrapper<bool> enableHierarchyView, ValueWrapper<bool> autoExpand)
+			public ClassTreeNode(ClassNode node, ValueTypeWrapper<bool> enableHierarchyView, ValueTypeWrapper<bool> autoExpand)
 				: this(node, enableHierarchyView, autoExpand, null)
 			{
 				Contract.Requires(node != null);
@@ -43,7 +31,7 @@ namespace ReClassNET.UI
 				Contract.Requires(autoExpand != null);
 			}
 
-			private ClassTreeNode(ClassNode node, ValueWrapper<bool> enableHierarchyView, ValueWrapper<bool> autoExpand, HashSet<ClassNode> seen)
+			private ClassTreeNode(ClassNode node, ValueTypeWrapper<bool> enableHierarchyView, ValueTypeWrapper<bool> autoExpand, HashSet<ClassNode> seen)
 			{
 				Contract.Requires(node != null);
 				Contract.Requires(enableHierarchyView != null);
@@ -126,8 +114,8 @@ namespace ReClassNET.UI
 		}
 
 		private readonly TreeNode root;
-		private readonly ValueWrapper<bool> enableHierarchyView;
-		private readonly ValueWrapper<bool> autoExpand;
+		private readonly ValueTypeWrapper<bool> enableHierarchyView;
+		private readonly ValueTypeWrapper<bool> autoExpand;
 
 		private ReClassNetProject project;
 
@@ -198,8 +186,8 @@ namespace ReClassNET.UI
 
 			DoubleBuffered = true;
 
-			enableHierarchyView = new ValueWrapper<bool>(true);
-			autoExpand = new ValueWrapper<bool>(false);
+			enableHierarchyView = new ValueTypeWrapper<bool>(true);
+			autoExpand = new ValueTypeWrapper<bool>(false);
 
 			classesTreeView.ImageList = new ImageList();
 			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);
