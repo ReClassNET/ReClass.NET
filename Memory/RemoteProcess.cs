@@ -53,6 +53,34 @@ namespace ReClassNET.Memory
 
 		public SymbolStore Symbols => symbols;
 
+		/// <summary>Gets a copy of the current modules list. This list may change if the remote process (un)loads a module.</summary>
+		public IEnumerable<Module> Modules
+		{
+			get
+			{
+				List<Module> cpy;
+				lock (modules)
+				{
+					cpy = modules.ToList();
+				}
+				return cpy;
+			}
+		}
+
+		/// <summary>Gets a copy of the current sections list. This list may change if the remote process (un)loads a section.</summary>
+		public IEnumerable<Section> Sections
+		{
+			get
+			{
+				List<Section> cpy;
+				lock (sections)
+				{
+					cpy = sections.ToList();
+				}
+				return cpy;
+			}
+		}
+
 		public bool IsValid => process != null && coreFunctions.IsProcessValid(handle);
 
 		public RemoteProcess(CoreFunctionsManager coreFunctions)
