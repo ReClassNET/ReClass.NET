@@ -12,7 +12,7 @@ namespace ReClassNET.Nodes
 		public static DateTime CurrentHighlightTime;
 		public static readonly TimeSpan HightlightDuration = TimeSpan.FromSeconds(1);
 
-		private static readonly Dictionary<IntPtr, ValueTypeWrapper<DateTime>> highlight = new Dictionary<IntPtr, ValueTypeWrapper<DateTime>>();
+		private static readonly Dictionary<IntPtr, ValueTypeWrapper<DateTime>> HighlightTimer = new Dictionary<IntPtr, ValueTypeWrapper<DateTime>>();
 
 		private readonly byte[] buffer;
 
@@ -52,8 +52,10 @@ namespace ReClassNET.Nodes
 			{
 				var address = view.Address.Add(Offset);
 
+				HighlightTimer.RemoveWhere(kv => kv.Value.Value < CurrentHighlightTime);
+
 				ValueTypeWrapper<DateTime> until;
-				if (highlight.TryGetValue(address, out until))
+				if (HighlightTimer.TryGetValue(address, out until))
 				{
 					if (until.Value >= CurrentHighlightTime)
 					{
@@ -64,14 +66,10 @@ namespace ReClassNET.Nodes
 							until.Value = CurrentHighlightTime.Add(HightlightDuration);
 						}
 					}
-					else
-					{
-						highlight.Remove(address);
-					}
 				}
 				else if (view.Memory.HasChanged(Offset, MemorySize))
 				{
-					highlight.Add(address, CurrentHighlightTime.Add(HightlightDuration));
+					HighlightTimer.Add(address, CurrentHighlightTime.Add(HightlightDuration));
 
 					color = view.Settings.HighlightColor;
 				}
