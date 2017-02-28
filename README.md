@@ -19,8 +19,10 @@ This is a port of ReClass to the .NET platform with additional features.
  - Class Arrays and array of pointers to classes
  - VTable
  - Function Pointer
+ - Function
 - Automatic Node Dissection
 - Highlight changed memory
+- Pointer Preview
 - Copy / Paste Support across ReClass.NET instances
 - Display types from Debug Symbols (*.pdb)
 - Display Runtime Type Informations (RTTI)
@@ -30,6 +32,7 @@ This is a port of ReClass to the .NET platform with additional features.
 - Class address calculator
 - Code Generator (C++ / C#)
 - Module / Section Dumper
+- Linux Support (tested on Ubuntu)
 - Plugin Support
  - Plugins can be written in different languages (example: C++, C++/CLI, C#)
  - Plugins can provide custom methods to access an other process (example: use a driver)
@@ -41,6 +44,7 @@ This is a port of ReClass to the .NET platform with additional features.
 - [Sample Plugins](https://github.com/KN4CK3R/ReClass.NET-SamplePlugin)
 - [Frostbite Plugin](https://github.com/KN4CK3R/ReClass.NET-FrostbitePlugin)
 - [MemoryPipe Plugin](https://github.com/KN4CK3R/ReClass.NET-MemoryPipePlugin)
+- [LoadBinary Plugin](https://github.com/KN4CK3R/ReClass.NET-LoadBinaryPlugin)
 
 To install a plugin just copy it in the "Plugins" folder.
 If you want to develop your own plugin just learn from the code of the [Sample Plugins](https://github.com/KN4CK3R/ReClass.NET-SamplePlugin) and [Frostbite Plugin](https://github.com/KN4CK3R/ReClass.NET-FrostbitePlugin) repositories. If you have developed a nice plugin, leave me a message and I will add it to the list above.
@@ -74,6 +78,9 @@ Process Selection
 
 Memory Viewer  
 ![](https://abload.de/img/memoryviewerb4y1s.jpg)
+
+Pointer Preview  
+![](http://abload.de/img/memorypreview2gsfp.jpg)
 
 Code Generator  
 ![](https://abload.de/img/codegeneratorqdat2.jpg)
