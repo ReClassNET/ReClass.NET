@@ -33,6 +33,7 @@ This is a port of ReClass to the .NET platform with additional features.
 - Code Generator (C++ / C#)
 - Module / Section Dumper
 - Linux Support (tested on Ubuntu)
+- Debugger with "Find out what writes/accesses this address" support
 - Plugin Support
  - Plugins can be written in different languages (example: C++, C++/CLI, C#)
  - Plugins can provide custom methods to access an other process (example: use a driver)
