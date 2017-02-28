@@ -12,6 +12,7 @@ namespace ReClassNET.Memory
 
 		private byte[] data;
 		private byte[] historyData;
+		private bool hasHistory;
 
 		public int Size
 		{
@@ -25,6 +26,8 @@ namespace ReClassNET.Memory
 				{
 					data = new byte[value];
 					historyData = new byte[value];
+
+					hasHistory = false;
 				}
 			}
 		}
@@ -55,6 +58,7 @@ namespace ReClassNET.Memory
 
 			data = other.data;
 			historyData = other.historyData;
+			hasHistory = other.hasHistory;
 		}
 
 		public MemoryBuffer Clone()
@@ -80,6 +84,8 @@ namespace ReClassNET.Memory
 			if (setHistory)
 			{
 				Array.Copy(data, historyData, data.Length);
+
+				hasHistory = true;
 			}
 
 			Process.ReadRemoteMemoryIntoBuffer(address, ref data);
@@ -254,6 +260,11 @@ namespace ReClassNET.Memory
 
 		public bool HasChanged(int offset, int length)
 		{
+			if (hasHistory)
+			{
+				return false;
+			}
+
 			if (Offset + offset + length > data.Length)
 			{
 				return false;
