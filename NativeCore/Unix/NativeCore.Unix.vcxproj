@@ -164,10 +164,15 @@
       <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>RECLASSNET64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>-m64 %(AdditionalOptions)</AdditionalOptions>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <LinkTimeOptimization>true</LinkTimeOptimization>
+      <ExceptionHandling>Disabled</ExceptionHandling>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <LibraryDependencies>stdc++fs</LibraryDependencies>
       <AdditionalOptions>-m64 %(AdditionalOptions)</AdditionalOptions>
+      <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
@@ -190,10 +195,15 @@
       <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>RECLASSNET32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <LinkTimeOptimization>true</LinkTimeOptimization>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <ExceptionHandling>Disabled</ExceptionHandling>
     </ClCompile>
     <Link>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
       <LibraryDependencies>stdc++fs</LibraryDependencies>
+      <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
