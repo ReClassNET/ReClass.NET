@@ -2,7 +2,7 @@
 
 namespace ReClassNET.Util
 {
-	static class LinqExtension
+	public static class LinqExtension
 	{
 		public static string Join(this IEnumerable<string> source)
 		{
