@@ -11,6 +11,7 @@ using ReClassNET.CodeGenerator;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.UI;
+using ReClassNET.Util;
 using ReClassNET.Util.Rtf;
 
 namespace ReClassNET.Forms
@@ -23,6 +24,8 @@ namespace ReClassNET.Forms
 			Contract.Requires(classes != null);
 
 			InitializeComponent();
+
+			codeRichTextBox.SetInnerPadding(5, 5, 5, 5);
 
 			var code = generator.GenerateCode(classes, logger);
 

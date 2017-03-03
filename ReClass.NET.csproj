@@ -251,6 +251,7 @@
     </Compile>
     <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
     <Compile Include="Util\Extension.Dictionary.cs" />
+    <Compile Include="Util\Extension.RichTextBox.cs" />
     <Compile Include="Util\GrowingList.cs" />
     <Compile Include="Forms\PluginForm.cs">
       <SubType>Form</SubType>
