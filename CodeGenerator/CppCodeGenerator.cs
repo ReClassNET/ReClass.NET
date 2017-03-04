@@ -51,7 +51,7 @@ namespace ReClassNET.CodeGenerator
 			sb.AppendLine(
 				string.Join(
 					Environment.NewLine + Environment.NewLine,
-					OrderByInheritance(classNodes).Select(c =>
+					OrderByInheritance(classNodes.Where(c => c.Nodes.None(n => n is FunctionNode))).Select(c =>
 					{
 						var csb = new StringBuilder();
 						csb.Append($"class {c.Name}");
