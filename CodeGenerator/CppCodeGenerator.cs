@@ -51,6 +51,7 @@ namespace ReClassNET.CodeGenerator
 			sb.AppendLine(
 				string.Join(
 					Environment.NewLine + Environment.NewLine,
+					// Skip class which contains FunctionNodes because these are not data classes.
 					OrderByInheritance(classNodes.Where(c => c.Nodes.None(n => n is FunctionNode))).Select(c =>
 					{
 						var csb = new StringBuilder();
