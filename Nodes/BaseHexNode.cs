@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Globalization;
 using ReClassNET.UI;
 using ReClassNET.Util;
@@ -23,10 +24,9 @@ namespace ReClassNET.Nodes
 			buffer = new byte[MemorySize];
 		}
 
-		protected int Draw(ViewInfo view, int x, int y, string text, int length)
+		protected Size Draw(ViewInfo view, int x, int y, string text, int length)
 		{
 			Contract.Requires(view != null);
-			Contract.Requires(text != null);
 
 			if (IsHidden)
 			{
@@ -40,7 +40,7 @@ namespace ReClassNET.Nodes
 			x += TextPadding + 16;
 			x = AddAddressOffset(view, x, y);
 
-			if (view.Settings.ShowNodeText)
+			if (!string.IsNullOrEmpty(text))
 			{
 				x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text);
 			}
@@ -80,14 +80,14 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, color, i, $"{buffer[i]:X02}") + view.Font.Width;
 			}
 
-			AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
-			return y + view.Font.Height;
+			return new Size(x, y + view.Font.Height);
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
-			return IsHidden ? HiddenHeight : view.Font.Height;
+			return IsHidden ? HiddenSize : new Size(0, view.Font.Height);
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected byte.</summary>

@@ -20,7 +20,7 @@ namespace ReClassNET.Nodes
 		internal static readonly List<INodeInfoReader> NodeInfoReader = new List<INodeInfoReader>();
 
 		protected static readonly int TextPadding = Icons.Dimensions;
-		protected const int HiddenHeight = 1;
+		protected static readonly Size HiddenSize = new Size(0, 1);
 
 		private static int NodeIndex = 0;
 
@@ -123,17 +123,17 @@ namespace ReClassNET.Nodes
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
-		/// <returns>The height the node occupies.</returns>
-		public abstract int Draw(ViewInfo view, int x, int y);
+		/// <returns>The size the node occupies.</returns>
+		public abstract Size Draw(ViewInfo view, int x, int y);
 
 		/// <summary>
-		/// Calculates the height of the node if drawn.
+		/// Calculates the size of the node if drawn.
 		/// This method is used to determine if a node outside the visible area should be drawn.
-		/// The returned height must be equal to the height which gets added by the <see cref="Draw(ViewInfo, int, int)"/> method.
+		/// The returned size must be equal to the size which is returned by the <see cref="Draw(ViewInfo, int, int)"/> method.
 		/// </summary>
 		/// <param name="view">The view information.</param>
-		/// <returns>The calculated height.</returns>
-		public abstract int CalculateHeight(ViewInfo view);
+		/// <returns>The calculated size.</returns>
+		public abstract Size CalculateSize(ViewInfo view);
 
 		/// <summary>Updates the node from the given <paramref name="spot"/>. Sets the <see cref="Name"/> and <see cref="Comment"/> of the node.</summary>
 		/// <param name="spot">The spot.</param>
@@ -388,8 +388,8 @@ namespace ReClassNET.Nodes
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
-		/// <returns>The new y coordinate after drawing the line.</returns>
-		protected int DrawHidden(ViewInfo view, int x, int y)
+		/// <returns>The size of the drawing.</returns>
+		protected Size DrawHidden(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
@@ -399,7 +399,7 @@ namespace ReClassNET.Nodes
 				view.Context.FillRectangle(brush, 0, y, view.ClientArea.Right, 1);
 			}
 
-			return y + HiddenHeight;
+			return new Size(0, y + HiddenSize.Height);
 		}
 	}
 
@@ -416,14 +416,14 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		public override int Draw(ViewInfo view, int x, int y)
+		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
 
 			throw new NotImplementedException();
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
 			Contract.Requires(view != null);
 

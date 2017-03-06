@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -50,9 +52,9 @@ namespace ReClassNET.Nodes
 		/// <param name="x2">The x coordinate.</param>
 		/// <param name="y2">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
-		public override int Draw(ViewInfo view, int x2, int y2)
+		public override Size Draw(ViewInfo view, int x2, int y2)
 		{
-			return DrawMatrixType(view, x2, y2, "Matrix (4x4)", (int defaultX, ref int y) =>
+			return DrawMatrixType(view, x2, y2, "Matrix (4x4)", (int defaultX, ref int maxX, ref int y) =>
 			{
 				var value = view.Memory.ReadObject<Matrix4x4Data>(Offset);
 
@@ -66,7 +68,8 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 2, $"{value._13,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 3, $"{value._14,14:0.000}");
-				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				maxX = Math.Max(x, maxX);
 
 				y += view.Font.Height;
 				x = defaultX;
@@ -78,7 +81,8 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 6, $"{value._23,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 7, $"{value._24,14:0.000}");
-				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				maxX = Math.Max(x, maxX);
 
 				y += view.Font.Height;
 				x = defaultX;
@@ -90,7 +94,8 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 10, $"{value._33,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 11, $"{value._34,14:0.000}");
-				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				maxX = Math.Max(x, maxX);
 
 				y += view.Font.Height;
 				x = defaultX;
@@ -102,7 +107,8 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 14, $"{value._43,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 15, $"{value._44,14:0.000}");
-				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				maxX = Math.Max(x, maxX);
 			});
 		}
 

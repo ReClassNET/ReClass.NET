@@ -20,11 +20,12 @@ namespace ReClassNET.Nodes
 		protected IntPtr address = IntPtr.Zero;
 		protected readonly List<FunctionNodeInstruction> instructions = new List<FunctionNodeInstruction>();
 
-		protected int DrawInstructions(ViewInfo view, int tx, int y)
+		protected Size DrawInstructions(ViewInfo view, int tx, int y)
 		{
 			Contract.Requires(view != null);
 
 			var minWidth = 26 * view.Font.Width;
+			var maxWidth = 0;
 
 			foreach (var instruction in instructions)
 			{
@@ -42,11 +43,13 @@ namespace ReClassNET.Nodes
 					view.Context.FillRectangle(brush, x, y, 1, view.Font.Height);
 					x += 6;
 
-					AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, instruction.Instruction);
+					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, instruction.Instruction);
+
+					maxWidth = Math.Max(x, maxWidth);
 				}
 			}
 
-			return y;
+			return new Size(maxWidth, y);
 		}
 
 		protected void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address, out int memorySize)

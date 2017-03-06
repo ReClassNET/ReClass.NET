@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -10,7 +11,7 @@ namespace ReClassNET.Nodes
 		public int CurrentIndex { get; set; }
 		public int Count { get; set; } = 1;
 
-		protected int Draw(ViewInfo view, int x, int y, string type, HotSpotType exchange)
+		protected Size Draw(ViewInfo view, int x, int y, string type, HotSpotType exchange)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -46,25 +47,27 @@ namespace ReClassNET.Nodes
 			x = AddIcon(view, x + 2, y, Icons.Change, 4, exchange);
 
 			x += view.Font.Width;
-			AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
 			y += view.Font.Height;
 
 			if (levelsOpen[view.Level])
 			{
-				y = DrawChild(view, tx, y);
+				var childSize = DrawChild(view, tx, y);
+				x = Math.Max(x, childSize.Width);
+				y = childSize.Height;
 			}
 
-			return y;
+			return new Size(x, y);
 		}
 
-		protected abstract int DrawChild(ViewInfo view, int x, int y);
+		protected abstract Size DrawChild(ViewInfo view, int x, int y);
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenHeight;
+				return HiddenSize;
 			}
 
 			var h = view.Font.Height;
@@ -72,7 +75,7 @@ namespace ReClassNET.Nodes
 			{
 				h += CalculateChildHeight(view);
 			}
-			return h;
+			return new Size(0, h);
 		}
 
 		protected abstract int CalculateChildHeight(ViewInfo view);
@@ -124,7 +127,7 @@ namespace ReClassNET.Nodes
 	[ContractClassFor(typeof(BaseArrayNode))]
 	internal abstract class BaseArrayNodeContract : BaseArrayNode
 	{
-		protected override int DrawChild(ViewInfo view, int x, int y)
+		protected override Size DrawChild(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
 

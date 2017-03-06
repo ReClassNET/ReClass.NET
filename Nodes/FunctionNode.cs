@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Linq;
 using ReClassNET.Memory;
 using ReClassNET.UI;
@@ -24,7 +25,7 @@ namespace ReClassNET.Nodes
 			return string.Join("\n", instructions.Select(i => i.Instruction));
 		}
 
-		public override int Draw(ViewInfo view, int x, int y)
+		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
 
@@ -50,7 +51,7 @@ namespace ReClassNET.Nodes
 
 			x = AddOpenClose(view, x, y) + view.Font.Width;
 
-			AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
 			var ptr = view.Address.Add(Offset);
 
@@ -59,25 +60,29 @@ namespace ReClassNET.Nodes
 			if (levelsOpen[view.Level])
 			{
 				y += view.Font.Height;
-				x = AddText(view, tx, y, view.Settings.TypeColor, HotSpot.NoneId, "Signature:") + view.Font.Width;
-				AddText(view, x, y, view.Settings.ValueColor, 0, Signature);
+				var x2 = AddText(view, tx, y, view.Settings.TypeColor, HotSpot.NoneId, "Signature:") + view.Font.Width;
+				x2 = AddText(view, x2, y, view.Settings.ValueColor, 0, Signature);
+				x = Math.Max(x, x2);
 
 				y += view.Font.Height;
-				x = AddText(view, tx, y, view.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
-				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>");
-				AddIcon(view, x, y, Icons.Change, 1, HotSpotType.ChangeType);
+				x2 = AddText(view, tx, y, view.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
+				x2 = AddText(view, x2, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>");
+				x2 = AddIcon(view, x2, y, Icons.Change, 1, HotSpotType.ChangeType);
+				x = Math.Max(x, x2);
 
-				y = DrawInstructions(view, tx, y + 4) + 4;
+				var instructionSize = DrawInstructions(view, tx, y + 4);
+				x = Math.Max(x, instructionSize.Width);
+				y = instructionSize.Height + 4;
 			}
 
-			return y + view.Font.Height;
+			return new Size(x, y + view.Font.Height);
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenHeight;
+				return HiddenSize;
 			}
 
 			var h = view.Font.Height;
@@ -85,7 +90,7 @@ namespace ReClassNET.Nodes
 			{
 				h += instructions.Count * view.Font.Height;
 			}
-			return h;
+			return new Size(0, h);
 		}
 
 		public override void Update(HotSpot spot)

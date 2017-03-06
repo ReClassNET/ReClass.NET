@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using ReClassNET.Memory;
 using ReClassNET.UI;
 
@@ -26,12 +27,12 @@ namespace ReClassNET.Nodes
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
-		public override int Draw(ViewInfo view, int x, int y)
+		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			return Draw(view, x, y, "PtrArray", HotSpotType.ChangeType);
 		}
 
-		protected override int DrawChild(ViewInfo view, int x, int y)
+		protected override Size DrawChild(ViewInfo view, int x, int y)
 		{
 			var ptr = view.Memory.ReadObject<IntPtr>(Offset + IntPtr.Size * CurrentIndex);
 
@@ -48,7 +49,7 @@ namespace ReClassNET.Nodes
 
 		protected override int CalculateChildHeight(ViewInfo view)
 		{
-			return InnerNode.CalculateHeight(view);
+			return InnerNode.CalculateSize(view).Height;
 		}
 	}
 }

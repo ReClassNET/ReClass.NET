@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Drawing;
+using System.Runtime.InteropServices;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -24,7 +25,7 @@ namespace ReClassNET.Nodes
 		/// <param name="x2">The x coordinate.</param>
 		/// <param name="y2">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
-		public override int Draw(ViewInfo view, int x2, int y2)
+		public override Size Draw(ViewInfo view, int x2, int y2)
 		{
 			return DrawVectorType(view, x2, y2, "Vector3", (ref int x, ref int y) =>
 			{

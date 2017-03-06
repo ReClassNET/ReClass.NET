@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
+using System.Drawing;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -10,9 +11,9 @@ namespace ReClassNET.Nodes
 			levelsOpen.DefaultValue = true;
 		}
 
-		protected delegate void DrawMatrixValues(int x, ref int y);
+		protected delegate void DrawMatrixValues(int x, ref int maxX, ref int y);
 
-		protected int DrawMatrixType(ViewInfo view, int x, int y, string type, DrawMatrixValues drawValues)
+		protected Size DrawMatrixType(ViewInfo view, int x, int y, string type, DrawMatrixValues drawValues)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -41,18 +42,18 @@ namespace ReClassNET.Nodes
 
 			x += view.Font.Width;
 
-			AddComment(view, x, y);
+			x += AddComment(view, x, y);
 
 			if (levelsOpen[view.Level])
 			{
-				drawValues(tx, ref y);
+				drawValues(tx, ref x, ref y);
 			}
 
-			return y + view.Font.Height;
+			return new Size(x, y + view.Font.Height);
 		}
 
 		protected delegate void DrawVectorValues(ref int x, ref int y);
-		protected int DrawVectorType(ViewInfo view, int x, int y, string type, DrawVectorValues drawValues)
+		protected Size DrawVectorType(ViewInfo view, int x, int y, string type, DrawVectorValues drawValues)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -83,16 +84,16 @@ namespace ReClassNET.Nodes
 
 			x += view.Font.Width;
 
-			AddComment(view, x, y);
+			x += AddComment(view, x, y);
 
-			return y + view.Font.Height;
+			return new Size(x, y + view.Font.Height);
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenHeight;
+				return HiddenSize;
 			}
 
 			var h = view.Font.Height;
@@ -100,7 +101,7 @@ namespace ReClassNET.Nodes
 			{
 				h += CalculateValuesHeight(view);
 			}
-			return h;
+			return new Size(0, h);
 		}
 
 		protected abstract int CalculateValuesHeight(ViewInfo view);

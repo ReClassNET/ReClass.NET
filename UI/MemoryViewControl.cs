@@ -95,8 +95,9 @@ namespace ReClassNET.UI
 			VerticalScroll.Enabled = true;
 			VerticalScroll.Visible = true;
 			VerticalScroll.SmallChange = 10;
-			HorizontalScroll.Enabled = false;
-			HorizontalScroll.Visible = false;
+			HorizontalScroll.Enabled = true;
+			HorizontalScroll.Visible = true;
+			HorizontalScroll.SmallChange = 100;
 		}
 
 		internal void RegisterNodeType(Type type, string name, Image icon)
@@ -169,13 +170,17 @@ namespace ReClassNET.UI
 				HotSpots = hotSpots
 			};
 
+			var scrollX = HorizontalScroll.Value;
 			var scrollY = VerticalScroll.Value * font.Height;
-			int maxY;
+
+			Size drawnSize;
 			try
 			{
 				BaseHexNode.CurrentHighlightTime = DateTime.Now;
 
-				maxY = ClassNode.Draw(view, 0, -scrollY) + scrollY;
+				drawnSize = ClassNode.Draw(view, -scrollX, -scrollY);
+				drawnSize.Width += scrollX + 50;
+				drawnSize.Height += scrollY;
 			}
 			catch
 			{
@@ -187,18 +192,32 @@ namespace ReClassNET.UI
 				e.Graphics.DrawRectangle(new Pen(new SolidBrush(Color.FromArgb(150, 255, 0, 0)), 1), spot.Rect);
 			}*/
 
-			if (maxY > ClientSize.Height)
+			if (drawnSize.Height > ClientSize.Height)
 			{
 				VerticalScroll.Enabled = true;
 
 				VerticalScroll.LargeChange = ClientSize.Height / font.Height;
-				VerticalScroll.Maximum = (maxY - ClientSize.Height) / font.Height + VerticalScroll.LargeChange;
+				VerticalScroll.Maximum = (drawnSize.Height - ClientSize.Height) / font.Height + VerticalScroll.LargeChange;
 			}
 			else
 			{
 				VerticalScroll.Enabled = false;
 
 				VerticalScroll.Value = 0;
+			}
+
+			if (drawnSize.Width > ClientSize.Width)
+			{
+				HorizontalScroll.Enabled = true;
+
+				HorizontalScroll.LargeChange = ClientSize.Width;
+				HorizontalScroll.Maximum = (drawnSize.Width - ClientSize.Width) + HorizontalScroll.LargeChange;
+			}
+			else
+			{
+				HorizontalScroll.Enabled = false;
+
+				HorizontalScroll.Value = 0;
 			}
 		}
 

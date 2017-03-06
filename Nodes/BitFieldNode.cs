@@ -94,7 +94,7 @@ namespace ReClassNET.Nodes
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
-		public override int Draw(ViewInfo view, int x, int y)
+		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			if (IsHidden)
 			{
@@ -125,7 +125,7 @@ namespace ReClassNET.Nodes
 
 			x += view.Font.Width;
 
-			AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
 			if (levelsOpen[view.Level])
 			{
@@ -146,14 +146,14 @@ namespace ReClassNET.Nodes
 				y += 2;
 			}
 
-			return y + view.Font.Height;
+			return new Size(x, y + view.Font.Height);
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenHeight;
+				return HiddenSize;
 			}
 
 			var h = view.Font.Height;
@@ -161,7 +161,7 @@ namespace ReClassNET.Nodes
 			{
 				h += view.Font.Height + 2;
 			}
-			return h;
+			return new Size(0, h);
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected bit.</summary>

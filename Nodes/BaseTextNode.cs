@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -21,7 +22,7 @@ namespace ReClassNET.Nodes
 			Length = node.MemorySize / CharacterSize;
 		}
 
-		protected int DrawText(ViewInfo view, int x, int y, string type, int length, string text)
+		protected Size DrawText(ViewInfo view, int x, int y, string type, int length, string text)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -50,14 +51,14 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text.LimitLength(150));
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
 
-			AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
-			return y + view.Font.Height;
+			return new Size(x, y + view.Font.Height);
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
-			return IsHidden ? HiddenHeight : view.Font.Height;
+			return IsHidden ? HiddenSize : new Size(0, view.Font.Height);
 		}
 
 		public override void Update(HotSpot spot)

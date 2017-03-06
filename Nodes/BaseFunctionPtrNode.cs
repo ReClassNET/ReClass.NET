@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Linq;
 using ReClassNET.Memory;
 using ReClassNET.UI;
@@ -21,7 +22,7 @@ namespace ReClassNET.Nodes
 			return string.Join("\n", instructions.Select(i => i.Instruction));
 		}
 
-		protected int Draw(ViewInfo view, int x, int y, string type, string name)
+		protected Size Draw(ViewInfo view, int x, int y, string type, string name)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -62,7 +63,7 @@ namespace ReClassNET.Nodes
 					var symbol = symbols?.GetSymbolString(value, module);
 					if (!string.IsNullOrEmpty(symbol))
 					{
-						AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol);
+						x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol);
 					}
 				}
 			}
@@ -73,17 +74,19 @@ namespace ReClassNET.Nodes
 
 				DisassembleRemoteCode(view.Memory, ptr);
 
-				y = DrawInstructions(view, tx, y);
+				var instructionSize = DrawInstructions(view, tx, y);
+				x = Math.Max(x, instructionSize.Width);
+				y = instructionSize.Height;
 			}
 
-			return y + view.Font.Height;
+			return new Size(x, y + view.Font.Height);
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenHeight;
+				return HiddenSize;
 			}
 
 			var h = view.Font.Height;
@@ -91,7 +94,7 @@ namespace ReClassNET.Nodes
 			{
 				h += instructions.Count * view.Font.Height;
 			}
-			return h;
+			return new Size(0, h);
 		}
 
 		private void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address)

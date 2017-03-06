@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Linq;
 using System.Xml.Linq;
 using ReClassNET.Logger;
@@ -295,12 +296,12 @@ namespace ReClassNET.DataExchange
 				get { throw new NotImplementedException(); }
 			}
 
-			public override int CalculateHeight(ViewInfo view)
+			public override Size CalculateSize(ViewInfo view)
 			{
 				throw new NotImplementedException();
 			}
 
-			public override int Draw(ViewInfo view, int x, int y)
+			public override Size Draw(ViewInfo view, int x, int y)
 			{
 				throw new NotImplementedException();
 			}

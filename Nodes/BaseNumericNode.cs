@@ -14,7 +14,7 @@ namespace ReClassNET.Nodes
 		/// <param name="type">The type of the node.</param>
 		/// <param name="value">The value of the node.</param>
 		/// <returns>The height the node occupies.</returns>
-		protected int DrawNumeric(ViewInfo view, int x, int y, Image icon, string type, string value)
+		protected Size DrawNumeric(ViewInfo view, int x, int y, Image icon, string type, string value)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(icon != null);
@@ -40,14 +40,14 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "=") + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.ValueColor, 0, value) + view.Font.Width;
 
-			AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
-			return y + view.Font.Height;
+			return new Size(x, y + view.Font.Height);
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
-			return IsHidden ? HiddenHeight : view.Font.Height;
+			return IsHidden ? HiddenSize : new Size(0, view.Font.Height);
 		}
 	}
 }

@@ -91,7 +91,7 @@ namespace ReClassNET.Nodes
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
-		public override int Draw(ViewInfo view, int x, int y)
+		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			AddSelection(view, 0, y, view.Font.Height);
 			x = AddOpenClose(view, x, y);
@@ -104,7 +104,7 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Class") + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"[{MemorySize}]") + view.Font.Width;
-			AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
 			y += view.Font.Height;
 
@@ -117,36 +117,42 @@ namespace ReClassNET.Nodes
 					// If the node is in the visible area draw it.
 					if (view.ClientArea.Contains(tx, y))
 					{
-						y = node.Draw(nv, tx, y);
+						var innerSize = node.Draw(nv, tx, y);
+						x = Math.Max(x, innerSize.Width);
+						y = innerSize.Height;
 					}
 					else
 					{
-						// Otherwise calculate the height...
-						var height = node.CalculateHeight(nv);
+						// Otherwise calculate the size...
+						var calculatedSize = node.CalculateSize(nv);
 
 						// and check if the nodes area overlaps with the visible area...
-						if (new Rectangle(tx, y, view.ClientArea.Width, height).IntersectsWith(view.ClientArea))
+						if (new Rectangle(tx, y, view.ClientArea.Width, calculatedSize.Height).IntersectsWith(view.ClientArea)
+						 || new Rectangle(tx, y, calculatedSize.Width, view.ClientArea.Height).IntersectsWith(view.ClientArea))
 						{
 							// then draw the node...
-							y = node.Draw(nv, tx, y);
+							var innerSize = node.Draw(nv, tx, y);
+							x = Math.Max(x, innerSize.Width);
+							y = innerSize.Height;
 						}
 						else
 						{
-							// or skip drawing and just add the height.
-							y += height;
+							// or skip drawing and just use calculated width and height.
+							x = Math.Max(x, calculatedSize.Width);
+							y += calculatedSize.Height;
 						}
 					}
 				}
 			}
 
-			return y;
+			return new Size(x, y);
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenHeight;
+				return HiddenSize;
 			}
 
 			var h = view.Font.Height;
@@ -154,9 +160,9 @@ namespace ReClassNET.Nodes
 			{
 				var nv = view.Clone();
 				nv.Level++;
-				h += Nodes.Sum(n => n.CalculateHeight(nv));
+				h += Nodes.Sum(n => n.CalculateSize(nv).Height);
 			}
-			return h;
+			return new Size(0, h);
 		}
 
 		public override void Update(HotSpot spot)

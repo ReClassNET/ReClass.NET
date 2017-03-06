@@ -1,4 +1,5 @@
-﻿using ReClassNET.UI;
+﻿using System.Drawing;
+using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
@@ -11,7 +12,7 @@ namespace ReClassNET.Nodes
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
-		public override int Draw(ViewInfo view, int x, int y)
+		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			return DrawText(view, x, y, "Text16", MemorySize / CharacterSize, view.Memory.ReadUTF16String(Offset, MemorySize));
 		}

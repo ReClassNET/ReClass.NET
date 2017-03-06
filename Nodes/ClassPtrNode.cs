@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using ReClassNET.Memory;
 using ReClassNET.UI;
 
@@ -26,7 +27,7 @@ namespace ReClassNET.Nodes
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
-		public override int Draw(ViewInfo view, int x, int y)
+		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			if (IsHidden)
 			{
@@ -49,7 +50,7 @@ namespace ReClassNET.Nodes
 			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeType);
 
 			x += view.Font.Width;
-			AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
 			y += view.Font.Height;
 
@@ -65,25 +66,27 @@ namespace ReClassNET.Nodes
 				v.Address = ptr;
 				v.Memory = memory;
 
-				y = InnerNode.Draw(v, tx, y);
+				var innerSize = InnerNode.Draw(v, tx, y);
+				x = Math.Max(x, innerSize.Width);
+				y = innerSize.Height;
 			}
 
-			return y;
+			return new Size(x, y);
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenHeight;
+				return HiddenSize;
 			}
 
 			var h = view.Font.Height;
 			if (levelsOpen[view.Level])
 			{
-				h += InnerNode.CalculateHeight(view);
+				h += InnerNode.CalculateSize(view).Height;
 			}
-			return h;
+			return new Size(0, h);
 		}
 	}
 }

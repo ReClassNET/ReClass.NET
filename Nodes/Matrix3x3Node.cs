@@ -1,5 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Drawing;
+using System.Runtime.InteropServices;
 using ReClassNET.UI;
+using System;
 
 namespace ReClassNET.Nodes
 {
@@ -36,9 +38,9 @@ namespace ReClassNET.Nodes
 		/// <param name="x2">The x coordinate.</param>
 		/// <param name="y2">The y coordinate.</param>
 		/// <returns>The height the node occupies.</returns>
-		public override int Draw(ViewInfo view, int x2, int y2)
+		public override Size Draw(ViewInfo view, int x2, int y2)
 		{
-			return DrawMatrixType(view, x2, y2, "Matrix (3x3)", (int defaultX, ref int y) =>
+			return DrawMatrixType(view, x2, y2, "Matrix (3x3)", (int defaultX, ref int maxX, ref int y) =>
 			{
 				var value = view.Memory.ReadObject<Matrix3x3Data>(Offset);
 
@@ -50,7 +52,8 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 1, $"{value._12,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 2, $"{value._13,14:0.000}");
-				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				maxX = Math.Max(x, maxX);
 
 				y += view.Font.Height;
 				x = defaultX;
@@ -60,7 +63,8 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 4, $"{value._22,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 5, $"{value._23,14:0.000}");
-				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				maxX = Math.Max(x, maxX);
 
 				y += view.Font.Height;
 				x = defaultX;
@@ -70,7 +74,8 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.ValueColor, 7, $"{value._32,14:0.000}");
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
 				x = AddText(view, x, y, view.Settings.ValueColor, 8, $"{value._33,14:0.000}");
-				AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				maxX = Math.Max(x, maxX);
 			});
 		}
 

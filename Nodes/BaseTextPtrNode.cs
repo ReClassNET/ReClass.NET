@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -16,7 +17,7 @@ namespace ReClassNET.Nodes
 		/// <param name="type">The name of the type.</param>
 		/// <param name="text">The text.</param>
 		/// <returns>The height the node occupies.</returns>
-		public int DrawText(ViewInfo view, int x, int y, string type, string text)
+		public Size DrawText(ViewInfo view, int x, int y, string type, string text)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -42,14 +43,14 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text);
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
 
-			AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
-			return y + view.Font.Height;
+			return new Size(x, y + view.Font.Height);
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
-			return IsHidden ? HiddenHeight : view.Font.Height;
+			return IsHidden ? HiddenSize : new Size(0, view.Font.Height);
 		}
 	}
 }

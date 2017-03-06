@@ -1,4 +1,5 @@
-﻿using ReClassNET.UI;
+﻿using System.Drawing;
+using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
@@ -12,7 +13,7 @@ namespace ReClassNET.Nodes
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The height th node occupies.</returns>
-		public override int Draw(ViewInfo view, int x, int y)
+		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			if (IsHidden)
 			{
@@ -34,14 +35,14 @@ namespace ReClassNET.Nodes
 			var value = view.Memory.ReadByte(Offset);
 			x = AddText(view, x, y, view.Settings.ValueColor, 0, value == 0 ? "false" : "true") + view.Font.Width;
 
-			AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
-			return y + view.Font.Height;
+			return new Size(x, y + view.Font.Height);
 		}
 
-		public override int CalculateHeight(ViewInfo view)
+		public override Size CalculateSize(ViewInfo view)
 		{
-			return IsHidden ? HiddenHeight : view.Font.Height;
+			return IsHidden ? HiddenSize : new Size(0, view.Font.Height);
 		}
 
 		/// <summary>Updates the node from the given spot and sets the value.</summary>
