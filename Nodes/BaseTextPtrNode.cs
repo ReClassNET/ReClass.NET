@@ -29,8 +29,6 @@ namespace ReClassNET.Nodes
 			}
 
 			AddSelection(view, x, y, view.Font.Height);
-			AddDelete(view, x, y);
-			AddTypeDrop(view, x, y);
 
 			x += TextPadding;
 			x = AddIcon(view, x, y, Icons.Text, HotSpot.NoneId, HotSpotType.None);
@@ -44,6 +42,9 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
 
 			x = AddComment(view, x, y);
+
+			AddTypeDrop(view, y);
+			AddDelete(view, y);
 
 			return new Size(x, y + view.Font.Height);
 		}

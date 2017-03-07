@@ -27,8 +27,6 @@ namespace ReClassNET.Nodes
 			}
 
 			AddSelection(view, x, y, view.Font.Height);
-			AddDelete(view, x, y);
-			AddTypeDrop(view, x, y);
 
 			x = x + TextPadding;
 
@@ -41,6 +39,9 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.ValueColor, 0, value) + view.Font.Width;
 
 			x = AddComment(view, x, y);
+
+			AddTypeDrop(view, y);
+			AddDelete(view, y);
 
 			return new Size(x, y + view.Font.Height);
 		}

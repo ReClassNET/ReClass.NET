@@ -327,31 +327,10 @@ namespace ReClassNET.Nodes
 			return AddIcon(view, x, y, levelsOpen[view.Level] ? Icons.OpenCloseOpen : Icons.OpenCloseClosed, 0, HotSpotType.OpenClose);
 		}
 
-		/// <summary>Draws a delete icon if the node is selected.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		protected void AddDelete(ViewInfo view, int x, int y)
-		{
-			Contract.Requires(view != null);
-			Contract.Requires(view.Context != null);
-
-			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0)
-			{
-				return;
-			}
-
-			if (IsSelected)
-			{
-				AddIcon(view, view.ClientArea.Right - Icons.Dimensions, y, Icons.Delete, 0, HotSpotType.Delete);
-			}
-		}
-
 		/// <summary>Draws a type drop icon if the node is selected.</summary>
 		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
-		protected void AddTypeDrop(ViewInfo view, int x, int y)
+		protected void AddTypeDrop(ViewInfo view, int y)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
@@ -364,6 +343,25 @@ namespace ReClassNET.Nodes
 			if (IsSelected)
 			{
 				AddIcon(view, 0, y, Icons.DropArrow, 0, HotSpotType.Drop);
+			}
+		}
+
+		/// <summary>Draws a delete icon if the node is selected.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="y">The y coordinate.</param>
+		protected void AddDelete(ViewInfo view, int y)
+		{
+			Contract.Requires(view != null);
+			Contract.Requires(view.Context != null);
+
+			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0)
+			{
+				return;
+			}
+
+			if (IsSelected)
+			{
+				AddIcon(view, view.ClientArea.Right - Icons.Dimensions, y, Icons.Delete, 0, HotSpotType.Delete);
 			}
 		}
 

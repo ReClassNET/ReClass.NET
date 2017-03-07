@@ -22,8 +22,6 @@ namespace ReClassNET.Nodes
 			}
 
 			AddSelection(view, x, y, view.Font.Height);
-			AddDelete(view, x, y);
-			AddTypeDrop(view, x, y);
 
 			x = AddOpenClose(view, x, y);
 			x = AddIcon(view, x, y, Icons.Array, -1, HotSpotType.None);
@@ -57,6 +55,9 @@ namespace ReClassNET.Nodes
 				x = Math.Max(x, childSize.Width);
 				y = childSize.Height;
 			}
+
+			AddTypeDrop(view, y);
+			AddDelete(view, y);
 
 			return new Size(x, y);
 		}
