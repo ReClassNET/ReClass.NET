@@ -19,7 +19,7 @@ namespace ReClassNET.UI
 		public List<Nodes.ClassNode> Classes { get; set; }
 		public IntPtr Address { get; set; }
 		public int Level { get; set; }
-		public bool MultiSelected { get; set; }
+		public bool MultipleNodesSelected { get; set; }
 
 		public ViewInfo Clone()
 		{
@@ -34,7 +34,7 @@ namespace ReClassNET.UI
 				Classes = Classes,
 				Address = Address,
 				Level = Level,
-				MultiSelected = MultiSelected
+				MultipleNodesSelected = MultipleNodesSelected
 			};
 		}
 	}

@@ -356,7 +356,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
 
-			if (view.MultiSelected || (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0))
+			if (view.MultipleNodesSelected || (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0))
 			{
 				return;
 			}

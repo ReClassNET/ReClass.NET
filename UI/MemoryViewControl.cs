@@ -166,7 +166,7 @@ namespace ReClassNET.UI
 				ClientArea = ClientRectangle,
 				Level = 0,
 				Memory = Memory,
-				MultiSelected = selectedNodes.Count > 1,
+				MultipleNodesSelected = selectedNodes.Count > 1,
 				HotSpots = hotSpots
 			};
 
