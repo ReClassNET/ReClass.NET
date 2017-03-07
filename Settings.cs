@@ -16,15 +16,20 @@ namespace ReClassNET
 
 			try
 			{
-				using (var sr = new StreamReader(filename))
+				if (File.Exists(filename))
 				{
-					return (Settings)new XmlSerializer(typeof(Settings)).Deserialize(sr);
+					using (var sr = new StreamReader(filename))
+					{
+						return (Settings)new XmlSerializer(typeof(Settings)).Deserialize(sr);
+					}
 				}
 			}
 			catch
 			{
-				return new Settings();
+				
 			}
+
+			return new Settings();
 		}
 
 		public static void Save(Settings settings, string filename)
