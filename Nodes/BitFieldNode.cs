@@ -93,7 +93,7 @@ namespace ReClassNET.Nodes
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
-		/// <returns>The height the node occupies.</returns>
+		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			if (IsHidden)
@@ -101,9 +101,12 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
+			var origX = x;
+			var origY = y;
+
 			AddSelection(view, x, y, view.Font.Height);
 
-			x += TextPadding + 16;
+			x += TextPadding + Icons.Dimensions;
 
 			x = AddAddressOffset(view, x, y);
 
@@ -147,7 +150,7 @@ namespace ReClassNET.Nodes
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			return new Size(x, y + view.Font.Height);
+			return new Size(x - origX, y - origY + view.Font.Height);
 		}
 
 		public override Size CalculateSize(ViewInfo view)
@@ -162,7 +165,7 @@ namespace ReClassNET.Nodes
 			{
 				h += view.Font.Height + 2;
 			}
-			return new Size(0, h);
+			return new Size(500, h);
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected bit.</summary>

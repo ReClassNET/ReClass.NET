@@ -26,13 +26,16 @@ namespace ReClassNET.Nodes
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
-		/// <returns>The height the node occupies.</returns>
+		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
 			}
+
+			var origX = x;
+			var origY = y;
 
 			AddSelection(view, x, y, view.Font.Height);
 
@@ -45,12 +48,16 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Ptr") + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name}>");
-			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeType);
+			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeType) + view.Font.Width;
 
-			x += view.Font.Width;
 			x = AddComment(view, x, y);
 
+			AddTypeDrop(view, y);
+			AddDelete(view, y);
+
 			y += view.Font.Height;
+
+			var size = new Size(x - origX, y - origY);
 
 			if (levelsOpen[view.Level])
 			{
@@ -65,14 +72,12 @@ namespace ReClassNET.Nodes
 				v.Memory = memory;
 
 				var innerSize = InnerNode.Draw(v, tx, y);
-				x = Math.Max(x, innerSize.Width);
-				y = innerSize.Height;
+
+				size.Width = Math.Max(size.Width, innerSize.Width + tx - origX);
+				size.Height += innerSize.Height;
 			}
 
-			AddTypeDrop(view, y);
-			AddDelete(view, y);
-
-			return new Size(x, y);
+			return size;
 		}
 
 		public override Size CalculateSize(ViewInfo view)
@@ -87,7 +92,7 @@ namespace ReClassNET.Nodes
 			{
 				h += InnerNode.CalculateSize(view).Height;
 			}
-			return new Size(0, h);
+			return new Size(500, h);
 		}
 	}
 }

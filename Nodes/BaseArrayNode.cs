@@ -21,6 +21,9 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
+			var origX = x;
+			var origY = y;
+
 			AddSelection(view, x, y, view.Font.Height);
 
 			x = AddOpenClose(view, x, y);
@@ -49,17 +52,20 @@ namespace ReClassNET.Nodes
 
 			y += view.Font.Height;
 
+			var size = new Size(x - origX, y - origY);
+
 			if (levelsOpen[view.Level])
 			{
 				var childSize = DrawChild(view, tx, y);
-				x = Math.Max(x, childSize.Width);
-				y = childSize.Height;
+
+				size.Width = Math.Max(size.Width, childSize.Width + tx - origX);
+				size.Height += childSize.Height;
 			}
 
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			return new Size(x, y);
+			return size;
 		}
 
 		protected abstract Size DrawChild(ViewInfo view, int x, int y);
@@ -76,7 +82,7 @@ namespace ReClassNET.Nodes
 			{
 				h += CalculateChildHeight(view);
 			}
-			return new Size(0, h);
+			return new Size(500, h);
 		}
 
 		protected abstract int CalculateChildHeight(ViewInfo view);

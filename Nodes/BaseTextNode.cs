@@ -33,6 +33,8 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
+			var origX = x;
+
 			AddSelection(view, x, y, view.Font.Height);
 
 			x += TextPadding;
@@ -54,12 +56,12 @@ namespace ReClassNET.Nodes
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			return new Size(x, y + view.Font.Height);
+			return new Size(x - origX, view.Font.Height);
 		}
 
 		public override Size CalculateSize(ViewInfo view)
 		{
-			return IsHidden ? HiddenSize : new Size(0, view.Font.Height);
+			return IsHidden ? HiddenSize : new Size(500, view.Font.Height);
 		}
 
 		public override void Update(HotSpot spot)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
@@ -157,6 +158,8 @@ namespace ReClassNET.UI
 			Memory.Size = ClassNode.MemorySize;
 			Memory.Update(ClassNode.Offset);
 
+			BaseHexNode.CurrentHighlightTime = DateTime.Now;
+
 			var view = new ViewInfo
 			{
 				Settings = Program.Settings,
@@ -170,54 +173,51 @@ namespace ReClassNET.UI
 				HotSpots = hotSpots
 			};
 
-			var scrollX = HorizontalScroll.Value;
-			var scrollY = VerticalScroll.Value * font.Height;
-
-			Size drawnSize;
 			try
 			{
-				BaseHexNode.CurrentHighlightTime = DateTime.Now;
+				var drawnSize = ClassNode.Draw(
+					view,
+					-HorizontalScroll.Value,
+					-VerticalScroll.Value * font.Height
+				);
+				drawnSize.Width += 50;
 
-				drawnSize = ClassNode.Draw(view, -scrollX, -scrollY);
-				drawnSize.Width += scrollX + 50;
-				drawnSize.Height += scrollY;
+				/*foreach (var spot in hotSpots.Where(h => h.Type == HotSpotType.Select))
+				{
+					e.Graphics.DrawRectangle(new Pen(new SolidBrush(Color.FromArgb(150, 255, 0, 0)), 1), spot.Rect);
+				}*/
+
+				if (drawnSize.Height > ClientSize.Height)
+				{
+					VerticalScroll.Enabled = true;
+
+					VerticalScroll.LargeChange = ClientSize.Height / font.Height;
+					VerticalScroll.Maximum = (drawnSize.Height - ClientSize.Height) / font.Height + VerticalScroll.LargeChange;
+				}
+				else
+				{
+					VerticalScroll.Enabled = false;
+
+					VerticalScroll.Value = 0;
+				}
+
+				if (drawnSize.Width > ClientSize.Width)
+				{
+					HorizontalScroll.Enabled = true;
+
+					HorizontalScroll.LargeChange = ClientSize.Width;
+					HorizontalScroll.Maximum = (drawnSize.Width - ClientSize.Width) + HorizontalScroll.LargeChange;
+				}
+				else
+				{
+					HorizontalScroll.Enabled = false;
+
+					HorizontalScroll.Value = 0;
+				}
 			}
-			catch
+			catch (Exception ex)
 			{
-				return;
-			}
-
-			/*foreach (var spot in hotSpots.Where(h => h.Type == HotSpotType.Select))
-			{
-				e.Graphics.DrawRectangle(new Pen(new SolidBrush(Color.FromArgb(150, 255, 0, 0)), 1), spot.Rect);
-			}*/
-
-			if (drawnSize.Height > ClientSize.Height)
-			{
-				VerticalScroll.Enabled = true;
-
-				VerticalScroll.LargeChange = ClientSize.Height / font.Height;
-				VerticalScroll.Maximum = (drawnSize.Height - ClientSize.Height) / font.Height + VerticalScroll.LargeChange;
-			}
-			else
-			{
-				VerticalScroll.Enabled = false;
-
-				VerticalScroll.Value = 0;
-			}
-
-			if (drawnSize.Width > ClientSize.Width)
-			{
-				HorizontalScroll.Enabled = true;
-
-				HorizontalScroll.LargeChange = ClientSize.Width;
-				HorizontalScroll.Maximum = (drawnSize.Width - ClientSize.Width) + HorizontalScroll.LargeChange;
-			}
-			else
-			{
-				HorizontalScroll.Enabled = false;
-
-				HorizontalScroll.Value = 0;
+				Debug.Assert(false);
 			}
 		}
 

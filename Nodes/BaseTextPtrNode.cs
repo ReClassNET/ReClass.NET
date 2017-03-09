@@ -16,7 +16,7 @@ namespace ReClassNET.Nodes
 		/// <param name="y">The y coordinate.</param>
 		/// <param name="type">The name of the type.</param>
 		/// <param name="text">The text.</param>
-		/// <returns>The height the node occupies.</returns>
+		/// <returns>The pixel size the node occupies.</returns>
 		public Size DrawText(ViewInfo view, int x, int y, string type, string text)
 		{
 			Contract.Requires(view != null);
@@ -27,6 +27,8 @@ namespace ReClassNET.Nodes
 			{
 				return DrawHidden(view, x, y);
 			}
+
+			var origX = x;
 
 			AddSelection(view, x, y, view.Font.Height);
 
@@ -46,12 +48,12 @@ namespace ReClassNET.Nodes
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			return new Size(x, y + view.Font.Height);
+			return new Size(x - origX, view.Font.Height);
 		}
 
 		public override Size CalculateSize(ViewInfo view)
 		{
-			return IsHidden ? HiddenSize : new Size(0, view.Font.Height);
+			return IsHidden ? HiddenSize : new Size(500, view.Font.Height);
 		}
 	}
 }

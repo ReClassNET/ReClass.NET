@@ -24,6 +24,8 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
+			var origY = y;
+
 			var minWidth = 26 * view.Font.Width;
 			var maxWidth = 0;
 
@@ -45,11 +47,11 @@ namespace ReClassNET.Nodes
 
 					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, instruction.Instruction);
 
-					maxWidth = Math.Max(x, maxWidth);
+					maxWidth = Math.Max(x - tx, maxWidth);
 				}
 			}
 
-			return new Size(maxWidth, y);
+			return new Size(maxWidth, y - origY);
 		}
 
 		protected void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address, out int memorySize)

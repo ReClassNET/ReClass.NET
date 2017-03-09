@@ -34,6 +34,8 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
+			var origX = x;
+
 			AddSelection(view, x, y, view.Font.Height);
 
 			x += TextPadding;
@@ -51,32 +53,35 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
-			var ptr = view.Address.Add(Offset);
+			AddTypeDrop(view, y);
+			AddDelete(view, y);
 
+			var size = new Size(x - origX, view.Font.Height);
+
+			var ptr = view.Address.Add(Offset);
 			DisassembleRemoteCode(view.Memory, ptr);
 
 			if (levelsOpen[view.Level])
 			{
 				y += view.Font.Height;
-				var x2 = AddText(view, tx, y, view.Settings.TypeColor, HotSpot.NoneId, "Signature:") + view.Font.Width;
-				x2 = AddText(view, x2, y, view.Settings.ValueColor, 0, Signature);
-				x = Math.Max(x, x2);
+				x = AddText(view, tx, y, view.Settings.TypeColor, HotSpot.NoneId, "Signature:") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.ValueColor, 0, Signature);
+				size.Width = Math.Max(size.Width, x - origX);
+				size.Height += view.Font.Height;
 
 				y += view.Font.Height;
-				x2 = AddText(view, tx, y, view.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
-				x2 = AddText(view, x2, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>");
-				x2 = AddIcon(view, x2, y, Icons.Change, 1, HotSpotType.ChangeType);
-				x = Math.Max(x, x2);
+				x = AddText(view, tx, y, view.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
+				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>");
+				x = AddIcon(view, x, y, Icons.Change, 1, HotSpotType.ChangeType);
+				size.Width = Math.Max(size.Width, x - origX);
+				size.Height += view.Font.Height;
 
 				var instructionSize = DrawInstructions(view, tx, y + 4);
-				x = Math.Max(x, instructionSize.Width);
-				y = instructionSize.Height + 4;
+				size.Width = Math.Max(size.Width, instructionSize.Width + tx - origX);
+				size.Height += instructionSize.Height + 4;
 			}
 
-			AddTypeDrop(view, y);
-			AddDelete(view, y);
-
-			return new Size(x, y + view.Font.Height);
+			return size;
 		}
 
 		public override Size CalculateSize(ViewInfo view)
@@ -91,7 +96,7 @@ namespace ReClassNET.Nodes
 			{
 				h += instructions.Count * view.Font.Height;
 			}
-			return new Size(0, h);
+			return new Size(500, h);
 		}
 
 		public override void Update(HotSpot spot)

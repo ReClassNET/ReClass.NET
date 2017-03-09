@@ -12,7 +12,7 @@ namespace ReClassNET.Nodes
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
-		/// <returns>The height th node occupies.</returns>
+		/// <returns>The size th node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			return DrawNumeric(view, x, y, Icons.Signed, "Int8", view.Memory.ReadObject<sbyte>(Offset).ToString());

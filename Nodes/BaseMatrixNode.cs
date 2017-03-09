@@ -24,6 +24,9 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
+			var origX = x;
+			var origY = y;
+
 			AddSelection(view, x, y, view.Font.Height);
 
 			x += TextPadding;
@@ -40,7 +43,7 @@ namespace ReClassNET.Nodes
 
 			x += view.Font.Width;
 
-			x += AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
 			if (levelsOpen[view.Level])
 			{
@@ -50,7 +53,7 @@ namespace ReClassNET.Nodes
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			return new Size(x, y + view.Font.Height);
+			return new Size(x - origX, y - origY + view.Font.Height);
 		}
 
 		protected delegate void DrawVectorValues(ref int x, ref int y);
@@ -64,6 +67,9 @@ namespace ReClassNET.Nodes
 			{
 				return DrawHidden(view, x, y);
 			}
+
+			var origX = x;
+			var origY = y;
 
 			AddSelection(view, x, y, view.Font.Height);
 
@@ -83,12 +89,12 @@ namespace ReClassNET.Nodes
 
 			x += view.Font.Width;
 
-			x += AddComment(view, x, y);
+			x = AddComment(view, x, y);
 
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			return new Size(x, y + view.Font.Height);
+			return new Size(x - origX, y - origY + view.Font.Height);
 		}
 
 		public override Size CalculateSize(ViewInfo view)
@@ -103,7 +109,7 @@ namespace ReClassNET.Nodes
 			{
 				h += CalculateValuesHeight(view);
 			}
-			return new Size(0, h);
+			return new Size(500, h);
 		}
 
 		protected abstract int CalculateValuesHeight(ViewInfo view);

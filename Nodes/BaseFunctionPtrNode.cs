@@ -33,6 +33,8 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
+			var origX = x;
+
 			AddSelection(view, x, y, view.Font.Height);
 
 			x += TextPadding;
@@ -66,6 +68,8 @@ namespace ReClassNET.Nodes
 				}
 			}
 
+			var size = new Size(x - origX, view.Font.Height);
+
 			if (levelsOpen[view.Level])
 			{
 				var ptr = view.Memory.ReadObject<IntPtr>(Offset);
@@ -73,14 +77,15 @@ namespace ReClassNET.Nodes
 				DisassembleRemoteCode(view.Memory, ptr);
 
 				var instructionSize = DrawInstructions(view, tx, y);
-				x = Math.Max(x, instructionSize.Width);
-				y = instructionSize.Height;
+
+				size.Width = Math.Max(size.Width, instructionSize.Width + tx - origX);
+				size.Height += instructionSize.Height;
 			}
 
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			return new Size(x, y + view.Font.Height);
+			return size;
 		}
 
 		public override Size CalculateSize(ViewInfo view)
@@ -95,7 +100,7 @@ namespace ReClassNET.Nodes
 			{
 				h += instructions.Count * view.Font.Height;
 			}
-			return new Size(0, h);
+			return new Size(500, h);
 		}
 
 		private void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address)

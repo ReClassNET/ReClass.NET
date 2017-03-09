@@ -51,7 +51,7 @@ namespace ReClassNET.Nodes
 		/// <param name="view">The view information.</param>
 		/// <param name="x2">The x coordinate.</param>
 		/// <param name="y2">The y coordinate.</param>
-		/// <returns>The height the node occupies.</returns>
+		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x2, int y2)
 		{
 			return DrawMatrixType(view, x2, y2, "Matrix (4x4)", (int defaultX, ref int maxX, ref int y) =>

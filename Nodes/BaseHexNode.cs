@@ -33,6 +33,8 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
+			var origX = x;
+
 			AddSelection(view, x, y, view.Font.Height);
 
 			x += TextPadding + 16;
@@ -83,12 +85,12 @@ namespace ReClassNET.Nodes
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			return new Size(x, y + view.Font.Height);
+			return new Size(x - origX, view.Font.Height);
 		}
 
 		public override Size CalculateSize(ViewInfo view)
 		{
-			return IsHidden ? HiddenSize : new Size(0, view.Font.Height);
+			return IsHidden ? HiddenSize : new Size(500/*CalculateWidth(view, true, false, true, 9 + MemorySize * 3)*/, view.Font.Height);
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected byte.</summary>

@@ -123,7 +123,7 @@ namespace ReClassNET.Nodes
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
-		/// <returns>The size the node occupies.</returns>
+		/// <returns>The pixel size the node occupies.</returns>
 		public abstract Size Draw(ViewInfo view, int x, int y);
 
 		/// <summary>
@@ -134,6 +134,50 @@ namespace ReClassNET.Nodes
 		/// <param name="view">The view information.</param>
 		/// <returns>The calculated size.</returns>
 		public abstract Size CalculateSize(ViewInfo view);
+
+		protected int CalculateWidth(ViewInfo view, bool addAddressOffset, bool addName, bool addComment, int addCharacters)
+		{
+			Contract.Requires(view != null);
+			Contract.Requires(addCharacters >= 0);
+
+			var width = 0;
+
+			width += TextPadding;
+			width += Icons.Dimensions;
+
+			if (addAddressOffset)
+			{
+				if (view.Settings.ShowNodeOffset)
+				{
+					addCharacters += 4;
+					width += view.Font.Width;
+				}
+				if (view.Settings.ShowNodeAddress)
+				{
+#if WIN64
+					addCharacters += 16;
+#else
+					addCharacters += 8;
+#endif
+					width += view.Font.Width;
+				}
+			}
+
+			if (addName)
+			{
+				addCharacters += Name.Length;
+			}
+
+			if (addComment)
+			{
+				addCharacters += 2 + Comment.Length;
+				width += view.Font.Width;
+			}
+
+			width += addCharacters * view.Font.Width;
+
+			return width;
+		}
 
 		/// <summary>Updates the node from the given <paramref name="spot"/>. Sets the <see cref="Name"/> and <see cref="Comment"/> of the node.</summary>
 		/// <param name="spot">The spot.</param>
@@ -397,7 +441,7 @@ namespace ReClassNET.Nodes
 				view.Context.FillRectangle(brush, 0, y, view.ClientArea.Right, 1);
 			}
 
-			return new Size(0, y + HiddenSize.Height);
+			return new Size(0, HiddenSize.Height);
 		}
 	}
 
