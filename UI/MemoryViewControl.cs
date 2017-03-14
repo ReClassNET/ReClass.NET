@@ -696,6 +696,13 @@ namespace ReClassNET.UI
 
 		#region Event Handler
 
+		protected override void OnSizeChanged(EventArgs e)
+		{
+			base.OnSizeChanged(e);
+
+			Invalidate();
+		}
+
 		private void repaintTimer_Tick(object sender, EventArgs e)
 		{
 			if (DesignMode)
