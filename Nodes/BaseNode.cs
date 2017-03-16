@@ -135,7 +135,7 @@ namespace ReClassNET.Nodes
 		/// <returns>The calculated size.</returns>
 		public abstract Size CalculateSize(ViewInfo view);
 
-		protected int CalculateWidth(ViewInfo view, bool addAddressOffset, bool addName, bool addComment, int addCharacters)
+		protected virtual int CalculateWidth(ViewInfo view, bool addAddressOffset, bool addName, bool addComment, int addCharacters)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(addCharacters >= 0);

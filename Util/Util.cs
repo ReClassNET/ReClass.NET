@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 
 namespace ReClassNET.Util
 {
@@ -42,6 +43,11 @@ namespace ReClassNET.Util
 				return item1;
 			}
 			return item2;
+		}
+
+		public static Size AggregateNodeSizes(Size baseSize, Size newSize)
+		{
+			return new Size(Math.Max(baseSize.Width, newSize.Width), baseSize.Height + newSize.Height);
 		}
 	}
 }

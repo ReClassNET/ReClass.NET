@@ -29,12 +29,12 @@ namespace ReClassNET.Nodes
 			var minWidth = 26 * view.Font.Width;
 			var maxWidth = 0;
 
-			foreach (var instruction in instructions)
+			using (var brush = new SolidBrush(view.Settings.HiddenColor))
 			{
-				y += view.Font.Height;
-
-				using (var brush = new SolidBrush(view.Settings.HiddenColor))
+				foreach (var instruction in instructions)
 				{
+					y += view.Font.Height;
+
 					var x = AddText(view, tx, y, view.Settings.AddressColor, HotSpot.ReadOnlyId, instruction.Address) + 6;
 
 					view.Context.FillRectangle(brush, x, y, 1, view.Font.Height);
@@ -52,6 +52,25 @@ namespace ReClassNET.Nodes
 			}
 
 			return new Size(maxWidth, y - origY);
+		}
+
+		protected Size CalculateInstructionsSize(ViewInfo view)
+		{
+			var width = 0;
+
+			// Address
+#if WIN64
+			width += 16 * view.Font.Width;
+#else
+			width += 8 * view.Font.Width;
+#endif
+
+			// Spacer
+			width += 26;
+
+			width += (26 /* Bytes */ + 15 /* Instruction Text */) * view.Font.Width;
+
+			return new Size(width, instructions.Count * view.Font.Height);
 		}
 
 		protected void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address, out int memorySize)

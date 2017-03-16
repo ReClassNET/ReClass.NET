@@ -6,6 +6,7 @@ using System.Linq;
 using ReClassNET.AddressParser;
 using ReClassNET.Memory;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -116,6 +117,8 @@ namespace ReClassNET.Nodes
 
 			if (levelsOpen[view.Level])
 			{
+				var childOffset = tx - origX;
+
 				var nv = view.Clone();
 				nv.Level++;
 				foreach (var node in Nodes)
@@ -125,8 +128,7 @@ namespace ReClassNET.Nodes
 					{
 						var innerSize = node.Draw(nv, tx, y);
 
-						size.Width = Math.Max(size.Width, innerSize.Width + tx - origX);
-						size.Height += innerSize.Height;
+						size = Utils.AggregateNodeSizes(size, innerSize.Extend(childOffset, 0));
 
 						y += innerSize.Height;
 					}
@@ -141,16 +143,14 @@ namespace ReClassNET.Nodes
 							// then draw the node...
 							var innerSize = node.Draw(nv, tx, y);
 
-							size.Width = Math.Max(size.Width, innerSize.Width + tx - origX);
-							size.Height += innerSize.Height;
+							size = Utils.AggregateNodeSizes(size, innerSize.Extend(childOffset, 0));
 
 							y += innerSize.Height;
 						}
 						else
 						{
 							// or skip drawing and just use the calculated width and height.
-							size.Width = Math.Max(size.Width, calculatedSize.Width);
-							size.Height += calculatedSize.Height;
+							size = Utils.AggregateNodeSizes(size, calculatedSize);
 
 							y += calculatedSize.Height;
 						}
@@ -168,14 +168,17 @@ namespace ReClassNET.Nodes
 				return HiddenSize;
 			}
 
-			var h = view.Font.Height;
+			var childOffset = Icons.Dimensions * 2;
+
+			var size = new Size(CalculateWidth(view, false, true, true, AddressFormula.Length + 6 + 10), view.Font.Height);
 			if (levelsOpen[view.Level])
 			{
 				var nv = view.Clone();
 				nv.Level++;
-				h += Nodes.Sum(n => n.CalculateSize(nv).Height);
+
+				size = Nodes.Aggregate(size, (s, n) => Utils.AggregateNodeSizes(s, n.CalculateSize(nv).Extend(childOffset, 0)));
 			}
-			return new Size(500, h);
+			return size;
 		}
 
 		public override void Update(HotSpot spot)

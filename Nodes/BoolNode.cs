@@ -45,7 +45,7 @@ namespace ReClassNET.Nodes
 
 		public override Size CalculateSize(ViewInfo view)
 		{
-			return IsHidden ? HiddenSize : new Size(500/*CalculateWidth(view, true, true, true, 13)*/, view.Font.Height);
+			return IsHidden ? HiddenSize : new Size(CalculateWidth(view, true, true, true, 13), view.Font.Height);
 		}
 
 		/// <summary>Updates the node from the given spot and sets the value.</summary>

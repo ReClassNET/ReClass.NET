@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -42,9 +43,9 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "(");
 			x = AddText(view, x, y, view.Settings.IndexColor, 1, CurrentIndex.ToString());
 			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, ")");
-			x = AddIcon(view, x, y, Icons.RightArrow, 3, HotSpotType.Click);
+			x = AddIcon(view, x, y, Icons.RightArrow, 3, HotSpotType.Click) + view.Font.Width;
 
-			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name} Size={MemorySize}>");
+			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name} Size={MemorySize}>") + view.Font.Width;
 			x = AddIcon(view, x + 2, y, Icons.Change, 4, exchange);
 
 			x += view.Font.Width;
@@ -77,15 +78,15 @@ namespace ReClassNET.Nodes
 				return HiddenSize;
 			}
 
-			var h = view.Font.Height;
+			var size = new Size(CalculateWidth(view, true, true, true, 14 + 5 + 7 + InnerNode.Name.Length + 3) + 3 * Icons.Dimensions, view.Font.Height);
 			if (levelsOpen[view.Level])
 			{
-				h += CalculateChildHeight(view);
-			}
-			return new Size(500, h);
-		}
+				var childOffset = Icons.Dimensions * 2;
 
-		protected abstract int CalculateChildHeight(ViewInfo view);
+				size = Utils.AggregateNodeSizes(size, InnerNode.CalculateSize(view).Extend(childOffset, 0));
+			}
+			return size;
+		}
 
 		public override void Update(HotSpot spot)
 		{

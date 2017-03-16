@@ -42,11 +42,10 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Instance") + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
-			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name}>");
-			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeType);
+			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name}>") + view.Font.Width;
+			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeType) + view.Font.Width;
 
-			x += view.Font.Width;
 			x = AddComment(view, x, y);
 
 			AddTypeDrop(view, y);
@@ -78,12 +77,14 @@ namespace ReClassNET.Nodes
 				return HiddenSize;
 			}
 
-			var h = view.Font.Height;
+			var size = new Size(CalculateWidth(view, true, true, true, 11 + InnerNode.Name.Length) + Icons.Dimensions, view.Font.Height);
 			if (levelsOpen[view.Level])
 			{
-				h += InnerNode.CalculateSize(view).Height;
+				var childOffset = Icons.Dimensions * 2;
+
+				size = Utils.AggregateNodeSizes(size, InnerNode.CalculateSize(view).Extend(childOffset, 0));
 			}
-			return new Size(500, h);
+			return size;
 		}
 	}
 }

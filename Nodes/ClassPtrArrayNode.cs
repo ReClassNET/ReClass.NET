@@ -12,7 +12,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size * Count;
 
-		public override bool PerformCycleCheck => true;
+		public override bool PerformCycleCheck => false;
 
 		public override void Intialize()
 		{
@@ -45,11 +45,6 @@ namespace ReClassNET.Nodes
 			v.Memory = memory;
 
 			return InnerNode.Draw(v, x, y);
-		}
-
-		protected override int CalculateChildHeight(ViewInfo view)
-		{
-			return InnerNode.CalculateSize(view).Height;
 		}
 	}
 }

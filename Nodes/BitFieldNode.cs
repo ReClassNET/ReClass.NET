@@ -160,12 +160,12 @@ namespace ReClassNET.Nodes
 				return HiddenSize;
 			}
 
-			var h = view.Font.Height;
+			var size = new Size(CalculateWidth(view, true, true, true, 10 + Bits), view.Font.Height);
 			if (levelsOpen[view.Level])
 			{
-				h += view.Font.Height + 2;
+				size.Height += view.Font.Height + 2;
 			}
-			return new Size(500, h);
+			return size;
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected bit.</summary>

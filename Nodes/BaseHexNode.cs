@@ -90,7 +90,7 @@ namespace ReClassNET.Nodes
 
 		public override Size CalculateSize(ViewInfo view)
 		{
-			return IsHidden ? HiddenSize : new Size(500/*CalculateWidth(view, true, false, true, 9 + MemorySize * 3)*/, view.Font.Height);
+			return IsHidden ? HiddenSize : new Size(CalculateWidth(view, true, false, true, 9 + MemorySize * 3), view.Font.Height);
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected byte.</summary>

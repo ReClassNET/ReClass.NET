@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Drawing;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -104,15 +105,15 @@ namespace ReClassNET.Nodes
 				return HiddenSize;
 			}
 
-			var h = view.Font.Height;
+			var size = new Size(CalculateWidth(view, true, true, true, 0), view.Font.Height);
 			if (levelsOpen[view.Level])
 			{
-				h += CalculateValuesHeight(view);
+				size = Utils.AggregateNodeSizes(size, CalculateValuesSize(view));
 			}
-			return new Size(500, h);
+			return size;
 		}
 
-		protected abstract int CalculateValuesHeight(ViewInfo view);
+		protected abstract Size CalculateValuesSize(ViewInfo view);
 
 		public void Update(HotSpot spot, int max)
 		{

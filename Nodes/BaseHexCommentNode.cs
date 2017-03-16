@@ -88,5 +88,16 @@ namespace ReClassNET.Nodes
 
 			return x;
 		}
+
+		protected override int CalculateWidth(ViewInfo view, bool addAddressOffset, bool addName, bool addComment, int addCharacters)
+		{
+			if (view.Settings.ShowCommentFloat) addCharacters += 5;
+			if (view.Settings.ShowCommentInteger) addCharacters += 7;
+
+			// There may be special info about pointers etc.
+			addCharacters += 5;
+
+			return base.CalculateWidth(view, addAddressOffset, addName, addComment, addCharacters);
+		}
 	}
 }

@@ -95,12 +95,14 @@ namespace ReClassNET.Nodes
 				return HiddenSize;
 			}
 
-			var h = view.Font.Height;
+			var size = new Size(CalculateWidth(view, true, true, true, 10) + Icons.Dimensions, view.Font.Height);
 			if (levelsOpen[view.Level])
 			{
-				h += instructions.Count * view.Font.Height;
+				var instructionOffset = Icons.Dimensions * 2;
+
+				size = Utils.AggregateNodeSizes(size, CalculateInstructionsSize(view).Extend(instructionOffset, 0));
 			}
-			return new Size(500, h);
+			return size;
 		}
 
 		private void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address)
