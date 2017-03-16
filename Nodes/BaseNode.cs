@@ -265,10 +265,11 @@ namespace ReClassNET.Nodes
 					AddHotSpot(view, rect, text, hitId, HotSpotType.Edit);
 				}
 
-				using (var brush = new SolidBrush(color))
+				view.Context.DrawStringEx(text, view.Font.Font, color, x, y);
+				/*using (var brush = new SolidBrush(color))
 				{
 					view.Context.DrawString(text, view.Font.Font, brush, x, y);
-				}
+				}*/
 			}
 
 			return x + width;
