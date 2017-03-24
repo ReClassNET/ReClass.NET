@@ -136,9 +136,10 @@ namespace ReClassNET.Nodes
 					{
 						// Otherwise calculate the size...
 						var calculatedSize = node.CalculateSize(nv);
+						calculatedSize.Width = 0;
 
 						// and check if the node area overlaps with the visible area...
-						if (new Rectangle(tx, y, calculatedSize.Width, calculatedSize.Height).IntersectsWith(view.ClientArea))
+						if (new Rectangle(tx, y, 9999999, calculatedSize.Height).IntersectsWith(view.ClientArea))
 						{
 							// then draw the node...
 							var innerSize = node.Draw(nv, tx, y);
