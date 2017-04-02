@@ -45,9 +45,9 @@ namespace ReClassNET.Nodes
 			});
 		}
 
-		protected override Size CalculateValuesSize(ViewInfo view)
+		protected override int CalculateValuesHeight(ViewInfo view)
 		{
-			return new Size(25 * view.Font.Width, 0);
+			return 0;
 		}
 
 		public override void Update(HotSpot spot)

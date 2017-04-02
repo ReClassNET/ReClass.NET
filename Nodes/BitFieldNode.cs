@@ -153,19 +153,19 @@ namespace ReClassNET.Nodes
 			return new Size(x - origX, y - origY + view.Font.Height);
 		}
 
-		public override Size CalculateSize(ViewInfo view)
+		public override int CalculateDrawnHeight(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenSize;
+				return HiddenHeight;
 			}
 
-			var size = new Size(CalculateWidth(view, true, true, true, 10 + Bits), view.Font.Height);
+			var height = view.Font.Height;
 			if (levelsOpen[view.Level])
 			{
-				size.Height += view.Font.Height + 2;
+				height += view.Font.Height + 2;
 			}
-			return size;
+			return height;
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected bit.</summary>

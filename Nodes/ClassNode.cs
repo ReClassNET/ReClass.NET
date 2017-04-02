@@ -134,12 +134,11 @@ namespace ReClassNET.Nodes
 					}
 					else
 					{
-						// Otherwise calculate the size...
-						var calculatedSize = node.CalculateSize(nv);
-						calculatedSize.Width = 0;
+						// Otherwise calculate the height...
+						var calculatedHeight = node.CalculateDrawnHeight(nv);
 
 						// and check if the node area overlaps with the visible area...
-						if (new Rectangle(tx, y, 9999999, calculatedSize.Height).IntersectsWith(view.ClientArea))
+						if (new Rectangle(tx, y, 9999999, calculatedHeight).IntersectsWith(view.ClientArea))
 						{
 							// then draw the node...
 							var innerSize = node.Draw(nv, tx, y);
@@ -150,10 +149,10 @@ namespace ReClassNET.Nodes
 						}
 						else
 						{
-							// or skip drawing and just use the calculated width and height.
-							size = Utils.AggregateNodeSizes(size, calculatedSize);
+							// or skip drawing and just use the calculated height.
+							size = Utils.AggregateNodeSizes(size, new Size(0, calculatedHeight));
 
-							y += calculatedSize.Height;
+							y += calculatedHeight;
 						}
 					}
 				}
@@ -162,24 +161,21 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override Size CalculateSize(ViewInfo view)
+		public override int CalculateDrawnHeight(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenSize;
+				return HiddenHeight;
 			}
 
-			var childOffset = Icons.Dimensions * 2;
-
-			var size = new Size(CalculateWidth(view, false, true, true, AddressFormula.Length + 6 + 10), view.Font.Height);
+			var height = view.Font.Height;
 			if (levelsOpen[view.Level])
 			{
 				var nv = view.Clone();
 				nv.Level++;
-
-				size = Nodes.Aggregate(size, (s, n) => Utils.AggregateNodeSizes(s, n.CalculateSize(nv).Extend(childOffset, 0)));
+				height += Nodes.Sum(n => n.CalculateDrawnHeight(nv));
 			}
-			return size;
+			return height;
 		}
 
 		public override void Update(HotSpot spot)

@@ -84,19 +84,19 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override Size CalculateSize(ViewInfo view)
+		public override int CalculateDrawnHeight(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenSize;
+				return HiddenHeight;
 			}
 
-			var h = view.Font.Height;
+			var height = view.Font.Height;
 			if (levelsOpen[view.Level])
 			{
-				h += instructions.Count * view.Font.Height;
+				height += instructions.Count * view.Font.Height;
 			}
-			return new Size(500, h);
+			return height;
 		}
 
 		public override void Update(HotSpot spot)

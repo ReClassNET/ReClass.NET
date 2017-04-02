@@ -88,19 +88,19 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override Size CalculateSize(ViewInfo view)
+		public override int CalculateDrawnHeight(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenSize;
+				return HiddenHeight;
 			}
 
-			var h = view.Font.Height;
+			var height = view.Font.Height;
 			if (levelsOpen[view.Level])
 			{
-				h += nodes.Sum(n => n.CalculateSize(view).Height);
+				height += nodes.Sum(n => n.CalculateDrawnHeight(view));
 			}
-			return new Size(500, h);
+			return height;
 		}
 
 		public override bool ReplaceChildNode(int index, Type nodeType, ref List<BaseNode> createdNodes) => false;

@@ -296,7 +296,7 @@ namespace ReClassNET.DataExchange
 				get { throw new NotImplementedException(); }
 			}
 
-			public override Size CalculateSize(ViewInfo view)
+			public override int CalculateDrawnHeight(ViewInfo view)
 			{
 				throw new NotImplementedException();
 			}

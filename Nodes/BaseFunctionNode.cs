@@ -54,25 +54,6 @@ namespace ReClassNET.Nodes
 			return new Size(maxWidth, y - origY);
 		}
 
-		protected Size CalculateInstructionsSize(ViewInfo view)
-		{
-			var width = 0;
-
-			// Address
-#if WIN64
-			width += 16 * view.Font.Width;
-#else
-			width += 8 * view.Font.Width;
-#endif
-
-			// Spacer
-			width += 26;
-
-			width += (26 /* Bytes */ + 15 /* Instruction Text */) * view.Font.Width;
-
-			return new Size(width, instructions.Count * view.Font.Height);
-		}
-
 		protected void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address, out int memorySize)
 		{
 			Contract.Requires(memory != null);

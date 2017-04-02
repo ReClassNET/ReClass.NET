@@ -88,21 +88,19 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override Size CalculateSize(ViewInfo view)
+		public override int CalculateDrawnHeight(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenSize;
+				return HiddenHeight;
 			}
 
-			var size = new Size(CalculateWidth(view, true, true, true, 10) + Icons.Dimensions, view.Font.Height);
+			var height = view.Font.Height;
 			if (levelsOpen[view.Level])
 			{
-				var instructionOffset = Icons.Dimensions * 2;
-
-				size = Utils.AggregateNodeSizes(size, CalculateInstructionsSize(view).Extend(instructionOffset, 0));
+				height += instructions.Count * view.Font.Height;
 			}
-			return size;
+			return height;
 		}
 
 		private void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address)

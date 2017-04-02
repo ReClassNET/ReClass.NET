@@ -88,9 +88,9 @@ namespace ReClassNET.Nodes
 			return new Size(x - origX, view.Font.Height);
 		}
 
-		public override Size CalculateSize(ViewInfo view)
+		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			return IsHidden ? HiddenSize : new Size(CalculateWidth(view, true, false, true, 9 + MemorySize * 3), view.Font.Height);
+			return IsHidden ? HiddenHeight : view.Font.Height;
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected byte.</summary>

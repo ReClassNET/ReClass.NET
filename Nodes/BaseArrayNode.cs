@@ -71,21 +71,19 @@ namespace ReClassNET.Nodes
 
 		protected abstract Size DrawChild(ViewInfo view, int x, int y);
 
-		public override Size CalculateSize(ViewInfo view)
+		public override int CalculateDrawnHeight(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenSize;
+				return HiddenHeight;
 			}
 
-			var size = new Size(CalculateWidth(view, true, true, true, 14 + 5 + 7 + InnerNode.Name.Length + 3) + 3 * Icons.Dimensions, view.Font.Height);
+			var height = view.Font.Height;
 			if (levelsOpen[view.Level])
 			{
-				var childOffset = Icons.Dimensions * 2;
-
-				size = Utils.AggregateNodeSizes(size, InnerNode.CalculateSize(view).Extend(childOffset, 0));
+				height += InnerNode.CalculateDrawnHeight(view);
 			}
-			return size;
+			return height;
 		}
 
 		public override void Update(HotSpot spot)

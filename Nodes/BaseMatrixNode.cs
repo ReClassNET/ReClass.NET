@@ -98,22 +98,22 @@ namespace ReClassNET.Nodes
 			return new Size(x - origX, y - origY + view.Font.Height);
 		}
 
-		public override Size CalculateSize(ViewInfo view)
+		public override int CalculateDrawnHeight(ViewInfo view)
 		{
 			if (IsHidden)
 			{
-				return HiddenSize;
+				return HiddenHeight;
 			}
 
-			var size = new Size(CalculateWidth(view, true, true, true, 0), view.Font.Height);
+			var height = view.Font.Height;
 			if (levelsOpen[view.Level])
 			{
-				size = Utils.AggregateNodeSizes(size, CalculateValuesSize(view));
+				height += CalculateValuesHeight(view);
 			}
-			return size;
+			return height;
 		}
 
-		protected abstract Size CalculateValuesSize(ViewInfo view);
+		protected abstract int CalculateValuesHeight(ViewInfo view);
 
 		public void Update(HotSpot spot, int max)
 		{

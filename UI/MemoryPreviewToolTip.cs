@@ -61,7 +61,7 @@ namespace ReClassNET.UI
 		private void OnPopup(object sender, PopupEventArgs e)
 		{
 			size.Width = ToolTipWidth;
-			size.Height = nodes.Sum(n => n.CalculateSize(viewInfo).Height) + ToolTipPadding;
+			size.Height = nodes.Sum(n => n.CalculateDrawnHeight(viewInfo)) + ToolTipPadding;
 
 			e.ToolTipSize = size;
 

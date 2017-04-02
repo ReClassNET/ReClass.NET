@@ -20,7 +20,7 @@ namespace ReClassNET.Nodes
 		internal static readonly List<INodeInfoReader> NodeInfoReader = new List<INodeInfoReader>();
 
 		protected static readonly int TextPadding = Icons.Dimensions;
-		protected static readonly Size HiddenSize = new Size(0, 1);
+		protected static readonly int HiddenHeight = 1;
 
 		private static int NodeIndex = 0;
 
@@ -127,57 +127,13 @@ namespace ReClassNET.Nodes
 		public abstract Size Draw(ViewInfo view, int x, int y);
 
 		/// <summary>
-		/// Calculates the size of the node if drawn.
+		/// Calculates the height of the node if drawn.
 		/// This method is used to determine if a node outside the visible area should be drawn.
-		/// The returned size must be equal to the size which is returned by the <see cref="Draw(ViewInfo, int, int)"/> method.
+		/// The returned height must be equal to the height which is returned by the <see cref="Draw(ViewInfo, int, int)"/> method.
 		/// </summary>
 		/// <param name="view">The view information.</param>
-		/// <returns>The calculated size.</returns>
-		public abstract Size CalculateSize(ViewInfo view);
-
-		protected virtual int CalculateWidth(ViewInfo view, bool addAddressOffset, bool addName, bool addComment, int addCharacters)
-		{
-			Contract.Requires(view != null);
-			Contract.Requires(addCharacters >= 0);
-
-			var width = 0;
-
-			width += TextPadding;
-			width += Icons.Dimensions;
-
-			if (addAddressOffset)
-			{
-				if (view.Settings.ShowNodeOffset)
-				{
-					addCharacters += 4;
-					width += view.Font.Width;
-				}
-				if (view.Settings.ShowNodeAddress)
-				{
-#if WIN64
-					addCharacters += 16;
-#else
-					addCharacters += 8;
-#endif
-					width += view.Font.Width;
-				}
-			}
-
-			if (addName)
-			{
-				addCharacters += Name.Length;
-			}
-
-			if (addComment)
-			{
-				addCharacters += 2 + Comment.Length;
-				width += view.Font.Width;
-			}
-
-			width += addCharacters * view.Font.Width;
-
-			return width;
-		}
+		/// <returns>The calculated height.</returns>
+		public abstract int CalculateDrawnHeight(ViewInfo view);
 
 		/// <summary>Updates the node from the given <paramref name="spot"/>. Sets the <see cref="Name"/> and <see cref="Comment"/> of the node.</summary>
 		/// <param name="spot">The spot.</param>
@@ -442,7 +398,7 @@ namespace ReClassNET.Nodes
 				view.Context.FillRectangle(brush, 0, y, view.ClientArea.Right, 1);
 			}
 
-			return new Size(0, HiddenSize.Height);
+			return new Size(0, HiddenHeight);
 		}
 	}
 
@@ -466,7 +422,7 @@ namespace ReClassNET.Nodes
 			throw new NotImplementedException();
 		}
 
-		public override Size CalculateSize(ViewInfo view)
+		public override int CalculateDrawnHeight(ViewInfo view)
 		{
 			Contract.Requires(view != null);
 
