@@ -252,7 +252,7 @@ struct DebugRegister7
 
 inline void MultiByteToUnicode(const char* src, RC_UnicodeChar* dst, int size)
 {
-#if _MSC_VER == 1900
+#if _MSC_VER >= 1900
 	// VS Bug: https://connect.microsoft.com/VisualStudio/feedback/details/1348277/link-error-when-using-std-codecvt-utf8-utf16-char16-t
 
 	auto temp = std::wstring_convert<std::codecvt_utf8_utf16<int16_t>, int16_t>{}.from_bytes(src);
