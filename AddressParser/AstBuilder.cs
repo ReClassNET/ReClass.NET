@@ -103,7 +103,7 @@ namespace ReClassNET.AddressParser
 				if (operatorStack.Count > 0 && operatorStack.Peek().TokenType == TokenType.LeftBracket)
 				{
 					operatorStack.Pop();
-					operatorStack.Push(new Token(TokenType.ReadPointer, '\r'));
+					resultStack.Push(ConvertOperation(new Token(TokenType.ReadPointer, '\r')));
 				}
 				else
 				{

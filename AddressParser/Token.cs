@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 namespace ReClassNET.AddressParser
 {
-	enum TokenType
+	internal enum TokenType
 	{
 		Offset,
 		ModuleOffset,
@@ -14,7 +14,7 @@ namespace ReClassNET.AddressParser
 		ReadPointer
 	}
 
-	class Token
+	internal class Token
 	{
 		/// <summary>The type of the token.</summary>
 		public TokenType TokenType { get; }
