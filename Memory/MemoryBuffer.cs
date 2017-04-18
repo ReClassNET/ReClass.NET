@@ -215,7 +215,7 @@ namespace ReClassNET.Memory
 				length = data.Length - Offset - offset;
 			}
 
-			var sb = new StringBuilder(encoding.GetString(data, offset, length));
+			var sb = new StringBuilder(encoding.GetString(data, Offset + offset, length));
 			for (var i = 0; i < sb.Length; ++i)
 			{
 				if (!sb[i].IsPrintable())
