@@ -88,7 +88,11 @@ namespace ReClassNET.Memory
 				hasHistory = true;
 			}
 
-			Process.ReadRemoteMemoryIntoBuffer(address, ref data);
+			if (!Process.ReadRemoteMemoryIntoBuffer(address, ref data))
+			{
+				// What to do with failed reads? Set all bytes to zero?
+				data.FillWithZero();
+			}
 		}
 
 		public byte ReadByte(IntPtr offset)
