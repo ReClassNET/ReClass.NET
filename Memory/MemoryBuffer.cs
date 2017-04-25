@@ -8,11 +8,11 @@ namespace ReClassNET.Memory
 {
 	public class MemoryBuffer
 	{
-		public RemoteProcess Process { get; set; }
-
 		private byte[] data;
 		private byte[] historyData;
 		private bool hasHistory;
+
+		public RemoteProcess Process { get; set; }
 
 		public int Size
 		{
@@ -34,6 +34,8 @@ namespace ReClassNET.Memory
 
 		public int Offset { get; set; }
 
+		public bool ContainsValidData { get; private set; }
+
 		[ContractInvariantMethod]
 		private void ObjectInvariants()
 		{
@@ -48,6 +50,8 @@ namespace ReClassNET.Memory
 
 			data = new byte[0];
 			historyData = new byte[0];
+
+			ContainsValidData = true;
 		}
 
 		public MemoryBuffer(MemoryBuffer other)
@@ -59,6 +63,8 @@ namespace ReClassNET.Memory
 			data = other.data;
 			historyData = other.historyData;
 			hasHistory = other.hasHistory;
+
+			ContainsValidData = other.ContainsValidData;
 		}
 
 		public MemoryBuffer Clone()
@@ -88,9 +94,9 @@ namespace ReClassNET.Memory
 				hasHistory = true;
 			}
 
-			if (!Process.ReadRemoteMemoryIntoBuffer(address, ref data))
+			ContainsValidData = Process.ReadRemoteMemoryIntoBuffer(address, ref data);
+			if (!ContainsValidData)
 			{
-				// What to do with failed reads? Set all bytes to zero?
 				data.FillWithZero();
 			}
 		}

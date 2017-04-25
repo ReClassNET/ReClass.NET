@@ -28,6 +28,8 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
+			DrawInvalidMemoryIndicator(view, y);
+
 			var origX = x;
 
 			AddSelection(view, x, y, view.Font.Height);

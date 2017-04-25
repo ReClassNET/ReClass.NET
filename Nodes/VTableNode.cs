@@ -41,6 +41,8 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
+			DrawInvalidMemoryIndicator(view, y);
+
 			var origX = x;
 			var origY = y;
 

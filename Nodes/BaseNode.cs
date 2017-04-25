@@ -400,6 +400,17 @@ namespace ReClassNET.Nodes
 
 			return new Size(0, HiddenHeight);
 		}
+
+		/// <summary>Draws an error indicator if the used memory buffer is not valid.</summary>
+		/// <param name="view">The view information.</param>
+		/// <param name="y">The y coordinate.</param>
+		protected void DrawInvalidMemoryIndicator(ViewInfo view, int y)
+		{
+			if (!view.Memory.ContainsValidData)
+			{
+				view.Context.DrawImage(Properties.Resources.B16x16_Error, 2, y);
+			}
+		}
 	}
 
 	[ContractClassFor(typeof(BaseNode))]
