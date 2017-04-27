@@ -28,6 +28,10 @@ namespace ReClassNET.DataExchange
 		public void Load(string filePath, ILogger logger)
 		{
 			var document = XDocument.Load(filePath);
+			if (document.Root == null)
+			{
+				return;
+			}
 
 			Type[] typeMap = null;
 
@@ -256,7 +260,7 @@ namespace ReClassNET.DataExchange
 				{
 					int count;
 					TryGetAttributeValue(element, "Size", out count, logger);
-					classInstanceArrayNode.Count = count / IntPtr.Size;
+					classPtrArrayNode.Count = count / IntPtr.Size;
 				}
 				var textNode = node as BaseTextNode;
 				if (textNode != null)
