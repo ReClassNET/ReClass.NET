@@ -29,12 +29,12 @@ namespace ReClassNET.Memory
 		[FieldOffset(0)]
 		public int IntValue;
 
-		public IntPtr IntPtr => unchecked((IntPtr)IntValue);
+		public IntPtr IntPtr => (IntPtr)IntValue;
 
 		[FieldOffset(0)]
 		public uint UIntValue;
 
-		public UIntPtr UIntPtr => unchecked((UIntPtr)UIntValue);
+		public UIntPtr UIntPtr => (UIntPtr)UIntValue;
 
 		[FieldOffset(0)]
 		public float FloatValue;

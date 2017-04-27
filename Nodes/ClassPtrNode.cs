@@ -2,7 +2,6 @@
 using System.Drawing;
 using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {

@@ -87,12 +87,12 @@ namespace ReClassNET.Debugger
 				}
 			};
 
-			BreakpointHandler handler = delegate (IBreakpoint bp, ref DebugEvent evt)
+			void HandleBreakpoint(IBreakpoint bp, ref DebugEvent evt)
 			{
 				fcf.AddRecord(evt.ExceptionInfo);
-			};
+			}
 
-			var breakpoint = new HardwareBreakpoint(breakpointList[0].Address, register, trigger, (HardwareBreakpointSize)breakpointList[0].Size, handler);
+			var breakpoint = new HardwareBreakpoint(breakpointList[0].Address, register, trigger, (HardwareBreakpointSize)breakpointList[0].Size, HandleBreakpoint);
 			try
 			{
 				AddBreakpoint(breakpoint);
@@ -117,7 +117,7 @@ namespace ReClassNET.Debugger
 						break;
 					}
 
-					breakpoint = new HardwareBreakpoint(split.Address, register, trigger, (HardwareBreakpointSize)split.Size, handler);
+					breakpoint = new HardwareBreakpoint(split.Address, register, trigger, (HardwareBreakpointSize)split.Size, HandleBreakpoint);
 					AddBreakpoint(breakpoint);
 					localBreakpoints.Add(breakpoint);
 				}

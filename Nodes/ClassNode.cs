@@ -28,7 +28,7 @@ namespace ReClassNET.Nodes
 		private NodeUuid uuid;
 		public NodeUuid Uuid
 		{
-			get { return uuid; }
+			get => uuid;
 			set
 			{
 				Contract.Requires(value != null);

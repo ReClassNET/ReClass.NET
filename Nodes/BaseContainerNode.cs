@@ -76,6 +76,10 @@ namespace ReClassNET.Nodes
 			var oldNode = nodes[index];
 
 			var node = Activator.CreateInstance(nodeType) as BaseNode;
+			if (node == null)
+			{
+				return false;
+			}
 
 			node.Intialize();
 			node.CopyFromNode(oldNode);

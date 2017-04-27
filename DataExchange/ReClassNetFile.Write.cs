@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.Compression;
@@ -142,8 +141,7 @@ namespace ReClassNET.DataExchange
 
 			using (var project = new ReClassNetProject())
 			{
-				Action<BaseReferenceNode> recursiveAddReferences = null;
-				recursiveAddReferences = delegate (BaseReferenceNode referenceNode)
+				void RecursiveAddReferences(BaseReferenceNode referenceNode)
 				{
 					if (project.ContainsClass(referenceNode.InnerNode.Uuid))
 					{
@@ -154,9 +152,9 @@ namespace ReClassNET.DataExchange
 
 					foreach (var reference in referenceNode.InnerNode.Nodes.OfType<BaseReferenceNode>())
 					{
-						recursiveAddReferences(reference);
+						RecursiveAddReferences(reference);
 					}
-				};
+				}
 
 				var serialisationClass = new ClassNode(false)
 				{
@@ -178,7 +176,7 @@ namespace ReClassNET.DataExchange
 					var referenceNode = node as BaseReferenceNode;
 					if (referenceNode != null)
 					{
-						recursiveAddReferences(referenceNode);
+						RecursiveAddReferences(referenceNode);
 					}
 
 					serialisationClass.AddNode(node);

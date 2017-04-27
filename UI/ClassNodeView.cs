@@ -128,7 +128,7 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ReClassNetProject Project
 		{
-			get { return project; }
+			get => project;
 			set
 			{
 				Contract.Requires(value != null);

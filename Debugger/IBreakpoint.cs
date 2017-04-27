@@ -19,13 +19,7 @@ namespace ReClassNET.Debugger
 	[ContractClassFor(typeof(IBreakpoint))]
 	internal abstract class IBreakpointContract : IBreakpoint
 	{
-		public IntPtr Address
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-		}
+		public IntPtr Address => throw new NotImplementedException();
 
 		public void Handler(ref DebugEvent evt)
 		{

@@ -22,13 +22,7 @@ namespace ReClassNET.CodeGenerator
 	[ContractClassFor(typeof(ICodeGenerator))]
 	internal abstract class ICodeGeneratorContract : ICodeGenerator
 	{
-		public Language Language
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-		}
+		public Language Language => throw new NotImplementedException();
 
 		public string GenerateCode(IEnumerable<ClassNode> classes, ILogger logger)
 		{

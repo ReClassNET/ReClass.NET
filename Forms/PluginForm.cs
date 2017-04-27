@@ -12,7 +12,6 @@ namespace ReClassNET.Forms
 {
 	public partial class PluginForm : IconForm
 	{
-		private readonly PluginManager pluginManager;
 		private readonly CoreFunctionsManager coreFunctions;
 
 		private class PluginInfoRow
@@ -39,7 +38,6 @@ namespace ReClassNET.Forms
 			Contract.Requires(pluginManager != null);
 			Contract.Requires(coreFunctions != null);
 
-			this.pluginManager = pluginManager;
 			this.coreFunctions = coreFunctions;
 
 			InitializeComponent();

@@ -13,14 +13,14 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string SettingName
 		{
-			get { return property?.Name; }
+			get => property?.Name;
 			set { property = typeof(Settings).GetProperty(value); ReadSetting(); }
 		}
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Settings Source
 		{
-			get { return source; }
+			get => source;
 			set { source = value; ReadSetting(); }
 		}
 

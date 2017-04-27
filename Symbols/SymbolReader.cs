@@ -97,7 +97,7 @@ namespace ReClassNET.Symbols
 				using (var symbol = new ComDisposableWrapper<IDiaSymbol>(diaSymbol))
 				{
 					var sb = new StringBuilder();
-					ReadSymbol(diaSymbol, sb);
+					ReadSymbol(symbol.Interface, sb);
 					return sb.ToString();
 				}
 			}

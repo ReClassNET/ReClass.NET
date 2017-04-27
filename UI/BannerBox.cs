@@ -16,11 +16,11 @@ namespace ReClassNET.UI
 
 		private Image image;
 
-		public Image Icon { get { return icon; } set { icon = value; UpdateBanner(); } }
+		public Image Icon { get => icon; set { icon = value; UpdateBanner(); } }
 
-		public string Title { get { return title; } set { title = value ?? string.Empty; UpdateBanner(); } }
+		public string Title { get => title; set { title = value ?? string.Empty; UpdateBanner(); } }
 
-		public override string Text { get { return text; } set { text = value ?? string.Empty; UpdateBanner(); } }
+		public override string Text { get => text; set { text = value ?? string.Empty; UpdateBanner(); } }
 
 		public BannerBox()
 		{

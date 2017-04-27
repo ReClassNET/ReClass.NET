@@ -32,7 +32,7 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ReClassNetProject Project
 		{
-			get { return project; }
+			get => project;
 			set
 			{
 				Contract.Requires(value != null);
@@ -45,7 +45,7 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ClassNode ClassNode
 		{
-			get { return classNode; }
+			get => classNode;
 			set
 			{
 				ClearSelection();
@@ -215,7 +215,7 @@ namespace ReClassNET.UI
 					HorizontalScroll.Value = 0;
 				}
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				Debug.Assert(false);
 			}
@@ -376,7 +376,7 @@ namespace ReClassNET.UI
 									Name = "None"
 								};
 
-								EventHandler handler = (sender2, e2) =>
+								void ChangeTypeHandler(object sender2, EventArgs e2)
 								{
 									var selectedClassNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
 									if (selectedClassNode == null)
@@ -390,7 +390,7 @@ namespace ReClassNET.UI
 									}
 
 									functionNode.BelongsToClass = selectedClassNode;
-								};
+								}
 
 								items = noneClass.Yield()
 									.Concat(project.Classes.OrderBy(c => c.Name))
@@ -401,7 +401,7 @@ namespace ReClassNET.UI
 											Text = c.Name,
 											Tag = c
 										};
-										b.Click += handler;
+										b.Click += ChangeTypeHandler;
 										return b;
 									});
 							}
@@ -409,7 +409,7 @@ namespace ReClassNET.UI
 							var refNode = hitObject as BaseReferenceNode;
 							if (refNode != null)
 							{
-								EventHandler handler = (sender2, e2) =>
+								void ChangeInnerNodeHandler(object sender2, EventArgs e2)
 								{
 									var selectedClassNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
 									if (selectedClassNode == null)
@@ -421,7 +421,7 @@ namespace ReClassNET.UI
 									{
 										refNode.ChangeInnerNode(selectedClassNode);
 									}
-								};
+								}
 
 								items = project.Classes
 									.OrderBy(c => c.Name)
@@ -432,7 +432,7 @@ namespace ReClassNET.UI
 											Text = c.Name,
 											Tag = c
 										};
-										b.Click += handler;
+										b.Click += ChangeInnerNodeHandler;
 										return b;
 									});
 							}
@@ -865,7 +865,7 @@ namespace ReClassNET.UI
 			var hotspot = selectedNodes.FirstOrDefault();
 			if (hotspot != null)
 			{
-				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode).AddBytes(length);
+				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode)?.AddBytes(length);
 			}
 
 			Invalidate();
@@ -878,7 +878,7 @@ namespace ReClassNET.UI
 			var hotspot = selectedNodes.FirstOrDefault();
 			if (hotspot != null)
 			{
-				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode).InsertBytes(hotspot.Node, length);
+				(hotspot.Node.ParentNode ?? hotspot.Node as ClassNode)?.InsertBytes(hotspot.Node, length);
 
 				Invalidate();
 			}

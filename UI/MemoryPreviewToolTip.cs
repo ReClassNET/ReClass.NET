@@ -18,16 +18,16 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public FontEx Font
 		{
-			get { return viewInfo.Font; }
-			set { viewInfo.Font = value; }
+			get => viewInfo.Font;
+			set => viewInfo.Font = value;
 		}
 
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public MemoryBuffer Memory
 		{
-			get { return viewInfo.Memory; }
-			set { viewInfo.Memory = value; }
+			get => viewInfo.Memory;
+			set => viewInfo.Memory = value;
 		}
 
 		private readonly List<BaseHexNode> nodes;

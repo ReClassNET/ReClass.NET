@@ -47,7 +47,7 @@ namespace ReClassNET.DataExchange
 
 		public void Load(string filePath, ILogger logger)
 		{
-			using (var connection = new SQLiteConnection($@"Data Source={filePath}"))
+			using (var connection = new SQLiteConnection($"Data Source={filePath}"))
 			{
 				connection.Open();
 

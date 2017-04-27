@@ -26,6 +26,10 @@ namespace ReClassNET.DataExchange
 		public void Load(string filePath, ILogger logger)
 		{
 			var document = XDocument.Load(filePath);
+			if (document.Root == null)
+			{
+				return;
+			}
 
 			var classes = new List<Tuple<XElement, ClassNode>>();
 

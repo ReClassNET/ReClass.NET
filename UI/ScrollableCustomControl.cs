@@ -19,7 +19,7 @@ namespace ReClassNET.UI
 
 			const int WHEEL_DELTA = 120;
 
-			var scrollProperties = VerticalScroll.Enabled ? (ScrollProperties)VerticalScroll : (ScrollProperties)HorizontalScroll;
+			var scrollProperties = VerticalScroll.Enabled ? VerticalScroll : (ScrollProperties)HorizontalScroll;
 
 			var wheelDelta = e.Delta;
 			while (Math.Abs(wheelDelta) >= WHEEL_DELTA)
@@ -153,7 +153,7 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			var scrollProperties = orientation == ScrollOrientation.VerticalScroll ? (ScrollProperties)VerticalScroll : (ScrollProperties)HorizontalScroll;
+			var scrollProperties = orientation == ScrollOrientation.VerticalScroll ? VerticalScroll : (ScrollProperties)HorizontalScroll;
 
 			SetValue(ScrollEventType.ThumbPosition, scrollProperties, scrollProperties.Value + amount);
 		}
@@ -193,7 +193,7 @@ namespace ReClassNET.UI
 							break;
 						}
 
-						ProcessMessage(ref msg, msg.Msg == WM_VSCROLL ? (ScrollProperties)VerticalScroll : (ScrollProperties)HorizontalScroll);
+						ProcessMessage(ref msg, msg.Msg == WM_VSCROLL ? VerticalScroll : (ScrollProperties)HorizontalScroll);
 
 						return;
 				}

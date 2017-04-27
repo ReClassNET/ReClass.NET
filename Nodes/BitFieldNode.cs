@@ -15,7 +15,7 @@ namespace ReClassNET.Nodes
 		/// <value>Possible values: 64, 32, 16, 8</value>
 		public int Bits
 		{
-			get { return bits; }
+			get => bits;
 			set
 			{
 				Contract.Ensures(bits > 0);

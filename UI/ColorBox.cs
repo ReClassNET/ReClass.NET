@@ -19,7 +19,7 @@ namespace ReClassNET.UI
 		private Color color;
 		public Color Color
 		{
-			get { return color; }
+			get => color;
 			set
 			{
 				// Normalize the color because Color.Red != Color.FromArgb(255, 0, 0)
@@ -44,14 +44,14 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string SettingName
 		{
-			get { return property?.Name; }
+			get => property?.Name;
 			set { property = typeof(Settings).GetProperty(value); ReadSetting(); }
 		}
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Settings Source
 		{
-			get { return source; }
+			get => source;
 			set { source = value; ReadSetting(); }
 		}
 

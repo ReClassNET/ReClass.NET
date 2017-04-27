@@ -189,7 +189,11 @@ namespace ReClassNET.Symbols
 				return;
 			}
 
-			var moduleName = Path.GetFileName(path).ToLower();
+			var moduleName = Path.GetFileName(path)?.ToLower();
+			if (string.IsNullOrEmpty(moduleName))
+			{
+				return;
+			}
 
 			bool createNew;
 			lock (symbolReaders)

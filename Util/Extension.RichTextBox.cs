@@ -37,10 +37,10 @@ namespace ReClassNET.Util
 			}
 		}
 
-		[DllImport(@"User32.dll", CharSet = CharSet.Auto)]
+		[DllImport("User32.dll", CharSet = CharSet.Auto)]
 		private static extern int SendMessage(IntPtr hWnd, uint msg, int wParam, ref RECT rect);
 
-		[DllImport(@"user32.dll", CharSet = CharSet.Auto)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
 		private static extern int SendMessage(IntPtr hwnd, int wMsg, IntPtr wParam, ref Rectangle lParam);
 
 		private const int EmGetrect = 0xB2;

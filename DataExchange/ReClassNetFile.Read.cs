@@ -36,8 +36,13 @@ namespace ReClassNET.DataExchange
 				using (var entryStream = dataEntry.Open())
 				{
 					var document = XDocument.Load(entryStream);
+					if (document.Root == null)
+					{
+						logger.Log(LogLevel.Error, "File has not the correct format.");
+						return;
+					}
 
-					var version = document.Root.Attribute(XmlVersionAttribute)?.Value;
+					//var version = document.Root.Attribute(XmlVersionAttribute)?.Value;
 					var platform = document.Root.Attribute(XmlTypeAttribute)?.Value;
 					if (platform != Constants.Platform)
 					{
@@ -101,7 +106,7 @@ namespace ReClassNET.DataExchange
 				}
 
 				Type nodeType;
-				if (!BuildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value, out nodeType))
+				if (!BuildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value ?? string.Empty, out nodeType))
 				{
 					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {element.Attribute(XmlTypeAttribute)?.Value}");
 					logger.Log(LogLevel.Warning, element.ToString());
