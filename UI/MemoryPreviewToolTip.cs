@@ -89,7 +89,7 @@ namespace ReClassNET.UI
 			int y = 2;
 			foreach (var node in nodes)
 			{
-				y = node.Draw(viewInfo, x, y).Height;
+				y += node.Draw(viewInfo, x, y).Height;
 			}
 		}
 
