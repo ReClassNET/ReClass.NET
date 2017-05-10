@@ -84,6 +84,8 @@ namespace ReClassNET.Nodes
 
 					size.Width = Math.Max(size.Width, innerSize.Width + tx - origX);
 					size.Height += innerSize.Height;
+
+					y += innerSize.Height;
 				}
 			}
 
