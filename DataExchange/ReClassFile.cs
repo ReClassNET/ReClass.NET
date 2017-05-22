@@ -236,45 +236,43 @@ namespace ReClassNET.DataExchange
 
 					referenceNode.ChangeInnerNode(innerClassNode);
 				}
-				var vtableNode = node as VTableNode;
-				if (vtableNode != null)
+
+				switch (node)
 				{
-					element
-						.Elements("Function")
-						.Select(e => new VMethodNode
-						{
-							Name = e.Attribute("Name")?.Value ?? string.Empty,
-							Comment = e.Attribute("Comments")?.Value ?? string.Empty
-						})
-						.ForEach(vtableNode.AddNode);
-				}
-				var classInstanceArrayNode = node as ClassInstanceArrayNode;
-				if (classInstanceArrayNode != null)
-				{
-					int count;
-					TryGetAttributeValue(element, "Total", out count, logger);
-					classInstanceArrayNode.Count = count;
-				}
-				var classPtrArrayNode = node as ClassPtrArrayNode;
-				if (classPtrArrayNode != null)
-				{
-					int count;
-					TryGetAttributeValue(element, "Size", out count, logger);
-					classPtrArrayNode.Count = count / IntPtr.Size;
-				}
-				var textNode = node as BaseTextNode;
-				if (textNode != null)
-				{
-					int length;
-					TryGetAttributeValue(element, "Size", out length, logger);
-					textNode.Length = textNode is UTF16TextNode ? length / 2 : length;
-				}
-				var bitFieldNode = node as BitFieldNode;
-				if (bitFieldNode != null)
-				{
-					int bits;
-					TryGetAttributeValue(element, "Size", out bits, logger);
-					bitFieldNode.Bits = bits * 8;
+					case VTableNode vtableNode:
+						element
+							.Elements("Function")
+							.Select(e => new VMethodNode
+							{
+								Name = e.Attribute("Name")?.Value ?? string.Empty,
+								Comment = e.Attribute("Comments")?.Value ?? string.Empty
+							})
+							.ForEach(vtableNode.AddNode);
+						break;
+					case ClassInstanceArrayNode classInstanceArrayNode:
+					{
+						TryGetAttributeValue(element, "Total", out var count, logger);
+						classInstanceArrayNode.Count = count;
+						break;
+					}
+					case ClassPtrArrayNode classPtrArrayNode:
+					{
+						TryGetAttributeValue(element, "Size", out var count, logger);
+						classPtrArrayNode.Count = count / IntPtr.Size;
+						break;
+					}
+					case BaseTextNode textNode:
+					{
+						TryGetAttributeValue(element, "Size", out var length, logger);
+						textNode.Length = textNode is UTF16TextNode ? length / 2 : length;
+						break;
+					}
+					case BitFieldNode bitFieldNode:
+					{
+						TryGetAttributeValue(element, "Size", out var bits, logger);
+						bitFieldNode.Bits = bits * 8;
+						break;
+					}
 				}
 
 				yield return node;
