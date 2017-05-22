@@ -77,12 +77,9 @@ namespace ReClassNET.DataExchange
 							})
 							.ForEach(vtableNode.AddNode);
 
-						foreach (var method in vtableNode.Nodes)
+						foreach (var method in vtableNode.Nodes.Where(m => m.Name == "void function()"))
 						{
-							if (method.Name == "void function()")
-							{
-								method.Name = string.Empty;
-							}
+							method.Name = string.Empty;
 						}
 
 						vtables.Add(id, vtableNode);
