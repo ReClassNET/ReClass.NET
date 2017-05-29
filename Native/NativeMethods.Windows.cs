@@ -115,8 +115,7 @@ namespace ReClassNET.Native
 
 		public void EnableDebugPrivileges()
 		{
-			IntPtr token;
-			if (OpenProcessToken(System.Diagnostics.Process.GetCurrentProcess().Handle, TokenAccessLevels.AllAccess, out token))
+			if (OpenProcessToken(System.Diagnostics.Process.GetCurrentProcess().Handle, TokenAccessLevels.AllAccess, out var token))
 			{
 				var privileges = new TOKEN_PRIVILEGES
 				{

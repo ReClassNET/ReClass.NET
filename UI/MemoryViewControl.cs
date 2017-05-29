@@ -503,8 +503,7 @@ namespace ReClassNET.UI
 				{
 					if (spot.Rect.Contains(toolTipPosition))
 					{
-						IntPtr previewAddress;
-						if (spot.Node.UseMemoryPreviewToolTip(spot, spot.Memory, out previewAddress))
+						if (spot.Node.UseMemoryPreviewToolTip(spot, spot.Memory, out var previewAddress))
 						{
 							memoryPreviewToolTip.UpdateMemory(spot.Memory.Process, previewAddress);
 

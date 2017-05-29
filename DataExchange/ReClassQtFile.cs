@@ -118,8 +118,7 @@ namespace ReClassNET.DataExchange
 			{
 				Type nodeType = null;
 
-				int typeVal;
-				if (int.TryParse(element.Attribute("Type")?.Value, out typeVal))
+				if (int.TryParse(element.Attribute("Type")?.Value, out var typeVal))
 				{
 					if (typeVal >= 0 && typeVal < typeMap.Length)
 					{

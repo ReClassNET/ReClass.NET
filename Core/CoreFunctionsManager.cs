@@ -78,8 +78,7 @@ namespace ReClassNET.Core
 
 		public void SetActiveFunctionsProvider(string provider)
 		{
-			ICoreProcessFunctions functions;
-			if (!functionsRegistry.TryGetValue(provider, out functions))
+			if (!functionsRegistry.TryGetValue(provider, out var functions))
 			{
 				throw new ArgumentException();
 			}

@@ -68,8 +68,7 @@ namespace ReClassNET.AddressParser
 						buffer = buffer.Substring(2);
 					}
 
-					long offsetValue;
-					if (long.TryParse(buffer, NumberStyles.HexNumber, null, out offsetValue))
+					if (long.TryParse(buffer, NumberStyles.HexNumber, null, out var offsetValue))
 					{
 #if WIN64
 						var address = (IntPtr)offsetValue;

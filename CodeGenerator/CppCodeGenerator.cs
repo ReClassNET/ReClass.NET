@@ -181,8 +181,7 @@ namespace ReClassNET.CodeGenerator
 					fill = 0;
 				}
 
-				string type;
-				if (typeToTypedefMap.TryGetValue(member.GetType(), out type))
+				if (typeToTypedefMap.TryGetValue(member.GetType(), out var type))
 				{
 					var count = (member as BaseTextNode)?.Length ?? 0;
 

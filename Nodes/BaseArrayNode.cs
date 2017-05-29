@@ -93,8 +93,7 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id == 0 || spot.Id == 1)
 			{
-				int value;
-				if (int.TryParse(spot.Text, out value))
+				if (int.TryParse(spot.Text, out var value))
 				{
 					if (spot.Id == 0)
 					{

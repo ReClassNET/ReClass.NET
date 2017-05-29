@@ -56,8 +56,7 @@ namespace ReClassNET.Nodes
 
 				HighlightTimer.RemoveWhere(kv => kv.Value.Value < CurrentHighlightTime);
 
-				ValueTypeWrapper<DateTime> until;
-				if (HighlightTimer.TryGetValue(address, out until))
+				if (HighlightTimer.TryGetValue(address, out var until))
 				{
 					if (until.Value >= CurrentHighlightTime)
 					{
@@ -106,8 +105,7 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id >= 0 && spot.Id < maxId)
 			{
-				byte val;
-				if (byte.TryParse(spot.Text, NumberStyles.HexNumber, null, out val))
+				if (byte.TryParse(spot.Text, NumberStyles.HexNumber, null, out var val))
 				{
 					spot.Memory.Process.WriteRemoteMemory(spot.Address + spot.Id, val);
 				}

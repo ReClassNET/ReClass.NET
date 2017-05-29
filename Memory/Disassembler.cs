@@ -59,8 +59,7 @@ namespace ReClassNET.Memory
 
 			while (eip.CompareTo(end) == -1)
 			{
-				InstructionData instruction;
-				var res = coreFunctions.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, virtualAddress, out instruction);
+				var res = coreFunctions.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, virtualAddress, out var instruction);
 				if (!res)
 				{
 					break;

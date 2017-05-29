@@ -151,8 +151,7 @@ namespace ReClassNET.DataExchange
 					var reference = Convert.ToInt32(row["ref"]);
 					if (!classes.ContainsKey(reference))
 					{
-						VTableNode vtableNode;
-						if (!vtables.TryGetValue(reference, out vtableNode))
+						if (!vtables.TryGetValue(reference, out var vtableNode))
 						{
 							logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {row["ref"]}");
 							logger.Log(LogLevel.Warning, string.Join(",", row.ItemArray));

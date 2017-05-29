@@ -111,8 +111,7 @@ namespace ReClassNET.CodeGenerator
 				}
 				else
 				{
-					string type;
-					if (typeToTypedefMap.TryGetValue(member.GetType(), out type))
+					if (typeToTypedefMap.TryGetValue(member.GetType(), out var type))
 					{
 						yield return new MemberDefinition(member, type);
 					}

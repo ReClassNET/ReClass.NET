@@ -126,8 +126,7 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id >= 0 && spot.Id < max)
 			{
-				float val;
-				if (float.TryParse(spot.Text, out val))
+				if (float.TryParse(spot.Text, out var val))
 				{
 					spot.Memory.Process.WriteRemoteMemory(spot.Address, val);
 				}

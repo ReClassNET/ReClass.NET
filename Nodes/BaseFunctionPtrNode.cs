@@ -117,8 +117,7 @@ namespace ReClassNET.Nodes
 
 				if (!address.IsNull() && memory.Process.IsValid)
 				{
-					int unused;
-					DisassembleRemoteCode(memory, address, out unused);
+					DisassembleRemoteCode(memory, address, out _);
 				}
 			}
 		}

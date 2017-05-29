@@ -58,8 +58,7 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id == 0)
 			{
-				bool val;
-				if (bool.TryParse(spot.Text, out val))
+				if (bool.TryParse(spot.Text, out var val))
 				{
 					spot.Memory.Process.WriteRemoteMemory(spot.Address, (byte)(val ? 1 : 0));
 				}

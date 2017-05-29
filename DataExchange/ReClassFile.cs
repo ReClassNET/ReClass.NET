@@ -138,8 +138,7 @@ namespace ReClassNET.DataExchange
 			{
 				Type nodeType = null;
 
-				int typeVal;
-				if (int.TryParse(element.Attribute("Type")?.Value, out typeVal))
+				if (int.TryParse(element.Attribute("Type")?.Value, out var typeVal))
 				{
 					if (typeVal >= 0 && typeVal < typeMap.Length)
 					{
@@ -169,8 +168,7 @@ namespace ReClassNET.DataExchange
 				// Convert the Custom node into normal hex nodes.
 				if (node is CustomNode)
 				{
-					int size;
-					int.TryParse(element.Attribute("Size")?.Value, out size);
+					int.TryParse(element.Attribute("Size")?.Value, out var size);
 
 					while (size != 0)
 					{

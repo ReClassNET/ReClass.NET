@@ -283,8 +283,7 @@ namespace ReClassNET.Memory
 		{
 			if (address.MayBeValid())
 			{
-				string rtti;
-				if (!rttiCache.TryGetValue(address, out rtti))
+				if (!rttiCache.TryGetValue(address, out var rtti))
 				{
 					var objectLocatorPtr = ReadRemoteObject<IntPtr>(address - IntPtr.Size);
 					if (objectLocatorPtr.MayBeValid())

@@ -72,8 +72,7 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id == 0)
 			{
-				int val;
-				if (int.TryParse(spot.Text, out val) && val > 0)
+				if (int.TryParse(spot.Text, out var val) && val > 0)
 				{
 					Length = val;
 
