@@ -105,8 +105,7 @@ namespace ReClassNET.DataExchange
 					continue;
 				}
 
-				Type nodeType;
-				if (!BuildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value ?? string.Empty, out nodeType))
+				if (!BuildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value ?? string.Empty, out var nodeType))
 				{
 					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {element.Attribute(XmlTypeAttribute)?.Value}");
 					logger.Log(LogLevel.Warning, element.ToString());
@@ -147,48 +146,49 @@ namespace ReClassNET.DataExchange
 
 					referenceNode.ChangeInnerNode(innerClassNode);
 				}
-				var vtableNode = node as VTableNode;
-				if (vtableNode != null)
-				{
-					element
-						.Elements(XmlMethodElement)
-						.Select(e => new VMethodNode
-						{
-							Name = e.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
-							Comment = e.Attribute(XmlCommentAttribute)?.Value ?? string.Empty
-						})
-						.ForEach(vtableNode.AddNode);
-				}
-				var arrayNode = node as BaseArrayNode;
-				if (arrayNode != null)
-				{
-					int count;
-					TryGetAttributeValue(element, XmlCountAttribute, out count, logger);
-					arrayNode.Count = count;
-				}
-				var textNode = node as BaseTextNode;
-				if (textNode != null)
-				{
-					int length;
-					TryGetAttributeValue(element, XmlLengthAttribute, out length, logger);
-					textNode.Length = length;
-				}
-				var bitFieldNode = node as BitFieldNode;
-				if (bitFieldNode != null)
-				{
-					int bits;
-					TryGetAttributeValue(element, XmlBitsAttribute, out bits, logger);
-					bitFieldNode.Bits = bits;
-				}
-				var functionNode = node as FunctionNode;
-				if (functionNode != null)
-				{
-					functionNode.Signature = element.Attribute(XmlSignatureAttribute)?.Value ?? string.Empty;
 
-					var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
-					if (project.ContainsClass(reference))
+				switch (node)
+				{
+					case VTableNode vtableNode:
 					{
-						functionNode.BelongsToClass = project.GetClassByUuid(reference);
+						element
+							.Elements(XmlMethodElement)
+							.Select(e => new VMethodNode
+							{
+								Name = e.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
+								Comment = e.Attribute(XmlCommentAttribute)?.Value ?? string.Empty
+							})
+							.ForEach(vtableNode.AddNode);
+						break;
+					}
+					case BaseArrayNode arrayNode:
+					{
+						TryGetAttributeValue(element, XmlCountAttribute, out var count, logger);
+						arrayNode.Count = count;
+						break;
+					}
+					case BaseTextNode textNode:
+					{
+						TryGetAttributeValue(element, XmlLengthAttribute, out var length, logger);
+						textNode.Length = length;
+						break;
+					}
+					case BitFieldNode bitFieldNode:
+					{
+						TryGetAttributeValue(element, XmlBitsAttribute, out var bits, logger);
+						bitFieldNode.Bits = bits;
+						break;
+					}
+					case FunctionNode functionNode:
+					{
+						functionNode.Signature = element.Attribute(XmlSignatureAttribute)?.Value ?? string.Empty;
+
+						var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
+						if (project.ContainsClass(reference))
+						{
+							functionNode.BelongsToClass = project.GetClassByUuid(reference);
+						}
+						break;
 					}
 				}
 
@@ -233,13 +233,7 @@ namespace ReClassNET.DataExchange
 				{
 					if (templateProject != null)
 					{
-						foreach (var classNode in project.Classes.Where(c => c != serialisationClassNode))
-						{
-							if (!templateProject.ContainsClass(classNode.Uuid))
-							{
-								classes.Add(classNode);
-							}
-						}
+						classes.AddRange(project.Classes.Where(c => c != serialisationClassNode).Where(classNode => !templateProject.ContainsClass(classNode.Uuid)));
 					}
 
 					nodes.AddRange(serialisationClassNode.Nodes);

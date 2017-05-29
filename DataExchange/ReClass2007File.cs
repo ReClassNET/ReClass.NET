@@ -15,8 +15,7 @@ namespace ReClassNET.DataExchange
 		public const string FormatName = "ReClass 2007 File";
 		public const string FileExtension = ".rdc";
 
-		private static readonly Type[] TypeMap = new Type[]
-		{
+		private static readonly Type[] TypeMap = {
 			null,
 			typeof(ClassInstanceNode),
 			typeof(ClassNode),

@@ -82,8 +82,7 @@ namespace ReClassNET.DataExchange
 			return address;
 		}
 
-		private readonly Type[] typeMap = new Type[]
-		{
+		private readonly Type[] typeMap = {
 			null,
 			null,
 			typeof(ClassPtrNode),

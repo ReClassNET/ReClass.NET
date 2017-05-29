@@ -75,8 +75,7 @@ namespace ReClassNET.DataExchange
 					continue;
 				}
 
-				string typeString;
-				if (!BuildInTypeToStringMap.TryGetValue(node.GetType(), out typeString))
+				if (!BuildInTypeToStringMap.TryGetValue(node.GetType(), out var typeString))
 				{
 					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Name}");
 					logger.Log(LogLevel.Warning, node.GetType().ToString());
@@ -96,36 +95,40 @@ namespace ReClassNET.DataExchange
 				{
 					element.SetAttributeValue(XmlReferenceAttribute, referenceNode.InnerNode.Uuid.ToBase64String());
 				}
-				var vtableNode = node as VTableNode;
-				if (vtableNode != null)
+
+				switch (node)
 				{
-					element.Add(vtableNode.Nodes.Select(n => new XElement(
-						XmlMethodElement,
-						new XAttribute(XmlNameAttribute, n.Name ?? string.Empty),
-						new XAttribute(XmlCommentAttribute, n.Comment ?? string.Empty)
-					)));
-				}
-				var arrayNode = node as BaseArrayNode;
-				if (arrayNode != null)
-				{
-					element.SetAttributeValue(XmlCountAttribute, arrayNode.Count);
-				}
-				var textNode = node as BaseTextNode;
-				if (textNode != null)
-				{
-					element.SetAttributeValue(XmlLengthAttribute, textNode.Length);
-				}
-				var bitFieldNode = node as BitFieldNode;
-				if (bitFieldNode != null)
-				{
-					element.SetAttributeValue(XmlBitsAttribute, bitFieldNode.Bits);
-				}
-				var functionNode = node as FunctionNode;
-				if (functionNode != null)
-				{
-					var uuid = functionNode.BelongsToClass == null ? NodeUuid.Zero : functionNode.BelongsToClass.Uuid;
-					element.SetAttributeValue(XmlReferenceAttribute, uuid.ToBase64String());
-					element.SetAttributeValue(XmlSignatureAttribute, functionNode.Signature);
+					case VTableNode vtableNode:
+					{
+						element.Add(vtableNode.Nodes.Select(n => new XElement(
+							XmlMethodElement,
+							new XAttribute(XmlNameAttribute, n.Name ?? string.Empty),
+							new XAttribute(XmlCommentAttribute, n.Comment ?? string.Empty)
+						)));
+						break;
+					}
+					case BaseArrayNode arrayNode:
+					{
+						element.SetAttributeValue(XmlCountAttribute, arrayNode.Count);
+						break;
+					}
+					case BaseTextNode textNode:
+					{
+						element.SetAttributeValue(XmlLengthAttribute, textNode.Length);
+						break;
+					}
+					case BitFieldNode bitFieldNode:
+					{
+						element.SetAttributeValue(XmlBitsAttribute, bitFieldNode.Bits);
+						break;
+					}
+					case FunctionNode functionNode:
+					{
+						var uuid = functionNode.BelongsToClass == null ? NodeUuid.Zero : functionNode.BelongsToClass.Uuid;
+						element.SetAttributeValue(XmlReferenceAttribute, uuid.ToBase64String());
+						element.SetAttributeValue(XmlSignatureAttribute, functionNode.Signature);
+						break;
+					}
 				}
 
 				yield return element;
