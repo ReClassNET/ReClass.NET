@@ -162,8 +162,7 @@ namespace ReClassNET.Forms
 				Comment = info.Instructions[2].Instruction
 			});
 
-			var mainForm = Application.OpenForms[0] as MainForm;
-			mainForm.ClassView.SelectedClass = node;
+			Program.MainForm.ClassView.SelectedClass = node;
 		}
 
 		private void stopButton_Click(object sender, EventArgs e)
