@@ -445,6 +445,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="README.md" />
     <None Include="Resources\Images\B16x16_Button_Add_Bytes_4.png" />
   </ItemGroup>
   <ItemGroup>

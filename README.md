@@ -7,19 +7,19 @@ This is a port of ReClass to the .NET platform with additional features.
 - Support for x86 / x64
 - File import from ReClass 2007-2016 and ReClass QT
 - Memory Nodes
- - Hex 8 / 16 / 32 / 64
- - Int 8 / 16 / 32 / 64
- - UInt 8 / 16 / 32 / 64
- - Bool
- - Bits ![](https://abload.de/img/bitsnhlql.jpg)
- - Float / Double
- - Vector 2 / 3 / 4
- - Matrix 3x3 / 3x4 / 4x4
- - UTF8/16/32 Text and pointer to text
- - Class Arrays and array of pointers to classes
- - VTable
- - Function Pointer
- - Function
+  - Hex 8 / 16 / 32 / 64
+  - Int 8 / 16 / 32 / 64
+  - UInt 8 / 16 / 32 / 64
+  - Bool
+  - Bits ![](https://abload.de/img/bitsnhlql.jpg)
+  - Float / Double
+  - Vector 2 / 3 / 4
+  - Matrix 3x3 / 3x4 / 4x4
+  - UTF8/16/32 Text and pointer to text
+  - Class Arrays and array of pointers to classes
+  - VTable
+  - Function Pointer
+  - Function
 - Automatic Node Dissection
 - Highlight changed memory
 - Pointer Preview
@@ -35,11 +35,11 @@ This is a port of ReClass to the .NET platform with additional features.
 - Linux Support (tested on Ubuntu)
 - Debugger with "Find out what writes/accesses this address" support
 - Plugin Support
- - Plugins can be written in different languages (example: C++, C++/CLI, C#)
- - Plugins can provide custom methods to access an other process (example: use a driver)
- - Plugins can interact with the ReClass.NET windows
- - Plugins can provide node infos which will be displayed (example: class informations for Frostbite games)
- - Plugins can implement custom nodes with load/save and code generation support
+  - Plugins can be written in different languages (example: C++, C++/CLI, C#)
+  - Plugins can provide custom methods to access an other process (example: use a driver)
+  - Plugins can interact with the ReClass.NET windows
+  - Plugins can provide node infos which will be displayed (example: class informations for Frostbite games)
+  - Plugins can implement custom nodes with load/save and code generation support
 
 ## Plugins
 - [Sample Plugins](https://github.com/KN4CK3R/ReClass.NET-SamplePlugin)
