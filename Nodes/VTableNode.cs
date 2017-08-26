@@ -16,7 +16,7 @@ namespace ReClassNET.Nodes
 
 		public override void Intialize()
 		{
-			InsertBytes(0, 10 * IntPtr.Size);
+			AddBytes(10 * IntPtr.Size);
 		}
 
 		public override void ClearSelection()
