@@ -46,11 +46,11 @@ namespace ReClassNET.Memory
 			var raw = memory.ReadBytes(offset, node.MemorySize);
 			if (raw.InterpretAsUTF8().IsLikelyPrintableData() >= 0.75f)
 			{
-				return typeof(UTF8TextNode);
+				return typeof(Utf8TextNode);
 			}
 			else if (raw.InterpretAsUTF16().IsLikelyPrintableData() >= 0.75f)
 			{
-				return typeof(UTF16TextNode);
+				return typeof(Utf16TextNode);
 			}
 
 			if (is8ByteAligned)
@@ -142,11 +142,11 @@ namespace ReClassNET.Memory
 					var data = memory.Process.ReadRemoteMemory(address, IntPtr.Size * 2);
 					if (data.Take(IntPtr.Size).InterpretAsUTF8().IsLikelyPrintableData() >= 07.5f)
 					{
-						return typeof(UTF8TextPtrNode);
+						return typeof(Utf8TextPtrNode);
 					}
 					else if (data.InterpretAsUTF16().IsLikelyPrintableData() >= 0.75f)
 					{
-						return typeof(UTF16TextPtrNode);
+						return typeof(Utf16TextPtrNode);
 					}
 
 					// Now it could be a pointer to something else but we can't tell. :(

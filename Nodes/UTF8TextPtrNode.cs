@@ -5,7 +5,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	public class UTF8TextPtrNode : BaseTextPtrNode
+	public class Utf8TextPtrNode : BaseTextPtrNode
 	{
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>

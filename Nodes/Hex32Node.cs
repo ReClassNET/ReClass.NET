@@ -37,7 +37,7 @@ namespace ReClassNET.Nodes
 		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			return Draw(view, x, y, view.Settings.ShowNodeText ? view.Memory.ReadPrintableASCIIString(Offset, 4) + "     " : null, 4);
+			return Draw(view, x, y, view.Settings.ShowNodeText ? view.Memory.ReadPrintableAsciiString(Offset, 4) + "     " : null, 4);
 		}
 
 		public override void Update(HotSpot spot)

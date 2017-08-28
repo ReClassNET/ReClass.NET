@@ -764,7 +764,7 @@
 			this.utf8TextToolStripButton.Name = "utf8TextToolStripButton";
 			this.utf8TextToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.utf8TextToolStripButton.ToolTipText = "UTF8 Text";
-			this.utf8TextToolStripButton.Value = typeof(ReClassNET.Nodes.UTF8TextNode);
+			this.utf8TextToolStripButton.Value = typeof(ReClassNET.Nodes.Utf8TextNode);
 			this.utf8TextToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
 			// 
 			// utf8TextPtrToolStripButton
@@ -775,7 +775,7 @@
 			this.utf8TextPtrToolStripButton.Name = "utf8TextPtrToolStripButton";
 			this.utf8TextPtrToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.utf8TextPtrToolStripButton.ToolTipText = "Pointer to UTF8 text";
-			this.utf8TextPtrToolStripButton.Value = typeof(ReClassNET.Nodes.UTF8TextPtrNode);
+			this.utf8TextPtrToolStripButton.Value = typeof(ReClassNET.Nodes.Utf8TextPtrNode);
 			this.utf8TextPtrToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
 			// 
 			// utf16TextToolStripButton
@@ -786,7 +786,7 @@
 			this.utf16TextToolStripButton.Name = "utf16TextToolStripButton";
 			this.utf16TextToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.utf16TextToolStripButton.ToolTipText = "UTF16 / Unicode Text";
-			this.utf16TextToolStripButton.Value = typeof(ReClassNET.Nodes.UTF16TextNode);
+			this.utf16TextToolStripButton.Value = typeof(ReClassNET.Nodes.Utf16TextNode);
 			this.utf16TextToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
 			// 
 			// utf16TextPtrToolStripButton
@@ -797,7 +797,7 @@
 			this.utf16TextPtrToolStripButton.Name = "utf16TextPtrToolStripButton";
 			this.utf16TextPtrToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.utf16TextPtrToolStripButton.ToolTipText = "Pointer to UTF16 / Unicode text";
-			this.utf16TextPtrToolStripButton.Value = typeof(ReClassNET.Nodes.UTF16TextPtrNode);
+			this.utf16TextPtrToolStripButton.Value = typeof(ReClassNET.Nodes.Utf16TextPtrNode);
 			this.utf16TextPtrToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
 			// 
 			// toolStripSeparator14

@@ -420,7 +420,7 @@
 			this.uTF8TextToolStripMenuItem.Name = "uTF8TextToolStripMenuItem";
 			this.uTF8TextToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uTF8TextToolStripMenuItem.Text = "UTF8 Text";
-			this.uTF8TextToolStripMenuItem.Value = typeof(ReClassNET.Nodes.UTF8TextNode);
+			this.uTF8TextToolStripMenuItem.Value = typeof(ReClassNET.Nodes.Utf8TextNode);
 			this.uTF8TextToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
 			// 
 			// uTF8TextPointerToolStripMenuItem
@@ -429,7 +429,7 @@
 			this.uTF8TextPointerToolStripMenuItem.Name = "uTF8TextPointerToolStripMenuItem";
 			this.uTF8TextPointerToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uTF8TextPointerToolStripMenuItem.Text = "UTF8 Text Pointer";
-			this.uTF8TextPointerToolStripMenuItem.Value = typeof(ReClassNET.Nodes.UTF8TextPtrNode);
+			this.uTF8TextPointerToolStripMenuItem.Value = typeof(ReClassNET.Nodes.Utf8TextPtrNode);
 			this.uTF8TextPointerToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
 			// 
 			// uTF16TextToolStripMenuItem
@@ -438,7 +438,7 @@
 			this.uTF16TextToolStripMenuItem.Name = "uTF16TextToolStripMenuItem";
 			this.uTF16TextToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uTF16TextToolStripMenuItem.Text = "UTF16 Text";
-			this.uTF16TextToolStripMenuItem.Value = typeof(ReClassNET.Nodes.UTF16TextNode);
+			this.uTF16TextToolStripMenuItem.Value = typeof(ReClassNET.Nodes.Utf16TextNode);
 			this.uTF16TextToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
 			// 
 			// uTF16TextPointerToolStripMenuItem
@@ -447,7 +447,7 @@
 			this.uTF16TextPointerToolStripMenuItem.Name = "uTF16TextPointerToolStripMenuItem";
 			this.uTF16TextPointerToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
 			this.uTF16TextPointerToolStripMenuItem.Text = "UTF16 Text Pointer";
-			this.uTF16TextPointerToolStripMenuItem.Value = typeof(ReClassNET.Nodes.UTF16TextPtrNode);
+			this.uTF16TextPointerToolStripMenuItem.Value = typeof(ReClassNET.Nodes.Utf16TextPtrNode);
 			this.uTF16TextPointerToolStripMenuItem.Click += new System.EventHandler(this.memoryTypeToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator9

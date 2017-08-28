@@ -179,16 +179,16 @@ namespace ReClassNET.Memory
 			return (T)obj;
 		}
 
-		public string ReadPrintableASCIIString(IntPtr offset, int length)
+		public string ReadPrintableAsciiString(IntPtr offset, int length)
 		{
 			Contract.Requires(offset.ToInt32() >= 0);
 			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 
-			return ReadPrintableASCIIString(offset.ToInt32(), length);
+			return ReadPrintableAsciiString(offset.ToInt32(), length);
 		}
 
-		public string ReadPrintableASCIIString(int offset, int length)
+		public string ReadPrintableAsciiString(int offset, int length)
 		{
 			Contract.Requires(offset >= 0);
 			Contract.Requires(length >= 0);
@@ -236,7 +236,7 @@ namespace ReClassNET.Memory
 			return sb.ToString();
 		}
 
-		public string ReadUTF8String(IntPtr offset, int length)
+		public string ReadUtf8String(IntPtr offset, int length)
 		{
 			Contract.Requires(offset.ToInt32() >= 0);
 			Contract.Requires(length >= 0);
@@ -245,7 +245,7 @@ namespace ReClassNET.Memory
 			return ReadString(Encoding.UTF8, offset.ToInt32(), length);
 		}
 
-		public string ReadUTF16String(IntPtr offset, int length)
+		public string ReadUtf16String(IntPtr offset, int length)
 		{
 			Contract.Requires(offset.ToInt32() >= 0);
 			Contract.Requires(length >= 0);
@@ -254,7 +254,7 @@ namespace ReClassNET.Memory
 			return ReadString(Encoding.Unicode, offset.ToInt32(), length);
 		}
 
-		public string ReadUTF32String(IntPtr offset, int length)
+		public string ReadUtf32String(IntPtr offset, int length)
 		{
 			Contract.Requires(offset.ToInt32() >= 0);
 			Contract.Requires(length >= 0);

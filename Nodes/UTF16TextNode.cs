@@ -3,7 +3,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	public class UTF16TextNode : BaseTextNode
+	public class Utf16TextNode : BaseTextNode
 	{
 		public override int CharacterSize => 2;
 
@@ -14,7 +14,7 @@ namespace ReClassNET.Nodes
 		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			return DrawText(view, x, y, "Text16", MemorySize / CharacterSize, view.Memory.ReadUTF16String(Offset, MemorySize));
+			return DrawText(view, x, y, "Text16", MemorySize / CharacterSize, view.Memory.ReadUtf16String(Offset, MemorySize));
 		}
 	}
 }

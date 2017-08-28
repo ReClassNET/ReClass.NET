@@ -26,9 +26,9 @@ namespace ReClassNET.CodeGenerator
 			[typeof(UInt64Node)] = "ulong",
 
 			[typeof(FunctionPtrNode)] = "IntPtr",
-			[typeof(UTF8TextPtrNode)] = "IntPtr",
-			[typeof(UTF16TextPtrNode)] = "IntPtr",
-			[typeof(UTF32TextPtrNode)] = "IntPtr",
+			[typeof(Utf8TextPtrNode)] = "IntPtr",
+			[typeof(Utf16TextPtrNode)] = "IntPtr",
+			[typeof(Utf32TextPtrNode)] = "IntPtr",
 			[typeof(ClassPtrNode)] = "IntPtr",
 			[typeof(VTableNode)] = "IntPtr"
 		};

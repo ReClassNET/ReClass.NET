@@ -262,7 +262,7 @@ namespace ReClassNET.DataExchange
 					case BaseTextNode textNode:
 					{
 						TryGetAttributeValue(element, "Size", out var length, logger);
-						textNode.Length = textNode is UTF16TextNode ? length / 2 : length;
+						textNode.Length = textNode is Utf16TextNode ? length / 2 : length;
 						break;
 					}
 					case BitFieldNode bitFieldNode:
@@ -323,7 +323,7 @@ namespace ReClassNET.DataExchange
 			typeof(UInt32Node),
 			typeof(UInt16Node),
 			typeof(UInt8Node),
-			typeof(UTF8TextNode),
+			typeof(Utf8TextNode),
 			typeof(FunctionPtrNode),
 			typeof(CustomNode),
 			typeof(Vector2Node),
@@ -337,7 +337,7 @@ namespace ReClassNET.DataExchange
 			null,
 			typeof(Int64Node),
 			typeof(DoubleNode),
-			typeof(UTF16TextNode),
+			typeof(Utf16TextNode),
 			typeof(ClassPtrArrayNode)
 		};
 
@@ -365,8 +365,8 @@ namespace ReClassNET.DataExchange
 			typeof(UInt32Node),
 			typeof(UInt16Node),
 			typeof(UInt8Node),
-			typeof(UTF8TextNode),
-			typeof(UTF16TextNode),
+			typeof(Utf8TextNode),
+			typeof(Utf16TextNode),
 			typeof(FunctionPtrNode),
 			typeof(CustomNode),
 			typeof(Vector2Node),
@@ -376,8 +376,8 @@ namespace ReClassNET.DataExchange
 			typeof(VTableNode),
 			typeof(ClassInstanceArrayNode),
 			null,
-			typeof(UTF8TextPtrNode),
-			typeof(UTF16TextPtrNode),
+			typeof(Utf8TextPtrNode),
+			typeof(Utf16TextPtrNode),
 			typeof(BitFieldNode),
 			typeof(UInt64Node),
 			typeof(FunctionNode)

@@ -31,7 +31,7 @@ namespace ReClassNET.DataExchange
 			typeof(UInt32Node),
 			typeof(UInt16Node),
 			typeof(UInt8Node),
-			typeof(UTF8TextNode),
+			typeof(Utf8TextNode),
 			typeof(FunctionPtrNode)
 		};
 
