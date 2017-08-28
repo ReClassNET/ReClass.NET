@@ -74,6 +74,8 @@ namespace ReClassNET.UI
 		/// <summary>The context menu of a node.</summary>
 		public ContextMenuStrip NodeContextMenu => selectedNodeContextMenuStrip;
 
+		private readonly MemoryPreviewPopUp memoryPreviewPopUp;
+
 		public MemoryViewControl()
 		{
 			InitializeComponent();
@@ -86,7 +88,8 @@ namespace ReClassNET.UI
 			};
 
 			editBox.Font = font;
-			memoryPreviewToolTip.Font = font;
+
+			memoryPreviewPopUp = new MemoryPreviewPopUp(font);
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -154,6 +157,10 @@ namespace ReClassNET.UI
 			}
 
 			ClassNode.UpdateAddress(Memory);
+			if (memoryPreviewPopUp.Visible)
+			{
+				memoryPreviewPopUp.UpdateMemory();
+			}
 
 			Memory.Size = ClassNode.MemorySize;
 			Memory.Update(ClassNode.Offset);
@@ -505,9 +512,9 @@ namespace ReClassNET.UI
 					{
 						if (spot.Node.UseMemoryPreviewToolTip(spot, spot.Memory, out var previewAddress))
 						{
-							memoryPreviewToolTip.UpdateMemory(spot.Memory.Process, previewAddress);
+							memoryPreviewPopUp.InitializeMemory(spot.Memory.Process, previewAddress);
 
-							memoryPreviewToolTip.Show("<>", this, toolTipPosition.OffsetEx(16, 16));
+							memoryPreviewPopUp.Show(this, toolTipPosition.OffsetEx(16, 16));
 						}
 						else
 						{
@@ -535,9 +542,27 @@ namespace ReClassNET.UI
 				toolTipPosition = e.Location;
 
 				nodeInfoToolTip.Hide(this);
-				memoryPreviewToolTip.Hide(this);
+
+				if (memoryPreviewPopUp.Visible)
+				{
+					memoryPreviewPopUp.Close();
+
+					Invalidate();
+				}
 
 				ResetMouseEventArgs();
+			}
+		}
+
+		protected override void OnMouseWheel(MouseEventArgs e)
+		{
+			if (memoryPreviewPopUp.Visible)
+			{
+				memoryPreviewPopUp.HandleMouseWheelEvent(e);
+			}
+			else
+			{
+				base.OnMouseWheel(e);
 			}
 		}
 

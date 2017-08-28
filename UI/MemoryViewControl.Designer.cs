@@ -105,7 +105,6 @@
 			this.repaintTimer = new System.Windows.Forms.Timer(this.components);
 			this.editBox = new ReClassNET.UI.HotSpotTextBox();
 			this.nodeInfoToolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.memoryPreviewToolTip = new ReClassNET.UI.MemoryPreviewToolTip();
 			this.selectedNodeContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -791,11 +790,6 @@
 			// 
 			this.nodeInfoToolTip.ShowAlways = true;
 			// 
-			// memoryPreviewToolTip
-			// 
-			this.memoryPreviewToolTip.OwnerDraw = true;
-			this.memoryPreviewToolTip.ShowAlways = true;
-			// 
 			// MemoryViewControl
 			// 
 			this.Controls.Add(this.editBox);
@@ -883,7 +877,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
 		private UI.TypeToolStripMenuItem boolToolStripMenuItem;
 		private UI.TypeToolStripMenuItem functionToolStripMenuItem;
-		private MemoryPreviewToolTip memoryPreviewToolTip;
 		private System.Windows.Forms.ToolStripMenuItem findOutWhatAccessesThisAddressToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem findOutWhatWritesToThisAddressToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
