@@ -98,6 +98,8 @@ namespace ReClassNET.Memory
 			if (!ContainsValidData)
 			{
 				data.FillWithZero();
+
+				hasHistory = false;
 			}
 		}
 
@@ -270,7 +272,7 @@ namespace ReClassNET.Memory
 
 		public bool HasChanged(int offset, int length)
 		{
-			if (hasHistory)
+			if (!hasHistory)
 			{
 				return false;
 			}
