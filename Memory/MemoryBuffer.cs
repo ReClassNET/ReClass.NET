@@ -10,24 +10,24 @@ namespace ReClassNET.Memory
 	{
 		private byte[] data;
 		private byte[] historyData;
+
 		private bool hasHistory;
 
 		public RemoteProcess Process { get; set; }
 
 		public int Size
 		{
-			get
-			{
-				return data.Length;
-			}
+			get => data.Length;
 			set
 			{
 				if (value != data.Length)
 				{
 					data = new byte[value];
 					historyData = new byte[value];
-
+					
 					hasHistory = false;
+
+					ContainsValidData = false;
 				}
 			}
 		}
@@ -50,8 +50,6 @@ namespace ReClassNET.Memory
 
 			data = new byte[0];
 			historyData = new byte[0];
-
-			ContainsValidData = true;
 		}
 
 		public MemoryBuffer(MemoryBuffer other)
@@ -91,7 +89,7 @@ namespace ReClassNET.Memory
 			{
 				Array.Copy(data, historyData, data.Length);
 
-				hasHistory = true;
+				hasHistory = ContainsValidData;
 			}
 
 			ContainsValidData = Process.ReadRemoteMemoryIntoBuffer(address, ref data);
