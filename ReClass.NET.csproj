@@ -171,6 +171,14 @@
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Debugger\RemoteDebugger.cs" />
+    <Compile Include="MemorySearcher\IPatternMatcher.cs" />
+    <Compile Include="MemorySearcher\Searcher.cs" />
+    <Compile Include="MemorySearcher\SimplePatternMatcher.cs" />
+    <Compile Include="MemorySearcher\SimplePatternMatcher.Naive.cs" />
+    <Compile Include="MemorySearcher\SimplePatternMatcher.RabinKarp.cs" />
+    <Compile Include="MemorySearcher\SimplePatternMatcher.Strategy.cs" />
+    <Compile Include="MemorySearcher\WildcardPatternMatcher.cs" />
+    <Compile Include="MemorySearcher\WildcardPatternMatcher.PatternByte.cs" />
     <Compile Include="Memory\Disassembler.cs" />
     <Compile Include="Debugger\IBreakpoint.cs" />
     <Compile Include="Memory\Module.cs" />
@@ -243,9 +251,7 @@
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ISettingsBindable.cs" />
-    <Compile Include="UI\MemoryPreviewPopUp.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="UI\MemoryPreviewToolTip.cs" />
     <Compile Include="UI\MemoryViewControl.Designer.cs">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
@@ -445,7 +451,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md" />
     <None Include="Resources\Images\B16x16_Button_Add_Bytes_4.png" />
   </ItemGroup>
   <ItemGroup>
