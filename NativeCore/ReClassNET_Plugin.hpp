@@ -115,7 +115,8 @@ enum class HardwareBreakpointSize
 struct EnumerateProcessData
 {
 	RC_Size Id;
-	RC_UnicodeChar ModulePath[PATH_MAXIMUM_LENGTH];
+	RC_UnicodeChar Name[PATH_MAXIMUM_LENGTH];
+	RC_UnicodeChar Path[PATH_MAXIMUM_LENGTH];
 };
 
 struct InstructionData
@@ -261,4 +262,21 @@ inline void MultiByteToUnicode(const char* src, RC_UnicodeChar* dst, int size)
 #endif
 
 	std::memcpy(dst, temp.c_str(), std::min<int>(static_cast<int>(temp.length()), size) * sizeof(char16_t));
+}
+
+inline char16_t* str16cpy(char16_t* destination, const char16_t* source, size_t n)
+{
+	char16_t* temp = destination;
+	while (n > 0 && *source != 0)
+	{
+		*temp++ = *source++;
+		--n;
+	}
+	while (n > 0)
+	{
+		*temp++ = 0;
+		--n;
+	}
+	while ((*temp++ = *source++) != 0);
+	return destination;
 }

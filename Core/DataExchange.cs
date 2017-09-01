@@ -24,6 +24,9 @@ namespace ReClassNET.Core
 		public IntPtr Id;
 
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+		public string Name;
+
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
 		public string Path;
 	};
 

@@ -1,6 +1,8 @@
 #include <windows.h>
 #include <tlhelp32.h>
-#include <Psapi.h>
+#include <psapi.h>
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
 
 #include "NativeCore.hpp"
 
@@ -49,7 +51,7 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 		return;
 	}
 
-	auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	const auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 	if (handle != INVALID_HANDLE_VALUE)
 	{
 		PROCESSENTRY32W pe32 = {};
@@ -58,10 +60,10 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 		{
 			do
 			{
-				auto process = OpenRemoteProcess(reinterpret_cast<RC_Pointer>(pe32.th32ProcessID), ProcessAccess::Read);
+				const auto process = OpenRemoteProcess(reinterpret_cast<RC_Pointer>(pe32.th32ProcessID), ProcessAccess::Read);
 				if (IsProcessValid(process))
 				{
-					auto platform = GetProcessPlatform(process);
+					const auto platform = GetProcessPlatform(process);
 #ifdef RECLASSNET64
 					if (platform == Platform::X64)
 #else
@@ -70,7 +72,9 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 					{
 						EnumerateProcessData data;
 						data.Id = pe32.th32ProcessID;
-						GetModuleFileNameExW(process, nullptr, reinterpret_cast<LPWSTR>(data.ModulePath), PATH_MAXIMUM_LENGTH);
+						GetModuleFileNameExW(process, nullptr, reinterpret_cast<LPWSTR>(data.Path), PATH_MAXIMUM_LENGTH);
+						const auto name = fs::path(data.Path).filename().u16string();
+						str16cpy(data.Name, name.c_str(), std::min<int>(name.length(), PATH_MAXIMUM_LENGTH));
 
 						callbackProcess(&data);
 					}

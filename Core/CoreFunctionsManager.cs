@@ -92,7 +92,7 @@ namespace ReClassNET.Core
 		{
 			var c = callbackProcess == null ? null : (EnumerateProcessCallback)delegate (ref EnumerateProcessData data)
 			{
-				callbackProcess(new ProcessInfo(data.Id, data.Path));
+				callbackProcess(new ProcessInfo(data.Id, data.Name, data.Path));
 			};
 
 			currentFunctions.EnumerateProcesses(c);

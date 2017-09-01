@@ -9,12 +9,13 @@ namespace ReClassNET.Memory
 		public string Name { get; }
 		public string Path { get; }
 
-		public ProcessInfo(IntPtr id, string path)
+		public ProcessInfo(IntPtr id, string name, string path)
 		{
+			Contract.Requires(name != null);
 			Contract.Requires(path != null);
 
 			Id = id;
-			Name = System.IO.Path.GetFileName(path);
+			Name = name;
 			Path = path;
 		}
 	}

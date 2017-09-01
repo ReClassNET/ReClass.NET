@@ -122,7 +122,9 @@ extern "C" void EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 							{
 								EnumerateProcessData data = {};
 								data.Id = parse_type<size_t>(name);
-								MultiByteToUnicode(linkPath.c_str(), data.ModulePath, PATH_MAXIMUM_LENGTH);
+								MultiByteToUnicode(linkPath.c_str(), data.Path, PATH_MAXIMUM_LENGTH);
+								const auto name = fs::path(data.Path).filename().u16string();
+								str16cpy(data.Name, name.c_str(), std::min<int>(name.length(), PATH_MAXIMUM_LENGTH));
 
 								callbackProcess(&data);
 							}
