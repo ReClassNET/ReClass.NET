@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using System.IO;
+using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher
 {

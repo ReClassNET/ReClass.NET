@@ -2,32 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReClassNET.MemorySearcher
 {
-	public static class StringReaderExtension
-	{
-		public static int ReadSkipWhitespaces(this StringReader sr)
-		{
-			while (true)
-			{
-				var i = sr.Read();
-				if (i == -1)
-				{
-					return i;
-				}
-
-				if (!char.IsWhiteSpace((char)i))
-				{
-					return i;
-				}
-			}
-		}
-	}
-
 	public partial class WildcardPatternMatcher : IPatternMatcher
 	{
 		private readonly List<PatternByte> pattern;
