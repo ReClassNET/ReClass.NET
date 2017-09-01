@@ -251,7 +251,9 @@
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ISettingsBindable.cs" />
-    <Compile Include="UI\MemoryPreviewToolTip.cs" />
+    <Compile Include="UI\MemoryPreviewPopUp.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\MemoryViewControl.Designer.cs">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
@@ -260,6 +262,7 @@
     <Compile Include="Util\Extension.Graphics.cs" />
     <Compile Include="Util\Extension.RichTextBox.cs" />
     <Compile Include="Util\Extension.Size.cs" />
+    <Compile Include="Util\Extension.StringReader.cs" />
     <Compile Include="Util\GrowingList.cs" />
     <Compile Include="Forms\PluginForm.cs">
       <SubType>Form</SubType>

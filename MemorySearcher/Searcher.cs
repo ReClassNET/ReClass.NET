@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ReClassNET.Memory;
+﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
+using ReClassNET.Memory;
 
 namespace ReClassNET.MemorySearcher
 {

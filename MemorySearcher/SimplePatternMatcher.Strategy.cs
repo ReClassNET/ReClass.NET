@@ -6,7 +6,7 @@ namespace ReClassNET.MemorySearcher
 {
 	public partial class SimplePatternMatcher
 	{
-		[ContractClass(typeof(IMatchStrategyContract))]
+		[ContractClass(typeof(MatchStrategyContract))]
 		private interface IMatchStrategy
 		{
 			int PatternLength { get; }
@@ -15,9 +15,9 @@ namespace ReClassNET.MemorySearcher
 		}
 
 		[ContractClassFor(typeof(IMatchStrategy))]
-		internal abstract class IMatchStrategyContract : IMatchStrategy
+		internal abstract class MatchStrategyContract : IMatchStrategy
 		{
-			public int PatternLength { get { throw new NotImplementedException(); } }
+			public int PatternLength => throw new NotImplementedException();
 
 			public IEnumerable<int> SearchMatches(IList<byte> data, int index, int count)
 			{
