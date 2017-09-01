@@ -277,6 +277,5 @@ inline char16_t* str16cpy(char16_t* destination, const char16_t* source, size_t 
 		*temp++ = 0;
 		--n;
 	}
-	while ((*temp++ = *source++) != 0);
 	return destination;
 }

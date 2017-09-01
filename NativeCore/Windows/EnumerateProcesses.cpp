@@ -70,11 +70,11 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 					if (platform == Platform::X86)
 #endif
 					{
-						EnumerateProcessData data;
+						EnumerateProcessData data = { };
 						data.Id = pe32.th32ProcessID;
 						GetModuleFileNameExW(process, nullptr, reinterpret_cast<LPWSTR>(data.Path), PATH_MAXIMUM_LENGTH);
 						const auto name = fs::path(data.Path).filename().u16string();
-						str16cpy(data.Name, name.c_str(), std::min<int>(name.length(), PATH_MAXIMUM_LENGTH));
+						str16cpy(data.Name, name.c_str(), std::min<int>(name.length(), PATH_MAXIMUM_LENGTH - 1));
 
 						callbackProcess(&data);
 					}
