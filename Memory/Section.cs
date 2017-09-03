@@ -17,9 +17,10 @@ namespace ReClassNET.Memory
 
 		Read = 1,
 		Write = 2,
-		Execute = 4,
+		CopyOnWrite = 4,
+		Execute = 8,
 
-		Guard = 8
+		Guard = 16
 	}
 
 	public enum SectionType
