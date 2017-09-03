@@ -15,6 +15,8 @@ namespace ReClassNET.Memory
 
 		public RemoteProcess Process { get; set; }
 
+		public byte[] RawData => data;
+
 		public int Size
 		{
 			get => data.Length;
@@ -44,12 +46,20 @@ namespace ReClassNET.Memory
 		}
 
 		public MemoryBuffer()
+			: this(0)
 		{
 			Contract.Ensures(data != null);
 			Contract.Ensures(historyData != null);
+		}
 
-			data = new byte[0];
-			historyData = new byte[0];
+		public MemoryBuffer(int size)
+		{
+			Contract.Requires(size >= 0);
+			Contract.Ensures(data != null);
+			Contract.Ensures(historyData != null);
+
+			data = new byte[size];
+			historyData = new byte[size];
 		}
 
 		public MemoryBuffer(MemoryBuffer other)
