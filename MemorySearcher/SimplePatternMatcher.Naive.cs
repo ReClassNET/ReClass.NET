@@ -8,6 +8,7 @@ namespace ReClassNET.MemorySearcher
 		private class NaiveMatchStrategy : IMatchStrategy
 		{
 			private readonly byte[] pattern;
+			private readonly int stepSize;
 
 			public int PatternLength => pattern.Length;
 
@@ -16,6 +17,14 @@ namespace ReClassNET.MemorySearcher
 				Contract.Requires(pattern != null);
 
 				this.pattern = pattern;
+			}
+
+			public NaiveMatchStrategy(byte[] pattern, int stepSize)
+			{
+				Contract.Requires(pattern != null);
+
+				this.pattern = pattern;
+				this.stepSize = stepSize;
 			}
 
 			public IEnumerable<int> SearchMatches(IList<byte> data, int index, int count)
@@ -27,7 +36,7 @@ namespace ReClassNET.MemorySearcher
 
 				var endIndex = index + count - PatternLength + 1;
 
-				for (var i = index; i < endIndex; ++i)
+				for (var i = index; i < endIndex; i += stepSize)
 				{
 					var found = true;
 					for (var j = 0; j < PatternLength; ++j)
