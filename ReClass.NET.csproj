@@ -171,14 +171,15 @@
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Debugger\RemoteDebugger.cs" />
-    <Compile Include="MemorySearcher\IPatternMatcher.cs" />
+    <Compile Include="MemorySearcher\Algorithm\IPatternMatcher.cs" />
     <Compile Include="MemorySearcher\Searcher.cs" />
-    <Compile Include="MemorySearcher\SimplePatternMatcher.cs" />
-    <Compile Include="MemorySearcher\SimplePatternMatcher.Naive.cs" />
-    <Compile Include="MemorySearcher\SimplePatternMatcher.RabinKarp.cs" />
-    <Compile Include="MemorySearcher\SimplePatternMatcher.Strategy.cs" />
-    <Compile Include="MemorySearcher\WildcardPatternMatcher.cs" />
-    <Compile Include="MemorySearcher\WildcardPatternMatcher.PatternByte.cs" />
+    <Compile Include="MemorySearcher\SearchSettings.cs" />
+    <Compile Include="MemorySearcher\Algorithm\SimplePatternMatcher.cs" />
+    <Compile Include="MemorySearcher\Algorithm\SimplePatternMatcher.Naive.cs" />
+    <Compile Include="MemorySearcher\Algorithm\SimplePatternMatcher.RabinKarp.cs" />
+    <Compile Include="MemorySearcher\Algorithm\SimplePatternMatcher.Strategy.cs" />
+    <Compile Include="MemorySearcher\Algorithm\WildcardPatternMatcher.cs" />
+    <Compile Include="MemorySearcher\Algorithm\WildcardPatternMatcher.PatternByte.cs" />
     <Compile Include="Memory\Disassembler.cs" />
     <Compile Include="Debugger\IBreakpoint.cs" />
     <Compile Include="Memory\Module.cs" />
@@ -403,6 +404,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputBytesForm.resx">
       <DependentUpon>InputBytesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MemorySearcherForm.resx">
+      <DependentUpon>MemorySearcherForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ClassNodeView.resx">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
