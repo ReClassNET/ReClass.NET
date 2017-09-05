@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemorySearcher.Algorithm
 {
 	[ContractClass(typeof(PatternMatcherContract))]
 	public interface IPatternMatcher

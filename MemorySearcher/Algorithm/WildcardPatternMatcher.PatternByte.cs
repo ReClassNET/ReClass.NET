@@ -2,7 +2,7 @@
 using System.IO;
 using ReClassNET.Util;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemorySearcher.Algorithm
 {
 	public partial class WildcardPatternMatcher
 	{

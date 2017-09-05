@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemorySearcher.Algorithm
 {
 	public partial class WildcardPatternMatcher : IPatternMatcher
 	{

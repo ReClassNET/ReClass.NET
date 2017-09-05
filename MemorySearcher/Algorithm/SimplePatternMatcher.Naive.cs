@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemorySearcher.Algorithm
 {
 	public partial class SimplePatternMatcher
 	{

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemorySearcher.Algorithm
 {
 	public partial class SimplePatternMatcher : IPatternMatcher
 	{
-		private readonly IMatchStrategy strategy;
+		private readonly SimplePatternMatcher.IMatchStrategy strategy;
 
 		#region Construction
 
@@ -73,18 +73,18 @@ namespace ReClassNET.MemorySearcher
 
 		#endregion
 
-		private static IMatchStrategy ChooseStrategy(byte[] pattern)
+		private static SimplePatternMatcher.IMatchStrategy ChooseStrategy(byte[] pattern)
 		{
 			Contract.Requires(pattern != null);
-			Contract.Ensures(Contract.Result<IMatchStrategy>() != null);
+			Contract.Ensures(Contract.Result<SimplePatternMatcher.IMatchStrategy>() != null);
 
 			if (pattern.Length <= 5)
 			{
-				return new NaiveMatchStrategy(pattern);
+				return new SimplePatternMatcher.NaiveMatchStrategy(pattern);
 			}
 			else
 			{
-				return new RabinKarpMatchStrategy(pattern);
+				return new SimplePatternMatcher.RabinKarpMatchStrategy(pattern);
 			}
 		}
 
