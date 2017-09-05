@@ -14,22 +14,20 @@ namespace ReClassNET.MemorySearcher
 				public bool IsWildcard;
 			}
 
-			private Nibble Nibble1;
-			private Nibble Nibble2;
+			private Nibble nibble1;
+			private Nibble nibble2;
 
 			private static bool IsHexValue(char c)
 			{
-				return ('0' <= c && c <= '9')
-					|| ('A' <= c && c <= 'F')
-					|| ('a' <= c && c <= 'f');
+				return '0' <= c && c <= '9'
+					|| 'A' <= c && c <= 'F'
+					|| 'a' <= c && c <= 'f';
 			}
 
 			private static int HexToInt(char c)
 			{
-				if ('0' <= c && c <= '9')
-					return c - '0';
-				if ('A' <= c && c <= 'F')
-					return c - 'A' + 10;
+				if ('0' <= c && c <= '9') return c - '0';
+				if ('A' <= c && c <= 'F') return c - 'A' + 10;
 				return c - 'a' + 10;
 			}
 
@@ -43,13 +41,13 @@ namespace ReClassNET.MemorySearcher
 					return false;
 				}
 
-				Nibble1.Value = HexToInt((char)temp) & 0xF;
-				Nibble1.IsWildcard = (char)temp == '?';
+				nibble1.Value = HexToInt((char)temp) & 0xF;
+				nibble1.IsWildcard = (char)temp == '?';
 
 				temp = sr.Read();
 				if (temp == -1 || char.IsWhiteSpace((char)temp) || (char)temp == '?')
 				{
-					Nibble2.IsWildcard = true;
+					nibble2.IsWildcard = true;
 
 					return true;
 				}
@@ -58,8 +56,8 @@ namespace ReClassNET.MemorySearcher
 				{
 					return false;
 				}
-				Nibble2.Value = HexToInt((char)temp) & 0xF;
-				Nibble2.IsWildcard = false;
+				nibble2.Value = HexToInt((char)temp) & 0xF;
+				nibble2.IsWildcard = false;
 
 				return true;
 			}
@@ -67,11 +65,11 @@ namespace ReClassNET.MemorySearcher
 			public bool Equals(byte b)
 			{
 				var matched = 0;
-				if (Nibble1.IsWildcard || ((b >> 4) & 0xF) == Nibble1.Value)
+				if (nibble1.IsWildcard || ((b >> 4) & 0xF) == nibble1.Value)
 				{
 					++matched;
 				}
-				if (Nibble2.IsWildcard || (b & 0xF) == Nibble2.Value)
+				if (nibble2.IsWildcard || (b & 0xF) == nibble2.Value)
 				{
 					++matched;
 				}
