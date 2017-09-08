@@ -25,7 +25,7 @@ namespace ReClassNET.MemorySearcher.Algorithm
 				this.stepSize = stepSize;
 			}
 
-			public IEnumerable<int> SearchMatches(IList<byte> data, int index, int count)
+			public IEnumerable<int> SearchMatches(byte[] data, int index, int count)
 			{
 				var patternLength = pattern.Length;
 				if (count < patternLength)

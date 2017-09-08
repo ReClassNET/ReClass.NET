@@ -31,12 +31,12 @@ namespace ReClassNET.MemorySearcher.Algorithm
 			}
 		}
 
-		public IEnumerable<int> SearchMatches(IList<byte> data)
+		public IEnumerable<int> SearchMatches(byte[] data)
 		{
-			return SearchMatches(data, 0, data.Count);
+			return SearchMatches(data, 0, data.Length);
 		}
 
-		public IEnumerable<int> SearchMatches(IList<byte> data, int index, int count)
+		public IEnumerable<int> SearchMatches(byte[] data, int index, int count)
 		{
 			if (count < pattern.Count)
 			{
