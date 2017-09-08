@@ -179,14 +179,10 @@ namespace ReClassNET.Memory
 			}
 
 			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			var obj = Marshal.PtrToStructure(handle.AddrOfPinnedObject() + Offset + offset, typeof(T));
+			var obj = Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject() + Offset + offset);
 			handle.Free();
 
-			if (obj == null)
-			{
-				return default(T);
-			}
-			return (T)obj;
+			return obj;
 		}
 
 		public string ReadPrintableAsciiString(IntPtr offset, int length)
