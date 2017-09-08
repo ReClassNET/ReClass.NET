@@ -14,8 +14,6 @@ namespace ReClassNET.MemorySearcher.Algorithm
 			private readonly uint power;
 			private readonly uint patternHash;
 
-			public int PatternLength => pattern.Length;
-
 			public RabinKarpMatchStrategy(byte[] pattern)
 			{
 				Contract.Requires(pattern != null);
@@ -57,14 +55,15 @@ namespace ReClassNET.MemorySearcher.Algorithm
 
 			public IEnumerable<int> SearchMatches(IList<byte> data, int index, int count)
 			{
-				if (count < PatternLength)
+				var patternLength = pattern.Length;
+				if (count < patternLength)
 				{
 					yield break;
 				}
 
-				var dataHash = CalculateHash(data, index, PatternLength);
+				var dataHash = CalculateHash(data, index, patternLength);
 
-				var endIndex = index + count - PatternLength;
+				var endIndex = index + count - patternLength;
 
 				for (var i = index; i < endIndex; ++i)
 				{
@@ -73,7 +72,7 @@ namespace ReClassNET.MemorySearcher.Algorithm
 						yield return i - index;
 					}
 
-					dataHash = UpdateHash(dataHash, data[i], data[i + PatternLength]);
+					dataHash = UpdateHash(dataHash, data[i], data[i + patternLength]);
 				}
 			}
 		}

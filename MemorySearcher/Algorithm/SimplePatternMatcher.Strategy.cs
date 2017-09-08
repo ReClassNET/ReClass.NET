@@ -9,16 +9,12 @@ namespace ReClassNET.MemorySearcher.Algorithm
 		[ContractClass(typeof(MatchStrategyContract))]
 		private interface IMatchStrategy
 		{
-			int PatternLength { get; }
-
 			IEnumerable<int> SearchMatches(IList<byte> data, int index, int count);
 		}
 
 		[ContractClassFor(typeof(IMatchStrategy))]
 		internal abstract class MatchStrategyContract : IMatchStrategy
 		{
-			public int PatternLength => throw new NotImplementedException();
-
 			public IEnumerable<int> SearchMatches(IList<byte> data, int index, int count)
 			{
 				Contract.Requires(data != null);
