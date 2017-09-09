@@ -5,8 +5,8 @@ namespace ReClassNET.MemorySearcher.Comparer
 {
 	public class FloatMemoryComparer : IMemoryComparer
 	{
-		public SearchCompareType CompareType { get; set; } = SearchCompareType.Unknown;
-		public SearchRoundMode RoundType { get; } = SearchRoundMode.Normal;
+		public SearchCompareType CompareType { get; }
+		public SearchRoundMode RoundType { get; }
 		public float Value1 { get; }
 		public float Value2 { get; }
 		public int ValueSize => sizeof(float);

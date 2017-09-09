@@ -5,7 +5,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 {
 	public class IntegerMemoryComparer : IMemoryComparer
 	{
-		public SearchCompareType CompareType { get; set; } = SearchCompareType.Unknown;
+		public SearchCompareType CompareType { get; }
 		public int Value1 { get; }
 		public int Value2 { get; }
 		public int ValueSize => sizeof(int);

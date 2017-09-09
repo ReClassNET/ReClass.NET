@@ -5,7 +5,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 {
 	public class ArrayOfBytesMemoryComparer : IMemoryComparer
 	{
-		public SearchCompareType CompareType { get; set; } = SearchCompareType.Equal;
+		public SearchCompareType CompareType => SearchCompareType.Equal;
 		public BytePattern Value { get; }
 		public int ValueSize => Value.Length;
 

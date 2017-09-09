@@ -5,7 +5,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 {
 	public class ShortMemoryComparer : IMemoryComparer
 	{
-		public SearchCompareType CompareType { get; set; } = SearchCompareType.Unknown;
+		public SearchCompareType CompareType { get; }
 		public short Value1 { get; }
 		public short Value2 { get; }
 		public int ValueSize => sizeof(short);

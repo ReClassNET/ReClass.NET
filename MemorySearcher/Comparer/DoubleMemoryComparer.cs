@@ -5,8 +5,8 @@ namespace ReClassNET.MemorySearcher.Comparer
 {
 	public class DoubleMemoryComparer : IMemoryComparer
 	{
-		public SearchCompareType CompareType { get; set; } = SearchCompareType.Unknown;
-		public SearchRoundMode RoundType { get; } = SearchRoundMode.Normal;
+		public SearchCompareType CompareType { get; }
+		public SearchRoundMode RoundType { get; }
 		public double Value1 { get; }
 		public double Value2 { get; }
 		public int ValueSize => sizeof(double);

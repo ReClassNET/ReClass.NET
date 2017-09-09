@@ -6,9 +6,9 @@ namespace ReClassNET.MemorySearcher.Comparer
 {
 	public class StringMemoryComparer : IMemoryComparer
 	{
-		public SearchCompareType CompareType { get; set; } = SearchCompareType.Equal;
+		public SearchCompareType CompareType => SearchCompareType.Equal;
 		public bool CaseSensitive { get; } = true;
-		public Encoding Encoding { get; } = Encoding.UTF8;
+		public Encoding Encoding { get; }
 		public string Value { get; }
 		public int ValueSize => Value.Length * Encoding.GetMaxByteCount(1);
 
