@@ -19,20 +19,29 @@ namespace ReClassNET.MemorySearcher.Comparer
 			CaseSensitive = caseSensitive;
 		}
 
-		public bool Compare(byte[] data, int index)
+		public bool Compare(byte[] data, int index, out SearchResult result)
 		{
+			result = null;
+
 			var value = Encoding.GetString(data, index, Value.Length);
 
-			return Value.Equals(value, CaseSensitive ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase);
+			if (!Value.Equals(value, CaseSensitive ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase))
+			{
+				return false;
+			}
+
+			result = new StringSearchResult();
+
+			return true;
 		}
 
-		public bool Compare(byte[] data, int index, SearchResult other)
+		public bool Compare(byte[] data, int index, SearchResult previous, out SearchResult result)
 		{
 #if DEBUG
-			Debug.Assert(other is StringSearchResult);
+			Debug.Assert(previous is StringSearchResult);
 #endif
 
-			return Compare(data, index);
+			return Compare(data, index, out result);
 		}
 	}
 }

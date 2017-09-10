@@ -23,8 +23,10 @@ namespace ReClassNET.MemorySearcher.Comparer
 			}
 		}
 
-		public bool Compare(byte[] data, int index)
+		public bool Compare(byte[] data, int index, out SearchResult result)
 		{
+			result = null;
+
 			if (pattern != null)
 			{
 				for (var i = 0; i < pattern.Length; ++i)
@@ -34,22 +36,24 @@ namespace ReClassNET.MemorySearcher.Comparer
 						return false;
 					}
 				}
-
-				return true;
 			}
-			else
+			else if (!Value.Equals(data, index))
 			{
-				return Value.Equals(data, index);
+				return false;
 			}
+
+			result = new ArrayOfBytesSearchResult();
+
+			return true;
 		}
 
-		public bool Compare(byte[] data, int index, SearchResult other)
+		public bool Compare(byte[] data, int index, SearchResult previous, out SearchResult result)
 		{
 #if DEBUG
-			Debug.Assert(other is ArrayOfBytesSearchResult);
+			Debug.Assert(previous is ArrayOfBytesSearchResult);
 #endif
 
-			return Compare(data, index);
+			return Compare(data, index, out result);
 		}
 	}
 }

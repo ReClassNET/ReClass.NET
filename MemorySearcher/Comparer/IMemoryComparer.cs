@@ -5,8 +5,8 @@
 		SearchCompareType CompareType { get; }
 		int ValueSize { get; }
 
-		bool Compare(byte[] data, int index);
+		bool Compare(byte[] data, int index, out SearchResult result);
 
-		bool Compare(byte[] data, int index, SearchResult other);
+		bool Compare(byte[] data, int index, SearchResult previous, out SearchResult result);
 	}
 }
