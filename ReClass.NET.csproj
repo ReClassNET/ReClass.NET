@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WIN32</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WIN32;RECLASSNET32</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -75,7 +75,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;WIN32;RELEASE</DefineConstants>
+    <DefineConstants>TRACE;WIN32;RECLASSNET32;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -85,7 +85,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WIN64</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WIN64;RECLASSNET64</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -95,7 +95,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;WIN64;RELEASE</DefineConstants>
+    <DefineConstants>TRACE;WIN64;RECLASSNET64;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -171,15 +171,30 @@
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Debugger\RemoteDebugger.cs" />
-    <Compile Include="MemorySearcher\Algorithm\IPatternMatcher.cs" />
+    <Compile Include="Forms\MemorySearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MemorySearchForm.Designer.cs">
+      <DependentUpon>MemorySearchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MemorySearcher\BytePattern.cs" />
+    <Compile Include="MemorySearcher\Comparer\ArrayOfBytesMemoryComparer.cs" />
+    <Compile Include="MemorySearcher\Comparer\ByteMemoryComparer.cs" />
+    <Compile Include="MemorySearcher\Comparer\DoubleMemoryComparer.cs" />
+    <Compile Include="MemorySearcher\Comparer\FloatMemoryComparer.cs" />
+    <Compile Include="MemorySearcher\Comparer\IMemoryComparer.cs" />
+    <Compile Include="MemorySearcher\Comparer\IntegerMemoryComparer.cs" />
+    <Compile Include="MemorySearcher\Comparer\LongMemoryComparer.cs" />
+    <Compile Include="MemorySearcher\Comparer\ShortMemoryComparer.cs" />
+    <Compile Include="MemorySearcher\Comparer\StringMemoryComparer.cs" />
+    <Compile Include="MemorySearcher\SearchCompareType.cs" />
+    <Compile Include="MemorySearcher\SearcherWorker.cs" />
+    <Compile Include="MemorySearcher\SearchValueType.cs" />
+    <Compile Include="MemorySearcher\InvalidCompareTypeException.cs" />
+    <Compile Include="MemorySearcher\SearchRoundMode.cs" />
+    <Compile Include="MemorySearcher\SearchResult.cs" />
     <Compile Include="MemorySearcher\Searcher.cs" />
     <Compile Include="MemorySearcher\SearchSettings.cs" />
-    <Compile Include="MemorySearcher\Algorithm\SimplePatternMatcher.cs" />
-    <Compile Include="MemorySearcher\Algorithm\SimplePatternMatcher.Naive.cs" />
-    <Compile Include="MemorySearcher\Algorithm\SimplePatternMatcher.RabinKarp.cs" />
-    <Compile Include="MemorySearcher\Algorithm\SimplePatternMatcher.Strategy.cs" />
-    <Compile Include="MemorySearcher\Algorithm\WildcardPatternMatcher.cs" />
-    <Compile Include="MemorySearcher\Algorithm\WildcardPatternMatcher.PatternByte.cs" />
     <Compile Include="Memory\Disassembler.cs" />
     <Compile Include="Debugger\IBreakpoint.cs" />
     <Compile Include="Memory\Module.cs" />
@@ -251,6 +266,13 @@
     <Compile Include="Forms\LogForm.Designer.cs">
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\DualValueControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\DualValueControl.Designer.cs">
+      <DependentUpon>DualValueControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\EnumDescriptionDisplay.cs" />
     <Compile Include="UI\ISettingsBindable.cs" />
     <Compile Include="UI\MemoryPreviewPopUp.cs">
       <SubType>Component</SubType>
@@ -405,8 +427,8 @@
     <EmbeddedResource Include="Forms\InputBytesForm.resx">
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MemorySearcherForm.resx">
-      <DependentUpon>MemorySearcherForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\MemorySearchForm.resx">
+      <DependentUpon>MemorySearchForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ClassNodeView.resx">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
@@ -421,6 +443,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ColorBox.resx">
       <DependentUpon>ColorBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DualValueControl.resx">
+      <DependentUpon>DualValueControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MemoryViewControl.resx">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>

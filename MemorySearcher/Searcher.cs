@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ReClassNET.Memory;
-using ReClassNET.MemorySearcher.Algorithm;
 using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher
@@ -21,7 +20,7 @@ namespace ReClassNET.MemorySearcher
 			this.process = process;
 		}
 
-		private ICollection<Section> GetSearchableSections(SearchSettings settings)
+		private IList<Section> GetSearchableSections(SearchSettings settings)
 		{
 			Contract.Requires(settings != null);
 
@@ -71,10 +70,9 @@ namespace ReClassNET.MemorySearcher
 				.ToList();
 		}
 
-		public IList<IntPtr> Search(SearchSettings settings, IPatternMatcher matcher, CancellationToken ct, IProgress<int> progress)
+		public Task<bool> FirstScan(SearchSettings settings, CancellationToken ct, IProgress<int> progress)
 		{
 			Contract.Requires(settings != null);
-			Contract.Requires(matcher != null);
 
 			var sections = GetSearchableSections(settings);
 
@@ -82,22 +80,37 @@ namespace ReClassNET.MemorySearcher
 
 			var counter = 0;
 
-			return sections
-				.AsParallel()
-				.WithCancellation(ct)
-				.Select(s =>
-				{
-					var buffer = new MemoryBuffer(s.Size.ToInt32()) { Process = process };
-					buffer.Update(s.Start, false);
-					return new { StartAddress = s.Start, Buffer = buffer };
-				})
-				.SelectMany(i =>
-				{
-					var result = matcher.SearchMatches(i.Buffer.RawData).Select(offset => i.StartAddress + offset).ToList();
-					progress?.Report((int)(Interlocked.Increment(ref counter) / (float)sections.Count * 100));
-					return result;
-				})
-				.ToList();
+			return Task.Run(() =>
+			{
+				var result = Parallel.ForEach(
+					sections,
+					new ParallelOptions { CancellationToken = ct},
+					() => new SearcherWorker(settings),
+					(s, state, _, w) =>
+					{
+						var buffer = new MemoryBuffer(s.Size.ToInt32()) { Process = process };
+						buffer.Update(s.Start, false);
+
+						w.Search(s.Start, buffer.RawData);
+
+						progress?.Report((int)(Interlocked.Increment(ref counter) / (float)sections.Count * 100));
+
+						return w;
+					},
+					w => w.Finish()
+				);
+				return result.IsCompleted;
+			}, ct);
+		}
+
+		public Task NextScan(SearchSettings settings, CancellationToken ct, IProgress<int> progress)
+		{
+			Contract.Requires(settings != null);
+
+			return Task.Run(() =>
+			{
+
+			}, ct);
 		}
 	}
 }
