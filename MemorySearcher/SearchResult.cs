@@ -4,20 +4,14 @@ namespace ReClassNET.MemorySearcher
 {
 	public abstract class SearchResult
 	{
-		public IntPtr Address { get; }
-
-		protected SearchResult(IntPtr address)
-		{
-			Address = address;
-		}
+		public IntPtr Address { get; set; }
 	}
 
 	public class ByteSearchResult : SearchResult
 	{
 		public byte Value { get; }
 
-		public ByteSearchResult(IntPtr address, byte value)
-			: base(address)
+		public ByteSearchResult(byte value)
 		{
 			Value = value;
 		}
@@ -27,8 +21,7 @@ namespace ReClassNET.MemorySearcher
 	{
 		public short Value { get; }
 
-		public ShortSearchResult(IntPtr address, short value)
-			: base(address)
+		public ShortSearchResult(short value)
 		{
 			Value = value;
 		}
@@ -38,8 +31,7 @@ namespace ReClassNET.MemorySearcher
 	{
 		public int Value { get; }
 
-		public IntegerSearchResult(IntPtr address, int value)
-			: base(address)
+		public IntegerSearchResult(int value)
 		{
 			Value = value;
 		}
@@ -49,8 +41,7 @@ namespace ReClassNET.MemorySearcher
 	{
 		public long Value { get; }
 
-		public LongSearchResult(IntPtr address, long value)
-			: base(address)
+		public LongSearchResult(long value)
 		{
 			Value = value;
 		}
@@ -60,8 +51,7 @@ namespace ReClassNET.MemorySearcher
 	{
 		public float Value { get; }
 
-		public FloatSearchResult(IntPtr address, float value)
-			: base(address)
+		public FloatSearchResult(float value)
 		{
 			Value = value;
 		}
@@ -71,8 +61,7 @@ namespace ReClassNET.MemorySearcher
 	{
 		public double Value { get; }
 
-		public DoubleSearchResult(IntPtr address, double value)
-			: base(address)
+		public DoubleSearchResult(double value)
 		{
 			Value = value;
 		}
@@ -80,19 +69,11 @@ namespace ReClassNET.MemorySearcher
 
 	public class ArrayOfBytesSearchResult : SearchResult
 	{
-		public ArrayOfBytesSearchResult(IntPtr address)
-			: base(address)
-		{
 
-		}
 	}
 
 	public class StringSearchResult : SearchResult
 	{
-		public StringSearchResult(IntPtr address)
-			: base(address)
-		{
 
-		}
 	}
 }
