@@ -487,6 +487,7 @@
 			this.Controls.Add(this.bannerBox);
 			this.Name = "MemorySearchForm";
 			this.Text = "ReClass.NET - Memory Searcher";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MemorySearchForm_FormClosing);
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
 			this.filterGroupBox.ResumeLayout(false);
 			this.filterGroupBox.PerformLayout();

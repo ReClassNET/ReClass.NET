@@ -14,12 +14,13 @@ using ReClassNET.Memory;
 using ReClassNET.MemorySearcher;
 using ReClassNET.MemorySearcher.Comparer;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Forms
 {
 	public partial class MemorySearchForm : IconForm
 	{
-		private const int MaxVisibleResults = 1000;
+		private const int MaxVisibleResults = 10000;
 
 		private readonly RemoteProcess process;
 
@@ -42,7 +43,7 @@ namespace ReClassNET.Forms
 
 			startAddressTextBox.Text = 0.ToString(Constants.StringHexFormat);
 			endAddressTextBox.Text =
-#if WIN64
+#if RECLASSNET64
 				long.MaxValue.ToString(Constants.StringHexFormat);
 #else
 				int.MaxValue.ToString(Constants.StringHexFormat);
@@ -71,7 +72,7 @@ namespace ReClassNET.Forms
 			var previousColumn = dt.Columns.Add("previous", typeof(string));
 			var dataColumn = dt.Columns.Add("data", typeof(SearchResult));
 
-			foreach (var result in searcher.GetResults().Take(MaxVisibleResults))
+			foreach (var result in searcher.GetResults().Take(MaxVisibleResults).OrderBy(r => r.Address, IntPtrComparer.Instance))
 			{
 				var row = dt.NewRow();
 				row[addressColumn] = result.Address.ToString(Constants.StringHexFormat);
@@ -115,20 +116,9 @@ namespace ReClassNET.Forms
 
 		private void OnValueTypeChanged()
 		{
+			SetValidCompareTypes();
+
 			var valueType = SelectedValueType;
-			if (valueType == SearchValueType.ArrayOfBytes || valueType == SearchValueType.String)
-			{
-				scanTypeComboBox.DataSource = EnumDescriptionDisplay<SearchCompareType>.CreateExact(SearchCompareType.Equal);
-			}
-			else
-			{
-				scanTypeComboBox.DataSource = isFirstScan
-					? EnumDescriptionDisplay<SearchCompareType>.CreateExclude(
-						SearchCompareType.Changed, SearchCompareType.NotChanged, SearchCompareType.Decreased, SearchCompareType.DecreasedOrEqual,
-						SearchCompareType.Increased, SearchCompareType.IncreasedOrEqual
-					)
-					: EnumDescriptionDisplay<SearchCompareType>.CreateExclude(SearchCompareType.Unknown);
-			}
 
 			int alignment = 1;
 			switch (valueType)
@@ -149,8 +139,29 @@ namespace ReClassNET.Forms
 			stringOptionsGroupBox.Visible = valueType == SearchValueType.String;
 		}
 
+		private void SetValidCompareTypes()
+		{
+			var valueType = SelectedValueType;
+			if (valueType == SearchValueType.ArrayOfBytes || valueType == SearchValueType.String)
+			{
+				scanTypeComboBox.DataSource = EnumDescriptionDisplay<SearchCompareType>.CreateExact(SearchCompareType.Equal);
+			}
+			else
+			{
+				scanTypeComboBox.DataSource = isFirstScan
+					? EnumDescriptionDisplay<SearchCompareType>.CreateExclude(
+						SearchCompareType.Changed, SearchCompareType.NotChanged, SearchCompareType.Decreased, SearchCompareType.DecreasedOrEqual,
+						SearchCompareType.Increased, SearchCompareType.IncreasedOrEqual
+					)
+					: EnumDescriptionDisplay<SearchCompareType>.CreateExclude(SearchCompareType.Unknown);
+			}
+		}
+
 		private void Reset()
 		{
+			searcher?.Dispose();
+			searcher = null;
+
 			SetResultCount(0);
 			resultDataGridView.DataSource = null;
 
@@ -162,6 +173,8 @@ namespace ReClassNET.Forms
 			scanOptionsGroupBox.Enabled = true;
 
 			isFirstScan = true;
+
+			SetValidCompareTypes();
 		}
 
 		private async void firstScanButton_Click(object sender, EventArgs e)
@@ -178,6 +191,8 @@ namespace ReClassNET.Forms
 		{
 			if (isFirstScan)
 			{
+				firstScanButton.Enabled = false;
+
 				var settings = CreateSearchSettings();
 				var comparer = CreateComparer(settings);
 				searcher = new Searcher(process, settings);
@@ -191,6 +206,7 @@ namespace ReClassNET.Forms
 				}
 
 				scanProgressBar.Value = 0;
+				firstScanButton.Enabled = true;
 				nextScanButton.Enabled = true;
 				valueTypeComboBox.Enabled = false;
 
@@ -199,6 +215,8 @@ namespace ReClassNET.Forms
 				scanOptionsGroupBox.Enabled = false;
 
 				isFirstScan = false;
+
+				SetValidCompareTypes();
 			}
 			else
 			{
@@ -210,6 +228,9 @@ namespace ReClassNET.Forms
 		{
 			if (!isFirstScan)
 			{
+				firstScanButton.Enabled = false;
+				nextScanButton.Enabled = false;
+
 				var comparer = CreateComparer(searcher.Settings);
 
 				var report = new Progress<int>(i => scanProgressBar.Value = i);
@@ -221,6 +242,8 @@ namespace ReClassNET.Forms
 				}
 
 				scanProgressBar.Value = 0;
+				firstScanButton.Enabled = true;
+				nextScanButton.Enabled = true;
 			}
 		}
 
@@ -317,6 +340,11 @@ namespace ReClassNET.Forms
 			}
 
 			throw new Exception();
+		}
+
+		private void MemorySearchForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			searcher?.Dispose();
 		}
 	}
 }
