@@ -5,12 +5,12 @@ using ReClassNET.MemorySearcher.Comparer;
 
 namespace ReClassNET.MemorySearcher
 {
-	internal class SearcherWorker
+	internal class SearchWorker
 	{
 		private readonly SearchSettings settings;
 		private readonly IMemoryComparer comparer;
 
-		public SearcherWorker(SearchSettings settings, IMemoryComparer comparer)
+		public SearchWorker(SearchSettings settings, IMemoryComparer comparer)
 		{
 			Contract.Requires(settings != null);
 			Contract.Requires(comparer != null);

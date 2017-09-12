@@ -6,7 +6,7 @@ namespace ReClassNET.MemorySearcher
 	internal class SearchContext
 	{
 		public byte[] Buffer { get; private set; }
-		public SearcherWorker Worker { get; }
+		public SearchWorker Worker { get; }
 
 		public SearchContext(SearchSettings settings, IMemoryComparer comparer, int bufferSize)
 		{
@@ -16,7 +16,7 @@ namespace ReClassNET.MemorySearcher
 
 			EnsureBufferSize(bufferSize);
 
-			Worker = new SearcherWorker(settings, comparer);
+			Worker = new SearchWorker(settings, comparer);
 		}
 
 		public void EnsureBufferSize(int size)
