@@ -188,7 +188,10 @@
     <Compile Include="MemorySearcher\Comparer\ShortMemoryComparer.cs" />
     <Compile Include="MemorySearcher\Comparer\StringMemoryComparer.cs" />
     <Compile Include="MemorySearcher\SearchCompareType.cs" />
+    <Compile Include="MemorySearcher\SearchContext.cs" />
     <Compile Include="MemorySearcher\SearcherWorker.cs" />
+    <Compile Include="MemorySearcher\SearchResultBlock.cs" />
+    <Compile Include="MemorySearcher\SearchResultStore.cs" />
     <Compile Include="MemorySearcher\SearchValueType.cs" />
     <Compile Include="MemorySearcher\InvalidCompareTypeException.cs" />
     <Compile Include="MemorySearcher\SearchRoundMode.cs" />
@@ -281,6 +284,7 @@
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
+    <Compile Include="Util\Extension.BinaryReaderWriter.cs" />
     <Compile Include="Util\Extension.Dictionary.cs" />
     <Compile Include="Util\Extension.Graphics.cs" />
     <Compile Include="Util\Extension.RichTextBox.cs" />
@@ -408,6 +412,7 @@
     </Compile>
     <Compile Include="UI\ViewInfo.cs" />
     <Compile Include="Util\Extension.Linq.cs" />
+    <Compile Include="Util\IntPtrComparer.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.RtfFormatLock.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.RtfFormatWrapper.cs" />

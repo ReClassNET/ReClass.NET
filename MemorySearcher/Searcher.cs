@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ReClassNET.Memory;
+using ReClassNET.MemorySearcher.Comparer;
 using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher
@@ -12,17 +13,36 @@ namespace ReClassNET.MemorySearcher
 	public class Searcher
 	{
 		private readonly RemoteProcess process;
+		private readonly SearchSettings settings;
+		private SearchResultStore store;
 
-		public Searcher(RemoteProcess process)
+		public SearchSettings Settings => settings;
+
+		public int TotalResultCount => store.TotalResultCount;
+
+		private bool isFirstScan;
+
+		public Searcher(RemoteProcess process, SearchSettings settings)
 		{
 			Contract.Requires(process != null);
+			Contract.Requires(settings != null);
 
 			this.process = process;
+			this.settings = settings;
+
+			isFirstScan = true;
 		}
 
-		private IList<Section> GetSearchableSections(SearchSettings settings)
+		public IEnumerable<SearchResult> GetResults()
 		{
-			Contract.Requires(settings != null);
+			Contract.Ensures(Contract.Result<IEnumerable<SearchResult>>() != null);
+
+			return store.GetResultBlocks().SelectMany(kv => kv.Results);
+		}
+
+		private IList<Section> GetSearchableSections()
+		{
+			Contract.Ensures(Contract.Result<IList<Section>>() != null);
 
 			return process.Sections
 				.Where(s => !s.Protection.HasFlag(SectionProtection.Guard))
@@ -70,11 +90,21 @@ namespace ReClassNET.MemorySearcher
 				.ToList();
 		}
 
-		public Task<bool> FirstScan(SearchSettings settings, CancellationToken ct, IProgress<int> progress)
+		public Task<bool> Search(IMemoryComparer comparer, CancellationToken ct, IProgress<int> progress)
 		{
-			Contract.Requires(settings != null);
+			return isFirstScan ? FirstScan(comparer, ct, progress) : NextScan(comparer, ct, progress);
+		}
 
-			var sections = GetSearchableSections(settings);
+		private Task<bool> FirstScan(IMemoryComparer comparer, CancellationToken ct, IProgress<int> progress)
+		{
+			Contract.Requires(comparer != null);
+			Contract.Ensures(Contract.Result<Task<bool>>() != null);
+
+			store = new SearchResultStore();
+
+			var sections = GetSearchableSections();
+
+			var maxSectionSize = (int)sections.Average(s => s.Size.ToInt32());
 
 			progress?.Report(0);
 
@@ -85,31 +115,98 @@ namespace ReClassNET.MemorySearcher
 				var result = Parallel.ForEach(
 					sections,
 					new ParallelOptions { CancellationToken = ct},
-					() => new SearcherWorker(settings),
-					(s, state, _, w) =>
+					() => new SearchContext(settings, comparer, maxSectionSize),
+					(s, state, _, context) =>
 					{
-						var buffer = new MemoryBuffer(s.Size.ToInt32()) { Process = process };
-						buffer.Update(s.Start, false);
-
-						w.Search(s.Start, buffer.RawData);
+						var size = s.Size.ToInt32();
+						context.EnsureBufferSize(size);
+						var buffer = context.Buffer;
+						if (process.ReadRemoteMemoryIntoBuffer(s.Start, ref buffer, 0, size))
+						{
+							var results = context.Worker.Search(buffer, size)
+								.Select(r => { r.Address = r.Address.Add(s.Start); return r; })
+								.ToList();
+							if (results.Count > 0)
+							{
+								var block = new SearchResultBlock(
+									results.Min(r => r.Address, IntPtrComparer.Instance),
+									results.Max(r => r.Address, IntPtrComparer.Instance) + comparer.ValueSize,
+									results
+								);
+								store.AddBlock(block);
+							}
+						}
 
 						progress?.Report((int)(Interlocked.Increment(ref counter) / (float)sections.Count * 100));
 
-						return w;
+						return context;
 					},
-					w => w.Finish()
+					w => { }
 				);
-				return result.IsCompleted;
+
+				if (result.IsCompleted)
+				{
+					isFirstScan = false;
+
+					return true;
+				}
+
+				return false;
 			}, ct);
 		}
 
-		public Task NextScan(SearchSettings settings, CancellationToken ct, IProgress<int> progress)
+		private Task<bool> NextScan(IMemoryComparer comparer, CancellationToken ct, IProgress<int> progress)
 		{
-			Contract.Requires(settings != null);
+			Contract.Requires(comparer != null);
+			Contract.Ensures(Contract.Result<Task<bool>>() != null);
+
+			var localStore = new SearchResultStore();
+
+			progress?.Report(0);
+
+			var counter = 0;
 
 			return Task.Run(() =>
 			{
+				var result = Parallel.ForEach(
+					store.GetResultBlocks(),
+					new ParallelOptions { CancellationToken = ct },
+					() => new SearchContext(settings, comparer, 0),
+					(b, state, _, context) =>
+					{
+						context.EnsureBufferSize(b.Size);
+						var buffer = context.Buffer;
+						if (process.ReadRemoteMemoryIntoBuffer(b.Start, ref buffer, 0, b.Size))
+						{
+							var results = context.Worker.Search(buffer, buffer.Length, b.Results.Select(r => { r.Address = r.Address.Sub(b.Start); return r; }))
+								.Select(r => { r.Address = r.Address.Add(b.Start); return r; })
+								.ToList();
+							if (results.Count > 0)
+							{
+								var block = new SearchResultBlock(
+									results.Min(r => r.Address, IntPtrComparer.Instance),
+									results.Max(r => r.Address, IntPtrComparer.Instance) + comparer.ValueSize,
+									results
+								);
+								localStore.AddBlock(block);
+							}
+						}
 
+						//progress?.Report((int)(Interlocked.Increment(ref counter) / (float)sections.Count * 100));
+
+						return context;
+					},
+					w => { }
+				);
+
+				if (result.IsCompleted)
+				{
+					store = localStore;
+
+					return true;
+				}
+
+				return false;
 			}, ct);
 		}
 	}

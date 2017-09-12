@@ -1,46 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using ReClassNET.MemorySearcher.Comparer;
 
 namespace ReClassNET.MemorySearcher
 {
 	internal class SearcherWorker
 	{
-		private static int InstanceCounter = 0;
-
-		private const int MaxResultCount = 200000;
-
-		private readonly int id;
-
 		private readonly SearchSettings settings;
-		private readonly List<SearchResult> results = new List<SearchResult>(2000);
+		private readonly IMemoryComparer comparer;
 
-		public SearcherWorker(SearchSettings settings)
+		public SearcherWorker(SearchSettings settings, IMemoryComparer comparer)
 		{
 			Contract.Requires(settings != null);
+			Contract.Requires(comparer != null);
 
 			this.settings = settings;
-
-			id = Interlocked.Increment(ref InstanceCounter);
+			this.comparer = comparer;
 		}
 
-		public void Search(IntPtr address, byte[] data)
+		public IEnumerable<SearchResult> Search(byte[] data, int count)
 		{
-			var endIndex = data.Length - settings.Comparer.ValueSize;
+			Contract.Requires(data != null);
 
-			var comparer = settings.Comparer;
+			var endIndex = count - comparer.ValueSize;
 
 			for (var i = 0; i < endIndex; i += settings.FastScanAlignment)
 			{
 				if (comparer.Compare(data, i, out var result))
 				{
-					result.Address = address + i;
+					result.Address = (IntPtr)i;
 
-					results.Add(result);
+					yield return result;
+				}
+			}
+		}
+
+		public IEnumerable<SearchResult> Search(byte[] data, int count, IEnumerable<SearchResult> results)
+		{
+			Contract.Requires(data != null);
+			Contract.Requires(results != null);
+
+			var endIndex = count - comparer.ValueSize;
+
+			foreach (var previous in results)
+			{
+				var offset = previous.Address.ToInt32();
+				if (offset + comparer.ValueSize < count)
+				{
+					if (comparer.Compare(data, offset, previous, out var result))
+					{
+						result.Address = previous.Address;
+
+						yield return result;
+					}
 				}
 			}
 		}

@@ -1,5 +1,4 @@
 ﻿using System;
-using ReClassNET.MemorySearcher.Comparer;
 
 namespace ReClassNET.MemorySearcher
 {
@@ -27,6 +26,6 @@ namespace ReClassNET.MemorySearcher
 		public bool SearchMemMapped { get; set; } = false;
 		public bool FastScan { get; set; } = true;
 		public int FastScanAlignment { get; set; } = 1;
-		public IMemoryComparer Comparer { get; set; }
+		public SearchValueType ValueType { get; set; } = SearchValueType.Byte;
 	}
 }

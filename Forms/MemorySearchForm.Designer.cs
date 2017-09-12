@@ -408,6 +408,7 @@
 			this.nextScanButton.TabIndex = 12;
 			this.nextScanButton.Text = "Next Scan";
 			this.nextScanButton.UseVisualStyleBackColor = true;
+			this.nextScanButton.Click += new System.EventHandler(this.nextScanButton_Click);
 			// 
 			// scanProgressBar
 			// 
@@ -422,6 +423,8 @@
 			this.resultDataGridView.AllowUserToAddRows = false;
 			this.resultDataGridView.AllowUserToDeleteRows = false;
 			this.resultDataGridView.AllowUserToResizeRows = false;
+			this.resultDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.resultDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.resultDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.resultAddressColumn,
@@ -438,6 +441,7 @@
 			// resultAddressColumn
 			// 
 			this.resultAddressColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.resultAddressColumn.DataPropertyName = "address";
 			this.resultAddressColumn.HeaderText = "Address";
 			this.resultAddressColumn.Name = "resultAddressColumn";
 			this.resultAddressColumn.ReadOnly = true;
@@ -445,6 +449,7 @@
 			// resultValueColumn
 			// 
 			this.resultValueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.resultValueColumn.DataPropertyName = "value";
 			this.resultValueColumn.HeaderText = "Value";
 			this.resultValueColumn.Name = "resultValueColumn";
 			this.resultValueColumn.ReadOnly = true;
@@ -453,6 +458,7 @@
 			// resultPreviousValueColumn
 			// 
 			this.resultPreviousValueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.resultPreviousValueColumn.DataPropertyName = "previous";
 			this.resultPreviousValueColumn.HeaderText = "Previous";
 			this.resultPreviousValueColumn.Name = "resultPreviousValueColumn";
 			this.resultPreviousValueColumn.ReadOnly = true;
@@ -467,7 +473,7 @@
 			this.resultCountLabel.TabIndex = 15;
 			this.resultCountLabel.Text = "<>";
 			// 
-			// MemorySearcherForm
+			// MemorySearchForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -479,7 +485,7 @@
 			this.Controls.Add(this.firstScanButton);
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.bannerBox);
-			this.Name = "MemorySearcherForm";
+			this.Name = "MemorySearchForm";
 			this.Text = "ReClass.NET - Memory Searcher";
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
 			this.filterGroupBox.ResumeLayout(false);
@@ -531,9 +537,9 @@
 		private System.Windows.Forms.Button nextScanButton;
 		private System.Windows.Forms.ProgressBar scanProgressBar;
 		private System.Windows.Forms.DataGridView resultDataGridView;
+		private System.Windows.Forms.Label resultCountLabel;
 		private System.Windows.Forms.DataGridViewTextBoxColumn resultAddressColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn resultValueColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn resultPreviousValueColumn;
-		private System.Windows.Forms.Label resultCountLabel;
 	}
 }
