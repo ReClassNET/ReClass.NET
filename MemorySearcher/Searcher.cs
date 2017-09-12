@@ -47,9 +47,9 @@ namespace ReClassNET.MemorySearcher
 			return store.GetResultBlocks().SelectMany(kv => kv.Results);
 		}
 
-		private static SearchResultStore CreateStore()
+		private SearchResultStore CreateStore()
 		{
-			return new SearchResultStore(Path.GetTempPath());
+			return new SearchResultStore(Settings.ValueType, Path.GetTempPath());
 		}
 
 		private IList<Section> GetSearchableSections()
@@ -116,18 +116,19 @@ namespace ReClassNET.MemorySearcher
 
 			var sections = GetSearchableSections();
 
-			var maxSectionSize = (int)sections.Average(s => s.Size.ToInt32());
+			var initialBufferSize = (int)sections.Average(s => s.Size.ToInt32());
 
 			progress?.Report(0);
 
 			var counter = 0;
+			var totalSectionCount = (float)sections.Count;
 
 			return Task.Run(() =>
 			{
 				var result = Parallel.ForEach(
 					sections,
 					new ParallelOptions { CancellationToken = ct},
-					() => new SearchContext(settings, comparer, maxSectionSize),
+					() => new SearchContext(settings, comparer, initialBufferSize),
 					(s, state, _, context) =>
 					{
 						var size = s.Size.ToInt32();
@@ -149,7 +150,7 @@ namespace ReClassNET.MemorySearcher
 							}
 						}
 
-						progress?.Report((int)(Interlocked.Increment(ref counter) / (float)sections.Count * 100));
+						progress?.Report((int)(Interlocked.Increment(ref counter) / totalSectionCount * 100));
 
 						return context;
 					},
@@ -179,6 +180,7 @@ namespace ReClassNET.MemorySearcher
 			progress?.Report(0);
 
 			var counter = 0;
+			var totalResultCount = (float)store.TotalResultCount;
 
 			return Task.Run(() =>
 			{
@@ -206,7 +208,7 @@ namespace ReClassNET.MemorySearcher
 							}
 						}
 
-						//progress?.Report((int)(Interlocked.Increment(ref counter) / (float)sections.Count * 100));
+						progress?.Report((int)(Interlocked.Add(ref counter, b.Results.Count) / totalResultCount * 100));
 
 						return context;
 					},
