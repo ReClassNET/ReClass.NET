@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher
 {
-	public class Searcher
+	public class Searcher : IDisposable
 	{
 		private readonly RemoteProcess process;
 		private readonly SearchSettings settings;
@@ -33,11 +34,22 @@ namespace ReClassNET.MemorySearcher
 			isFirstScan = true;
 		}
 
+		public void Dispose()
+		{
+			store?.Dispose();
+			store = null;
+		}
+
 		public IEnumerable<SearchResult> GetResults()
 		{
 			Contract.Ensures(Contract.Result<IEnumerable<SearchResult>>() != null);
 
 			return store.GetResultBlocks().SelectMany(kv => kv.Results);
+		}
+
+		private static SearchResultStore CreateStore()
+		{
+			return new SearchResultStore(Path.GetTempPath());
 		}
 
 		private IList<Section> GetSearchableSections()
@@ -100,7 +112,7 @@ namespace ReClassNET.MemorySearcher
 			Contract.Requires(comparer != null);
 			Contract.Ensures(Contract.Result<Task<bool>>() != null);
 
-			store = new SearchResultStore();
+			store = CreateStore();
 
 			var sections = GetSearchableSections();
 
@@ -144,6 +156,8 @@ namespace ReClassNET.MemorySearcher
 					w => { }
 				);
 
+				store.Finish();
+
 				if (result.IsCompleted)
 				{
 					isFirstScan = false;
@@ -160,7 +174,7 @@ namespace ReClassNET.MemorySearcher
 			Contract.Requires(comparer != null);
 			Contract.Ensures(Contract.Result<Task<bool>>() != null);
 
-			var localStore = new SearchResultStore();
+			var localStore = CreateStore();
 
 			progress?.Report(0);
 
@@ -199,8 +213,12 @@ namespace ReClassNET.MemorySearcher
 					w => { }
 				);
 
+				localStore.Finish();
+
 				if (result.IsCompleted)
 				{
+					store.Dispose();
+
 					store = localStore;
 
 					return true;
