@@ -28,8 +28,9 @@ namespace ReClassNET.MemorySearcher
 
 		public int TotalResultCount { get; private set; }
 
-		public SearchResultStore(string storePath)
+		public SearchResultStore(SearchValueType valueType, string storePath)
 		{
+			this.valueType = valueType;
 			this.storePath = Path.Combine(storePath, $"ReClass.NET_MemorySearcher_{Guid.NewGuid()}.tmp");
 		}
 
@@ -88,6 +89,10 @@ namespace ReClassNET.MemorySearcher
 						store.TrimExcess();
 
 						AppendBlockToFile(block);
+					}
+					else
+					{
+						store.Add(block);
 					}
 				}
 				else
