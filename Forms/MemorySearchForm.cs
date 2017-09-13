@@ -39,8 +39,6 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
-			resultDataGridView.AutoGenerateColumns = false;
-
 			startAddressTextBox.Text = 0.ToString(Constants.StringHexFormat);
 			endAddressTextBox.Text =
 #if RECLASSNET64
@@ -66,47 +64,11 @@ namespace ReClassNET.Forms
 
 			SetResultCount(searcher.TotalResultCount);
 
-			var dt = new DataTable();
-			var addressColumn = dt.Columns.Add("address", typeof(string));
-			var valueColumn = dt.Columns.Add("value", typeof(string));
-			var previousColumn = dt.Columns.Add("previous", typeof(string));
-			var dataColumn = dt.Columns.Add("data", typeof(SearchResult));
-
-			foreach (var result in searcher.GetResults().Take(MaxVisibleResults).OrderBy(r => r.Address, IntPtrComparer.Instance))
-			{
-				var row = dt.NewRow();
-				row[addressColumn] = result.Address.ToString(Constants.StringHexFormat);
-				row[valueColumn] = row[previousColumn] = FormatResultValue(result, false);
-				row[dataColumn] = result;
-				dt.Rows.Add(row);
-			}
-
-			resultDataGridView.DataSource = dt;
-		}
-
-		private static string FormatResultValue(SearchResult result, bool showAsHex)
-		{
-			switch (result)
-			{
-				case ByteSearchResult sr:
-					return showAsHex ? sr.Value.ToString("X") : sr.Value.ToString();
-				case ShortSearchResult sr:
-					return showAsHex ? sr.Value.ToString("X") : sr.Value.ToString();
-				case IntegerSearchResult sr:
-					return showAsHex ? sr.Value.ToString("X") : sr.Value.ToString();
-				case LongSearchResult sr:
-					return showAsHex ? sr.Value.ToString("X") : sr.Value.ToString();
-				case FloatSearchResult sr:
-					return sr.Value.ToString(CultureInfo.InvariantCulture);
-				case DoubleSearchResult sr:
-					return sr.Value.ToString(CultureInfo.InvariantCulture);
-				case ArrayOfBytesSearchResult sr:
-					return "[...]";
-				case StringSearchResult sr:
-					return "[...]";
-				default:
-					throw new InvalidOperationException();
-			}
+			memorySearchResultControl1.SetSearchResults(
+				searcher.GetResults()
+					.Take(MaxVisibleResults)
+					.OrderBy(r => r.Address, IntPtrComparer.Instance)
+			);
 		}
 
 		private void valueTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
@@ -163,7 +125,7 @@ namespace ReClassNET.Forms
 			searcher = null;
 
 			SetResultCount(0);
-			resultDataGridView.DataSource = null;
+			memorySearchResultControl1.SetSearchResults(null);
 
 			nextScanButton.Enabled = false;
 			valueTypeComboBox.Enabled = true;
@@ -345,6 +307,11 @@ namespace ReClassNET.Forms
 		private void MemorySearchForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			searcher?.Dispose();
+		}
+
+		private void updateValuesTimer_Tick(object sender, EventArgs e)
+		{
+			memorySearchResultControl1.UpdateValues(process);
 		}
 	}
 }

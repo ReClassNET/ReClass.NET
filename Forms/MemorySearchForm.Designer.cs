@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.bannerBox = new ReClassNET.UI.BannerBox();
 			this.filterGroupBox = new System.Windows.Forms.GroupBox();
 			this.valueTypeComboBox = new System.Windows.Forms.ComboBox();
@@ -59,18 +60,15 @@
 			this.firstScanButton = new System.Windows.Forms.Button();
 			this.nextScanButton = new System.Windows.Forms.Button();
 			this.scanProgressBar = new System.Windows.Forms.ProgressBar();
-			this.resultDataGridView = new System.Windows.Forms.DataGridView();
-			this.resultAddressColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.resultValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.resultPreviousValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.resultCountLabel = new System.Windows.Forms.Label();
+			this.updateValuesTimer = new System.Windows.Forms.Timer(this.components);
+			this.memorySearchResultControl1 = new ReClassNET.UI.MemorySearchResultControl();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.filterGroupBox.SuspendLayout();
 			this.scanOptionsGroupBox.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
 			this.floatingOptionsGroupBox.SuspendLayout();
 			this.stringOptionsGroupBox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.resultDataGridView)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// bannerBox
@@ -418,52 +416,6 @@
 			this.scanProgressBar.Size = new System.Drawing.Size(149, 23);
 			this.scanProgressBar.TabIndex = 13;
 			// 
-			// resultDataGridView
-			// 
-			this.resultDataGridView.AllowUserToAddRows = false;
-			this.resultDataGridView.AllowUserToDeleteRows = false;
-			this.resultDataGridView.AllowUserToResizeRows = false;
-			this.resultDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.resultDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.resultDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.resultAddressColumn,
-            this.resultValueColumn,
-            this.resultPreviousValueColumn});
-			this.resultDataGridView.Location = new System.Drawing.Point(11, 70);
-			this.resultDataGridView.Name = "resultDataGridView";
-			this.resultDataGridView.ReadOnly = true;
-			this.resultDataGridView.RowHeadersVisible = false;
-			this.resultDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.resultDataGridView.Size = new System.Drawing.Size(267, 302);
-			this.resultDataGridView.TabIndex = 14;
-			// 
-			// resultAddressColumn
-			// 
-			this.resultAddressColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.resultAddressColumn.DataPropertyName = "address";
-			this.resultAddressColumn.HeaderText = "Address";
-			this.resultAddressColumn.Name = "resultAddressColumn";
-			this.resultAddressColumn.ReadOnly = true;
-			// 
-			// resultValueColumn
-			// 
-			this.resultValueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.resultValueColumn.DataPropertyName = "value";
-			this.resultValueColumn.HeaderText = "Value";
-			this.resultValueColumn.Name = "resultValueColumn";
-			this.resultValueColumn.ReadOnly = true;
-			this.resultValueColumn.Width = 59;
-			// 
-			// resultPreviousValueColumn
-			// 
-			this.resultPreviousValueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.resultPreviousValueColumn.DataPropertyName = "previous";
-			this.resultPreviousValueColumn.HeaderText = "Previous";
-			this.resultPreviousValueColumn.Name = "resultPreviousValueColumn";
-			this.resultPreviousValueColumn.ReadOnly = true;
-			this.resultPreviousValueColumn.Width = 73;
-			// 
 			// resultCountLabel
 			// 
 			this.resultCountLabel.AutoSize = true;
@@ -473,13 +425,27 @@
 			this.resultCountLabel.TabIndex = 15;
 			this.resultCountLabel.Text = "<>";
 			// 
+			// updateValuesTimer
+			// 
+			this.updateValuesTimer.Enabled = true;
+			this.updateValuesTimer.Tick += new System.EventHandler(this.updateValuesTimer_Tick);
+			// 
+			// memorySearchResultControl1
+			// 
+			this.memorySearchResultControl1.Location = new System.Drawing.Point(11, 70);
+			this.memorySearchResultControl1.Name = "memorySearchResultControl1";
+			this.memorySearchResultControl1.ShowDescriptionColumn = false;
+			this.memorySearchResultControl1.ShowValuesHexadecimal = false;
+			this.memorySearchResultControl1.Size = new System.Drawing.Size(267, 302);
+			this.memorySearchResultControl1.TabIndex = 16;
+			// 
 			// MemorySearchForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(611, 590);
+			this.Controls.Add(this.memorySearchResultControl1);
 			this.Controls.Add(this.resultCountLabel);
-			this.Controls.Add(this.resultDataGridView);
 			this.Controls.Add(this.scanProgressBar);
 			this.Controls.Add(this.nextScanButton);
 			this.Controls.Add(this.firstScanButton);
@@ -498,7 +464,6 @@
 			this.floatingOptionsGroupBox.PerformLayout();
 			this.stringOptionsGroupBox.ResumeLayout(false);
 			this.stringOptionsGroupBox.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.resultDataGridView)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -537,10 +502,8 @@
 		private System.Windows.Forms.Button firstScanButton;
 		private System.Windows.Forms.Button nextScanButton;
 		private System.Windows.Forms.ProgressBar scanProgressBar;
-		private System.Windows.Forms.DataGridView resultDataGridView;
 		private System.Windows.Forms.Label resultCountLabel;
-		private System.Windows.Forms.DataGridViewTextBoxColumn resultAddressColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn resultValueColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn resultPreviousValueColumn;
+		private System.Windows.Forms.Timer updateValuesTimer;
+		private UI.MemorySearchResultControl memorySearchResultControl1;
 	}
 }

@@ -80,12 +80,7 @@ namespace ReClassNET.UI
 		{
 			InitializeComponent();
 
-			font = new FontEx
-			{
-				Font = new Font("Courier New", DpiUtil.ScaleIntX(13), GraphicsUnit.Pixel),
-				Width = DpiUtil.ScaleIntX(8),
-				Height = DpiUtil.ScaleIntY(16)
-			};
+			font = Program.MonoSpaceFont;
 
 			editBox.Font = font;
 

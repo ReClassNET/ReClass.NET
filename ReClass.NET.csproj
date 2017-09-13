@@ -280,11 +280,18 @@
     <Compile Include="UI\MemoryPreviewPopUp.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UI\MemorySearchResultControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\MemorySearchResultControl.Designer.cs">
+      <DependentUpon>MemorySearchResultControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MemoryViewControl.Designer.cs">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
     <Compile Include="Util\Extension.BinaryReaderWriter.cs" />
+    <Compile Include="Util\Extension.DataGridView.cs" />
     <Compile Include="Util\Extension.Dictionary.cs" />
     <Compile Include="Util\Extension.Graphics.cs" />
     <Compile Include="Util\Extension.RichTextBox.cs" />
@@ -451,6 +458,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DualValueControl.resx">
       <DependentUpon>DualValueControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MemorySearchResultControl.resx">
+      <DependentUpon>MemorySearchResultControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MemoryViewControl.resx">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>

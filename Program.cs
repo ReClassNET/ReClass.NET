@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
@@ -22,6 +23,8 @@ namespace ReClassNET
 
 		public static bool DesignMode { get; private set; } = true;
 
+		public static FontEx MonoSpaceFont { get; private set; }
+
 		[STAThread]
 		static void Main()
 		{
@@ -35,6 +38,13 @@ namespace ReClassNET
 			{
 				
 			}
+
+			MonoSpaceFont = new FontEx
+			{
+				Font = new Font("Courier New", DpiUtil.ScaleIntX(13), GraphicsUnit.Pixel),
+				Width = DpiUtil.ScaleIntX(8),
+				Height = DpiUtil.ScaleIntY(16)
+			};
 
 			NativeMethods.EnableDebugPrivileges();
 
