@@ -175,7 +175,7 @@ namespace ReClassNET.MemorySearcher
 					result = new ArrayOfBytesSearchResult();
 					break;
 				case SearchValueType.String:
-					result = new StringSearchResult();
+					result = new StringSearchResult(br.ReadString());
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -214,7 +214,7 @@ namespace ReClassNET.MemorySearcher
 					
 					break;
 				case StringSearchResult stringSearchResult:
-					
+					bw.Write(stringSearchResult.Value);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(result));

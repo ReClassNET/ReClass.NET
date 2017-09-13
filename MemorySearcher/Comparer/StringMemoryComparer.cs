@@ -30,7 +30,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 				return false;
 			}
 
-			result = new StringSearchResult();
+			result = new StringSearchResult(value);
 
 			return true;
 		}

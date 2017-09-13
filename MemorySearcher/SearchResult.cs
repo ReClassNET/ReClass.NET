@@ -4,11 +4,15 @@ namespace ReClassNET.MemorySearcher
 {
 	public abstract class SearchResult
 	{
+		public abstract SearchValueType ValueType { get; }
+
 		public IntPtr Address { get; set; }
 	}
 
 	public class ByteSearchResult : SearchResult
 	{
+		public override SearchValueType ValueType => SearchValueType.Byte;
+
 		public byte Value { get; }
 
 		public ByteSearchResult(byte value)
@@ -19,6 +23,8 @@ namespace ReClassNET.MemorySearcher
 
 	public class ShortSearchResult : SearchResult
 	{
+		public override SearchValueType ValueType => SearchValueType.Short;
+
 		public short Value { get; }
 
 		public ShortSearchResult(short value)
@@ -29,6 +35,8 @@ namespace ReClassNET.MemorySearcher
 
 	public class IntegerSearchResult : SearchResult
 	{
+		public override SearchValueType ValueType => SearchValueType.Integer;
+
 		public int Value { get; }
 
 		public IntegerSearchResult(int value)
@@ -39,6 +47,8 @@ namespace ReClassNET.MemorySearcher
 
 	public class LongSearchResult : SearchResult
 	{
+		public override SearchValueType ValueType => SearchValueType.Long;
+
 		public long Value { get; }
 
 		public LongSearchResult(long value)
@@ -49,6 +59,8 @@ namespace ReClassNET.MemorySearcher
 
 	public class FloatSearchResult : SearchResult
 	{
+		public override SearchValueType ValueType => SearchValueType.Float;
+
 		public float Value { get; }
 
 		public FloatSearchResult(float value)
@@ -59,6 +71,8 @@ namespace ReClassNET.MemorySearcher
 
 	public class DoubleSearchResult : SearchResult
 	{
+		public override SearchValueType ValueType => SearchValueType.Double;
+
 		public double Value { get; }
 
 		public DoubleSearchResult(double value)
@@ -69,11 +83,18 @@ namespace ReClassNET.MemorySearcher
 
 	public class ArrayOfBytesSearchResult : SearchResult
 	{
-
+		public override SearchValueType ValueType => SearchValueType.ArrayOfBytes;
 	}
 
 	public class StringSearchResult : SearchResult
 	{
+		public override SearchValueType ValueType => SearchValueType.String;
 
+		public string Value { get; }
+
+		public StringSearchResult(string value)
+		{
+			Value = value;
+		}
 	}
 }
