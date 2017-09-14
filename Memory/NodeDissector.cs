@@ -44,18 +44,18 @@ namespace ReClassNET.Memory
 			var data32 = memory.ReadObject<UInt32FloatData>(offset);
 
 			var raw = memory.ReadBytes(offset, node.MemorySize);
-			if (raw.InterpretAsUTF8().IsLikelyPrintableData() >= 0.75f)
+			if (raw.InterpretAsUtf8().IsLikelyPrintableData() >= 0.75f)
 			{
 				return typeof(Utf8TextNode);
 			}
-			else if (raw.InterpretAsUTF16().IsLikelyPrintableData() >= 0.75f)
+			if (raw.InterpretAsUtf16().IsLikelyPrintableData() >= 0.75f)
 			{
 				return typeof(Utf16TextNode);
 			}
 
 			if (is8ByteAligned)
 			{
-#if WIN64
+#if RECLASSNET64
 				var pointerType = GuessPointerType(data64.IntPtr, memory);
 				if (pointerType != null)
 				{
@@ -65,7 +65,7 @@ namespace ReClassNET.Memory
 			}
 
 			{
-#if WIN32
+#if RECLASSNET32
 				var pointerType = GuessPointerType(data32.IntPtr, memory);
 				if (pointerType != null)
 				{
@@ -140,11 +140,11 @@ namespace ReClassNET.Memory
 
 					// Check if it is a string.
 					var data = memory.Process.ReadRemoteMemory(address, IntPtr.Size * 2);
-					if (data.Take(IntPtr.Size).InterpretAsUTF8().IsLikelyPrintableData() >= 07.5f)
+					if (data.Take(IntPtr.Size).InterpretAsUtf8().IsLikelyPrintableData() >= 07.5f)
 					{
 						return typeof(Utf8TextPtrNode);
 					}
-					else if (data.InterpretAsUTF16().IsLikelyPrintableData() >= 0.75f)
+					if (data.InterpretAsUtf16().IsLikelyPrintableData() >= 0.75f)
 					{
 						return typeof(Utf16TextPtrNode);
 					}

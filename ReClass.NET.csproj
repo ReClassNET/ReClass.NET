@@ -296,9 +296,12 @@
     <Compile Include="Util\Extension.BinaryReaderWriter.cs" />
     <Compile Include="Util\Extension.DataGridView.cs" />
     <Compile Include="Util\Extension.Dictionary.cs" />
+    <Compile Include="Util\Extension.FloatingPoint.cs" />
     <Compile Include="Util\Extension.Graphics.cs" />
+    <Compile Include="Util\Extension.IntPtr.cs" />
     <Compile Include="Util\Extension.RichTextBox.cs" />
     <Compile Include="Util\Extension.Size.cs" />
+    <Compile Include="Util\Extension.String.cs" />
     <Compile Include="Util\Extension.StringReader.cs" />
     <Compile Include="Util\GrowingList.cs" />
     <Compile Include="Forms\PluginForm.cs">
