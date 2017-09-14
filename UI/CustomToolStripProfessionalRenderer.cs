@@ -30,6 +30,11 @@ namespace ReClassNET.UI
 				base.OnRenderToolStripBorder(e);
 			}
 		}
+
+		protected override void OnRenderToolStripPanelBackground(ToolStripPanelRenderEventArgs e)
+		{
+			//base.OnRenderToolStripPanelBackground(e);
+		}
 	}
 
 	internal class CustomProfessionalColorTable : ProfessionalColorTable
