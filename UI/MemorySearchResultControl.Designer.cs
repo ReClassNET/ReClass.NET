@@ -30,9 +30,10 @@
 		{
 			this.resultDataGridView = new System.Windows.Forms.DataGridView();
 			this.descriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.resultAddressColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.resultValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.resultPreviousValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.addressColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.valueTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.valueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.previousValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			((System.ComponentModel.ISupportInitialize)(this.resultDataGridView)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -45,9 +46,10 @@
 			this.resultDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.resultDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.descriptionColumn,
-            this.resultAddressColumn,
-            this.resultValueColumn,
-            this.resultPreviousValueColumn});
+            this.addressColumn,
+            this.valueTypeColumn,
+            this.valueColumn,
+            this.previousValueColumn});
 			this.resultDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.resultDataGridView.Location = new System.Drawing.Point(0, 0);
 			this.resultDataGridView.MultiSelect = false;
@@ -67,31 +69,38 @@
 			this.descriptionColumn.Name = "descriptionColumn";
 			this.descriptionColumn.ReadOnly = true;
 			// 
-			// resultAddressColumn
+			// addressColumn
 			// 
-			this.resultAddressColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.resultAddressColumn.DataPropertyName = "Address";
-			this.resultAddressColumn.HeaderText = "Address";
-			this.resultAddressColumn.Name = "resultAddressColumn";
-			this.resultAddressColumn.ReadOnly = true;
+			this.addressColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.addressColumn.DataPropertyName = "Address";
+			this.addressColumn.HeaderText = "Address";
+			this.addressColumn.Name = "addressColumn";
+			this.addressColumn.ReadOnly = true;
 			// 
-			// resultValueColumn
+			// valueTypeColumn
 			// 
-			this.resultValueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.resultValueColumn.DataPropertyName = "Value";
-			this.resultValueColumn.HeaderText = "Value";
-			this.resultValueColumn.Name = "resultValueColumn";
-			this.resultValueColumn.ReadOnly = true;
-			this.resultValueColumn.Width = 59;
+			this.valueTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+			this.valueTypeColumn.DataPropertyName = "ValueType";
+			this.valueTypeColumn.HeaderText = "Value Type";
+			this.valueTypeColumn.Name = "valueTypeColumn";
+			this.valueTypeColumn.ReadOnly = true;
+			this.valueTypeColumn.Width = 86;
 			// 
-			// resultPreviousValueColumn
+			// valueColumn
 			// 
-			this.resultPreviousValueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.resultPreviousValueColumn.DataPropertyName = "Previous";
-			this.resultPreviousValueColumn.HeaderText = "Previous";
-			this.resultPreviousValueColumn.Name = "resultPreviousValueColumn";
-			this.resultPreviousValueColumn.ReadOnly = true;
-			this.resultPreviousValueColumn.Width = 73;
+			this.valueColumn.DataPropertyName = "Value";
+			this.valueColumn.HeaderText = "Value";
+			this.valueColumn.Name = "valueColumn";
+			this.valueColumn.ReadOnly = true;
+			this.valueColumn.Width = 59;
+			// 
+			// previousValueColumn
+			// 
+			this.previousValueColumn.DataPropertyName = "Previous";
+			this.previousValueColumn.HeaderText = "Previous";
+			this.previousValueColumn.Name = "previousValueColumn";
+			this.previousValueColumn.ReadOnly = true;
+			this.previousValueColumn.Width = 73;
 			// 
 			// MemorySearchResultControl
 			// 
@@ -109,8 +118,9 @@
 
 		private System.Windows.Forms.DataGridView resultDataGridView;
 		private System.Windows.Forms.DataGridViewTextBoxColumn descriptionColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn resultAddressColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn resultValueColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn resultPreviousValueColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn addressColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn valueTypeColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn valueColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn previousValueColumn;
 	}
 }

@@ -286,6 +286,9 @@
     <Compile Include="UI\MemorySearchResultControl.Designer.cs">
       <DependentUpon>MemorySearchResultControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\MemorySearchResultControl.ResultData.cs">
+      <DependentUpon>MemorySearchResultControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MemoryViewControl.Designer.cs">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
