@@ -51,6 +51,11 @@ namespace ReClassNET.UI
 		{
 			InitializeComponent();
 
+			if (Program.DesignMode)
+			{
+				return;
+			}
+
 			bindings = new BindingList<ResultData>
 			{
 				AllowNew = true,
@@ -58,12 +63,8 @@ namespace ReClassNET.UI
 				RaiseListChangedEvents = true
 			};
 
-			if (!Program.DesignMode)
-			{
-				resultDataGridView.DefaultCellStyle.Font = Program.MonoSpaceFont.Font;
-			}
-
 			resultDataGridView.AutoGenerateColumns = false;
+			resultDataGridView.DefaultCellStyle.Font = Program.MonoSpaceFont.Font;
 			resultDataGridView.DataSource = bindings;
 		}
 

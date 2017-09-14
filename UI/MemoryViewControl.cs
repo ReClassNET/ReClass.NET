@@ -80,6 +80,11 @@ namespace ReClassNET.UI
 		{
 			InitializeComponent();
 
+			if (Program.DesignMode)
+			{
+				return;
+			}
+
 			font = Program.MonoSpaceFont;
 
 			editBox.Font = font;
