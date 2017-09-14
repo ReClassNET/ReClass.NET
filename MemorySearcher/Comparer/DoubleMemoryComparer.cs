@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher.Comparer
 {
@@ -11,12 +12,22 @@ namespace ReClassNET.MemorySearcher.Comparer
 		public double Value2 { get; }
 		public int ValueSize => sizeof(double);
 
-		public DoubleMemoryComparer(SearchCompareType compareType, SearchRoundMode roundType, double value1, double value2)
+		private readonly int significantDigits;
+		private readonly double minValue;
+		private readonly double maxValue;
+
+		public DoubleMemoryComparer(SearchCompareType compareType, SearchRoundMode roundType, int significantDigits, double value1, double value2)
 		{
 			CompareType = compareType;
 			RoundType = roundType;
-			Value1 = value1;
-			Value2 = value2;
+			this.significantDigits = significantDigits;
+			Value1 = Math.Round(value1, significantDigits, MidpointRounding.AwayFromZero);
+			Value2 = Math.Round(value2, significantDigits, MidpointRounding.AwayFromZero);
+
+			var factor = (int)Math.Pow(10.0, significantDigits);
+
+			minValue = value1 - 1.0 / factor;
+			maxValue = value1 + 1.0 / factor;
 		}
 
 		private bool CheckRoundedEquality(double value)
@@ -24,11 +35,11 @@ namespace ReClassNET.MemorySearcher.Comparer
 			switch (RoundType)
 			{
 				case SearchRoundMode.Strict:
-					return Math.Abs(value - Value1) < 0.05f;
+					return Value1.IsNearlyEqual(Math.Round(value, significantDigits, MidpointRounding.AwayFromZero));
 				case SearchRoundMode.Normal:
-					return Math.Abs(value - Value1) < 0.5f;
+					return minValue < value && value < maxValue;
 				case SearchRoundMode.Truncate:
-					return (int)value == (int)Value1;
+					return (long)value == (long)Value1;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}

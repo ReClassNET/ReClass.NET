@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher.Comparer
 {
@@ -11,12 +12,22 @@ namespace ReClassNET.MemorySearcher.Comparer
 		public float Value2 { get; }
 		public int ValueSize => sizeof(float);
 
-		public FloatMemoryComparer(SearchCompareType compareType, SearchRoundMode roundType, float value1, float value2)
+		private readonly int significantDigits;
+		private readonly float minValue;
+		private readonly float maxValue;
+
+		public FloatMemoryComparer(SearchCompareType compareType, SearchRoundMode roundType, int significantDigits, float value1, float value2)
 		{
 			CompareType = compareType;
 			RoundType = roundType;
-			Value1 = value1;
-			Value2 = value2;
+			this.significantDigits = significantDigits;
+			Value1 = (float)Math.Round(value1, significantDigits, MidpointRounding.AwayFromZero);
+			Value2 = (float)Math.Round(value2, significantDigits, MidpointRounding.AwayFromZero);
+
+			var factor = (int)Math.Pow(10.0, significantDigits);
+
+			minValue = value1 - 1.0f / factor;
+			maxValue = value1 + 1.0f / factor;
 		}
 
 		private bool CheckRoundedEquality(float value)
@@ -24,9 +35,9 @@ namespace ReClassNET.MemorySearcher.Comparer
 			switch (RoundType)
 			{
 				case SearchRoundMode.Strict:
-					return Math.Abs(value - Value1) < 0.05f;
+					return Value1.IsNearlyEqual((float)Math.Round(value, significantDigits, MidpointRounding.AwayFromZero));
 				case SearchRoundMode.Normal:
-					return Math.Abs(value - Value1) < 0.5f;
+					return minValue < value && value < maxValue;
 				case SearchRoundMode.Truncate:
 					return (int)value == (int)Value1;
 				default:

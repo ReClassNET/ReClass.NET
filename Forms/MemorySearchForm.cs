@@ -53,6 +53,50 @@ namespace ReClassNET.Forms
 			Reset();
 		}
 
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			GlobalWindowManager.AddWindow(this);
+		}
+
+		protected override void OnFormClosed(FormClosedEventArgs e)
+		{
+			base.OnFormClosed(e);
+
+			GlobalWindowManager.RemoveWindow(this);
+		}
+
+		#region Event Handler
+
+		private void MemorySearchForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			searcher?.Dispose();
+		}
+
+		private void updateValuesTimer_Tick(object sender, EventArgs e)
+		{
+			memorySearchResultControl.UpdateValues(process);
+			memorySearchResultControl2.UpdateValues(process);
+		}
+
+		private void valueTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			OnValueTypeChanged();
+		}
+
+		private async void firstScanButton_Click(object sender, EventArgs e)
+		{
+			await OnStartFirstScan();
+		}
+
+		private async void nextScanButton_Click(object sender, EventArgs e)
+		{
+			await OnStartSecondScan();
+		}
+
+		#endregion
+
 		private void SetResultCount(int count)
 		{
 			resultCountLabel.Text = count > MaxVisibleResults ? $"Found: {count} (only {MaxVisibleResults} shown)" : $"Found: {count}";
@@ -64,16 +108,11 @@ namespace ReClassNET.Forms
 
 			SetResultCount(searcher.TotalResultCount);
 
-			memorySearchResultControl1.SetSearchResults(
+			memorySearchResultControl.SetSearchResults(
 				searcher.GetResults()
 					.Take(MaxVisibleResults)
 					.OrderBy(r => r.Address, IntPtrComparer.Instance)
 			);
-		}
-
-		private void valueTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
-		{
-			OnValueTypeChanged();
 		}
 
 		private void OnValueTypeChanged()
@@ -125,7 +164,7 @@ namespace ReClassNET.Forms
 			searcher = null;
 
 			SetResultCount(0);
-			memorySearchResultControl1.SetSearchResults(null);
+			memorySearchResultControl.SetSearchResults(null);
 
 			nextScanButton.Enabled = false;
 			valueTypeComboBox.Enabled = true;
@@ -137,16 +176,6 @@ namespace ReClassNET.Forms
 			isFirstScan = true;
 
 			SetValidCompareTypes();
-		}
-
-		private async void firstScanButton_Click(object sender, EventArgs e)
-		{
-			await OnStartFirstScan();
-		}
-
-		private async void nextScanButton_Click(object sender, EventArgs e)
-		{
-			await OnStartSecondScan();
 		}
 
 		private async Task OnStartFirstScan()
@@ -165,25 +194,26 @@ namespace ReClassNET.Forms
 				if (completed)
 				{
 					ShowResults();
+
+					firstScanButton.Enabled = true;
+					nextScanButton.Enabled = true;
+					valueTypeComboBox.Enabled = false;
+
+					floatingOptionsGroupBox.Enabled = false;
+					stringOptionsGroupBox.Enabled = false;
+					scanOptionsGroupBox.Enabled = false;
+
+					isFirstScan = false;
+
+					SetValidCompareTypes();
 				}
 
 				scanProgressBar.Value = 0;
-				firstScanButton.Enabled = true;
-				nextScanButton.Enabled = true;
-				valueTypeComboBox.Enabled = false;
 
-				floatingOptionsGroupBox.Enabled = false;
-				stringOptionsGroupBox.Enabled = false;
-				scanOptionsGroupBox.Enabled = false;
-
-				isFirstScan = false;
-
-				SetValidCompareTypes();
+				return;
 			}
-			else
-			{
-				Reset();
-			}
+
+			Reset();
 		}
 
 		private async Task OnStartSecondScan()
@@ -275,17 +305,60 @@ namespace ReClassNET.Forms
 			}
 			else if (settings.ValueType == SearchValueType.Float || settings.ValueType == SearchValueType.Double)
 			{
-				double.TryParse(valueDualValueControl.Value1, out var value1);
-				double.TryParse(valueDualValueControl.Value2, out var value2);
+				NumberFormatInfo GuessNumberFormat(string input)
+				{
+					Contract.Requires(input != null);
+					Contract.Ensures(Contract.Result<NumberFormatInfo>() != null);
+
+					if (input.Contains(",") && !input.Contains("."))
+					{
+						return new NumberFormatInfo
+						{
+							NumberDecimalSeparator = ",",
+							NumberGroupSeparator = "."
+						};
+					}
+					return new NumberFormatInfo
+					{
+						NumberDecimalSeparator = ".",
+						NumberGroupSeparator = ","
+					};
+				}
+
+				int CalculateSignificantDigits(string input, NumberFormatInfo numberFormat)
+				{
+					Contract.Requires(input != null);
+					Contract.Requires(numberFormat != null);
+
+					var digits = 0;
+
+					var decimalIndex = input.IndexOf(numberFormat.NumberDecimalSeparator, StringComparison.Ordinal);
+					if (decimalIndex != -1)
+					{
+						digits = input.Length - 1 - decimalIndex;
+					}
+
+					return digits;
+				}
+
+				var nf1 = GuessNumberFormat(valueDualValueControl.Value1);
+				double.TryParse(valueDualValueControl.Value1, NumberStyles.Float, nf1, out var value1);
+				var nf2 = GuessNumberFormat(valueDualValueControl.Value2);
+				double.TryParse(valueDualValueControl.Value2, NumberStyles.Float, nf2, out var value2);
+
+				var significantDigits = Math.Max(
+					CalculateSignificantDigits(valueDualValueControl.Value1, nf1),
+					CalculateSignificantDigits(valueDualValueControl.Value2, nf2)
+				);
 
 				var roundMode = roundStrictRadioButton.Checked ? SearchRoundMode.Strict : roundLooseRadioButton.Checked ? SearchRoundMode.Normal : SearchRoundMode.Truncate;
 
 				switch (settings.ValueType)
 				{
 					case SearchValueType.Float:
-						return new FloatMemoryComparer(compareType, roundMode, (float)value1, (float)value2);
+						return new FloatMemoryComparer(compareType, roundMode, significantDigits, (float)value1, (float)value2);
 					case SearchValueType.Double:
-						return new DoubleMemoryComparer(compareType, roundMode, value1, value2);
+						return new DoubleMemoryComparer(compareType, roundMode, significantDigits, value1, value2);
 				}
 			}
 			else if (settings.ValueType == SearchValueType.ArrayOfBytes)
@@ -302,16 +375,6 @@ namespace ReClassNET.Forms
 			}
 
 			throw new Exception();
-		}
-
-		private void MemorySearchForm_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			searcher?.Dispose();
-		}
-
-		private void updateValuesTimer_Tick(object sender, EventArgs e)
-		{
-			memorySearchResultControl1.UpdateValues(process);
 		}
 	}
 }

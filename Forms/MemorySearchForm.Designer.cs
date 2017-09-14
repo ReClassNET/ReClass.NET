@@ -62,7 +62,8 @@
 			this.scanProgressBar = new System.Windows.Forms.ProgressBar();
 			this.resultCountLabel = new System.Windows.Forms.Label();
 			this.updateValuesTimer = new System.Windows.Forms.Timer(this.components);
-			this.memorySearchResultControl1 = new ReClassNET.UI.MemorySearchResultControl();
+			this.memorySearchResultControl = new ReClassNET.UI.MemorySearchResultControl();
+			this.memorySearchResultControl2 = new ReClassNET.UI.MemorySearchResultControl();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.filterGroupBox.SuspendLayout();
 			this.scanOptionsGroupBox.SuspendLayout();
@@ -430,21 +431,41 @@
 			this.updateValuesTimer.Enabled = true;
 			this.updateValuesTimer.Tick += new System.EventHandler(this.updateValuesTimer_Tick);
 			// 
-			// memorySearchResultControl1
+			// memorySearchResultControl
 			// 
-			this.memorySearchResultControl1.Location = new System.Drawing.Point(11, 70);
-			this.memorySearchResultControl1.Name = "memorySearchResultControl1";
-			this.memorySearchResultControl1.ShowDescriptionColumn = false;
-			this.memorySearchResultControl1.ShowValuesHexadecimal = false;
-			this.memorySearchResultControl1.Size = new System.Drawing.Size(267, 302);
-			this.memorySearchResultControl1.TabIndex = 16;
+			this.memorySearchResultControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.memorySearchResultControl.Location = new System.Drawing.Point(11, 70);
+			this.memorySearchResultControl.Name = "memorySearchResultControl";
+			this.memorySearchResultControl.ShowAddressColumn = true;
+			this.memorySearchResultControl.ShowDescriptionColumn = false;
+			this.memorySearchResultControl.ShowPreviousValueColumn = true;
+			this.memorySearchResultControl.ShowValueColumn = true;
+			this.memorySearchResultControl.ShowValuesHexadecimal = false;
+			this.memorySearchResultControl.ShowValueTypeColumn = false;
+			this.memorySearchResultControl.Size = new System.Drawing.Size(267, 302);
+			this.memorySearchResultControl.TabIndex = 16;
+			// 
+			// memorySearchResultControl2
+			// 
+			this.memorySearchResultControl2.Location = new System.Drawing.Point(12, 387);
+			this.memorySearchResultControl2.Name = "memorySearchResultControl2";
+			this.memorySearchResultControl2.ShowAddressColumn = true;
+			this.memorySearchResultControl2.ShowDescriptionColumn = true;
+			this.memorySearchResultControl2.ShowPreviousValueColumn = false;
+			this.memorySearchResultControl2.ShowValueColumn = true;
+			this.memorySearchResultControl2.ShowValuesHexadecimal = false;
+			this.memorySearchResultControl2.ShowValueTypeColumn = true;
+			this.memorySearchResultControl2.Size = new System.Drawing.Size(590, 191);
+			this.memorySearchResultControl2.TabIndex = 17;
 			// 
 			// MemorySearchForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(611, 590);
-			this.Controls.Add(this.memorySearchResultControl1);
+			this.Controls.Add(this.memorySearchResultControl2);
+			this.Controls.Add(this.memorySearchResultControl);
 			this.Controls.Add(this.resultCountLabel);
 			this.Controls.Add(this.scanProgressBar);
 			this.Controls.Add(this.nextScanButton);
@@ -504,6 +525,7 @@
 		private System.Windows.Forms.ProgressBar scanProgressBar;
 		private System.Windows.Forms.Label resultCountLabel;
 		private System.Windows.Forms.Timer updateValuesTimer;
-		private UI.MemorySearchResultControl memorySearchResultControl1;
+		private UI.MemorySearchResultControl memorySearchResultControl;
+		private UI.MemorySearchResultControl memorySearchResultControl2;
 	}
 }
