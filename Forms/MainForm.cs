@@ -49,13 +49,13 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
-			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true);
-			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(false);
+			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true, true);
+			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(true, false);
 
 			remoteProcess = new RemoteProcess(coreFunctions);
 			remoteProcess.ProcessAttached += (sender) =>
 			{
-				var text = $"{sender.UnderlayingProcess.Name} (PID: {sender.UnderlayingProcess.Id.ToString()})";
+				var text = $"{sender.UnderlayingProcess.Name} (ID: {sender.UnderlayingProcess.Id.ToString()})";
 
 				Text = $"{Constants.ApplicationName} - {text}";
 				processInfoToolStripStatusLabel.Text = text;
@@ -295,24 +295,9 @@ namespace ReClassNET.Forms
 			new ProcessInfoForm(remoteProcess, classesView).Show();
 		}
 
-		private void ControlRemoteProcessToolStripMenuItem_Click(object sender, EventArgs e)
+		private void memorySearcherToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (!remoteProcess.IsValid)
-			{
-				return;
-			}
-
-			var action = ControlRemoteProcessAction.Terminate;
-			if (sender == resumeProcessToolStripMenuItem)
-			{
-				action = ControlRemoteProcessAction.Resume;
-			}
-			else if (sender == suspendProcessToolStripMenuItem)
-			{
-				action = ControlRemoteProcessAction.Suspend;
-			}
-
-			remoteProcess.ControlRemoteProcess(action);
+			new MemorySearchForm(remoteProcess).Show();
 		}
 
 		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)
@@ -338,6 +323,26 @@ namespace ReClassNET.Forms
 		private void loadSymbolsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			LoadAllSymbolsForCurrentProcess();
+		}
+
+		private void ControlRemoteProcessToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (!remoteProcess.IsValid)
+			{
+				return;
+			}
+
+			var action = ControlRemoteProcessAction.Terminate;
+			if (sender == resumeProcessToolStripMenuItem)
+			{
+				action = ControlRemoteProcessAction.Resume;
+			}
+			else if (sender == suspendProcessToolStripMenuItem)
+			{
+				action = ControlRemoteProcessAction.Suspend;
+			}
+
+			remoteProcess.ControlRemoteProcess(action);
 		}
 
 		private void cleanUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)

@@ -123,6 +123,7 @@
 			this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.processInformationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.memorySearcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
 			this.loadSymbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.loadSymbolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1056,6 +1057,7 @@
 			// 
 			this.processToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.processInformationsToolStripMenuItem,
+            this.memorySearcherToolStripMenuItem,
             this.toolStripSeparator17,
             this.loadSymbolToolStripMenuItem,
             this.loadSymbolsToolStripMenuItem,
@@ -1069,11 +1071,19 @@
 			// 
 			// processInformationsToolStripMenuItem
 			// 
-			this.processInformationsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
+			this.processInformationsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Category;
 			this.processInformationsToolStripMenuItem.Name = "processInformationsToolStripMenuItem";
 			this.processInformationsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
 			this.processInformationsToolStripMenuItem.Text = "Process Informations";
 			this.processInformationsToolStripMenuItem.Click += new System.EventHandler(this.memoryViewerToolStripMenuItem_Click);
+			// 
+			// memorySearcherToolStripMenuItem
+			// 
+			this.memorySearcherToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+			this.memorySearcherToolStripMenuItem.Name = "memorySearcherToolStripMenuItem";
+			this.memorySearcherToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+			this.memorySearcherToolStripMenuItem.Text = "Memory Searcher";
+			this.memorySearcherToolStripMenuItem.Click += new System.EventHandler(this.memorySearcherToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator17
 			// 
@@ -1323,6 +1333,7 @@
 		private System.Windows.Forms.ToolStripMenuItem detachToolStripMenuItem;
 		private UI.TypeToolStripButton boolToolStripButton;
 		private UI.TypeToolStripButton fnTypeToolStripButton;
+		private System.Windows.Forms.ToolStripMenuItem memorySearcherToolStripMenuItem;
 	}
 }
 
