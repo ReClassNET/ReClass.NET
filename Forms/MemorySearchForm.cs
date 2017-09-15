@@ -39,6 +39,10 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
+			toolStripPanel.RenderMode = ToolStripRenderMode.Professional;
+			toolStripPanel.Renderer = new CustomToolStripProfessionalRenderer(true, false);
+			menuToolStrip.Renderer = new CustomToolStripProfessionalRenderer(false, false);
+
 			startAddressTextBox.Text = 0.ToString(Constants.StringHexFormat);
 			endAddressTextBox.Text =
 #if RECLASSNET64
@@ -77,7 +81,7 @@ namespace ReClassNET.Forms
 		private void updateValuesTimer_Tick(object sender, EventArgs e)
 		{
 			memorySearchResultControl.UpdateValues(process);
-			memorySearchResultControl2.UpdateValues(process);
+			addressListMemorySearchResultControl.UpdateValues(process);
 		}
 
 		private void valueTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
@@ -305,26 +309,6 @@ namespace ReClassNET.Forms
 			}
 			else if (settings.ValueType == SearchValueType.Float || settings.ValueType == SearchValueType.Double)
 			{
-				NumberFormatInfo GuessNumberFormat(string input)
-				{
-					Contract.Requires(input != null);
-					Contract.Ensures(Contract.Result<NumberFormatInfo>() != null);
-
-					if (input.Contains(",") && !input.Contains("."))
-					{
-						return new NumberFormatInfo
-						{
-							NumberDecimalSeparator = ",",
-							NumberGroupSeparator = "."
-						};
-					}
-					return new NumberFormatInfo
-					{
-						NumberDecimalSeparator = ".",
-						NumberGroupSeparator = ","
-					};
-				}
-
 				int CalculateSignificantDigits(string input, NumberFormatInfo numberFormat)
 				{
 					Contract.Requires(input != null);
@@ -341,9 +325,9 @@ namespace ReClassNET.Forms
 					return digits;
 				}
 
-				var nf1 = GuessNumberFormat(valueDualValueControl.Value1);
+				var nf1 = Utils.GuessNumberFormat(valueDualValueControl.Value1);
 				double.TryParse(valueDualValueControl.Value1, NumberStyles.Float, nf1, out var value1);
-				var nf2 = GuessNumberFormat(valueDualValueControl.Value2);
+				var nf2 = Utils.GuessNumberFormat(valueDualValueControl.Value2);
 				double.TryParse(valueDualValueControl.Value2, NumberStyles.Float, nf2, out var value2);
 
 				var significantDigits = Math.Max(
@@ -375,6 +359,16 @@ namespace ReClassNET.Forms
 			}
 
 			throw new Exception();
+		}
+
+		private void clearAddressListToolStripButton_Click(object sender, EventArgs e)
+		{
+			addressListMemorySearchResultControl.Clear();
+		}
+
+		private void memorySearchResultControl_ResultDoubleClick(object sender, SearchResult result)
+		{
+			addressListMemorySearchResultControl.AddSearchResult(result);
 		}
 	}
 }

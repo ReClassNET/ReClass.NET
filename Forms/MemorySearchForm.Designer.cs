@@ -63,13 +63,23 @@
 			this.resultCountLabel = new System.Windows.Forms.Label();
 			this.updateValuesTimer = new System.Windows.Forms.Timer(this.components);
 			this.memorySearchResultControl = new ReClassNET.UI.MemorySearchResultControl();
-			this.memorySearchResultControl2 = new ReClassNET.UI.MemorySearchResultControl();
+			this.addressListMemorySearchResultControl = new ReClassNET.UI.MemorySearchResultControl();
+			this.toolStripPanel = new System.Windows.Forms.ToolStripPanel();
+			this.menuToolStrip = new System.Windows.Forms.ToolStrip();
+			this.openAddressFileToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.saveAddressFileToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.saveAsAddressFileToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.clearAddressListToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.infoToolTip = new System.Windows.Forms.ToolTip(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.filterGroupBox.SuspendLayout();
 			this.scanOptionsGroupBox.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
 			this.floatingOptionsGroupBox.SuspendLayout();
 			this.stringOptionsGroupBox.SuspendLayout();
+			this.toolStripPanel.SuspendLayout();
+			this.menuToolStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// bannerBox
@@ -78,7 +88,7 @@
 			this.bannerBox.Icon = global::ReClassNET.Properties.Resources.B32x32_Magnifier;
 			this.bannerBox.Location = new System.Drawing.Point(0, 0);
 			this.bannerBox.Name = "bannerBox";
-			this.bannerBox.Size = new System.Drawing.Size(611, 48);
+			this.bannerBox.Size = new System.Drawing.Size(612, 48);
 			this.bannerBox.TabIndex = 7;
 			this.bannerBox.Text = "Search the process memory for specific values.";
 			this.bannerBox.Title = "Memory Searcher";
@@ -276,7 +286,7 @@
 			this.flowLayoutPanel1.Controls.Add(this.stringOptionsGroupBox);
 			this.flowLayoutPanel1.Controls.Add(this.scanOptionsGroupBox);
 			this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-			this.flowLayoutPanel1.Location = new System.Drawing.Point(291, 80);
+			this.flowLayoutPanel1.Location = new System.Drawing.Point(292, 80);
 			this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
 			this.flowLayoutPanel1.Size = new System.Drawing.Size(317, 294);
@@ -304,6 +314,7 @@
 			this.roundTruncateRadioButton.Size = new System.Drawing.Size(68, 17);
 			this.roundTruncateRadioButton.TabIndex = 2;
 			this.roundTruncateRadioButton.Text = "Truncate";
+			this.infoToolTip.SetToolTip(this.roundTruncateRadioButton, "123.45 == 123.99");
 			this.roundTruncateRadioButton.UseVisualStyleBackColor = true;
 			// 
 			// roundLooseRadioButton
@@ -316,6 +327,7 @@
 			this.roundLooseRadioButton.TabIndex = 1;
 			this.roundLooseRadioButton.TabStop = true;
 			this.roundLooseRadioButton.Text = "Rounded (loose)";
+			this.infoToolTip.SetToolTip(this.roundLooseRadioButton, "123.44 <= x <= 123.46");
 			this.roundLooseRadioButton.UseVisualStyleBackColor = true;
 			// 
 			// roundStrictRadioButton
@@ -326,6 +338,7 @@
 			this.roundStrictRadioButton.Size = new System.Drawing.Size(100, 17);
 			this.roundStrictRadioButton.TabIndex = 0;
 			this.roundStrictRadioButton.Text = "Rounded (strict)";
+			this.infoToolTip.SetToolTip(this.roundStrictRadioButton, "123.45 == 123.454319");
 			this.roundStrictRadioButton.UseVisualStyleBackColor = true;
 			// 
 			// stringOptionsGroupBox
@@ -352,6 +365,7 @@
 			this.caseSensitiveCheckBox.Size = new System.Drawing.Size(94, 17);
 			this.caseSensitiveCheckBox.TabIndex = 3;
 			this.caseSensitiveCheckBox.Text = "Case sensitive";
+			this.infoToolTip.SetToolTip(this.caseSensitiveCheckBox, "ASD == asd");
 			this.caseSensitiveCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// encodingUtf32RadioButton
@@ -389,7 +403,7 @@
 			// firstScanButton
 			// 
 			this.firstScanButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.firstScanButton.Location = new System.Drawing.Point(291, 54);
+			this.firstScanButton.Location = new System.Drawing.Point(292, 54);
 			this.firstScanButton.Name = "firstScanButton";
 			this.firstScanButton.Size = new System.Drawing.Size(75, 23);
 			this.firstScanButton.TabIndex = 11;
@@ -401,7 +415,7 @@
 			// 
 			this.nextScanButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.nextScanButton.Enabled = false;
-			this.nextScanButton.Location = new System.Drawing.Point(372, 54);
+			this.nextScanButton.Location = new System.Drawing.Point(373, 54);
 			this.nextScanButton.Name = "nextScanButton";
 			this.nextScanButton.Size = new System.Drawing.Size(75, 23);
 			this.nextScanButton.TabIndex = 12;
@@ -412,7 +426,7 @@
 			// scanProgressBar
 			// 
 			this.scanProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.scanProgressBar.Location = new System.Drawing.Point(453, 54);
+			this.scanProgressBar.Location = new System.Drawing.Point(454, 54);
 			this.scanProgressBar.Name = "scanProgressBar";
 			this.scanProgressBar.Size = new System.Drawing.Size(149, 23);
 			this.scanProgressBar.TabIndex = 13;
@@ -420,7 +434,7 @@
 			// resultCountLabel
 			// 
 			this.resultCountLabel.AutoSize = true;
-			this.resultCountLabel.Location = new System.Drawing.Point(8, 54);
+			this.resultCountLabel.Location = new System.Drawing.Point(8, 59);
 			this.resultCountLabel.Name = "resultCountLabel";
 			this.resultCountLabel.Size = new System.Drawing.Size(19, 13);
 			this.resultCountLabel.TabIndex = 15;
@@ -429,13 +443,14 @@
 			// updateValuesTimer
 			// 
 			this.updateValuesTimer.Enabled = true;
+			this.updateValuesTimer.Interval = 1000;
 			this.updateValuesTimer.Tick += new System.EventHandler(this.updateValuesTimer_Tick);
 			// 
 			// memorySearchResultControl
 			// 
 			this.memorySearchResultControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.memorySearchResultControl.Location = new System.Drawing.Point(11, 70);
+			this.memorySearchResultControl.Location = new System.Drawing.Point(11, 80);
 			this.memorySearchResultControl.Name = "memorySearchResultControl";
 			this.memorySearchResultControl.ShowAddressColumn = true;
 			this.memorySearchResultControl.ShowDescriptionColumn = false;
@@ -443,28 +458,103 @@
 			this.memorySearchResultControl.ShowValueColumn = true;
 			this.memorySearchResultControl.ShowValuesHexadecimal = false;
 			this.memorySearchResultControl.ShowValueTypeColumn = false;
-			this.memorySearchResultControl.Size = new System.Drawing.Size(267, 302);
+			this.memorySearchResultControl.Size = new System.Drawing.Size(268, 292);
 			this.memorySearchResultControl.TabIndex = 16;
+			this.memorySearchResultControl.ResultDoubleClick += new ReClassNET.UI.MemorySearchResultControlResultDoubleClickEventHandler(this.memorySearchResultControl_ResultDoubleClick);
 			// 
-			// memorySearchResultControl2
+			// addressListMemorySearchResultControl
 			// 
-			this.memorySearchResultControl2.Location = new System.Drawing.Point(12, 387);
-			this.memorySearchResultControl2.Name = "memorySearchResultControl2";
-			this.memorySearchResultControl2.ShowAddressColumn = true;
-			this.memorySearchResultControl2.ShowDescriptionColumn = true;
-			this.memorySearchResultControl2.ShowPreviousValueColumn = false;
-			this.memorySearchResultControl2.ShowValueColumn = true;
-			this.memorySearchResultControl2.ShowValuesHexadecimal = false;
-			this.memorySearchResultControl2.ShowValueTypeColumn = true;
-			this.memorySearchResultControl2.Size = new System.Drawing.Size(590, 191);
-			this.memorySearchResultControl2.TabIndex = 17;
+			this.addressListMemorySearchResultControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.addressListMemorySearchResultControl.Location = new System.Drawing.Point(11, 402);
+			this.addressListMemorySearchResultControl.Name = "addressListMemorySearchResultControl";
+			this.addressListMemorySearchResultControl.ShowAddressColumn = true;
+			this.addressListMemorySearchResultControl.ShowDescriptionColumn = true;
+			this.addressListMemorySearchResultControl.ShowPreviousValueColumn = false;
+			this.addressListMemorySearchResultControl.ShowValueColumn = true;
+			this.addressListMemorySearchResultControl.ShowValuesHexadecimal = false;
+			this.addressListMemorySearchResultControl.ShowValueTypeColumn = true;
+			this.addressListMemorySearchResultControl.Size = new System.Drawing.Size(592, 169);
+			this.addressListMemorySearchResultControl.TabIndex = 17;
+			// 
+			// toolStripPanel
+			// 
+			this.toolStripPanel.Controls.Add(this.menuToolStrip);
+			this.toolStripPanel.Location = new System.Drawing.Point(-4, 375);
+			this.toolStripPanel.Name = "toolStripPanel";
+			this.toolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			this.toolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+			this.toolStripPanel.RowMargin = new System.Windows.Forms.Padding(0);
+			this.toolStripPanel.Size = new System.Drawing.Size(591, 25);
+			// 
+			// menuToolStrip
+			// 
+			this.menuToolStrip.Dock = System.Windows.Forms.DockStyle.None;
+			this.menuToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openAddressFileToolStripButton,
+            this.saveAddressFileToolStripButton,
+            this.saveAsAddressFileToolStripButton,
+            this.toolStripSeparator1,
+            this.clearAddressListToolStripButton});
+			this.menuToolStrip.Location = new System.Drawing.Point(3, 0);
+			this.menuToolStrip.Name = "menuToolStrip";
+			this.menuToolStrip.Size = new System.Drawing.Size(110, 25);
+			this.menuToolStrip.TabIndex = 0;
+			// 
+			// openAddressFileToolStripButton
+			// 
+			this.openAddressFileToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.openAddressFileToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Folder;
+			this.openAddressFileToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.openAddressFileToolStripButton.Name = "openAddressFileToolStripButton";
+			this.openAddressFileToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.openAddressFileToolStripButton.ToolTipText = "Open...";
+			// 
+			// saveAddressFileToolStripButton
+			// 
+			this.saveAddressFileToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.saveAddressFileToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Save;
+			this.saveAddressFileToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.saveAddressFileToolStripButton.Name = "saveAddressFileToolStripButton";
+			this.saveAddressFileToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.saveAddressFileToolStripButton.ToolTipText = "Save";
+			// 
+			// saveAsAddressFileToolStripButton
+			// 
+			this.saveAsAddressFileToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.saveAsAddressFileToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Save_As;
+			this.saveAsAddressFileToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.saveAsAddressFileToolStripButton.Name = "saveAsAddressFileToolStripButton";
+			this.saveAsAddressFileToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.saveAsAddressFileToolStripButton.ToolTipText = "Save as...";
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+			// 
+			// clearAddressListToolStripButton
+			// 
+			this.clearAddressListToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.clearAddressListToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Quit;
+			this.clearAddressListToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.clearAddressListToolStripButton.Name = "clearAddressListToolStripButton";
+			this.clearAddressListToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.clearAddressListToolStripButton.ToolTipText = "Clear";
+			this.clearAddressListToolStripButton.Click += new System.EventHandler(this.clearAddressListToolStripButton_Click);
+			// 
+			// infoToolTip
+			// 
+			this.infoToolTip.AutomaticDelay = 100;
 			// 
 			// MemorySearchForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(611, 590);
-			this.Controls.Add(this.memorySearchResultControl2);
+			this.ClientSize = new System.Drawing.Size(612, 583);
+			this.Controls.Add(this.toolStripPanel);
+			this.Controls.Add(this.addressListMemorySearchResultControl);
 			this.Controls.Add(this.memorySearchResultControl);
 			this.Controls.Add(this.resultCountLabel);
 			this.Controls.Add(this.scanProgressBar);
@@ -472,6 +562,7 @@
 			this.Controls.Add(this.firstScanButton);
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.bannerBox);
+			this.MinimumSize = new System.Drawing.Size(628, 622);
 			this.Name = "MemorySearchForm";
 			this.Text = "ReClass.NET - Memory Searcher";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MemorySearchForm_FormClosing);
@@ -485,6 +576,10 @@
 			this.floatingOptionsGroupBox.PerformLayout();
 			this.stringOptionsGroupBox.ResumeLayout(false);
 			this.stringOptionsGroupBox.PerformLayout();
+			this.toolStripPanel.ResumeLayout(false);
+			this.toolStripPanel.PerformLayout();
+			this.menuToolStrip.ResumeLayout(false);
+			this.menuToolStrip.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -526,6 +621,14 @@
 		private System.Windows.Forms.Label resultCountLabel;
 		private System.Windows.Forms.Timer updateValuesTimer;
 		private UI.MemorySearchResultControl memorySearchResultControl;
-		private UI.MemorySearchResultControl memorySearchResultControl2;
+		private UI.MemorySearchResultControl addressListMemorySearchResultControl;
+		private System.Windows.Forms.ToolStripPanel toolStripPanel;
+		private System.Windows.Forms.ToolStrip menuToolStrip;
+		private System.Windows.Forms.ToolStripButton openAddressFileToolStripButton;
+		private System.Windows.Forms.ToolStripButton saveAddressFileToolStripButton;
+		private System.Windows.Forms.ToolStripButton saveAsAddressFileToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripButton clearAddressListToolStripButton;
+		private System.Windows.Forms.ToolTip infoToolTip;
 	}
 }

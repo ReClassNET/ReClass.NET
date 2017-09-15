@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.Globalization;
 
 namespace ReClassNET.Util
 {
@@ -48,6 +49,26 @@ namespace ReClassNET.Util
 		public static Size AggregateNodeSizes(Size baseSize, Size newSize)
 		{
 			return new Size(Math.Max(baseSize.Width, newSize.Width), baseSize.Height + newSize.Height);
+		}
+
+		public static NumberFormatInfo GuessNumberFormat(string input)
+		{
+			Contract.Requires(input != null);
+			Contract.Ensures(Contract.Result<NumberFormatInfo>() != null);
+
+			if (input.Contains(",") && !input.Contains("."))
+			{
+				return new NumberFormatInfo
+				{
+					NumberDecimalSeparator = ",",
+					NumberGroupSeparator = "."
+				};
+			}
+			return new NumberFormatInfo
+			{
+				NumberDecimalSeparator = ".",
+				NumberGroupSeparator = ","
+			};
 		}
 	}
 }
