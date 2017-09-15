@@ -6,7 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.DataExchange;
+using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Debugger;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
