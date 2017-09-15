@@ -2,9 +2,9 @@
 using System.IO;
 using ReClassNET.Logger;
 
-namespace ReClassNET.DataExchange
+namespace ReClassNET.DataExchange.ReClass
 {
-	[ContractClass(typeof(IReClassExportContract))]
+	[ContractClass(typeof(ReClassExportContract))]
 	public interface IReClassExport
 	{
 		void Save(string filePath, ILogger logger);
@@ -13,7 +13,7 @@ namespace ReClassNET.DataExchange
 	}
 
 	[ContractClassFor(typeof(IReClassExport))]
-	internal abstract class IReClassExportContract : IReClassExport
+	internal abstract class ReClassExportContract : IReClassExport
 	{
 		public void Save(string filePath, ILogger logger)
 		{

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.CodeGenerator;
 using ReClassNET.Core;
-using ReClassNET.DataExchange;
+using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;

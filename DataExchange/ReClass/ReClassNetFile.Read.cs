@@ -9,7 +9,7 @@ using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
 
-namespace ReClassNET.DataExchange
+namespace ReClassNET.DataExchange.ReClass
 {
 	public partial class ReClassNetFile
 	{
@@ -36,7 +36,7 @@ namespace ReClassNET.DataExchange
 				using (var entryStream = dataEntry.Open())
 				{
 					var document = XDocument.Load(entryStream);
-					if (document.Root == null)
+					if (document.Root?.Element(XmlClassesElement) == null)
 					{
 						logger.Log(LogLevel.Error, "File has not the correct format.");
 						return;
@@ -104,7 +104,7 @@ namespace ReClassNET.DataExchange
 					continue;
 				}
 
-				if (!BuildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value ?? string.Empty, out var nodeType))
+				if (!buildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value ?? string.Empty, out var nodeType))
 				{
 					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {element.Attribute(XmlTypeAttribute)?.Value}");
 					logger.Log(LogLevel.Warning, element.ToString());
@@ -123,8 +123,7 @@ namespace ReClassNET.DataExchange
 				node.Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
 				node.Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty;
 
-				var referenceNode = node as BaseReferenceNode;
-				if (referenceNode != null)
+				if (node is BaseReferenceNode referenceNode)
 				{
 					var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
 					if (!project.ContainsClass(reference))

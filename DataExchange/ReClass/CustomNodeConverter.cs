@@ -6,9 +6,9 @@ using System.Xml.Linq;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
-namespace ReClassNET.DataExchange
+namespace ReClassNET.DataExchange.ReClass
 {
-	[ContractClass(typeof(ICustomNodeConverterContract))]
+	[ContractClass(typeof(CustomNodeConverterContract))]
 	public interface ICustomNodeConverter
 	{
 		/// <summary>Determine if the instance can handle the xml element.</summary>
@@ -38,7 +38,7 @@ namespace ReClassNET.DataExchange
 	}
 
 	[ContractClassFor(typeof(ICustomNodeConverter))]
-	internal abstract class ICustomNodeConverterContract : ICustomNodeConverter
+	internal abstract class CustomNodeConverterContract : ICustomNodeConverter
 	{
 		public bool CanHandleElement(XElement element)
 		{

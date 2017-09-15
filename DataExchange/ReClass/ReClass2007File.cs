@@ -8,14 +8,15 @@ using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
 
-namespace ReClassNET.DataExchange
+namespace ReClassNET.DataExchange.ReClass
 {
-	class ReClass2007File : IReClassImport
+	public class ReClass2007File : IReClassImport
 	{
 		public const string FormatName = "ReClass 2007 File";
 		public const string FileExtension = ".rdc";
 
-		private static readonly Type[] TypeMap = {
+		private static readonly Type[] typeMap =
+		{
 			null,
 			typeof(ClassInstanceNode),
 			typeof(ClassNode),
@@ -120,10 +121,10 @@ namespace ReClassNET.DataExchange
 			{
 				Type nodeType = null;
 
-				int typeVal = Convert.ToInt32(row["type"]);
-				if (typeVal >= 0 && typeVal < TypeMap.Length)
+				var typeVal = Convert.ToInt32(row["type"]);
+				if (typeVal >= 0 && typeVal < typeMap.Length)
 				{
-					nodeType = TypeMap[typeVal];
+					nodeType = typeMap[typeVal];
 				}
 
 				if (nodeType == null)
@@ -145,8 +146,7 @@ namespace ReClassNET.DataExchange
 				node.Name = Convert.ToString(row["variable"]);
 				node.Comment = Convert.ToString(row["comment"]);
 
-				var referenceNode = node as BaseReferenceNode;
-				if (referenceNode != null)
+				if (node is BaseReferenceNode referenceNode)
 				{
 					var reference = Convert.ToInt32(row["ref"]);
 					if (!classes.ContainsKey(reference))
@@ -174,8 +174,7 @@ namespace ReClassNET.DataExchange
 
 					referenceNode.ChangeInnerNode(innerClassNode);
 				}
-				var textNode = node as BaseTextNode;
-				if (textNode != null)
+				if (node is BaseTextNode textNode)
 				{
 					textNode.Length = Math.Max(IntPtr.Size, Convert.ToInt32(row["length"]));
 				}
