@@ -148,9 +148,9 @@
     <Compile Include="Core\ICoreProcessFunctions.cs" />
     <Compile Include="Core\InternalCoreFunctions.cs" />
     <Compile Include="Core\NativeCoreWrapper.cs" />
-    <Compile Include="DataExchange\ReClassClipboard.cs" />
-    <Compile Include="DataExchange\ReClassNetFile.Read.cs" />
-    <Compile Include="DataExchange\ReClassNetFile.Write.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassClipboard.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassNetFile.Read.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassNetFile.Write.cs" />
     <Compile Include="Debugger\BreakpointAlreadySetException.cs" />
     <Compile Include="Debugger\DataExchange.cs" />
     <Compile Include="Debugger\HardwareBreakpoint.cs" />
@@ -226,10 +226,10 @@
     <Compile Include="CodeGenerator\CSharpCodeGenerator.cs" />
     <Compile Include="CodeGenerator\ICodeGenerator.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="DataExchange\CustomNodeConverter.cs" />
-    <Compile Include="DataExchange\IReClassExport.cs" />
-    <Compile Include="DataExchange\ReClassFile.cs" />
-    <Compile Include="DataExchange\ReClass2007File.cs" />
+    <Compile Include="DataExchange\ReClass\CustomNodeConverter.cs" />
+    <Compile Include="DataExchange\ReClass\IReClassExport.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassFile.cs" />
+    <Compile Include="DataExchange\ReClass\ReClass2007File.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -329,9 +329,9 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataExchange\IReClassImport.cs" />
-    <Compile Include="DataExchange\ReClassNetFile.cs" />
-    <Compile Include="DataExchange\ReClassQtFile.cs" />
+    <Compile Include="DataExchange\ReClass\IReClassImport.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassNetFile.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassQtFile.cs" />
     <Compile Include="Logger\BaseLogger.cs" />
     <Compile Include="Logger\GuiLogger.cs" />
     <Compile Include="Logger\ILogger.cs" />
@@ -859,6 +859,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Eye.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataExchange\Scanner\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" />
