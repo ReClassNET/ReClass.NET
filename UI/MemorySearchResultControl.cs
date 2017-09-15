@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.Memory;
 using ReClassNET.MemorySearcher;
 using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {
+	public delegate void MemorySearchResultControlResultDoubleClickEventHandler(object sender, MemoryRecord record);
+
 	public partial class MemorySearchResultControl : UserControl
 	{
 		public bool ShowDescriptionColumn
@@ -45,7 +44,9 @@ namespace ReClassNET.UI
 
 		public bool ShowValuesHexadecimal { get; set; }
 
-		private readonly BindingList<ResultData> bindings;
+		public event MemorySearchResultControlResultDoubleClickEventHandler RecordDoubleClick;
+
+		private readonly BindingList<MemoryRecord> bindings;
 
 		public MemorySearchResultControl()
 		{
@@ -56,7 +57,7 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			bindings = new BindingList<ResultData>
+			bindings = new BindingList<MemoryRecord>
 			{
 				AllowNew = true,
 				AllowEdit = true,
@@ -68,7 +69,7 @@ namespace ReClassNET.UI
 			resultDataGridView.DataSource = bindings;
 		}
 
-		public void SetSearchResults(IEnumerable<SearchResult> results)
+		public void SetRecords(IEnumerable<MemoryRecord> results)
 		{
 			Contract.Requires(results != null);
 
@@ -81,7 +82,7 @@ namespace ReClassNET.UI
 
 			bindings.RaiseListChangedEvents = false;
 
-			foreach (var result in results.Select(r => new ResultData(r)))
+			foreach (var result in results)
 			{
 				bindings.Add(result);
 			}
@@ -90,17 +91,35 @@ namespace ReClassNET.UI
 			bindings.ResetBindings();
 		}
 
-		public void UpdateValues(RemoteProcess process)
+		public void AddRecord(MemoryRecord result)
 		{
-			Contract.Requires(process != null);
+			Contract.Requires(result != null);
 
-			foreach (var row in resultDataGridView.GetVisibleRows())
+			bindings.Add(result);
+		}
+
+		public void Clear()
+		{
+			SetRecords(null);
+		}
+
+		public void RefreshValues()
+		{
+			foreach (var record in resultDataGridView.GetVisibleRows().Select(r => (MemoryRecord)r.DataBoundItem))
 			{
-				if (row.DataBoundItem is ResultData result)
-				{
-					result.UpdateValue(process);
-				}
+				record.RefreshValue();
 			}
+		}
+
+		private void OnRecordDoubleClick(MemoryRecord record)
+		{
+			var evt = RecordDoubleClick;
+			evt?.Invoke(this, record);
+		}
+
+		private void resultDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+		{
+			OnRecordDoubleClick((MemoryRecord)resultDataGridView.Rows[e.RowIndex].DataBoundItem);
 		}
 	}
 }

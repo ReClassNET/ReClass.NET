@@ -460,7 +460,7 @@
 			this.memorySearchResultControl.ShowValueTypeColumn = false;
 			this.memorySearchResultControl.Size = new System.Drawing.Size(268, 292);
 			this.memorySearchResultControl.TabIndex = 16;
-			this.memorySearchResultControl.ResultDoubleClick += new ReClassNET.UI.MemorySearchResultControlResultDoubleClickEventHandler(this.memorySearchResultControl_ResultDoubleClick);
+			this.memorySearchResultControl.RecordDoubleClick += new ReClassNET.UI.MemorySearchResultControlResultDoubleClickEventHandler(this.memorySearchResultControl_ResultDoubleClick);
 			// 
 			// addressListMemorySearchResultControl
 			// 

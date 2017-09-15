@@ -80,8 +80,8 @@ namespace ReClassNET.Forms
 
 		private void updateValuesTimer_Tick(object sender, EventArgs e)
 		{
-			memorySearchResultControl.UpdateValues(process);
-			addressListMemorySearchResultControl.UpdateValues(process);
+			memorySearchResultControl.RefreshValues();
+			addressListMemorySearchResultControl.RefreshValues();
 		}
 
 		private void valueTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
@@ -112,10 +112,11 @@ namespace ReClassNET.Forms
 
 			SetResultCount(searcher.TotalResultCount);
 
-			memorySearchResultControl.SetSearchResults(
+			memorySearchResultControl.SetRecords(
 				searcher.GetResults()
 					.Take(MaxVisibleResults)
 					.OrderBy(r => r.Address, IntPtrComparer.Instance)
+					.Select(r => new MemoryRecord(r, process))
 			);
 		}
 
@@ -168,7 +169,7 @@ namespace ReClassNET.Forms
 			searcher = null;
 
 			SetResultCount(0);
-			memorySearchResultControl.SetSearchResults(null);
+			memorySearchResultControl.SetRecords(null);
 
 			nextScanButton.Enabled = false;
 			valueTypeComboBox.Enabled = true;
@@ -366,9 +367,9 @@ namespace ReClassNET.Forms
 			addressListMemorySearchResultControl.Clear();
 		}
 
-		private void memorySearchResultControl_ResultDoubleClick(object sender, SearchResult result)
+		private void memorySearchResultControl_ResultDoubleClick(object sender, MemoryRecord record)
 		{
-			addressListMemorySearchResultControl.AddSearchResult(result);
+			addressListMemorySearchResultControl.AddRecord(record);
 		}
 	}
 }

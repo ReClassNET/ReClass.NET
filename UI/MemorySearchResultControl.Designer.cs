@@ -60,6 +60,7 @@
 			this.resultDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.resultDataGridView.Size = new System.Drawing.Size(290, 327);
 			this.resultDataGridView.TabIndex = 15;
+			this.resultDataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.resultDataGridView_CellDoubleClick);
 			// 
 			// descriptionColumn
 			// 
@@ -72,7 +73,7 @@
 			// addressColumn
 			// 
 			this.addressColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.addressColumn.DataPropertyName = "Address";
+			this.addressColumn.DataPropertyName = "AddressStr";
 			this.addressColumn.HeaderText = "Address";
 			this.addressColumn.Name = "addressColumn";
 			this.addressColumn.ReadOnly = true;
@@ -88,7 +89,7 @@
 			// 
 			// valueColumn
 			// 
-			this.valueColumn.DataPropertyName = "Value";
+			this.valueColumn.DataPropertyName = "ValueStr";
 			this.valueColumn.HeaderText = "Value";
 			this.valueColumn.Name = "valueColumn";
 			this.valueColumn.ReadOnly = true;
@@ -96,7 +97,7 @@
 			// 
 			// previousValueColumn
 			// 
-			this.previousValueColumn.DataPropertyName = "Previous";
+			this.previousValueColumn.DataPropertyName = "PreviousValueStr";
 			this.previousValueColumn.HeaderText = "Previous";
 			this.previousValueColumn.Name = "previousValueColumn";
 			this.previousValueColumn.ReadOnly = true;
