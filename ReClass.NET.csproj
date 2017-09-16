@@ -294,6 +294,7 @@
     <Compile Include="Util\Extension.BinaryReaderWriter.cs" />
     <Compile Include="Util\Extension.DataGridView.cs" />
     <Compile Include="Util\Extension.Dictionary.cs" />
+    <Compile Include="Util\Extension.Encoding.cs" />
     <Compile Include="Util\Extension.FloatingPoint.cs" />
     <Compile Include="Util\Extension.Graphics.cs" />
     <Compile Include="Util\Extension.IntPtr.cs" />

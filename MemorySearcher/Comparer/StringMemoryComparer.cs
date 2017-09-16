@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
+using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher.Comparer
 {
@@ -10,7 +11,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 		public bool CaseSensitive { get; }
 		public Encoding Encoding { get; }
 		public string Value { get; }
-		public int ValueSize => Value.Length * Encoding.GetMaxByteCount(1);
+		public int ValueSize => Value.Length * Encoding.GetSimpleByteCountPerChar();
 
 		public StringMemoryComparer(string value, Encoding encoding, bool caseSensitive)
 		{
