@@ -53,7 +53,7 @@ namespace ReClassNET.Forms
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(true, false);
 
 			remoteProcess = new RemoteProcess(coreFunctions);
-			remoteProcess.ProcessAttached += (sender) =>
+			remoteProcess.ProcessAttached += sender =>
 			{
 				var text = $"{sender.UnderlayingProcess.Name} (ID: {sender.UnderlayingProcess.Id.ToString()})";
 
@@ -374,8 +374,7 @@ namespace ReClassNET.Forms
 
 		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var item = sender as IntegerToolStripMenuItem;
-			if (item == null)
+			if (!(sender is IntegerToolStripMenuItem item))
 			{
 				return;
 			}
@@ -390,8 +389,7 @@ namespace ReClassNET.Forms
 
 		private void insertBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var item = sender as IntegerToolStripMenuItem;
-			if (item == null)
+			if (!(sender is IntegerToolStripMenuItem item))
 			{
 				return;
 			}
@@ -406,8 +404,7 @@ namespace ReClassNET.Forms
 
 		private void memoryTypeToolStripButton_Click(object sender, EventArgs e)
 		{
-			var item = sender as TypeToolStripButton;
-			if (item == null)
+			if (!(sender is TypeToolStripButton item))
 			{
 				return;
 			}
@@ -421,8 +418,7 @@ namespace ReClassNET.Forms
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
-				var files = e.Data.GetData(DataFormats.FileDrop) as string[];
-				if (files != null && files.Any())
+				if (e.Data.GetData(DataFormats.FileDrop) is string[] files && files.Any())
 				{
 					switch (Path.GetExtension(files.First()))
 					{
@@ -439,8 +435,7 @@ namespace ReClassNET.Forms
 
 		private void MainForm_DragDrop(object sender, DragEventArgs e)
 		{
-			var files = e.Data.GetData(DataFormats.FileDrop) as string[];
-			if (files != null && files.Any())
+			if (e.Data.GetData(DataFormats.FileDrop) is string[] files && files.Any())
 			{
 				try
 				{
@@ -484,8 +479,7 @@ namespace ReClassNET.Forms
 
 		private void memoryViewControl_SelectionChanged(object sender, EventArgs e)
 		{
-			var memoryView = sender as MemoryViewControl;
-			if (memoryView == null)
+			if (!(sender is MemoryViewControl memoryView))
 			{
 				return;
 			}
@@ -649,7 +643,7 @@ namespace ReClassNET.Forms
 			Contract.Ensures(Contract.ValueAtReturn(out project) != null);
 
 			IReClassImport import = null;
-			switch (Path.GetExtension(filePath))
+			switch (Path.GetExtension(filePath)?.ToLower())
 			{
 				case ReClassNetFile.FileExtension:
 					import = new ReClassNetFile(project);
