@@ -24,7 +24,7 @@ namespace ReClassNET.MemorySearcher
 
 		private StorageMode mode = StorageMode.Memory;
 
-		private readonly SearchValueType valueType = SearchValueType.Byte;
+		private readonly SearchValueType valueType;
 
 		public int TotalResultCount { get; private set; }
 
@@ -172,10 +172,11 @@ namespace ReClassNET.MemorySearcher
 					result = new DoubleSearchResult(br.ReadDouble());
 					break;
 				case SearchValueType.ArrayOfBytes:
-					result = new ArrayOfBytesSearchResult();
+					result = new ArrayOfBytesSearchResult(br.ReadBytes(br.ReadInt32()));
 					break;
 				case SearchValueType.String:
-					result = new StringSearchResult(br.ReadString());
+					var encoding = br.ReadInt32();
+					result = new StringSearchResult(br.ReadString(), encoding == 0 ? Encoding.UTF8 : encoding == 1 ? Encoding.Unicode : Encoding.UTF32);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -211,9 +212,11 @@ namespace ReClassNET.MemorySearcher
 					bw.Write(doubleSearchResult.Value);
 					break;
 				case ArrayOfBytesSearchResult arrayOfBytesSearchResult:
-					
+					bw.Write(arrayOfBytesSearchResult.Value.Length);
+					bw.Write(arrayOfBytesSearchResult.Value);
 					break;
 				case StringSearchResult stringSearchResult:
+					bw.Write(stringSearchResult.Encoding == Encoding.UTF8 ? 0 : stringSearchResult.Encoding == Encoding.Unicode ? 1 : 2);
 					bw.Write(stringSearchResult.Value);
 					break;
 				default:

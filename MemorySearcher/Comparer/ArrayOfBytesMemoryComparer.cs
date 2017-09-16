@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 
 namespace ReClassNET.MemorySearcher.Comparer
@@ -42,7 +43,9 @@ namespace ReClassNET.MemorySearcher.Comparer
 				return false;
 			}
 
-			result = new ArrayOfBytesSearchResult();
+			var temp = new byte[ValueSize];
+			Array.Copy(data, index, temp, 0, temp.Length);
+			result = new ArrayOfBytesSearchResult(temp);
 
 			return true;
 		}

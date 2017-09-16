@@ -7,7 +7,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 	public class StringMemoryComparer : IMemoryComparer
 	{
 		public SearchCompareType CompareType => SearchCompareType.Equal;
-		public bool CaseSensitive { get; } = true;
+		public bool CaseSensitive { get; }
 		public Encoding Encoding { get; }
 		public string Value { get; }
 		public int ValueSize => Value.Length * Encoding.GetMaxByteCount(1);
@@ -30,7 +30,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 				return false;
 			}
 
-			result = new StringSearchResult(value);
+			result = new StringSearchResult(value, Encoding);
 
 			return true;
 		}

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
+using System.Text;
 
 namespace ReClassNET.MemorySearcher
 {
@@ -84,6 +86,15 @@ namespace ReClassNET.MemorySearcher
 	public class ArrayOfBytesSearchResult : SearchResult
 	{
 		public override SearchValueType ValueType => SearchValueType.ArrayOfBytes;
+
+		public byte[] Value { get; }
+
+		public ArrayOfBytesSearchResult(byte[] value)
+		{
+			Contract.Requires(value != null);
+
+			Value = value;
+		}
 	}
 
 	public class StringSearchResult : SearchResult
@@ -92,9 +103,15 @@ namespace ReClassNET.MemorySearcher
 
 		public string Value { get; }
 
-		public StringSearchResult(string value)
+		public Encoding Encoding { get; }
+
+		public StringSearchResult(string value, Encoding encoding)
 		{
+			Contract.Requires(value != null);
+			Contract.Requires(encoding != null);
+
 			Value = value;
+			Encoding = encoding;
 		}
 	}
 }
