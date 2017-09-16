@@ -564,6 +564,7 @@
 			this.Controls.Add(this.bannerBox);
 			this.MinimumSize = new System.Drawing.Size(628, 622);
 			this.Name = "MemorySearchForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "ReClass.NET - Memory Searcher";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MemorySearchForm_FormClosing);
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();

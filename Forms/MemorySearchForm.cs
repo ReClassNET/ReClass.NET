@@ -55,6 +55,27 @@ namespace ReClassNET.Forms
 			OnValueTypeChanged();
 
 			Reset();
+
+			process.ProcessAttached += sender =>
+			{
+				Reset();
+
+				if (addressListMemorySearchResultControl.Records.Any())
+				{
+					if (MessageBox.Show("Keep the current address list?", "Process has changed", MessageBoxButtons.YesNo) != DialogResult.Yes)
+					{
+						addressListMemorySearchResultControl.Clear();
+					}
+					else
+					{
+						foreach (var record in addressListMemorySearchResultControl.Records)
+						{
+							record.ResolveAddress(process);
+							record.RefreshValue(process);
+						}
+					}
+				}
+			};
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -80,8 +101,8 @@ namespace ReClassNET.Forms
 
 		private void updateValuesTimer_Tick(object sender, EventArgs e)
 		{
-			memorySearchResultControl.RefreshValues();
-			addressListMemorySearchResultControl.RefreshValues();
+			memorySearchResultControl.RefreshValues(process);
+			addressListMemorySearchResultControl.RefreshValues(process);
 		}
 
 		private void valueTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
@@ -116,7 +137,12 @@ namespace ReClassNET.Forms
 				searcher.GetResults()
 					.Take(MaxVisibleResults)
 					.OrderBy(r => r.Address, IntPtrComparer.Instance)
-					.Select(r => new MemoryRecord(r, process))
+					.Select(r =>
+					{
+						var record = new MemoryRecord(r);
+						record.ResolveAddress(process);
+						return record;
+					})
 			);
 		}
 
@@ -173,6 +199,7 @@ namespace ReClassNET.Forms
 
 			nextScanButton.Enabled = false;
 			valueTypeComboBox.Enabled = true;
+			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<SearchValueType>>().FirstOrDefault(e => e.Value == SearchValueType.Integer);
 
 			floatingOptionsGroupBox.Enabled = true;
 			stringOptionsGroupBox.Enabled = true;
