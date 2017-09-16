@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ReClassNET.Memory;
 using ReClassNET.MemorySearcher;
 using ReClassNET.Util;
 
@@ -43,6 +45,8 @@ namespace ReClassNET.UI
 		}
 
 		public bool ShowValuesHexadecimal { get; set; }
+
+		public IEnumerable<MemoryRecord> Records => bindings;
 
 		public event MemorySearchResultControlResultDoubleClickEventHandler RecordDoubleClick;
 
@@ -103,11 +107,13 @@ namespace ReClassNET.UI
 			SetRecords(null);
 		}
 
-		public void RefreshValues()
+		public void RefreshValues(RemoteProcess process)
 		{
+			Contract.Requires(process != null);
+
 			foreach (var record in resultDataGridView.GetVisibleRows().Select(r => (MemoryRecord)r.DataBoundItem))
 			{
-				record.RefreshValue();
+				record.RefreshValue(process);
 			}
 		}
 
@@ -120,6 +126,19 @@ namespace ReClassNET.UI
 		private void resultDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
 		{
 			OnRecordDoubleClick((MemoryRecord)resultDataGridView.Rows[e.RowIndex].DataBoundItem);
+		}
+
+		private void resultDataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		{
+			if (e.ColumnIndex == 1)
+			{
+				var record = (MemoryRecord)resultDataGridView.Rows[e.RowIndex].DataBoundItem;
+				if (record.IsRelativeAddress)
+				{
+					e.CellStyle.ForeColor = Color.ForestGreen;
+					e.FormattingApplied = true;
+				}
+			}
 		}
 	}
 }

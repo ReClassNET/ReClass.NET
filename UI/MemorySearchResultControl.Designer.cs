@@ -61,6 +61,7 @@
 			this.resultDataGridView.Size = new System.Drawing.Size(290, 327);
 			this.resultDataGridView.TabIndex = 15;
 			this.resultDataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.resultDataGridView_CellDoubleClick);
+			this.resultDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.resultDataGridView_CellFormatting);
 			// 
 			// descriptionColumn
 			// 
