@@ -47,7 +47,7 @@ namespace ReClassNET.MemorySearcher
 		public bool IsRelativeAddress => !string.IsNullOrEmpty(ModuleName);
 
 		public string Description { get; set; } = string.Empty;
-		public SearchValueType ValueType { get; set; }
+		public ScanValueType ValueType { get; set; }
 
 		public string ValueStr { get; private set; }
 		public string PreviousValueStr { get; }
@@ -65,7 +65,7 @@ namespace ReClassNET.MemorySearcher
 
 		}
 
-		public MemoryRecord(SearchResult result)
+		public MemoryRecord(ScanResult result)
 		{
 			Contract.Requires(result != null);
 
@@ -75,30 +75,30 @@ namespace ReClassNET.MemorySearcher
 
 			switch (ValueType)
 			{
-				case SearchValueType.Byte:
+				case ScanValueType.Byte:
 					ValueStr = FormatValue(((ByteSearchResult)result).Value, false);
 					break;
-				case SearchValueType.Short:
+				case ScanValueType.Short:
 					ValueStr = FormatValue(((ShortSearchResult)result).Value, false);
 					break;
-				case SearchValueType.Integer:
+				case ScanValueType.Integer:
 					ValueStr = FormatValue(((IntegerSearchResult)result).Value, false);
 					break;
-				case SearchValueType.Long:
+				case ScanValueType.Long:
 					ValueStr = FormatValue(((LongSearchResult)result).Value, false);
 					break;
-				case SearchValueType.Float:
+				case ScanValueType.Float:
 					ValueStr = FormatValue(((FloatSearchResult)result).Value);
 					break;
-				case SearchValueType.Double:
+				case ScanValueType.Double:
 					ValueStr = FormatValue(((DoubleSearchResult)result).Value);
 					break;
-				case SearchValueType.ArrayOfBytes:
+				case ScanValueType.ArrayOfBytes:
 					var byteData = ((ArrayOfBytesSearchResult)result).Value;
 					ValueLength = byteData.Length;
 					ValueStr = FormatValue(byteData);
 					break;
-				case SearchValueType.String:
+				case ScanValueType.String:
 					var strResult = (StringSearchResult)result;
 					ValueLength = strResult.Value.Length;
 					Encoding = strResult.Encoding;
@@ -156,24 +156,24 @@ namespace ReClassNET.MemorySearcher
 
 			switch (ValueType)
 			{
-				case SearchValueType.Byte:
+				case ScanValueType.Byte:
 					buffer = new byte[1];
 					break;
-				case SearchValueType.Short:
+				case ScanValueType.Short:
 					buffer = new byte[2];
 					break;
-				case SearchValueType.Integer:
-				case SearchValueType.Float:
+				case ScanValueType.Integer:
+				case ScanValueType.Float:
 					buffer = new byte[4];
 					break;
-				case SearchValueType.Long:
-				case SearchValueType.Double:
+				case ScanValueType.Long:
+				case ScanValueType.Double:
 					buffer = new byte[8];
 					break;
-				case SearchValueType.ArrayOfBytes:
+				case ScanValueType.ArrayOfBytes:
 					buffer = new byte[ValueLength];
 					break;
-				case SearchValueType.String:
+				case ScanValueType.String:
 					buffer = new byte[ValueLength * Encoding.GetSimpleByteCountPerChar()];
 					break;
 				default:
@@ -184,28 +184,28 @@ namespace ReClassNET.MemorySearcher
 			{
 				switch (ValueType)
 				{
-					case SearchValueType.Byte:
+					case ScanValueType.Byte:
 						ValueStr = FormatValue(buffer[0], ShowValueHexadecimal);
 						break;
-					case SearchValueType.Short:
+					case ScanValueType.Short:
 						ValueStr = FormatValue(BitConverter.ToInt16(buffer, 0), ShowValueHexadecimal);
 						break;
-					case SearchValueType.Integer:
+					case ScanValueType.Integer:
 						ValueStr = FormatValue(BitConverter.ToInt32(buffer, 0), ShowValueHexadecimal);
 						break;
-					case SearchValueType.Long:
+					case ScanValueType.Long:
 						ValueStr = FormatValue(BitConverter.ToInt64(buffer, 0), ShowValueHexadecimal);
 						break;
-					case SearchValueType.Float:
+					case ScanValueType.Float:
 						ValueStr = FormatValue(BitConverter.ToSingle(buffer, 0));
 						break;
-					case SearchValueType.Double:
+					case ScanValueType.Double:
 						ValueStr = FormatValue(BitConverter.ToDouble(buffer, 0));
 						break;
-					case SearchValueType.ArrayOfBytes:
+					case ScanValueType.ArrayOfBytes:
 						ValueStr = FormatValue(buffer);
 						break;
-					case SearchValueType.String:
+					case ScanValueType.String:
 						ValueStr = FormatValue(Encoding.GetString(buffer));
 						break;
 				}
@@ -225,38 +225,38 @@ namespace ReClassNET.MemorySearcher
 
 			byte[] data = null;
 
-			if (ValueType == SearchValueType.Byte || ValueType == SearchValueType.Short || ValueType == SearchValueType.Integer || ValueType == SearchValueType.Long)
+			if (ValueType == ScanValueType.Byte || ValueType == ScanValueType.Short || ValueType == ScanValueType.Integer || ValueType == ScanValueType.Long)
 			{
 				var numberStyle = isHex ? NumberStyles.HexNumber : NumberStyles.Integer;
 				long.TryParse(input, numberStyle, null, out var value);
 
 				switch (ValueType)
 				{
-					case SearchValueType.Byte:
+					case ScanValueType.Byte:
 						data = BitConverter.GetBytes((byte)value);
 						break;
-					case SearchValueType.Short:
+					case ScanValueType.Short:
 						data = BitConverter.GetBytes((short)value);
 						break;
-					case SearchValueType.Integer:
+					case ScanValueType.Integer:
 						data = BitConverter.GetBytes((int)value);
 						break;
-					case SearchValueType.Long:
+					case ScanValueType.Long:
 						data = BitConverter.GetBytes(value);
 						break;
 				}
 			}
-			else if (ValueType == SearchValueType.Float || ValueType == SearchValueType.Double)
+			else if (ValueType == ScanValueType.Float || ValueType == ScanValueType.Double)
 			{
 				var nf = Utils.GuessNumberFormat(input);
 				double.TryParse(input, NumberStyles.Float, nf, out var value);
 
 				switch (ValueType)
 				{
-					case SearchValueType.Float:
+					case ScanValueType.Float:
 						data = BitConverter.GetBytes((float)value);
 						break;
-					case SearchValueType.Double:
+					case ScanValueType.Double:
 						data = BitConverter.GetBytes(value);
 						break;
 				}

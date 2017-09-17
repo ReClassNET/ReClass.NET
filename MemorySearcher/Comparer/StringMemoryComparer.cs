@@ -7,7 +7,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 {
 	public class StringMemoryComparer : IMemoryComparer
 	{
-		public SearchCompareType CompareType => SearchCompareType.Equal;
+		public ScanCompareType CompareType => ScanCompareType.Equal;
 		public bool CaseSensitive { get; }
 		public Encoding Encoding { get; }
 		public string Value { get; }
@@ -21,7 +21,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 			ValueSize = Value.Length * Encoding.GetSimpleByteCountPerChar();
 		}
 
-		public bool Compare(byte[] data, int index, out SearchResult result)
+		public bool Compare(byte[] data, int index, out ScanResult result)
 		{
 			result = null;
 
@@ -37,7 +37,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 			return true;
 		}
 
-		public bool Compare(byte[] data, int index, SearchResult previous, out SearchResult result)
+		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
 		{
 #if DEBUG
 			Debug.Assert(previous is StringSearchResult);

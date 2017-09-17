@@ -60,14 +60,14 @@ namespace ReClassNET.DataExchange.Scanner
 								record.ModuleName = moduleName;
 							}
 
-							if (valueType == SearchValueType.ArrayOfBytes || valueType == SearchValueType.String)
+							if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)
 							{
 								var lengthStr = (entry.Element(XmlSizeElement)?.Attribute(XmlValueAttribute)?.Value.Trim() ?? string.Empty);
 								int.TryParse(lengthStr, NumberStyles.Integer, null, out var valueLength);
 
 								record.ValueLength = Math.Max(1, valueLength);
 
-								if (valueType == SearchValueType.String)
+								if (valueType == ScanValueType.String)
 								{
 									switch (valueTypeStr)
 									{
@@ -89,31 +89,31 @@ namespace ReClassNET.DataExchange.Scanner
 			}
 		}
 
-		private static SearchValueType Parse(string value, ILogger logger)
+		private static ScanValueType Parse(string value, ILogger logger)
 		{
 			switch (value)
 			{
 				case "1":
-					return SearchValueType.Byte;
+					return ScanValueType.Byte;
 				case "2":
-					return SearchValueType.Short;
+					return ScanValueType.Short;
 				case "3":
-					return SearchValueType.Integer;
+					return ScanValueType.Integer;
 				case "4":
-					return SearchValueType.Long;
+					return ScanValueType.Long;
 				case "5":
-					return SearchValueType.Float;
+					return ScanValueType.Float;
 				case "6":
-					return SearchValueType.Double;
+					return ScanValueType.Double;
 				case "7":
-					return SearchValueType.ArrayOfBytes;
+					return ScanValueType.ArrayOfBytes;
 				case "8":
 				case "9":
-					return SearchValueType.String;
+					return ScanValueType.String;
 				default:
 					logger?.Log(LogLevel.Warning, $"Unknown value type: {value}");
 
-					return SearchValueType.Integer;
+					return ScanValueType.Integer;
 			}
 		}
 	}

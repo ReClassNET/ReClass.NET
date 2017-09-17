@@ -3,12 +3,12 @@ using ReClassNET.MemorySearcher.Comparer;
 
 namespace ReClassNET.MemorySearcher
 {
-	internal class SearchContext
+	internal class ScanContext
 	{
 		public byte[] Buffer { get; private set; }
-		public SearchWorker Worker { get; }
+		public ScannerWorker Worker { get; }
 
-		public SearchContext(SearchSettings settings, IMemoryComparer comparer, int bufferSize)
+		public ScanContext(ScanSettings settings, IMemoryComparer comparer, int bufferSize)
 		{
 			Contract.Requires(settings != null);
 			Contract.Requires(comparer != null);
@@ -16,7 +16,7 @@ namespace ReClassNET.MemorySearcher
 
 			EnsureBufferSize(bufferSize);
 
-			Worker = new SearchWorker(settings, comparer);
+			Worker = new ScannerWorker(settings, comparer);
 		}
 
 		public void EnsureBufferSize(int size)

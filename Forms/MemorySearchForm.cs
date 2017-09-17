@@ -29,10 +29,10 @@ namespace ReClassNET.Forms
 
 		private bool isFirstScan;
 
-		private Searcher searcher;
+		private Scanner searcher;
 
-		private SearchCompareType SelectedCompareType => (scanTypeComboBox.SelectedItem as EnumDescriptionDisplay<SearchCompareType>)?.Value ?? throw new InvalidOperationException();
-		private SearchValueType SelectedValueType => (valueTypeComboBox.SelectedItem as EnumDescriptionDisplay<SearchValueType>)?.Value ?? throw new InvalidOperationException();
+		private ScanCompareType SelectedCompareType => (scanTypeComboBox.SelectedItem as EnumDescriptionDisplay<ScanCompareType>)?.Value ?? throw new InvalidOperationException();
+		private ScanValueType SelectedValueType => (valueTypeComboBox.SelectedItem as EnumDescriptionDisplay<ScanValueType>)?.Value ?? throw new InvalidOperationException();
 
 		public MemorySearchForm(RemoteProcess process)
 		{
@@ -54,7 +54,7 @@ namespace ReClassNET.Forms
 				int.MaxValue.ToString(Constants.StringHexFormat);
 #endif
 
-			valueTypeComboBox.DataSource = EnumDescriptionDisplay<SearchValueType>.Create();
+			valueTypeComboBox.DataSource = EnumDescriptionDisplay<ScanValueType>.Create();
 			OnValueTypeChanged();
 
 			Reset();
@@ -158,37 +158,37 @@ namespace ReClassNET.Forms
 			int alignment = 1;
 			switch (valueType)
 			{
-				case SearchValueType.Short:
+				case ScanValueType.Short:
 					alignment = 2;
 					break;
-				case SearchValueType.Integer:
-				case SearchValueType.Long:
-				case SearchValueType.Float:
-				case SearchValueType.Double:
+				case ScanValueType.Integer:
+				case ScanValueType.Long:
+				case ScanValueType.Float:
+				case ScanValueType.Double:
 					alignment = 4;
 					break;
 			}
 			fastScanAlignmentTextBox.Text = alignment.ToString();
 
-			floatingOptionsGroupBox.Visible = valueType == SearchValueType.Float || valueType == SearchValueType.Double;
-			stringOptionsGroupBox.Visible = valueType == SearchValueType.String;
+			floatingOptionsGroupBox.Visible = valueType == ScanValueType.Float || valueType == ScanValueType.Double;
+			stringOptionsGroupBox.Visible = valueType == ScanValueType.String;
 		}
 
 		private void SetValidCompareTypes()
 		{
 			var valueType = SelectedValueType;
-			if (valueType == SearchValueType.ArrayOfBytes || valueType == SearchValueType.String)
+			if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)
 			{
-				scanTypeComboBox.DataSource = EnumDescriptionDisplay<SearchCompareType>.CreateExact(SearchCompareType.Equal);
+				scanTypeComboBox.DataSource = EnumDescriptionDisplay<ScanCompareType>.CreateExact(ScanCompareType.Equal);
 			}
 			else
 			{
 				scanTypeComboBox.DataSource = isFirstScan
-					? EnumDescriptionDisplay<SearchCompareType>.CreateExclude(
-						SearchCompareType.Changed, SearchCompareType.NotChanged, SearchCompareType.Decreased, SearchCompareType.DecreasedOrEqual,
-						SearchCompareType.Increased, SearchCompareType.IncreasedOrEqual
+					? EnumDescriptionDisplay<ScanCompareType>.CreateExclude(
+						ScanCompareType.Changed, ScanCompareType.NotChanged, ScanCompareType.Decreased, ScanCompareType.DecreasedOrEqual,
+						ScanCompareType.Increased, ScanCompareType.IncreasedOrEqual
 					)
-					: EnumDescriptionDisplay<SearchCompareType>.CreateExclude(SearchCompareType.Unknown);
+					: EnumDescriptionDisplay<ScanCompareType>.CreateExclude(ScanCompareType.Unknown);
 			}
 		}
 
@@ -202,7 +202,7 @@ namespace ReClassNET.Forms
 
 			nextScanButton.Enabled = false;
 			valueTypeComboBox.Enabled = true;
-			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<SearchValueType>>().FirstOrDefault(e => e.Value == SearchValueType.Integer);
+			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == ScanValueType.Integer);
 
 			floatingOptionsGroupBox.Enabled = true;
 			stringOptionsGroupBox.Enabled = true;
@@ -221,7 +221,7 @@ namespace ReClassNET.Forms
 
 				var settings = CreateSearchSettings();
 				var comparer = CreateComparer(settings);
-				searcher = new Searcher(process, settings);
+				searcher = new Scanner(process, settings);
 
 				var report = new Progress<int>(i => scanProgressBar.Value = i);
 				var completed = await searcher.Search(comparer, CancellationToken.None, report);
@@ -274,9 +274,9 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private SearchSettings CreateSearchSettings()
+		private ScanSettings CreateSearchSettings()
 		{
-			var settings = new SearchSettings
+			var settings = new ScanSettings
 			{
 				ValueType = SelectedValueType
 			};
@@ -314,13 +314,13 @@ namespace ReClassNET.Forms
 			return settings;
 		}
 
-		private IMemoryComparer CreateComparer(SearchSettings settings)
+		private IMemoryComparer CreateComparer(ScanSettings settings)
 		{
 			Contract.Requires(settings != null);
 
 			var compareType = SelectedCompareType;
 
-			if (settings.ValueType == SearchValueType.Byte || settings.ValueType == SearchValueType.Short || settings.ValueType == SearchValueType.Integer || settings.ValueType == SearchValueType.Long)
+			if (settings.ValueType == ScanValueType.Byte || settings.ValueType == ScanValueType.Short || settings.ValueType == ScanValueType.Integer || settings.ValueType == ScanValueType.Long)
 			{
 				var numberStyle = isHexCheckBox.Checked ? NumberStyles.HexNumber : NumberStyles.Integer;
 				long.TryParse(valueDualValueControl.Value1, numberStyle, null, out var value1);
@@ -328,17 +328,17 @@ namespace ReClassNET.Forms
 
 				switch (settings.ValueType)
 				{
-					case SearchValueType.Byte:
+					case ScanValueType.Byte:
 						return new ByteMemoryComparer(compareType, (byte)value1, (byte)value2);
-					case SearchValueType.Short:
+					case ScanValueType.Short:
 						return new ShortMemoryComparer(compareType, (short)value1, (short)value2);
-					case SearchValueType.Integer:
+					case ScanValueType.Integer:
 						return new IntegerMemoryComparer(compareType, (int)value1, (int)value2);
-					case SearchValueType.Long:
+					case ScanValueType.Long:
 						return new LongMemoryComparer(compareType, value1, value2);
 				}
 			}
-			else if (settings.ValueType == SearchValueType.Float || settings.ValueType == SearchValueType.Double)
+			else if (settings.ValueType == ScanValueType.Float || settings.ValueType == ScanValueType.Double)
 			{
 				int CalculateSignificantDigits(string input, NumberFormatInfo numberFormat)
 				{
@@ -366,23 +366,23 @@ namespace ReClassNET.Forms
 					CalculateSignificantDigits(valueDualValueControl.Value2, nf2)
 				);
 
-				var roundMode = roundStrictRadioButton.Checked ? SearchRoundMode.Strict : roundLooseRadioButton.Checked ? SearchRoundMode.Normal : SearchRoundMode.Truncate;
+				var roundMode = roundStrictRadioButton.Checked ? ScanRoundMode.Strict : roundLooseRadioButton.Checked ? ScanRoundMode.Normal : ScanRoundMode.Truncate;
 
 				switch (settings.ValueType)
 				{
-					case SearchValueType.Float:
+					case ScanValueType.Float:
 						return new FloatMemoryComparer(compareType, roundMode, significantDigits, (float)value1, (float)value2);
-					case SearchValueType.Double:
+					case ScanValueType.Double:
 						return new DoubleMemoryComparer(compareType, roundMode, significantDigits, value1, value2);
 				}
 			}
-			else if (settings.ValueType == SearchValueType.ArrayOfBytes)
+			else if (settings.ValueType == ScanValueType.ArrayOfBytes)
 			{
 				var pattern = BytePattern.Parse(valueDualValueControl.Value1);
 
 				return new ArrayOfBytesMemoryComparer(pattern);
 			}
-			else if (settings.ValueType == SearchValueType.String)
+			else if (settings.ValueType == ScanValueType.String)
 			{
 				var encoding = encodingUtf8RadioButton.Checked ? Encoding.UTF8 : encodingUtf16RadioButton.Checked ? Encoding.Unicode : Encoding.UTF32;
 

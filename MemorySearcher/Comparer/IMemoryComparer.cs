@@ -2,11 +2,11 @@
 {
 	public interface IMemoryComparer
 	{
-		SearchCompareType CompareType { get; }
+		ScanCompareType CompareType { get; }
 		int ValueSize { get; }
 
-		bool Compare(byte[] data, int index, out SearchResult result);
+		bool Compare(byte[] data, int index, out ScanResult result);
 
-		bool Compare(byte[] data, int index, SearchResult previous, out SearchResult result);
+		bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result);
 	}
 }

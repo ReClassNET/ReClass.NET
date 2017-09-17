@@ -69,14 +69,14 @@ namespace ReClassNET.DataExchange.Scanner
 									record.Address = (IntPtr)value;
 								}
 
-								if (valueType == SearchValueType.ArrayOfBytes || valueType == SearchValueType.String)
+								if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)
 								{
 									var lengthStr = entry.Element(XmlLengthElement)?.Value ?? string.Empty;
 									int.TryParse(lengthStr, NumberStyles.Integer, null, out var valueLength);
 
 									record.ValueLength = Math.Max(1, valueLength);
 
-									if (valueType == SearchValueType.String)
+									if (valueType == ScanValueType.String)
 									{
 										var isUnicode = (entry.Element(XmlUnicodeElement)?.Value ?? string.Empty) == "1";
 
@@ -99,30 +99,30 @@ namespace ReClassNET.DataExchange.Scanner
 			}
 		}
 
-		private static SearchValueType Parse(string value, ILogger logger)
+		private static ScanValueType Parse(string value, ILogger logger)
 		{
 			switch (value)
 			{
 				case "Byte":
-					return SearchValueType.Byte;
+					return ScanValueType.Byte;
 				case "2 Bytes":
-					return SearchValueType.Short;
+					return ScanValueType.Short;
 				case "4 Bytes":
-					return SearchValueType.Integer;
+					return ScanValueType.Integer;
 				case "8 Bytes":
-					return SearchValueType.Long;
+					return ScanValueType.Long;
 				case "Float":
-					return SearchValueType.Float;
+					return ScanValueType.Float;
 				case "Double":
-					return SearchValueType.Double;
+					return ScanValueType.Double;
 				case "String":
-					return SearchValueType.String;
+					return ScanValueType.String;
 				case "Array of byte":
-					return SearchValueType.ArrayOfBytes;
+					return ScanValueType.ArrayOfBytes;
 				default:
 					logger?.Log(LogLevel.Warning, $"Unknown value type: {value}");
 
-					return SearchValueType.Integer;
+					return ScanValueType.Integer;
 			}
 		}
 	}

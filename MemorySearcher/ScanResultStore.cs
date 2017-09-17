@@ -7,7 +7,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher
 {
-	internal class SearchResultStore : IDisposable
+	internal class ScanResultStore : IDisposable
 	{
 		private enum StorageMode
 		{
@@ -17,18 +17,18 @@ namespace ReClassNET.MemorySearcher
 
 		private const int MaximumMemoryResultsCount = 10000000;
 
-		private readonly List<SearchResultBlock> store = new List<SearchResultBlock>();
+		private readonly List<ScanResultBlock> store = new List<ScanResultBlock>();
 
 		private readonly string storePath;
 		private FileStream fileStream;
 
 		private StorageMode mode = StorageMode.Memory;
 
-		private readonly SearchValueType valueType;
+		private readonly ScanValueType valueType;
 
 		public int TotalResultCount { get; private set; }
 
-		public SearchResultStore(SearchValueType valueType, string storePath)
+		public ScanResultStore(ScanValueType valueType, string storePath)
 		{
 			this.valueType = valueType;
 			this.storePath = Path.Combine(storePath, $"ReClass.NET_MemorySearcher_{Guid.NewGuid()}.tmp");
@@ -60,12 +60,12 @@ namespace ReClassNET.MemorySearcher
 			}
 		}
 
-		public IEnumerable<SearchResultBlock> GetResultBlocks()
+		public IEnumerable<ScanResultBlock> GetResultBlocks()
 		{
 			return mode == StorageMode.Memory ? store : ReadBlocksFromFile();
 		}
 
-		public void AddBlock(SearchResultBlock block)
+		public void AddBlock(ScanResultBlock block)
 		{
 			Contract.Requires(block != null);
 
@@ -102,7 +102,7 @@ namespace ReClassNET.MemorySearcher
 			}
 		}
 
-		private void AppendBlockToFile(SearchResultBlock block)
+		private void AppendBlockToFile(ScanResultBlock block)
 		{
 			Contract.Requires(block != null);
 
@@ -119,7 +119,7 @@ namespace ReClassNET.MemorySearcher
 			}
 		}
 
-		private IEnumerable<SearchResultBlock> ReadBlocksFromFile()
+		private IEnumerable<ScanResultBlock> ReadBlocksFromFile()
 		{
 			using (var stream = File.OpenRead(storePath))
 			{
@@ -134,47 +134,47 @@ namespace ReClassNET.MemorySearcher
 
 						var resultCount = br.ReadInt32();
 
-						var results = new List<SearchResult>(resultCount);
+						var results = new List<ScanResult>(resultCount);
 						for (var i = 0; i < resultCount; ++i)
 						{
 							results.Add(ReadSearchResult(br));
 						}
 
-						yield return new SearchResultBlock(start, end, results);
+						yield return new ScanResultBlock(start, end, results);
 					}
 				}
 			}
 		}
 
-		private SearchResult ReadSearchResult(BinaryReader br)
+		private ScanResult ReadSearchResult(BinaryReader br)
 		{
 			var address = br.ReadIntPtr();
 
-			SearchResult result;
+			ScanResult result;
 			switch (valueType)
 			{
-				case SearchValueType.Byte:
+				case ScanValueType.Byte:
 					result = new ByteSearchResult(br.ReadByte());
 					break;
-				case SearchValueType.Short:
+				case ScanValueType.Short:
 					result = new ShortSearchResult(br.ReadInt16());
 					break;
-				case SearchValueType.Integer:
+				case ScanValueType.Integer:
 					result = new IntegerSearchResult(br.ReadInt32());
 					break;
-				case SearchValueType.Long:
+				case ScanValueType.Long:
 					result = new LongSearchResult(br.ReadInt64());
 					break;
-				case SearchValueType.Float:
+				case ScanValueType.Float:
 					result = new FloatSearchResult(br.ReadSingle());
 					break;
-				case SearchValueType.Double:
+				case ScanValueType.Double:
 					result = new DoubleSearchResult(br.ReadDouble());
 					break;
-				case SearchValueType.ArrayOfBytes:
+				case ScanValueType.ArrayOfBytes:
 					result = new ArrayOfBytesSearchResult(br.ReadBytes(br.ReadInt32()));
 					break;
-				case SearchValueType.String:
+				case ScanValueType.String:
 					var encoding = br.ReadInt32();
 					result = new StringSearchResult(br.ReadString(), encoding == 0 ? Encoding.UTF8 : encoding == 1 ? Encoding.Unicode : Encoding.UTF32);
 					break;
@@ -187,7 +187,7 @@ namespace ReClassNET.MemorySearcher
 			return result;
 		}
 
-		private static void WriteSearchResult(BinaryWriter bw, SearchResult result)
+		private static void WriteSearchResult(BinaryWriter bw, ScanResult result)
 		{
 			bw.Write(result.Address);
 

@@ -4,16 +4,16 @@ using System.Text;
 
 namespace ReClassNET.MemorySearcher
 {
-	public abstract class SearchResult
+	public abstract class ScanResult
 	{
-		public abstract SearchValueType ValueType { get; }
+		public abstract ScanValueType ValueType { get; }
 
 		public IntPtr Address { get; set; }
 	}
 
-	public class ByteSearchResult : SearchResult
+	public class ByteSearchResult : ScanResult
 	{
-		public override SearchValueType ValueType => SearchValueType.Byte;
+		public override ScanValueType ValueType => ScanValueType.Byte;
 
 		public byte Value { get; }
 
@@ -23,9 +23,9 @@ namespace ReClassNET.MemorySearcher
 		}
 	}
 
-	public class ShortSearchResult : SearchResult
+	public class ShortSearchResult : ScanResult
 	{
-		public override SearchValueType ValueType => SearchValueType.Short;
+		public override ScanValueType ValueType => ScanValueType.Short;
 
 		public short Value { get; }
 
@@ -35,9 +35,9 @@ namespace ReClassNET.MemorySearcher
 		}
 	}
 
-	public class IntegerSearchResult : SearchResult
+	public class IntegerSearchResult : ScanResult
 	{
-		public override SearchValueType ValueType => SearchValueType.Integer;
+		public override ScanValueType ValueType => ScanValueType.Integer;
 
 		public int Value { get; }
 
@@ -47,9 +47,9 @@ namespace ReClassNET.MemorySearcher
 		}
 	}
 
-	public class LongSearchResult : SearchResult
+	public class LongSearchResult : ScanResult
 	{
-		public override SearchValueType ValueType => SearchValueType.Long;
+		public override ScanValueType ValueType => ScanValueType.Long;
 
 		public long Value { get; }
 
@@ -59,9 +59,9 @@ namespace ReClassNET.MemorySearcher
 		}
 	}
 
-	public class FloatSearchResult : SearchResult
+	public class FloatSearchResult : ScanResult
 	{
-		public override SearchValueType ValueType => SearchValueType.Float;
+		public override ScanValueType ValueType => ScanValueType.Float;
 
 		public float Value { get; }
 
@@ -71,9 +71,9 @@ namespace ReClassNET.MemorySearcher
 		}
 	}
 
-	public class DoubleSearchResult : SearchResult
+	public class DoubleSearchResult : ScanResult
 	{
-		public override SearchValueType ValueType => SearchValueType.Double;
+		public override ScanValueType ValueType => ScanValueType.Double;
 
 		public double Value { get; }
 
@@ -83,9 +83,9 @@ namespace ReClassNET.MemorySearcher
 		}
 	}
 
-	public class ArrayOfBytesSearchResult : SearchResult
+	public class ArrayOfBytesSearchResult : ScanResult
 	{
-		public override SearchValueType ValueType => SearchValueType.ArrayOfBytes;
+		public override ScanValueType ValueType => ScanValueType.ArrayOfBytes;
 
 		public byte[] Value { get; }
 
@@ -97,9 +97,9 @@ namespace ReClassNET.MemorySearcher
 		}
 	}
 
-	public class StringSearchResult : SearchResult
+	public class StringSearchResult : ScanResult
 	{
-		public override SearchValueType ValueType => SearchValueType.String;
+		public override ScanValueType ValueType => ScanValueType.String;
 
 		public string Value { get; }
 

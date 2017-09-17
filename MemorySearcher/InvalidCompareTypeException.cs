@@ -4,7 +4,7 @@ namespace ReClassNET.MemorySearcher
 {
 	public class InvalidCompareTypeException : Exception
 	{
-		public InvalidCompareTypeException(SearchCompareType type)
+		public InvalidCompareTypeException(ScanCompareType type)
 			: base($"{type} is not valid in the current state.")
 		{
 			

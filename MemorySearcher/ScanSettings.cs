@@ -9,7 +9,7 @@ namespace ReClassNET.MemorySearcher
 		Indeterminate
 	}
 
-	public class SearchSettings
+	public class ScanSettings
 	{
 		public IntPtr StartAddress { get; set; } = IntPtr.Zero;
 		public IntPtr StopAddress { get; set; } =
@@ -26,6 +26,6 @@ namespace ReClassNET.MemorySearcher
 		public bool SearchMemMapped { get; set; } = false;
 		public bool FastScan { get; set; } = true;
 		public int FastScanAlignment { get; set; } = 1;
-		public SearchValueType ValueType { get; set; } = SearchValueType.Byte;
+		public ScanValueType ValueType { get; set; } = ScanValueType.Byte;
 	}
 }

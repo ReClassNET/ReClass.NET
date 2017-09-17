@@ -2,7 +2,7 @@
 
 namespace ReClassNET.MemorySearcher
 {
-	public enum SearchValueType
+	public enum ScanValueType
 	{
 		[Description("Byte")]
 		Byte,

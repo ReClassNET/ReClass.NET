@@ -5,19 +5,19 @@ namespace ReClassNET.MemorySearcher.Comparer
 {
 	public class ShortMemoryComparer : IMemoryComparer
 	{
-		public SearchCompareType CompareType { get; }
+		public ScanCompareType CompareType { get; }
 		public short Value1 { get; }
 		public short Value2 { get; }
 		public int ValueSize => sizeof(short);
 
-		public ShortMemoryComparer(SearchCompareType compareType, short value1, short value2)
+		public ShortMemoryComparer(ScanCompareType compareType, short value1, short value2)
 		{
 			CompareType = compareType;
 			Value1 = value1;
 			Value2 = value2;
 		}
 
-		public bool Compare(byte[] data, int index, out SearchResult result)
+		public bool Compare(byte[] data, int index, out ScanResult result)
 		{
 			result = null;
 
@@ -27,23 +27,23 @@ namespace ReClassNET.MemorySearcher.Comparer
 			{
 				switch (CompareType)
 				{
-					case SearchCompareType.Equal:
+					case ScanCompareType.Equal:
 						return value == Value1;
-					case SearchCompareType.NotEqual:
+					case ScanCompareType.NotEqual:
 						return value != Value1;
-					case SearchCompareType.GreaterThan:
+					case ScanCompareType.GreaterThan:
 						return value > Value1;
-					case SearchCompareType.GreaterThanOrEqual:
+					case ScanCompareType.GreaterThanOrEqual:
 						return value >= Value1;
-					case SearchCompareType.LessThan:
+					case ScanCompareType.LessThan:
 						return value < Value1;
-					case SearchCompareType.LessThanOrEqual:
+					case ScanCompareType.LessThanOrEqual:
 						return value <= Value1;
-					case SearchCompareType.Between:
+					case ScanCompareType.Between:
 						return Value1 < value && value < Value2;
-					case SearchCompareType.BetweenOrEqual:
+					case ScanCompareType.BetweenOrEqual:
 						return Value1 <= value && value <= Value2;
-					case SearchCompareType.Unknown:
+					case ScanCompareType.Unknown:
 						return true;
 					default:
 						throw new InvalidCompareTypeException(CompareType);
@@ -60,7 +60,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 			return true;
 		}
 
-		public bool Compare(byte[] data, int index, SearchResult previous, out SearchResult result)
+		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
 		{
 #if DEBUG
 			Debug.Assert(previous is ShortSearchResult);
@@ -69,7 +69,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 			return Compare(data, index, (ShortSearchResult)previous, out result);
 		}
 
-		public bool Compare(byte[] data, int index, ShortSearchResult previous, out SearchResult result)
+		public bool Compare(byte[] data, int index, ShortSearchResult previous, out ScanResult result)
 		{
 			result = null;
 
@@ -79,33 +79,33 @@ namespace ReClassNET.MemorySearcher.Comparer
 			{
 				switch (CompareType)
 				{
-					case SearchCompareType.Equal:
+					case ScanCompareType.Equal:
 						return value == Value1;
-					case SearchCompareType.NotEqual:
+					case ScanCompareType.NotEqual:
 						return value != Value1;
-					case SearchCompareType.Changed:
+					case ScanCompareType.Changed:
 						return value != previous.Value;
-					case SearchCompareType.NotChanged:
+					case ScanCompareType.NotChanged:
 						return value == previous.Value;
-					case SearchCompareType.GreaterThan:
+					case ScanCompareType.GreaterThan:
 						return value > Value1;
-					case SearchCompareType.GreaterThanOrEqual:
+					case ScanCompareType.GreaterThanOrEqual:
 						return value >= Value1;
-					case SearchCompareType.Increased:
+					case ScanCompareType.Increased:
 						return value > previous.Value;
-					case SearchCompareType.IncreasedOrEqual:
+					case ScanCompareType.IncreasedOrEqual:
 						return value >= previous.Value;
-					case SearchCompareType.LessThan:
+					case ScanCompareType.LessThan:
 						return value < Value1;
-					case SearchCompareType.LessThanOrEqual:
+					case ScanCompareType.LessThanOrEqual:
 						return value <= Value1;
-					case SearchCompareType.Decreased:
+					case ScanCompareType.Decreased:
 						return value < previous.Value;
-					case SearchCompareType.DecreasedOrEqual:
+					case ScanCompareType.DecreasedOrEqual:
 						return value <= previous.Value;
-					case SearchCompareType.Between:
+					case ScanCompareType.Between:
 						return Value1 < value && value < Value2;
-					case SearchCompareType.BetweenOrEqual:
+					case ScanCompareType.BetweenOrEqual:
 						return Value1 <= value && value <= Value2;
 					default:
 						throw new InvalidCompareTypeException(CompareType);

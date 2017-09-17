@@ -2,7 +2,7 @@
 
 namespace ReClassNET.MemorySearcher
 {
-	public enum SearchCompareType
+	public enum ScanCompareType
 	{
 		[Description("Is Equal")]
 		Equal,

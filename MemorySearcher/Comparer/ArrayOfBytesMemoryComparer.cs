@@ -6,7 +6,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 {
 	public class ArrayOfBytesMemoryComparer : IMemoryComparer
 	{
-		public SearchCompareType CompareType => SearchCompareType.Equal;
+		public ScanCompareType CompareType => ScanCompareType.Equal;
 		public BytePattern Value { get; }
 		public int ValueSize => Value.Length;
 
@@ -24,7 +24,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 			}
 		}
 
-		public bool Compare(byte[] data, int index, out SearchResult result)
+		public bool Compare(byte[] data, int index, out ScanResult result)
 		{
 			result = null;
 
@@ -50,7 +50,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 			return true;
 		}
 
-		public bool Compare(byte[] data, int index, SearchResult previous, out SearchResult result)
+		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
 		{
 #if DEBUG
 			Debug.Assert(previous is ArrayOfBytesSearchResult);

@@ -4,14 +4,14 @@ using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher
 {
-	internal class SearchResultBlock
+	internal class ScanResultBlock
 	{
 		public IntPtr Start { get; }
 		public IntPtr End { get; }
 		public int Size => End.Sub(Start).ToInt32();
-		public IReadOnlyList<SearchResult> Results { get; }
+		public IReadOnlyList<ScanResult> Results { get; }
 
-		public SearchResultBlock(IntPtr start, IntPtr end, IReadOnlyList<SearchResult> results)
+		public ScanResultBlock(IntPtr start, IntPtr end, IReadOnlyList<ScanResult> results)
 		{
 			Start = start;
 			End = end;

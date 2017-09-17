@@ -5,12 +5,12 @@ using ReClassNET.MemorySearcher.Comparer;
 
 namespace ReClassNET.MemorySearcher
 {
-	internal class SearchWorker
+	internal class ScannerWorker
 	{
-		private readonly SearchSettings settings;
+		private readonly ScanSettings settings;
 		private readonly IMemoryComparer comparer;
 
-		public SearchWorker(SearchSettings settings, IMemoryComparer comparer)
+		public ScannerWorker(ScanSettings settings, IMemoryComparer comparer)
 		{
 			Contract.Requires(settings != null);
 			Contract.Requires(comparer != null);
@@ -19,7 +19,7 @@ namespace ReClassNET.MemorySearcher
 			this.comparer = comparer;
 		}
 
-		public IEnumerable<SearchResult> Search(byte[] data, int count)
+		public IEnumerable<ScanResult> Search(byte[] data, int count)
 		{
 			Contract.Requires(data != null);
 
@@ -36,7 +36,7 @@ namespace ReClassNET.MemorySearcher
 			}
 		}
 
-		public IEnumerable<SearchResult> Search(byte[] data, int count, IEnumerable<SearchResult> results)
+		public IEnumerable<ScanResult> Search(byte[] data, int count, IEnumerable<ScanResult> results)
 		{
 			Contract.Requires(data != null);
 			Contract.Requires(results != null);

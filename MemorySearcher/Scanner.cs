@@ -11,19 +11,19 @@ using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher
 {
-	public class Searcher : IDisposable
+	public class Scanner : IDisposable
 	{
 		private readonly RemoteProcess process;
-		private readonly SearchSettings settings;
-		private SearchResultStore store;
+		private readonly ScanSettings settings;
+		private ScanResultStore store;
 
-		public SearchSettings Settings => settings;
+		public ScanSettings Settings => settings;
 
 		public int TotalResultCount => store.TotalResultCount;
 
 		private bool isFirstScan;
 
-		public Searcher(RemoteProcess process, SearchSettings settings)
+		public Scanner(RemoteProcess process, ScanSettings settings)
 		{
 			Contract.Requires(process != null);
 			Contract.Requires(settings != null);
@@ -40,16 +40,16 @@ namespace ReClassNET.MemorySearcher
 			store = null;
 		}
 
-		public IEnumerable<SearchResult> GetResults()
+		public IEnumerable<ScanResult> GetResults()
 		{
-			Contract.Ensures(Contract.Result<IEnumerable<SearchResult>>() != null);
+			Contract.Ensures(Contract.Result<IEnumerable<ScanResult>>() != null);
 
 			return store.GetResultBlocks().SelectMany(kv => kv.Results);
 		}
 
-		private SearchResultStore CreateStore()
+		private ScanResultStore CreateStore()
 		{
-			return new SearchResultStore(Settings.ValueType, Path.GetTempPath());
+			return new ScanResultStore(Settings.ValueType, Path.GetTempPath());
 		}
 
 		private IList<Section> GetSearchableSections()
@@ -128,7 +128,7 @@ namespace ReClassNET.MemorySearcher
 				var result = Parallel.ForEach(
 					sections,
 					new ParallelOptions { CancellationToken = ct},
-					() => new SearchContext(settings, comparer, initialBufferSize),
+					() => new ScanContext(settings, comparer, initialBufferSize),
 					(s, state, _, context) =>
 					{
 						var size = s.Size.ToInt32();
@@ -141,7 +141,7 @@ namespace ReClassNET.MemorySearcher
 								.ToList();
 							if (results.Count > 0)
 							{
-								var block = new SearchResultBlock(
+								var block = new ScanResultBlock(
 									results.Min(r => r.Address, IntPtrComparer.Instance),
 									results.Max(r => r.Address, IntPtrComparer.Instance) + comparer.ValueSize,
 									results
@@ -187,7 +187,7 @@ namespace ReClassNET.MemorySearcher
 				var result = Parallel.ForEach(
 					store.GetResultBlocks(),
 					new ParallelOptions { CancellationToken = ct },
-					() => new SearchContext(settings, comparer, 0),
+					() => new ScanContext(settings, comparer, 0),
 					(b, state, _, context) =>
 					{
 						context.EnsureBufferSize(b.Size);
@@ -199,7 +199,7 @@ namespace ReClassNET.MemorySearcher
 								.ToList();
 							if (results.Count > 0)
 							{
-								var block = new SearchResultBlock(
+								var block = new ScanResultBlock(
 									results.Min(r => r.Address, IntPtrComparer.Instance),
 									results.Max(r => r.Address, IntPtrComparer.Instance) + comparer.ValueSize,
 									results

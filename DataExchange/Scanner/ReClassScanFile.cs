@@ -62,7 +62,7 @@ namespace ReClassNET.DataExchange.Scanner
 						{
 							var valueTypeStr = element.Attribute(XmlValueTypeAttribute)?.Value ?? string.Empty;
 
-							if (!Enum.TryParse<SearchValueType>(valueTypeStr, out var valueType))
+							if (!Enum.TryParse<ScanValueType>(valueTypeStr, out var valueType))
 							{
 								logger?.Log(LogLevel.Warning, $"Unknown value type: {valueTypeStr}");
 								continue;
@@ -84,14 +84,14 @@ namespace ReClassNET.DataExchange.Scanner
 								record.ModuleName = moduleName;
 							}
 
-							if (valueType == SearchValueType.ArrayOfBytes || valueType == SearchValueType.String)
+							if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)
 							{
 								var lengthStr = element.Attribute(XmlValueLengthAttribute)?.Value ?? string.Empty;
 								int.TryParse(lengthStr, NumberStyles.Integer, null, out var valueLength);
 
 								record.ValueLength = Math.Max(1, valueLength);
 
-								if (valueType == SearchValueType.String)
+								if (valueType == ScanValueType.String)
 								{
 									switch (element.Attribute(XmlEncodingAttribute)?.Value ?? string.Empty)
 									{
@@ -143,10 +143,10 @@ namespace ReClassNET.DataExchange.Scanner
 									{
 										temp.SetAttributeValue(XmlModuleAttribute, r.ModuleName);
 									}
-									if (r.ValueType == SearchValueType.ArrayOfBytes || r.ValueType == SearchValueType.String)
+									if (r.ValueType == ScanValueType.ArrayOfBytes || r.ValueType == ScanValueType.String)
 									{
 										temp.SetAttributeValue(XmlValueLengthAttribute, r.ValueLength);
-										if (r.ValueType == SearchValueType.String)
+										if (r.ValueType == ScanValueType.String)
 										{
 											temp.SetAttributeValue(XmlEncodingAttribute, r.Encoding == Encoding.UTF8 ? "UTF8" : r.Encoding == Encoding.Unicode ? "UTF16" : "UTF32");
 										}
