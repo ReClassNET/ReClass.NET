@@ -176,11 +176,11 @@
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Debugger\RemoteDebugger.cs" />
-    <Compile Include="Forms\MemorySearchForm.cs">
+    <Compile Include="Forms\ScannerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MemorySearchForm.Designer.cs">
-      <DependentUpon>MemorySearchForm.cs</DependentUpon>
+    <Compile Include="Forms\ScannerForm.Designer.cs">
+      <DependentUpon>ScannerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MemorySearcher\BytePattern.cs" />
     <Compile Include="MemorySearcher\Comparer\ArrayOfBytesMemoryComparer.cs" />
@@ -449,8 +449,8 @@
     <EmbeddedResource Include="Forms\InputBytesForm.resx">
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MemorySearchForm.resx">
-      <DependentUpon>MemorySearchForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ScannerForm.resx">
+      <DependentUpon>ScannerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ClassNodeView.resx">
       <DependentUpon>ClassNodeView.cs</DependentUpon>
