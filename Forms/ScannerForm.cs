@@ -160,18 +160,37 @@ namespace ReClassNET.Forms
 		{
 			SetValidCompareTypes();
 
+			isHexCheckBox.Enabled = true;
+
 			var valueType = SelectedValueType;
 
-			int alignment = 1;
+			switch (valueType)
+			{
+				case ScanValueType.Byte:
+				case ScanValueType.Short:
+				case ScanValueType.Integer:
+				case ScanValueType.Long:
+					isHexCheckBox.Enabled = true;
+					break;
+				case ScanValueType.Float:
+				case ScanValueType.Double:
+				case ScanValueType.ArrayOfBytes:
+				case ScanValueType.String:
+					isHexCheckBox.Checked = false;
+					isHexCheckBox.Enabled = false;
+					break;
+			}
+
+			var alignment = 1;
 			switch (valueType)
 			{
 				case ScanValueType.Short:
 					alignment = 2;
 					break;
-				case ScanValueType.Integer:
-				case ScanValueType.Long:
 				case ScanValueType.Float:
 				case ScanValueType.Double:
+				case ScanValueType.Integer:
+				case ScanValueType.Long:
 					alignment = 4;
 					break;
 			}
