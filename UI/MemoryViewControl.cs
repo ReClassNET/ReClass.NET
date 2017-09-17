@@ -14,7 +14,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {
-	partial class MemoryViewControl : ScrollableCustomControl
+	public partial class MemoryViewControl : ScrollableCustomControl
 	{
 		private ReClassNetProject project;
 
@@ -213,7 +213,7 @@ namespace ReClassNET.UI
 					HorizontalScroll.Enabled = true;
 
 					HorizontalScroll.LargeChange = ClientSize.Width;
-					HorizontalScroll.Maximum = (drawnSize.Width - ClientSize.Width) + HorizontalScroll.LargeChange;
+					HorizontalScroll.Maximum = drawnSize.Width - ClientSize.Width + HorizontalScroll.LargeChange;
 				}
 				else
 				{
@@ -375,8 +375,7 @@ namespace ReClassNET.UI
 						{
 							IEnumerable<TypeToolStripMenuItem> items = null;
 
-							var functionNode = hitObject as FunctionNode;
-							if (functionNode != null)
+							if (hitObject is FunctionNode functionNode)
 							{
 								var noneClass = new ClassNode(false)
 								{
@@ -385,8 +384,7 @@ namespace ReClassNET.UI
 
 								void ChangeTypeHandler(object sender2, EventArgs e2)
 								{
-									var selectedClassNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
-									if (selectedClassNode == null)
+									if (!((sender2 as TypeToolStripMenuItem)?.Tag is ClassNode selectedClassNode))
 									{
 										return;
 									}
@@ -413,13 +411,11 @@ namespace ReClassNET.UI
 									});
 							}
 
-							var refNode = hitObject as BaseReferenceNode;
-							if (refNode != null)
+							if (hitObject is BaseReferenceNode refNode)
 							{
 								void ChangeInnerNodeHandler(object sender2, EventArgs e2)
 								{
-									var selectedClassNode = (sender2 as TypeToolStripMenuItem)?.Tag as ClassNode;
-									if (selectedClassNode == null)
+									if (!((sender2 as TypeToolStripMenuItem)?.Tag is ClassNode selectedClassNode))
 									{
 										return;
 									}
@@ -780,8 +776,7 @@ namespace ReClassNET.UI
 
 		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var item = sender as IntegerToolStripMenuItem;
-			if (item == null)
+			if (!(sender is IntegerToolStripMenuItem item))
 			{
 				return;
 			}
@@ -791,8 +786,7 @@ namespace ReClassNET.UI
 
 		private void insertBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var item = sender as IntegerToolStripMenuItem;
-			if (item == null)
+			if (!(sender is IntegerToolStripMenuItem item))
 			{
 				return;
 			}
@@ -802,8 +796,7 @@ namespace ReClassNET.UI
 
 		private void memoryTypeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var item = sender as TypeToolStripMenuItem;
-			if (item == null)
+			if (!(sender is TypeToolStripMenuItem item))
 			{
 				return;
 			}
@@ -815,8 +808,7 @@ namespace ReClassNET.UI
 		{
 			if (selectedNodes.Count > 0 && !(selectedNodes[0].Node is ClassNode))
 			{
-				var parentNode = selectedNodes[0].Node.ParentNode as ClassNode;
-				if (parentNode != null)
+				if (selectedNodes[0].Node.ParentNode is ClassNode parentNode)
 				{
 					var newClassNode = ClassNode.Create();
 					selectedNodes.Select(h => h.Node).ForEach(newClassNode.AddNode);
@@ -1089,8 +1081,7 @@ namespace ReClassNET.UI
 			if (selectedNodes.Count == 1)
 			{
 				var selectedNode = selectedNodes.First().Node;
-				var parent = selectedNode.ParentNode as ClassNode;
-				if (parent != null)
+				if (selectedNode.ParentNode is ClassNode parent)
 				{
 					foreach (var node in result.Item2)
 					{
@@ -1105,8 +1096,7 @@ namespace ReClassNET.UI
 
 		private bool IsCycleFree(ClassNode parent, BaseNode node)
 		{
-			var referenceNode = node as BaseReferenceNode;
-			if (referenceNode == null)
+			if (!(node is BaseReferenceNode referenceNode))
 			{
 				return true;
 			}
