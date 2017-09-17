@@ -20,11 +20,11 @@ namespace ReClassNET.MemoryScanner.Comparer
 		{
 			CompareType = compareType;
 			RoundType = roundType;
-			this.significantDigits = significantDigits;
-			Value1 = Math.Round(value1, significantDigits, MidpointRounding.AwayFromZero);
-			Value2 = Math.Round(value2, significantDigits, MidpointRounding.AwayFromZero);
+			this.significantDigits = Math.Max(significantDigits, 1);
+			Value1 = Math.Round(value1, this.significantDigits, MidpointRounding.AwayFromZero);
+			Value2 = Math.Round(value2, this.significantDigits, MidpointRounding.AwayFromZero);
 
-			var factor = (int)Math.Pow(10.0, significantDigits);
+			var factor = (int)Math.Pow(10.0, this.significantDigits);
 
 			minValue = value1 - 1.0 / factor;
 			maxValue = value1 + 1.0 / factor;
