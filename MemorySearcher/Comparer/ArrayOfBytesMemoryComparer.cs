@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 namespace ReClassNET.MemorySearcher.Comparer
 {
-	public class ArrayOfBytesMemoryComparer : IMemoryComparer
+	public class ArrayOfBytesMemoryComparer : IScanComparer
 	{
 		public ScanCompareType CompareType => ScanCompareType.Equal;
 		public BytePattern Value { get; }
@@ -45,7 +45,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 
 			var temp = new byte[ValueSize];
 			Array.Copy(data, index, temp, 0, temp.Length);
-			result = new ArrayOfBytesSearchResult(temp);
+			result = new ArrayOfBytesScanResult(temp);
 
 			return true;
 		}
@@ -53,7 +53,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
 		{
 #if DEBUG
-			Debug.Assert(previous is ArrayOfBytesSearchResult);
+			Debug.Assert(previous is ArrayOfBytesScanResult);
 #endif
 
 			return Compare(data, index, out result);

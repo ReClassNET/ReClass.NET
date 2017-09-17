@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET.Forms
 {
-	partial class MemorySearchForm
+	partial class ScannerForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -89,8 +89,8 @@
 			this.bannerBox.Name = "bannerBox";
 			this.bannerBox.Size = new System.Drawing.Size(612, 48);
 			this.bannerBox.TabIndex = 7;
-			this.bannerBox.Text = "Search the process memory for specific values.";
-			this.bannerBox.Title = "Memory Searcher";
+			this.bannerBox.Text = "Scan the process memory for specific values.";
+			this.bannerBox.Title = "Scanner";
 			// 
 			// filterGroupBox
 			// 
@@ -538,7 +538,7 @@
 			// 
 			this.infoToolTip.AutomaticDelay = 100;
 			// 
-			// MemorySearchForm
+			// ScannerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -553,9 +553,9 @@
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.bannerBox);
 			this.MinimumSize = new System.Drawing.Size(628, 622);
-			this.Name = "MemorySearchForm";
+			this.Name = "ScannerForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "ReClass.NET - Memory Searcher";
+			this.Text = "ReClass.NET - Scanner";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MemorySearchForm_FormClosing);
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
 			this.filterGroupBox.ResumeLayout(false);

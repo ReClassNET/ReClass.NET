@@ -297,7 +297,7 @@ namespace ReClassNET.Forms
 
 		private void memorySearcherToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			new MemorySearchForm(remoteProcess).Show();
+			new ScannerForm(remoteProcess).Show();
 		}
 
 		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)

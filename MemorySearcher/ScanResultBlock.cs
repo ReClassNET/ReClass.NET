@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher
@@ -13,6 +14,8 @@ namespace ReClassNET.MemorySearcher
 
 		public ScanResultBlock(IntPtr start, IntPtr end, IReadOnlyList<ScanResult> results)
 		{
+			Contract.Requires(results != null);
+
 			Start = start;
 			End = end;
 			Results = results;

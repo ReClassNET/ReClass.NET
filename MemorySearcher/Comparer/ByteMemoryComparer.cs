@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ReClassNET.MemorySearcher.Comparer
 {
-	public class ByteMemoryComparer : IMemoryComparer
+	public class ByteMemoryComparer : IScanComparer
 	{
 		public ScanCompareType CompareType { get; }
 		public byte Value1 { get; }
@@ -55,7 +55,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 				return false;
 			}
 
-			result = new ByteSearchResult(value);
+			result = new ByteScanResult(value);
 
 			return true;
 		}
@@ -63,13 +63,13 @@ namespace ReClassNET.MemorySearcher.Comparer
 		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
 		{
 #if DEBUG
-			Debug.Assert(previous is ByteSearchResult);
+			Debug.Assert(previous is ByteScanResult);
 #endif
 
-			return Compare(data, index, (ByteSearchResult)previous, out result);
+			return Compare(data, index, (ByteScanResult)previous, out result);
 		}
 
-		public bool Compare(byte[] data, int index, ByteSearchResult previous, out ScanResult result)
+		public bool Compare(byte[] data, int index, ByteScanResult previous, out ScanResult result)
 		{
 			result = null;
 
@@ -117,7 +117,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 				return false;
 			}
 
-			result = new ByteSearchResult(value);
+			result = new ByteScanResult(value);
 
 			return true;
 		}

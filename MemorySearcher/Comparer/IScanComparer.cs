@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET.MemorySearcher.Comparer
 {
-	public interface IMemoryComparer
+	public interface IScanComparer
 	{
 		ScanCompareType CompareType { get; }
 		int ValueSize { get; }

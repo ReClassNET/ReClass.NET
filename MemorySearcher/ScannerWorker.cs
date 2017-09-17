@@ -8,9 +8,9 @@ namespace ReClassNET.MemorySearcher
 	internal class ScannerWorker
 	{
 		private readonly ScanSettings settings;
-		private readonly IMemoryComparer comparer;
+		private readonly IScanComparer comparer;
 
-		public ScannerWorker(ScanSettings settings, IMemoryComparer comparer)
+		public ScannerWorker(ScanSettings settings, IScanComparer comparer)
 		{
 			Contract.Requires(settings != null);
 			Contract.Requires(comparer != null);
@@ -56,11 +56,6 @@ namespace ReClassNET.MemorySearcher
 					}
 				}
 			}
-		}
-
-		public void Finish()
-		{
-			
 		}
 	}
 }

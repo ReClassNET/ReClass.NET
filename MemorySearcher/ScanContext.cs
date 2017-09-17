@@ -8,7 +8,7 @@ namespace ReClassNET.MemorySearcher
 		public byte[] Buffer { get; private set; }
 		public ScannerWorker Worker { get; }
 
-		public ScanContext(ScanSettings settings, IMemoryComparer comparer, int bufferSize)
+		public ScanContext(ScanSettings settings, IScanComparer comparer, int bufferSize)
 		{
 			Contract.Requires(settings != null);
 			Contract.Requires(comparer != null);

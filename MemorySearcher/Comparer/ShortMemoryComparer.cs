@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ReClassNET.MemorySearcher.Comparer
 {
-	public class ShortMemoryComparer : IMemoryComparer
+	public class ShortMemoryComparer : IScanComparer
 	{
 		public ScanCompareType CompareType { get; }
 		public short Value1 { get; }
@@ -55,7 +55,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 				return false;
 			}
 
-			result = new ShortSearchResult(value);
+			result = new ShortScanResult(value);
 
 			return true;
 		}
@@ -63,13 +63,13 @@ namespace ReClassNET.MemorySearcher.Comparer
 		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
 		{
 #if DEBUG
-			Debug.Assert(previous is ShortSearchResult);
+			Debug.Assert(previous is ShortScanResult);
 #endif
 
-			return Compare(data, index, (ShortSearchResult)previous, out result);
+			return Compare(data, index, (ShortScanResult)previous, out result);
 		}
 
-		public bool Compare(byte[] data, int index, ShortSearchResult previous, out ScanResult result)
+		public bool Compare(byte[] data, int index, ShortScanResult previous, out ScanResult result)
 		{
 			result = null;
 
@@ -117,7 +117,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 				return false;
 			}
 
-			result = new ShortSearchResult(value);
+			result = new ShortScanResult(value);
 
 			return true;
 		}

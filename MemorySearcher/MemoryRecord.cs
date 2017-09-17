@@ -76,30 +76,30 @@ namespace ReClassNET.MemorySearcher
 			switch (ValueType)
 			{
 				case ScanValueType.Byte:
-					ValueStr = FormatValue(((ByteSearchResult)result).Value, false);
+					ValueStr = FormatValue(((ByteScanResult)result).Value, false);
 					break;
 				case ScanValueType.Short:
-					ValueStr = FormatValue(((ShortSearchResult)result).Value, false);
+					ValueStr = FormatValue(((ShortScanResult)result).Value, false);
 					break;
 				case ScanValueType.Integer:
-					ValueStr = FormatValue(((IntegerSearchResult)result).Value, false);
+					ValueStr = FormatValue(((IntegerScanResult)result).Value, false);
 					break;
 				case ScanValueType.Long:
-					ValueStr = FormatValue(((LongSearchResult)result).Value, false);
+					ValueStr = FormatValue(((LongScanResult)result).Value, false);
 					break;
 				case ScanValueType.Float:
-					ValueStr = FormatValue(((FloatSearchResult)result).Value);
+					ValueStr = FormatValue(((FloatScanResult)result).Value);
 					break;
 				case ScanValueType.Double:
-					ValueStr = FormatValue(((DoubleSearchResult)result).Value);
+					ValueStr = FormatValue(((DoubleScanResult)result).Value);
 					break;
 				case ScanValueType.ArrayOfBytes:
-					var byteData = ((ArrayOfBytesSearchResult)result).Value;
+					var byteData = ((ArrayOfBytesScanResult)result).Value;
 					ValueLength = byteData.Length;
 					ValueStr = FormatValue(byteData);
 					break;
 				case ScanValueType.String:
-					var strResult = (StringSearchResult)result;
+					var strResult = (StringScanResult)result;
 					ValueLength = strResult.Value.Length;
 					Encoding = strResult.Encoding;
 					ValueStr = FormatValue(strResult.Value);

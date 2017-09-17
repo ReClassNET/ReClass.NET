@@ -4,7 +4,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher.Comparer
 {
-	public class FloatMemoryComparer : IMemoryComparer
+	public class FloatMemoryComparer : IScanComparer
 	{
 		public ScanCompareType CompareType { get; }
 		public ScanRoundMode RoundType { get; }
@@ -83,7 +83,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 				return false;
 			}
 
-			result = new FloatSearchResult(value);
+			result = new FloatScanResult(value);
 
 			return true;
 		}
@@ -91,13 +91,13 @@ namespace ReClassNET.MemorySearcher.Comparer
 		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
 		{
 #if DEBUG
-			Debug.Assert(previous is FloatSearchResult);
+			Debug.Assert(previous is FloatScanResult);
 #endif
 
-			return Compare(data, index, (FloatSearchResult)previous, out result);
+			return Compare(data, index, (FloatScanResult)previous, out result);
 		}
 
-		public bool Compare(byte[] data, int index, FloatSearchResult previous, out ScanResult result)
+		public bool Compare(byte[] data, int index, FloatScanResult previous, out ScanResult result)
 		{
 			result = null;
 
@@ -145,7 +145,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 				return false;
 			}
 
-			result = new FloatSearchResult(value);
+			result = new FloatScanResult(value);
 
 			return true;
 		}

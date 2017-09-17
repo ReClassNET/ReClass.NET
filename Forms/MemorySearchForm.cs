@@ -21,7 +21,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Forms
 {
-	public partial class MemorySearchForm : IconForm
+	public partial class ScannerForm : IconForm
 	{
 		private const int MaxVisibleResults = 10000;
 
@@ -34,7 +34,7 @@ namespace ReClassNET.Forms
 		private ScanCompareType SelectedCompareType => (scanTypeComboBox.SelectedItem as EnumDescriptionDisplay<ScanCompareType>)?.Value ?? throw new InvalidOperationException();
 		private ScanValueType SelectedValueType => (valueTypeComboBox.SelectedItem as EnumDescriptionDisplay<ScanValueType>)?.Value ?? throw new InvalidOperationException();
 
-		public MemorySearchForm(RemoteProcess process)
+		public ScannerForm(RemoteProcess process)
 		{
 			Contract.Requires(process != null);
 
@@ -307,14 +307,14 @@ namespace ReClassNET.Forms
 				}
 			}
 
-			settings.SearchWritableMemory = CheckStateToSettingState(scanWritableCheckBox.CheckState);
-			settings.SearchExecutableMemory = CheckStateToSettingState(scanExecutableCheckBox.CheckState);
-			settings.SearchCopyOnWriteMemory = CheckStateToSettingState(scanCopyOnWriteCheckBox.CheckState);
+			settings.ScanWritableMemory = CheckStateToSettingState(scanWritableCheckBox.CheckState);
+			settings.ScanExecutableMemory = CheckStateToSettingState(scanExecutableCheckBox.CheckState);
+			settings.ScanCopyOnWriteMemory = CheckStateToSettingState(scanCopyOnWriteCheckBox.CheckState);
 
 			return settings;
 		}
 
-		private IMemoryComparer CreateComparer(ScanSettings settings)
+		private IScanComparer CreateComparer(ScanSettings settings)
 		{
 			Contract.Requires(settings != null);
 

@@ -11,85 +11,85 @@ namespace ReClassNET.MemorySearcher
 		public IntPtr Address { get; set; }
 	}
 
-	public class ByteSearchResult : ScanResult
+	public class ByteScanResult : ScanResult
 	{
 		public override ScanValueType ValueType => ScanValueType.Byte;
 
 		public byte Value { get; }
 
-		public ByteSearchResult(byte value)
+		public ByteScanResult(byte value)
 		{
 			Value = value;
 		}
 	}
 
-	public class ShortSearchResult : ScanResult
+	public class ShortScanResult : ScanResult
 	{
 		public override ScanValueType ValueType => ScanValueType.Short;
 
 		public short Value { get; }
 
-		public ShortSearchResult(short value)
+		public ShortScanResult(short value)
 		{
 			Value = value;
 		}
 	}
 
-	public class IntegerSearchResult : ScanResult
+	public class IntegerScanResult : ScanResult
 	{
 		public override ScanValueType ValueType => ScanValueType.Integer;
 
 		public int Value { get; }
 
-		public IntegerSearchResult(int value)
+		public IntegerScanResult(int value)
 		{
 			Value = value;
 		}
 	}
 
-	public class LongSearchResult : ScanResult
+	public class LongScanResult : ScanResult
 	{
 		public override ScanValueType ValueType => ScanValueType.Long;
 
 		public long Value { get; }
 
-		public LongSearchResult(long value)
+		public LongScanResult(long value)
 		{
 			Value = value;
 		}
 	}
 
-	public class FloatSearchResult : ScanResult
+	public class FloatScanResult : ScanResult
 	{
 		public override ScanValueType ValueType => ScanValueType.Float;
 
 		public float Value { get; }
 
-		public FloatSearchResult(float value)
+		public FloatScanResult(float value)
 		{
 			Value = value;
 		}
 	}
 
-	public class DoubleSearchResult : ScanResult
+	public class DoubleScanResult : ScanResult
 	{
 		public override ScanValueType ValueType => ScanValueType.Double;
 
 		public double Value { get; }
 
-		public DoubleSearchResult(double value)
+		public DoubleScanResult(double value)
 		{
 			Value = value;
 		}
 	}
 
-	public class ArrayOfBytesSearchResult : ScanResult
+	public class ArrayOfBytesScanResult : ScanResult
 	{
 		public override ScanValueType ValueType => ScanValueType.ArrayOfBytes;
 
 		public byte[] Value { get; }
 
-		public ArrayOfBytesSearchResult(byte[] value)
+		public ArrayOfBytesScanResult(byte[] value)
 		{
 			Contract.Requires(value != null);
 
@@ -97,7 +97,7 @@ namespace ReClassNET.MemorySearcher
 		}
 	}
 
-	public class StringSearchResult : ScanResult
+	public class StringScanResult : ScanResult
 	{
 		public override ScanValueType ValueType => ScanValueType.String;
 
@@ -105,7 +105,7 @@ namespace ReClassNET.MemorySearcher
 
 		public Encoding Encoding { get; }
 
-		public StringSearchResult(string value, Encoding encoding)
+		public StringScanResult(string value, Encoding encoding)
 		{
 			Contract.Requires(value != null);
 			Contract.Requires(encoding != null);

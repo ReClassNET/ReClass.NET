@@ -187,7 +187,7 @@
     <Compile Include="MemorySearcher\Comparer\ByteMemoryComparer.cs" />
     <Compile Include="MemorySearcher\Comparer\DoubleMemoryComparer.cs" />
     <Compile Include="MemorySearcher\Comparer\FloatMemoryComparer.cs" />
-    <Compile Include="MemorySearcher\Comparer\IMemoryComparer.cs" />
+    <Compile Include="MemorySearcher\Comparer\IScanComparer.cs" />
     <Compile Include="MemorySearcher\Comparer\IntegerMemoryComparer.cs" />
     <Compile Include="MemorySearcher\Comparer\LongMemoryComparer.cs" />
     <Compile Include="MemorySearcher\Comparer\ShortMemoryComparer.cs" />
@@ -199,7 +199,7 @@
     <Compile Include="MemorySearcher\ScanResultBlock.cs" />
     <Compile Include="MemorySearcher\ScanResultStore.cs" />
     <Compile Include="MemorySearcher\ScanValueType.cs" />
-    <Compile Include="MemorySearcher\InvalidCompareTypeException.cs" />
+    <Compile Include="MemorySearcher\Comparer\InvalidCompareTypeException.cs" />
     <Compile Include="MemorySearcher\ScanRoundMode.cs" />
     <Compile Include="MemorySearcher\ScanResult.cs" />
     <Compile Include="MemorySearcher\Scanner.cs" />

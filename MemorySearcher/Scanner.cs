@@ -14,10 +14,9 @@ namespace ReClassNET.MemorySearcher
 	public class Scanner : IDisposable
 	{
 		private readonly RemoteProcess process;
-		private readonly ScanSettings settings;
 		private ScanResultStore store;
 
-		public ScanSettings Settings => settings;
+		public ScanSettings Settings { get; }
 
 		public int TotalResultCount => store.TotalResultCount;
 
@@ -29,7 +28,7 @@ namespace ReClassNET.MemorySearcher
 			Contract.Requires(settings != null);
 
 			this.process = process;
-			this.settings = settings;
+			Settings = settings;
 
 			isFirstScan = true;
 		}
@@ -58,21 +57,21 @@ namespace ReClassNET.MemorySearcher
 
 			return process.Sections
 				.Where(s => !s.Protection.HasFlag(SectionProtection.Guard))
-				.Where(s => s.Start.InRange(settings.StartAddress, settings.StopAddress))
+				.Where(s => s.Start.InRange(Settings.StartAddress, Settings.StopAddress))
 				.Where(s =>
 				{
 					switch (s.Type)
 					{
-						case SectionType.Private: return settings.SearchMemPrivate;
-						case SectionType.Image: return settings.SearchMemImage;
-						case SectionType.Mapped: return settings.SearchMemMapped;
+						case SectionType.Private: return Settings.ScanMemPrivate;
+						case SectionType.Image: return Settings.ScanMemImage;
+						case SectionType.Mapped: return Settings.ScanMemMapped;
 						default: return false;
 					}
 				})
 				.Where(s =>
 				{
 					var isWritable = s.Protection.HasFlag(SectionProtection.Write);
-					switch (settings.SearchWritableMemory)
+					switch (Settings.ScanWritableMemory)
 					{
 						case SettingState.Yes: return isWritable;
 						case SettingState.No: return !isWritable;
@@ -82,7 +81,7 @@ namespace ReClassNET.MemorySearcher
 				.Where(s =>
 				{
 					var isExecutable = s.Protection.HasFlag(SectionProtection.Execute);
-					switch (settings.SearchExecutableMemory)
+					switch (Settings.ScanExecutableMemory)
 					{
 						case SettingState.Yes: return isExecutable;
 						case SettingState.No: return !isExecutable;
@@ -92,7 +91,7 @@ namespace ReClassNET.MemorySearcher
 				.Where(s =>
 				{
 					var isCopyOnWrite = s.Protection.HasFlag(SectionProtection.CopyOnWrite);
-					switch (settings.SearchCopyOnWriteMemory)
+					switch (Settings.ScanCopyOnWriteMemory)
 					{
 						case SettingState.Yes: return isCopyOnWrite;
 						case SettingState.No: return !isCopyOnWrite;
@@ -102,12 +101,12 @@ namespace ReClassNET.MemorySearcher
 				.ToList();
 		}
 
-		public Task<bool> Search(IMemoryComparer comparer, CancellationToken ct, IProgress<int> progress)
+		public Task<bool> Search(IScanComparer comparer, CancellationToken ct, IProgress<int> progress)
 		{
 			return isFirstScan ? FirstScan(comparer, ct, progress) : NextScan(comparer, ct, progress);
 		}
 
-		private Task<bool> FirstScan(IMemoryComparer comparer, CancellationToken ct, IProgress<int> progress)
+		private Task<bool> FirstScan(IScanComparer comparer, CancellationToken ct, IProgress<int> progress)
 		{
 			Contract.Requires(comparer != null);
 			Contract.Ensures(Contract.Result<Task<bool>>() != null);
@@ -128,7 +127,7 @@ namespace ReClassNET.MemorySearcher
 				var result = Parallel.ForEach(
 					sections,
 					new ParallelOptions { CancellationToken = ct},
-					() => new ScanContext(settings, comparer, initialBufferSize),
+					() => new ScanContext(Settings, comparer, initialBufferSize),
 					(s, state, _, context) =>
 					{
 						var size = s.Size.ToInt32();
@@ -170,7 +169,7 @@ namespace ReClassNET.MemorySearcher
 			}, ct);
 		}
 
-		private Task<bool> NextScan(IMemoryComparer comparer, CancellationToken ct, IProgress<int> progress)
+		private Task<bool> NextScan(IScanComparer comparer, CancellationToken ct, IProgress<int> progress)
 		{
 			Contract.Requires(comparer != null);
 			Contract.Ensures(Contract.Result<Task<bool>>() != null);
@@ -187,7 +186,7 @@ namespace ReClassNET.MemorySearcher
 				var result = Parallel.ForEach(
 					store.GetResultBlocks(),
 					new ParallelOptions { CancellationToken = ct },
-					() => new ScanContext(settings, comparer, 0),
+					() => new ScanContext(Settings, comparer, 0),
 					(b, state, _, context) =>
 					{
 						context.EnsureBufferSize(b.Size);

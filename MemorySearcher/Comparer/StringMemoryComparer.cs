@@ -5,7 +5,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher.Comparer
 {
-	public class StringMemoryComparer : IMemoryComparer
+	public class StringMemoryComparer : IScanComparer
 	{
 		public ScanCompareType CompareType => ScanCompareType.Equal;
 		public bool CaseSensitive { get; }
@@ -32,7 +32,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 				return false;
 			}
 
-			result = new StringSearchResult(value, Encoding);
+			result = new StringScanResult(value, Encoding);
 
 			return true;
 		}
@@ -40,7 +40,7 @@ namespace ReClassNET.MemorySearcher.Comparer
 		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
 		{
 #if DEBUG
-			Debug.Assert(previous is StringSearchResult);
+			Debug.Assert(previous is StringScanResult);
 #endif
 
 			return Compare(data, index, out result);

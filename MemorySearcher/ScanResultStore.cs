@@ -106,7 +106,7 @@ namespace ReClassNET.MemorySearcher
 		{
 			Contract.Requires(block != null);
 
-			using (var bw = new BinaryWriter(fileStream, Encoding.ASCII, true))
+			using (var bw = new BinaryWriter(fileStream, Encoding.Unicode, true))
 			{
 				bw.Write(block.Start);
 				bw.Write(block.End);
@@ -123,7 +123,7 @@ namespace ReClassNET.MemorySearcher
 		{
 			using (var stream = File.OpenRead(storePath))
 			{
-				using (var br = new BinaryReader(stream))
+				using (var br = new BinaryReader(stream, Encoding.Unicode))
 				{
 					var length = stream.Length;
 
@@ -137,7 +137,7 @@ namespace ReClassNET.MemorySearcher
 						var results = new List<ScanResult>(resultCount);
 						for (var i = 0; i < resultCount; ++i)
 						{
-							results.Add(ReadSearchResult(br));
+							results.Add(ReadScanResult(br));
 						}
 
 						yield return new ScanResultBlock(start, end, results);
@@ -146,7 +146,7 @@ namespace ReClassNET.MemorySearcher
 			}
 		}
 
-		private ScanResult ReadSearchResult(BinaryReader br)
+		private ScanResult ReadScanResult(BinaryReader br)
 		{
 			var address = br.ReadIntPtr();
 
@@ -154,29 +154,29 @@ namespace ReClassNET.MemorySearcher
 			switch (valueType)
 			{
 				case ScanValueType.Byte:
-					result = new ByteSearchResult(br.ReadByte());
+					result = new ByteScanResult(br.ReadByte());
 					break;
 				case ScanValueType.Short:
-					result = new ShortSearchResult(br.ReadInt16());
+					result = new ShortScanResult(br.ReadInt16());
 					break;
 				case ScanValueType.Integer:
-					result = new IntegerSearchResult(br.ReadInt32());
+					result = new IntegerScanResult(br.ReadInt32());
 					break;
 				case ScanValueType.Long:
-					result = new LongSearchResult(br.ReadInt64());
+					result = new LongScanResult(br.ReadInt64());
 					break;
 				case ScanValueType.Float:
-					result = new FloatSearchResult(br.ReadSingle());
+					result = new FloatScanResult(br.ReadSingle());
 					break;
 				case ScanValueType.Double:
-					result = new DoubleSearchResult(br.ReadDouble());
+					result = new DoubleScanResult(br.ReadDouble());
 					break;
 				case ScanValueType.ArrayOfBytes:
-					result = new ArrayOfBytesSearchResult(br.ReadBytes(br.ReadInt32()));
+					result = new ArrayOfBytesScanResult(br.ReadBytes(br.ReadInt32()));
 					break;
 				case ScanValueType.String:
 					var encoding = br.ReadInt32();
-					result = new StringSearchResult(br.ReadString(), encoding == 0 ? Encoding.UTF8 : encoding == 1 ? Encoding.Unicode : Encoding.UTF32);
+					result = new StringScanResult(br.ReadString(), encoding == 0 ? Encoding.UTF8 : encoding == 1 ? Encoding.Unicode : Encoding.UTF32);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -193,29 +193,29 @@ namespace ReClassNET.MemorySearcher
 
 			switch (result)
 			{
-				case ByteSearchResult byteSearchResult:
+				case ByteScanResult byteSearchResult:
 					bw.Write(byteSearchResult.Value);
 					break;
-				case ShortSearchResult shortSearchResult:
+				case ShortScanResult shortSearchResult:
 					bw.Write(shortSearchResult.Value);
 					break;
-				case IntegerSearchResult integerSearchResult:
+				case IntegerScanResult integerSearchResult:
 					bw.Write(integerSearchResult.Value);
 					break;
-				case LongSearchResult longSearchResult:
+				case LongScanResult longSearchResult:
 					bw.Write(longSearchResult.Value);
 					break;
-				case FloatSearchResult floatSearchResult:
+				case FloatScanResult floatSearchResult:
 					bw.Write(floatSearchResult.Value);
 					break;
-				case DoubleSearchResult doubleSearchResult:
+				case DoubleScanResult doubleSearchResult:
 					bw.Write(doubleSearchResult.Value);
 					break;
-				case ArrayOfBytesSearchResult arrayOfBytesSearchResult:
+				case ArrayOfBytesScanResult arrayOfBytesSearchResult:
 					bw.Write(arrayOfBytesSearchResult.Value.Length);
 					bw.Write(arrayOfBytesSearchResult.Value);
 					break;
-				case StringSearchResult stringSearchResult:
+				case StringScanResult stringSearchResult:
 					bw.Write(stringSearchResult.Encoding == Encoding.UTF8 ? 0 : stringSearchResult.Encoding == Encoding.Unicode ? 1 : 2);
 					bw.Write(stringSearchResult.Value);
 					break;

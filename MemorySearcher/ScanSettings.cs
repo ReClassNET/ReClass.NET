@@ -18,12 +18,12 @@ namespace ReClassNET.MemorySearcher
 #else
 			(IntPtr)int.MaxValue;
 #endif
-		public SettingState SearchWritableMemory { get; set; } = SettingState.Yes;
-		public SettingState SearchExecutableMemory { get; set; } = SettingState.Indeterminate;
-		public SettingState SearchCopyOnWriteMemory { get; set; } = SettingState.No;
-		public bool SearchMemPrivate { get; set; } = true;
-		public bool SearchMemImage { get; set; } = true;
-		public bool SearchMemMapped { get; set; } = false;
+		public SettingState ScanWritableMemory { get; set; } = SettingState.Yes;
+		public SettingState ScanExecutableMemory { get; set; } = SettingState.Indeterminate;
+		public SettingState ScanCopyOnWriteMemory { get; set; } = SettingState.No;
+		public bool ScanMemPrivate { get; set; } = true;
+		public bool ScanMemImage { get; set; } = true;
+		public bool ScanMemMapped { get; set; } = false;
 		public bool FastScan { get; set; } = true;
 		public int FastScanAlignment { get; set; } = 1;
 		public ScanValueType ValueType { get; set; } = ScanValueType.Byte;
