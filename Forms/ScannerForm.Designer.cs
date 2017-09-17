@@ -68,10 +68,10 @@
 			this.menuToolStrip = new System.Windows.Forms.ToolStrip();
 			this.openAddressFileToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveAddressFileToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.saveAddressFileAsToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.clearAddressListToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.infoToolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.saveAddressFileAsToolStripButton = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.filterGroupBox.SuspendLayout();
 			this.scanOptionsGroupBox.SuspendLayout();
@@ -166,10 +166,10 @@
 			this.dualValueBox.Location = new System.Drawing.Point(72, 12);
 			this.dualValueBox.Name = "dualValueBox";
 			this.dualValueBox.ShowSecondInputField = false;
-			this.dualValueBox.Size = new System.Drawing.Size(224, 40);
+			this.dualValueBox.Size = new System.Drawing.Size(224, 34);
 			this.dualValueBox.TabIndex = 2;
-			this.dualValueBox.Value1 = "";
-			this.dualValueBox.Value2 = "";
+			this.dualValueBox.Value1 = "0";
+			this.dualValueBox.Value2 = "0";
 			// 
 			// scanOptionsGroupBox
 			// 
@@ -499,7 +499,7 @@
             this.clearAddressListToolStripButton});
 			this.menuToolStrip.Location = new System.Drawing.Point(3, 0);
 			this.menuToolStrip.Name = "menuToolStrip";
-			this.menuToolStrip.Size = new System.Drawing.Size(141, 25);
+			this.menuToolStrip.Size = new System.Drawing.Size(110, 25);
 			this.menuToolStrip.TabIndex = 0;
 			// 
 			// openAddressFileToolStripButton
@@ -522,6 +522,16 @@
 			this.saveAddressFileToolStripButton.ToolTipText = "Save";
 			this.saveAddressFileToolStripButton.Click += new System.EventHandler(this.saveAddressFileToolStripButton_Click);
 			// 
+			// saveAddressFileAsToolStripButton
+			// 
+			this.saveAddressFileAsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.saveAddressFileAsToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Save_As;
+			this.saveAddressFileAsToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.saveAddressFileAsToolStripButton.Name = "saveAddressFileAsToolStripButton";
+			this.saveAddressFileAsToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.saveAddressFileAsToolStripButton.ToolTipText = "Save As...";
+			this.saveAddressFileAsToolStripButton.Click += new System.EventHandler(this.saveAsToolStripButton_Click);
+			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -540,16 +550,6 @@
 			// infoToolTip
 			// 
 			this.infoToolTip.AutomaticDelay = 100;
-			// 
-			// saveAddressFileAsToolStripButton
-			// 
-			this.saveAddressFileAsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.saveAddressFileAsToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Save_As;
-			this.saveAddressFileAsToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.saveAddressFileAsToolStripButton.Name = "saveAddressFileAsToolStripButton";
-			this.saveAddressFileAsToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.saveAddressFileAsToolStripButton.ToolTipText = "Save As...";
-			this.saveAddressFileAsToolStripButton.Click += new System.EventHandler(this.saveAsToolStripButton_Click);
 			// 
 			// ScannerForm
 			// 

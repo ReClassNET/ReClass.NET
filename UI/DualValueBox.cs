@@ -47,13 +47,21 @@ namespace ReClassNET.UI
 
 		protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
 		{
-			base.SetBoundsCore(x, y, width, 40, specified);
+			base.SetBoundsCore(x, y, width, 34, specified);
 		}
 
-		public void Clear()
+		public void Clear() => Clear(true, true);
+
+		public void Clear(bool clearValue1, bool clearValue2)
 		{
-			value1TextBox.Clear();
-			value2TextBox.Clear();
+			if (clearValue1)
+			{
+				value1TextBox.Clear();
+			}
+			if (clearValue2)
+			{
+				value2TextBox.Clear();
+			}
 		}
 	}
 

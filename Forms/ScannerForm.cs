@@ -231,7 +231,6 @@ namespace ReClassNET.Forms
 
 			isHexCheckBox.Enabled = true;
 			isHexCheckBox.Checked = false;
-			dualValueBox.Clear();
 
 			valueTypeComboBox.Enabled = true;
 			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == ScanValueType.Integer);
@@ -473,6 +472,11 @@ namespace ReClassNET.Forms
 							{
 								return;
 							}
+						}
+
+						if (import is ReClassScanFile)
+						{
+							addressFilePath = ofd.FileName;
 						}
 
 						addressListMemoryRecordList.SetRecords(
