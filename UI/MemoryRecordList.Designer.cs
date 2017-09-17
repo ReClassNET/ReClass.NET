@@ -90,6 +90,7 @@
 			// 
 			// valueColumn
 			// 
+			this.valueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.valueColumn.DataPropertyName = "ValueStr";
 			this.valueColumn.HeaderText = "Value";
 			this.valueColumn.Name = "valueColumn";
@@ -98,18 +99,19 @@
 			// 
 			// previousValueColumn
 			// 
+			this.previousValueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.previousValueColumn.DataPropertyName = "PreviousValueStr";
 			this.previousValueColumn.HeaderText = "Previous";
 			this.previousValueColumn.Name = "previousValueColumn";
 			this.previousValueColumn.ReadOnly = true;
 			this.previousValueColumn.Width = 73;
 			// 
-			// MemorySearchResultControl
+			// MemoryRecordList
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.resultDataGridView);
-			this.Name = "MemorySearchResultControl";
+			this.Name = "MemoryRecordList";
 			this.Size = new System.Drawing.Size(290, 327);
 			((System.ComponentModel.ISupportInitialize)(this.resultDataGridView)).EndInit();
 			this.ResumeLayout(false);
