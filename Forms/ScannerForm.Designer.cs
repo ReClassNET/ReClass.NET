@@ -47,7 +47,7 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.startAddressTextBox = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
-			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+			this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
 			this.floatingOptionsGroupBox = new System.Windows.Forms.GroupBox();
 			this.roundTruncateRadioButton = new System.Windows.Forms.RadioButton();
 			this.roundLooseRadioButton = new System.Windows.Forms.RadioButton();
@@ -71,10 +71,11 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.clearAddressListToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.infoToolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.saveAddressFileAsToolStripButton = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.filterGroupBox.SuspendLayout();
 			this.scanOptionsGroupBox.SuspendLayout();
-			this.flowLayoutPanel1.SuspendLayout();
+			this.flowLayoutPanel.SuspendLayout();
 			this.floatingOptionsGroupBox.SuspendLayout();
 			this.stringOptionsGroupBox.SuspendLayout();
 			this.toolStripPanel.SuspendLayout();
@@ -277,20 +278,20 @@
 			this.label2.TabIndex = 0;
 			this.label2.Text = "Start:";
 			// 
-			// flowLayoutPanel1
+			// flowLayoutPanel
 			// 
-			this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.flowLayoutPanel1.Controls.Add(this.filterGroupBox);
-			this.flowLayoutPanel1.Controls.Add(this.floatingOptionsGroupBox);
-			this.flowLayoutPanel1.Controls.Add(this.stringOptionsGroupBox);
-			this.flowLayoutPanel1.Controls.Add(this.scanOptionsGroupBox);
-			this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-			this.flowLayoutPanel1.Location = new System.Drawing.Point(292, 80);
-			this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-			this.flowLayoutPanel1.Size = new System.Drawing.Size(317, 294);
-			this.flowLayoutPanel1.TabIndex = 9;
-			this.flowLayoutPanel1.WrapContents = false;
+			this.flowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.flowLayoutPanel.Controls.Add(this.filterGroupBox);
+			this.flowLayoutPanel.Controls.Add(this.floatingOptionsGroupBox);
+			this.flowLayoutPanel.Controls.Add(this.stringOptionsGroupBox);
+			this.flowLayoutPanel.Controls.Add(this.scanOptionsGroupBox);
+			this.flowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+			this.flowLayoutPanel.Location = new System.Drawing.Point(292, 80);
+			this.flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+			this.flowLayoutPanel.Name = "flowLayoutPanel";
+			this.flowLayoutPanel.Size = new System.Drawing.Size(317, 294);
+			this.flowLayoutPanel.TabIndex = 9;
+			this.flowLayoutPanel.WrapContents = false;
 			// 
 			// floatingOptionsGroupBox
 			// 
@@ -493,11 +494,12 @@
 			this.menuToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openAddressFileToolStripButton,
             this.saveAddressFileToolStripButton,
+            this.saveAddressFileAsToolStripButton,
             this.toolStripSeparator1,
             this.clearAddressListToolStripButton});
 			this.menuToolStrip.Location = new System.Drawing.Point(3, 0);
 			this.menuToolStrip.Name = "menuToolStrip";
-			this.menuToolStrip.Size = new System.Drawing.Size(87, 25);
+			this.menuToolStrip.Size = new System.Drawing.Size(141, 25);
 			this.menuToolStrip.TabIndex = 0;
 			// 
 			// openAddressFileToolStripButton
@@ -518,6 +520,7 @@
 			this.saveAddressFileToolStripButton.Name = "saveAddressFileToolStripButton";
 			this.saveAddressFileToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.saveAddressFileToolStripButton.ToolTipText = "Save";
+			this.saveAddressFileToolStripButton.Click += new System.EventHandler(this.saveAddressFileToolStripButton_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -538,6 +541,16 @@
 			// 
 			this.infoToolTip.AutomaticDelay = 100;
 			// 
+			// saveAddressFileAsToolStripButton
+			// 
+			this.saveAddressFileAsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.saveAddressFileAsToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Save_As;
+			this.saveAddressFileAsToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.saveAddressFileAsToolStripButton.Name = "saveAddressFileAsToolStripButton";
+			this.saveAddressFileAsToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.saveAddressFileAsToolStripButton.ToolTipText = "Save As...";
+			this.saveAddressFileAsToolStripButton.Click += new System.EventHandler(this.saveAsToolStripButton_Click);
+			// 
 			// ScannerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -550,7 +563,7 @@
 			this.Controls.Add(this.scanProgressBar);
 			this.Controls.Add(this.nextScanButton);
 			this.Controls.Add(this.firstScanButton);
-			this.Controls.Add(this.flowLayoutPanel1);
+			this.Controls.Add(this.flowLayoutPanel);
 			this.Controls.Add(this.bannerBox);
 			this.MinimumSize = new System.Drawing.Size(628, 622);
 			this.Name = "ScannerForm";
@@ -562,7 +575,7 @@
 			this.filterGroupBox.PerformLayout();
 			this.scanOptionsGroupBox.ResumeLayout(false);
 			this.scanOptionsGroupBox.PerformLayout();
-			this.flowLayoutPanel1.ResumeLayout(false);
+			this.flowLayoutPanel.ResumeLayout(false);
 			this.floatingOptionsGroupBox.ResumeLayout(false);
 			this.floatingOptionsGroupBox.PerformLayout();
 			this.stringOptionsGroupBox.ResumeLayout(false);
@@ -596,7 +609,7 @@
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox startAddressTextBox;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
 		private System.Windows.Forms.GroupBox floatingOptionsGroupBox;
 		private System.Windows.Forms.RadioButton roundTruncateRadioButton;
 		private System.Windows.Forms.RadioButton roundLooseRadioButton;
@@ -620,5 +633,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton clearAddressListToolStripButton;
 		private System.Windows.Forms.ToolTip infoToolTip;
+		private System.Windows.Forms.ToolStripButton saveAddressFileAsToolStripButton;
 	}
 }

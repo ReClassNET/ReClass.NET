@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -57,8 +56,12 @@ namespace ReClassNET.Forms
 
 			Reset();
 
+			firstScanButton.Enabled = nextScanButton.Enabled = flowLayoutPanel.Enabled = process.IsValid;
+
 			process.ProcessAttached += sender =>
 			{
+				firstScanButton.Enabled = nextScanButton.Enabled = flowLayoutPanel.Enabled = true;
+
 				Reset();
 
 				if (addressListMemoryRecordList.Records.Any())
@@ -76,6 +79,12 @@ namespace ReClassNET.Forms
 						}
 					}
 				}
+			};
+			process.ProcessClosing += sender =>
+			{
+				Reset();
+
+				firstScanButton.Enabled = nextScanButton.Enabled = flowLayoutPanel.Enabled = false;
 			};
 		}
 
@@ -128,7 +137,7 @@ namespace ReClassNET.Forms
 			resultCountLabel.Text = count > MaxVisibleResults ? $"Found: {count} (only {MaxVisibleResults} shown)" : $"Found: {count}";
 		}
 
-		private void ShowResults()
+		private void ShowScannerResults()
 		{
 			Contract.Requires(searcher != null);
 
@@ -198,10 +207,16 @@ namespace ReClassNET.Forms
 			SetResultCount(0);
 			resultMemoryRecordList.SetRecords(null);
 
+			firstScanButton.Enabled = true;
 			nextScanButton.Enabled = false;
+
+			isHexCheckBox.Enabled = true;
+			isHexCheckBox.Checked = false;
 			dualValueBox.Clear();
+
 			valueTypeComboBox.Enabled = true;
 			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == ScanValueType.Integer);
+			OnValueTypeChanged();
 
 			floatingOptionsGroupBox.Enabled = true;
 			stringOptionsGroupBox.Enabled = true;
@@ -227,7 +242,7 @@ namespace ReClassNET.Forms
 
 				if (completed)
 				{
-					ShowResults();
+					ShowScannerResults();
 
 					firstScanButton.Enabled = true;
 					nextScanButton.Enabled = true;
@@ -264,7 +279,7 @@ namespace ReClassNET.Forms
 
 				if (completed)
 				{
-					ShowResults();
+					ShowScannerResults();
 				}
 
 				scanProgressBar.Value = 0;
@@ -401,6 +416,8 @@ namespace ReClassNET.Forms
 			addressListMemoryRecordList.AddRecord(record);
 		}
 
+		private string addressFilePath;
+
 		private void openAddressFileToolStripButton_Click(object sender, EventArgs e)
 		{
 			using (var ofd = new OpenFileDialog())
@@ -449,6 +466,45 @@ namespace ReClassNET.Forms
 								})
 						);
 					}
+				}
+			}
+		}
+
+		private void saveAddressFileToolStripButton_Click(object sender, EventArgs e)
+		{
+			if (addressListMemoryRecordList.Records.None())
+			{
+				return;
+			}
+
+			if (string.IsNullOrEmpty(addressFilePath))
+			{
+				saveAsToolStripButton_Click(sender, e);
+
+				return;
+			}
+
+			var file = new ReClassScanFile();
+			file.Save(addressListMemoryRecordList.Records, addressFilePath, Program.Logger);
+		}
+
+		private void saveAsToolStripButton_Click(object sender, EventArgs e)
+		{
+			if (addressListMemoryRecordList.Records.None())
+			{
+				return;
+			}
+
+			using (var sfd = new SaveFileDialog())
+			{
+				sfd.DefaultExt = ReClassScanFile.FileExtension;
+				sfd.Filter = $"{ReClassScanFile.FormatName} (*{ReClassScanFile.FileExtension})|*{ReClassScanFile.FileExtension}";
+
+				if (sfd.ShowDialog() == DialogResult.OK)
+				{
+					addressFilePath = sfd.FileName;
+
+					saveAddressFileToolStripButton_Click(sender, e);
 				}
 			}
 		}

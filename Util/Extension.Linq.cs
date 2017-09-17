@@ -67,6 +67,14 @@ namespace ReClassNET.Util
 		}
 
 		[DebuggerStepThrough]
+		public static bool None<TSource>(this IEnumerable<TSource> source)
+		{
+			Contract.Requires(source != null);
+
+			return !source.Any();
+		}
+
+		[DebuggerStepThrough]
 		public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
 		{
 			Contract.Requires(source != null);
