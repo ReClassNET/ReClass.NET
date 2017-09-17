@@ -286,11 +286,11 @@
     <Compile Include="UI\MemoryPreviewPopUp.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\MemorySearchResultControl.cs">
+    <Compile Include="UI\MemoryRecordList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\MemorySearchResultControl.Designer.cs">
-      <DependentUpon>MemorySearchResultControl.cs</DependentUpon>
+    <Compile Include="UI\MemoryRecordList.Designer.cs">
+      <DependentUpon>MemoryRecordList.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MemoryViewControl.Designer.cs">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
@@ -469,8 +469,8 @@
     <EmbeddedResource Include="UI\DualValueControl.resx">
       <DependentUpon>DualValueControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\MemorySearchResultControl.resx">
-      <DependentUpon>MemorySearchResultControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\MemoryRecordList.resx">
+      <DependentUpon>MemoryRecordList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MemoryViewControl.resx">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>

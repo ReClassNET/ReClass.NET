@@ -62,8 +62,8 @@
 			this.scanProgressBar = new System.Windows.Forms.ProgressBar();
 			this.resultCountLabel = new System.Windows.Forms.Label();
 			this.updateValuesTimer = new System.Windows.Forms.Timer(this.components);
-			this.memorySearchResultControl = new ReClassNET.UI.MemorySearchResultControl();
-			this.addressListMemorySearchResultControl = new ReClassNET.UI.MemorySearchResultControl();
+			this.resultMemoryRecordList = new ReClassNET.UI.MemoryRecordList();
+			this.addressListMemoryRecordList = new ReClassNET.UI.MemoryRecordList();
 			this.toolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.menuToolStrip = new System.Windows.Forms.ToolStrip();
 			this.openAddressFileToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -445,37 +445,37 @@
 			this.updateValuesTimer.Interval = 1000;
 			this.updateValuesTimer.Tick += new System.EventHandler(this.updateValuesTimer_Tick);
 			// 
-			// memorySearchResultControl
+			// resultMemoryRecordList
 			// 
-			this.memorySearchResultControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.resultMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.memorySearchResultControl.Location = new System.Drawing.Point(11, 80);
-			this.memorySearchResultControl.Name = "memorySearchResultControl";
-			this.memorySearchResultControl.ShowAddressColumn = true;
-			this.memorySearchResultControl.ShowDescriptionColumn = false;
-			this.memorySearchResultControl.ShowPreviousValueColumn = true;
-			this.memorySearchResultControl.ShowValueColumn = true;
-			this.memorySearchResultControl.ShowValuesHexadecimal = false;
-			this.memorySearchResultControl.ShowValueTypeColumn = false;
-			this.memorySearchResultControl.Size = new System.Drawing.Size(268, 292);
-			this.memorySearchResultControl.TabIndex = 16;
-			this.memorySearchResultControl.RecordDoubleClick += new ReClassNET.UI.MemorySearchResultControlResultDoubleClickEventHandler(this.memorySearchResultControl_ResultDoubleClick);
+			this.resultMemoryRecordList.Location = new System.Drawing.Point(11, 80);
+			this.resultMemoryRecordList.Name = "resultMemoryRecordList";
+			this.resultMemoryRecordList.ShowAddressColumn = true;
+			this.resultMemoryRecordList.ShowDescriptionColumn = false;
+			this.resultMemoryRecordList.ShowPreviousValueColumn = true;
+			this.resultMemoryRecordList.ShowValueColumn = true;
+			this.resultMemoryRecordList.ShowValuesHexadecimal = false;
+			this.resultMemoryRecordList.ShowValueTypeColumn = false;
+			this.resultMemoryRecordList.Size = new System.Drawing.Size(268, 292);
+			this.resultMemoryRecordList.TabIndex = 16;
+			this.resultMemoryRecordList.RecordDoubleClick += new ReClassNET.UI.MemorySearchResultControlResultDoubleClickEventHandler(this.memorySearchResultControl_ResultDoubleClick);
 			// 
-			// addressListMemorySearchResultControl
+			// addressListMemoryRecordList
 			// 
-			this.addressListMemorySearchResultControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.addressListMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.addressListMemorySearchResultControl.Location = new System.Drawing.Point(11, 402);
-			this.addressListMemorySearchResultControl.Name = "addressListMemorySearchResultControl";
-			this.addressListMemorySearchResultControl.ShowAddressColumn = true;
-			this.addressListMemorySearchResultControl.ShowDescriptionColumn = true;
-			this.addressListMemorySearchResultControl.ShowPreviousValueColumn = false;
-			this.addressListMemorySearchResultControl.ShowValueColumn = true;
-			this.addressListMemorySearchResultControl.ShowValuesHexadecimal = false;
-			this.addressListMemorySearchResultControl.ShowValueTypeColumn = true;
-			this.addressListMemorySearchResultControl.Size = new System.Drawing.Size(592, 169);
-			this.addressListMemorySearchResultControl.TabIndex = 17;
+			this.addressListMemoryRecordList.Location = new System.Drawing.Point(11, 402);
+			this.addressListMemoryRecordList.Name = "addressListMemoryRecordList";
+			this.addressListMemoryRecordList.ShowAddressColumn = true;
+			this.addressListMemoryRecordList.ShowDescriptionColumn = true;
+			this.addressListMemoryRecordList.ShowPreviousValueColumn = false;
+			this.addressListMemoryRecordList.ShowValueColumn = true;
+			this.addressListMemoryRecordList.ShowValuesHexadecimal = false;
+			this.addressListMemoryRecordList.ShowValueTypeColumn = true;
+			this.addressListMemoryRecordList.Size = new System.Drawing.Size(592, 169);
+			this.addressListMemoryRecordList.TabIndex = 17;
 			// 
 			// toolStripPanel
 			// 
@@ -544,8 +544,8 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(612, 583);
 			this.Controls.Add(this.toolStripPanel);
-			this.Controls.Add(this.addressListMemorySearchResultControl);
-			this.Controls.Add(this.memorySearchResultControl);
+			this.Controls.Add(this.addressListMemoryRecordList);
+			this.Controls.Add(this.resultMemoryRecordList);
 			this.Controls.Add(this.resultCountLabel);
 			this.Controls.Add(this.scanProgressBar);
 			this.Controls.Add(this.nextScanButton);
@@ -611,8 +611,8 @@
 		private System.Windows.Forms.ProgressBar scanProgressBar;
 		private System.Windows.Forms.Label resultCountLabel;
 		private System.Windows.Forms.Timer updateValuesTimer;
-		private UI.MemorySearchResultControl memorySearchResultControl;
-		private UI.MemorySearchResultControl addressListMemorySearchResultControl;
+		private UI.MemoryRecordList resultMemoryRecordList;
+		private UI.MemoryRecordList addressListMemoryRecordList;
 		private System.Windows.Forms.ToolStripPanel toolStripPanel;
 		private System.Windows.Forms.ToolStrip menuToolStrip;
 		private System.Windows.Forms.ToolStripButton openAddressFileToolStripButton;

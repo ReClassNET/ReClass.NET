@@ -12,7 +12,7 @@ namespace ReClassNET.UI
 {
 	public delegate void MemorySearchResultControlResultDoubleClickEventHandler(object sender, MemoryRecord record);
 
-	public partial class MemorySearchResultControl : UserControl
+	public partial class MemoryRecordList : UserControl
 	{
 		public bool ShowDescriptionColumn
 		{
@@ -52,7 +52,7 @@ namespace ReClassNET.UI
 
 		private readonly BindingList<MemoryRecord> bindings;
 
-		public MemorySearchResultControl()
+		public MemoryRecordList()
 		{
 			InitializeComponent();
 

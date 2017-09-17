@@ -49,6 +49,12 @@ namespace ReClassNET.UI
 		{
 			base.SetBoundsCore(x, y, width, 40, specified);
 		}
+
+		public void Clear()
+		{
+			value1TextBox.Clear();
+			value2TextBox.Clear();
+		}
 	}
 
 	internal class DualValueControlDesigner : ControlDesigner

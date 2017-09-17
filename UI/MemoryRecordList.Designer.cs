@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET.UI
 {
-	partial class MemorySearchResultControl
+	partial class MemoryRecordList
 	{
 		/// <summary> 
 		/// Erforderliche Designervariable.

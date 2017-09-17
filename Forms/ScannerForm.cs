@@ -61,15 +61,15 @@ namespace ReClassNET.Forms
 			{
 				Reset();
 
-				if (addressListMemorySearchResultControl.Records.Any())
+				if (addressListMemoryRecordList.Records.Any())
 				{
 					if (MessageBox.Show("Keep the current address list?", "Process has changed", MessageBoxButtons.YesNo) != DialogResult.Yes)
 					{
-						addressListMemorySearchResultControl.Clear();
+						addressListMemoryRecordList.Clear();
 					}
 					else
 					{
-						foreach (var record in addressListMemorySearchResultControl.Records)
+						foreach (var record in addressListMemoryRecordList.Records)
 						{
 							record.ResolveAddress(process);
 							record.RefreshValue(process);
@@ -102,8 +102,8 @@ namespace ReClassNET.Forms
 
 		private void updateValuesTimer_Tick(object sender, EventArgs e)
 		{
-			memorySearchResultControl.RefreshValues(process);
-			addressListMemorySearchResultControl.RefreshValues(process);
+			resultMemoryRecordList.RefreshValues(process);
+			addressListMemoryRecordList.RefreshValues(process);
 		}
 
 		private void valueTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
@@ -134,7 +134,7 @@ namespace ReClassNET.Forms
 
 			SetResultCount(searcher.TotalResultCount);
 
-			memorySearchResultControl.SetRecords(
+			resultMemoryRecordList.SetRecords(
 				searcher.GetResults()
 					.Take(MaxVisibleResults)
 					.OrderBy(r => r.Address, IntPtrComparer.Instance)
@@ -196,9 +196,10 @@ namespace ReClassNET.Forms
 			searcher = null;
 
 			SetResultCount(0);
-			memorySearchResultControl.SetRecords(null);
+			resultMemoryRecordList.SetRecords(null);
 
 			nextScanButton.Enabled = false;
+			valueDualValueControl.Clear();
 			valueTypeComboBox.Enabled = true;
 			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == ScanValueType.Integer);
 
@@ -392,12 +393,12 @@ namespace ReClassNET.Forms
 
 		private void clearAddressListToolStripButton_Click(object sender, EventArgs e)
 		{
-			addressListMemorySearchResultControl.Clear();
+			addressListMemoryRecordList.Clear();
 		}
 
 		private void memorySearchResultControl_ResultDoubleClick(object sender, MemoryRecord record)
 		{
-			addressListMemorySearchResultControl.AddRecord(record);
+			addressListMemoryRecordList.AddRecord(record);
 		}
 
 		private void openAddressFileToolStripButton_Click(object sender, EventArgs e)
@@ -430,7 +431,7 @@ namespace ReClassNET.Forms
 					}
 					if (import != null)
 					{
-						if (addressListMemorySearchResultControl.Records.Any())
+						if (addressListMemoryRecordList.Records.Any())
 						{
 							if (MessageBox.Show("The address list contains addresses. Do you really want to open the file?", $"{Constants.ApplicationName} Scanner", MessageBoxButtons.YesNo) != DialogResult.Yes)
 							{
@@ -438,14 +439,14 @@ namespace ReClassNET.Forms
 							}
 						}
 
-						addressListMemorySearchResultControl.SetRecords(
-						import.Load(ofd.FileName, Program.Logger)
-							.Select(r =>
-							{
-								r.ResolveAddress(process);
-								r.RefreshValue(process);
-								return r;
-							})
+						addressListMemoryRecordList.SetRecords(
+							import.Load(ofd.FileName, Program.Logger)
+								.Select(r =>
+								{
+									r.ResolveAddress(process);
+									r.RefreshValue(process);
+									return r;
+								})
 						);
 					}
 				}
