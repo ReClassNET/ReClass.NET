@@ -274,8 +274,8 @@ namespace ReClassNET.MemoryScanner
 		private static string FormatValue(short value, bool showAsHex) => showAsHex ? value.ToString("X") : value.ToString();
 		private static string FormatValue(int value, bool showAsHex) => showAsHex ? value.ToString("X") : value.ToString();
 		private static string FormatValue(long value, bool showAsHex) => showAsHex ? value.ToString("X") : value.ToString();
-		private static string FormatValue(float value) => value.ToString(CultureInfo.InvariantCulture);
-		private static string FormatValue(double value) => value.ToString(CultureInfo.InvariantCulture);
+		private static string FormatValue(float value) => value.ToString("0.0000");
+		private static string FormatValue(double value) => value.ToString("0.0000");
 		private static string FormatValue(byte[] value) => Utils.ByteArrayToHexString(value);
 		private static string FormatValue(string value) => value;
 	}
