@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Memory;
-using ReClassNET.MemorySearcher;
+using ReClassNET.MemoryScanner;
 using ReClassNET.Util;
 
 namespace ReClassNET.UI

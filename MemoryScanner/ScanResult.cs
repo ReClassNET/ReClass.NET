@@ -2,7 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Text;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemoryScanner
 {
 	public abstract class ScanResult
 	{

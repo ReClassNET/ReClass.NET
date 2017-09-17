@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using ReClassNET.Logger;
-using ReClassNET.MemorySearcher;
+using ReClassNET.MemoryScanner;
 
 namespace ReClassNET.DataExchange.Scanner
 {

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -14,8 +11,9 @@ using System.Windows.Forms;
 using ReClassNET.DataExchange.Scanner;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
+using ReClassNET.MemoryScanner;
+using ReClassNET.MemoryScanner.Comparer;
 using ReClassNET.MemorySearcher;
-using ReClassNET.MemorySearcher.Comparer;
 using ReClassNET.UI;
 using ReClassNET.Util;
 

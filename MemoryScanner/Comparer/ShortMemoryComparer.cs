@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace ReClassNET.MemorySearcher.Comparer
+namespace ReClassNET.MemoryScanner.Comparer
 {
 	public class ShortMemoryComparer : IScanComparer
 	{

@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text;
 using System.Xml.Linq;
 using ReClassNET.Logger;
-using ReClassNET.MemorySearcher;
+using ReClassNET.MemoryScanner;
 
 namespace ReClassNET.DataExchange.Scanner
 {

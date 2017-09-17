@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReClassNET.MemorySearcher.Comparer
+namespace ReClassNET.MemoryScanner.Comparer
 {
 	public class InvalidCompareTypeException : Exception
 	{

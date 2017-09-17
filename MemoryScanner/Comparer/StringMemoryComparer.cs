@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Text;
 using ReClassNET.Util;
 
-namespace ReClassNET.MemorySearcher.Comparer
+namespace ReClassNET.MemoryScanner.Comparer
 {
 	public class StringMemoryComparer : IScanComparer
 	{

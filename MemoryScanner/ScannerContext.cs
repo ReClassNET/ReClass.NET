@@ -1,14 +1,14 @@
 ﻿using System.Diagnostics.Contracts;
-using ReClassNET.MemorySearcher.Comparer;
+using ReClassNET.MemoryScanner.Comparer;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemoryScanner
 {
-	internal class ScanContext
+	internal class ScannerContext
 	{
 		public byte[] Buffer { get; private set; }
 		public ScannerWorker Worker { get; }
 
-		public ScanContext(ScanSettings settings, IScanComparer comparer, int bufferSize)
+		public ScannerContext(ScanSettings settings, IScanComparer comparer, int bufferSize)
 		{
 			Contract.Requires(settings != null);
 			Contract.Requires(comparer != null);

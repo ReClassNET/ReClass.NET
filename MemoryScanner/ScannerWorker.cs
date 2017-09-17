@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using ReClassNET.MemorySearcher.Comparer;
+using ReClassNET.MemoryScanner.Comparer;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemoryScanner
 {
 	internal class ScannerWorker
 	{

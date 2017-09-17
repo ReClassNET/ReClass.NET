@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using ReClassNET.Util;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemoryScanner
 {
 	public class BytePattern
 	{

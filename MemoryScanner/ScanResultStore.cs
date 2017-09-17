@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using ReClassNET.Util;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemoryScanner
 {
 	internal class ScanResultStore : IDisposable
 	{
@@ -31,7 +31,7 @@ namespace ReClassNET.MemorySearcher
 		public ScanResultStore(ScanValueType valueType, string storePath)
 		{
 			this.valueType = valueType;
-			this.storePath = Path.Combine(storePath, $"ReClass.NET_MemorySearcher_{Guid.NewGuid()}.tmp");
+			this.storePath = Path.Combine(storePath, $"ReClass.NET_MemoryScanner_{Guid.NewGuid()}.tmp");
 		}
 
 		public void Dispose()

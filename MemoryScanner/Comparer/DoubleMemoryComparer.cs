@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using ReClassNET.Util;
 
-namespace ReClassNET.MemorySearcher.Comparer
+namespace ReClassNET.MemoryScanner.Comparer
 {
 	public class DoubleMemoryComparer : IScanComparer
 	{

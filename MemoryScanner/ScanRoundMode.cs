@@ -1,4 +1,4 @@
-﻿namespace ReClassNET.MemorySearcher
+﻿namespace ReClassNET.MemoryScanner
 {
 	public enum ScanRoundMode
 	{

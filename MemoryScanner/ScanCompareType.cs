@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemoryScanner
 {
 	public enum ScanCompareType
 	{

@@ -194,7 +194,7 @@
     <Compile Include="MemoryScanner\Comparer\StringMemoryComparer.cs" />
     <Compile Include="MemoryScanner\MemoryRecord.cs" />
     <Compile Include="MemoryScanner\ScanCompareType.cs" />
-    <Compile Include="MemoryScanner\ScanContext.cs" />
+    <Compile Include="MemoryScanner\ScannerContext.cs" />
     <Compile Include="MemoryScanner\ScannerWorker.cs" />
     <Compile Include="MemoryScanner\ScanResultBlock.cs" />
     <Compile Include="MemoryScanner\ScanResultStore.cs" />

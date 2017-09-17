@@ -6,7 +6,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ReClassNET.Memory;
-using ReClassNET.MemorySearcher.Comparer;
+using ReClassNET.MemoryScanner;
+using ReClassNET.MemoryScanner.Comparer;
 using ReClassNET.Util;
 
 namespace ReClassNET.MemorySearcher
@@ -127,7 +128,7 @@ namespace ReClassNET.MemorySearcher
 				var result = Parallel.ForEach(
 					sections,
 					new ParallelOptions { CancellationToken = ct},
-					() => new ScanContext(Settings, comparer, initialBufferSize),
+					() => new ScannerContext(Settings, comparer, initialBufferSize),
 					(s, state, _, context) =>
 					{
 						var size = s.Size.ToInt32();
@@ -186,7 +187,7 @@ namespace ReClassNET.MemorySearcher
 				var result = Parallel.ForEach(
 					store.GetResultBlocks(),
 					new ParallelOptions { CancellationToken = ct },
-					() => new ScanContext(Settings, comparer, 0),
+					() => new ScannerContext(Settings, comparer, 0),
 					(b, state, _, context) =>
 					{
 						context.EnsureBufferSize(b.Size);

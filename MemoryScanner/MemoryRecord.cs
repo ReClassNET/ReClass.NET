@@ -6,7 +6,7 @@ using System.Text;
 using ReClassNET.Memory;
 using ReClassNET.Util;
 
-namespace ReClassNET.MemorySearcher
+namespace ReClassNET.MemoryScanner
 {
 	public enum MemoryRecordAddressMode
 	{
