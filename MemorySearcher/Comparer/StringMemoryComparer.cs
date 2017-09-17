@@ -11,13 +11,14 @@ namespace ReClassNET.MemorySearcher.Comparer
 		public bool CaseSensitive { get; }
 		public Encoding Encoding { get; }
 		public string Value { get; }
-		public int ValueSize => Value.Length * Encoding.GetSimpleByteCountPerChar();
+		public int ValueSize { get; }
 
 		public StringMemoryComparer(string value, Encoding encoding, bool caseSensitive)
 		{
 			Value = value;
 			Encoding = encoding;
 			CaseSensitive = caseSensitive;
+			ValueSize = Value.Length * Encoding.GetSimpleByteCountPerChar();
 		}
 
 		public bool Compare(byte[] data, int index, out SearchResult result)
