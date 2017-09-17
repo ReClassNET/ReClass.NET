@@ -36,7 +36,7 @@
 			this.scanTypeComboBox = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.isHexCheckBox = new System.Windows.Forms.CheckBox();
-			this.valueDualValueControl = new ReClassNET.UI.DualValueControl();
+			this.dualValueBox = new ReClassNET.UI.DualValueBox();
 			this.scanOptionsGroupBox = new System.Windows.Forms.GroupBox();
 			this.fastScanAlignmentTextBox = new System.Windows.Forms.TextBox();
 			this.fastScanCheckBox = new System.Windows.Forms.CheckBox();
@@ -99,7 +99,7 @@
 			this.filterGroupBox.Controls.Add(this.scanTypeComboBox);
 			this.filterGroupBox.Controls.Add(this.label1);
 			this.filterGroupBox.Controls.Add(this.isHexCheckBox);
-			this.filterGroupBox.Controls.Add(this.valueDualValueControl);
+			this.filterGroupBox.Controls.Add(this.dualValueBox);
 			this.filterGroupBox.Location = new System.Drawing.Point(3, 3);
 			this.filterGroupBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
 			this.filterGroupBox.Name = "filterGroupBox";
@@ -160,15 +160,15 @@
 			this.isHexCheckBox.Text = "Is Hex";
 			this.isHexCheckBox.UseVisualStyleBackColor = true;
 			// 
-			// valueDualValueControl
+			// dualValueBox
 			// 
-			this.valueDualValueControl.Location = new System.Drawing.Point(72, 12);
-			this.valueDualValueControl.Name = "valueDualValueControl";
-			this.valueDualValueControl.ShowSecondInputField = false;
-			this.valueDualValueControl.Size = new System.Drawing.Size(224, 40);
-			this.valueDualValueControl.TabIndex = 2;
-			this.valueDualValueControl.Value1 = "";
-			this.valueDualValueControl.Value2 = "";
+			this.dualValueBox.Location = new System.Drawing.Point(72, 12);
+			this.dualValueBox.Name = "dualValueBox";
+			this.dualValueBox.ShowSecondInputField = false;
+			this.dualValueBox.Size = new System.Drawing.Size(224, 40);
+			this.dualValueBox.TabIndex = 2;
+			this.dualValueBox.Value1 = "";
+			this.dualValueBox.Value2 = "";
 			// 
 			// scanOptionsGroupBox
 			// 
@@ -580,7 +580,7 @@
 
 		private UI.BannerBox bannerBox;
 		private System.Windows.Forms.GroupBox filterGroupBox;
-		private UI.DualValueControl valueDualValueControl;
+		private UI.DualValueBox dualValueBox;
 		private System.Windows.Forms.CheckBox isHexCheckBox;
 		private System.Windows.Forms.ComboBox scanTypeComboBox;
 		private System.Windows.Forms.Label label1;

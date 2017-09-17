@@ -199,7 +199,7 @@ namespace ReClassNET.Forms
 			resultMemoryRecordList.SetRecords(null);
 
 			nextScanButton.Enabled = false;
-			valueDualValueControl.Clear();
+			dualValueBox.Clear();
 			valueTypeComboBox.Enabled = true;
 			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == ScanValueType.Integer);
 
@@ -322,8 +322,8 @@ namespace ReClassNET.Forms
 			if (settings.ValueType == ScanValueType.Byte || settings.ValueType == ScanValueType.Short || settings.ValueType == ScanValueType.Integer || settings.ValueType == ScanValueType.Long)
 			{
 				var numberStyle = isHexCheckBox.Checked ? NumberStyles.HexNumber : NumberStyles.Integer;
-				long.TryParse(valueDualValueControl.Value1, numberStyle, null, out var value1);
-				long.TryParse(valueDualValueControl.Value2, numberStyle, null, out var value2);
+				long.TryParse(dualValueBox.Value1, numberStyle, null, out var value1);
+				long.TryParse(dualValueBox.Value2, numberStyle, null, out var value2);
 
 				switch (settings.ValueType)
 				{
@@ -355,14 +355,14 @@ namespace ReClassNET.Forms
 					return digits;
 				}
 
-				var nf1 = Utils.GuessNumberFormat(valueDualValueControl.Value1);
-				double.TryParse(valueDualValueControl.Value1, NumberStyles.Float, nf1, out var value1);
-				var nf2 = Utils.GuessNumberFormat(valueDualValueControl.Value2);
-				double.TryParse(valueDualValueControl.Value2, NumberStyles.Float, nf2, out var value2);
+				var nf1 = Utils.GuessNumberFormat(dualValueBox.Value1);
+				double.TryParse(dualValueBox.Value1, NumberStyles.Float, nf1, out var value1);
+				var nf2 = Utils.GuessNumberFormat(dualValueBox.Value2);
+				double.TryParse(dualValueBox.Value2, NumberStyles.Float, nf2, out var value2);
 
 				var significantDigits = Math.Max(
-					CalculateSignificantDigits(valueDualValueControl.Value1, nf1),
-					CalculateSignificantDigits(valueDualValueControl.Value2, nf2)
+					CalculateSignificantDigits(dualValueBox.Value1, nf1),
+					CalculateSignificantDigits(dualValueBox.Value2, nf2)
 				);
 
 				var roundMode = roundStrictRadioButton.Checked ? ScanRoundMode.Strict : roundLooseRadioButton.Checked ? ScanRoundMode.Normal : ScanRoundMode.Truncate;
@@ -377,7 +377,7 @@ namespace ReClassNET.Forms
 			}
 			else if (settings.ValueType == ScanValueType.ArrayOfBytes)
 			{
-				var pattern = BytePattern.Parse(valueDualValueControl.Value1);
+				var pattern = BytePattern.Parse(dualValueBox.Value1);
 
 				return new ArrayOfBytesMemoryComparer(pattern);
 			}
@@ -385,7 +385,7 @@ namespace ReClassNET.Forms
 			{
 				var encoding = encodingUtf8RadioButton.Checked ? Encoding.UTF8 : encodingUtf16RadioButton.Checked ? Encoding.Unicode : Encoding.UTF32;
 
-				return new StringMemoryComparer(valueDualValueControl.Value1, encoding, caseSensitiveCheckBox.Checked);
+				return new StringMemoryComparer(dualValueBox.Value1, encoding, caseSensitiveCheckBox.Checked);
 			}
 
 			throw new Exception();

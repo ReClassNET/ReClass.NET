@@ -275,11 +275,11 @@
     <Compile Include="Forms\LogForm.Designer.cs">
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\DualValueControl.cs">
+    <Compile Include="UI\DualValueBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\DualValueControl.Designer.cs">
-      <DependentUpon>DualValueControl.cs</DependentUpon>
+    <Compile Include="UI\DualValueBox.Designer.cs">
+      <DependentUpon>DualValueBox.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\EnumDescriptionDisplay.cs" />
     <Compile Include="UI\ISettingsBindable.cs" />
@@ -466,8 +466,8 @@
     <EmbeddedResource Include="UI\ColorBox.resx">
       <DependentUpon>ColorBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\DualValueControl.resx">
-      <DependentUpon>DualValueControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\DualValueBox.resx">
+      <DependentUpon>DualValueBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MemoryRecordList.resx">
       <DependentUpon>MemoryRecordList.cs</DependentUpon>

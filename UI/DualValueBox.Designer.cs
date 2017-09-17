@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET.UI
 {
-	partial class DualValueControl
+	partial class DualValueBox
 	{
 		/// <summary> 
 		/// Erforderliche Designervariable.

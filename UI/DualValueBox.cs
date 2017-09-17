@@ -5,7 +5,7 @@ using System.Windows.Forms.Design;
 namespace ReClassNET.UI
 {
 	[Designer(typeof(DualValueControlDesigner))]
-	public partial class DualValueControl : UserControl
+	public partial class DualValueBox : UserControl
 	{
 		public bool ShowSecondInputField
 		{
@@ -40,7 +40,7 @@ namespace ReClassNET.UI
 			set => value2TextBox.Text = value;
 		}
 
-		public DualValueControl()
+		public DualValueBox()
 		{
 			InitializeComponent();
 		}
