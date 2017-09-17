@@ -68,7 +68,6 @@
 			this.menuToolStrip = new System.Windows.Forms.ToolStrip();
 			this.openAddressFileToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveAddressFileToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.saveAsAddressFileToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.clearAddressListToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.infoToolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -494,12 +493,11 @@
 			this.menuToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openAddressFileToolStripButton,
             this.saveAddressFileToolStripButton,
-            this.saveAsAddressFileToolStripButton,
             this.toolStripSeparator1,
             this.clearAddressListToolStripButton});
 			this.menuToolStrip.Location = new System.Drawing.Point(3, 0);
 			this.menuToolStrip.Name = "menuToolStrip";
-			this.menuToolStrip.Size = new System.Drawing.Size(110, 25);
+			this.menuToolStrip.Size = new System.Drawing.Size(87, 25);
 			this.menuToolStrip.TabIndex = 0;
 			// 
 			// openAddressFileToolStripButton
@@ -510,6 +508,7 @@
 			this.openAddressFileToolStripButton.Name = "openAddressFileToolStripButton";
 			this.openAddressFileToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.openAddressFileToolStripButton.ToolTipText = "Open...";
+			this.openAddressFileToolStripButton.Click += new System.EventHandler(this.openAddressFileToolStripButton_Click);
 			// 
 			// saveAddressFileToolStripButton
 			// 
@@ -519,15 +518,6 @@
 			this.saveAddressFileToolStripButton.Name = "saveAddressFileToolStripButton";
 			this.saveAddressFileToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.saveAddressFileToolStripButton.ToolTipText = "Save";
-			// 
-			// saveAsAddressFileToolStripButton
-			// 
-			this.saveAsAddressFileToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.saveAsAddressFileToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Save_As;
-			this.saveAsAddressFileToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.saveAsAddressFileToolStripButton.Name = "saveAsAddressFileToolStripButton";
-			this.saveAsAddressFileToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.saveAsAddressFileToolStripButton.ToolTipText = "Save as...";
 			// 
 			// toolStripSeparator1
 			// 
@@ -627,7 +617,6 @@
 		private System.Windows.Forms.ToolStrip menuToolStrip;
 		private System.Windows.Forms.ToolStripButton openAddressFileToolStripButton;
 		private System.Windows.Forms.ToolStripButton saveAddressFileToolStripButton;
-		private System.Windows.Forms.ToolStripButton saveAsAddressFileToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton clearAddressListToolStripButton;
 		private System.Windows.Forms.ToolTip infoToolTip;

@@ -5,11 +5,14 @@ using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ReClassNET.DataExchange.Scanner;
+using ReClassNET.Logger;
 using ReClassNET.Memory;
 using ReClassNET.MemorySearcher;
 using ReClassNET.MemorySearcher.Comparer;
@@ -397,6 +400,58 @@ namespace ReClassNET.Forms
 		private void memorySearchResultControl_ResultDoubleClick(object sender, MemoryRecord record)
 		{
 			addressListMemorySearchResultControl.AddRecord(record);
+		}
+
+		private void openAddressFileToolStripButton_Click(object sender, EventArgs e)
+		{
+			using (var ofd = new OpenFileDialog())
+			{
+				ofd.CheckFileExists = true;
+				ofd.Filter = $"All Scanner Types |*{ReClassScanFile.FileExtension};*{CheatEngineFile.FileExtension};*{CrySearchFile.FileExtension}"
+							+ $"|{ReClassScanFile.FormatName} (*{ReClassScanFile.FileExtension})|*{ReClassScanFile.FileExtension}"
+							+ $"|{CheatEngineFile.FormatName} (*{CheatEngineFile.FileExtension})|*{CheatEngineFile.FileExtension}"
+							+ $"|{CrySearchFile.FormatName} (*{CrySearchFile.FileExtension})|*{CrySearchFile.FileExtension}";
+
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					IScannerImport import = null;
+					switch (Path.GetExtension(ofd.FileName)?.ToLower())
+					{
+						case ReClassScanFile.FileExtension:
+							import = new ReClassScanFile();
+							break;
+						case CheatEngineFile.FileExtension:
+							import = new CheatEngineFile();
+							break;
+						case CrySearchFile.FileExtension:
+							import = new CrySearchFile();
+							break;
+						default:
+							Program.Logger.Log(LogLevel.Error, $"The file '{ofd.FileName}' has an unknown type.");
+							break;
+					}
+					if (import != null)
+					{
+						if (addressListMemorySearchResultControl.Records.Any())
+						{
+							if (MessageBox.Show("The address list contains addresses. Do you really want to open the file?", $"{Constants.ApplicationName} Scanner", MessageBoxButtons.YesNo) != DialogResult.Yes)
+							{
+								return;
+							}
+						}
+
+						addressListMemorySearchResultControl.SetRecords(
+						import.Load(ofd.FileName, Program.Logger)
+							.Select(r =>
+							{
+								r.ResolveAddress(process);
+								r.RefreshValue(process);
+								return r;
+							})
+						);
+					}
+				}
+			}
 		}
 	}
 }

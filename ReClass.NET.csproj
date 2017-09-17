@@ -151,6 +151,11 @@
     <Compile Include="DataExchange\ReClass\ReClassClipboard.cs" />
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Read.cs" />
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Write.cs" />
+    <Compile Include="DataExchange\Scanner\CheatEngineFile.cs" />
+    <Compile Include="DataExchange\Scanner\CrySearchFile.cs" />
+    <Compile Include="DataExchange\Scanner\IScannerExport.cs" />
+    <Compile Include="DataExchange\Scanner\IScannerImport.cs" />
+    <Compile Include="DataExchange\Scanner\ReClassScanFile.cs" />
     <Compile Include="Debugger\BreakpointAlreadySetException.cs" />
     <Compile Include="Debugger\DataExchange.cs" />
     <Compile Include="Debugger\HardwareBreakpoint.cs" />
