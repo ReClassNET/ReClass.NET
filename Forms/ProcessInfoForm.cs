@@ -113,8 +113,7 @@ namespace ReClassNET.Forms
 
 		private void SelectRow_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
 		{
-			var dgv = sender as DataGridView;
-			if (dgv == null)
+			if (!(sender is DataGridView dgv))
 			{
 				return;
 			}
@@ -226,7 +225,7 @@ namespace ReClassNET.Forms
 								dumper.DumpSection(address, size, stream);
 							}
 
-							MessageBox.Show("Module successfully dumped.", "ReClass.NET", MessageBoxButtons.OK, MessageBoxIcon.Information);
+							MessageBox.Show("Module successfully dumped.", Constants.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 						}
 					}
 					catch (Exception ex)

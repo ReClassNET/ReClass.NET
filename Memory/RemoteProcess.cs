@@ -520,6 +520,21 @@ namespace ReClassNET.Memory
 			coreFunctions.EnumerateRemoteSectionsAndModules(handle, callbackSection, callbackModule);
 		}
 
+		public bool EnumerateRemoteSectionsAndModules(out List<Section> sections, out List<Module> modules)
+		{
+			if (!IsValid)
+			{
+				sections = null;
+				modules = null;
+
+				return false;
+			}
+
+			coreFunctions.EnumerateRemoteSectionsAndModules(handle, out sections, out modules);
+
+			return true;
+		}
+
 		/// <summary>Updates the process informations.</summary>
 		public void UpdateProcessInformations()
 		{
@@ -550,10 +565,7 @@ namespace ReClassNET.Memory
 
 			return Task.Run(() =>
 			{
-				var newModules = new List<Module>();
-				var newSections = new List<Section>();
-
-				EnumerateRemoteSectionsAndModules(newSections.Add, newModules.Add);
+				EnumerateRemoteSectionsAndModules(out var newSections, out var newModules);
 
 				newModules.Sort((m1, m2) => m1.Start.CompareTo(m2.Start));
 				newSections.Sort((s1, s2) => s1.Start.CompareTo(s2.Start));
