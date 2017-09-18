@@ -28,6 +28,7 @@ namespace ReClassNET.DataExchange.Scanner
 		public const string XmlValueTypeAttribute = "type";
 		public const string XmlAddressAttribute = "address";
 		public const string XmlModuleAttribute = "module";
+		public const string XmlDescriptionAttribute = "description";
 		public const string XmlValueLengthAttribute = "length";
 		public const string XmlEncodingAttribute = "encoding";
 
@@ -68,6 +69,8 @@ namespace ReClassNET.DataExchange.Scanner
 								continue;
 							}
 
+							var description = element.Attribute(XmlDescriptionAttribute)?.Value ?? string.Empty;
+
 							var addressStr = element.Attribute(XmlAddressAttribute)?.Value ?? string.Empty;
 							var moduleName = element.Attribute(XmlModuleAttribute)?.Value ?? string.Empty;
 
@@ -75,7 +78,8 @@ namespace ReClassNET.DataExchange.Scanner
 
 							var record = new MemoryRecord
 							{
-								Address = (IntPtr)address,
+								Description = description,
+								AddressOrOffset = (IntPtr)address,
 								ValueType = valueType
 							};
 
@@ -137,7 +141,8 @@ namespace ReClassNET.DataExchange.Scanner
 									var temp = new XElement(
 										XmlRecordElement,
 										new XAttribute(XmlValueTypeAttribute, r.ValueType.ToString()),
-										new XAttribute(XmlAddressAttribute, r.Address.ToString(Constants.StringHexFormat))
+										new XAttribute(XmlDescriptionAttribute, r.Description ?? string.Empty),
+										new XAttribute(XmlAddressAttribute, r.AddressOrOffset.ToString(Constants.StringHexFormat))
 									);
 									if (r.IsRelativeAddress)
 									{

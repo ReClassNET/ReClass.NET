@@ -18,12 +18,11 @@ namespace ReClassNET.MemoryScanner
 	public class MemoryRecord : INotifyPropertyChanged
 	{
 		private IntPtr addressOrOffset;
-		private IntPtr realAddress;
 		private string moduleName;
 
 		public MemoryRecordAddressMode AddressMode { get; set; }
 
-		public IntPtr Address
+		public IntPtr AddressOrOffset
 		{
 			get => addressOrOffset;
 			set
@@ -32,8 +31,10 @@ namespace ReClassNET.MemoryScanner
 				AddressMode = MemoryRecordAddressMode.Unknown;
 			}
 		}
+
+		public IntPtr RealAddress { get; private set; }
 	
-		public string AddressStr => realAddress.ToString(Constants.StringHexFormat);
+		public string AddressStr => RealAddress.ToString(Constants.StringHexFormat);
 
 		public string ModuleName
 		{
@@ -123,7 +124,7 @@ namespace ReClassNET.MemoryScanner
 
 			if (AddressMode == MemoryRecordAddressMode.Unknown)
 			{
-				realAddress = addressOrOffset;
+				RealAddress = addressOrOffset;
 
 				var module = process.GetModuleToPointer(addressOrOffset);
 				if (module != null)
@@ -143,7 +144,7 @@ namespace ReClassNET.MemoryScanner
 				var module = process.GetModuleByName(ModuleName);
 				if (module != null)
 				{
-					realAddress = module.Start.Add(addressOrOffset);
+					RealAddress = module.Start.Add(addressOrOffset);
 				}
 			}
 		}
@@ -180,7 +181,7 @@ namespace ReClassNET.MemoryScanner
 					throw new InvalidOperationException();
 			}
 
-			if (process.ReadRemoteMemoryIntoBuffer(realAddress, ref buffer))
+			if (process.ReadRemoteMemoryIntoBuffer(RealAddress, ref buffer))
 			{
 				switch (ValueType)
 				{
@@ -264,7 +265,7 @@ namespace ReClassNET.MemoryScanner
 
 			if (data != null)
 			{
-				process.WriteRemoteMemory(realAddress, data);
+				process.WriteRemoteMemory(RealAddress, data);
 
 				RefreshValue(process);
 			}

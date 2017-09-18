@@ -59,14 +59,14 @@ namespace ReClassNET.DataExchange.Scanner
 								if (addressParts.Length == 2)
 								{
 									long.TryParse(addressParts[1], NumberStyles.HexNumber, null, out var value);
-									record.Address = (IntPtr)value;
+									record.AddressOrOffset = (IntPtr)value;
 
 									record.ModuleName = addressParts[0].Trim();
 								}
 								else
 								{
 									long.TryParse(addressStr, NumberStyles.HexNumber, null, out var value);
-									record.Address = (IntPtr)value;
+									record.AddressOrOffset = (IntPtr)value;
 								}
 
 								if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)

@@ -50,7 +50,7 @@ namespace ReClassNET.DataExchange.Scanner
 
 							var record = new MemoryRecord
 							{
-								Address = (IntPtr)value,
+								AddressOrOffset = (IntPtr)value,
 								Description = description,
 								ValueType = valueType
 							};
