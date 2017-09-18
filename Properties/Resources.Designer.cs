@@ -913,6 +913,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Magnifier_Arrow {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Magnifier_Arrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Magnifier_Remove {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Magnifier_Remove", resourceCulture);
@@ -1231,7 +1241,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 2017/09/14 21:59:08
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2017/09/18 18:04:02
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {

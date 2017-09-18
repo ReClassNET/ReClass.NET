@@ -148,6 +148,20 @@ namespace ReClassNET.Forms
 
 		#region Menustrip
 
+		private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+		{
+			var lastProcess = Program.Settings.LastProcess;
+			if (string.IsNullOrEmpty(lastProcess))
+			{
+				reattachToProcessToolStripMenuItem.Visible = false;
+			}
+			else
+			{
+				reattachToProcessToolStripMenuItem.Visible = true;
+				reattachToProcessToolStripMenuItem.Text = $"Re-Attach to '{lastProcess}'";
+			}
+		}
+
 		private void attachToProcessToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using (var pb = new ProcessBrowserForm(coreFunctions, Program.Settings.LastProcess))
@@ -156,18 +170,35 @@ namespace ReClassNET.Forms
 				{
 					if (pb.SelectedProcess != null)
 					{
-						remoteProcess.Close();
+						AttachToProcess(pb.SelectedProcess);
 
-						remoteProcess.Open(pb.SelectedProcess);
-						remoteProcess.UpdateProcessInformations();
 						if (pb.LoadSymbols)
 						{
 							LoadAllSymbolsForCurrentProcess();
 						}
-
-						Program.Settings.LastProcess = remoteProcess.UnderlayingProcess.Name;
 					}
 				}
+			}
+		}
+
+		private void reattachToProcessToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var lastProcess = Program.Settings.LastProcess;
+			if (string.IsNullOrEmpty(lastProcess))
+			{
+				return;
+			}
+
+			var info = coreFunctions.EnumerateProcesses().FirstOrDefault(p => p.Name == lastProcess);
+			if (info == null)
+			{
+				MessageBox.Show($"Process '{lastProcess}' could not be found.", Constants.ApplicationName);
+
+				Program.Settings.LastProcess = string.Empty;
+			}
+			else
+			{
+				AttachToProcess(info);
 			}
 		}
 
@@ -495,6 +526,18 @@ namespace ReClassNET.Forms
 		}
 
 		#endregion
+
+		public void AttachToProcess(ProcessInfo info)
+		{
+			Contract.Requires(info != null);
+
+			remoteProcess.Close();
+
+			remoteProcess.Open(info);
+			remoteProcess.UpdateProcessInformations();
+
+			Program.Settings.LastProcess = remoteProcess.UnderlayingProcess.Name;
+		}
 
 		/// <summary>Creates a new default class.</summary>
 		public void CreateNewDefaultClass()
