@@ -19,6 +19,12 @@ namespace ReClassNET.MemoryScanner
 			this.comparer = comparer;
 		}
 
+		/// <summary>
+		/// Uses the <see cref="IScanComparer"/> to scan the byte array for results.
+		/// </summary>
+		/// <param name="data">The data to scan.</param>
+		/// <param name="count">The length of the <paramref name="data"/> parameter.</param>
+		/// <returns>An enumeration of all <see cref="ScanResult"/>s.</returns>
 		public IEnumerable<ScanResult> Search(byte[] data, int count)
 		{
 			Contract.Requires(data != null);
@@ -36,6 +42,14 @@ namespace ReClassNET.MemoryScanner
 			}
 		}
 
+		/// <summary>
+		/// Uses the <see cref="IScanComparer"/> to scan the byte array for results.
+		/// The comparer uses the provided previous results to compare to the current value.
+		/// </summary>
+		/// <param name="data">The data to scan.</param>
+		/// <param name="count">The length of the <paramref name="data"/> parameter.</param>
+		/// <param name="results">The previous results to use.</param>
+		/// <returns>An enumeration of all <see cref="ScanResult"/>s.</returns>
 		public IEnumerable<ScanResult> Search(byte[] data, int count, IEnumerable<ScanResult> results)
 		{
 			Contract.Requires(data != null);

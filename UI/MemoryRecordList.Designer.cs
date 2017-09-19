@@ -52,7 +52,6 @@
             this.previousValueColumn});
 			this.resultDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.resultDataGridView.Location = new System.Drawing.Point(0, 0);
-			this.resultDataGridView.MultiSelect = false;
 			this.resultDataGridView.Name = "resultDataGridView";
 			this.resultDataGridView.ReadOnly = true;
 			this.resultDataGridView.RowHeadersVisible = false;
@@ -62,6 +61,8 @@
 			this.resultDataGridView.TabIndex = 15;
 			this.resultDataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.resultDataGridView_CellDoubleClick);
 			this.resultDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.resultDataGridView_CellFormatting);
+			this.resultDataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.resultDataGridView_CellMouseDown);
+			this.resultDataGridView.RowContextMenuStripNeeded += new System.Windows.Forms.DataGridViewRowContextMenuStripNeededEventHandler(this.resultDataGridView_RowContextMenuStripNeeded);
 			// 
 			// descriptionColumn
 			// 

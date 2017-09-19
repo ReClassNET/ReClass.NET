@@ -13,6 +13,8 @@ namespace ReClassNET.MemoryScanner
 			Contract.Requires(settings != null);
 			Contract.Requires(comparer != null);
 			Contract.Requires(bufferSize >= 0);
+			Contract.Ensures(Buffer != null);
+			Contract.Ensures(Worker != null);
 
 			EnsureBufferSize(bufferSize);
 
@@ -22,6 +24,7 @@ namespace ReClassNET.MemoryScanner
 		public void EnsureBufferSize(int size)
 		{
 			Contract.Requires(size >= 0);
+			Contract.Ensures(Buffer != null);
 
 			if (Buffer == null || Buffer.Length < size)
 			{

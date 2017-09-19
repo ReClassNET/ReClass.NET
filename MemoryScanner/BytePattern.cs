@@ -86,10 +86,29 @@ namespace ReClassNET.MemoryScanner
 
 		private readonly List<PatternByte> pattern = new List<PatternByte>();
 
+		/// <summary>
+		/// Gets the length of the pattern in byte.
+		/// </summary>
 		public int Length => pattern.Count;
 
+		/// <summary>
+		/// Gets if the pattern contains wildcards.
+		/// </summary>
 		public bool HasWildcards => pattern.Any(pb => pb.HasWildcard);
 
+		/// <summary>
+		/// Parses the provided string for a byte pattern. Wildcards are supported by nibble.
+		/// </summary>
+		/// <example>
+		/// Valid patterns:
+		/// AA BB CC DD
+		/// AABBCCDD
+		/// aabb CCdd
+		/// A? ?B ?? DD
+		/// </example>
+		/// <exception cref="ArgumentException">Thrown if the provided string doesn't contain a valid byte pattern.</exception>
+		/// <param name="value">The byte pattern in hex format.</param>
+		/// <returns>The corresponding <see cref="BytePattern"/>.</returns>
 		public static BytePattern Parse(string value)
 		{
 			Contract.Requires(!string.IsNullOrEmpty(value));
@@ -114,6 +133,12 @@ namespace ReClassNET.MemoryScanner
 			return pattern;
 		}
 
+		/// <summary>
+		/// Tests if the provided byte array matches the byte pattern at the provided index.
+		/// </summary>
+		/// <param name="data">The byte array to be compared.</param>
+		/// <param name="index">The index into the byte array.</param>
+		/// <returns>True if the pattern matches, false if they are not.</returns>
 		public bool Equals(byte[] data, int index)
 		{
 			for (var j = 0; j < pattern.Count; ++j)
@@ -127,6 +152,12 @@ namespace ReClassNET.MemoryScanner
 			return true;
 		}
 
+		/// <summary>
+		/// Converts this <see cref="BytePattern"/> to a byte array.
+		/// </summary>
+		/// <exception cref="InvalidOperationException">Thrown if the pattern contains wildcards.</exception>
+		/// <returns>The bytes of the pattern.
+		/// </returns>
 		public byte[] ToByteArray()
 		{
 			if (HasWildcards)

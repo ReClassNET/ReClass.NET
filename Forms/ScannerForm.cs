@@ -30,6 +30,8 @@ namespace ReClassNET.Forms
 		private ScanCompareType SelectedCompareType => (scanTypeComboBox.SelectedItem as EnumDescriptionDisplay<ScanCompareType>)?.Value ?? throw new InvalidOperationException();
 		private ScanValueType SelectedValueType => (valueTypeComboBox.SelectedItem as EnumDescriptionDisplay<ScanValueType>)?.Value ?? throw new InvalidOperationException();
 
+		private string addressFilePath;
+
 		public ScannerForm()
 		{
 			InitializeComponent();
@@ -129,314 +131,13 @@ namespace ReClassNET.Forms
 
 		private async void nextScanButton_Click(object sender, EventArgs e)
 		{
-			await OnStartSecondScan();
-		}
-
-		#endregion
-
-		private void SetResultCount(int count)
-		{
-			resultCountLabel.Text = count > MaxVisibleResults ? $"Found: {count} (only {MaxVisibleResults} shown)" : $"Found: {count}";
-		}
-
-		private void ShowScannerResults()
-		{
-			Contract.Requires(searcher != null);
-
-			SetResultCount(searcher.TotalResultCount);
-
-			resultMemoryRecordList.SetRecords(
-				searcher.GetResults()
-					.Take(MaxVisibleResults)
-					.OrderBy(r => r.Address, IntPtrComparer.Instance)
-					.Select(r =>
-					{
-						var record = new MemoryRecord(r);
-						record.ResolveAddress(Program.RemoteProcess);
-						return record;
-					})
-			);
-		}
-
-		private void OnValueTypeChanged()
-		{
-			SetValidCompareTypes();
-
-			isHexCheckBox.Enabled = true;
-
-			var valueType = SelectedValueType;
-
-			switch (valueType)
-			{
-				case ScanValueType.Byte:
-				case ScanValueType.Short:
-				case ScanValueType.Integer:
-				case ScanValueType.Long:
-					isHexCheckBox.Enabled = true;
-					break;
-				case ScanValueType.Float:
-				case ScanValueType.Double:
-				case ScanValueType.ArrayOfBytes:
-				case ScanValueType.String:
-					isHexCheckBox.Checked = false;
-					isHexCheckBox.Enabled = false;
-					break;
-			}
-
-			var alignment = 1;
-			switch (valueType)
-			{
-				case ScanValueType.Short:
-					alignment = 2;
-					break;
-				case ScanValueType.Float:
-				case ScanValueType.Double:
-				case ScanValueType.Integer:
-				case ScanValueType.Long:
-					alignment = 4;
-					break;
-			}
-			fastScanAlignmentTextBox.Text = alignment.ToString();
-
-			floatingOptionsGroupBox.Visible = valueType == ScanValueType.Float || valueType == ScanValueType.Double;
-			stringOptionsGroupBox.Visible = valueType == ScanValueType.String;
-		}
-
-		private void SetValidCompareTypes()
-		{
-			var valueType = SelectedValueType;
-			if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)
-			{
-				scanTypeComboBox.DataSource = EnumDescriptionDisplay<ScanCompareType>.CreateExact(ScanCompareType.Equal);
-			}
-			else
-			{
-				scanTypeComboBox.DataSource = isFirstScan
-					? EnumDescriptionDisplay<ScanCompareType>.CreateExclude(
-						ScanCompareType.Changed, ScanCompareType.NotChanged, ScanCompareType.Decreased, ScanCompareType.DecreasedOrEqual,
-						ScanCompareType.Increased, ScanCompareType.IncreasedOrEqual
-					)
-					: EnumDescriptionDisplay<ScanCompareType>.CreateExclude(ScanCompareType.Unknown);
-			}
-		}
-
-		private void Reset()
-		{
-			searcher?.Dispose();
-			searcher = null;
-
-			SetResultCount(0);
-			resultMemoryRecordList.SetRecords(null);
-
-			firstScanButton.Enabled = true;
-			nextScanButton.Enabled = false;
-
-			isHexCheckBox.Enabled = true;
-			isHexCheckBox.Checked = false;
-
-			valueTypeComboBox.Enabled = true;
-			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == ScanValueType.Integer);
-			OnValueTypeChanged();
-
-			floatingOptionsGroupBox.Enabled = true;
-			stringOptionsGroupBox.Enabled = true;
-			scanOptionsGroupBox.Enabled = true;
-
-			isFirstScan = true;
-
-			SetValidCompareTypes();
-		}
-
-		private async Task OnStartFirstScan()
-		{
-			if (isFirstScan)
-			{
-				firstScanButton.Enabled = false;
-
-				var settings = CreateSearchSettings();
-				var comparer = CreateComparer(settings);
-				searcher = new Scanner(Program.RemoteProcess, settings);
-
-				var report = new Progress<int>(i => scanProgressBar.Value = i);
-				var completed = await searcher.Search(comparer, CancellationToken.None, report);
-
-				if (completed)
-				{
-					ShowScannerResults();
-
-					firstScanButton.Enabled = true;
-					nextScanButton.Enabled = true;
-					valueTypeComboBox.Enabled = false;
-
-					floatingOptionsGroupBox.Enabled = false;
-					stringOptionsGroupBox.Enabled = false;
-					scanOptionsGroupBox.Enabled = false;
-
-					isFirstScan = false;
-
-					SetValidCompareTypes();
-				}
-
-				scanProgressBar.Value = 0;
-
-				return;
-			}
-
-			Reset();
-		}
-
-		private async Task OnStartSecondScan()
-		{
-			if (!isFirstScan)
-			{
-				firstScanButton.Enabled = false;
-				nextScanButton.Enabled = false;
-
-				var comparer = CreateComparer(searcher.Settings);
-
-				var report = new Progress<int>(i => scanProgressBar.Value = i);
-				var completed = await searcher.Search(comparer, CancellationToken.None, report);
-
-				if (completed)
-				{
-					ShowScannerResults();
-				}
-
-				scanProgressBar.Value = 0;
-				firstScanButton.Enabled = true;
-				nextScanButton.Enabled = true;
-			}
-		}
-
-		private ScanSettings CreateSearchSettings()
-		{
-			var settings = new ScanSettings
-			{
-				ValueType = SelectedValueType
-			};
-
-			long.TryParse(startAddressTextBox.Text, NumberStyles.HexNumber, null, out var startAddressVar);
-			long.TryParse(endAddressTextBox.Text, NumberStyles.HexNumber, null, out var endAddressVar);
-#if RECLASSNET64
-			settings.StartAddress = unchecked((IntPtr)startAddressVar);
-			settings.StopAddress = unchecked((IntPtr)endAddressVar);
-#else
-			settings.StartAddress = unchecked((IntPtr)(int)startAddressVar);
-			settings.StopAddress = unchecked((IntPtr)(int)endAddressVar);
-#endif
-			settings.FastScan = fastScanCheckBox.Checked;
-			int.TryParse(fastScanAlignmentTextBox.Text, out var alignment);
-			settings.FastScanAlignment = Math.Max(1, alignment);
-
-			SettingState CheckStateToSettingState(CheckState state)
-			{
-				switch (state)
-				{
-					case CheckState.Checked:
-						return SettingState.Yes;
-					case CheckState.Unchecked:
-						return SettingState.No;
-					default:
-						return SettingState.Indeterminate;
-				}
-			}
-
-			settings.ScanWritableMemory = CheckStateToSettingState(scanWritableCheckBox.CheckState);
-			settings.ScanExecutableMemory = CheckStateToSettingState(scanExecutableCheckBox.CheckState);
-			settings.ScanCopyOnWriteMemory = CheckStateToSettingState(scanCopyOnWriteCheckBox.CheckState);
-
-			return settings;
-		}
-
-		private IScanComparer CreateComparer(ScanSettings settings)
-		{
-			Contract.Requires(settings != null);
-
-			var compareType = SelectedCompareType;
-
-			if (settings.ValueType == ScanValueType.Byte || settings.ValueType == ScanValueType.Short || settings.ValueType == ScanValueType.Integer || settings.ValueType == ScanValueType.Long)
-			{
-				var numberStyle = isHexCheckBox.Checked ? NumberStyles.HexNumber : NumberStyles.Integer;
-				long.TryParse(dualValueBox.Value1, numberStyle, null, out var value1);
-				long.TryParse(dualValueBox.Value2, numberStyle, null, out var value2);
-
-				switch (settings.ValueType)
-				{
-					case ScanValueType.Byte:
-						return new ByteMemoryComparer(compareType, (byte)value1, (byte)value2);
-					case ScanValueType.Short:
-						return new ShortMemoryComparer(compareType, (short)value1, (short)value2);
-					case ScanValueType.Integer:
-						return new IntegerMemoryComparer(compareType, (int)value1, (int)value2);
-					case ScanValueType.Long:
-						return new LongMemoryComparer(compareType, value1, value2);
-				}
-			}
-			else if (settings.ValueType == ScanValueType.Float || settings.ValueType == ScanValueType.Double)
-			{
-				int CalculateSignificantDigits(string input, NumberFormatInfo numberFormat)
-				{
-					Contract.Requires(input != null);
-					Contract.Requires(numberFormat != null);
-
-					var digits = 0;
-
-					var decimalIndex = input.IndexOf(numberFormat.NumberDecimalSeparator, StringComparison.Ordinal);
-					if (decimalIndex != -1)
-					{
-						digits = input.Length - 1 - decimalIndex;
-					}
-
-					return digits;
-				}
-
-				var nf1 = Utils.GuessNumberFormat(dualValueBox.Value1);
-				double.TryParse(dualValueBox.Value1, NumberStyles.Float, nf1, out var value1);
-				var nf2 = Utils.GuessNumberFormat(dualValueBox.Value2);
-				double.TryParse(dualValueBox.Value2, NumberStyles.Float, nf2, out var value2);
-
-				var significantDigits = Math.Max(
-					CalculateSignificantDigits(dualValueBox.Value1, nf1),
-					CalculateSignificantDigits(dualValueBox.Value2, nf2)
-				);
-
-				var roundMode = roundStrictRadioButton.Checked ? ScanRoundMode.Strict : roundLooseRadioButton.Checked ? ScanRoundMode.Normal : ScanRoundMode.Truncate;
-
-				switch (settings.ValueType)
-				{
-					case ScanValueType.Float:
-						return new FloatMemoryComparer(compareType, roundMode, significantDigits, (float)value1, (float)value2);
-					case ScanValueType.Double:
-						return new DoubleMemoryComparer(compareType, roundMode, significantDigits, value1, value2);
-				}
-			}
-			else if (settings.ValueType == ScanValueType.ArrayOfBytes)
-			{
-				var pattern = BytePattern.Parse(dualValueBox.Value1);
-
-				return new ArrayOfBytesMemoryComparer(pattern);
-			}
-			else if (settings.ValueType == ScanValueType.String)
-			{
-				var encoding = encodingUtf8RadioButton.Checked ? Encoding.UTF8 : encodingUtf16RadioButton.Checked ? Encoding.Unicode : Encoding.UTF32;
-
-				return new StringMemoryComparer(dualValueBox.Value1, encoding, caseSensitiveCheckBox.Checked);
-			}
-
-			throw new Exception();
-		}
-
-		private void clearAddressListToolStripButton_Click(object sender, EventArgs e)
-		{
-			addressListMemoryRecordList.Clear();
+			await OnStartNextScan();
 		}
 
 		private void memorySearchResultControl_ResultDoubleClick(object sender, MemoryRecord record)
 		{
 			addressListMemoryRecordList.Records.Add(record);
 		}
-
-		private string addressFilePath;
 
 		private void openAddressFileToolStripButton_Click(object sender, EventArgs e)
 		{
@@ -534,6 +235,11 @@ namespace ReClassNET.Forms
 			}
 		}
 
+		private void clearAddressListToolStripButton_Click(object sender, EventArgs e)
+		{
+			addressListMemoryRecordList.Clear();
+		}
+
 		private void resultListContextMenuStrip_Opening(object sender, CancelEventArgs e)
 		{
 			var cms = (ContextMenuStrip)sender;
@@ -555,26 +261,17 @@ namespace ReClassNET.Forms
 		private static MemoryRecordList GetMemoryRecordListFromMenuItem(object sender) =>
 			(MemoryRecordList)((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl.Parent;
 
-		private void removeSelectedRecordsToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			addressListMemoryRecordList.Records.Remove(addressListMemoryRecordList.SelectedRecord);
-		}
-
-		private void copyAddressToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			var record = GetMemoryRecordListFromMenuItem(sender)?.SelectedRecord;
-			if (record != null)
-			{
-				Clipboard.SetText(record.RealAddress.ToString("X"));
-			}
-		}
-
 		private void addSelectedResultsToAddressListToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			foreach (var record in resultMemoryRecordList.SelectedRecords)
 			{
 				addressListMemoryRecordList.Records.Add(record);
 			}
+		}
+
+		private void removeSelectedRecordsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			addressListMemoryRecordList.Records.Remove(addressListMemoryRecordList.SelectedRecord);
 		}
 
 		private void setCurrentClassAddressToolStripMenuItem_Click(object sender, EventArgs e)
@@ -603,7 +300,351 @@ namespace ReClassNET.Forms
 			);
 		}
 
-		private void FindWhatInteractsWithSelectedRecord(MemoryRecord record,bool writeOnly)
+		private void copyAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var record = GetMemoryRecordListFromMenuItem(sender)?.SelectedRecord;
+			if (record != null)
+			{
+				Clipboard.SetText(record.RealAddress.ToString("X"));
+			}
+		}
+
+		#endregion
+
+		/// <summary>
+		/// Displays the total result count.
+		/// </summary>
+		/// <param name="count">Number of.</param>
+		private void SetResultCount(int count)
+		{
+			resultCountLabel.Text = count > MaxVisibleResults ? $"Found: {count} (only {MaxVisibleResults} shown)" : $"Found: {count}";
+		}
+
+		/// <summary>
+		/// Shows some of the scanner results.
+		/// </summary>
+		private void ShowScannerResults()
+		{
+			Contract.Requires(searcher != null);
+
+			SetResultCount(searcher.TotalResultCount);
+
+			resultMemoryRecordList.SetRecords(
+				searcher.GetResults()
+					.Take(MaxVisibleResults)
+					.OrderBy(r => r.Address, IntPtrComparer.Instance)
+					.Select(r =>
+					{
+						var record = new MemoryRecord(r);
+						record.ResolveAddress(Program.RemoteProcess);
+						return record;
+					})
+			);
+		}
+
+		/// <summary>
+		/// Hide gui elements after the value type has changed.
+		/// </summary>
+		private void OnValueTypeChanged()
+		{
+			SetValidCompareTypes();
+
+			isHexCheckBox.Enabled = true;
+
+			var valueType = SelectedValueType;
+
+			switch (valueType)
+			{
+				case ScanValueType.Byte:
+				case ScanValueType.Short:
+				case ScanValueType.Integer:
+				case ScanValueType.Long:
+					isHexCheckBox.Enabled = true;
+					break;
+				case ScanValueType.Float:
+				case ScanValueType.Double:
+				case ScanValueType.ArrayOfBytes:
+				case ScanValueType.String:
+					isHexCheckBox.Checked = false;
+					isHexCheckBox.Enabled = false;
+					break;
+			}
+
+			var alignment = 1;
+			switch (valueType)
+			{
+				case ScanValueType.Short:
+					alignment = 2;
+					break;
+				case ScanValueType.Float:
+				case ScanValueType.Double:
+				case ScanValueType.Integer:
+				case ScanValueType.Long:
+					alignment = 4;
+					break;
+			}
+			fastScanAlignmentTextBox.Text = alignment.ToString();
+
+			floatingOptionsGroupBox.Visible = valueType == ScanValueType.Float || valueType == ScanValueType.Double;
+			stringOptionsGroupBox.Visible = valueType == ScanValueType.String;
+		}
+
+		/// <summary>
+		/// Sets valid compare types dependend on the selected value type.
+		/// </summary>
+		private void SetValidCompareTypes()
+		{
+			var valueType = SelectedValueType;
+			if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)
+			{
+				scanTypeComboBox.DataSource = EnumDescriptionDisplay<ScanCompareType>.CreateExact(ScanCompareType.Equal);
+			}
+			else
+			{
+				scanTypeComboBox.DataSource = isFirstScan
+					? EnumDescriptionDisplay<ScanCompareType>.CreateExclude(
+						ScanCompareType.Changed, ScanCompareType.NotChanged, ScanCompareType.Decreased, ScanCompareType.DecreasedOrEqual,
+						ScanCompareType.Increased, ScanCompareType.IncreasedOrEqual
+					)
+					: EnumDescriptionDisplay<ScanCompareType>.CreateExclude(ScanCompareType.Unknown);
+			}
+		}
+
+		/// <summary>
+		/// Resets all fields.
+		/// </summary>
+		private void Reset()
+		{
+			searcher?.Dispose();
+			searcher = null;
+
+			SetResultCount(0);
+			resultMemoryRecordList.Clear();
+
+			firstScanButton.Enabled = true;
+			nextScanButton.Enabled = false;
+
+			isHexCheckBox.Enabled = true;
+			isHexCheckBox.Checked = false;
+
+			valueTypeComboBox.Enabled = true;
+			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == ScanValueType.Integer);
+			OnValueTypeChanged();
+
+			floatingOptionsGroupBox.Enabled = true;
+			stringOptionsGroupBox.Enabled = true;
+			scanOptionsGroupBox.Enabled = true;
+
+			isFirstScan = true;
+
+			SetValidCompareTypes();
+		}
+
+		/// <summary>
+		/// Executes the first scan async.
+		/// </summary>
+		/// <returns>The scanner task.</returns>
+		private async Task OnStartFirstScan()
+		{
+			if (isFirstScan)
+			{
+				firstScanButton.Enabled = false;
+
+				var settings = CreateSearchSettings();
+				var comparer = CreateComparer(settings);
+				searcher = new Scanner(Program.RemoteProcess, settings);
+
+				var report = new Progress<int>(i => scanProgressBar.Value = i);
+				var completed = await searcher.Search(comparer, CancellationToken.None, report);
+
+				if (completed)
+				{
+					ShowScannerResults();
+
+					firstScanButton.Enabled = true;
+					nextScanButton.Enabled = true;
+					valueTypeComboBox.Enabled = false;
+
+					floatingOptionsGroupBox.Enabled = false;
+					stringOptionsGroupBox.Enabled = false;
+					scanOptionsGroupBox.Enabled = false;
+
+					isFirstScan = false;
+
+					SetValidCompareTypes();
+				}
+
+				scanProgressBar.Value = 0;
+
+				return;
+			}
+
+			Reset();
+		}
+
+		/// <summary>
+		/// Executes the next scan async.
+		/// </summary>
+		/// <returns>The scanner task.</returns>
+		private async Task OnStartNextScan()
+		{
+			if (!isFirstScan)
+			{
+				firstScanButton.Enabled = false;
+				nextScanButton.Enabled = false;
+
+				var comparer = CreateComparer(searcher.Settings);
+
+				var report = new Progress<int>(i => scanProgressBar.Value = i);
+				var completed = await searcher.Search(comparer, CancellationToken.None, report);
+
+				if (completed)
+				{
+					ShowScannerResults();
+				}
+
+				scanProgressBar.Value = 0;
+				firstScanButton.Enabled = true;
+				nextScanButton.Enabled = true;
+			}
+		}
+
+		/// <summary>
+		/// Creates the search settings from the user input.
+		/// </summary>
+		/// <returns>The search settings.</returns>
+		private ScanSettings CreateSearchSettings()
+		{
+			Contract.Ensures(Contract.Result<ScanSettings>() != null);
+
+			var settings = new ScanSettings
+			{
+				ValueType = SelectedValueType
+			};
+
+			long.TryParse(startAddressTextBox.Text, NumberStyles.HexNumber, null, out var startAddressVar);
+			long.TryParse(endAddressTextBox.Text, NumberStyles.HexNumber, null, out var endAddressVar);
+#if RECLASSNET64
+			settings.StartAddress = unchecked((IntPtr)startAddressVar);
+			settings.StopAddress = unchecked((IntPtr)endAddressVar);
+#else
+			settings.StartAddress = unchecked((IntPtr)(int)startAddressVar);
+			settings.StopAddress = unchecked((IntPtr)(int)endAddressVar);
+#endif
+			settings.EnableFastScan = fastScanCheckBox.Checked;
+			int.TryParse(fastScanAlignmentTextBox.Text, out var alignment);
+			settings.FastScanAlignment = Math.Max(1, alignment);
+
+			SettingState CheckStateToSettingState(CheckState state)
+			{
+				switch (state)
+				{
+					case CheckState.Checked:
+						return SettingState.Yes;
+					case CheckState.Unchecked:
+						return SettingState.No;
+					default:
+						return SettingState.Indeterminate;
+				}
+			}
+
+			settings.ScanWritableMemory = CheckStateToSettingState(scanWritableCheckBox.CheckState);
+			settings.ScanExecutableMemory = CheckStateToSettingState(scanExecutableCheckBox.CheckState);
+			settings.ScanCopyOnWriteMemory = CheckStateToSettingState(scanCopyOnWriteCheckBox.CheckState);
+
+			return settings;
+		}
+
+		/// <summary>
+		/// Creates the comparer from the user input.
+		/// </summary>
+		/// <returns>The scan comparer.</returns>
+		private IScanComparer CreateComparer(ScanSettings settings)
+		{
+			Contract.Requires(settings != null);
+			Contract.Ensures(Contract.Result<IScanComparer>() != null);
+
+			var compareType = SelectedCompareType;
+
+			if (settings.ValueType == ScanValueType.Byte || settings.ValueType == ScanValueType.Short || settings.ValueType == ScanValueType.Integer || settings.ValueType == ScanValueType.Long)
+			{
+				var numberStyle = isHexCheckBox.Checked ? NumberStyles.HexNumber : NumberStyles.Integer;
+				long.TryParse(dualValueBox.Value1, numberStyle, null, out var value1);
+				long.TryParse(dualValueBox.Value2, numberStyle, null, out var value2);
+
+				switch (settings.ValueType)
+				{
+					case ScanValueType.Byte:
+						return new ByteMemoryComparer(compareType, (byte)value1, (byte)value2);
+					case ScanValueType.Short:
+						return new ShortMemoryComparer(compareType, (short)value1, (short)value2);
+					case ScanValueType.Integer:
+						return new IntegerMemoryComparer(compareType, (int)value1, (int)value2);
+					case ScanValueType.Long:
+						return new LongMemoryComparer(compareType, value1, value2);
+				}
+			}
+			else if (settings.ValueType == ScanValueType.Float || settings.ValueType == ScanValueType.Double)
+			{
+				int CalculateSignificantDigits(string input, NumberFormatInfo numberFormat)
+				{
+					Contract.Requires(input != null);
+					Contract.Requires(numberFormat != null);
+
+					var digits = 0;
+
+					var decimalIndex = input.IndexOf(numberFormat.NumberDecimalSeparator, StringComparison.Ordinal);
+					if (decimalIndex != -1)
+					{
+						digits = input.Length - 1 - decimalIndex;
+					}
+
+					return digits;
+				}
+
+				var nf1 = Utils.GuessNumberFormat(dualValueBox.Value1);
+				double.TryParse(dualValueBox.Value1, NumberStyles.Float, nf1, out var value1);
+				var nf2 = Utils.GuessNumberFormat(dualValueBox.Value2);
+				double.TryParse(dualValueBox.Value2, NumberStyles.Float, nf2, out var value2);
+
+				var significantDigits = Math.Max(
+					CalculateSignificantDigits(dualValueBox.Value1, nf1),
+					CalculateSignificantDigits(dualValueBox.Value2, nf2)
+				);
+
+				var roundMode = roundStrictRadioButton.Checked ? ScanRoundMode.Strict : roundLooseRadioButton.Checked ? ScanRoundMode.Normal : ScanRoundMode.Truncate;
+
+				switch (settings.ValueType)
+				{
+					case ScanValueType.Float:
+						return new FloatMemoryComparer(compareType, roundMode, significantDigits, (float)value1, (float)value2);
+					case ScanValueType.Double:
+						return new DoubleMemoryComparer(compareType, roundMode, significantDigits, value1, value2);
+				}
+			}
+			else if (settings.ValueType == ScanValueType.ArrayOfBytes)
+			{
+				var pattern = BytePattern.Parse(dualValueBox.Value1);
+
+				return new ArrayOfBytesMemoryComparer(pattern);
+			}
+			else if (settings.ValueType == ScanValueType.String)
+			{
+				var encoding = encodingUtf8RadioButton.Checked ? Encoding.UTF8 : encodingUtf16RadioButton.Checked ? Encoding.Unicode : Encoding.UTF32;
+
+				return new StringMemoryComparer(dualValueBox.Value1, encoding, caseSensitiveCheckBox.Checked);
+			}
+
+			throw new Exception();
+		}
+
+		/// <summary>
+		/// Attaches the debugger to find what interacts with the selected record.
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown when one or more arguments are outside the required range.</exception>
+		/// <param name="record">The record.</param>
+		/// <param name="writeOnly">True to search only for write access.</param>
+		private static void FindWhatInteractsWithSelectedRecord(MemoryRecord record, bool writeOnly)
 		{
 			int size;
 			switch (record.ValueType)

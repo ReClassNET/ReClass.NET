@@ -19,6 +19,9 @@ namespace ReClassNET.MemorySearcher
 
 		public ScanSettings Settings { get; }
 
+		/// <summary>
+		/// Gets the total result count from the last scan.
+		/// </summary>
 		public int TotalResultCount => store.TotalResultCount;
 
 		private bool isFirstScan;
@@ -40,6 +43,12 @@ namespace ReClassNET.MemorySearcher
 			store = null;
 		}
 
+		/// <summary>
+		/// Retrieves the results of the last scan from the store.
+		/// </summary>
+		/// <returns>
+		/// An enumeration of the <see cref="ScanResult"/>s of the last scan.
+		/// </returns>
 		public IEnumerable<ScanResult> GetResults()
 		{
 			Contract.Ensures(Contract.Result<IEnumerable<ScanResult>>() != null);
@@ -47,11 +56,19 @@ namespace ReClassNET.MemorySearcher
 			return store.GetResultBlocks().SelectMany(kv => kv.Results);
 		}
 
+		/// <summary>
+		/// Creates a new <see cref="ScanResultStore"/> and uses the system temporary path as file location.
+		/// </summary>
+		/// <returns>The new <see cref="ScanResultStore"/>.</returns>
 		private ScanResultStore CreateStore()
 		{
 			return new ScanResultStore(Settings.ValueType, Path.GetTempPath());
 		}
 
+		/// <summary>
+		/// Gets a list of the sections which meet the provided scan settings.
+		/// </summary>
+		/// <returns>A list of searchable sections.</returns>
 		private IList<Section> GetSearchableSections()
 		{
 			Contract.Ensures(Contract.Result<IList<Section>>() != null);
@@ -63,9 +80,9 @@ namespace ReClassNET.MemorySearcher
 				{
 					switch (s.Type)
 					{
-						case SectionType.Private: return Settings.ScanMemPrivate;
-						case SectionType.Image: return Settings.ScanMemImage;
-						case SectionType.Mapped: return Settings.ScanMemMapped;
+						case SectionType.Private: return Settings.ScanPrivateMemory;
+						case SectionType.Image: return Settings.ScanImageMemory;
+						case SectionType.Mapped: return Settings.ScanMappedMemory;
 						default: return false;
 					}
 				})
@@ -102,11 +119,26 @@ namespace ReClassNET.MemorySearcher
 				.ToList();
 		}
 
+		/// <summary>
+		/// Starts an async search with the provided <see cref="IScanComparer"/>.
+		/// The results are stored in the store.
+		/// </summary>
+		/// <param name="comparer">The comparer to scan for values.</param>
+		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
+		/// <param name="progress">The <see cref="IProgress{T}"/> object to report the current progress.</param>
+		/// <returns> The asynchronous result indicating if the scan completed.</returns>
 		public Task<bool> Search(IScanComparer comparer, CancellationToken ct, IProgress<int> progress)
 		{
 			return isFirstScan ? FirstScan(comparer, ct, progress) : NextScan(comparer, ct, progress);
 		}
 
+		/// <summary>
+		/// Starts an async first scan with the provided <see cref="IScanComparer"/>.
+		/// </summary>
+		/// <param name="comparer">The comparer to scan for values.</param>
+		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
+		/// <param name="progress">The <see cref="IProgress{T}"/> object to report the current progress.</param>
+		/// <returns> The asynchronous result indicating if the scan completed.</returns>
 		private Task<bool> FirstScan(IScanComparer comparer, CancellationToken ct, IProgress<int> progress)
 		{
 			Contract.Requires(comparer != null);
@@ -125,28 +157,34 @@ namespace ReClassNET.MemorySearcher
 
 			return Task.Run(() =>
 			{
+				// Algorithm:
+				// 1. Partition the sections for the worker threads.
+				// 2. Create a ScannerContext per worker thread.
+				// 3. n Worker -> m Sections: Read data, search results, store results
+
 				var result = Parallel.ForEach(
-					sections,
+					sections, // Sections get grouped by the framework to balance the workers.
 					new ParallelOptions { CancellationToken = ct},
-					() => new ScannerContext(Settings, comparer, initialBufferSize),
+					() => new ScannerContext(Settings, comparer, initialBufferSize), // Create a new context for every worker (thread).
 					(s, state, _, context) =>
 					{
 						var size = s.Size.ToInt32();
 						context.EnsureBufferSize(size);
 						var buffer = context.Buffer;
-						if (process.ReadRemoteMemoryIntoBuffer(s.Start, ref buffer, 0, size))
+						if (process.ReadRemoteMemoryIntoBuffer(s.Start, ref buffer, 0, size)) // Fill the buffer.
 						{
-							var results = context.Worker.Search(buffer, size)
-								.Select(r => { r.Address = r.Address.Add(s.Start); return r; })
+							var results = context.Worker.Search(buffer, size) // Search for results.
+								.Select(r => { r.Address = r.Address.Add(s.Start); return r; }) // Results are relative to the buffer so add the section start address.
 								.ToList();
 							if (results.Count > 0)
 							{
+								// Minify the result block range.
 								var block = new ScanResultBlock(
 									results.Min(r => r.Address, IntPtrComparer.Instance),
 									results.Max(r => r.Address, IntPtrComparer.Instance) + comparer.ValueSize,
 									results
 								);
-								store.AddBlock(block);
+								store.AddBlock(block); // Store the result block.
 							}
 						}
 
@@ -170,6 +208,14 @@ namespace ReClassNET.MemorySearcher
 			}, ct);
 		}
 
+		/// <summary>
+		/// Starts an async next scan with the provided <see cref="IScanComparer"/>.
+		/// The next scan uses the previous results to refine the results.
+		/// </summary>
+		/// <param name="comparer">The comparer to scan for values.</param>
+		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
+		/// <param name="progress">The <see cref="IProgress{T}"/> object to report the current progress.</param>
+		/// <returns> The asynchronous result indicating if the scan completed.</returns>
 		private Task<bool> NextScan(IScanComparer comparer, CancellationToken ct, IProgress<int> progress)
 		{
 			Contract.Requires(comparer != null);

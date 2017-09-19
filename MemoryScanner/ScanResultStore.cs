@@ -7,6 +7,10 @@ using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner
 {
+	/// <summary>
+	/// The store of all found scan results. If the result count exceed the <see cref="MaximumMemoryResultsCount"/> limit,
+	/// the results are stored in temporary files.
+	/// </summary>
 	internal class ScanResultStore : IDisposable
 	{
 		private enum StorageMode
@@ -26,6 +30,9 @@ namespace ReClassNET.MemoryScanner
 
 		private readonly ScanValueType valueType;
 
+		/// <summary>
+		/// Gets the number of total results.
+		/// </summary>
 		public int TotalResultCount { get; private set; }
 
 		public ScanResultStore(ScanValueType valueType, string storePath)
@@ -60,11 +67,21 @@ namespace ReClassNET.MemoryScanner
 			}
 		}
 
+		/// <summary>
+		/// Gets the result blocks from the store. This may read results from files..
+		/// </summary>
 		public IEnumerable<ScanResultBlock> GetResultBlocks()
 		{
+			Contract.Ensures(Contract.Result<IEnumerable<ScanResultBlock>>() != null);
+
 			return mode == StorageMode.Memory ? store : ReadBlocksFromFile();
 		}
 
+		/// <summary>
+		/// Adds a result block to the store. If the result count exceed the <see cref="MaximumMemoryResultsCount"/> limit,
+		/// the results are stored in temporary files.
+		/// </summary>
+		/// <param name="block">The result block to add.</param>
 		public void AddBlock(ScanResultBlock block)
 		{
 			Contract.Requires(block != null);
@@ -102,6 +119,10 @@ namespace ReClassNET.MemoryScanner
 			}
 		}
 
+		/// <summary>
+		/// Writes a result block to the file.
+		/// </summary>
+		/// <param name="block">The result block to add.</param>
 		private void AppendBlockToFile(ScanResultBlock block)
 		{
 			Contract.Requires(block != null);
@@ -119,8 +140,13 @@ namespace ReClassNET.MemoryScanner
 			}
 		}
 
+		/// <summary>
+		/// Reads all memory blocks from the file.
+		/// </summary>
 		private IEnumerable<ScanResultBlock> ReadBlocksFromFile()
 		{
+			Contract.Ensures(Contract.Result<IEnumerable<ScanResultBlock>>() != null);
+
 			using (var stream = File.OpenRead(storePath))
 			{
 				using (var br = new BinaryReader(stream, Encoding.Unicode))
@@ -146,8 +172,16 @@ namespace ReClassNET.MemoryScanner
 			}
 		}
 
+		/// <summary>
+		/// Reads a single scan result from the file.
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the <see cref="ScanValueType"/> is not valid.</exception>
+		/// <param name="br">The <see cref="BinaryReader"/> to read from.</param>
+		/// <returns>The scan result.</returns>
 		private ScanResult ReadScanResult(BinaryReader br)
 		{
+			Contract.Ensures(Contract.Result<ScanResult>() != null);
+
 			var address = br.ReadIntPtr();
 
 			ScanResult result;
@@ -187,8 +221,16 @@ namespace ReClassNET.MemoryScanner
 			return result;
 		}
 
+		/// <summary>
+		/// Writes a single scan result to the file.
+		/// </summary>
+		/// <param name="bw">The <see cref="BinaryWriter"/> to write to.</param>
+		/// <param name="result">The result to write.</param>
 		private static void WriteSearchResult(BinaryWriter bw, ScanResult result)
 		{
+			Contract.Requires(bw != null);
+			Contract.Requires(result != null);
+
 			bw.Write(result.Address);
 
 			switch (result)
@@ -219,8 +261,6 @@ namespace ReClassNET.MemoryScanner
 					bw.Write(stringSearchResult.Encoding == Encoding.UTF8 ? 0 : stringSearchResult.Encoding == Encoding.Unicode ? 1 : 2);
 					bw.Write(stringSearchResult.Value);
 					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(result));
 			}
 		}
 	}

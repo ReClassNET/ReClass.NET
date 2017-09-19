@@ -44,9 +44,23 @@ namespace ReClassNET.UI
 			set => previousValueColumn.Visible = value;
 		}
 
-		public bool ShowValuesHexadecimal { get; set; }
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public IList<MemoryRecord> Records => bindings;
 
-		public IEnumerable<MemoryRecord> Records => bindings;
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public MemoryRecord SelectedRecord => GetSelectedRecords().FirstOrDefault();
+
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public IList<MemoryRecord> SelectedRecords => GetSelectedRecords().ToList();
+
+		public override ContextMenuStrip ContextMenuStrip
+		{
+			get;
+			set;
+		}
 
 		public event MemorySearchResultControlResultDoubleClickEventHandler RecordDoubleClick;
 
@@ -73,55 +87,7 @@ namespace ReClassNET.UI
 			resultDataGridView.DataSource = bindings;
 		}
 
-		public void SetRecords(IEnumerable<MemoryRecord> results)
-		{
-			Contract.Requires(results != null);
-
-			bindings.Clear();
-
-			if (results == null)
-			{
-				return;
-			}
-
-			bindings.RaiseListChangedEvents = false;
-
-			foreach (var result in results)
-			{
-				bindings.Add(result);
-			}
-
-			bindings.RaiseListChangedEvents = true;
-			bindings.ResetBindings();
-		}
-
-		public void AddRecord(MemoryRecord result)
-		{
-			Contract.Requires(result != null);
-
-			bindings.Add(result);
-		}
-
-		public void Clear()
-		{
-			SetRecords(null);
-		}
-
-		public void RefreshValues(RemoteProcess process)
-		{
-			Contract.Requires(process != null);
-
-			foreach (var record in resultDataGridView.GetVisibleRows().Select(r => (MemoryRecord)r.DataBoundItem))
-			{
-				record.RefreshValue(process);
-			}
-		}
-
-		private void OnRecordDoubleClick(MemoryRecord record)
-		{
-			var evt = RecordDoubleClick;
-			evt?.Invoke(this, record);
-		}
+		#region Event Handler
 
 		private void resultDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
 		{
@@ -139,6 +105,76 @@ namespace ReClassNET.UI
 					e.FormattingApplied = true;
 				}
 			}
+		}
+
+		private void resultDataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				if (e.RowIndex != -1)
+				{
+					var row = resultDataGridView.Rows[e.RowIndex];
+					row.Selected = true;
+				}
+			}
+		}
+
+		private void resultDataGridView_RowContextMenuStripNeeded(object sender, DataGridViewRowContextMenuStripNeededEventArgs e)
+		{
+			e.ContextMenuStrip = ContextMenuStrip;
+		}
+
+		#endregion
+
+		private IEnumerable<MemoryRecord> GetSelectedRecords() => resultDataGridView.SelectedRows.Cast<DataGridViewRow>().Select(r => (MemoryRecord)r.DataBoundItem);
+
+		/// <summary>
+		/// Sets the records to display.
+		/// </summary>
+		/// <param name="records">The records.</param>
+		public void SetRecords(IEnumerable<MemoryRecord> records)
+		{
+			Contract.Requires(records != null);
+
+			bindings.Clear();
+
+			bindings.RaiseListChangedEvents = false;
+
+			foreach (var record in records)
+			{
+				bindings.Add(record);
+			}
+
+			bindings.RaiseListChangedEvents = true;
+			bindings.ResetBindings();
+		}
+
+		/// <summary>
+		/// Removes all records.
+		/// </summary>
+		public void Clear()
+		{
+			bindings.Clear();
+		}
+
+		/// <summary>
+		/// Refreshes the data of all displayed records.
+		/// </summary>
+		/// <param name="process">The process.</param>
+		public void RefreshValues(RemoteProcess process)
+		{
+			Contract.Requires(process != null);
+
+			foreach (var record in resultDataGridView.GetVisibleRows().Select(r => (MemoryRecord)r.DataBoundItem))
+			{
+				record.RefreshValue(process);
+			}
+		}
+
+		private void OnRecordDoubleClick(MemoryRecord record)
+		{
+			var evt = RecordDoubleClick;
+			evt?.Invoke(this, record);
 		}
 	}
 }
