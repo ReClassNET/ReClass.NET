@@ -14,7 +14,7 @@
 
 		public const string PluginUrl = "https://github.com/KN4CK3R/ReClass.NET#plugins";
 
-#if WIN64
+#if RECLASSNET64
 		public const string Platform = "x64";
 
 		public const string StringHexFormat = "X016";

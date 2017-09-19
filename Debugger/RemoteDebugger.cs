@@ -130,7 +130,7 @@ namespace ReClassNET.Debugger
 
 			while (size > 0)
 			{
-#if WIN64
+#if RECLASSNET64
 				if (size >= 8)
 				{
 					if (address.Mod(8) == 0)
@@ -182,7 +182,7 @@ namespace ReClassNET.Debugger
 
 		private HardwareBreakpointRegister GetUsableDebugRegister()
 		{
-			var all = new HashSet<HardwareBreakpointRegister>()
+			var all = new HashSet<HardwareBreakpointRegister>
 			{
 				HardwareBreakpointRegister.Dr0,
 				HardwareBreakpointRegister.Dr1,
@@ -194,8 +194,7 @@ namespace ReClassNET.Debugger
 			{
 				foreach (var bp in breakpoints)
 				{
-					var hwbp = bp as HardwareBreakpoint;
-					if (hwbp != null)
+					if (bp is HardwareBreakpoint hwbp)
 					{
 						all.Remove(hwbp.Register);
 					}
@@ -211,7 +210,7 @@ namespace ReClassNET.Debugger
 		}
 	}
 
-	class BreakpointSplit
+	internal class BreakpointSplit
 	{
 		public IntPtr Address;
 		public int Size;

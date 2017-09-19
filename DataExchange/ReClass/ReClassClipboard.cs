@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
-namespace ReClassNET.DataExchange
+namespace ReClassNET.DataExchange.ReClass
 {
 	public class ReClassClipboard
 	{
@@ -47,8 +47,7 @@ namespace ReClassNET.DataExchange
 
 			if (ContainsNodes)
 			{
-				var data = Clipboard.GetData(ClipboardFormat) as byte[];
-				if (data != null)
+				if (Clipboard.GetData(ClipboardFormat) is byte[] data)
 				{
 					using (var ms = new MemoryStream(data))
 					{

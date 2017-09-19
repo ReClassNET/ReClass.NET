@@ -31,7 +31,6 @@
 			this.components = new System.ComponentModel.Container();
 			this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.setCurrentClassAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.createClassAtAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.dumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,12 +64,11 @@
 			// 
 			this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.setCurrentClassAddressToolStripMenuItem,
-            this.toolStripSeparator1,
             this.createClassAtAddressToolStripMenuItem,
             this.toolStripSeparator2,
             this.dumpToolStripMenuItem});
 			this.contextMenuStrip.Name = "contextMenuStrip";
-			this.contextMenuStrip.Size = new System.Drawing.Size(203, 104);
+			this.contextMenuStrip.Size = new System.Drawing.Size(203, 98);
 			// 
 			// setCurrentClassAddressToolStripMenuItem
 			// 
@@ -79,11 +77,6 @@
 			this.setCurrentClassAddressToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
 			this.setCurrentClassAddressToolStripMenuItem.Text = "Set current class address";
 			this.setCurrentClassAddressToolStripMenuItem.Click += new System.EventHandler(this.setCurrentClassAddressToolStripMenuItem_Click);
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(199, 6);
 			// 
 			// createClassAtAddressToolStripMenuItem
 			// 
@@ -330,7 +323,6 @@
 		private System.Windows.Forms.DataGridView sectionsDataGridView;
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem setCurrentClassAddressToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem createClassAtAddressToolStripMenuItem;
 		private UI.BannerBox bannerBox1;
 		private System.Windows.Forms.TabControl tabControl;

@@ -7,7 +7,7 @@ using System.Xml.Linq;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
-namespace ReClassNET.DataExchange
+namespace ReClassNET.DataExchange.ReClass
 {
 	public partial class ReClassNetFile
 	{
@@ -27,7 +27,8 @@ namespace ReClassNET.DataExchange
 				using (var entryStream = dataEntry.Open())
 				{
 					var document = new XDocument(
-						new XComment("ReClass.NET by KN4CK3R"),
+						new XComment($"{Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}"),
+						new XComment($"Website: {Constants.HomepageUrl}"),
 						new XElement(
 							XmlRootElement,
 							new XAttribute(XmlVersionAttribute, Version1),
@@ -41,7 +42,7 @@ namespace ReClassNET.DataExchange
 			}
 		}
 
-		private IEnumerable<XElement> CreateClassElements(IEnumerable<ClassNode> classes, ILogger logger)
+		private static IEnumerable<XElement> CreateClassElements(IEnumerable<ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(classes != null);
 			Contract.Requires(Contract.ForAll(classes, c => c != null));
@@ -58,7 +59,7 @@ namespace ReClassNET.DataExchange
 			));
 		}
 
-		private IEnumerable<XElement> CreateNodeElements(IEnumerable<BaseNode> nodes, ILogger logger)
+		private static IEnumerable<XElement> CreateNodeElements(IEnumerable<BaseNode> nodes, ILogger logger)
 		{
 			Contract.Requires(nodes != null);
 			Contract.Requires(Contract.ForAll(nodes, n => n != null));
@@ -75,7 +76,7 @@ namespace ReClassNET.DataExchange
 					continue;
 				}
 
-				if (!BuildInTypeToStringMap.TryGetValue(node.GetType(), out var typeString))
+				if (!buildInTypeToStringMap.TryGetValue(node.GetType(), out var typeString))
 				{
 					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Name}");
 					logger.Log(LogLevel.Warning, node.GetType().ToString());
@@ -90,8 +91,7 @@ namespace ReClassNET.DataExchange
 					new XAttribute(XmlTypeAttribute, typeString)
 				);
 
-				var referenceNode = node as BaseReferenceNode;
-				if (referenceNode != null)
+				if (node is BaseReferenceNode referenceNode)
 				{
 					element.SetAttributeValue(XmlReferenceAttribute, referenceNode.InnerNode.Uuid.ToBase64String());
 				}
@@ -168,16 +168,14 @@ namespace ReClassNET.DataExchange
 
 				foreach (var node in nodes)
 				{
-					var classNode = node as ClassNode;
-					if (classNode != null)
+					if (node is ClassNode classNode)
 					{
 						project.AddClass(classNode);
 
 						continue;
 					}
 
-					var referenceNode = node as BaseReferenceNode;
-					if (referenceNode != null)
+					if (node is BaseReferenceNode referenceNode)
 					{
 						RecursiveAddReferences(referenceNode);
 					}

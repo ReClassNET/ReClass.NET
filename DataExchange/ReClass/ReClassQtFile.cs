@@ -7,7 +7,7 @@ using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
 
-namespace ReClassNET.DataExchange
+namespace ReClassNET.DataExchange.ReClass
 {
 	class ReClassQtFile : IReClassImport
 	{
@@ -64,7 +64,7 @@ namespace ReClassNET.DataExchange
 		/// <summary>Parse a ReClassQT address string and transform it into a ReClass.NET formula.</summary>
 		/// <param name="element">The class element.</param>
 		/// <returns>A string with an address formula.</returns>
-		private string ParseAddressString(XElement element)
+		private static string ParseAddressString(XElement element)
 		{
 			Contract.Requires(element != null);
 
@@ -145,8 +145,7 @@ namespace ReClassNET.DataExchange
 				node.Name = element.Attribute("Name")?.Value ?? string.Empty;
 				node.Comment = element.Attribute("Comments")?.Value ?? string.Empty;
 
-				var referenceNode = node as BaseReferenceNode;
-				if (referenceNode != null)
+				if (node is BaseReferenceNode referenceNode)
 				{
 					var pointToClassId = element.Attribute("PointToClass")?.Value;
 					if (pointToClassId == null || !classes.ContainsKey(pointToClassId))

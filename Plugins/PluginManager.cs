@@ -16,14 +16,12 @@ namespace ReClassNET.Plugins
 		private readonly List<PluginInfo> plugins = new List<PluginInfo>();
 
 		private readonly IPluginHost host;
-		private readonly CoreFunctionsManager coreFunctions;
 
-		public PluginManager(IPluginHost host, CoreFunctionsManager coreFunctions)
+		public PluginManager(IPluginHost host)
 		{
 			Contract.Requires(host != null);
 
 			this.host = host;
-			this.coreFunctions = coreFunctions;
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
@@ -105,7 +103,7 @@ namespace ReClassNET.Plugins
 					}
 					else
 					{
-						coreFunctions.RegisterFunctions(
+						Program.CoreFunctions.RegisterFunctions(
 							pi.Name,
 							new NativeCoreWrapper(pi.NativeHandle)
 						);

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Core;
 using ReClassNET.Forms;
 using ReClassNET.Logger;
+using ReClassNET.Memory;
 using ReClassNET.Native;
 using ReClassNET.UI;
 
@@ -18,9 +20,15 @@ namespace ReClassNET
 
 		public static Random GlobalRandom { get; } = new Random();
 
+		public static RemoteProcess RemoteProcess { get; private set; }
+
+		public static CoreFunctionsManager CoreFunctions => RemoteProcess.CoreFunctions;
+
 		public static MainForm MainForm { get; private set; }
 
 		public static bool DesignMode { get; private set; } = true;
+
+		public static FontEx MonoSpaceFont { get; private set; }
 
 		[STAThread]
 		static void Main()
@@ -36,6 +44,13 @@ namespace ReClassNET
 				
 			}
 
+			MonoSpaceFont = new FontEx
+			{
+				Font = new Font("Courier New", DpiUtil.ScaleIntX(13), GraphicsUnit.Pixel),
+				Width = DpiUtil.ScaleIntX(8),
+				Height = DpiUtil.ScaleIntY(16)
+			};
+
 			NativeMethods.EnableDebugPrivileges();
 
 			Application.EnableVisualStyles();
@@ -48,18 +63,26 @@ namespace ReClassNET
 #if DEBUG
 			using (var coreFunctions = new CoreFunctionsManager())
 			{
-				MainForm = new MainForm(coreFunctions);
+				RemoteProcess = new RemoteProcess(coreFunctions);
+
+				MainForm = new MainForm();
 
 				Application.Run(MainForm);
+
+				RemoteProcess.Dispose();
 			}
 #else
 			try
 			{
-				using (var nativeHelper = new CoreFunctionsManager())
+				using (var coreFunctions = new CoreFunctionsManager())
 				{
-					MainForm = new MainForm(nativeHelper);
+					RemoteProcess = new RemoteProcess(coreFunctions);
+
+					MainForm = new MainForm();
 
 					Application.Run(MainForm);
+
+					RemoteProcess.Dispose();
 				}
 			}
 			catch (Exception ex)

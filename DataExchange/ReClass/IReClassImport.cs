@@ -2,16 +2,16 @@
 using System.Diagnostics.Contracts;
 using ReClassNET.Logger;
 
-namespace ReClassNET.DataExchange
+namespace ReClassNET.DataExchange.ReClass
 {
-	[ContractClass(typeof(IReClassImportContract))]
+	[ContractClass(typeof(ReClassImportContract))]
 	public interface IReClassImport
 	{
 		void Load(string filePath, ILogger logger);
 	}
 
 	[ContractClassFor(typeof(IReClassImport))]
-	internal abstract class IReClassImportContract : IReClassImport
+	internal abstract class ReClassImportContract : IReClassImport
 	{
 		public void Load(string filePath, ILogger logger)
 		{

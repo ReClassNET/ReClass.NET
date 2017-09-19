@@ -330,7 +330,7 @@ namespace ReClassNET.UI
 
 		private void addNewClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			Program.MainForm?.CreateNewDefaultClass();
+			LinkedWindowFeatures.CreateDefaultClass();
 		}
 
 		#endregion

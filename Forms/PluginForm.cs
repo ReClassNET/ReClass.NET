@@ -4,7 +4,6 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.Core;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
 
@@ -12,8 +11,6 @@ namespace ReClassNET.Forms
 {
 	public partial class PluginForm : IconForm
 	{
-		private readonly CoreFunctionsManager coreFunctions;
-
 		private class PluginInfoRow
 		{
 			private readonly PluginInfo plugin;
@@ -33,12 +30,9 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		internal PluginForm(PluginManager pluginManager, CoreFunctionsManager coreFunctions)
+		internal PluginForm(PluginManager pluginManager)
 		{
 			Contract.Requires(pluginManager != null);
-			Contract.Requires(coreFunctions != null);
-
-			this.coreFunctions = coreFunctions;
 
 			InitializeComponent();
 
@@ -51,7 +45,7 @@ namespace ReClassNET.Forms
 
 			// Native Methods Tab
 
-			functionsProvidersComboBox.Items.AddRange(coreFunctions.FunctionProviders.ToArray());
+			functionsProvidersComboBox.Items.AddRange(Program.CoreFunctions.FunctionProviders.ToArray());
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -83,7 +77,7 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			coreFunctions.SetActiveFunctionsProvider(provider);
+			Program.CoreFunctions.SetActiveFunctionsProvider(provider);
 		}
 
 		private void getMoreLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -104,8 +98,7 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			var plugin = row.DataBoundItem as PluginInfoRow;
-			if (plugin != null)
+			if (row.DataBoundItem is PluginInfoRow plugin)
 			{
 				descriptionGroupBox.Text = plugin.Name;
 				descriptionLabel.Text = plugin.Description;

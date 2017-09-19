@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Data;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.Core;
 using ReClassNET.Memory;
 using ReClassNET.Native;
 using ReClassNET.UI;
@@ -15,13 +13,11 @@ namespace ReClassNET.Forms
 	{
 		private const string NoPreviousProcess = "No previous process";
 
-		private static readonly string[] CommonProcesses = new string[]
+		private static readonly string[] commonProcesses = 
 		{
 			"[system process]", "system", "svchost.exe", "services.exe", "wininit.exe",
 			"smss.exe", "csrss.exe", "lsass.exe", "winlogon.exe", "wininit.exe", "dwm.exe"
 		};
-
-		private readonly CoreFunctionsManager coreFunctions;
 
 		/// <summary>Gets the selected process.</summary>
 		public ProcessInfo SelectedProcess => (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)
@@ -31,12 +27,8 @@ namespace ReClassNET.Forms
 		/// <summary>Gets if symbols should get loaded.</summary>
 		public bool LoadSymbols => loadSymbolsCheckBox.Checked;
 
-		public ProcessBrowserForm(CoreFunctionsManager coreFunctions, string previousProcess)
+		public ProcessBrowserForm(string previousProcess)
 		{
-			Contract.Requires(coreFunctions != null);
-
-			this.coreFunctions = coreFunctions;
-
 			InitializeComponent();
 
 			processDataGridView.AutoGenerateColumns = false;
@@ -53,7 +45,7 @@ namespace ReClassNET.Forms
 
 			foreach (var row in processDataGridView.Rows.Cast<DataGridViewRow>())
 			{
-				if ((row.Cells[1].Value as string) == previousProcess)
+				if (row.Cells[1].Value as string == previousProcess)
 				{
 					processDataGridView.CurrentCell = row.Cells[1];
 					break;
@@ -114,19 +106,18 @@ namespace ReClassNET.Forms
 			dt.Columns.Add("path", typeof(string));
 			dt.Columns.Add("info", typeof(ProcessInfo));
 
-			coreFunctions.EnumerateProcesses(p =>
+			var shouldFilter = filterCheckBox.Checked;
+
+			foreach (var p in Program.CoreFunctions.EnumerateProcesses().Where(p => !shouldFilter || !commonProcesses.Contains(p.Name.ToLower())))
 			{
-				if (!filterCheckBox.Checked || !CommonProcesses.Contains(p.Name.ToLower()))
-				{
-					var row = dt.NewRow();
-					row["icon"] = NativeMethods.GetIconForFile(p.Path);
-					row["name"] = p.Name;
-					row["id"] = p.Id;
-					row["path"] = p.Path;
-					row["info"] = p;
-					dt.Rows.Add(row);
-				}
-			});
+				var row = dt.NewRow();
+				row["icon"] = NativeMethods.GetIconForFile(p.Path);
+				row["name"] = p.Name;
+				row["id"] = p.Id;
+				row["path"] = p.Path;
+				row["info"] = p;
+				dt.Rows.Add(row);
+			}
 
 			dt.DefaultView.Sort = "name ASC";
 
@@ -142,7 +133,7 @@ namespace ReClassNET.Forms
 			{
 				filter = $"name like '%{filter}%' or path like '%{filter}%'";
 			}
-			(processDataGridView.DataSource as DataTable).DefaultView.RowFilter = filter;
+			((DataTable)processDataGridView.DataSource).DefaultView.RowFilter = filter;
 		}
 	}
 }

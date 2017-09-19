@@ -108,6 +108,7 @@
 			this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.attachToProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.reattachToProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.detachToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,6 +124,7 @@
 			this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.processInformationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.memorySearcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
 			this.loadSymbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.loadSymbolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -931,6 +933,7 @@
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.attachToProcessToolStripMenuItem,
+            this.reattachToProcessToolStripMenuItem,
             this.detachToolStripMenuItem,
             this.toolStripSeparator1,
             this.openProjectToolStripMenuItem,
@@ -947,6 +950,7 @@
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
+			this.fileToolStripMenuItem.DropDownOpening += new System.EventHandler(this.fileToolStripMenuItem_DropDownOpening);
 			// 
 			// attachToProcessToolStripMenuItem
 			// 
@@ -955,6 +959,14 @@
 			this.attachToProcessToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
 			this.attachToProcessToolStripMenuItem.Text = "Attach to Process...";
 			this.attachToProcessToolStripMenuItem.Click += new System.EventHandler(this.attachToProcessToolStripMenuItem_Click);
+			// 
+			// reattachToProcessToolStripMenuItem
+			// 
+			this.reattachToProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier_Arrow;
+			this.reattachToProcessToolStripMenuItem.Name = "reattachToProcessToolStripMenuItem";
+			this.reattachToProcessToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.reattachToProcessToolStripMenuItem.Text = "<>";
+			this.reattachToProcessToolStripMenuItem.Click += new System.EventHandler(this.reattachToProcessToolStripMenuItem_Click);
 			// 
 			// detachToolStripMenuItem
 			// 
@@ -1056,6 +1068,7 @@
 			// 
 			this.processToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.processInformationsToolStripMenuItem,
+            this.memorySearcherToolStripMenuItem,
             this.toolStripSeparator17,
             this.loadSymbolToolStripMenuItem,
             this.loadSymbolsToolStripMenuItem,
@@ -1069,11 +1082,19 @@
 			// 
 			// processInformationsToolStripMenuItem
 			// 
-			this.processInformationsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
+			this.processInformationsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Category;
 			this.processInformationsToolStripMenuItem.Name = "processInformationsToolStripMenuItem";
 			this.processInformationsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
 			this.processInformationsToolStripMenuItem.Text = "Process Informations";
 			this.processInformationsToolStripMenuItem.Click += new System.EventHandler(this.memoryViewerToolStripMenuItem_Click);
+			// 
+			// memorySearcherToolStripMenuItem
+			// 
+			this.memorySearcherToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+			this.memorySearcherToolStripMenuItem.Name = "memorySearcherToolStripMenuItem";
+			this.memorySearcherToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+			this.memorySearcherToolStripMenuItem.Text = "Memory Searcher";
+			this.memorySearcherToolStripMenuItem.Click += new System.EventHandler(this.memorySearcherToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator17
 			// 
@@ -1323,6 +1344,8 @@
 		private System.Windows.Forms.ToolStripMenuItem detachToolStripMenuItem;
 		private UI.TypeToolStripButton boolToolStripButton;
 		private UI.TypeToolStripButton fnTypeToolStripButton;
+		private System.Windows.Forms.ToolStripMenuItem memorySearcherToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem reattachToProcessToolStripMenuItem;
 	}
 }
 

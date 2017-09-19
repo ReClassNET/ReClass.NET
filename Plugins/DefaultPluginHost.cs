@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Resources;
 using ReClassNET.CodeGenerator;
-using ReClassNET.DataExchange;
+using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Memory;

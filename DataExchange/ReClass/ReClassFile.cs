@@ -9,9 +9,9 @@ using ReClassNET.Nodes;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
-namespace ReClassNET.DataExchange
+namespace ReClassNET.DataExchange.ReClass
 {
-	class ReClassFile : IReClassImport
+	public class ReClassFile : IReClassImport
 	{
 		public const string FormatName = "ReClass File";
 		public const string FileExtension = ".reclass";
@@ -35,28 +35,25 @@ namespace ReClassNET.DataExchange
 
 			Type[] typeMap = null;
 
-			var versionComment = document.Root.FirstNode as XComment;
-			if (versionComment != null)
+			if (document.Root.FirstNode is XComment versionComment)
 			{
 				switch (versionComment.Value.Substring(0, 12).ToLower())
 				{
 					case "reclass 2011":
 					case "reclass 2013":
-						typeMap = TypeMap2013;
+						typeMap = typeMap2013;
 						break;
 					case "reclass 2015":
 					case "reclass 2016":
-						typeMap = TypeMap2016;
+						typeMap = typeMap2016;
+						break;
+					default:
+						logger.Log(LogLevel.Warning, $"Unknown file version: {versionComment.Value}");
+						logger.Log(LogLevel.Warning, "Defaulting to ReClass 2016.");
+
+						typeMap = typeMap2016;
 						break;
 				}
-			}
-
-			if (typeMap == null)
-			{
-				logger.Log(LogLevel.Warning, $"Unknown file version: {versionComment?.Value}");
-				logger.Log(LogLevel.Warning, "Defaulting to ReClass 2016.");
-
-				typeMap = TypeMap2016;
 			}
 
 			var classes = new List<Tuple<XElement, ClassNode>>();
@@ -92,19 +89,22 @@ namespace ReClassNET.DataExchange
 		/// <summary>Parse ReClass address string and transform it into a ReClass.NET formula.</summary>
 		/// <param name="address">The address string.</param>
 		/// <returns>A string.</returns>
-		private string TransformAddressString(string address)
+		private static string TransformAddressString(string address)
 		{
 			Contract.Requires(address != null);
 
-			var parts = address.Split('+').Select(s => s.Trim().ToLower().Replace("\"", string.Empty)).Where(s => s != string.Empty).ToArray();
+			var parts = address.Split('+')
+				.Select(s => s.Trim().ToLower().Replace("\"", string.Empty))
+				.Where(s => s != string.Empty)
+				.ToArray();
 
-			for (int i = 0; i < parts.Length; ++i)
+			for (var i = 0; i < parts.Length; ++i)
 			{
 				var part = parts[i];
 
-				bool isModule = part.Contains(".exe") || part.Contains(".dll");
+				var isModule = part.Contains(".exe") || part.Contains(".dll");
 
-				bool isPointer = false;
+				var isPointer = false;
 				if (part.StartsWith("*"))
 				{
 					isPointer = true;
@@ -173,7 +173,7 @@ namespace ReClassNET.DataExchange
 					while (size != 0)
 					{
 						BaseNode paddingNode;
-#if WIN64
+#if RECLASSNET64
 						if (size >= 8)
 						{
 							paddingNode = new Hex64Node();
@@ -203,8 +203,7 @@ namespace ReClassNET.DataExchange
 					continue;
 				}
 
-				var referenceNode = node as BaseReferenceNode;
-				if (referenceNode != null)
+				if (node is BaseReferenceNode referenceNode)
 				{
 					string reference;
 					if (referenceNode is ClassInstanceArrayNode)
@@ -306,7 +305,7 @@ namespace ReClassNET.DataExchange
 
 		#region ReClass 2011 / ReClass 2013
 
-		private static readonly Type[] TypeMap2013 = new Type[]
+		private static readonly Type[] typeMap2013 = new Type[]
 		{
 			null,
 			typeof(ClassInstanceNode),
@@ -345,7 +344,7 @@ namespace ReClassNET.DataExchange
 
 		#region ReClass 2015 / ReClass 2016
 
-		private static readonly Type[] TypeMap2016 = new Type[]
+		private static readonly Type[] typeMap2016 = new Type[]
 		{
 			null,
 			typeof(ClassInstanceNode),

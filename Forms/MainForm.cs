@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.CodeGenerator;
 using ReClassNET.Core;
-using ReClassNET.DataExchange;
+using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
@@ -21,10 +21,6 @@ namespace ReClassNET.Forms
 {
 	public partial class MainForm : IconForm
 	{
-		private readonly CoreFunctionsManager coreFunctions;
-
-		private readonly RemoteProcess remoteProcess;
-
 		private readonly PluginManager pluginManager;
 
 		private ReClassNetProject currentProject;
@@ -38,29 +34,24 @@ namespace ReClassNET.Forms
 
 		public MenuStrip MainMenu => mainMenuStrip;
 
-		public MainForm(CoreFunctionsManager coreFunctions)
+		public MainForm()
 		{
-			Contract.Requires(coreFunctions != null);
-			Contract.Ensures(remoteProcess != null);
 			Contract.Ensures(pluginManager != null);
 			Contract.Ensures(currentProject != null);
 
-			this.coreFunctions = coreFunctions;
-
 			InitializeComponent();
 
-			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true);
-			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(false);
+			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true, true);
+			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(true, false);
 
-			remoteProcess = new RemoteProcess(coreFunctions);
-			remoteProcess.ProcessAttached += (sender) =>
+			Program.RemoteProcess.ProcessAttached += sender =>
 			{
-				var text = $"{sender.UnderlayingProcess.Name} (PID: {sender.UnderlayingProcess.Id.ToString()})";
+				var text = $"{sender.UnderlayingProcess.Name} (ID: {sender.UnderlayingProcess.Id.ToString()})";
 
 				Text = $"{Constants.ApplicationName} - {text}";
 				processInfoToolStripStatusLabel.Text = text;
 			};
-			remoteProcess.ProcessClosed += (sender) =>
+			Program.RemoteProcess.ProcessClosed += (sender) =>
 			{
 				Text = Constants.ApplicationName;
 				processInfoToolStripStatusLabel.Text = "No process selected";
@@ -68,14 +59,12 @@ namespace ReClassNET.Forms
 
 			memoryViewControl.Memory = new MemoryBuffer
 			{
-				Process = remoteProcess
+				Process = Program.RemoteProcess
 			};
 
-			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess, Program.Logger), coreFunctions);
+			pluginManager = new PluginManager(new DefaultPluginHost(this, Program.RemoteProcess, Program.Logger));
 
 			SetProject(new ReClassNetProject());
-
-			newClassToolStripButton_Click(null, null);
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -85,6 +74,8 @@ namespace ReClassNET.Forms
 			GlobalWindowManager.AddWindow(this);
 
 			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, Constants.PluginsFolder), Program.Logger);
+
+			LinkedWindowFeatures.CreateDefaultClass();
 		}
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
@@ -142,43 +133,72 @@ namespace ReClassNET.Forms
 
 				Close();
 			}
-
-			remoteProcess.Dispose();
 		}
 
 		#region Menustrip
 
+		private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+		{
+			var lastProcess = Program.Settings.LastProcess;
+			if (string.IsNullOrEmpty(lastProcess))
+			{
+				reattachToProcessToolStripMenuItem.Visible = false;
+			}
+			else
+			{
+				reattachToProcessToolStripMenuItem.Visible = true;
+				reattachToProcessToolStripMenuItem.Text = $"Re-Attach to '{lastProcess}'";
+			}
+		}
+
 		private void attachToProcessToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var pb = new ProcessBrowserForm(coreFunctions, Program.Settings.LastProcess))
+			using (var pb = new ProcessBrowserForm(Program.Settings.LastProcess))
 			{
 				if (pb.ShowDialog() == DialogResult.OK)
 				{
 					if (pb.SelectedProcess != null)
 					{
-						remoteProcess.Close();
+						AttachToProcess(pb.SelectedProcess);
 
-						remoteProcess.Open(pb.SelectedProcess);
-						remoteProcess.UpdateProcessInformations();
 						if (pb.LoadSymbols)
 						{
 							LoadAllSymbolsForCurrentProcess();
 						}
-
-						Program.Settings.LastProcess = remoteProcess.UnderlayingProcess.Name;
 					}
 				}
 			}
 		}
 
+		private void reattachToProcessToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var lastProcess = Program.Settings.LastProcess;
+			if (string.IsNullOrEmpty(lastProcess))
+			{
+				return;
+			}
+
+			var info = Program.CoreFunctions.EnumerateProcesses().FirstOrDefault(p => p.Name == lastProcess);
+			if (info == null)
+			{
+				MessageBox.Show($"Process '{lastProcess}' could not be found.", Constants.ApplicationName);
+
+				Program.Settings.LastProcess = string.Empty;
+			}
+			else
+			{
+				AttachToProcess(info);
+			}
+		}
+
 		private void detachToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			remoteProcess.Close();
+			Program.RemoteProcess.Close();
 		}
 
 		private void newClassToolStripButton_Click(object sender, EventArgs e)
 		{
-			CreateNewDefaultClass();
+			LinkedWindowFeatures.CreateDefaultClass();
 		}
 
 		private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -279,7 +299,7 @@ namespace ReClassNET.Forms
 
 		private void pluginsToolStripButton_Click(object sender, EventArgs e)
 		{
-			using (var pf = new PluginForm(pluginManager, coreFunctions))
+			using (var pf = new PluginForm(pluginManager))
 			{
 				pf.ShowDialog();
 			}
@@ -292,12 +312,42 @@ namespace ReClassNET.Forms
 
 		private void memoryViewerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			new ProcessInfoForm(remoteProcess, classesView).Show();
+			new ProcessInfoForm().Show();
+		}
+
+		private void memorySearcherToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			new ScannerForm().Show();
+		}
+
+		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (var ofd = new OpenFileDialog())
+			{
+				ofd.Filter = "Program Debug Database (*.pdb)|*.pdb|All Files (*.*)|*.*";
+
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					try
+					{
+						Program.RemoteProcess.Symbols.LoadSymbolsFromPDB(ofd.FileName);
+					}
+					catch (Exception ex)
+					{
+						Program.Logger.Log(ex);
+					}
+				}
+			}
+		}
+
+		private void loadSymbolsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			LoadAllSymbolsForCurrentProcess();
 		}
 
 		private void ControlRemoteProcessToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (!remoteProcess.IsValid)
+			if (!Program.RemoteProcess.IsValid)
 			{
 				return;
 			}
@@ -312,32 +362,7 @@ namespace ReClassNET.Forms
 				action = ControlRemoteProcessAction.Suspend;
 			}
 
-			remoteProcess.ControlRemoteProcess(action);
-		}
-
-		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using (var ofd = new OpenFileDialog())
-			{
-				ofd.Filter = "Program Debug Database (*.pdb)|*.pdb|All Files (*.*)|*.*";
-
-				if (ofd.ShowDialog() == DialogResult.OK)
-				{
-					try
-					{
-						remoteProcess.Symbols.LoadSymbolsFromPDB(ofd.FileName);
-					}
-					catch (Exception ex)
-					{
-						Program.Logger.Log(ex);
-					}
-				}
-			}
-		}
-
-		private void loadSymbolsToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			LoadAllSymbolsForCurrentProcess();
+			Program.RemoteProcess.ControlRemoteProcess(action);
 		}
 
 		private void cleanUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -369,8 +394,7 @@ namespace ReClassNET.Forms
 
 		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var item = sender as IntegerToolStripMenuItem;
-			if (item == null)
+			if (!(sender is IntegerToolStripMenuItem item))
 			{
 				return;
 			}
@@ -385,8 +409,7 @@ namespace ReClassNET.Forms
 
 		private void insertBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var item = sender as IntegerToolStripMenuItem;
-			if (item == null)
+			if (!(sender is IntegerToolStripMenuItem item))
 			{
 				return;
 			}
@@ -401,8 +424,7 @@ namespace ReClassNET.Forms
 
 		private void memoryTypeToolStripButton_Click(object sender, EventArgs e)
 		{
-			var item = sender as TypeToolStripButton;
-			if (item == null)
+			if (!(sender is TypeToolStripButton item))
 			{
 				return;
 			}
@@ -416,8 +438,7 @@ namespace ReClassNET.Forms
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
-				var files = e.Data.GetData(DataFormats.FileDrop) as string[];
-				if (files != null && files.Any())
+				if (e.Data.GetData(DataFormats.FileDrop) is string[] files && files.Any())
 				{
 					switch (Path.GetExtension(files.First()))
 					{
@@ -434,8 +455,7 @@ namespace ReClassNET.Forms
 
 		private void MainForm_DragDrop(object sender, DragEventArgs e)
 		{
-			var files = e.Data.GetData(DataFormats.FileDrop) as string[];
-			if (files != null && files.Any())
+			if (e.Data.GetData(DataFormats.FileDrop) is string[] files && files.Any())
 			{
 				try
 				{
@@ -467,7 +487,7 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			updateProcessInformationsTask = remoteProcess.UpdateProcessInformationsAsync();
+			updateProcessInformationsTask = Program.RemoteProcess.UpdateProcessInformationsAsync();
 		}
 
 		private void classesView_ClassSelected(object sender, ClassNode node)
@@ -479,8 +499,7 @@ namespace ReClassNET.Forms
 
 		private void memoryViewControl_SelectionChanged(object sender, EventArgs e)
 		{
-			var memoryView = sender as MemoryViewControl;
-			if (memoryView == null)
+			if (!(sender is MemoryViewControl memoryView))
 			{
 				return;
 			}
@@ -497,19 +516,16 @@ namespace ReClassNET.Forms
 
 		#endregion
 
-		/// <summary>Creates a new default class.</summary>
-		public void CreateNewDefaultClass()
+		public void AttachToProcess(ProcessInfo info)
 		{
-			var node = ClassNode.Create();
-			node.AddBytes(64);
+			Contract.Requires(info != null);
 
-			var mainModule = remoteProcess.GetModuleByName(remoteProcess.UnderlayingProcess?.Name);
-			if (mainModule != null)
-			{
-				node.Address = mainModule.Start;
-			}
+			Program.RemoteProcess.Close();
 
-			classesView.SelectedClass = node;
+			Program.RemoteProcess.Open(info);
+			Program.RemoteProcess.UpdateProcessInformations();
+
+			Program.Settings.LastProcess = Program.RemoteProcess.UnderlayingProcess.Name;
 		}
 
 		/// <summary>Sets the current project.</summary>
@@ -644,7 +660,7 @@ namespace ReClassNET.Forms
 			Contract.Ensures(Contract.ValueAtReturn(out project) != null);
 
 			IReClassImport import = null;
-			switch (Path.GetExtension(filePath))
+			switch (Path.GetExtension(filePath)?.ToLower())
 			{
 				case ReClassNetFile.FileExtension:
 					import = new ReClassNetFile(project);
@@ -686,7 +702,7 @@ namespace ReClassNET.Forms
 
 			loadSymbolsTaskToken = new CancellationTokenSource();
 
-			loadSymbolsTask = remoteProcess
+			loadSymbolsTask = Program.RemoteProcess
 				.LoadAllSymbolsAsync(progress, loadSymbolsTaskToken.Token)
 				.ContinueWith(_ => infoToolStripStatusLabel.Visible = false, TaskScheduler.FromCurrentSynchronizationContext());
 		}

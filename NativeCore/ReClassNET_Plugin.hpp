@@ -32,9 +32,10 @@ enum class SectionProtection
 
 	Read = 1,
 	Write = 2,
-	Execute = 4,
+	CopyOnWrite = 4,
+	Execute = 8,
 
-	Guard = 8
+	Guard = 16
 };
 
 inline SectionProtection operator|(SectionProtection lhs, SectionProtection rhs)

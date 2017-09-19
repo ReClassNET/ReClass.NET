@@ -16,7 +16,7 @@ namespace ReClassNET.Nodes
 	{
 		public static event ClassCreatedEventHandler ClassCreated;
 
-#if WIN64
+#if RECLASSNET64
 		public static IntPtr DefaultAddress = (IntPtr)0x140000000;
 #else
 		public static IntPtr DefaultAddress = (IntPtr)0x400000;

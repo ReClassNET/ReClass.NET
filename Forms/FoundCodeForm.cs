@@ -99,7 +99,7 @@ namespace ReClassNET.Forms
 
 			sb.AppendLine();
 
-#if WIN64
+#if RECLASSNET64
 			sb.AppendLine($"RAX = {info.DebugInfo.Registers.Rax.ToString(Constants.StringHexFormat)}");
 			sb.AppendLine($"RBX = {info.DebugInfo.Registers.Rbx.ToString(Constants.StringHexFormat)}");
 			sb.AppendLine($"RCX = {info.DebugInfo.Registers.Rcx.ToString(Constants.StringHexFormat)}");
@@ -155,14 +155,11 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			var node = ClassNode.Create();
-			node.Address = functionStartAddress;
+			var node = LinkedWindowFeatures.CreateClassAtAddress(functionStartAddress, false);
 			node.AddNode(new FunctionNode
 			{
 				Comment = info.Instructions[2].Instruction
 			});
-
-			Program.MainForm.ClassView.SelectedClass = node;
 		}
 
 		private void stopButton_Click(object sender, EventArgs e)

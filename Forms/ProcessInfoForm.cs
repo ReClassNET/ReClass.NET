@@ -1,33 +1,22 @@
 ﻿using System;
 using System.Data;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Memory;
 using ReClassNET.Native;
-using ReClassNET.Nodes;
 using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
 	public partial class ProcessInfoForm : IconForm
 	{
-		private readonly RemoteProcess process;
-		private readonly ClassNodeView classesView;
-
 		/// <summary>The context menu of the sections grid view.</summary>
 		public ContextMenuStrip GridContextMenu => contextMenuStrip;
 
-		public ProcessInfoForm(RemoteProcess process, ClassNodeView classesView)
+		public ProcessInfoForm()
 		{
-			Contract.Requires(process != null);
-			Contract.Requires(classesView != null);
-
-			this.process = process;
-			this.classesView = classesView;
-
 			InitializeComponent();
 
 			tabControl.ImageList = new ImageList();
@@ -45,7 +34,7 @@ namespace ReClassNET.Forms
 				moduleIconDataGridViewImageColumn.Visible = false;
 			}
 
-			if (process.IsValid)
+			if (Program.RemoteProcess.IsValid)
 			{
 				var sections = new DataTable();
 				sections.Columns.Add("address", typeof(string));
@@ -64,7 +53,7 @@ namespace ReClassNET.Forms
 				modules.Columns.Add("path", typeof(string));
 				modules.Columns.Add("module", typeof(Module));
 
-				process.EnumerateRemoteSectionsAndModules(
+				Program.RemoteProcess.EnumerateRemoteSectionsAndModules(
 					delegate (Section section)
 					{
 						var row = sections.NewRow();
@@ -113,8 +102,7 @@ namespace ReClassNET.Forms
 
 		private void SelectRow_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
 		{
-			var dgv = sender as DataGridView;
-			if (dgv == null)
+			if (!(sender is DataGridView dgv))
 			{
 				return;
 			}
@@ -131,40 +119,12 @@ namespace ReClassNET.Forms
 
 		private void setCurrentClassAddressToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var classNode = classesView.SelectedClass;
-			if (classNode == null)
-			{
-				return;
-			}
-
-			IntPtr address;
-			if (GetToolStripSourceControl(sender) == modulesDataGridView)
-			{
-				address = GetSelectedModule()?.Start ?? IntPtr.Zero;
-			}
-			else
-			{
-				address = GetSelectedSection()?.Start ?? IntPtr.Zero;
-			}
-
-			classNode.Address = address;
+			LinkedWindowFeatures.SetCurrentClassAddress(GetSelectedAddress(sender));
 		}
 
 		private void createClassAtAddressToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var node = ClassNode.Create();
-			node.AddBytes(64);
-
-			if (GetToolStripSourceControl(sender) == modulesDataGridView)
-			{
-				node.Address = GetSelectedModule()?.Start ?? IntPtr.Zero;
-			}
-			else
-			{
-				node.Address = GetSelectedSection()?.Start ?? IntPtr.Zero;
-			}
-
-			classesView.SelectedClass = node;
+			LinkedWindowFeatures.CreateClassAtAddress(GetSelectedAddress(sender), true);
 		}
 
 		private void dumpToolStripMenuItem_Click(object sender, EventArgs e)
@@ -211,7 +171,7 @@ namespace ReClassNET.Forms
 
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
-					var dumper = new Dumper(process);
+					var dumper = new Dumper(Program.RemoteProcess);
 
 					try
 					{
@@ -226,7 +186,7 @@ namespace ReClassNET.Forms
 								dumper.DumpSection(address, size, stream);
 							}
 
-							MessageBox.Show("Module successfully dumped.", "ReClass.NET", MessageBoxButtons.OK, MessageBoxIcon.Information);
+							MessageBox.Show("Module successfully dumped.", Constants.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 						}
 					}
 					catch (Exception ex)
@@ -245,6 +205,18 @@ namespace ReClassNET.Forms
 		}
 
 		#endregion
+
+		private IntPtr GetSelectedAddress(object sender)
+		{
+			if (GetToolStripSourceControl(sender) == modulesDataGridView)
+			{
+				return GetSelectedModule()?.Start ?? IntPtr.Zero;
+			}
+			else
+			{
+				return GetSelectedSection()?.Start ?? IntPtr.Zero;
+			}
+		}
 
 		private Control GetToolStripSourceControl(object sender)
 		{

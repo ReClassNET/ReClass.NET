@@ -70,7 +70,7 @@ namespace ReClassNET.AddressParser
 
 					if (long.TryParse(buffer, NumberStyles.HexNumber, null, out var offsetValue))
 					{
-#if WIN64
+#if RECLASSNET64
 						var address = (IntPtr)offsetValue;
 #else
 						var address = (IntPtr)unchecked((int)offsetValue);

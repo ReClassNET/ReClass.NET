@@ -15,6 +15,8 @@ namespace ReClassNET.Memory
 
 		public RemoteProcess Process { get; set; }
 
+		public byte[] RawData => data;
+
 		public int Size
 		{
 			get => data.Length;
@@ -44,12 +46,20 @@ namespace ReClassNET.Memory
 		}
 
 		public MemoryBuffer()
+			: this(0)
 		{
 			Contract.Ensures(data != null);
 			Contract.Ensures(historyData != null);
+		}
 
-			data = new byte[0];
-			historyData = new byte[0];
+		public MemoryBuffer(int size)
+		{
+			Contract.Requires(size >= 0);
+			Contract.Ensures(data != null);
+			Contract.Ensures(historyData != null);
+
+			data = new byte[size];
+			historyData = new byte[size];
 		}
 
 		public MemoryBuffer(MemoryBuffer other)
@@ -169,14 +179,10 @@ namespace ReClassNET.Memory
 			}
 
 			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			var obj = Marshal.PtrToStructure(handle.AddrOfPinnedObject() + Offset + offset, typeof(T));
+			var obj = Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject() + Offset + offset);
 			handle.Free();
 
-			if (obj == null)
-			{
-				return default(T);
-			}
-			return (T)obj;
+			return obj;
 		}
 
 		public string ReadPrintableAsciiString(IntPtr offset, int length)

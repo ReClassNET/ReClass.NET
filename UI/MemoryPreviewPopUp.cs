@@ -55,7 +55,7 @@ namespace ReClassNET.UI
 			{
 				BaseHexNode CreateNode(int index)
 				{
-#if WIN64
+#if RECLASSNET64
 					return new Hex64Node { Offset = (IntPtr)(index * 8) };
 #else
 					return new Hex32Node { Offset = (IntPtr)(index * 4) };
