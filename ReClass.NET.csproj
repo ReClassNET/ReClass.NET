@@ -283,6 +283,7 @@
     </Compile>
     <Compile Include="UI\EnumDescriptionDisplay.cs" />
     <Compile Include="UI\ISettingsBindable.cs" />
+    <Compile Include="UI\LinkedWindowFeatures.cs" />
     <Compile Include="UI\MemoryPreviewPopUp.cs">
       <SubType>Component</SubType>
     </Compile>

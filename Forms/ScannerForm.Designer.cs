@@ -63,6 +63,22 @@
 			this.resultCountLabel = new System.Windows.Forms.Label();
 			this.updateValuesTimer = new System.Windows.Forms.Timer(this.components);
 			this.resultMemoryRecordList = new ReClassNET.UI.MemoryRecordList();
+			this.resultListContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.addSelectedResultsToAddressListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.removeSelectedRecordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.descriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.addressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.valueTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.valueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.setCurrentClassAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.createClassAtAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.findOutWhatAccessesThisAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.findOutWhatWritesToThisAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.copyAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.addressListMemoryRecordList = new ReClassNET.UI.MemoryRecordList();
 			this.toolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.menuToolStrip = new System.Windows.Forms.ToolStrip();
@@ -78,6 +94,7 @@
 			this.flowLayoutPanel.SuspendLayout();
 			this.floatingOptionsGroupBox.SuspendLayout();
 			this.stringOptionsGroupBox.SuspendLayout();
+			this.resultListContextMenuStrip.SuspendLayout();
 			this.toolStripPanel.SuspendLayout();
 			this.menuToolStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -450,30 +467,155 @@
 			// 
 			this.resultMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.resultMemoryRecordList.ContextMenuStrip = this.resultListContextMenuStrip;
 			this.resultMemoryRecordList.Location = new System.Drawing.Point(11, 80);
 			this.resultMemoryRecordList.Name = "resultMemoryRecordList";
 			this.resultMemoryRecordList.ShowAddressColumn = true;
 			this.resultMemoryRecordList.ShowDescriptionColumn = false;
 			this.resultMemoryRecordList.ShowPreviousValueColumn = true;
 			this.resultMemoryRecordList.ShowValueColumn = true;
-			this.resultMemoryRecordList.ShowValuesHexadecimal = false;
 			this.resultMemoryRecordList.ShowValueTypeColumn = false;
 			this.resultMemoryRecordList.Size = new System.Drawing.Size(268, 292);
 			this.resultMemoryRecordList.TabIndex = 16;
 			this.resultMemoryRecordList.RecordDoubleClick += new ReClassNET.UI.MemorySearchResultControlResultDoubleClickEventHandler(this.memorySearchResultControl_ResultDoubleClick);
+			// 
+			// resultListContextMenuStrip
+			// 
+			this.resultListContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addSelectedResultsToAddressListToolStripMenuItem,
+            this.removeSelectedRecordsToolStripMenuItem,
+            this.changeToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.setCurrentClassAddressToolStripMenuItem,
+            this.createClassAtAddressToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.findOutWhatAccessesThisAddressToolStripMenuItem,
+            this.findOutWhatWritesToThisAddressToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.copyAddressToolStripMenuItem});
+			this.resultListContextMenuStrip.Name = "resultListContextMenuStrip";
+			this.resultListContextMenuStrip.Size = new System.Drawing.Size(270, 198);
+			this.resultListContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.resultListContextMenuStrip_Opening);
+			// 
+			// addSelectedResultsToAddressListToolStripMenuItem
+			// 
+			this.addSelectedResultsToAddressListToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Tree_Expand;
+			this.addSelectedResultsToAddressListToolStripMenuItem.Name = "addSelectedResultsToAddressListToolStripMenuItem";
+			this.addSelectedResultsToAddressListToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.addSelectedResultsToAddressListToolStripMenuItem.Text = "Add selected results to address list";
+			this.addSelectedResultsToAddressListToolStripMenuItem.Click += new System.EventHandler(this.addSelectedResultsToAddressListToolStripMenuItem_Click);
+			// 
+			// removeSelectedRecordsToolStripMenuItem
+			// 
+			this.removeSelectedRecordsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Delete;
+			this.removeSelectedRecordsToolStripMenuItem.Name = "removeSelectedRecordsToolStripMenuItem";
+			this.removeSelectedRecordsToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.removeSelectedRecordsToolStripMenuItem.Text = "Remove selected records";
+			this.removeSelectedRecordsToolStripMenuItem.Click += new System.EventHandler(this.removeSelectedRecordsToolStripMenuItem_Click);
+			// 
+			// changeToolStripMenuItem
+			// 
+			this.changeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.descriptionToolStripMenuItem,
+            this.addressToolStripMenuItem,
+            this.valueTypeToolStripMenuItem,
+            this.valueToolStripMenuItem});
+			this.changeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Textfield_Rename;
+			this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
+			this.changeToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.changeToolStripMenuItem.Text = "Change...";
+			// 
+			// descriptionToolStripMenuItem
+			// 
+			this.descriptionToolStripMenuItem.Name = "descriptionToolStripMenuItem";
+			this.descriptionToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.descriptionToolStripMenuItem.Text = "Description";
+			// 
+			// addressToolStripMenuItem
+			// 
+			this.addressToolStripMenuItem.Name = "addressToolStripMenuItem";
+			this.addressToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.addressToolStripMenuItem.Text = "Address";
+			// 
+			// valueTypeToolStripMenuItem
+			// 
+			this.valueTypeToolStripMenuItem.Name = "valueTypeToolStripMenuItem";
+			this.valueTypeToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.valueTypeToolStripMenuItem.Text = "Value Type";
+			// 
+			// valueToolStripMenuItem
+			// 
+			this.valueToolStripMenuItem.Name = "valueToolStripMenuItem";
+			this.valueToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.valueToolStripMenuItem.Text = "Value";
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(266, 6);
+			// 
+			// setCurrentClassAddressToolStripMenuItem
+			// 
+			this.setCurrentClassAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Exchange_Button;
+			this.setCurrentClassAddressToolStripMenuItem.Name = "setCurrentClassAddressToolStripMenuItem";
+			this.setCurrentClassAddressToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.setCurrentClassAddressToolStripMenuItem.Text = "Set current class address";
+			this.setCurrentClassAddressToolStripMenuItem.Click += new System.EventHandler(this.setCurrentClassAddressToolStripMenuItem_Click);
+			// 
+			// createClassAtAddressToolStripMenuItem
+			// 
+			this.createClassAtAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
+			this.createClassAtAddressToolStripMenuItem.Name = "createClassAtAddressToolStripMenuItem";
+			this.createClassAtAddressToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.createClassAtAddressToolStripMenuItem.Text = "Create class at address";
+			this.createClassAtAddressToolStripMenuItem.Click += new System.EventHandler(this.createClassAtAddressToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(266, 6);
+			// 
+			// findOutWhatAccessesThisAddressToolStripMenuItem
+			// 
+			this.findOutWhatAccessesThisAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Find_Access;
+			this.findOutWhatAccessesThisAddressToolStripMenuItem.Name = "findOutWhatAccessesThisAddressToolStripMenuItem";
+			this.findOutWhatAccessesThisAddressToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.findOutWhatAccessesThisAddressToolStripMenuItem.Text = "Find out what accesses this address...";
+			this.findOutWhatAccessesThisAddressToolStripMenuItem.Click += new System.EventHandler(this.findOutWhatAccessesThisAddressToolStripMenuItem_Click);
+			// 
+			// findOutWhatWritesToThisAddressToolStripMenuItem
+			// 
+			this.findOutWhatWritesToThisAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Find_Write;
+			this.findOutWhatWritesToThisAddressToolStripMenuItem.Name = "findOutWhatWritesToThisAddressToolStripMenuItem";
+			this.findOutWhatWritesToThisAddressToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.findOutWhatWritesToThisAddressToolStripMenuItem.Text = "Find out what writes to this address...";
+			this.findOutWhatWritesToThisAddressToolStripMenuItem.Click += new System.EventHandler(this.findOutWhatWritesToThisAddressToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(266, 6);
+			// 
+			// copyAddressToolStripMenuItem
+			// 
+			this.copyAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Copy;
+			this.copyAddressToolStripMenuItem.Name = "copyAddressToolStripMenuItem";
+			this.copyAddressToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.copyAddressToolStripMenuItem.Text = "Copy Address";
+			this.copyAddressToolStripMenuItem.Click += new System.EventHandler(this.copyAddressToolStripMenuItem_Click);
 			// 
 			// addressListMemoryRecordList
 			// 
 			this.addressListMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.addressListMemoryRecordList.ContextMenuStrip = this.resultListContextMenuStrip;
 			this.addressListMemoryRecordList.Location = new System.Drawing.Point(11, 402);
 			this.addressListMemoryRecordList.Name = "addressListMemoryRecordList";
 			this.addressListMemoryRecordList.ShowAddressColumn = true;
 			this.addressListMemoryRecordList.ShowDescriptionColumn = true;
 			this.addressListMemoryRecordList.ShowPreviousValueColumn = false;
 			this.addressListMemoryRecordList.ShowValueColumn = true;
-			this.addressListMemoryRecordList.ShowValuesHexadecimal = false;
 			this.addressListMemoryRecordList.ShowValueTypeColumn = true;
 			this.addressListMemoryRecordList.Size = new System.Drawing.Size(592, 169);
 			this.addressListMemoryRecordList.TabIndex = 17;
@@ -540,7 +682,7 @@
 			// clearAddressListToolStripButton
 			// 
 			this.clearAddressListToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.clearAddressListToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Quit;
+			this.clearAddressListToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Delete;
 			this.clearAddressListToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.clearAddressListToolStripButton.Name = "clearAddressListToolStripButton";
 			this.clearAddressListToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -580,6 +722,7 @@
 			this.floatingOptionsGroupBox.PerformLayout();
 			this.stringOptionsGroupBox.ResumeLayout(false);
 			this.stringOptionsGroupBox.PerformLayout();
+			this.resultListContextMenuStrip.ResumeLayout(false);
 			this.toolStripPanel.ResumeLayout(false);
 			this.toolStripPanel.PerformLayout();
 			this.menuToolStrip.ResumeLayout(false);
@@ -634,5 +777,21 @@
 		private System.Windows.Forms.ToolStripButton clearAddressListToolStripButton;
 		private System.Windows.Forms.ToolTip infoToolTip;
 		private System.Windows.Forms.ToolStripButton saveAddressFileAsToolStripButton;
+		private System.Windows.Forms.ContextMenuStrip resultListContextMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem addSelectedResultsToAddressListToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem setCurrentClassAddressToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem createClassAtAddressToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripMenuItem findOutWhatAccessesThisAddressToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem findOutWhatWritesToThisAddressToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem removeSelectedRecordsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem changeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem descriptionToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem addressToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem valueTypeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem valueToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private System.Windows.Forms.ToolStripMenuItem copyAddressToolStripMenuItem;
 	}
 }

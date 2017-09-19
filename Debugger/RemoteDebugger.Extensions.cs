@@ -5,7 +5,7 @@ namespace ReClassNET.Debugger
 {
 	public static class RemoteDebuggerExtensions
 	{
-		public static bool AskUserAndStartDebugger(this RemoteDebugger debugger)
+		public static bool AskUserAndAttachDebugger(this RemoteDebugger debugger)
 		{
 			Contract.Requires(debugger != null);
 

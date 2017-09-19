@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -22,8 +23,6 @@ namespace ReClassNET.Forms
 	{
 		private const int MaxVisibleResults = 10000;
 
-		private readonly RemoteProcess process;
-
 		private bool isFirstScan;
 
 		private Scanner searcher;
@@ -31,12 +30,8 @@ namespace ReClassNET.Forms
 		private ScanCompareType SelectedCompareType => (scanTypeComboBox.SelectedItem as EnumDescriptionDisplay<ScanCompareType>)?.Value ?? throw new InvalidOperationException();
 		private ScanValueType SelectedValueType => (valueTypeComboBox.SelectedItem as EnumDescriptionDisplay<ScanValueType>)?.Value ?? throw new InvalidOperationException();
 
-		public ScannerForm(RemoteProcess process)
+		public ScannerForm()
 		{
-			Contract.Requires(process != null);
-
-			this.process = process;
-
 			InitializeComponent();
 
 			toolStripPanel.RenderMode = ToolStripRenderMode.Professional;
@@ -56,36 +51,10 @@ namespace ReClassNET.Forms
 
 			Reset();
 
-			firstScanButton.Enabled = nextScanButton.Enabled = flowLayoutPanel.Enabled = process.IsValid;
+			firstScanButton.Enabled = flowLayoutPanel.Enabled = Program.RemoteProcess.IsValid;
 
-			process.ProcessAttached += sender =>
-			{
-				firstScanButton.Enabled = nextScanButton.Enabled = flowLayoutPanel.Enabled = true;
-
-				Reset();
-
-				if (addressListMemoryRecordList.Records.Any())
-				{
-					if (MessageBox.Show("Keep the current address list?", "Process has changed", MessageBoxButtons.YesNo) != DialogResult.Yes)
-					{
-						addressListMemoryRecordList.Clear();
-					}
-					else
-					{
-						foreach (var record in addressListMemoryRecordList.Records)
-						{
-							record.ResolveAddress(process);
-							record.RefreshValue(process);
-						}
-					}
-				}
-			};
-			process.ProcessClosing += sender =>
-			{
-				Reset();
-
-				firstScanButton.Enabled = nextScanButton.Enabled = flowLayoutPanel.Enabled = false;
-			};
+			Program.RemoteProcess.ProcessAttached += RemoteProcessOnProcessAttached;
+			Program.RemoteProcess.ProcessClosing += RemoteProcessOnProcessClosing;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -104,15 +73,48 @@ namespace ReClassNET.Forms
 
 		#region Event Handler
 
+		private void RemoteProcessOnProcessAttached(RemoteProcess remoteProcess)
+		{
+			firstScanButton.Enabled = nextScanButton.Enabled = flowLayoutPanel.Enabled = true;
+
+			Reset();
+
+			if (addressListMemoryRecordList.Records.Any())
+			{
+				if (MessageBox.Show("Keep the current address list?", "Process has changed", MessageBoxButtons.YesNo) != DialogResult.Yes)
+				{
+					addressListMemoryRecordList.Clear();
+				}
+				else
+				{
+					foreach (var record in addressListMemoryRecordList.Records)
+					{
+						record.ResolveAddress(Program.RemoteProcess);
+						record.RefreshValue(Program.RemoteProcess);
+					}
+				}
+			}
+		}
+
+		private void RemoteProcessOnProcessClosing(RemoteProcess remoteProcess)
+		{
+			Reset();
+
+			firstScanButton.Enabled = nextScanButton.Enabled = flowLayoutPanel.Enabled = false;
+		}
+
 		private void MemorySearchForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			searcher?.Dispose();
+
+			Program.RemoteProcess.ProcessAttached -= RemoteProcessOnProcessAttached;
+			Program.RemoteProcess.ProcessClosing -= RemoteProcessOnProcessClosing;
 		}
 
 		private void updateValuesTimer_Tick(object sender, EventArgs e)
 		{
-			resultMemoryRecordList.RefreshValues(process);
-			addressListMemoryRecordList.RefreshValues(process);
+			resultMemoryRecordList.RefreshValues(Program.RemoteProcess);
+			addressListMemoryRecordList.RefreshValues(Program.RemoteProcess);
 		}
 
 		private void valueTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
@@ -150,7 +152,7 @@ namespace ReClassNET.Forms
 					.Select(r =>
 					{
 						var record = new MemoryRecord(r);
-						record.ResolveAddress(process);
+						record.ResolveAddress(Program.RemoteProcess);
 						return record;
 					})
 			);
@@ -253,7 +255,7 @@ namespace ReClassNET.Forms
 
 				var settings = CreateSearchSettings();
 				var comparer = CreateComparer(settings);
-				searcher = new Scanner(process, settings);
+				searcher = new Scanner(Program.RemoteProcess, settings);
 
 				var report = new Progress<int>(i => scanProgressBar.Value = i);
 				var completed = await searcher.Search(comparer, CancellationToken.None, report);
@@ -431,7 +433,7 @@ namespace ReClassNET.Forms
 
 		private void memorySearchResultControl_ResultDoubleClick(object sender, MemoryRecord record)
 		{
-			addressListMemoryRecordList.AddRecord(record);
+			addressListMemoryRecordList.Records.Add(record);
 		}
 
 		private string addressFilePath;
@@ -483,8 +485,8 @@ namespace ReClassNET.Forms
 							import.Load(ofd.FileName, Program.Logger)
 								.Select(r =>
 								{
-									r.ResolveAddress(process);
-									r.RefreshValue(process);
+									r.ResolveAddress(Program.RemoteProcess);
+									r.RefreshValue(Program.RemoteProcess);
 									return r;
 								})
 						);
@@ -530,6 +532,107 @@ namespace ReClassNET.Forms
 					saveAddressFileToolStripButton_Click(sender, e);
 				}
 			}
+		}
+
+		private void resultListContextMenuStrip_Opening(object sender, CancelEventArgs e)
+		{
+			var cms = (ContextMenuStrip)sender;
+
+			var isResultList = cms.SourceControl.Parent == resultMemoryRecordList;
+
+			addSelectedResultsToAddressListToolStripMenuItem.Visible = isResultList;
+			changeToolStripMenuItem.Visible = !isResultList;
+			removeSelectedRecordsToolStripMenuItem.Visible = !isResultList;
+
+			// Hide all other items if multiple records are selected.
+			var multipleRecordsSelected = (isResultList ? resultMemoryRecordList.SelectedRecords.Count : addressListMemoryRecordList.SelectedRecords.Count) > 1;
+			for (var i = 3; i < cms.Items.Count; ++i)
+			{
+				cms.Items[i].Visible = !multipleRecordsSelected;
+			}
+		}
+
+		private static MemoryRecordList GetMemoryRecordListFromMenuItem(object sender) =>
+			(MemoryRecordList)((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl.Parent;
+
+		private void removeSelectedRecordsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			addressListMemoryRecordList.Records.Remove(addressListMemoryRecordList.SelectedRecord);
+		}
+
+		private void copyAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var record = GetMemoryRecordListFromMenuItem(sender)?.SelectedRecord;
+			if (record != null)
+			{
+				Clipboard.SetText(record.RealAddress.ToString("X"));
+			}
+		}
+
+		private void addSelectedResultsToAddressListToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			foreach (var record in resultMemoryRecordList.SelectedRecords)
+			{
+				addressListMemoryRecordList.Records.Add(record);
+			}
+		}
+
+		private void setCurrentClassAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			LinkedWindowFeatures.SetCurrentClassAddress(GetMemoryRecordListFromMenuItem(sender).SelectedRecord.RealAddress);
+		}
+
+		private void createClassAtAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			LinkedWindowFeatures.CreateClassAtAddress(GetMemoryRecordListFromMenuItem(sender).SelectedRecord.RealAddress, true);
+		}
+
+		private void findOutWhatAccessesThisAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			FindWhatInteractsWithSelectedRecord(
+				GetMemoryRecordListFromMenuItem(sender).SelectedRecord,
+				false
+			);
+		}
+
+		private void findOutWhatWritesToThisAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			FindWhatInteractsWithSelectedRecord(
+				GetMemoryRecordListFromMenuItem(sender).SelectedRecord,
+				true
+			);
+		}
+
+		private void FindWhatInteractsWithSelectedRecord(MemoryRecord record,bool writeOnly)
+		{
+			int size;
+			switch (record.ValueType)
+			{
+				case ScanValueType.Byte:
+					size = 1;
+					break;
+				case ScanValueType.Short:
+					size = 2;
+					break;
+				case ScanValueType.Integer:
+				case ScanValueType.Float:
+					size = 4;
+					break;
+				case ScanValueType.Long:
+				case ScanValueType.Double:
+					size = 8;
+					break;
+				case ScanValueType.ArrayOfBytes:
+					size = record.ValueLength;
+					break;
+				case ScanValueType.String:
+					size = record.ValueLength;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+
+			LinkedWindowFeatures.FindWhatInteractsWithAddress(record.RealAddress, size, writeOnly);
 		}
 	}
 }

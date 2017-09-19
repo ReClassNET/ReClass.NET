@@ -21,10 +21,6 @@ namespace ReClassNET.Forms
 {
 	public partial class MainForm : IconForm
 	{
-		private readonly CoreFunctionsManager coreFunctions;
-
-		private readonly RemoteProcess remoteProcess;
-
 		private readonly PluginManager pluginManager;
 
 		private ReClassNetProject currentProject;
@@ -38,29 +34,24 @@ namespace ReClassNET.Forms
 
 		public MenuStrip MainMenu => mainMenuStrip;
 
-		public MainForm(CoreFunctionsManager coreFunctions)
+		public MainForm()
 		{
-			Contract.Requires(coreFunctions != null);
-			Contract.Ensures(remoteProcess != null);
 			Contract.Ensures(pluginManager != null);
 			Contract.Ensures(currentProject != null);
-
-			this.coreFunctions = coreFunctions;
 
 			InitializeComponent();
 
 			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true, true);
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(true, false);
 
-			remoteProcess = new RemoteProcess(coreFunctions);
-			remoteProcess.ProcessAttached += sender =>
+			Program.RemoteProcess.ProcessAttached += sender =>
 			{
 				var text = $"{sender.UnderlayingProcess.Name} (ID: {sender.UnderlayingProcess.Id.ToString()})";
 
 				Text = $"{Constants.ApplicationName} - {text}";
 				processInfoToolStripStatusLabel.Text = text;
 			};
-			remoteProcess.ProcessClosed += (sender) =>
+			Program.RemoteProcess.ProcessClosed += (sender) =>
 			{
 				Text = Constants.ApplicationName;
 				processInfoToolStripStatusLabel.Text = "No process selected";
@@ -68,14 +59,12 @@ namespace ReClassNET.Forms
 
 			memoryViewControl.Memory = new MemoryBuffer
 			{
-				Process = remoteProcess
+				Process = Program.RemoteProcess
 			};
 
-			pluginManager = new PluginManager(new DefaultPluginHost(this, remoteProcess, Program.Logger), coreFunctions);
+			pluginManager = new PluginManager(new DefaultPluginHost(this, Program.RemoteProcess, Program.Logger));
 
 			SetProject(new ReClassNetProject());
-
-			newClassToolStripButton_Click(null, null);
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -85,6 +74,8 @@ namespace ReClassNET.Forms
 			GlobalWindowManager.AddWindow(this);
 
 			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, Constants.PluginsFolder), Program.Logger);
+
+			LinkedWindowFeatures.CreateDefaultClass();
 		}
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
@@ -142,8 +133,6 @@ namespace ReClassNET.Forms
 
 				Close();
 			}
-
-			remoteProcess.Dispose();
 		}
 
 		#region Menustrip
@@ -164,7 +153,7 @@ namespace ReClassNET.Forms
 
 		private void attachToProcessToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var pb = new ProcessBrowserForm(coreFunctions, Program.Settings.LastProcess))
+			using (var pb = new ProcessBrowserForm(Program.Settings.LastProcess))
 			{
 				if (pb.ShowDialog() == DialogResult.OK)
 				{
@@ -189,7 +178,7 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			var info = coreFunctions.EnumerateProcesses().FirstOrDefault(p => p.Name == lastProcess);
+			var info = Program.CoreFunctions.EnumerateProcesses().FirstOrDefault(p => p.Name == lastProcess);
 			if (info == null)
 			{
 				MessageBox.Show($"Process '{lastProcess}' could not be found.", Constants.ApplicationName);
@@ -204,12 +193,12 @@ namespace ReClassNET.Forms
 
 		private void detachToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			remoteProcess.Close();
+			Program.RemoteProcess.Close();
 		}
 
 		private void newClassToolStripButton_Click(object sender, EventArgs e)
 		{
-			CreateNewDefaultClass();
+			LinkedWindowFeatures.CreateDefaultClass();
 		}
 
 		private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -310,7 +299,7 @@ namespace ReClassNET.Forms
 
 		private void pluginsToolStripButton_Click(object sender, EventArgs e)
 		{
-			using (var pf = new PluginForm(pluginManager, coreFunctions))
+			using (var pf = new PluginForm(pluginManager))
 			{
 				pf.ShowDialog();
 			}
@@ -323,12 +312,12 @@ namespace ReClassNET.Forms
 
 		private void memoryViewerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			new ProcessInfoForm(remoteProcess, classesView).Show();
+			new ProcessInfoForm().Show();
 		}
 
 		private void memorySearcherToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			new ScannerForm(remoteProcess).Show();
+			new ScannerForm().Show();
 		}
 
 		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)
@@ -341,7 +330,7 @@ namespace ReClassNET.Forms
 				{
 					try
 					{
-						remoteProcess.Symbols.LoadSymbolsFromPDB(ofd.FileName);
+						Program.RemoteProcess.Symbols.LoadSymbolsFromPDB(ofd.FileName);
 					}
 					catch (Exception ex)
 					{
@@ -358,7 +347,7 @@ namespace ReClassNET.Forms
 
 		private void ControlRemoteProcessToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (!remoteProcess.IsValid)
+			if (!Program.RemoteProcess.IsValid)
 			{
 				return;
 			}
@@ -373,7 +362,7 @@ namespace ReClassNET.Forms
 				action = ControlRemoteProcessAction.Suspend;
 			}
 
-			remoteProcess.ControlRemoteProcess(action);
+			Program.RemoteProcess.ControlRemoteProcess(action);
 		}
 
 		private void cleanUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -498,7 +487,7 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			updateProcessInformationsTask = remoteProcess.UpdateProcessInformationsAsync();
+			updateProcessInformationsTask = Program.RemoteProcess.UpdateProcessInformationsAsync();
 		}
 
 		private void classesView_ClassSelected(object sender, ClassNode node)
@@ -531,27 +520,12 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(info != null);
 
-			remoteProcess.Close();
+			Program.RemoteProcess.Close();
 
-			remoteProcess.Open(info);
-			remoteProcess.UpdateProcessInformations();
+			Program.RemoteProcess.Open(info);
+			Program.RemoteProcess.UpdateProcessInformations();
 
-			Program.Settings.LastProcess = remoteProcess.UnderlayingProcess.Name;
-		}
-
-		/// <summary>Creates a new default class.</summary>
-		public void CreateNewDefaultClass()
-		{
-			var node = ClassNode.Create();
-			node.AddBytes(64);
-
-			var mainModule = remoteProcess.GetModuleByName(remoteProcess.UnderlayingProcess?.Name);
-			if (mainModule != null)
-			{
-				node.Address = mainModule.Start;
-			}
-
-			classesView.SelectedClass = node;
+			Program.Settings.LastProcess = Program.RemoteProcess.UnderlayingProcess.Name;
 		}
 
 		/// <summary>Sets the current project.</summary>
@@ -728,7 +702,7 @@ namespace ReClassNET.Forms
 
 			loadSymbolsTaskToken = new CancellationTokenSource();
 
-			loadSymbolsTask = remoteProcess
+			loadSymbolsTask = Program.RemoteProcess
 				.LoadAllSymbolsAsync(progress, loadSymbolsTaskToken.Token)
 				.ContinueWith(_ => infoToolStripStatusLabel.Visible = false, TaskScheduler.FromCurrentSynchronizationContext());
 		}

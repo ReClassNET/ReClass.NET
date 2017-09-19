@@ -155,14 +155,11 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			var node = ClassNode.Create();
-			node.Address = functionStartAddress;
+			var node = LinkedWindowFeatures.CreateClassAtAddress(functionStartAddress, false);
 			node.AddNode(new FunctionNode
 			{
 				Comment = info.Instructions[2].Instruction
 			});
-
-			Program.MainForm.ClassView.SelectedClass = node;
 		}
 
 		private void stopButton_Click(object sender, EventArgs e)

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Data;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.Core;
 using ReClassNET.Memory;
 using ReClassNET.Native;
 using ReClassNET.UI;
@@ -21,8 +19,6 @@ namespace ReClassNET.Forms
 			"smss.exe", "csrss.exe", "lsass.exe", "winlogon.exe", "wininit.exe", "dwm.exe"
 		};
 
-		private readonly CoreFunctionsManager coreFunctions;
-
 		/// <summary>Gets the selected process.</summary>
 		public ProcessInfo SelectedProcess => (processDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault()?.DataBoundItem as DataRowView)
 			?.Row
@@ -31,12 +27,8 @@ namespace ReClassNET.Forms
 		/// <summary>Gets if symbols should get loaded.</summary>
 		public bool LoadSymbols => loadSymbolsCheckBox.Checked;
 
-		public ProcessBrowserForm(CoreFunctionsManager coreFunctions, string previousProcess)
+		public ProcessBrowserForm(string previousProcess)
 		{
-			Contract.Requires(coreFunctions != null);
-
-			this.coreFunctions = coreFunctions;
-
 			InitializeComponent();
 
 			processDataGridView.AutoGenerateColumns = false;
@@ -116,7 +108,7 @@ namespace ReClassNET.Forms
 
 			var shouldFilter = filterCheckBox.Checked;
 
-			foreach (var p in coreFunctions.EnumerateProcesses().Where(p => !shouldFilter || !commonProcesses.Contains(p.Name.ToLower())))
+			foreach (var p in Program.CoreFunctions.EnumerateProcesses().Where(p => !shouldFilter || !commonProcesses.Contains(p.Name.ToLower())))
 			{
 				var row = dt.NewRow();
 				row["icon"] = NativeMethods.GetIconForFile(p.Path);

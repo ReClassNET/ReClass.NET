@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.DataExchange.ReClass;
-using ReClassNET.Debugger;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
@@ -1129,18 +1128,7 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			var debugger = Memory.Process.Debugger;
-			if (debugger.AskUserAndStartDebugger())
-			{
-				if (writeOnly)
-				{
-					debugger.FindWhatWritesToAddress(selectedNode.Address, selectedNode.Node.MemorySize);
-				}
-				else
-				{
-					debugger.FindWhatAccessesAddress(selectedNode.Address, selectedNode.Node.MemorySize);
-				}
-			}
+			LinkedWindowFeatures.FindWhatInteractsWithAddress(selectedNode.Address, selectedNode.Node.MemorySize, writeOnly);
 		}
 	}
 }
