@@ -22,7 +22,7 @@ namespace ReClassNET.MemoryScanner
 
 			public bool HasWildcard => nibble1.IsWildcard || nibble2.IsWildcard;
 
-			public byte ByteValue => !HasWildcard ? (byte)(nibble1.Value << 4 + nibble2.Value) : throw new InvalidOperationException();
+			public byte ByteValue => !HasWildcard ? (byte)((nibble1.Value << 4) + nibble2.Value) : throw new InvalidOperationException();
 
 			private static bool IsHexValue(char c)
 			{
