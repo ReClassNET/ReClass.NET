@@ -103,9 +103,9 @@ namespace ReClassNET.Util
 			for (var i = 1; i < data.Length; i++)
 			{
 				val = lookup[data[i]];
-				result[2 * i] = ' ';
-				result[2 * i + 1] = (char)val;
-				result[2 * i + 2] = (char)(val >> 16);
+				result[3 * i - 1] = ' ';
+				result[3 * i] = (char)val;
+				result[3 * i + 1] = (char)(val >> 16);
 			}
 			return new string(result);
 		}
