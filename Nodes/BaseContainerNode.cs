@@ -147,7 +147,7 @@ namespace ReClassNET.Nodes
 			while (size != 0)
 			{
 				BaseNode node;
-#if WIN64
+#if RECLASSNET64
 				if (size >= 8)
 				{
 					node = new Hex64Node();

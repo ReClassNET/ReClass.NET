@@ -288,8 +288,8 @@ namespace ReClassNET.Memory
 					var objectLocatorPtr = ReadRemoteObject<IntPtr>(address - IntPtr.Size);
 					if (objectLocatorPtr.MayBeValid())
 					{
-					
-#if WIN64
+
+#if RECLASSNET64
 						rtti = ReadRemoteRuntimeTypeInformation64(objectLocatorPtr);
 #else
 						rtti = ReadRemoteRuntimeTypeInformation32(objectLocatorPtr);

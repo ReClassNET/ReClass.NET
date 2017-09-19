@@ -99,7 +99,7 @@ namespace ReClassNET.Forms
 
 			sb.AppendLine();
 
-#if WIN64
+#if RECLASSNET64
 			sb.AppendLine($"RAX = {info.DebugInfo.Registers.Rax.ToString(Constants.StringHexFormat)}");
 			sb.AppendLine($"RBX = {info.DebugInfo.Registers.Rbx.ToString(Constants.StringHexFormat)}");
 			sb.AppendLine($"RCX = {info.DebugInfo.Registers.Rcx.ToString(Constants.StringHexFormat)}");

@@ -130,7 +130,7 @@ namespace ReClassNET.Debugger
 
 			while (size > 0)
 			{
-#if WIN64
+#if RECLASSNET64
 				if (size >= 8)
 				{
 					if (address.Mod(8) == 0)
