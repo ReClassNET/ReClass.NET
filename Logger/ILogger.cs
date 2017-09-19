@@ -5,7 +5,7 @@ namespace ReClassNET.Logger
 {
 	public delegate void NewLogEntryEventHandler(LogLevel level, string message, Exception ex);
 
-	[ContractClass(typeof(ILoggerContract))]
+	[ContractClass(typeof(LoggerContract))]
 	public interface ILogger
 	{
 		/// <summary>Gets triggered every time a new entry is created.</summary>
@@ -22,9 +22,9 @@ namespace ReClassNET.Logger
 	}
 
 	[ContractClassFor(typeof(ILogger))]
-	internal abstract class ILoggerContract : ILogger
+	internal abstract class LoggerContract : ILogger
 	{
-		public event NewLogEntryEventHandler NewLogEntry;
+		public event NewLogEntryEventHandler NewLogEntry { add { throw new NotImplementedException(); } remove { } }
 
 		public void Log(Exception ex)
 		{
