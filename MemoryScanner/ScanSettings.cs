@@ -25,7 +25,9 @@ namespace ReClassNET.MemoryScanner
 		public bool ScanImageMemory { get; set; } = true;
 		public bool ScanMappedMemory { get; set; } = false;
 		public bool EnableFastScan { get; set; } = true;
-		public int FastScanAlignment { get; set; } = 1;
-		public ScanValueType ValueType { get; set; } = ScanValueType.Byte;
+		public int FastScanAlignment { get; set; } = 4;
+		public ScanValueType ValueType { get; set; } = ScanValueType.Integer;
+
+		public static ScanSettings Default => new ScanSettings();
 	}
 }
