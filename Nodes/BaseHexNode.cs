@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Globalization;
+using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -110,6 +111,11 @@ namespace ReClassNET.Nodes
 					spot.Memory.Process.WriteRemoteMemory(spot.Address + spot.Id, val);
 				}
 			}
+		}
+
+		public byte[] ReadValueFromMemory(MemoryBuffer memory)
+		{
+			return memory.ReadBytes(Offset, MemorySize);
 		}
 	}
 }

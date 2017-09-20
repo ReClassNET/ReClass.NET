@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ReClassNET.Memory;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -31,6 +32,11 @@ namespace ReClassNET.Nodes
 					spot.Memory.Process.WriteRemoteMemory(spot.Address, val);
 				}
 			}
+		}
+
+		public float ReadValueFromMemory(MemoryBuffer memory)
+		{
+			return memory.ReadObject<float>(Offset);
 		}
 	}
 }

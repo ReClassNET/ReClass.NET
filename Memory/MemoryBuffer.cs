@@ -130,6 +130,11 @@ namespace ReClassNET.Memory
 			return data[Offset + offset];
 		}
 
+		public byte[] ReadBytes(IntPtr offset, int length)
+		{
+			return ReadBytes(offset.ToInt32(), length);
+		}
+
 		public byte[] ReadBytes(int offset, int length)
 		{
 			Contract.Requires(offset >= 0);

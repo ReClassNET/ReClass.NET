@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ReClassNET.Memory;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -15,6 +16,11 @@ namespace ReClassNET.Nodes
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			return DrawText(view, x, y, "Text16", MemorySize / CharacterSize, view.Memory.ReadUtf16String(Offset, MemorySize));
+		}
+
+		public string ReadValueFromMemory(MemoryBuffer memory)
+		{
+			return memory.ReadUtf16String(Offset, MemorySize);
 		}
 	}
 }
