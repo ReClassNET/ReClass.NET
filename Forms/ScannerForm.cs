@@ -40,15 +40,10 @@ namespace ReClassNET.Forms
 			toolStripPanel.Renderer = new CustomToolStripProfessionalRenderer(true, false);
 			menuToolStrip.Renderer = new CustomToolStripProfessionalRenderer(false, false);
 
-			startAddressTextBox.Text = 0.ToString(Constants.StringHexFormat);
-			endAddressTextBox.Text =
-#if RECLASSNET64
-				long.MaxValue.ToString(Constants.StringHexFormat);
-#else
-				int.MaxValue.ToString(Constants.StringHexFormat);
-#endif
-
 			valueTypeComboBox.DataSource = EnumDescriptionDisplay<ScanValueType>.Create();
+
+			SetGuiFromSettings(ScanSettings.Default);
+
 			OnValueTypeChanged();
 
 			Reset();
@@ -126,12 +121,42 @@ namespace ReClassNET.Forms
 
 		private async void firstScanButton_Click(object sender, EventArgs e)
 		{
-			await OnStartFirstScan();
+			if (isFirstScan)
+			{
+				firstScanButton.Enabled = false;
+
+				var settings = CreateSearchSettings();
+				var comparer = CreateComparer(settings);
+
+				await StartFirstScanEx(settings, comparer);
+
+				return;
+			}
+
+			Reset();
 		}
 
 		private async void nextScanButton_Click(object sender, EventArgs e)
 		{
-			await OnStartNextScan();
+			if (!isFirstScan)
+			{
+				firstScanButton.Enabled = false;
+				nextScanButton.Enabled = false;
+
+				var comparer = CreateComparer(searcher.Settings);
+
+				var report = new Progress<int>(i => scanProgressBar.Value = i);
+				var completed = await searcher.Search(comparer, CancellationToken.None, report);
+
+				if (completed)
+				{
+					ShowScannerResults();
+				}
+
+				scanProgressBar.Value = 0;
+				firstScanButton.Enabled = true;
+				nextScanButton.Enabled = true;
+			}
 		}
 
 		private void memorySearchResultControl_ResultDoubleClick(object sender, MemoryRecord record)
@@ -349,8 +374,6 @@ namespace ReClassNET.Forms
 		{
 			SetValidCompareTypes();
 
-			isHexCheckBox.Enabled = true;
-
 			var valueType = SelectedValueType;
 
 			switch (valueType)
@@ -428,7 +451,7 @@ namespace ReClassNET.Forms
 			isHexCheckBox.Checked = false;
 
 			valueTypeComboBox.Enabled = true;
-			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == ScanValueType.Integer);
+			//valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == ScanValueType.Integer);
 			OnValueTypeChanged();
 
 			floatingOptionsGroupBox.Enabled = true;
@@ -441,78 +464,60 @@ namespace ReClassNET.Forms
 		}
 
 		/// <summary>
-		/// Executes the first scan async.
+		/// Excutes a new scan with the provided settings and comparer.
 		/// </summary>
-		/// <returns>The scanner task.</returns>
-		private async Task OnStartFirstScan()
+		/// <param name="settings">The scan settings.</param>
+		/// <param name="comparer">The comparer.</param>
+		public void ExcuteScan(ScanSettings settings, IScanComparer comparer)
 		{
-			if (isFirstScan)
-			{
-				firstScanButton.Enabled = false;
-
-				var settings = CreateSearchSettings();
-				var comparer = CreateComparer(settings);
-				searcher = new Scanner(Program.RemoteProcess, settings);
-
-				var report = new Progress<int>(i => scanProgressBar.Value = i);
-				var completed = await searcher.Search(comparer, CancellationToken.None, report);
-
-				if (completed)
-				{
-					ShowScannerResults();
-
-					firstScanButton.Enabled = true;
-					nextScanButton.Enabled = true;
-					valueTypeComboBox.Enabled = false;
-
-					floatingOptionsGroupBox.Enabled = false;
-					stringOptionsGroupBox.Enabled = false;
-					scanOptionsGroupBox.Enabled = false;
-
-					isFirstScan = false;
-
-					SetValidCompareTypes();
-				}
-
-				scanProgressBar.Value = 0;
-
-				return;
-			}
+			Contract.Requires(settings != null);
+			Contract.Requires(comparer != null);
 
 			Reset();
+
+			SetGuiFromSettings(settings);
+
+			Invoke((Action)(async () => await StartFirstScanEx(settings, comparer)));
 		}
 
 		/// <summary>
-		/// Executes the next scan async.
+		/// Starts a new first scan with the provided settings and comparer.
 		/// </summary>
-		/// <returns>The scanner task.</returns>
-		private async Task OnStartNextScan()
+		/// <param name="settings">The scan settings.</param>
+		/// <param name="comparer">The comparer.</param>
+		private async Task StartFirstScanEx(ScanSettings settings, IScanComparer comparer)
 		{
-			if (!isFirstScan)
+			firstScanButton.Enabled = false;
+
+			searcher = new Scanner(Program.RemoteProcess, settings);
+
+			var report = new Progress<int>(i => scanProgressBar.Value = i);
+			var completed = await searcher.Search(comparer, CancellationToken.None, report);
+
+			if (completed)
 			{
-				firstScanButton.Enabled = false;
-				nextScanButton.Enabled = false;
+				ShowScannerResults();
 
-				var comparer = CreateComparer(searcher.Settings);
-
-				var report = new Progress<int>(i => scanProgressBar.Value = i);
-				var completed = await searcher.Search(comparer, CancellationToken.None, report);
-
-				if (completed)
-				{
-					ShowScannerResults();
-				}
-
-				scanProgressBar.Value = 0;
 				firstScanButton.Enabled = true;
 				nextScanButton.Enabled = true;
+				valueTypeComboBox.Enabled = false;
+
+				floatingOptionsGroupBox.Enabled = false;
+				stringOptionsGroupBox.Enabled = false;
+				scanOptionsGroupBox.Enabled = false;
+
+				isFirstScan = false;
+
+				SetValidCompareTypes();
 			}
+
+			scanProgressBar.Value = 0;
 		}
 
 		/// <summary>
 		/// Creates the search settings from the user input.
 		/// </summary>
-		/// <returns>The search settings.</returns>
+		/// <returns>The scan settings.</returns>
 		private ScanSettings CreateSearchSettings()
 		{
 			Contract.Ensures(Contract.Result<ScanSettings>() != null);
@@ -523,7 +528,7 @@ namespace ReClassNET.Forms
 			};
 
 			long.TryParse(startAddressTextBox.Text, NumberStyles.HexNumber, null, out var startAddressVar);
-			long.TryParse(endAddressTextBox.Text, NumberStyles.HexNumber, null, out var endAddressVar);
+			long.TryParse(stopAddressTextBox.Text, NumberStyles.HexNumber, null, out var endAddressVar);
 #if RECLASSNET64
 			settings.StartAddress = unchecked((IntPtr)startAddressVar);
 			settings.StopAddress = unchecked((IntPtr)endAddressVar);
@@ -553,6 +558,40 @@ namespace ReClassNET.Forms
 			settings.ScanCopyOnWriteMemory = CheckStateToSettingState(scanCopyOnWriteCheckBox.CheckState);
 
 			return settings;
+		}
+
+		/// <summary>
+		/// Sets the input fields according to the provided settings.
+		/// </summary>
+		/// <param name="settings">The scan settings.</param>
+		private void SetGuiFromSettings(ScanSettings settings)
+		{
+			Contract.Requires(settings != null);
+
+			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == settings.ValueType);
+
+			startAddressTextBox.Text = settings.StartAddress.ToString(Constants.StringHexFormat);
+			stopAddressTextBox.Text = settings.StopAddress.ToString(Constants.StringHexFormat);
+
+			fastScanCheckBox.Checked = settings.EnableFastScan;
+			fastScanAlignmentTextBox.Text = Math.Max(1, settings.FastScanAlignment).ToString();
+			
+			CheckState SettingStateToCheckState(SettingState state)
+			{
+				switch (state)
+				{
+					case SettingState.Yes:
+						return CheckState.Checked;
+					case SettingState.No:
+						return CheckState.Unchecked;
+					default:
+						return CheckState.Indeterminate;
+				}
+			}
+
+			scanWritableCheckBox.CheckState = SettingStateToCheckState(settings.ScanWritableMemory);
+			scanExecutableCheckBox.CheckState = SettingStateToCheckState(settings.ScanExecutableMemory);
+			scanCopyOnWriteCheckBox.CheckState = SettingStateToCheckState(settings.ScanCopyOnWriteMemory);
 		}
 
 		/// <summary>

@@ -43,7 +43,7 @@
 			this.scanCopyOnWriteCheckBox = new System.Windows.Forms.CheckBox();
 			this.scanExecutableCheckBox = new System.Windows.Forms.CheckBox();
 			this.scanWritableCheckBox = new System.Windows.Forms.CheckBox();
-			this.endAddressTextBox = new System.Windows.Forms.TextBox();
+			this.stopAddressTextBox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.startAddressTextBox = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
@@ -195,7 +195,7 @@
 			this.scanOptionsGroupBox.Controls.Add(this.scanCopyOnWriteCheckBox);
 			this.scanOptionsGroupBox.Controls.Add(this.scanExecutableCheckBox);
 			this.scanOptionsGroupBox.Controls.Add(this.scanWritableCheckBox);
-			this.scanOptionsGroupBox.Controls.Add(this.endAddressTextBox);
+			this.scanOptionsGroupBox.Controls.Add(this.stopAddressTextBox);
 			this.scanOptionsGroupBox.Controls.Add(this.label4);
 			this.scanOptionsGroupBox.Controls.Add(this.startAddressTextBox);
 			this.scanOptionsGroupBox.Controls.Add(this.label2);
@@ -263,12 +263,12 @@
 			this.scanWritableCheckBox.ThreeState = true;
 			this.scanWritableCheckBox.UseVisualStyleBackColor = true;
 			// 
-			// endAddressTextBox
+			// stopAddressTextBox
 			// 
-			this.endAddressTextBox.Location = new System.Drawing.Point(66, 42);
-			this.endAddressTextBox.Name = "endAddressTextBox";
-			this.endAddressTextBox.Size = new System.Drawing.Size(218, 20);
-			this.endAddressTextBox.TabIndex = 3;
+			this.stopAddressTextBox.Location = new System.Drawing.Point(66, 42);
+			this.stopAddressTextBox.Name = "stopAddressTextBox";
+			this.stopAddressTextBox.Size = new System.Drawing.Size(218, 20);
+			this.stopAddressTextBox.TabIndex = 3;
 			// 
 			// label4
 			// 
@@ -748,7 +748,7 @@
 		private System.Windows.Forms.CheckBox scanCopyOnWriteCheckBox;
 		private System.Windows.Forms.CheckBox scanExecutableCheckBox;
 		private System.Windows.Forms.CheckBox scanWritableCheckBox;
-		private System.Windows.Forms.TextBox endAddressTextBox;
+		private System.Windows.Forms.TextBox stopAddressTextBox;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox startAddressTextBox;
 		private System.Windows.Forms.Label label2;

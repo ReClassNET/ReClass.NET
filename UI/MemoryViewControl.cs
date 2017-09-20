@@ -5,9 +5,12 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Memory;
+using ReClassNET.MemoryScanner;
+using ReClassNET.MemoryScanner.Comparer;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
 
@@ -258,7 +261,7 @@ namespace ReClassNET.UI
 
 							break;
 						}
-						else if (hotSpot.Type == HotSpotType.Click)
+						if (hotSpot.Type == HotSpotType.Click)
 						{
 							hitObject.Update(hotSpot);
 
@@ -266,7 +269,7 @@ namespace ReClassNET.UI
 
 							break;
 						}
-						else if (hotSpot.Type == HotSpotType.Select)
+						if (hotSpot.Type == HotSpotType.Select)
 						{
 							if (e.Button == MouseButtons.Left)
 							{
@@ -758,6 +761,26 @@ namespace ReClassNET.UI
 			var node = selectedNodes.Select(s => s.Node).FirstOrDefault();
 
 			var nodeIsClass = node is ClassNode;
+			var nodeIsValueNode = false;
+			switch (node)
+			{
+				case BaseHexNode _:
+				case FloatNode _:
+				case DoubleNode _:
+				case Int8Node _:
+				case UInt8Node _:
+				case Int16Node _:
+				case UInt16Node _:
+				case Int32Node _:
+				case UInt32Node _:
+				case Int64Node _:
+				case UInt64Node _:
+				case Utf8TextNode _:
+				case Utf16TextNode _:
+				case Utf32TextNode _:
+					nodeIsValueNode = true;
+					break;
+			}
 
 			addBytesToolStripMenuItem.Enabled = node?.ParentNode != null || nodeIsClass;
 			insertBytesToolStripMenuItem.Enabled = count == 1 && node?.ParentNode != null;
@@ -766,6 +789,7 @@ namespace ReClassNET.UI
 
 			createClassFromNodesToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
 			dissectNodesToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
+			searchForEqualValuesToolStripMenuItem.Enabled = count == 1 && nodeIsValueNode;
 
 			pasteNodesToolStripMenuItem.Enabled = count == 1 && ReClassClipboard.ContainsNodes;
 			removeToolStripMenuItem.Enabled = !nodeIsClass;
@@ -836,6 +860,66 @@ namespace ReClassNET.UI
 
 				ClearSelection();
 			}
+		}
+
+		private void searchForEqualValuesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var selectedNode = selectedNodes.FirstOrDefault();
+			if (selectedNode == null)
+			{
+				return;
+			}
+
+			IScanComparer comparer;
+			switch (selectedNode.Node)
+			{
+				case BaseHexNode node:
+					comparer = new ArrayOfBytesMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory));
+					break;
+				case FloatNode node:
+					comparer = new FloatMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case DoubleNode node:
+					comparer = new DoubleMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case Int8Node node:
+					comparer = new ByteMemoryComparer(ScanCompareType.Equal, (byte)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case UInt8Node node:
+					comparer = new ByteMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case Int16Node node:
+					comparer = new ShortMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case UInt16Node node:
+					comparer = new ShortMemoryComparer(ScanCompareType.Equal, (short)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case Int32Node node:
+					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case UInt32Node node:
+					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, (int)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case Int64Node node:
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case UInt64Node node:
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case Utf8TextNode node:
+					comparer = new StringMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory), Encoding.UTF8, true);
+					break;
+				case Utf16TextNode node:
+					comparer = new StringMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory), Encoding.Unicode, true);
+					break;
+				case Utf32TextNode node:
+					comparer = new StringMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory), Encoding.UTF32, true);
+					break;
+				default:
+					return;
+			}
+
+			LinkedWindowFeatures.StartMemoryScan(comparer);
 		}
 
 		private void findOutWhatAccessesThisAddressToolStripMenuItem_Click(object sender, EventArgs e)
