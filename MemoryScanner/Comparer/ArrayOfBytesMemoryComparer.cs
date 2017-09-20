@@ -7,38 +7,45 @@ namespace ReClassNET.MemoryScanner.Comparer
 	public class ArrayOfBytesMemoryComparer : IScanComparer
 	{
 		public ScanCompareType CompareType => ScanCompareType.Equal;
-		public BytePattern Value { get; }
-		public int ValueSize => Value.Length;
+		public int ValueSize => bytePattern?.Length ?? byteArray.Length;
 
-		private readonly byte[] pattern;
+		private readonly BytePattern bytePattern;
+		private readonly byte[] byteArray;
 
-		public ArrayOfBytesMemoryComparer(BytePattern value)
+		public ArrayOfBytesMemoryComparer(BytePattern pattern)
 		{
-			Contract.Requires(value != null);
+			Contract.Requires(pattern != null);
 
-			Value = value;
+			bytePattern = pattern;
 
-			if (!value.HasWildcards)
+			if (!bytePattern.HasWildcards)
 			{
-				pattern = value.ToByteArray();
+				byteArray = bytePattern.ToByteArray();
 			}
+		}
+
+		public ArrayOfBytesMemoryComparer(byte[] pattern)
+		{
+			Contract.Requires(pattern != null);
+
+			byteArray = pattern;
 		}
 
 		public bool Compare(byte[] data, int index, out ScanResult result)
 		{
 			result = null;
 
-			if (pattern != null)
+			if (byteArray != null)
 			{
-				for (var i = 0; i < pattern.Length; ++i)
+				for (var i = 0; i < byteArray.Length; ++i)
 				{
-					if (data[index + i] != pattern[i])
+					if (data[index + i] != byteArray[i])
 					{
 						return false;
 					}
 				}
 			}
-			else if (!Value.Equals(data, index))
+			else if (!bytePattern.Equals(data, index))
 			{
 				return false;
 			}
