@@ -150,7 +150,7 @@ namespace ReClassNET.Forms
 			var functionStartAddress = disassembler.RemoteGetFunctionStartAddress(process, info.DebugInfo.ExceptionAddress);
 			if (functionStartAddress.IsNull())
 			{
-				MessageBox.Show("Could not find the start of the function. Aborting.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Could not find the start of the function. Aborting.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
 				return;
 			}

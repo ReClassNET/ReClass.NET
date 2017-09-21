@@ -181,7 +181,7 @@ namespace ReClassNET.Forms
 			var info = Program.CoreFunctions.EnumerateProcesses().FirstOrDefault(p => p.Name == lastProcess);
 			if (info == null)
 			{
-				MessageBox.Show($"Process '{lastProcess}' could not be found.", Constants.ApplicationName);
+				MessageBox.Show($"Process '{lastProcess}' could not be found.", Constants.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 				Program.Settings.LastProcess = string.Empty;
 			}
