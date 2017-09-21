@@ -157,6 +157,7 @@
 			this.scanTypeComboBox.Size = new System.Drawing.Size(224, 21);
 			this.scanTypeComboBox.TabIndex = 5;
 			this.scanTypeComboBox.ValueMember = "Value";
+			this.scanTypeComboBox.SelectionChangeCommitted += new System.EventHandler(this.scanTypeComboBox_SelectionChangeCommitted);
 			// 
 			// label1
 			// 
@@ -628,7 +629,7 @@
 			this.toolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			this.toolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
 			this.toolStripPanel.RowMargin = new System.Windows.Forms.Padding(0);
-			this.toolStripPanel.Size = new System.Drawing.Size(591, 25);
+			this.toolStripPanel.Size = new System.Drawing.Size(128, 25);
 			// 
 			// menuToolStrip
 			// 

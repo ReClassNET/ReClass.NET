@@ -114,6 +114,40 @@ namespace ReClassNET.Forms
 			addressListMemoryRecordList.RefreshValues(Program.RemoteProcess);
 		}
 
+		private void scanTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			var enableHexCheckBox = true;
+			var enableValueBox = true;
+			var enableDualInput = false;
+
+			switch (SelectedCompareType)
+			{
+				case ScanCompareType.Unknown:
+					enableHexCheckBox = false;
+					enableValueBox = false;
+					break;
+				case ScanCompareType.Between:
+				case ScanCompareType.BetweenOrEqual:
+					enableDualInput = true;
+					break;
+			}
+
+			switch (SelectedValueType)
+			{
+				case ScanValueType.Float:
+				case ScanValueType.Double:
+				case ScanValueType.ArrayOfBytes:
+				case ScanValueType.String:
+					isHexCheckBox.Checked = false;
+					enableHexCheckBox = false;
+					break;
+			}
+
+			isHexCheckBox.Enabled = enableHexCheckBox;
+			dualValueBox.Enabled = enableValueBox;
+			dualValueBox.ShowSecondInputField = enableDualInput;
+		}
+
 		private void valueTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
 		{
 			OnValueTypeChanged();
