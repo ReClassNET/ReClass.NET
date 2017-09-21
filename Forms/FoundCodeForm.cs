@@ -50,6 +50,8 @@ namespace ReClassNET.Forms
 				Text = "Find out what accesses " + address.ToString(Constants.StringHexFormat);
 			}
 
+			bannerBox.Text = Text;
+
 			data = new DataTable();
 			data.Columns.Add("counter", typeof(int));
 			data.Columns.Add("instruction", typeof(string));

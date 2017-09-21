@@ -1203,9 +1203,29 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B32x32_3D_Glasses {
+            get {
+                object obj = ResourceManager.GetObject("B32x32_3D_Glasses", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B32x32_Cogs {
             get {
                 object obj = ResourceManager.GetObject("B32x32_Cogs", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B32x32_Eye {
+            get {
+                object obj = ResourceManager.GetObject("B32x32_Eye", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1241,7 +1261,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 2017/09/18 18:04:02
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2017/09/21 12:01:34
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {

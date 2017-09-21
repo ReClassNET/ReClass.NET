@@ -36,11 +36,13 @@
 			this.stopButton = new System.Windows.Forms.Button();
 			this.closeButton = new System.Windows.Forms.Button();
 			this.createFunctionButton = new System.Windows.Forms.Button();
+			this.bannerBox = new ReClassNET.UI.BannerBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.foundCodeDataGridView)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// splitContainer
@@ -48,7 +50,7 @@
 			this.splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.splitContainer.Location = new System.Drawing.Point(0, 0);
+			this.splitContainer.Location = new System.Drawing.Point(0, 49);
 			this.splitContainer.Name = "splitContainer";
 			this.splitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			// 
@@ -115,7 +117,7 @@
 			// stopButton
 			// 
 			this.stopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.stopButton.Location = new System.Drawing.Point(489, 53);
+			this.stopButton.Location = new System.Drawing.Point(489, 101);
 			this.stopButton.Name = "stopButton";
 			this.stopButton.Size = new System.Drawing.Size(86, 35);
 			this.stopButton.TabIndex = 1;
@@ -126,7 +128,7 @@
 			// closeButton
 			// 
 			this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.closeButton.Location = new System.Drawing.Point(489, 53);
+			this.closeButton.Location = new System.Drawing.Point(489, 101);
 			this.closeButton.Name = "closeButton";
 			this.closeButton.Size = new System.Drawing.Size(86, 35);
 			this.closeButton.TabIndex = 2;
@@ -138,7 +140,7 @@
 			// createFunctionButton
 			// 
 			this.createFunctionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.createFunctionButton.Location = new System.Drawing.Point(489, 12);
+			this.createFunctionButton.Location = new System.Drawing.Point(489, 60);
 			this.createFunctionButton.Name = "createFunctionButton";
 			this.createFunctionButton.Size = new System.Drawing.Size(86, 35);
 			this.createFunctionButton.TabIndex = 3;
@@ -146,11 +148,23 @@
 			this.createFunctionButton.UseVisualStyleBackColor = true;
 			this.createFunctionButton.Click += new System.EventHandler(this.createFunctionButton_Click);
 			// 
+			// bannerBox
+			// 
+			this.bannerBox.Dock = System.Windows.Forms.DockStyle.Top;
+			this.bannerBox.Icon = global::ReClassNET.Properties.Resources.B32x32_3D_Glasses;
+			this.bannerBox.Location = new System.Drawing.Point(0, 0);
+			this.bannerBox.Name = "bannerBox";
+			this.bannerBox.Size = new System.Drawing.Size(587, 48);
+			this.bannerBox.TabIndex = 8;
+			this.bannerBox.Text = "<>";
+			this.bannerBox.Title = "Instruction Finder";
+			// 
 			// FoundCodeForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(587, 426);
+			this.ClientSize = new System.Drawing.Size(587, 474);
+			this.Controls.Add(this.bannerBox);
 			this.Controls.Add(this.createFunctionButton);
 			this.Controls.Add(this.closeButton);
 			this.Controls.Add(this.stopButton);
@@ -165,6 +179,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
 			this.splitContainer.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.foundCodeDataGridView)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -179,5 +194,6 @@
 		private System.Windows.Forms.Button closeButton;
 		private System.Windows.Forms.TextBox infoTextBox;
 		private System.Windows.Forms.Button createFunctionButton;
+		private UI.BannerBox bannerBox;
 	}
 }

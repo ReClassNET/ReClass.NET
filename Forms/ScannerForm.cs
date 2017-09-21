@@ -138,6 +138,11 @@ namespace ReClassNET.Forms
 
 		private async void nextScanButton_Click(object sender, EventArgs e)
 		{
+			if (!Program.RemoteProcess.IsValid)
+			{
+				return;
+			}
+
 			if (!isFirstScan)
 			{
 				firstScanButton.Enabled = false;
@@ -487,6 +492,11 @@ namespace ReClassNET.Forms
 		/// <param name="comparer">The comparer.</param>
 		private async Task StartFirstScanEx(ScanSettings settings, IScanComparer comparer)
 		{
+			if (!Program.RemoteProcess.IsValid)
+			{
+				return;
+			}
+
 			firstScanButton.Enabled = false;
 
 			searcher = new Scanner(Program.RemoteProcess, settings);

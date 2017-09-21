@@ -102,7 +102,7 @@
 			// bannerBox
 			// 
 			this.bannerBox.Dock = System.Windows.Forms.DockStyle.Top;
-			this.bannerBox.Icon = global::ReClassNET.Properties.Resources.B32x32_Magnifier;
+			this.bannerBox.Icon = global::ReClassNET.Properties.Resources.B32x32_Eye;
 			this.bannerBox.Location = new System.Drawing.Point(0, 0);
 			this.bannerBox.Name = "bannerBox";
 			this.bannerBox.Size = new System.Drawing.Size(612, 48);
@@ -697,7 +697,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(612, 583);
+			this.ClientSize = new System.Drawing.Size(612, 584);
 			this.Controls.Add(this.toolStripPanel);
 			this.Controls.Add(this.addressListMemoryRecordList);
 			this.Controls.Add(this.resultMemoryRecordList);
