@@ -35,7 +35,7 @@ namespace ReClassNET.UI
 			return include
 				.Select(value => new EnumDescriptionDisplay<TEnum>
 				{
-					Description = value.GetType().GetField(value.ToString()).GetCustomAttribute<DescriptionAttribute>()?.Description ?? value.ToString(),
+					Description = GetDescription(value),
 					Value = value
 				})
 				.OrderBy(item => item.Value)
@@ -59,11 +59,18 @@ namespace ReClassNET.UI
 				.Except(exclude)
 				.Select(value => new EnumDescriptionDisplay<TEnum>
 				{
-					Description = value.GetType().GetField(value.ToString()).GetCustomAttribute<DescriptionAttribute>()?.Description ?? value.ToString(),
+					Description = GetDescription(value),
 					Value = value
 				})
 				.OrderBy(item => item.Value)
 				.ToList();
+		}
+
+		private static string GetDescription(TEnum value)
+		{
+			Contract.Ensures(Contract.Result<string>() != null);
+
+			return value.GetType().GetField(value.ToString()).GetCustomAttribute<DescriptionAttribute>()?.Description ?? value.ToString();
 		}
 	}
 }
