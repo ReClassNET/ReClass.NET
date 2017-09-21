@@ -112,6 +112,7 @@ namespace ReClassNET.MemoryScanner
 		public static BytePattern Parse(string value)
 		{
 			Contract.Requires(!string.IsNullOrEmpty(value));
+			Contract.Ensures(Contract.Result<BytePattern>() != null);
 
 			var pattern = new BytePattern();
 
@@ -126,7 +127,7 @@ namespace ReClassNET.MemoryScanner
 				// Check if we are not at the end of the stream
 				if (sr.Peek() != -1)
 				{
-					throw new ArgumentException();
+					throw new ArgumentException($"'{value}' is not a valid byte pattern.");
 				}
 			}
 
@@ -141,6 +142,8 @@ namespace ReClassNET.MemoryScanner
 		/// <returns>True if the pattern matches, false if they are not.</returns>
 		public bool Equals(byte[] data, int index)
 		{
+			Contract.Requires(data != null);
+
 			for (var j = 0; j < pattern.Count; ++j)
 			{
 				if (!pattern[j].Equals(data[index + j]))
@@ -160,6 +163,8 @@ namespace ReClassNET.MemoryScanner
 		/// </returns>
 		public byte[] ToByteArray()
 		{
+			Contract.Ensures(Contract.Result<byte[]>() != null);
+
 			if (HasWildcards)
 			{
 				throw new InvalidOperationException();

@@ -157,12 +157,17 @@ namespace ReClassNET.Forms
 		{
 			if (isFirstScan)
 			{
-				firstScanButton.Enabled = false;
+				try
+				{
+					var settings = CreateSearchSettings();
+					var comparer = CreateComparer(settings);
 
-				var settings = CreateSearchSettings();
-				var comparer = CreateComparer(settings);
-
-				await StartFirstScanEx(settings, comparer);
+					await StartFirstScanEx(settings, comparer);
+				}
+				catch (Exception ex)
+				{
+					Program.ShowException(ex);
+				}
 
 				return;
 			}
@@ -182,19 +187,27 @@ namespace ReClassNET.Forms
 				firstScanButton.Enabled = false;
 				nextScanButton.Enabled = false;
 
-				var comparer = CreateComparer(searcher.Settings);
-
-				var report = new Progress<int>(i => scanProgressBar.Value = i);
-				var completed = await searcher.Search(comparer, CancellationToken.None, report);
-
-				if (completed)
+				try
 				{
-					ShowScannerResults();
+					var comparer = CreateComparer(searcher.Settings);
+
+					var report = new Progress<int>(i => scanProgressBar.Value = i);
+					var completed = await searcher.Search(comparer, CancellationToken.None, report);
+
+					if (completed)
+					{
+						ShowScannerResults();
+					}
+				}
+				catch (Exception ex)
+				{
+					Program.ShowException(ex);
 				}
 
-				scanProgressBar.Value = 0;
 				firstScanButton.Enabled = true;
 				nextScanButton.Enabled = true;
+
+				scanProgressBar.Value = 0;
 			}
 		}
 
@@ -533,29 +546,35 @@ namespace ReClassNET.Forms
 
 			firstScanButton.Enabled = false;
 
-			searcher = new Scanner(Program.RemoteProcess, settings);
-
-			var report = new Progress<int>(i => scanProgressBar.Value = i);
-			var completed = await searcher.Search(comparer, CancellationToken.None, report);
-
-			if (completed)
+			try
 			{
-				ShowScannerResults();
+				searcher = new Scanner(Program.RemoteProcess, settings);
 
-				firstScanButton.Enabled = true;
-				nextScanButton.Enabled = true;
-				valueTypeComboBox.Enabled = false;
+				var report = new Progress<int>(i => scanProgressBar.Value = i);
+				var completed = await searcher.Search(comparer, CancellationToken.None, report);
 
-				floatingOptionsGroupBox.Enabled = false;
-				stringOptionsGroupBox.Enabled = false;
-				scanOptionsGroupBox.Enabled = false;
+				if (completed)
+				{
+					ShowScannerResults();
 
-				isFirstScan = false;
+					nextScanButton.Enabled = true;
+					valueTypeComboBox.Enabled = false;
 
-				SetValidCompareTypes();
+					floatingOptionsGroupBox.Enabled = false;
+					stringOptionsGroupBox.Enabled = false;
+					scanOptionsGroupBox.Enabled = false;
+
+					isFirstScan = false;
+
+					SetValidCompareTypes();
+				}
 			}
+			finally
+			{
+				firstScanButton.Enabled = true;
 
-			scanProgressBar.Value = 0;
+				scanProgressBar.Value = 0;
+			}
 		}
 
 		/// <summary>
@@ -648,12 +667,13 @@ namespace ReClassNET.Forms
 			Contract.Ensures(Contract.Result<IScanComparer>() != null);
 
 			var compareType = SelectedCompareType;
+			var checkBothInputFields = compareType == ScanCompareType.Between || compareType == ScanCompareType.BetweenOrEqual;
 
 			if (settings.ValueType == ScanValueType.Byte || settings.ValueType == ScanValueType.Short || settings.ValueType == ScanValueType.Integer || settings.ValueType == ScanValueType.Long)
 			{
 				var numberStyle = isHexCheckBox.Checked ? NumberStyles.HexNumber : NumberStyles.Integer;
-				long.TryParse(dualValueBox.Value1, numberStyle, null, out var value1);
-				long.TryParse(dualValueBox.Value2, numberStyle, null, out var value2);
+				if (!long.TryParse(dualValueBox.Value1, numberStyle, null, out var value1)) throw new InvalidInputException(dualValueBox.Value1);
+				if (!long.TryParse(dualValueBox.Value2, numberStyle, null, out var value2) && checkBothInputFields) throw new InvalidInputException(dualValueBox.Value2);
 
 				switch (settings.ValueType)
 				{
@@ -686,9 +706,9 @@ namespace ReClassNET.Forms
 				}
 
 				var nf1 = Utils.GuessNumberFormat(dualValueBox.Value1);
-				double.TryParse(dualValueBox.Value1, NumberStyles.Float, nf1, out var value1);
+				if (!double.TryParse(dualValueBox.Value1, NumberStyles.Float, nf1, out var value1)) throw new InvalidInputException(dualValueBox.Value1);
 				var nf2 = Utils.GuessNumberFormat(dualValueBox.Value2);
-				double.TryParse(dualValueBox.Value2, NumberStyles.Float, nf2, out var value2);
+				if (!double.TryParse(dualValueBox.Value2, NumberStyles.Float, nf2, out var value2) && checkBothInputFields) throw new InvalidInputException(dualValueBox.Value2);
 
 				var significantDigits = Math.Max(
 					CalculateSignificantDigits(dualValueBox.Value1, nf1),
@@ -713,12 +733,17 @@ namespace ReClassNET.Forms
 			}
 			else if (settings.ValueType == ScanValueType.String)
 			{
+				if (string.IsNullOrEmpty(dualValueBox.Value1))
+				{
+					throw new InvalidInputException(dualValueBox.Value1);
+				}
+
 				var encoding = encodingUtf8RadioButton.Checked ? Encoding.UTF8 : encodingUtf16RadioButton.Checked ? Encoding.Unicode : Encoding.UTF32;
 
 				return new StringMemoryComparer(dualValueBox.Value1, encoding, caseSensitiveCheckBox.Checked);
 			}
 
-			throw new Exception();
+			throw new InvalidOperationException();
 		}
 
 		/// <summary>
@@ -757,6 +782,15 @@ namespace ReClassNET.Forms
 			}
 
 			LinkedWindowFeatures.FindWhatInteractsWithAddress(record.RealAddress, size, writeOnly);
+		}
+	}
+
+	internal class InvalidInputException : Exception
+	{
+		public InvalidInputException(string input)
+			: base($"'{input}' is not a valid input.")
+		{
+			
 		}
 	}
 }
