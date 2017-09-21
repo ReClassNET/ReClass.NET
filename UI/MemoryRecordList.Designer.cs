@@ -42,6 +42,7 @@
 			this.resultDataGridView.AllowUserToAddRows = false;
 			this.resultDataGridView.AllowUserToDeleteRows = false;
 			this.resultDataGridView.AllowUserToResizeRows = false;
+			this.resultDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
 			this.resultDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleVertical;
 			this.resultDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.resultDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -66,7 +67,6 @@
 			// 
 			// descriptionColumn
 			// 
-			this.descriptionColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
 			this.descriptionColumn.DataPropertyName = "Description";
 			this.descriptionColumn.HeaderText = "Description";
 			this.descriptionColumn.Name = "descriptionColumn";
@@ -74,38 +74,32 @@
 			// 
 			// addressColumn
 			// 
-			this.addressColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
 			this.addressColumn.DataPropertyName = "AddressStr";
 			this.addressColumn.HeaderText = "Address";
+			this.addressColumn.MinimumWidth = 70;
 			this.addressColumn.Name = "addressColumn";
 			this.addressColumn.ReadOnly = true;
 			// 
 			// valueTypeColumn
 			// 
-			this.valueTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.valueTypeColumn.DataPropertyName = "ValueType";
 			this.valueTypeColumn.HeaderText = "Value Type";
 			this.valueTypeColumn.Name = "valueTypeColumn";
 			this.valueTypeColumn.ReadOnly = true;
-			this.valueTypeColumn.Width = 86;
 			// 
 			// valueColumn
 			// 
-			this.valueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.valueColumn.DataPropertyName = "ValueStr";
 			this.valueColumn.HeaderText = "Value";
 			this.valueColumn.Name = "valueColumn";
 			this.valueColumn.ReadOnly = true;
-			this.valueColumn.Width = 59;
 			// 
 			// previousValueColumn
 			// 
-			this.previousValueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.previousValueColumn.DataPropertyName = "PreviousValueStr";
 			this.previousValueColumn.HeaderText = "Previous";
 			this.previousValueColumn.Name = "previousValueColumn";
 			this.previousValueColumn.ReadOnly = true;
-			this.previousValueColumn.Width = 73;
 			// 
 			// MemoryRecordList
 			// 

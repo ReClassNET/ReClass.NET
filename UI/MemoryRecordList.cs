@@ -147,6 +147,8 @@ namespace ReClassNET.UI
 
 			bindings.RaiseListChangedEvents = true;
 			bindings.ResetBindings();
+
+			//resultDataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
 		}
 
 		/// <summary>
