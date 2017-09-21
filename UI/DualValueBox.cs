@@ -17,12 +17,14 @@ namespace ReClassNET.UI
 					tableLayoutPanel.ColumnStyles[1].SizeType = SizeType.Percent;
 					tableLayoutPanel.ColumnStyles[1].Width = 50;
 					tableLayoutPanel.ColumnStyles[0].Width = 50;
+					value1TextBox.Margin = new Padding(0, 0, 1, 0);
 				}
 				else
 				{
 					tableLayoutPanel.ColumnStyles[1].SizeType = SizeType.Absolute;
 					tableLayoutPanel.ColumnStyles[1].Width = 0;
 					tableLayoutPanel.ColumnStyles[0].Width = 100;
+					value1TextBox.Margin = new Padding(0);
 					value2TextBox.Text = null;
 				}
 			}

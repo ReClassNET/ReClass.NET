@@ -71,7 +71,7 @@
 			this.value2TextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.value2TextBox.Location = new System.Drawing.Point(255, 13);
-			this.value2TextBox.Margin = new System.Windows.Forms.Padding(0);
+			this.value2TextBox.Margin = new System.Windows.Forms.Padding(1, 0, 0, 0);
 			this.value2TextBox.Name = "value2TextBox";
 			this.value2TextBox.Size = new System.Drawing.Size(1, 20);
 			this.value2TextBox.TabIndex = 3;
