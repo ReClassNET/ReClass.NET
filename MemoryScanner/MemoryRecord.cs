@@ -52,6 +52,7 @@ namespace ReClassNET.MemoryScanner
 
 		public string ValueStr { get; private set; }
 		public string PreviousValueStr { get; }
+		public bool HasChangedSinceLastUpdate { get; private set; }
 
 		public int ValueLength { get; set; }
 
@@ -183,33 +184,38 @@ namespace ReClassNET.MemoryScanner
 
 			if (process.ReadRemoteMemoryIntoBuffer(RealAddress, ref buffer))
 			{
+				string newValueStr = null;
 				switch (ValueType)
 				{
 					case ScanValueType.Byte:
-						ValueStr = FormatValue(buffer[0], ShowValueHexadecimal);
+						newValueStr = FormatValue(buffer[0], ShowValueHexadecimal);
 						break;
 					case ScanValueType.Short:
-						ValueStr = FormatValue(BitConverter.ToInt16(buffer, 0), ShowValueHexadecimal);
+						newValueStr = FormatValue(BitConverter.ToInt16(buffer, 0), ShowValueHexadecimal);
 						break;
 					case ScanValueType.Integer:
-						ValueStr = FormatValue(BitConverter.ToInt32(buffer, 0), ShowValueHexadecimal);
+						newValueStr = FormatValue(BitConverter.ToInt32(buffer, 0), ShowValueHexadecimal);
 						break;
 					case ScanValueType.Long:
-						ValueStr = FormatValue(BitConverter.ToInt64(buffer, 0), ShowValueHexadecimal);
+						newValueStr = FormatValue(BitConverter.ToInt64(buffer, 0), ShowValueHexadecimal);
 						break;
 					case ScanValueType.Float:
-						ValueStr = FormatValue(BitConverter.ToSingle(buffer, 0));
+						newValueStr = FormatValue(BitConverter.ToSingle(buffer, 0));
 						break;
 					case ScanValueType.Double:
-						ValueStr = FormatValue(BitConverter.ToDouble(buffer, 0));
+						newValueStr = FormatValue(BitConverter.ToDouble(buffer, 0));
 						break;
 					case ScanValueType.ArrayOfBytes:
-						ValueStr = FormatValue(buffer);
+						newValueStr = FormatValue(buffer);
 						break;
 					case ScanValueType.String:
-						ValueStr = FormatValue(Encoding.GetString(buffer));
+						newValueStr = FormatValue(Encoding.GetString(buffer));
 						break;
 				}
+
+				HasChangedSinceLastUpdate = ValueStr != newValueStr;
+
+				ValueStr = newValueStr;
 			}
 			else
 			{

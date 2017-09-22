@@ -96,7 +96,7 @@ namespace ReClassNET.UI
 
 		private void resultDataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
 		{
-			if (e.ColumnIndex == 1)
+			if (e.ColumnIndex == 1) // Address
 			{
 				var record = (MemoryRecord)resultDataGridView.Rows[e.RowIndex].DataBoundItem;
 				if (record.IsRelativeAddress)
@@ -104,6 +104,12 @@ namespace ReClassNET.UI
 					e.CellStyle.ForeColor = Color.ForestGreen;
 					e.FormattingApplied = true;
 				}
+			}
+			else if (e.ColumnIndex == 3) // Value
+			{
+				var record = (MemoryRecord)resultDataGridView.Rows[e.RowIndex].DataBoundItem;
+				e.CellStyle.ForeColor = record.HasChangedSinceLastUpdate ? Color.Red : Color.Black;
+				e.FormattingApplied = true;
 			}
 		}
 
