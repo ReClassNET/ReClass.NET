@@ -13,7 +13,6 @@ using ReClassNET.Logger;
 using ReClassNET.Memory;
 using ReClassNET.MemoryScanner;
 using ReClassNET.MemoryScanner.Comparer;
-using ReClassNET.MemorySearcher;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
