@@ -212,19 +212,19 @@ namespace ReClassNET.Core
 			return internalCoreFunctions.DisassembleCode(address, length, virtualAddress, out instruction);
 		}
 
-		public bool InitializeInput()
+		public IntPtr InitializeInput()
 		{
 			return internalCoreFunctions.InitializeInput();
 		}
 
-		public Keys[] GetPressedKeys()
+		public Keys[] GetPressedKeys(IntPtr handle)
 		{
-			return internalCoreFunctions.GetPressedKeys();
+			return internalCoreFunctions.GetPressedKeys(handle);
 		}
 
-		public void ReleaseInput()
+		public void ReleaseInput(IntPtr handle)
 		{
-			internalCoreFunctions.ReleaseInput();
+			internalCoreFunctions.ReleaseInput(handle);
 		}
 
 		#endregion

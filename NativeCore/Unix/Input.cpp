@@ -3,17 +3,17 @@
 
 void ReleaseInput();
 
-bool InitializeInput()
+RC_Pointer InitializeInput()
+{
+	return nullptr;
+}
+
+bool GetPressedKeys(RC_Pointer handle, Keys* state[], int* count)
 {
 	return false;
 }
 
-bool GetPressedKeys(Keys* state[], int* count)
-{
-	return false;
-}
-
-void ReleaseInput()
+void ReleaseInput(RC_Pointer handle)
 {
 
 }

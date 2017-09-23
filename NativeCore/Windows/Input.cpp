@@ -4,120 +4,141 @@
 #include "NativeCore.hpp"
 #include "../Keys.hpp"
 
-const int STATE_PRESSED = 0x80;
-const int STATE_NOT_PRESSED = 0;
-const int STATE_ON = 0x1;
-
-IDirectInput8W* directInputInterface = nullptr;
-IDirectInputDevice8W* keyboardDevice = nullptr;
-
 Keys mapping[];
-std::vector<Keys> currentState(16);
 
-void __stdcall ReleaseInput();
-
-bool __stdcall InitializeInput()
+class DirectInput
 {
-	if (DirectInput8Create(GetModuleHandle(nullptr), DIRECTINPUT_VERSION, IID_IDirectInput8W, reinterpret_cast<void**>(&directInputInterface), nullptr) != DI_OK)
+public:
+	~DirectInput()
 	{
-		return false;
-	}
-
-	if (directInputInterface->CreateDevice(GUID_SysKeyboard, &keyboardDevice, nullptr) != DI_OK
-	 || keyboardDevice->SetDataFormat(&c_dfDIKeyboard) != DI_OK
-	 /*|| keyboardDevice->SetCooperativeLevel(target, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE) != DI_OK*/)
-	{
-		ReleaseInput();
-
-		return false;
-	}
-
-	return true;
-}
-
-bool __stdcall GetPressedKeys(Keys* state[], int* count)
-{
-	currentState.clear();
-
-	BYTE keyBuffer[256] = {};
-	const auto result = keyboardDevice->GetDeviceState(sizeof(keyBuffer), &keyBuffer);
-	if (result != DI_OK)
-	{
-		if (result == DIERR_NOTACQUIRED || result == DIERR_INPUTLOST)
+		if (keyboardDevice)
 		{
-			keyboardDevice->Acquire();
+			keyboardDevice->Unacquire();
+			keyboardDevice->Release();
+			keyboardDevice = nullptr;
 		}
-		return false;
-	}
-
-	auto modifier = Keys::None;
-	if (keyBuffer[DIK_LSHIFT] & STATE_PRESSED || keyBuffer[DIK_RSHIFT] & STATE_PRESSED)
-	{
-		modifier |= Keys::Shift;
-	}
-	if (keyBuffer[DIK_LCONTROL] & STATE_PRESSED || keyBuffer[DIK_RCONTROL] & STATE_PRESSED)
-	{
-		modifier |= Keys::Control;
-	}
-	if (keyBuffer[DIK_LMENU] & STATE_PRESSED)
-	{
-		modifier |= Keys::Alt;
-	}
-	if (keyBuffer[DIK_RMENU] & STATE_PRESSED)
-	{
-		modifier |= Keys::Alt;
-		modifier |= Keys::Control;
-	}
-
-	for (auto i = 0u; i < 0xEF; ++i)
-	{
-		if (keyBuffer[i] & STATE_PRESSED)
+		if (directInputInterface)
 		{
-			auto currentKey = mapping[i];
-			if (currentKey != Keys::None)
+			directInputInterface->Release();
+			directInputInterface = nullptr;
+		}
+	}
+
+	bool Initialize()
+	{
+		if (DirectInput8Create(GetModuleHandle(nullptr), DIRECTINPUT_VERSION, IID_IDirectInput8W, reinterpret_cast<void**>(&directInputInterface), nullptr) != DI_OK)
+		{
+			return false;
+		}
+
+		if (directInputInterface->CreateDevice(GUID_SysKeyboard, &keyboardDevice, nullptr) != DI_OK
+			|| keyboardDevice->SetDataFormat(&c_dfDIKeyboard) != DI_OK
+			/*|| keyboardDevice->SetCooperativeLevel(target, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE) != DI_OK*/)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	bool GetPressedKeys(Keys* state[], int* count)
+	{
+		const int STATE_PRESSED = 0x80;
+
+		currentState.clear();
+
+		BYTE keyBuffer[256] = {};
+		const auto result = keyboardDevice->GetDeviceState(sizeof(keyBuffer), &keyBuffer);
+		if (result != DI_OK)
+		{
+			if (result == DIERR_NOTACQUIRED || result == DIERR_INPUTLOST)
 			{
-				switch (currentKey)
+				keyboardDevice->Acquire();
+			}
+			return false;
+		}
+
+		auto modifier = Keys::None;
+		if (keyBuffer[DIK_LSHIFT] & STATE_PRESSED || keyBuffer[DIK_RSHIFT] & STATE_PRESSED)
+		{
+			modifier |= Keys::Shift;
+		}
+		if (keyBuffer[DIK_LCONTROL] & STATE_PRESSED || keyBuffer[DIK_RCONTROL] & STATE_PRESSED)
+		{
+			modifier |= Keys::Control;
+		}
+		if (keyBuffer[DIK_LMENU] & STATE_PRESSED)
+		{
+			modifier |= Keys::Alt;
+		}
+		if (keyBuffer[DIK_RMENU] & STATE_PRESSED)
+		{
+			modifier |= Keys::Alt;
+			modifier |= Keys::Control;
+		}
+
+		for (auto i = 0u; i < 0xEF; ++i)
+		{
+			if (keyBuffer[i] & STATE_PRESSED)
+			{
+				auto currentKey = mapping[i];
+				if (currentKey != Keys::None)
 				{
-				case Keys::LControlKey:
-				case Keys::RControlKey:
-					currentKey = Keys::ControlKey;
-					break;
-				case Keys::LShiftKey:
-				case Keys::RShiftKey:
-					currentKey = Keys::ControlKey;
-					break;
-				case Keys::LMenu:
-				case Keys::RMenu:
-					currentKey = Keys::Menu;
-					break;
+					switch (currentKey)
+					{
+					case Keys::LControlKey:
+					case Keys::RControlKey:
+						currentKey = Keys::ControlKey;
+						break;
+					case Keys::LShiftKey:
+					case Keys::RShiftKey:
+						currentKey = Keys::ControlKey;
+						break;
+					case Keys::LMenu:
+					case Keys::RMenu:
+						currentKey = Keys::Menu;
+						break;
+					}
+
+					currentKey |= modifier;
+
+					currentState.push_back(currentKey);
 				}
-
-				currentKey |= modifier;
-
-				currentState.push_back(currentKey);
 			}
 		}
+
+		*state = currentState.data();
+		*count = currentState.size();
+
+		return true;
 	}
 
-	*state = currentState.data();
-	*count = currentState.size();
+private:
+	IDirectInput8W* directInputInterface = nullptr;
+	IDirectInputDevice8W* keyboardDevice = nullptr;
+	std::vector<Keys> currentState;
+};
 
-	return true;
+RC_Pointer __stdcall InitializeInput()
+{
+	auto input = new DirectInput();
+	if (!input->Initialize())
+	{
+		delete input;
+
+		return nullptr;
+	}
+	return static_cast<RC_Pointer>(input);
 }
 
-void __stdcall ReleaseInput()
+bool __stdcall GetPressedKeys(RC_Pointer handle, Keys* state[], int* count)
 {
-	if (keyboardDevice)
-	{
-		keyboardDevice->Unacquire();
-		keyboardDevice->Release();
-		keyboardDevice = nullptr;
-	}
-	if (directInputInterface)
-	{
-		directInputInterface->Release();
-		directInputInterface = nullptr;
-	}
+	return static_cast<DirectInput*>(handle)->GetPressedKeys(state, count);
+}
+
+void __stdcall ReleaseInput(RC_Pointer handle)
+{
+	delete static_cast<DirectInput*>(handle);
 }
 
 Keys mapping[] =

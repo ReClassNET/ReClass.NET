@@ -9,13 +9,11 @@ namespace ReClassNET.Core
 		[return: MarshalAs(UnmanagedType.I1)]
 		private delegate bool DisassembleCodeDelegate(IntPtr address, IntPtr length, IntPtr virtualAddress, out InstructionData instruction);
 
-		[return: MarshalAs(UnmanagedType.I1)]
-		private delegate bool InitializeInputDelegate();
+		private delegate IntPtr InitializeInputDelegate();
 
-		[return: MarshalAs(UnmanagedType.I1)]
-		private delegate bool GetPressedKeysDelegate(out IntPtr address, out int length);
+		private delegate bool GetPressedKeysDelegate(IntPtr handle, out IntPtr pressedKeysArrayPtr, out int length);
 
-		private delegate void ReleaseInputDelegate();
+		private delegate void ReleaseInputDelegate(IntPtr handle);
 
 		private readonly DisassembleCodeDelegate disassembleCodeDelegate;
 
@@ -38,16 +36,16 @@ namespace ReClassNET.Core
 			return disassembleCodeDelegate(address, (IntPtr)length, virtualAddress, out instruction);
 		}
 
-		public bool InitializeInput()
+		public IntPtr InitializeInput()
 		{
 			return initializeInputDelegate();
 		}
 
 		private static readonly Keys[] empty = new Keys[0];
 
-		public Keys[] GetPressedKeys()
+		public Keys[] GetPressedKeys(IntPtr handle)
 		{
-			if (!getPressedKeysDelegate(out var buffer, out var length) || length == 0)
+			if (!getPressedKeysDelegate(handle, out var buffer, out var length) || length == 0)
 			{
 				return empty;
 			}
@@ -58,9 +56,9 @@ namespace ReClassNET.Core
 			//return Array.ConvertAll(keys, k => (Keys)k);
 		}
 
-		public void ReleaseInput()
+		public void ReleaseInput(IntPtr handle)
 		{
-			releaseInputDelegate();
+			releaseInputDelegate(handle);
 		}
 	}
 }

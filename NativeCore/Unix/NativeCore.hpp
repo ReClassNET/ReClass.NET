@@ -31,9 +31,9 @@ extern "C"
 	void HandleDebugEvent(DebugEvent* evt);
 	bool SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set);
 
-	bool InitializeInput();
-	bool GetPressedKeys(Keys* state[], int* count);
-	void ReleaseInput();
+	RC_Pointer InitializeInput();
+	bool GetPressedKeys(RC_Pointer handle, Keys* state[], int* count);
+	void ReleaseInput(RC_Pointer handle);
 }
 
 inline bool is_number(const std::string& s)
