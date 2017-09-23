@@ -117,12 +117,14 @@
     <ClCompile Include="DisassembleCode.cpp" />
     <ClCompile Include="EnumerateProcesses.cpp" />
     <ClCompile Include="EnumerateRemoteSectionsAndModules.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="IsProcessValid.cpp" />
     <ClCompile Include="OpenRemoteProcess.cpp" />
     <ClCompile Include="ReadRemoteMemory.cpp" />
     <ClCompile Include="WriteRemoteMemory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Keys.hpp" />
     <ClInclude Include="..\ReClassNET_Plugin.hpp" />
     <ClInclude Include="NativeCore.hpp" />
   </ItemGroup>

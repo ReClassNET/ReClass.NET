@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "../ReClassNET_Plugin.hpp"
+#include "../Keys.hpp"
 
 typedef void(EnumerateProcessCallback)(EnumerateProcessData* data);
 
@@ -29,6 +30,10 @@ extern "C"
 	bool AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds);
 	void HandleDebugEvent(DebugEvent* evt);
 	bool SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set);
+
+	bool InitializeInput();
+	bool GetPressedKeys(Keys* state[], int* count);
+	void ReleaseInput();
 }
 
 inline bool is_number(const std::string& s)

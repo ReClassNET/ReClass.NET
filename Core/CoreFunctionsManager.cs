@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using ReClassNET.Debugger;
 using ReClassNET.Memory;
 using ReClassNET.Native;
@@ -208,6 +210,21 @@ namespace ReClassNET.Core
 		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, out InstructionData instruction)
 		{
 			return internalCoreFunctions.DisassembleCode(address, length, virtualAddress, out instruction);
+		}
+
+		public bool InitializeInput()
+		{
+			return internalCoreFunctions.InitializeInput();
+		}
+
+		public Keys[] GetPressedKeys()
+		{
+			return internalCoreFunctions.GetPressedKeys();
+		}
+
+		public void ReleaseInput()
+		{
+			internalCoreFunctions.ReleaseInput();
 		}
 
 		#endregion

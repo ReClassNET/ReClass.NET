@@ -34,6 +34,9 @@
     <ClCompile Include="..\Dependencies\beaengine\src\BeaEngine.c">
       <Filter>Dependencies</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="exports.def" />
@@ -49,5 +52,6 @@
   <ItemGroup>
     <ClInclude Include="NativeCore.hpp" />
     <ClInclude Include="..\ReClassNET_Plugin.hpp" />
+    <ClInclude Include="..\Keys.hpp" />
   </ItemGroup>
 </Project>
