@@ -41,7 +41,7 @@ public:
 		return true;
 	}
 
-	bool GetPressedKeys(Keys* state[], int* count)
+	bool ReadKeyboardState(Keys* keys[], int* count)
 	{
 		const int STATE_PRESSED = 0x80;
 
@@ -107,7 +107,7 @@ public:
 			}
 		}
 
-		*state = currentState.data();
+		*keys = currentState.data();
 		*count = currentState.size();
 
 		return true;
@@ -131,9 +131,9 @@ RC_Pointer __stdcall InitializeInput()
 	return static_cast<RC_Pointer>(input);
 }
 
-bool __stdcall GetPressedKeys(RC_Pointer handle, Keys* state[], int* count)
+bool __stdcall GetPressedKeys(RC_Pointer handle, Keys* keys[], int* count)
 {
-	return static_cast<DirectInput*>(handle)->GetPressedKeys(state, count);
+	return static_cast<DirectInput*>(handle)->ReadKeyboardState(keys, count);
 }
 
 void __stdcall ReleaseInput(RC_Pointer handle)
