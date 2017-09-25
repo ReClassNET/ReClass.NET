@@ -146,6 +146,10 @@ namespace ReClassNET.MemoryScanner
 			store = CreateStore();
 
 			var sections = GetSearchableSections();
+			if (sections.Count == 0)
+			{
+				return Task.FromResult(true);
+			}
 
 			var initialBufferSize = (int)sections.Average(s => s.Size.ToInt32());
 
