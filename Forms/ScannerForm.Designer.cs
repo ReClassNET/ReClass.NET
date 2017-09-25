@@ -88,6 +88,9 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.clearAddressListToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.infoToolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.toolStripPanel2 = new System.Windows.Forms.ToolStripPanel();
+			this.additionalToolStrip = new System.Windows.Forms.ToolStrip();
+			this.inputCorrelatorToolStripButton = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.filterGroupBox.SuspendLayout();
 			this.scanOptionsGroupBox.SuspendLayout();
@@ -97,6 +100,8 @@
 			this.resultListContextMenuStrip.SuspendLayout();
 			this.toolStripPanel.SuspendLayout();
 			this.menuToolStrip.SuspendLayout();
+			this.toolStripPanel2.SuspendLayout();
+			this.additionalToolStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// bannerBox
@@ -624,7 +629,7 @@
 			// toolStripPanel
 			// 
 			this.toolStripPanel.Controls.Add(this.menuToolStrip);
-			this.toolStripPanel.Location = new System.Drawing.Point(-4, 375);
+			this.toolStripPanel.Location = new System.Drawing.Point(11, 375);
 			this.toolStripPanel.Name = "toolStripPanel";
 			this.toolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			this.toolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -634,15 +639,16 @@
 			// menuToolStrip
 			// 
 			this.menuToolStrip.Dock = System.Windows.Forms.DockStyle.None;
+			this.menuToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.menuToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openAddressFileToolStripButton,
             this.saveAddressFileToolStripButton,
             this.saveAddressFileAsToolStripButton,
             this.toolStripSeparator1,
             this.clearAddressListToolStripButton});
-			this.menuToolStrip.Location = new System.Drawing.Point(3, 0);
+			this.menuToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuToolStrip.Name = "menuToolStrip";
-			this.menuToolStrip.Size = new System.Drawing.Size(110, 25);
+			this.menuToolStrip.Size = new System.Drawing.Size(101, 25);
 			this.menuToolStrip.TabIndex = 0;
 			// 
 			// openAddressFileToolStripButton
@@ -694,11 +700,43 @@
 			// 
 			this.infoToolTip.AutomaticDelay = 100;
 			// 
+			// toolStripPanel2
+			// 
+			this.toolStripPanel2.Controls.Add(this.additionalToolStrip);
+			this.toolStripPanel2.Location = new System.Drawing.Point(580, 375);
+			this.toolStripPanel2.Name = "toolStripPanel2";
+			this.toolStripPanel2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			this.toolStripPanel2.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+			this.toolStripPanel2.RowMargin = new System.Windows.Forms.Padding(0);
+			this.toolStripPanel2.Size = new System.Drawing.Size(39, 25);
+			// 
+			// additionalToolStrip
+			// 
+			this.additionalToolStrip.Dock = System.Windows.Forms.DockStyle.None;
+			this.additionalToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.additionalToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.inputCorrelatorToolStripButton});
+			this.additionalToolStrip.Location = new System.Drawing.Point(0, 0);
+			this.additionalToolStrip.Name = "additionalToolStrip";
+			this.additionalToolStrip.Size = new System.Drawing.Size(50, 25);
+			this.additionalToolStrip.TabIndex = 0;
+			// 
+			// inputCorrelatorToolStripButton
+			// 
+			this.inputCorrelatorToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.inputCorrelatorToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Canvas_Size;
+			this.inputCorrelatorToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.inputCorrelatorToolStripButton.Name = "inputCorrelatorToolStripButton";
+			this.inputCorrelatorToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.inputCorrelatorToolStripButton.ToolTipText = "Show Input Correlator...";
+			this.inputCorrelatorToolStripButton.Click += new System.EventHandler(this.inputCorrelatorToolStripButton_Click);
+			// 
 			// ScannerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(612, 584);
+			this.Controls.Add(this.toolStripPanel2);
 			this.Controls.Add(this.toolStripPanel);
 			this.Controls.Add(this.addressListMemoryRecordList);
 			this.Controls.Add(this.resultMemoryRecordList);
@@ -728,6 +766,10 @@
 			this.toolStripPanel.PerformLayout();
 			this.menuToolStrip.ResumeLayout(false);
 			this.menuToolStrip.PerformLayout();
+			this.toolStripPanel2.ResumeLayout(false);
+			this.toolStripPanel2.PerformLayout();
+			this.additionalToolStrip.ResumeLayout(false);
+			this.additionalToolStrip.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -794,5 +836,8 @@
 		private System.Windows.Forms.ToolStripMenuItem valueToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem copyAddressToolStripMenuItem;
+		private System.Windows.Forms.ToolStripPanel toolStripPanel2;
+		private System.Windows.Forms.ToolStrip additionalToolStrip;
+		private System.Windows.Forms.ToolStripButton inputCorrelatorToolStripButton;
 	}
 }

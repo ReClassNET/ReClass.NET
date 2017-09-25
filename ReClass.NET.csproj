@@ -175,12 +175,20 @@
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Debugger\RemoteDebugger.cs" />
+    <Compile Include="Forms\InputCorrelatorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InputCorrelatorForm.Designer.cs">
+      <DependentUpon>InputCorrelatorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ScannerForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ScannerForm.Designer.cs">
       <DependentUpon>ScannerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Input\KeyboardInput.cs" />
+    <Compile Include="Input\KeyboardHotkey.cs" />
     <Compile Include="MemoryScanner\BytePattern.cs" />
     <Compile Include="MemoryScanner\Comparer\ArrayOfBytesMemoryComparer.cs" />
     <Compile Include="MemoryScanner\Comparer\ByteMemoryComparer.cs" />
@@ -191,6 +199,7 @@
     <Compile Include="MemoryScanner\Comparer\LongMemoryComparer.cs" />
     <Compile Include="MemoryScanner\Comparer\ShortMemoryComparer.cs" />
     <Compile Include="MemoryScanner\Comparer\StringMemoryComparer.cs" />
+    <Compile Include="MemoryScanner\InputCorrelatedScanner.cs" />
     <Compile Include="MemoryScanner\MemoryRecord.cs" />
     <Compile Include="MemoryScanner\ScanCompareType.cs" />
     <Compile Include="MemoryScanner\ScannerContext.cs" />
@@ -281,6 +290,12 @@
       <DependentUpon>DualValueBox.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\EnumDescriptionDisplay.cs" />
+    <Compile Include="UI\HotkeyBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\HotkeyBox.Designer.cs">
+      <DependentUpon>HotkeyBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ISettingsBindable.cs" />
     <Compile Include="UI\LinkedWindowFeatures.cs" />
     <Compile Include="UI\MemoryPreviewPopUp.cs">
@@ -449,6 +464,9 @@
     <EmbeddedResource Include="Forms\InputBytesForm.resx">
       <DependentUpon>InputBytesForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InputCorrelatorForm.resx">
+      <DependentUpon>InputCorrelatorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ScannerForm.resx">
       <DependentUpon>ScannerForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -468,6 +486,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DualValueBox.resx">
       <DependentUpon>DualValueBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\HotkeyBox.resx">
+      <DependentUpon>HotkeyBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MemoryRecordList.resx">
       <DependentUpon>MemoryRecordList.cs</DependentUpon>
@@ -877,6 +898,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\B32x32_Eye.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B32x32_Canvas_Size.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Canvas_Size.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

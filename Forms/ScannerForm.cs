@@ -24,10 +24,10 @@ namespace ReClassNET.Forms
 
 		private bool isFirstScan;
 
-		private Scanner searcher;
+		private Scanner scanner;
 
-		private ScanCompareType SelectedCompareType => (scanTypeComboBox.SelectedItem as EnumDescriptionDisplay<ScanCompareType>)?.Value ?? throw new InvalidOperationException();
-		private ScanValueType SelectedValueType => (valueTypeComboBox.SelectedItem as EnumDescriptionDisplay<ScanValueType>)?.Value ?? throw new InvalidOperationException();
+		private ScanCompareType SelectedCompareType => ((EnumDescriptionDisplay<ScanCompareType>)scanTypeComboBox.SelectedItem).Value;
+		private ScanValueType SelectedValueType => ((EnumDescriptionDisplay<ScanValueType>)valueTypeComboBox.SelectedItem).Value;
 
 		private string addressFilePath;
 
@@ -35,9 +35,9 @@ namespace ReClassNET.Forms
 		{
 			InitializeComponent();
 
-			toolStripPanel.RenderMode = ToolStripRenderMode.Professional;
-			toolStripPanel.Renderer = new CustomToolStripProfessionalRenderer(true, false);
-			menuToolStrip.Renderer = new CustomToolStripProfessionalRenderer(false, false);
+			toolStripPanel.RenderMode = toolStripPanel2.RenderMode = ToolStripRenderMode.Professional;
+			toolStripPanel.Renderer = toolStripPanel2.Renderer = new CustomToolStripProfessionalRenderer(true, false);
+			menuToolStrip.Renderer = additionalToolStrip.Renderer = new CustomToolStripProfessionalRenderer(false, false);
 
 			valueTypeComboBox.DataSource = EnumDescriptionDisplay<ScanValueType>.Create();
 
@@ -101,7 +101,7 @@ namespace ReClassNET.Forms
 
 		private void MemorySearchForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			searcher?.Dispose();
+			scanner?.Dispose();
 
 			Program.RemoteProcess.ProcessAttached -= RemoteProcessOnProcessAttached;
 			Program.RemoteProcess.ProcessClosing -= RemoteProcessOnProcessClosing;
@@ -188,14 +188,14 @@ namespace ReClassNET.Forms
 
 				try
 				{
-					var comparer = CreateComparer(searcher.Settings);
+					var comparer = CreateComparer(scanner.Settings);
 
 					var report = new Progress<int>(i => scanProgressBar.Value = i);
-					var completed = await searcher.Search(comparer, CancellationToken.None, report);
+					var completed = await scanner.Search(comparer, CancellationToken.None, report);
 
 					if (completed)
 					{
-						ShowScannerResults();
+						ShowScannerResults(scanner);
 					}
 				}
 				catch (Exception ex)
@@ -316,6 +316,11 @@ namespace ReClassNET.Forms
 			addressListMemoryRecordList.Clear();
 		}
 
+		private void inputCorrelatorToolStripButton_Click(object sender, EventArgs e)
+		{
+			new InputCorrelatorForm(this).Show();
+		}
+
 		private void resultListContextMenuStrip_Opening(object sender, CancelEventArgs e)
 		{
 			var cms = (ContextMenuStrip)sender;
@@ -399,14 +404,14 @@ namespace ReClassNET.Forms
 		/// <summary>
 		/// Shows some of the scanner results.
 		/// </summary>
-		private void ShowScannerResults()
+		public void ShowScannerResults(Scanner scanner)
 		{
-			Contract.Requires(searcher != null);
+			Contract.Requires(scanner != null);
 
-			SetResultCount(searcher.TotalResultCount);
+			SetResultCount(scanner.TotalResultCount);
 
 			resultMemoryRecordList.SetRecords(
-				searcher.GetResults()
+				scanner.GetResults()
 					.Take(MaxVisibleResults)
 					.OrderBy(r => r.Address, IntPtrComparer.Instance)
 					.Select(r =>
@@ -489,8 +494,8 @@ namespace ReClassNET.Forms
 		/// </summary>
 		private void Reset()
 		{
-			searcher?.Dispose();
-			searcher = null;
+			scanner?.Dispose();
+			scanner = null;
 
 			SetResultCount(0);
 			resultMemoryRecordList.Clear();
@@ -547,14 +552,14 @@ namespace ReClassNET.Forms
 
 			try
 			{
-				searcher = new Scanner(Program.RemoteProcess, settings);
+				scanner = new Scanner(Program.RemoteProcess, settings);
 
 				var report = new Progress<int>(i => scanProgressBar.Value = i);
-				var completed = await searcher.Search(comparer, CancellationToken.None, report);
+				var completed = await scanner.Search(comparer, CancellationToken.None, report);
 
 				if (completed)
 				{
-					ShowScannerResults();
+					ShowScannerResults(scanner);
 
 					nextScanButton.Enabled = true;
 					valueTypeComboBox.Enabled = false;
