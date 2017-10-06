@@ -43,6 +43,17 @@ namespace ReClassNET.DataExchange.ReClass
 			this.project = project;
 		}
 
+		static ReClassNetFile()
+		{
+			// Obsolete: The name of the class was changed. Because of this older files can't load this nodes.
+			buildInStringToTypeMap["UTF8TextNode"] = typeof(Utf8TextNode);
+			buildInStringToTypeMap["UTF8TextPtrNode"] = typeof(Utf8TextPtrNode);
+			buildInStringToTypeMap["UTF16TextNode"] = typeof(Utf16TextNode);
+			buildInStringToTypeMap["UTF16TextPtrNode"] = typeof(Utf16TextPtrNode);
+			buildInStringToTypeMap["UTF32TextNode"] = typeof(Utf32TextNode);
+			buildInStringToTypeMap["UTF32TextPtrNode"] = typeof(Utf32TextPtrNode);
+		}
+
 		private static readonly Dictionary<string, Type> buildInStringToTypeMap = new[]
 		{
 			typeof(BoolNode),
