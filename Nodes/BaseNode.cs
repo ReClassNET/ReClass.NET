@@ -31,10 +31,10 @@ namespace ReClassNET.Nodes
 		public IntPtr Offset { get; set; }
 
 		/// <summary>Gets or sets the name of the node. If a new name was set the property changed event gets fired.</summary>
-		public virtual string Name { get { return name; } set { if (value != null && name != value) { name = value; NameChanged?.Invoke(this); } } }
+		public virtual string Name { get => name; set { if (value != null && name != value) { name = value; NameChanged?.Invoke(this); } } }
 
 		/// <summary>Gets or sets the comment of the node.</summary>
-		public string Comment { get { return comment; } set { if (value != null && comment != value) { comment = value; CommentChanged?.Invoke(this); } } }
+		public string Comment { get => comment; set { if (value != null && comment != value) { comment = value; CommentChanged?.Invoke(this); } } }
 
 		/// <summary>Gets or sets the parent node.</summary>
 		public BaseContainerNode ParentNode { get; internal set; }
@@ -51,7 +51,7 @@ namespace ReClassNET.Nodes
 		public event NodeEventHandler NameChanged;
 		public event NodeEventHandler CommentChanged;
 
-		protected GrowingList<bool> levelsOpen = new GrowingList<bool>(false);
+		protected readonly GrowingList<bool> levelsOpen = new GrowingList<bool>(false);
 
 		[ContractInvariantMethod]
 		private void ObjectInvariants()
