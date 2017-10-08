@@ -601,7 +601,7 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(generator != null);
 
-			new CodeForm(generator, currentProject.Classes, Program.Logger).Show();
+			LinkedWindowFeatures.ShowCodeGeneratorForm(currentProject.Classes, generator);
 		}
 
 		/// <summary>Opens the <see cref="InputBytesForm"/> and calls <paramref name="callback"/> with the result.</summary>

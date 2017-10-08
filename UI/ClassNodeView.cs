@@ -212,8 +212,7 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			var node = e.Node as ClassTreeNode;
-			if (node == null)
+			if (!(e.Node is ClassTreeNode node))
 			{
 				return;
 			}
@@ -253,8 +252,7 @@ namespace ReClassNET.UI
 
 		private void deleteClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var treeNode = classesTreeView.SelectedNode as ClassTreeNode;
-			if (treeNode != null)
+			if (classesTreeView.SelectedNode is ClassTreeNode treeNode)
 			{
 				try
 				{
@@ -277,8 +275,7 @@ namespace ReClassNET.UI
 		{
 			if (!string.IsNullOrEmpty(e.Label))
 			{
-				var node = e.Node as ClassTreeNode;
-				if (node != null)
+				if (e.Node is ClassTreeNode node)
 				{
 					node.ClassNode.Name = e.Label;
 
@@ -331,6 +328,14 @@ namespace ReClassNET.UI
 		private void addNewClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			LinkedWindowFeatures.CreateDefaultClass();
+		}
+
+		private void showCodeOfClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (classesTreeView.SelectedNode is ClassTreeNode node)
+			{
+				LinkedWindowFeatures.ShowCodeGeneratorForm(node.ClassNode.Yield());
+			}
 		}
 
 		#endregion

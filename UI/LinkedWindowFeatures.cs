@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Windows.Forms;
+using ReClassNET.CodeGenerator;
 using ReClassNET.Debugger;
 using ReClassNET.Forms;
 using ReClassNET.MemoryScanner;
@@ -128,6 +130,21 @@ namespace ReClassNET.UI
 			}
 
 			sf.ExcuteScan(settings, comparer);
+		}
+
+		public static void ShowCodeGeneratorForm(IEnumerable<ClassNode> classes)
+		{
+			Contract.Requires(classes != null);
+
+			ShowCodeGeneratorForm(classes, new CppCodeGenerator());
+		}
+
+		public static void ShowCodeGeneratorForm(IEnumerable<ClassNode> classes, ICodeGenerator generator)
+		{
+			Contract.Requires(classes != null);
+			Contract.Requires(generator != null);
+
+			new CodeForm(generator, classes, Program.Logger).Show();
 		}
 	}
 }

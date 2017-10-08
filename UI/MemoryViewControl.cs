@@ -795,6 +795,8 @@ namespace ReClassNET.UI
 			removeToolStripMenuItem.Enabled = !nodeIsClass;
 
 			copyAddressToolStripMenuItem.Enabled = !nodeIsClass;
+
+			showCodeOfClassToolStripMenuItem.Enabled = nodeIsClass;
 		}
 
 		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1213,6 +1215,14 @@ namespace ReClassNET.UI
 			}
 
 			LinkedWindowFeatures.FindWhatInteractsWithAddress(selectedNode.Address, selectedNode.Node.MemorySize, writeOnly);
+		}
+
+		private void showCodeOfClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (selectedNodes.FirstOrDefault()?.Node is ClassNode node)
+			{
+				LinkedWindowFeatures.ShowCodeGeneratorForm(node.Yield());
+			}
 		}
 	}
 }
