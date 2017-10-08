@@ -32,8 +32,7 @@ public:
 		}
 
 		if (directInputInterface->CreateDevice(GUID_SysKeyboard, &keyboardDevice, nullptr) != DI_OK
-			|| keyboardDevice->SetDataFormat(&c_dfDIKeyboard) != DI_OK
-			/*|| keyboardDevice->SetCooperativeLevel(target, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE) != DI_OK*/)
+			|| keyboardDevice->SetDataFormat(&c_dfDIKeyboard) != DI_OK)
 		{
 			return false;
 		}
