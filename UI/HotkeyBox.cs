@@ -56,14 +56,19 @@ namespace ReClassNET.UI
 
 		private void clearButton_Click(object sender, EventArgs e)
 		{
-			Hotkey.Clear();
-
-			DisplayHotkey();
+			Clear();
 		}
 
 		private void DisplayHotkey()
 		{
 			textBox.Text = Hotkey.ToString();
+		}
+
+		public void Clear()
+		{
+			Hotkey.Clear();
+
+			DisplayHotkey();
 		}
 	}
 
