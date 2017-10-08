@@ -6,7 +6,7 @@ using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
 {
-	[ContractClass(typeof(ICodeGeneratorContract))]
+	[ContractClass(typeof(CodeGeneratorContract))]
 	public interface ICodeGenerator
 	{
 		/// <summary>The language this generator produces.</summary>
@@ -20,7 +20,7 @@ namespace ReClassNET.CodeGenerator
 	}
 
 	[ContractClassFor(typeof(ICodeGenerator))]
-	internal abstract class ICodeGeneratorContract : ICodeGenerator
+	internal abstract class CodeGeneratorContract : ICodeGenerator
 	{
 		public Language Language => throw new NotImplementedException();
 
