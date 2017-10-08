@@ -1,28 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.Input;
 using ReClassNET.MemoryScanner;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Forms
 {
 	public partial class InputCorrelatorForm : IconForm
 	{
+		private static readonly TimeSpan refineInterval = TimeSpan.FromMilliseconds(400);
+
 		private readonly ScannerForm scannerForm;
 		private readonly KeyboardInput input;
 		private InputCorrelatedScanner scanner;
 
 		private bool isScanning = false;
+		private DateTime lastRefineTime;
 
 		public InputCorrelatorForm(ScannerForm sf)
 		{
@@ -46,8 +43,6 @@ namespace ReClassNET.Forms
 
 			hotkeyBox.Input = input;
 
-			rescanTimer.Interval = 400;
-
 			infoLabel.Text = string.Empty;
 		}
 
@@ -60,6 +55,8 @@ namespace ReClassNET.Forms
 			}
 
 			hotkeyListBox.Items.Add(hotkey);
+
+			hotkeyBox.Clear();
 		}
 
 		private void removeButton_Click(object sender, EventArgs e)
@@ -73,34 +70,41 @@ namespace ReClassNET.Forms
 			hotkeyListBox.Items.RemoveAt(index);
 		}
 
-		private async void timer_Tick(object sender, EventArgs e)
+		private async void refineTimer_Tick(object sender, EventArgs e)
 		{
 			if (isScanning)
 			{
 				return;
 			}
 
-			isScanning = true;
+			scanner.CorrelateInput();
 
-			try
+			if (lastRefineTime + refineInterval < DateTime.Now)
 			{
-				await scanner.CorrelateInput(CancellationToken.None, null);
+				isScanning = true;
 
-				infoLabel.Text = $"Scan Count: {scanner.ScanCount} Possible Values: {scanner.TotalResultCount}";
-			}
-			catch (Exception ex)
-			{
-				Program.ShowException(ex);
-			}
+				try
+				{
+					await scanner.RefineResults(CancellationToken.None, null);
 
-			isScanning = false;
+					infoLabel.Text = $"Scan Count: {scanner.ScanCount} Possible Values: {scanner.TotalResultCount}";
+				}
+				catch (Exception ex)
+				{
+					Program.ShowException(ex);
+				}
+
+				isScanning = false;
+
+				lastRefineTime = DateTime.Now;
+			}
 		}
 
 		private async void InputCorrelatorForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			hotkeyBox.Input = null;
 
-			rescanTimer.Enabled = false;
+			refineTimer.Enabled = false;
 
 			if (isScanning)
 			{
@@ -146,7 +150,7 @@ namespace ReClassNET.Forms
 
 					startStopButton.Text = "Stop Scan";
 
-					rescanTimer.Enabled = true;
+					refineTimer.Enabled = true;
 
 					return;
 				}
@@ -157,7 +161,7 @@ namespace ReClassNET.Forms
 			}
 			else
 			{
-				rescanTimer.Enabled = false;
+				refineTimer.Enabled = false;
 
 				startStopButton.Text = "Start Scan";
 

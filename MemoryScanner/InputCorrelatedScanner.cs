@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -68,13 +67,34 @@ namespace ReClassNET.MemoryScanner
 			return Search(CreateScanComparer(ScanCompareType.Unknown), CancellationToken.None, null);
 		}
 
-		public async Task CorrelateInput(CancellationToken ct, IProgress<int> progress)
-		{
-			var keys = input.GetPressedKeys().Select(k => k & Keys.KeyCode).Where(k => k != Keys.None).ToArray();
+		private bool shouldHaveChangedSinceLastScan = false;
 
-			var compareType = keys.Length != 0 && hotkeys.Any(h => h.Matches(keys)) ? ScanCompareType.Changed : ScanCompareType.NotChanged;
+		public void CorrelateInput()
+		{
+			if (!shouldHaveChangedSinceLastScan)
+			{
+				var keys = input.GetPressedKeys().Select(k => k & Keys.KeyCode).Where(k => k != Keys.None).ToArray();
+
+				if (keys.Length != 0 && hotkeys.Any(h => h.Matches(keys)))
+				{
+					shouldHaveChangedSinceLastScan = true;
+				}
+			}
+		}
+
+		public async Task RefineResults(CancellationToken ct, IProgress<int> progress)
+		{
+			var compareType = shouldHaveChangedSinceLastScan ? ScanCompareType.Changed : ScanCompareType.NotChanged;
+
+			if (compareType == ScanCompareType.Changed)
+			{
+				// If the value should have changed, we give the target some time to react to the pressed key.
+				await Task.Delay(TimeSpan.FromMilliseconds(200), ct);
+			}
 
 			await Search(CreateScanComparer(compareType), ct, progress);
+
+			shouldHaveChangedSinceLastScan = false;
 
 			ScanCount++;
 		}

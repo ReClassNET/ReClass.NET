@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.rescanTimer = new System.Windows.Forms.Timer(this.components);
+			this.refineTimer = new System.Windows.Forms.Timer(this.components);
 			this.bannerBox = new ReClassNET.UI.BannerBox();
 			this.settingsGroupBox = new System.Windows.Forms.GroupBox();
 			this.removeButton = new System.Windows.Forms.Button();
@@ -44,9 +44,10 @@
 			this.settingsGroupBox.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// rescanTimer
+			// refineTimer
 			// 
-			this.rescanTimer.Tick += new System.EventHandler(this.timer_Tick);
+			this.refineTimer.Interval = 50;
+			this.refineTimer.Tick += new System.EventHandler(this.refineTimer_Tick);
 			// 
 			// bannerBox
 			// 
@@ -180,7 +181,7 @@
 		}
 
 		#endregion
-		private System.Windows.Forms.Timer rescanTimer;
+		private System.Windows.Forms.Timer refineTimer;
 		private UI.BannerBox bannerBox;
 		private System.Windows.Forms.GroupBox settingsGroupBox;
 		private UI.HotkeyBox hotkeyBox;
