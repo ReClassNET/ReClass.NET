@@ -29,6 +29,8 @@ This is a port of ReClass to the .NET platform with additional features.
 - Control the remote process: start / stop / kill
 - Process Selection Dialog with filtering
 - Memory Viewer
+- Memory Scanner
+  - Scan for values correlated to your input
 - Class address calculator
 - Code Generator (C++ / C#)
 - Module / Section Dumper
@@ -46,6 +48,7 @@ This is a port of ReClass to the .NET platform with additional features.
 - [Frostbite Plugin](https://github.com/KN4CK3R/ReClass.NET-FrostbitePlugin)
 - [MemoryPipe Plugin](https://github.com/KN4CK3R/ReClass.NET-MemoryPipePlugin)
 - [LoadBinary Plugin](https://github.com/KN4CK3R/ReClass.NET-LoadBinaryPlugin)
+- [Handle Abuser Plugin](https://github.com/KN4CK3R/ReClass.NET-HandleAbuser)
 
 To install a plugin just copy it in the "Plugins" folder.
 If you want to develop your own plugin just learn from the code of the [Sample Plugins](https://github.com/KN4CK3R/ReClass.NET-SamplePlugin) and [Frostbite Plugin](https://github.com/KN4CK3R/ReClass.NET-FrostbitePlugin) repositories. If you have developed a nice plugin, leave me a message and I will add it to the list above.
@@ -79,6 +82,9 @@ Process Selection
 
 Memory Viewer  
 ![](https://abload.de/img/memoryviewerb4y1s.jpg)
+
+Memory Scanner  
+![](https://abload.de/img/scannerytub1.jpg)
 
 Pointer Preview  
 ![](http://abload.de/img/memorypreview2gsfp.jpg)
