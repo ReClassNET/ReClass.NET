@@ -46,59 +46,7 @@ namespace ReClassNET.Forms
 			infoLabel.Text = string.Empty;
 		}
 
-		private void addButton_Click(object sender, EventArgs e)
-		{
-			var hotkey = hotkeyBox.Hotkey.Clone();
-			if (hotkey.IsEmpty)
-			{
-				return;
-			}
-
-			hotkeyListBox.Items.Add(hotkey);
-
-			hotkeyBox.Clear();
-		}
-
-		private void removeButton_Click(object sender, EventArgs e)
-		{
-			var index = hotkeyListBox.SelectedIndex;
-			if (index < 0)
-			{
-				return;
-			}
-
-			hotkeyListBox.Items.RemoveAt(index);
-		}
-
-		private async void refineTimer_Tick(object sender, EventArgs e)
-		{
-			if (isScanning)
-			{
-				return;
-			}
-
-			scanner.CorrelateInput();
-
-			if (lastRefineTime + refineInterval < DateTime.Now)
-			{
-				isScanning = true;
-
-				try
-				{
-					await scanner.RefineResults(CancellationToken.None, null);
-
-					infoLabel.Text = $"Scan Count: {scanner.ScanCount} Possible Values: {scanner.TotalResultCount}";
-				}
-				catch (Exception ex)
-				{
-					Program.ShowException(ex);
-				}
-
-				isScanning = false;
-
-				lastRefineTime = DateTime.Now;
-			}
-		}
+		#region Event Handler
 
 		private async void InputCorrelatorForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
@@ -122,6 +70,30 @@ namespace ReClassNET.Forms
 			scanner?.Dispose();
 
 			input?.Dispose();
+		}
+
+		private void addButton_Click(object sender, EventArgs e)
+		{
+			var hotkey = hotkeyBox.Hotkey.Clone();
+			if (hotkey.IsEmpty)
+			{
+				return;
+			}
+
+			hotkeyListBox.Items.Add(hotkey);
+
+			hotkeyBox.Clear();
+		}
+
+		private void removeButton_Click(object sender, EventArgs e)
+		{
+			var index = hotkeyListBox.SelectedIndex;
+			if (index < 0)
+			{
+				return;
+			}
+
+			hotkeyListBox.Items.RemoveAt(index);
 		}
 
 		private async void startStopButton_Click(object sender, EventArgs e)
@@ -178,5 +150,37 @@ namespace ReClassNET.Forms
 
 			settingsGroupBox.Enabled = true;
 		}
+
+		private async void refineTimer_Tick(object sender, EventArgs e)
+		{
+			if (isScanning)
+			{
+				return;
+			}
+
+			scanner.CorrelateInput();
+
+			if (lastRefineTime + refineInterval < DateTime.Now)
+			{
+				isScanning = true;
+
+				try
+				{
+					await scanner.RefineResults(CancellationToken.None, null);
+
+					infoLabel.Text = $"Scan Count: {scanner.ScanCount} Possible Values: {scanner.TotalResultCount}";
+				}
+				catch (Exception ex)
+				{
+					Program.ShowException(ex);
+				}
+
+				isScanning = false;
+
+				lastRefineTime = DateTime.Now;
+			}
+		}
+
+		#endregion
 	}
 }
