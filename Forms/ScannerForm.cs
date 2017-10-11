@@ -26,7 +26,7 @@ namespace ReClassNET.Forms
 
 		private Scanner scanner;
 
-		private ScanCompareType SelectedCompareType => ((EnumDescriptionDisplay<ScanCompareType>)scanTypeComboBox.SelectedItem).Value;
+		private ScanCompareType SelectedCompareType => ((EnumDescriptionDisplay<ScanCompareType>)compareTypeComboBox.SelectedItem).Value;
 		private ScanValueType SelectedValueType => ((EnumDescriptionDisplay<ScanValueType>)valueTypeComboBox.SelectedItem).Value;
 
 		private string addressFilePath;
@@ -115,36 +115,7 @@ namespace ReClassNET.Forms
 
 		private void scanTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			var enableHexCheckBox = true;
-			var enableValueBox = true;
-			var enableDualInput = false;
-
-			switch (SelectedCompareType)
-			{
-				case ScanCompareType.Unknown:
-					enableHexCheckBox = false;
-					enableValueBox = false;
-					break;
-				case ScanCompareType.Between:
-				case ScanCompareType.BetweenOrEqual:
-					enableDualInput = true;
-					break;
-			}
-
-			switch (SelectedValueType)
-			{
-				case ScanValueType.Float:
-				case ScanValueType.Double:
-				case ScanValueType.ArrayOfBytes:
-				case ScanValueType.String:
-					isHexCheckBox.Checked = false;
-					enableHexCheckBox = false;
-					break;
-			}
-
-			isHexCheckBox.Enabled = enableHexCheckBox;
-			dualValueBox.Enabled = enableValueBox;
-			dualValueBox.ShowSecondInputField = enableDualInput;
+			OnCompareTypeChanged();
 		}
 
 		private void valueTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
@@ -428,6 +399,43 @@ namespace ReClassNET.Forms
 		}
 
 		/// <summary>
+		/// Set input elements according to the selected compare type.
+		/// </summary>
+		private void OnCompareTypeChanged()
+		{
+			var enableHexCheckBox = true;
+			var enableValueBox = true;
+			var enableDualInput = false;
+
+			switch (SelectedCompareType)
+			{
+				case ScanCompareType.Unknown:
+					enableHexCheckBox = false;
+					enableValueBox = false;
+					break;
+				case ScanCompareType.Between:
+				case ScanCompareType.BetweenOrEqual:
+					enableDualInput = true;
+					break;
+			}
+
+			switch (SelectedValueType)
+			{
+				case ScanValueType.Float:
+				case ScanValueType.Double:
+				case ScanValueType.ArrayOfBytes:
+				case ScanValueType.String:
+					isHexCheckBox.Checked = false;
+					enableHexCheckBox = false;
+					break;
+			}
+
+			isHexCheckBox.Enabled = enableHexCheckBox;
+			dualValueBox.Enabled = enableValueBox;
+			dualValueBox.ShowSecondInputField = enableDualInput;
+		}
+
+		/// <summary>
 		/// Hide gui elements after the value type has changed.
 		/// </summary>
 		private void OnValueTypeChanged()
@@ -477,20 +485,23 @@ namespace ReClassNET.Forms
 		/// </summary>
 		private void SetValidCompareTypes()
 		{
+			var compareType = compareTypeComboBox.SelectedItem != null ? SelectedCompareType : ScanCompareType.Equal;
 			var valueType = SelectedValueType;
 			if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)
 			{
-				scanTypeComboBox.DataSource = EnumDescriptionDisplay<ScanCompareType>.CreateExact(ScanCompareType.Equal);
+				compareTypeComboBox.DataSource = EnumDescriptionDisplay<ScanCompareType>.CreateExact(ScanCompareType.Equal);
 			}
 			else
 			{
-				scanTypeComboBox.DataSource = isFirstScan
+				compareTypeComboBox.DataSource = isFirstScan
 					? EnumDescriptionDisplay<ScanCompareType>.CreateExclude(
 						ScanCompareType.Changed, ScanCompareType.NotChanged, ScanCompareType.Decreased, ScanCompareType.DecreasedOrEqual,
 						ScanCompareType.Increased, ScanCompareType.IncreasedOrEqual
 					)
 					: EnumDescriptionDisplay<ScanCompareType>.CreateExclude(ScanCompareType.Unknown);
 			}
+
+			compareTypeComboBox.SelectedItem = compareTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanCompareType>>().FirstOrDefault(e => e.Value == compareType);
 		}
 
 		/// <summary>
@@ -579,6 +590,7 @@ namespace ReClassNET.Forms
 					isFirstScan = false;
 
 					SetValidCompareTypes();
+					OnCompareTypeChanged();
 				}
 			}
 			finally

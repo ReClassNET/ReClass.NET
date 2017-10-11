@@ -33,7 +33,7 @@
 			this.filterGroupBox = new System.Windows.Forms.GroupBox();
 			this.valueTypeComboBox = new System.Windows.Forms.ComboBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.scanTypeComboBox = new System.Windows.Forms.ComboBox();
+			this.compareTypeComboBox = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.isHexCheckBox = new System.Windows.Forms.CheckBox();
 			this.dualValueBox = new ReClassNET.UI.DualValueBox();
@@ -119,7 +119,7 @@
 			// 
 			this.filterGroupBox.Controls.Add(this.valueTypeComboBox);
 			this.filterGroupBox.Controls.Add(this.label3);
-			this.filterGroupBox.Controls.Add(this.scanTypeComboBox);
+			this.filterGroupBox.Controls.Add(this.compareTypeComboBox);
 			this.filterGroupBox.Controls.Add(this.label1);
 			this.filterGroupBox.Controls.Add(this.isHexCheckBox);
 			this.filterGroupBox.Controls.Add(this.dualValueBox);
@@ -152,17 +152,17 @@
 			this.label3.TabIndex = 7;
 			this.label3.Text = "Value Type:";
 			// 
-			// scanTypeComboBox
+			// compareTypeComboBox
 			// 
-			this.scanTypeComboBox.DisplayMember = "Description";
-			this.scanTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.scanTypeComboBox.FormattingEnabled = true;
-			this.scanTypeComboBox.Location = new System.Drawing.Point(72, 50);
-			this.scanTypeComboBox.Name = "scanTypeComboBox";
-			this.scanTypeComboBox.Size = new System.Drawing.Size(224, 21);
-			this.scanTypeComboBox.TabIndex = 5;
-			this.scanTypeComboBox.ValueMember = "Value";
-			this.scanTypeComboBox.SelectionChangeCommitted += new System.EventHandler(this.scanTypeComboBox_SelectionChangeCommitted);
+			this.compareTypeComboBox.DisplayMember = "Description";
+			this.compareTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.compareTypeComboBox.FormattingEnabled = true;
+			this.compareTypeComboBox.Location = new System.Drawing.Point(72, 50);
+			this.compareTypeComboBox.Name = "compareTypeComboBox";
+			this.compareTypeComboBox.Size = new System.Drawing.Size(224, 21);
+			this.compareTypeComboBox.TabIndex = 5;
+			this.compareTypeComboBox.ValueMember = "Value";
+			this.compareTypeComboBox.SelectionChangeCommitted += new System.EventHandler(this.scanTypeComboBox_SelectionChangeCommitted);
 			// 
 			// label1
 			// 
@@ -718,7 +718,7 @@
             this.inputCorrelatorToolStripButton});
 			this.additionalToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.additionalToolStrip.Name = "additionalToolStrip";
-			this.additionalToolStrip.Size = new System.Drawing.Size(50, 25);
+			this.additionalToolStrip.Size = new System.Drawing.Size(26, 25);
 			this.additionalToolStrip.TabIndex = 0;
 			// 
 			// inputCorrelatorToolStripButton
@@ -781,7 +781,7 @@
 		private System.Windows.Forms.GroupBox filterGroupBox;
 		private UI.DualValueBox dualValueBox;
 		private System.Windows.Forms.CheckBox isHexCheckBox;
-		private System.Windows.Forms.ComboBox scanTypeComboBox;
+		private System.Windows.Forms.ComboBox compareTypeComboBox;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.ComboBox valueTypeComboBox;
 		private System.Windows.Forms.Label label3;
