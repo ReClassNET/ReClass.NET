@@ -52,7 +52,7 @@ namespace ReClassNET.MemoryScanner
 
 		public string ValueStr { get; private set; }
 		public string PreviousValueStr { get; }
-		public bool HasChangedSinceLastUpdate { get; private set; }
+		public bool HasChangedValue { get; private set; }
 
 		public int ValueLength { get; set; }
 
@@ -184,43 +184,40 @@ namespace ReClassNET.MemoryScanner
 
 			if (process.ReadRemoteMemoryIntoBuffer(RealAddress, ref buffer))
 			{
-				string newValueStr = null;
 				switch (ValueType)
 				{
 					case ScanValueType.Byte:
-						newValueStr = FormatValue(buffer[0], ShowValueHexadecimal);
+						ValueStr = FormatValue(buffer[0], ShowValueHexadecimal);
 						break;
 					case ScanValueType.Short:
-						newValueStr = FormatValue(BitConverter.ToInt16(buffer, 0), ShowValueHexadecimal);
+						ValueStr = FormatValue(BitConverter.ToInt16(buffer, 0), ShowValueHexadecimal);
 						break;
 					case ScanValueType.Integer:
-						newValueStr = FormatValue(BitConverter.ToInt32(buffer, 0), ShowValueHexadecimal);
+						ValueStr = FormatValue(BitConverter.ToInt32(buffer, 0), ShowValueHexadecimal);
 						break;
 					case ScanValueType.Long:
-						newValueStr = FormatValue(BitConverter.ToInt64(buffer, 0), ShowValueHexadecimal);
+						ValueStr = FormatValue(BitConverter.ToInt64(buffer, 0), ShowValueHexadecimal);
 						break;
 					case ScanValueType.Float:
-						newValueStr = FormatValue(BitConverter.ToSingle(buffer, 0));
+						ValueStr = FormatValue(BitConverter.ToSingle(buffer, 0));
 						break;
 					case ScanValueType.Double:
-						newValueStr = FormatValue(BitConverter.ToDouble(buffer, 0));
+						ValueStr = FormatValue(BitConverter.ToDouble(buffer, 0));
 						break;
 					case ScanValueType.ArrayOfBytes:
-						newValueStr = FormatValue(buffer);
+						ValueStr = FormatValue(buffer);
 						break;
 					case ScanValueType.String:
-						newValueStr = FormatValue(Encoding.GetString(buffer));
+						ValueStr = FormatValue(Encoding.GetString(buffer));
 						break;
 				}
-
-				HasChangedSinceLastUpdate = ValueStr != newValueStr;
-
-				ValueStr = newValueStr;
 			}
 			else
 			{
 				ValueStr = "???";
 			}
+
+			HasChangedValue = ValueStr != PreviousValueStr;
 
 			NotifyPropertyChanged(nameof(ValueStr));
 		}

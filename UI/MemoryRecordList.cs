@@ -108,7 +108,7 @@ namespace ReClassNET.UI
 			else if (e.ColumnIndex == 3) // Value
 			{
 				var record = (MemoryRecord)resultDataGridView.Rows[e.RowIndex].DataBoundItem;
-				e.CellStyle.ForeColor = record.HasChangedSinceLastUpdate ? Color.Red : Color.Black;
+				e.CellStyle.ForeColor = record.HasChangedValue ? Color.Red : Color.Black;
 				e.FormattingApplied = true;
 			}
 		}
