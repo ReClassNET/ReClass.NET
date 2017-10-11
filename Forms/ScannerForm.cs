@@ -190,7 +190,11 @@ namespace ReClassNET.Forms
 				{
 					var comparer = CreateComparer(scanner.Settings);
 
-					var report = new Progress<int>(i => scanProgressBar.Value = i);
+					var report = new Progress<int>(i =>
+					{
+						scanProgressBar.Value = i;
+						SetResultCount(scanner.TotalResultCount);
+					});
 					var completed = await scanner.Search(comparer, CancellationToken.None, report);
 
 					if (completed)
@@ -554,7 +558,11 @@ namespace ReClassNET.Forms
 			{
 				scanner = new Scanner(Program.RemoteProcess, settings);
 
-				var report = new Progress<int>(i => scanProgressBar.Value = i);
+				var report = new Progress<int>(i =>
+				{
+					scanProgressBar.Value = i;
+					SetResultCount(scanner.TotalResultCount);
+				});
 				var completed = await scanner.Search(comparer, CancellationToken.None, report);
 
 				if (completed)
