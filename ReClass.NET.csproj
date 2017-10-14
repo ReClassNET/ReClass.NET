@@ -296,6 +296,9 @@
     <Compile Include="UI\HotkeyBox.Designer.cs">
       <DependentUpon>HotkeyBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\IconButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\ISettingsBindable.cs" />
     <Compile Include="UI\LinkedWindowFeatures.cs" />
     <Compile Include="UI\MemoryPreviewPopUp.cs">
@@ -311,6 +314,7 @@
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
+    <Compile Include="Util\CircularBuffer.cs" />
     <Compile Include="Util\Extension.BinaryReaderWriter.cs" />
     <Compile Include="Util\Extension.DataGridView.cs" />
     <Compile Include="Util\Extension.Dictionary.cs" />
@@ -905,6 +909,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Canvas_Size.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Redo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Undo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

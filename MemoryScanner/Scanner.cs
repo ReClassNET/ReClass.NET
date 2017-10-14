@@ -14,14 +14,21 @@ namespace ReClassNET.MemoryScanner
 	public class Scanner : IDisposable
 	{
 		private readonly RemoteProcess process;
-		private ScanResultStore store;
+		private readonly CircularBuffer<ScanResultStore> stores;
 
 		public ScanSettings Settings { get; }
+
+		private ScanResultStore CurrentStore => stores.Head;
 
 		/// <summary>
 		/// Gets the total result count from the last scan.
 		/// </summary>
-		public int TotalResultCount => store.TotalResultCount;
+		public int TotalResultCount => CurrentStore?.TotalResultCount ?? 0;
+
+		/// <summary>
+		/// Checks if the last scan can be undone.
+		/// </summary>
+		public bool CanUndoLastScan => stores.Count > 1;
 
 		private bool isFirstScan;
 
@@ -29,6 +36,8 @@ namespace ReClassNET.MemoryScanner
 		{
 			Contract.Requires(process != null);
 			Contract.Requires(settings != null);
+
+			stores = new CircularBuffer<ScanResultStore>(3);
 
 			this.process = process;
 			Settings = settings;
@@ -38,8 +47,11 @@ namespace ReClassNET.MemoryScanner
 
 		public void Dispose()
 		{
-			store?.Dispose();
-			store = null;
+			foreach (var store in stores)
+			{
+				store?.Dispose();
+			}
+			stores.Clear();
 		}
 
 		/// <summary>
@@ -52,7 +64,33 @@ namespace ReClassNET.MemoryScanner
 		{
 			Contract.Ensures(Contract.Result<IEnumerable<ScanResult>>() != null);
 
-			return store.GetResultBlocks().SelectMany(kv => kv.Results);
+			if (CurrentStore == null)
+			{
+				return Enumerable.Empty<ScanResult>();
+			}
+
+			return CurrentStore.GetResultBlocks().SelectMany(rb => rb.Results.Select(r =>
+			{
+				// Convert the block offset to a real address.
+				var c = r.Clone();
+				c.Address = c.Address.Add(rb.Start);
+				return c;
+			}));
+		}
+
+		/// <summary>
+		/// Restores the results of the previous scan.
+		/// </summary>
+		/// <exception cref="InvalidOperationException">Thrown if no previous results are present.</exception>
+		public void UndoLastScan()
+		{
+			if (!CanUndoLastScan)
+			{
+				throw new InvalidOperationException();
+			}
+
+			var store = stores.Dequeue();
+			store?.Dispose();
 		}
 
 		/// <summary>
@@ -143,7 +181,7 @@ namespace ReClassNET.MemoryScanner
 			Contract.Requires(comparer != null);
 			Contract.Ensures(Contract.Result<Task<bool>>() != null);
 
-			store = CreateStore();
+			var store = CreateStore();
 
 			var sections = GetSearchableSections();
 			if (sections.Count == 0)
@@ -177,16 +215,11 @@ namespace ReClassNET.MemoryScanner
 						if (process.ReadRemoteMemoryIntoBuffer(s.Start, ref buffer, 0, size)) // Fill the buffer.
 						{
 							var results = context.Worker.Search(buffer, size) // Search for results.
-								.Select(r => { r.Address = r.Address.Add(s.Start); return r; }) // Results are relative to the buffer so add the section start address.
+								.OrderBy(r => r.Address, IntPtrComparer.Instance)
 								.ToList();
 							if (results.Count > 0)
 							{
-								// Minify the result block range.
-								var block = new ScanResultBlock(
-									results.Min(r => r.Address, IntPtrComparer.Instance),
-									results.Max(r => r.Address, IntPtrComparer.Instance) + comparer.ValueSize,
-									results
-								);
+								var block = CreateResultBlock(results, s.Start, comparer.ValueSize);
 								store.AddBlock(block); // Store the result block.
 							}
 						}
@@ -199,6 +232,9 @@ namespace ReClassNET.MemoryScanner
 				);
 
 				store.Finish();
+
+				var previousStore = stores.Enqueue(store);
+				previousStore?.Dispose();
 
 				if (result.IsCompleted)
 				{
@@ -224,17 +260,17 @@ namespace ReClassNET.MemoryScanner
 			Contract.Requires(comparer != null);
 			Contract.Ensures(Contract.Result<Task<bool>>() != null);
 
-			var localStore = CreateStore();
+			var store = CreateStore();
 
 			progress?.Report(0);
 
 			var counter = 0;
-			var totalResultCount = (float)store.TotalResultCount;
+			var totalResultCount = (float)CurrentStore.TotalResultCount;
 
 			return Task.Run(() =>
 			{
 				var result = Parallel.ForEach(
-					store.GetResultBlocks(),
+					CurrentStore.GetResultBlocks(),
 					new ParallelOptions { CancellationToken = ct },
 					() => new ScannerContext(Settings, comparer, 0),
 					(b, state, _, context) =>
@@ -243,17 +279,13 @@ namespace ReClassNET.MemoryScanner
 						var buffer = context.Buffer;
 						if (process.ReadRemoteMemoryIntoBuffer(b.Start, ref buffer, 0, b.Size))
 						{
-							var results = context.Worker.Search(buffer, buffer.Length, b.Results.Select(r => { r.Address = r.Address.Sub(b.Start); return r; }))
-								.Select(r => { r.Address = r.Address.Add(b.Start); return r; })
+							var results = context.Worker.Search(buffer, buffer.Length, b.Results)
+								.OrderBy(r => r.Address, IntPtrComparer.Instance)
 								.ToList();
 							if (results.Count > 0)
 							{
-								var block = new ScanResultBlock(
-									results.Min(r => r.Address, IntPtrComparer.Instance),
-									results.Max(r => r.Address, IntPtrComparer.Instance) + comparer.ValueSize,
-									results
-								);
-								localStore.AddBlock(block);
+								var block = CreateResultBlock(results, b.Start, comparer.ValueSize);
+								store.AddBlock(block);
 							}
 						}
 
@@ -264,19 +296,41 @@ namespace ReClassNET.MemoryScanner
 					w => { }
 				);
 
-				localStore.Finish();
+				store.Finish();
 
-				if (result.IsCompleted)
-				{
-					store.Dispose();
+				var previousStore = stores.Enqueue(store);
+				previousStore?.Dispose();
 
-					store = localStore;
-
-					return true;
-				}
-
-				return false;
+				return result.IsCompleted;
 			}, ct);
+		}
+
+		/// <summary>
+		/// Creates a result block from the scan results and adjusts the result offset.
+		/// </summary>
+		/// <param name="results">The results in this block.</param>
+		/// <param name="previousStartAddress">The start address of the previous block or section.</param>
+		/// <param name="valueSize">The size of the value type.</param>
+		/// <returns>The new result block.</returns>
+		private static ScanResultBlock CreateResultBlock(IReadOnlyList<ScanResult> results, IntPtr previousStartAddress, int valueSize)
+		{
+			// Calculate start and end address
+			var startAddress = results.First().Address.Add(previousStartAddress);
+			var endAddress = results.Last().Address.Add(previousStartAddress) + valueSize;
+
+			// Adjust the offsets of the results
+			var firstOffset = results.First().Address;
+			foreach (var result in results)
+			{
+				result.Address = result.Address.Sub(firstOffset);
+			}
+
+			var block = new ScanResultBlock(
+				startAddress,
+				endAddress,
+				results
+			);
+			return block;
 		}
 	}
 }

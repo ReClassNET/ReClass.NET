@@ -251,5 +251,27 @@ namespace ReClassNET.Util
 			}
 			return counter.Values.All(c => c == 0);
 		}
+
+		public static TSource PredicateOrFirst<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		{
+			Contract.Requires(source != null);
+			Contract.Requires(predicate != null);
+
+			var result = default(TSource);
+			var first = true;
+			foreach (var element in source)
+			{
+				if (predicate(element))
+				{
+					return element;
+				}
+				if (first)
+				{
+					result = element;
+					first = false;
+				}
+			}
+			return result;
+		}
 	}
 }

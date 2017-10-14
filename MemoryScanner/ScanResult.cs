@@ -9,6 +9,8 @@ namespace ReClassNET.MemoryScanner
 		public abstract ScanValueType ValueType { get; }
 
 		public IntPtr Address { get; set; }
+
+		public abstract ScanResult Clone();
 	}
 
 	public class ByteScanResult : ScanResult
@@ -20,6 +22,11 @@ namespace ReClassNET.MemoryScanner
 		public ByteScanResult(byte value)
 		{
 			Value = value;
+		}
+
+		public override ScanResult Clone()
+		{
+			return new ByteScanResult(Value) { Address = Address };
 		}
 	}
 
@@ -33,6 +40,11 @@ namespace ReClassNET.MemoryScanner
 		{
 			Value = value;
 		}
+
+		public override ScanResult Clone()
+		{
+			return new ShortScanResult(Value) { Address = Address };
+		}
 	}
 
 	public class IntegerScanResult : ScanResult
@@ -44,6 +56,11 @@ namespace ReClassNET.MemoryScanner
 		public IntegerScanResult(int value)
 		{
 			Value = value;
+		}
+
+		public override ScanResult Clone()
+		{
+			return new IntegerScanResult(Value) { Address = Address };
 		}
 	}
 
@@ -57,6 +74,11 @@ namespace ReClassNET.MemoryScanner
 		{
 			Value = value;
 		}
+
+		public override ScanResult Clone()
+		{
+			return new LongScanResult(Value) { Address = Address };
+		}
 	}
 
 	public class FloatScanResult : ScanResult
@@ -69,6 +91,11 @@ namespace ReClassNET.MemoryScanner
 		{
 			Value = value;
 		}
+
+		public override ScanResult Clone()
+		{
+			return new FloatScanResult(Value) { Address = Address };
+		}
 	}
 
 	public class DoubleScanResult : ScanResult
@@ -80,6 +107,11 @@ namespace ReClassNET.MemoryScanner
 		public DoubleScanResult(double value)
 		{
 			Value = value;
+		}
+
+		public override ScanResult Clone()
+		{
+			return new DoubleScanResult(Value) { Address = Address };
 		}
 	}
 
@@ -94,6 +126,11 @@ namespace ReClassNET.MemoryScanner
 			Contract.Requires(value != null);
 
 			Value = value;
+		}
+
+		public override ScanResult Clone()
+		{
+			return new ArrayOfBytesScanResult(Value) { Address = Address };
 		}
 	}
 
@@ -112,6 +149,11 @@ namespace ReClassNET.MemoryScanner
 
 			Value = value;
 			Encoding = encoding;
+		}
+
+		public override ScanResult Clone()
+		{
+			return new StringScanResult(Value, Encoding) { Address = Address };
 		}
 	}
 }

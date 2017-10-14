@@ -26,8 +26,8 @@ namespace ReClassNET.Forms
 
 		private Scanner scanner;
 
-		private ScanCompareType SelectedCompareType => ((EnumDescriptionDisplay<ScanCompareType>)compareTypeComboBox.SelectedItem).Value;
-		private ScanValueType SelectedValueType => ((EnumDescriptionDisplay<ScanValueType>)valueTypeComboBox.SelectedItem).Value;
+		private ScanCompareType SelectedCompareType => ((EnumDescriptionDisplay<ScanCompareType>)compareTypeComboBox.SelectedItem)?.Value ?? default(ScanCompareType);
+		private ScanValueType SelectedValueType => ((EnumDescriptionDisplay<ScanValueType>)valueTypeComboBox.SelectedItem)?.Value ?? default(ScanValueType);
 
 		private string addressFilePath;
 
@@ -35,9 +35,8 @@ namespace ReClassNET.Forms
 		{
 			InitializeComponent();
 
-			toolStripPanel.RenderMode = toolStripPanel2.RenderMode = ToolStripRenderMode.Professional;
-			toolStripPanel.Renderer = toolStripPanel2.Renderer = new CustomToolStripProfessionalRenderer(true, false);
-			menuToolStrip.Renderer = additionalToolStrip.Renderer = new CustomToolStripProfessionalRenderer(false, false);
+			toolStripPanel.Renderer = new CustomToolStripProfessionalRenderer(true, false);
+			menuToolStrip.Renderer = new CustomToolStripProfessionalRenderer(false, false);
 
 			valueTypeComboBox.DataSource = EnumDescriptionDisplay<ScanValueType>.Create();
 
@@ -171,6 +170,8 @@ namespace ReClassNET.Forms
 					if (completed)
 					{
 						ShowScannerResults(scanner);
+
+						undoIconButton.Enabled = scanner.CanUndoLastScan;
 					}
 				}
 				catch (Exception ex)
@@ -291,7 +292,7 @@ namespace ReClassNET.Forms
 			addressListMemoryRecordList.Clear();
 		}
 
-		private void inputCorrelatorToolStripButton_Click(object sender, EventArgs e)
+		private void showInputCorrelatorIconButton_Click(object sender, EventArgs e)
 		{
 			new InputCorrelatorForm(this).Show();
 		}
@@ -363,6 +364,18 @@ namespace ReClassNET.Forms
 			{
 				Clipboard.SetText(record.RealAddress.ToString("X"));
 			}
+		}
+
+		private void undoIconButton_Click(object sender, EventArgs e)
+		{
+			if (scanner.CanUndoLastScan)
+			{
+				scanner.UndoLastScan();
+
+				ShowScannerResults(scanner);
+			}
+
+			undoIconButton.Enabled = scanner.CanUndoLastScan;
 		}
 
 		#endregion
@@ -485,7 +498,7 @@ namespace ReClassNET.Forms
 		/// </summary>
 		private void SetValidCompareTypes()
 		{
-			var compareType = compareTypeComboBox.SelectedItem != null ? SelectedCompareType : ScanCompareType.Equal;
+			var compareType = SelectedCompareType;
 			var valueType = SelectedValueType;
 			if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)
 			{
@@ -501,7 +514,7 @@ namespace ReClassNET.Forms
 					: EnumDescriptionDisplay<ScanCompareType>.CreateExclude(ScanCompareType.Unknown);
 			}
 
-			compareTypeComboBox.SelectedItem = compareTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanCompareType>>().FirstOrDefault(e => e.Value == compareType);
+			compareTypeComboBox.SelectedItem = compareTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanCompareType>>().PredicateOrFirst(e => e.Value == compareType);
 		}
 
 		/// <summary>
@@ -511,6 +524,8 @@ namespace ReClassNET.Forms
 		{
 			scanner?.Dispose();
 			scanner = null;
+
+			undoIconButton.Enabled = false;
 
 			SetResultCount(0);
 			resultMemoryRecordList.Clear();
@@ -522,7 +537,7 @@ namespace ReClassNET.Forms
 			isHexCheckBox.Checked = false;
 
 			valueTypeComboBox.Enabled = true;
-			//valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == ScanValueType.Integer);
+			//valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().PredicateOrFirst(e => e.Value == ScanValueType.Integer);
 			OnValueTypeChanged();
 
 			floatingOptionsGroupBox.Enabled = true;
@@ -530,6 +545,7 @@ namespace ReClassNET.Forms
 			scanOptionsGroupBox.Enabled = true;
 
 			isFirstScan = true;
+			undoIconButton.Enabled = false;
 
 			SetValidCompareTypes();
 		}
@@ -655,7 +671,7 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(settings != null);
 
-			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == settings.ValueType);
+			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().PredicateOrFirst(e => e.Value == settings.ValueType);
 
 			startAddressTextBox.Text = settings.StartAddress.ToString(Constants.StringHexFormat);
 			stopAddressTextBox.Text = settings.StopAddress.ToString(Constants.StringHexFormat);

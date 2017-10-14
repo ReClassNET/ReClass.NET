@@ -1073,6 +1073,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Redo {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Redo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Right_Button {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Right_Button", resourceCulture);
@@ -1183,6 +1193,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Undo {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Undo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Unsigned_Type {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Unsigned_Type", resourceCulture);
@@ -1281,7 +1301,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 2017/09/25 19:13:20
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2017/10/11 21:28:28
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {
