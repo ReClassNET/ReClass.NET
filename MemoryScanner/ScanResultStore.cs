@@ -45,6 +45,8 @@ namespace ReClassNET.MemoryScanner
 		{
 			Finish();
 
+			store.Clear();
+
 			try
 			{
 				if (File.Exists(storePath))
