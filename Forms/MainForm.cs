@@ -151,25 +151,6 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private void attachToProcessToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using (var pb = new ProcessBrowserForm(Program.Settings.LastProcess))
-			{
-				if (pb.ShowDialog() == DialogResult.OK)
-				{
-					if (pb.SelectedProcess != null)
-					{
-						AttachToProcess(pb.SelectedProcess);
-
-						if (pb.LoadSymbols)
-						{
-							LoadAllSymbolsForCurrentProcess();
-						}
-					}
-				}
-			}
-		}
-
 		private void reattachToProcessToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			var lastProcess = Program.Settings.LastProcess;
@@ -391,6 +372,40 @@ namespace ReClassNET.Forms
 		#endregion
 
 		#region Toolstrip
+
+		private void attachToProcessToolStripSplitButton_ButtonClick(object sender, EventArgs e)
+		{
+			using (var pb = new ProcessBrowserForm(Program.Settings.LastProcess))
+			{
+				if (pb.ShowDialog() == DialogResult.OK)
+				{
+					if (pb.SelectedProcess != null)
+					{
+						AttachToProcess(pb.SelectedProcess);
+
+						if (pb.LoadSymbols)
+						{
+							LoadAllSymbolsForCurrentProcess();
+						}
+					}
+				}
+			}
+		}
+
+		private void attachToProcessToolStripSplitButton_DropDownClosed(object sender, EventArgs e)
+		{
+			attachToProcessToolStripSplitButton.DropDownItems.Clear();
+		}
+
+		private void attachToProcessToolStripSplitButton_DropDownOpening(object sender, EventArgs e)
+		{
+			attachToProcessToolStripSplitButton.DropDownItems.AddRange(
+				Program.CoreFunctions.EnumerateProcesses()
+					.OrderBy(p => p.Name).ThenBy(p => p.Id, IntPtrComparer.Instance)
+					.Select(p => new ToolStripMenuItem($"[{p.Id}] {p.Name}", p.Icon, (sender2, e2) => AttachToProcess(p)))
+					.ToArray()
+			);
+		}
 
 		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{

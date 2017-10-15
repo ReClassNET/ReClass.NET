@@ -35,7 +35,7 @@
 			this.classesView = new ReClassNET.UI.ClassNodeView();
 			this.memoryViewControl = new ReClassNET.UI.MemoryViewControl();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
-			this.attachToProcessToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.attachToProcessToolStripSplitButton = new System.Windows.Forms.ToolStripSplitButton();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.openProjectToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -195,7 +195,7 @@
 			// toolStrip
 			// 
 			this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.attachToProcessToolStripButton,
+            this.attachToProcessToolStripSplitButton,
             this.toolStripSeparator6,
             this.openProjectToolStripButton,
             this.saveToolStripButton,
@@ -251,15 +251,17 @@
 			this.toolStrip.Size = new System.Drawing.Size(1141, 25);
 			this.toolStrip.TabIndex = 3;
 			// 
-			// attachToProcessToolStripButton
+			// attachToProcessToolStripSplitButton
 			// 
-			this.attachToProcessToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.attachToProcessToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
-			this.attachToProcessToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.attachToProcessToolStripButton.Name = "attachToProcessToolStripButton";
-			this.attachToProcessToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.attachToProcessToolStripButton.ToolTipText = "Attach to Process...";
-			this.attachToProcessToolStripButton.Click += new System.EventHandler(this.attachToProcessToolStripMenuItem_Click);
+			this.attachToProcessToolStripSplitButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.attachToProcessToolStripSplitButton.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
+			this.attachToProcessToolStripSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.attachToProcessToolStripSplitButton.Name = "attachToProcessToolStripSplitButton";
+			this.attachToProcessToolStripSplitButton.Size = new System.Drawing.Size(32, 22);
+			this.attachToProcessToolStripSplitButton.ToolTipText = "Attach to Process...";
+			this.attachToProcessToolStripSplitButton.ButtonClick += new System.EventHandler(this.attachToProcessToolStripSplitButton_ButtonClick);
+			this.attachToProcessToolStripSplitButton.DropDownClosed += new System.EventHandler(this.attachToProcessToolStripSplitButton_DropDownClosed);
+			this.attachToProcessToolStripSplitButton.DropDownOpening += new System.EventHandler(this.attachToProcessToolStripSplitButton_DropDownOpening);
 			// 
 			// toolStripSeparator6
 			// 
@@ -958,7 +960,7 @@
 			this.attachToProcessToolStripMenuItem.Name = "attachToProcessToolStripMenuItem";
 			this.attachToProcessToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
 			this.attachToProcessToolStripMenuItem.Text = "Attach to Process...";
-			this.attachToProcessToolStripMenuItem.Click += new System.EventHandler(this.attachToProcessToolStripMenuItem_Click);
+			this.attachToProcessToolStripMenuItem.Click += new System.EventHandler(this.attachToProcessToolStripSplitButton_ButtonClick);
 			// 
 			// reattachToProcessToolStripMenuItem
 			// 
@@ -1262,7 +1264,6 @@
 		private System.Windows.Forms.ToolStripMenuItem loadSymbolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStrip toolStrip;
-		private System.Windows.Forms.ToolStripButton attachToProcessToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.SplitContainer splitContainer;
 		private System.Windows.Forms.ToolStripStatusLabel processInfoToolStripStatusLabel;
@@ -1346,6 +1347,7 @@
 		private UI.TypeToolStripButton fnTypeToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem memorySearcherToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem reattachToProcessToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSplitButton attachToProcessToolStripSplitButton;
 	}
 }
 

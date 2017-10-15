@@ -100,7 +100,7 @@ namespace ReClassNET.Forms
 		private void RefreshProcessList()
 		{
 			var dt = new DataTable();
-			dt.Columns.Add("icon", typeof(Icon));
+			dt.Columns.Add("icon", typeof(Image));
 			dt.Columns.Add("name", typeof(string));
 			dt.Columns.Add("id", typeof(IntPtr));
 			dt.Columns.Add("path", typeof(string));
@@ -111,7 +111,7 @@ namespace ReClassNET.Forms
 			foreach (var p in Program.CoreFunctions.EnumerateProcesses().Where(p => !shouldFilter || !commonProcesses.Contains(p.Name.ToLower())))
 			{
 				var row = dt.NewRow();
-				row["icon"] = NativeMethods.GetIconForFile(p.Path);
+				row["icon"] = p.Icon;
 				row["name"] = p.Name;
 				row["id"] = p.Id;
 				row["path"] = p.Path;
