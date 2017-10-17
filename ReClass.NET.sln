@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReClass.NET", "ReClass.NET.csproj", "{BFB8917D-E9B4-463F-A6E8-612C35728C78}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReClass.NET", "ReClass.NET\ReClass.NET.csproj", "{BFB8917D-E9B4-463F-A6E8-612C35728C78}"
 	ProjectSection(ProjectDependencies) = postProject
 		{22CA6FDB-7622-4F94-8FC2-2E7AB481C86F} = {22CA6FDB-7622-4F94-8FC2-2E7AB481C86F}
 	EndProjectSection

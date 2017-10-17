@@ -1,0 +1,939 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{BFB8917D-E9B4-463F-A6E8-612C35728C78}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ReClassNET</RootNamespace>
+    <AssemblyName>ReClass.NET</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;RECLASSNET32</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsInferRequires>True</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsSQLServerOption />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>3</CodeContractsAnalysisWarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;RECLASSNET32;RELEASE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;RECLASSNET64</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;RECLASSNET64;RELEASE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Icon\ReClassNet.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ColorCode, Version=1.0.1.62759, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\ColorCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Dia2Lib">
+      <HintPath>Dependencies\Dia2Lib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.ExceptionMessageBox, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Microsoft.ExceptionMessageBox.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.105.2, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>packages\System.Data.SQLite.Core.1.0.105.2\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Design" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddressParser\AstBuilder.cs" />
+    <Compile Include="AddressParser\Interpreter.cs" />
+    <Compile Include="AddressParser\Operations.cs" />
+    <Compile Include="AddressParser\ParseException.cs" />
+    <Compile Include="AddressParser\Token.cs" />
+    <Compile Include="AddressParser\TokenReader.cs" />
+    <Compile Include="CodeGenerator\CustomCodeGenerator.cs" />
+    <Compile Include="CodeGenerator\Language.cs" />
+    <Compile Include="CodeGenerator\MemberDefinition.cs" />
+    <Compile Include="Core\CoreFunctionsManager.cs" />
+    <Compile Include="Core\DataExchange.cs" />
+    <Compile Include="Core\ICoreProcessFunctions.cs" />
+    <Compile Include="Core\InternalCoreFunctions.cs" />
+    <Compile Include="Core\NativeCoreWrapper.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassClipboard.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassNetFile.Read.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassNetFile.Write.cs" />
+    <Compile Include="DataExchange\Scanner\CheatEngineFile.cs" />
+    <Compile Include="DataExchange\Scanner\CrySearchFile.cs" />
+    <Compile Include="DataExchange\Scanner\IScannerExport.cs" />
+    <Compile Include="DataExchange\Scanner\IScannerImport.cs" />
+    <Compile Include="DataExchange\Scanner\ReClassScanFile.cs" />
+    <Compile Include="Debugger\BreakpointAlreadySetException.cs" />
+    <Compile Include="Debugger\DataExchange.cs" />
+    <Compile Include="Debugger\HardwareBreakpoint.cs" />
+    <Compile Include="Debugger\NoHardwareBreakpointAvailableException.cs" />
+    <Compile Include="Debugger\RemoteDebugger.Extensions.cs" />
+    <Compile Include="Debugger\RemoteDebugger.Thread.cs" />
+    <Compile Include="Debugger\SoftwareBreakpoint.cs" />
+    <Compile Include="Forms\FoundCodeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FoundCodeForm.Designer.cs">
+      <DependentUpon>FoundCodeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InputBytesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InputBytesForm.Designer.cs">
+      <DependentUpon>InputBytesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Debugger\RemoteDebugger.cs" />
+    <Compile Include="Forms\InputCorrelatorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InputCorrelatorForm.Designer.cs">
+      <DependentUpon>InputCorrelatorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ScannerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ScannerForm.Designer.cs">
+      <DependentUpon>ScannerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Input\KeyboardInput.cs" />
+    <Compile Include="Input\KeyboardHotkey.cs" />
+    <Compile Include="MemoryScanner\BytePattern.cs" />
+    <Compile Include="MemoryScanner\Comparer\ArrayOfBytesMemoryComparer.cs" />
+    <Compile Include="MemoryScanner\Comparer\ByteMemoryComparer.cs" />
+    <Compile Include="MemoryScanner\Comparer\DoubleMemoryComparer.cs" />
+    <Compile Include="MemoryScanner\Comparer\FloatMemoryComparer.cs" />
+    <Compile Include="MemoryScanner\Comparer\IScanComparer.cs" />
+    <Compile Include="MemoryScanner\Comparer\IntegerMemoryComparer.cs" />
+    <Compile Include="MemoryScanner\Comparer\LongMemoryComparer.cs" />
+    <Compile Include="MemoryScanner\Comparer\ShortMemoryComparer.cs" />
+    <Compile Include="MemoryScanner\Comparer\StringMemoryComparer.cs" />
+    <Compile Include="MemoryScanner\InputCorrelatedScanner.cs" />
+    <Compile Include="MemoryScanner\MemoryRecord.cs" />
+    <Compile Include="MemoryScanner\ScanCompareType.cs" />
+    <Compile Include="MemoryScanner\ScannerContext.cs" />
+    <Compile Include="MemoryScanner\ScannerWorker.cs" />
+    <Compile Include="MemoryScanner\ScanResultBlock.cs" />
+    <Compile Include="MemoryScanner\ScanResultStore.cs" />
+    <Compile Include="MemoryScanner\ScanValueType.cs" />
+    <Compile Include="MemoryScanner\Comparer\InvalidCompareTypeException.cs" />
+    <Compile Include="MemoryScanner\ScanRoundMode.cs" />
+    <Compile Include="MemoryScanner\ScanResult.cs" />
+    <Compile Include="MemoryScanner\Scanner.cs" />
+    <Compile Include="MemoryScanner\ScanSettings.cs" />
+    <Compile Include="Memory\Disassembler.cs" />
+    <Compile Include="Debugger\IBreakpoint.cs" />
+    <Compile Include="Memory\Module.cs" />
+    <Compile Include="Memory\NodeDissector.cs" />
+    <Compile Include="Memory\Dumper.cs" />
+    <Compile Include="Memory\Section.cs" />
+    <Compile Include="Memory\UnionDataType.cs" />
+    <Compile Include="Native\INativeMethods.cs" />
+    <Compile Include="Native\NativeMethods.Unix.cs" />
+    <Compile Include="Native\NativeMethods.Windows.cs" />
+    <Compile Include="Nodes\BaseFunctionNode.cs" />
+    <Compile Include="Nodes\BoolNode.cs" />
+    <Compile Include="Nodes\ClassUtil.cs" />
+    <Compile Include="Nodes\FunctionNode.cs" />
+    <Compile Include="Nodes\NodeUuid.cs" />
+    <Compile Include="ReClassNetProject.cs" />
+    <Compile Include="UI\BannerBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="CodeGenerator\CppCodeGenerator.cs" />
+    <Compile Include="CodeGenerator\CSharpCodeGenerator.cs" />
+    <Compile Include="CodeGenerator\ICodeGenerator.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="DataExchange\ReClass\CustomNodeConverter.cs" />
+    <Compile Include="DataExchange\ReClass\IReClassExport.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassFile.cs" />
+    <Compile Include="DataExchange\ReClass\ReClass2007File.cs" />
+    <Compile Include="Forms\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\BannerFactory.cs" />
+    <Compile Include="UI\DpiUtil.cs" />
+    <Compile Include="Nodes\INodeInfoReader.cs" />
+    <Compile Include="UI\ClassNodeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ClassNodeView.Designer.cs">
+      <DependentUpon>ClassNodeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CodeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CodeForm.Designer.cs">
+      <DependentUpon>CodeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ColorBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ColorBox.Designer.cs">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CustomToolStripItems.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\IconForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LogForm.Designer.cs">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DualValueBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\DualValueBox.Designer.cs">
+      <DependentUpon>DualValueBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\EnumDescriptionDisplay.cs" />
+    <Compile Include="UI\HotkeyBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\HotkeyBox.Designer.cs">
+      <DependentUpon>HotkeyBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\IconButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\ISettingsBindable.cs" />
+    <Compile Include="UI\LinkedWindowFeatures.cs" />
+    <Compile Include="UI\MemoryPreviewPopUp.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\MemoryRecordList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\MemoryRecordList.Designer.cs">
+      <DependentUpon>MemoryRecordList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MemoryViewControl.Designer.cs">
+      <DependentUpon>MemoryViewControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
+    <Compile Include="Util\CircularBuffer.cs" />
+    <Compile Include="Util\CommandLineArgs.cs" />
+    <Compile Include="Util\Extension.BinaryReaderWriter.cs" />
+    <Compile Include="Util\Extension.DataGridView.cs" />
+    <Compile Include="Util\Extension.Dictionary.cs" />
+    <Compile Include="Util\Extension.Encoding.cs" />
+    <Compile Include="Util\Extension.FloatingPoint.cs" />
+    <Compile Include="Util\Extension.Graphics.cs" />
+    <Compile Include="Util\Extension.IntPtr.cs" />
+    <Compile Include="Util\Extension.RichTextBox.cs" />
+    <Compile Include="Util\Extension.Size.cs" />
+    <Compile Include="Util\Extension.String.cs" />
+    <Compile Include="Util\Extension.StringReader.cs" />
+    <Compile Include="Util\GrowingList.cs" />
+    <Compile Include="Forms\PluginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PluginForm.Designer.cs">
+      <DependentUpon>PluginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\HotSpot.cs" />
+    <Compile Include="Util\Extensions.cs" />
+    <Compile Include="UI\FontEx.cs" />
+    <Compile Include="UI\HotSpotTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Icons.cs" />
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataExchange\ReClass\IReClassImport.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassNetFile.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassQtFile.cs" />
+    <Compile Include="Logger\BaseLogger.cs" />
+    <Compile Include="Logger\GuiLogger.cs" />
+    <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Logger\LogLevel.cs" />
+    <Compile Include="Logger\NullLogger.cs" />
+    <Compile Include="Memory\MemoryBuffer.cs" />
+    <Compile Include="UI\MemoryViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Native\NativeMethods.cs" />
+    <Compile Include="Nodes\ClassInstanceArrayNode.cs" />
+    <Compile Include="Nodes\BaseArrayNode.cs" />
+    <Compile Include="Nodes\BaseContainerNode.cs" />
+    <Compile Include="Nodes\BaseFunctionPtrNode.cs" />
+    <Compile Include="Nodes\BaseHexCommentNode.cs" />
+    <Compile Include="Nodes\BaseHexNode.cs" />
+    <Compile Include="Nodes\BaseNode.cs" />
+    <Compile Include="Nodes\BaseReferenceNode.cs" />
+    <Compile Include="Nodes\BaseTextNode.cs" />
+    <Compile Include="Nodes\BaseTextPtrNode.cs" />
+    <Compile Include="Nodes\BaseMatrixNode.cs" />
+    <Compile Include="Nodes\BitFieldNode.cs" />
+    <Compile Include="Nodes\ClassInstanceNode.cs" />
+    <Compile Include="Nodes\ClassPtrArrayNode.cs" />
+    <Compile Include="Nodes\DoubleNode.cs" />
+    <Compile Include="Nodes\FloatNode.cs" />
+    <Compile Include="Nodes\FunctionPtrNode.cs" />
+    <Compile Include="Nodes\Int16Node.cs" />
+    <Compile Include="Nodes\Int32Node.cs" />
+    <Compile Include="Nodes\Int64Node.cs" />
+    <Compile Include="Nodes\Int8Node.cs" />
+    <Compile Include="Nodes\Matrix3x3Node.cs" />
+    <Compile Include="Nodes\Matrix3x4Node.cs" />
+    <Compile Include="Nodes\Matrix4x4Node.cs" />
+    <Compile Include="Nodes\BaseNumericNode.cs" />
+    <Compile Include="Nodes\ClassPtrNode.cs" />
+    <Compile Include="Nodes\UTF16TextNode.cs" />
+    <Compile Include="Nodes\UTF16TextPtrNode.cs" />
+    <Compile Include="Nodes\UTF32TextNode.cs" />
+    <Compile Include="Nodes\UTF32TextPtrNode.cs" />
+    <Compile Include="Nodes\UTF8TextNode.cs" />
+    <Compile Include="Nodes\UInt32Node.cs" />
+    <Compile Include="Nodes\UInt64Node.cs" />
+    <Compile Include="Nodes\UInt8Node.cs" />
+    <Compile Include="Nodes\ClassNode.cs" />
+    <Compile Include="Nodes\Hex16Node.cs" />
+    <Compile Include="Nodes\Hex32Node.cs" />
+    <Compile Include="Nodes\Hex64Node.cs" />
+    <Compile Include="Nodes\Hex8Node.cs" />
+    <Compile Include="Nodes\UInt16Node.cs" />
+    <Compile Include="Nodes\UTF8TextPtrNode.cs" />
+    <Compile Include="Nodes\Vector2Node.cs" />
+    <Compile Include="Nodes\Vector3Node.cs" />
+    <Compile Include="Nodes\Vector4Node.cs" />
+    <Compile Include="Forms\ProcessBrowserForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProcessBrowserForm.Designer.cs">
+      <DependentUpon>ProcessBrowserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProcessInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProcessInfoForm.Designer.cs">
+      <DependentUpon>ProcessInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Nodes\VMethodNode.cs" />
+    <Compile Include="Nodes\VTableNode.cs" />
+    <Compile Include="Plugins\DefaultPluginHost.cs" />
+    <Compile Include="Plugins\IPluginHost.cs" />
+    <Compile Include="Plugins\Plugin.cs" />
+    <Compile Include="Plugins\PluginInfo.cs" />
+    <Compile Include="Plugins\PluginManager.cs" />
+    <Compile Include="Memory\ProcessInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Memory\RemoteProcess.cs" />
+    <Compile Include="UI\ScrollableCustomControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="Symbols\ComDisposableWrapper.cs" />
+    <Compile Include="Symbols\SymbolReader.cs" />
+    <Compile Include="Symbols\SymbolStore.cs" />
+    <Compile Include="UI\GlobalWindowManager.cs" />
+    <Compile Include="UI\SettingsCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\SettingsTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\ViewInfo.cs" />
+    <Compile Include="Util\Extension.Linq.cs" />
+    <Compile Include="Util\IntPtrComparer.cs" />
+    <Compile Include="Util\PathUtil.cs" />
+    <Compile Include="Util\Rtf\RtfBuilder.cs" />
+    <Compile Include="Util\Rtf\RtfBuilder.RtfFormatLock.cs" />
+    <Compile Include="Util\Rtf\RtfBuilder.RtfFormatWrapper.cs" />
+    <Compile Include="Util\Rtf\RtfFont.cs" />
+    <Compile Include="Util\Util.cs" />
+    <Compile Include="Util\ValueTypeWrapper.cs" />
+    <Compile Include="Util\WinUtil.cs" />
+    <EmbeddedResource Include="Forms\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CodeForm.resx">
+      <DependentUpon>CodeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FoundCodeForm.resx">
+      <DependentUpon>FoundCodeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InputBytesForm.resx">
+      <DependentUpon>InputBytesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InputCorrelatorForm.resx">
+      <DependentUpon>InputCorrelatorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ScannerForm.resx">
+      <DependentUpon>ScannerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ClassNodeView.resx">
+      <DependentUpon>ClassNodeView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LogForm.resx">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ColorBox.resx">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DualValueBox.resx">
+      <DependentUpon>DualValueBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\HotkeyBox.resx">
+      <DependentUpon>HotkeyBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MemoryRecordList.resx">
+      <DependentUpon>MemoryRecordList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MemoryViewControl.resx">
+      <DependentUpon>MemoryViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PluginForm.resx">
+      <DependentUpon>PluginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProcessBrowserForm.resx">
+      <DependentUpon>ProcessBrowserForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProcessInfoForm.resx">
+      <DependentUpon>ProcessInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Debugger\RemoteDebugger.Handler.cs" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_1024.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_2048.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_4096.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Add_Bytes_X.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Array.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Class_Instance.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Class_Pointer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Class_Remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Double.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Float.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Function_Pointer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Hex_8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Hex_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Hex_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Hex_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_1024.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_2048.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_4096.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Insert_Bytes_X.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Int_8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Int_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Int_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Int_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Matrix_3x3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Matrix_3x4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Matrix_4x4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Text_Pointer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_UInt_8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_UInt_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_UInt_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_UInt_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_UText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_UText_Pointer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Vector_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Vector_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Vector_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_VTable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Control_Pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Control_Play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Control_Stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Textfield_Rename.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Accept.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Arrow_Refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Quit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Chart_Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Page_Code.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Page_Code_Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Pdb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Plugin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Class_Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Save_As.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Table_Gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Text_List_Bullets.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Array_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Drop_Down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Class_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Closed_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Custom_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Double_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Enum_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Exchange_Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Float_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Left_Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Matrix_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Open_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Pointer_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Right_Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Signed_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Text_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Unsigned_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Vector_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Page_Copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Pointer_Array.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Function_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Interface_Type.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon\ReClassNet.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Page_Code_Cpp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Page_Code_Csharp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Bits.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Color_Wheel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Settings_Edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B32x32_Page_Code.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B32x32_Plugin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B32x32_Magnifier.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Cogs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Magnifier.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B32x32_Cogs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BuildDate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Tree_Collapse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Tree_Expand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Page_Paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Camera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Folder_Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Magnifier_Remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Bool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Function.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Category.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Page_White_Stack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Drive_Go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Find_Access.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Find_Write.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Eye.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Magnifier_Arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B32x32_Bug.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B32x32_3D_Glasses.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B32x32_Eye.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B32x32_Canvas_Size.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Canvas_Size.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Redo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Undo.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>powershell -Command "((Get-Date).ToUniversalTime()).ToString(\"yyyy\/MM\/dd HH:mm:ss\") | Out-File '$(ProjectDir)Resources\BuildDate.txt'"</PreBuildEvent>
+  </PropertyGroup>
+  <Import Project="packages\System.Data.SQLite.Core.1.0.105.2\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.105.2\build\net46\System.Data.SQLite.Core.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Missing file: "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\System.Data.SQLite.Core.1.0.105.2\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\System.Data.SQLite.Core.1.0.105.2\build\net46\System.Data.SQLite.Core.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
