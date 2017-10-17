@@ -48,12 +48,12 @@ namespace ReClassNET.Forms
 
 			Program.RemoteProcess.ProcessAttached += sender =>
 			{
-				var text = $"{sender.UnderlayingProcess.Name} ({Constants.Platform}) (ID: {sender.UnderlayingProcess.Id.ToString()})";
+				var text = $"{sender.UnderlayingProcess.Name} (ID: {sender.UnderlayingProcess.Id.ToString()})";
 
-				Text = $"{Constants.ApplicationName} - {text}";
+				Text = $"{Constants.ApplicationName} ({Constants.Platform}) - {text}";
 				processInfoToolStripStatusLabel.Text = text;
 			};
-			Program.RemoteProcess.ProcessClosed += (sender) =>
+			Program.RemoteProcess.ProcessClosed += sender =>
 			{
 				Text = $"{Constants.ApplicationName} ({Constants.Platform})";
 				processInfoToolStripStatusLabel.Text = "No process selected";
