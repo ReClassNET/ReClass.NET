@@ -83,12 +83,33 @@ namespace ReClassNET.Native
 
 		public static string UndecorateSymbolName(string name)
 		{
+			Contract.Requires(name != null);
+			Contract.Ensures(Contract.Result<string>() != null);
+
 			return nativeMethods.UndecorateSymbolName(name);
 		}
 
 		public static void SetProcessDpiAwareness()
 		{
 			nativeMethods.SetProcessDpiAwareness();
+		}
+
+		public static bool RegisterExtension(string fileExtension, string extensionId, string applicationPath, string applicationName)
+		{
+			Contract.Requires(!string.IsNullOrEmpty(fileExtension));
+			Contract.Requires(!string.IsNullOrEmpty(extensionId));
+			Contract.Requires(applicationPath != null);
+			Contract.Requires(applicationName != null);
+
+			return nativeMethods.RegisterExtension(fileExtension, extensionId, applicationPath, applicationName);
+		}
+
+		public static void UnregisterExtension(string fileExtension, string extensionId)
+		{
+			Contract.Requires(!string.IsNullOrEmpty(fileExtension));
+			Contract.Requires(!string.IsNullOrEmpty(extensionId));
+
+			nativeMethods.UnregisterExtension(fileExtension, extensionId);
 		}
 	}
 }

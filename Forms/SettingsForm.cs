@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Windows.Forms;
+using ReClassNET.Native;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -31,6 +32,16 @@ namespace ReClassNET.Forms
 			backgroundColorBox.Color = System.Drawing.Color.Red;
 
 			SetBindings();
+
+			if (NativeMethods.IsUnix())
+			{
+				fileAssociationGroupBox.Enabled = false;
+			}
+			else
+			{
+				NativeMethodsWindows.SetButtonShield(createAssociationButton, true);
+				NativeMethodsWindows.SetButtonShield(removeAssociationButton, true);
+			}
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -45,6 +56,16 @@ namespace ReClassNET.Forms
 			base.OnFormClosed(e);
 
 			GlobalWindowManager.RemoveWindow(this);
+		}
+
+		private void createAssociationButton_Click(object sender, EventArgs e)
+		{
+			WinUtil.RunElevated(PathUtil.ExecutablePath, $"-{Constants.CommandLineOptions.FileExtRegister}");
+		}
+
+		private void removeAssociationButton_Click(object sender, EventArgs e)
+		{
+			WinUtil.RunElevated(PathUtil.ExecutablePath, $"-{Constants.CommandLineOptions.FileExtUnregister}");
 		}
 
 		private void SetBindings()

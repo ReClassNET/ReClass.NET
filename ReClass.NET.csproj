@@ -315,6 +315,7 @@
     </Compile>
     <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
     <Compile Include="Util\CircularBuffer.cs" />
+    <Compile Include="Util\CommandLineArgs.cs" />
     <Compile Include="Util\Extension.BinaryReaderWriter.cs" />
     <Compile Include="Util\Extension.DataGridView.cs" />
     <Compile Include="Util\Extension.Dictionary.cs" />
@@ -449,6 +450,7 @@
     <Compile Include="UI\ViewInfo.cs" />
     <Compile Include="Util\Extension.Linq.cs" />
     <Compile Include="Util\IntPtrComparer.cs" />
+    <Compile Include="Util\PathUtil.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.RtfFormatLock.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.RtfFormatWrapper.cs" />

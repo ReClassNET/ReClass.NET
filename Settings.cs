@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using System.Xml;
@@ -10,15 +11,17 @@ namespace ReClassNET
 {
 	public class Settings
 	{
-		public static Settings Load(string filename)
+		public static Settings Load()
 		{
-			Contract.Requires(!string.IsNullOrEmpty(filename));
+			EnsureSettingsDirectoryAvailable();
 
 			try
 			{
-				if (File.Exists(filename))
+				var path = Path.Combine(PathUtil.SettingsFolderPath, Constants.SettingsFile);
+
+				if (File.Exists(path))
 				{
-					using (var sr = new StreamReader(filename))
+					using (var sr = new StreamReader(path))
 					{
 						return (Settings)new XmlSerializer(typeof(Settings)).Deserialize(sr);
 					}
@@ -32,14 +35,32 @@ namespace ReClassNET
 			return new Settings();
 		}
 
-		public static void Save(Settings settings, string filename)
+		public static void Save(Settings settings)
 		{
 			Contract.Requires(settings != null);
-			Contract.Requires(!string.IsNullOrEmpty(filename));
 
-			using (var sr = new StreamWriter(filename))
+			EnsureSettingsDirectoryAvailable();
+
+			var path = Path.Combine(PathUtil.SettingsFolderPath, Constants.SettingsFile);
+
+			using (var sr = new StreamWriter(path))
 			{
 				new XmlSerializer(typeof(Settings)).Serialize(sr, settings);
+			}
+		}
+
+		private static void EnsureSettingsDirectoryAvailable()
+		{
+			try
+			{
+				if (Directory.Exists(PathUtil.SettingsFolderPath) == false)
+				{
+					Directory.CreateDirectory(PathUtil.SettingsFolderPath);
+				}
+			}
+			catch (Exception)
+			{
+				
 			}
 		}
 

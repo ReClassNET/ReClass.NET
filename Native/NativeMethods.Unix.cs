@@ -58,5 +58,15 @@ namespace ReClassNET.Native
 		{
 
 		}
+
+		public bool RegisterExtension(string fileExtension, string extensionId, string applicationPath, string applicationName)
+		{
+			return false;
+		}
+
+		public void UnregisterExtension(string fileExtension, string extensionId)
+		{
+
+		}
 	}
 }

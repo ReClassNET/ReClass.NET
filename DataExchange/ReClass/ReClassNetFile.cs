@@ -10,6 +10,7 @@ namespace ReClassNET.DataExchange.ReClass
 	{
 		public const string FormatName = "ReClass.NET File";
 		public const string FileExtension = ".rcnet";
+		public const string FileExtensionId = "rcnetfile";
 
 		private const string Version1 = "1";
 

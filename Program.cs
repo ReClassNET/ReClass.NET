@@ -4,16 +4,20 @@ using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Core;
+using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
 using ReClassNET.Native;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET
 {
 	static class Program
 	{
+		public static CommandLineArgs CommandLineArgs { get; private set; }
+
 		public static Settings Settings { get; private set; }
 
 		public static ILogger Logger { get; private set; }
@@ -31,9 +35,24 @@ namespace ReClassNET
 		public static FontEx MonoSpaceFont { get; private set; }
 
 		[STAThread]
-		static void Main()
+		static void Main(string[] args)
 		{
 			DesignMode = false; // The designer doesn't call Main()
+
+			CommandLineArgs = new CommandLineArgs(args);
+
+			if (CommandLineArgs[Constants.CommandLineOptions.FileExtRegister] != null)
+			{
+				NativeMethods.RegisterExtension(ReClassNetFile.FileExtension, ReClassNetFile.FileExtensionId, PathUtil.ExecutablePath, Constants.ApplicationName);
+
+				return;
+			}
+			if (CommandLineArgs[Constants.CommandLineOptions.FileExtUnregister] != null)
+			{
+				NativeMethods.UnregisterExtension(ReClassNetFile.FileExtension, ReClassNetFile.FileExtensionId);
+
+				return;
+			}
 
 			try
 			{
@@ -58,7 +77,7 @@ namespace ReClassNET
 
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-			Settings = Settings.Load(Constants.SettingsFile);
+			Settings = Settings.Load();
 			Logger = new GuiLogger();
 #if DEBUG
 			using (var coreFunctions = new CoreFunctionsManager())
@@ -91,7 +110,7 @@ namespace ReClassNET
 			}
 #endif
 
-			Settings.Save(Settings, Constants.SettingsFile);
+			Settings.Save(Settings);
 		}
 
 		/// <summary>Shows the exception in a special form.</summary>

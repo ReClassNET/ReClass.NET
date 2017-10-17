@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
+using System.Windows.Forms;
+using Microsoft.Win32;
 using ReClassNET.Util;
 
 namespace ReClassNET.Native
@@ -12,7 +15,7 @@ namespace ReClassNET.Native
 		#region Imports
 
 		[DllImport("kernel32.dll", ExactSpelling = true)]
-		public static extern bool CloseHandle(IntPtr hObject);
+		private static extern bool CloseHandle(IntPtr hObject);
 
 		[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
 		private static extern IntPtr LoadLibrary(string lpFileName);
@@ -23,12 +26,12 @@ namespace ReClassNET.Native
 		[DllImport("kernel32.dll", ExactSpelling = true)]
 		private static extern bool FreeLibrary(IntPtr hModule);
 
-		public const uint SHGFI_ICON = 0x100;
-		public const uint SHGFI_LARGEICON = 0x0;
-		public const uint SHGFI_SMALLICON = 0x1;
+		private const uint SHGFI_ICON = 0x100;
+		private const uint SHGFI_LARGEICON = 0x0;
+		private const uint SHGFI_SMALLICON = 0x1;
 
 		[StructLayout(LayoutKind.Sequential)]
-		public struct SHFILEINFO
+		private struct SHFILEINFO
 		{
 			public IntPtr hIcon;
 			public IntPtr iIcon;
@@ -40,14 +43,14 @@ namespace ReClassNET.Native
 		};
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public struct LUID
+		private struct LUID
 		{
 			public uint LowPart;
 			public int HighPart;
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public struct TOKEN_PRIVILEGES
+		private struct TOKEN_PRIVILEGES
 		{
 			public uint PrivilegeCount;
 			public LUID Luid;
@@ -82,6 +85,17 @@ namespace ReClassNET.Native
 
 		[DllImport("shcore.dll")]
 		private static extern int SetProcessDpiAwareness([MarshalAs(UnmanagedType.U4)] ProcessDpiAwareness a);
+
+		[DllImport("shell32.dll")]
+		private static extern void SHChangeNotify(int wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+
+		private const int SHCNE_ASSOCCHANGED = 0x08000000;
+		private const uint SHCNF_IDLIST = 0x0000;
+
+		[DllImport("user32.dll")]
+		private static extern IntPtr SendMessage(IntPtr hWnd, int nMsg, IntPtr wParam, IntPtr lParam);
+
+		private const int BCM_SETSHIELD = 0x160C;
 
 		#endregion
 
@@ -153,6 +167,162 @@ namespace ReClassNET.Native
 			else if (WinUtil.IsAtLeastWindowsVista)
 			{
 				SetProcessDPIAware();
+			}
+		}
+
+		public bool RegisterExtension(string fileExtension, string extensionId, string applicationPath, string applicationName)
+		{
+			try
+			{
+				var classesRoot = Registry.ClassesRoot;
+
+				try
+				{
+					classesRoot.CreateSubKey(fileExtension);
+				}
+				catch (Exception)
+				{
+					
+				}
+				using (var fileExtensionKey = classesRoot.OpenSubKey(fileExtension, true))
+				{
+					fileExtensionKey.SetValue(string.Empty, extensionId, RegistryValueKind.String);
+				}
+
+				try
+				{
+					classesRoot.CreateSubKey(extensionId);
+				}
+				catch (Exception)
+				{
+					
+				}
+				using (var extensionInfoKey = classesRoot.OpenSubKey(extensionId, true))
+				{
+					extensionInfoKey.SetValue(string.Empty, applicationName, RegistryValueKind.String);
+
+					try
+					{
+						extensionInfoKey.CreateSubKey("DefaultIcon");
+					}
+					catch (Exception)
+					{
+
+					}
+
+					using (var icon = extensionInfoKey.OpenSubKey("DefaultIcon", true))
+					{
+						if (applicationPath.IndexOfAny(new[] { ' ', '\t' }) < 0)
+						{
+							icon.SetValue(string.Empty, applicationPath + ",0", RegistryValueKind.String);
+						}
+						else
+						{
+							icon.SetValue(string.Empty, "\"" + applicationPath + "\",0", RegistryValueKind.String);
+						}
+					}
+
+					try
+					{
+						extensionInfoKey.CreateSubKey("shell");
+					}
+					catch (Exception)
+					{
+					}
+					using (var shellKey = extensionInfoKey.OpenSubKey("shell", true))
+					{
+						try
+						{
+							shellKey.CreateSubKey("open");
+						}
+						catch (Exception)
+						{
+
+						}
+
+						using (var openKey = shellKey.OpenSubKey("open", true))
+						{
+
+							openKey.SetValue(string.Empty, $"&Open with {applicationName}", RegistryValueKind.String);
+
+							try
+							{
+								openKey.CreateSubKey("command");
+							}
+							catch (Exception)
+							{
+
+							}
+
+							using (var commandKey = openKey.OpenSubKey("command", true))
+							{
+								commandKey.SetValue(string.Empty, $"\"{applicationPath}\" \"%1\"", RegistryValueKind.String);
+							}
+						}
+					}
+				}
+
+				ShChangeNotify();
+
+				return true;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
+
+		public void UnregisterExtension(string fileExtension, string extensionId)
+		{
+			try
+			{
+				var classesRoot = Registry.ClassesRoot;
+
+				classesRoot.DeleteSubKeyTree(fileExtension);
+				classesRoot.DeleteSubKeyTree(extensionId);
+
+				ShChangeNotify();
+			}
+			catch (Exception)
+			{
+				
+			}
+		}
+
+		private static void ShChangeNotify()
+		{
+			try
+			{
+				SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
+			}
+			catch (Exception)
+			{
+				
+			}
+		}
+
+		public static void SetButtonShield(Button button, bool setShield)
+		{
+			Contract.Requires(button != null);
+
+			try
+			{
+				if (button.FlatStyle != FlatStyle.System)
+				{
+					button.FlatStyle = FlatStyle.System;
+				}
+
+				var h = button.Handle;
+				if (h == IntPtr.Zero)
+				{
+					return;
+				}
+
+				SendMessage(h, BCM_SETSHIELD, IntPtr.Zero, (IntPtr)(setShield ? 1 : 0));
+			}
+			catch (Exception)
+			{
+				
 			}
 		}
 	}

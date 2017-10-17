@@ -4,6 +4,7 @@ using System.Drawing;
 
 namespace ReClassNET.Native
 {
+	[ContractClass(typeof(NativeMethodsContract))]
 	internal interface INativeMethods
 	{
 		IntPtr LoadLibrary(string fileName);
@@ -19,10 +20,14 @@ namespace ReClassNET.Native
 		string UndecorateSymbolName(string name);
 
 		void SetProcessDpiAwareness();
+
+		bool RegisterExtension(string fileExtension, string extensionId, string applicationPath, string applicationName);
+
+		void UnregisterExtension(string fileExtension, string extensionId);
 	}
 
 	[ContractClassFor(typeof(INativeMethods))]
-	internal abstract class IINativeMethodsContract : INativeMethods
+	internal abstract class NativeMethodsContract : INativeMethods
 	{
 		public IntPtr LoadLibrary(string fileName)
 		{
@@ -65,6 +70,24 @@ namespace ReClassNET.Native
 
 		public void SetProcessDpiAwareness()
 		{
+			throw new NotImplementedException();
+		}
+
+		public bool RegisterExtension(string fileExtension, string extensionId, string applicationPath, string applicationName)
+		{
+			Contract.Requires(!string.IsNullOrEmpty(fileExtension));
+			Contract.Requires(!string.IsNullOrEmpty(extensionId));
+			Contract.Requires(applicationPath != null);
+			Contract.Requires(applicationName != null);
+
+			throw new NotImplementedException();
+		}
+
+		public void UnregisterExtension(string fileExtension, string extensionId)
+		{
+			Contract.Requires(!string.IsNullOrEmpty(fileExtension));
+			Contract.Requires(!string.IsNullOrEmpty(extensionId));
+
 			throw new NotImplementedException();
 		}
 	}

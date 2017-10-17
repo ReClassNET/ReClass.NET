@@ -27,5 +27,11 @@
 		public const string SettingsFile = "settings.xml";
 
 		public const string PluginsFolder = "Plugins";
+
+		public static class CommandLineOptions
+		{
+			public const string FileExtRegister = "registerfileext";
+			public const string FileExtUnregister = "unregisterfileext";
+		}
 	}
 }

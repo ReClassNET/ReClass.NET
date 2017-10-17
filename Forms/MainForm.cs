@@ -65,8 +65,6 @@ namespace ReClassNET.Forms
 			};
 
 			pluginManager = new PluginManager(new DefaultPluginHost(this, Program.RemoteProcess, Program.Logger));
-
-			SetProject(new ReClassNetProject());
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -77,7 +75,28 @@ namespace ReClassNET.Forms
 
 			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, Constants.PluginsFolder), Program.Logger);
 
-			LinkedWindowFeatures.CreateDefaultClass();
+			var createDefaultProject = true;
+
+			if (Program.CommandLineArgs.FileName != null)
+			{
+				try
+				{
+					LoadProjectFromPath(Program.CommandLineArgs.FileName);
+
+					createDefaultProject = false;
+				}
+				catch (Exception ex)
+				{
+					Program.Logger.Log(ex);
+				}
+			}
+			
+			if (createDefaultProject)
+			{
+				SetProject(new ReClassNetProject());
+
+				LinkedWindowFeatures.CreateDefaultClass();
+			}
 		}
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
@@ -191,17 +210,7 @@ namespace ReClassNET.Forms
 				var path = ShowOpenProjectFileDialog();
 				if (path != null)
 				{
-					var project = new ReClassNetProject();
-
-					LoadFileFromPath(path, ref project);
-
-					// If the file is a ReClass.NET file remember the path.
-					if (Path.GetExtension(path) == ReClassNetFile.FileExtension)
-					{
-						project.Path = path;
-					}
-
-					SetProject(project);
+					LoadProjectFromPath(path);
 				}
 			}
 			catch (Exception ex)
@@ -217,7 +226,7 @@ namespace ReClassNET.Forms
 				var path = ShowOpenProjectFileDialog();
 				if (path != null)
 				{
-					LoadFileFromPath(path, ref currentProject);
+					LoadProjectFromPath(path, ref currentProject);
 				}
 			}
 			catch (Exception ex)
@@ -478,17 +487,7 @@ namespace ReClassNET.Forms
 				{
 					var path = files.First();
 
-					var project = new ReClassNetProject();
-
-					LoadFileFromPath(path, ref project);
-
-					// If the file is a ReClass.NET file remember the path.
-					if (Path.GetExtension(path) == ReClassNetFile.FileExtension)
-					{
-						project.Path = path;
-					}
-
-					SetProject(project);
+					LoadProjectFromPath(path);
 				}
 				catch (Exception ex)
 				{
@@ -667,17 +666,36 @@ namespace ReClassNET.Forms
 			return null;
 		}
 
-		/// <summary>Loads the file into the given project.</summary>
-		/// <param name="filePath">Full pathname of the file.</param>
-		/// <param name="project">[in,out] The project.</param>
-		private void LoadFileFromPath(string filePath, ref ReClassNetProject project)
+		/// <summary>Loads the file as a new project.</summary>
+		/// <param name="path">Full pathname of the file.</param>
+		public void LoadProjectFromPath(string path)
 		{
-			Contract.Requires(filePath != null);
+			Contract.Requires(path != null);
+
+			var project = new ReClassNetProject();
+
+			LoadProjectFromPath(path, ref project);
+
+			// If the file is a ReClass.NET file remember the path.
+			if (Path.GetExtension(path) == ReClassNetFile.FileExtension)
+			{
+				project.Path = path;
+			}
+
+			SetProject(project);
+		}
+
+		/// <summary>Loads the file into the given project.</summary>
+		/// <param name="path">Full pathname of the file.</param>
+		/// <param name="project">[in,out] The project.</param>
+		private static void LoadProjectFromPath(string path, ref ReClassNetProject project)
+		{
+			Contract.Requires(path != null);
 			Contract.Requires(project != null);
 			Contract.Ensures(Contract.ValueAtReturn(out project) != null);
 
 			IReClassImport import = null;
-			switch (Path.GetExtension(filePath)?.ToLower())
+			switch (Path.GetExtension(path)?.ToLower())
 			{
 				case ReClassNetFile.FileExtension:
 					import = new ReClassNetFile(project);
@@ -692,10 +710,10 @@ namespace ReClassNET.Forms
 					import = new ReClass2007File(project);
 					break;
 				default:
-					Program.Logger.Log(LogLevel.Error, $"The file '{filePath}' has an unknown type.");
-					break;
+					Program.Logger.Log(LogLevel.Error, $"The file '{path}' has an unknown type.");
+					return;
 			}
-			import?.Load(filePath, Program.Logger);
+			import.Load(path, Program.Logger);
 		}
 
 		/// <summary>Loads all symbols for the current process and displays the progress status.</summary>

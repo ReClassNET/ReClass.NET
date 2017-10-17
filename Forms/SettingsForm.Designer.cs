@@ -30,6 +30,10 @@
 		{
 			this.settingsTabControl = new System.Windows.Forms.TabControl();
 			this.generalSettingsTabPage = new System.Windows.Forms.TabPage();
+			this.fileAssociationGroupBox = new System.Windows.Forms.GroupBox();
+			this.removeAssociationButton = new System.Windows.Forms.Button();
+			this.createAssociationButton = new System.Windows.Forms.Button();
+			this.associationInfoLabel = new System.Windows.Forms.Label();
 			this.commentsGroupBox = new System.Windows.Forms.GroupBox();
 			this.showPluginInfoCheckBox = new ReClassNET.UI.SettingsCheckBox();
 			this.showStringCheckBox = new ReClassNET.UI.SettingsCheckBox();
@@ -125,6 +129,7 @@
 			this.bannerBox = new ReClassNET.UI.BannerBox();
 			this.settingsTabControl.SuspendLayout();
 			this.generalSettingsTabPage.SuspendLayout();
+			this.fileAssociationGroupBox.SuspendLayout();
 			this.commentsGroupBox.SuspendLayout();
 			this.displayGroupBox.SuspendLayout();
 			this.colorsSettingTabPage.SuspendLayout();
@@ -146,6 +151,7 @@
 			// 
 			// generalSettingsTabPage
 			// 
+			this.generalSettingsTabPage.Controls.Add(this.fileAssociationGroupBox);
 			this.generalSettingsTabPage.Controls.Add(this.commentsGroupBox);
 			this.generalSettingsTabPage.Controls.Add(this.displayGroupBox);
 			this.generalSettingsTabPage.Controls.Add(this.stayOnTopCheckBox);
@@ -156,6 +162,49 @@
 			this.generalSettingsTabPage.TabIndex = 0;
 			this.generalSettingsTabPage.Text = "General";
 			this.generalSettingsTabPage.UseVisualStyleBackColor = true;
+			// 
+			// fileAssociationGroupBox
+			// 
+			this.fileAssociationGroupBox.Controls.Add(this.removeAssociationButton);
+			this.fileAssociationGroupBox.Controls.Add(this.createAssociationButton);
+			this.fileAssociationGroupBox.Controls.Add(this.associationInfoLabel);
+			this.fileAssociationGroupBox.Location = new System.Drawing.Point(6, 231);
+			this.fileAssociationGroupBox.Name = "fileAssociationGroupBox";
+			this.fileAssociationGroupBox.Size = new System.Drawing.Size(542, 85);
+			this.fileAssociationGroupBox.TabIndex = 4;
+			this.fileAssociationGroupBox.TabStop = false;
+			this.fileAssociationGroupBox.Text = "RCNET File Association";
+			// 
+			// removeAssociationButton
+			// 
+			this.removeAssociationButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.removeAssociationButton.Location = new System.Drawing.Point(146, 52);
+			this.removeAssociationButton.Name = "removeAssociationButton";
+			this.removeAssociationButton.Size = new System.Drawing.Size(135, 23);
+			this.removeAssociationButton.TabIndex = 2;
+			this.removeAssociationButton.Text = "&Remove Association";
+			this.removeAssociationButton.UseVisualStyleBackColor = true;
+			this.removeAssociationButton.Click += new System.EventHandler(this.removeAssociationButton_Click);
+			// 
+			// createAssociationButton
+			// 
+			this.createAssociationButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.createAssociationButton.Location = new System.Drawing.Point(9, 52);
+			this.createAssociationButton.Name = "createAssociationButton";
+			this.createAssociationButton.Size = new System.Drawing.Size(131, 23);
+			this.createAssociationButton.TabIndex = 1;
+			this.createAssociationButton.Text = "Create &Association";
+			this.createAssociationButton.UseVisualStyleBackColor = true;
+			this.createAssociationButton.Click += new System.EventHandler(this.createAssociationButton_Click);
+			// 
+			// associationInfoLabel
+			// 
+			this.associationInfoLabel.Location = new System.Drawing.Point(6, 21);
+			this.associationInfoLabel.Name = "associationInfoLabel";
+			this.associationInfoLabel.Size = new System.Drawing.Size(525, 28);
+			this.associationInfoLabel.TabIndex = 0;
+			this.associationInfoLabel.Text = "RCNET files can be associated with ReClass.NET. When you double-click a RCNET fil" +
+    "e, they will automatically be opened by ReClass.NET.";
 			// 
 			// commentsGroupBox
 			// 
@@ -1054,6 +1103,7 @@
 			this.settingsTabControl.ResumeLayout(false);
 			this.generalSettingsTabPage.ResumeLayout(false);
 			this.generalSettingsTabPage.PerformLayout();
+			this.fileAssociationGroupBox.ResumeLayout(false);
 			this.commentsGroupBox.ResumeLayout(false);
 			this.commentsGroupBox.PerformLayout();
 			this.displayGroupBox.ResumeLayout(false);
@@ -1165,5 +1215,9 @@
 		private UI.BannerBox bannerBox;
 		private System.Windows.Forms.Label boolSettingsLabel;
 		private UI.SettingsTextBox boolSettingsTextBox;
+		private System.Windows.Forms.GroupBox fileAssociationGroupBox;
+		private System.Windows.Forms.Button removeAssociationButton;
+		private System.Windows.Forms.Button createAssociationButton;
+		private System.Windows.Forms.Label associationInfoLabel;
 	}
 }
