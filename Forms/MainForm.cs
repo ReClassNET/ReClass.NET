@@ -97,6 +97,11 @@ namespace ReClassNET.Forms
 
 				LinkedWindowFeatures.CreateDefaultClass();
 			}
+
+			if (Program.CommandLineArgs[Constants.CommandLineOptions.AttachTo] != null)
+			{
+				AttachToProcess(Program.CommandLineArgs[Constants.CommandLineOptions.AttachTo]);
+			}
 		}
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
@@ -180,17 +185,7 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			var info = Program.CoreFunctions.EnumerateProcesses().FirstOrDefault(p => p.Name == lastProcess);
-			if (info == null)
-			{
-				MessageBox.Show($"Process '{lastProcess}' could not be found.", Constants.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-				Program.Settings.LastProcess = string.Empty;
-			}
-			else
-			{
-				AttachToProcess(info);
-			}
+			AttachToProcess(lastProcess);
 		}
 
 		private void detachToolStripMenuItem_Click(object sender, EventArgs e)
@@ -531,6 +526,21 @@ namespace ReClassNET.Forms
 		}
 
 		#endregion
+
+		public void AttachToProcess(string processName)
+		{
+			var info = Program.CoreFunctions.EnumerateProcesses().FirstOrDefault(p => string.Equals(p.Name, processName, StringComparison.OrdinalIgnoreCase));
+			if (info == null)
+			{
+				MessageBox.Show($"Process '{processName}' could not be found.", Constants.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+				Program.Settings.LastProcess = string.Empty;
+			}
+			else
+			{
+				AttachToProcess(info);
+			}
+		}
 
 		public void AttachToProcess(ProcessInfo info)
 		{

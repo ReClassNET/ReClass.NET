@@ -30,6 +30,8 @@
 
 		public static class CommandLineOptions
 		{
+			public const string AttachTo = "attachto";
+
 			public const string FileExtRegister = "registerfileext";
 			public const string FileExtUnregister = "unregisterfileext";
 		}
