@@ -41,19 +41,21 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
+			Text = $"{Constants.ApplicationName} ({Constants.Platform})";
+
 			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true, true);
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(true, false);
 
 			Program.RemoteProcess.ProcessAttached += sender =>
 			{
-				var text = $"{sender.UnderlayingProcess.Name} (ID: {sender.UnderlayingProcess.Id.ToString()})";
+				var text = $"{sender.UnderlayingProcess.Name} ({Constants.Platform}) (ID: {sender.UnderlayingProcess.Id.ToString()})";
 
 				Text = $"{Constants.ApplicationName} - {text}";
 				processInfoToolStripStatusLabel.Text = text;
 			};
 			Program.RemoteProcess.ProcessClosed += (sender) =>
 			{
-				Text = Constants.ApplicationName;
+				Text = $"{Constants.ApplicationName} ({Constants.Platform})";
 				processInfoToolStripStatusLabel.Text = "No process selected";
 			};
 
