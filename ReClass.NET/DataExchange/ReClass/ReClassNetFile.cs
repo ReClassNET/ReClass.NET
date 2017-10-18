@@ -24,6 +24,7 @@ namespace ReClassNET.DataExchange.ReClass
 		public const string XmlNodeElement = "node";
 		public const string XmlMethodElement = "method";
 		public const string XmlVersionAttribute = "version";
+		public const string XmlPlatformAttribute = "type";
 		public const string XmlUuidAttribute = "uuid";
 		public const string XmlNameAttribute = "name";
 		public const string XmlCommentAttribute = "comment";

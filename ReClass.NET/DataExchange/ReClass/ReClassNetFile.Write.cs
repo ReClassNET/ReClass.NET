@@ -32,7 +32,7 @@ namespace ReClassNET.DataExchange.ReClass
 						new XElement(
 							XmlRootElement,
 							new XAttribute(XmlVersionAttribute, Version1),
-							new XAttribute(XmlTypeAttribute, Constants.Platform),
+							new XAttribute(XmlPlatformAttribute, Constants.Platform),
 							new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger))
 						)
 					);

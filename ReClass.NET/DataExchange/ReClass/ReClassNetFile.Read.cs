@@ -43,7 +43,7 @@ namespace ReClassNET.DataExchange.ReClass
 					}
 
 					//var version = document.Root.Attribute(XmlVersionAttribute)?.Value;
-					var platform = document.Root.Attribute(XmlTypeAttribute)?.Value;
+					var platform = document.Root.Attribute(XmlPlatformAttribute)?.Value;
 					if (platform != Constants.Platform)
 					{
 						logger.Log(LogLevel.Warning, $"The platform of the file ({platform}) doesn't match the program platform ({Constants.Platform}).");
