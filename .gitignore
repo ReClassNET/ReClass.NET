@@ -251,4 +251,4 @@ paket-files/
 .idea/
 *.sln.iml
 
-/Resources/BuildDate.txt
+/ReClass.NET/Resources/BuildDate.txt
