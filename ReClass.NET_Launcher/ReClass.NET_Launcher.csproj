@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{16591D29-2370-428A-BA11-87E38D0F3551}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ReClassNET_Launcher</RootNamespace>
+    <AssemblyName>ReClass.NET_Launcher</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ReClassNet.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\ReClass.NET\Constants.cs">
+      <Link>Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\ReClass.NET\DataExchange\ReClass\ReClassNetFile.Constants.cs">
+      <Link>DataExchange\ReClass\ReClassNetFile.Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\ReClass.NET\Native\INativeMethods.cs">
+      <Link>Native\INativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\ReClass.NET\Native\NativeMethods.cs">
+      <Link>Native\NativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\ReClass.NET\Native\NativeMethods.Unix.cs">
+      <Link>Native\NativeMethods.Unix.cs</Link>
+    </Compile>
+    <Compile Include="..\ReClass.NET\Native\NativeMethods.Windows.cs">
+      <Link>Native\NativeMethods.Windows.cs</Link>
+    </Compile>
+    <Compile Include="..\ReClass.NET\Util\Extension.IntPtr.cs">
+      <Link>Util\Extension.IntPtr.cs</Link>
+    </Compile>
+    <Compile Include="..\ReClass.NET\Util\PathUtil.cs">
+      <Link>Util\PathUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\ReClass.NET\Util\CommandLineArgs.cs">
+      <Link>Util\CommandLineArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\ReClass.NET\Util\WinUtil.cs">
+      <Link>Util\WinUtil.cs</Link>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassNetFile.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\ReClass.Net\Resources\Icon\ReClassNet.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

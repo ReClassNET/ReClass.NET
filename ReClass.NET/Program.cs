@@ -41,19 +41,6 @@ namespace ReClassNET
 
 			CommandLineArgs = new CommandLineArgs(args);
 
-			if (CommandLineArgs[Constants.CommandLineOptions.FileExtRegister] != null)
-			{
-				NativeMethods.RegisterExtension(ReClassNetFile.FileExtension, ReClassNetFile.FileExtensionId, PathUtil.ExecutablePath, Constants.ApplicationName);
-
-				return;
-			}
-			if (CommandLineArgs[Constants.CommandLineOptions.FileExtUnregister] != null)
-			{
-				NativeMethods.UnregisterExtension(ReClassNetFile.FileExtension, ReClassNetFile.FileExtensionId);
-
-				return;
-			}
-
 			try
 			{
 				DpiUtil.ConfigureProcess();

@@ -4,7 +4,11 @@
 	{
 		public const string ApplicationName = "ReClass.NET";
 
+		public const string ApplicationExecutableName = ApplicationName + ".exe";
+
 		public const string ApplicationVersion = "1.1";
+
+		public const string LauncherExecutableName = ApplicationName + "_Launcher.exe";
 
 		public const string Author = "KN4CK3R";
 

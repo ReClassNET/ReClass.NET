@@ -71,6 +71,15 @@ namespace ReClassNET.Util
 		/// <remarks>%localappdata%\ReClass.NET\</remarks>
 		public static string SettingsFolderPath => settingsFolderPath.Value;
 
+		private static readonly Lazy<string> launcherExecutablePath = new Lazy<string>(() =>
+		{
+			var path = Path.Combine(Directory.GetParent(ExecutableFolderPath).FullName, Constants.LauncherExecutableName);
+			return !File.Exists(path) ? null : path;
+		});
+
+		/// <summary>Gets the full pathname of the launcher executable.</summary>
+		public static string LauncherExecutablePath => launcherExecutablePath.Value;
+
 		/// <summary>Converts a file url to a normal path.</summary>
 		/// <param name="url">URL of the file.</param>
 		/// <returns>The path part of the URL.</returns>

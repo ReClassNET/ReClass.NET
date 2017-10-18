@@ -60,12 +60,12 @@ namespace ReClassNET.Forms
 
 		private void createAssociationButton_Click(object sender, EventArgs e)
 		{
-			WinUtil.RunElevated(PathUtil.ExecutablePath, $"-{Constants.CommandLineOptions.FileExtRegister}");
+			WinUtil.RunElevated(PathUtil.LauncherExecutablePath, $"-{Constants.CommandLineOptions.FileExtRegister}");
 		}
 
 		private void removeAssociationButton_Click(object sender, EventArgs e)
 		{
-			WinUtil.RunElevated(PathUtil.ExecutablePath, $"-{Constants.CommandLineOptions.FileExtUnregister}");
+			WinUtil.RunElevated(PathUtil.LauncherExecutablePath, $"-{Constants.CommandLineOptions.FileExtUnregister}");
 		}
 
 		private void SetBindings()
