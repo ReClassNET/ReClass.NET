@@ -250,6 +250,11 @@ struct DebugRegister7
 
 #pragma pack(pop)
 
+typedef void(__stdcall *EnumerateProcessCallback)(EnumerateProcessData* data);
+
+typedef void(__stdcall EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
+typedef void(__stdcall EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
+
 // Helpers
 
 inline void MultiByteToUnicode(const char* src, RC_UnicodeChar* dst, int size)

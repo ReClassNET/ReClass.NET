@@ -2,11 +2,6 @@
 
 #include "../ReClassNET_Plugin.hpp"
 
-typedef void(__stdcall *EnumerateProcessCallback)(EnumerateProcessData* data);
-
-typedef void(__stdcall EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
-typedef void(__stdcall EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
-
 void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess);
 void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer handle, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule);
 

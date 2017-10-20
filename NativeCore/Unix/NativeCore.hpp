@@ -6,11 +6,6 @@
 #include "../ReClassNET_Plugin.hpp"
 #include "../Keys.hpp"
 
-typedef void(EnumerateProcessCallback)(EnumerateProcessData* data);
-
-typedef void(EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
-typedef void(EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
-
 extern "C"
 {
 	void EnumerateProcesses(EnumerateProcessCallback callbackProcess);
