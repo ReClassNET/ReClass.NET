@@ -62,7 +62,7 @@ namespace ReClassNET.Nodes
 				var v = view.Clone();
 				v.Address = view.Address.Add(Offset);
 				v.Memory = view.Memory.Clone();
-				v.Memory.Offset = Offset.ToInt32();
+				v.Memory.Offset += Offset.ToInt32();
 
 				var innerSize = InnerNode.Draw(v, tx, y);
 				size.Width = Math.Max(size.Width, innerSize.Width + tx - origX);
