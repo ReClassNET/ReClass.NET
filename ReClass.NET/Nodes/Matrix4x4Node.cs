@@ -8,7 +8,7 @@ namespace ReClassNET.Nodes
 	public class Matrix4x4Node : BaseMatrixNode
 	{
 		[StructLayout(LayoutKind.Explicit)]
-		struct Matrix4x4Data
+		private struct Matrix4x4Data
 		{
 			[FieldOffset(0)]
 			public readonly float _11;
@@ -44,8 +44,9 @@ namespace ReClassNET.Nodes
 			public readonly float _44;
 		}
 
-		/// <summary>Size of the node in bytes.</summary>
-		public override int MemorySize => 16 * 4;
+		public override int ValueTypeSize => sizeof(float);
+
+		public override int MemorySize => 16 * ValueTypeSize;
 
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>

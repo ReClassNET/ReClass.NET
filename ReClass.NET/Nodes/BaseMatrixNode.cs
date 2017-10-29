@@ -6,6 +6,9 @@ namespace ReClassNET.Nodes
 {
 	public abstract class BaseMatrixNode : BaseNode
 	{
+		/// <summary>Size of the value type in bytes.</summary>
+		public abstract int ValueTypeSize { get; }
+
 		protected BaseMatrixNode()
 		{
 			levelsOpen.DefaultValue = true;
@@ -128,7 +131,7 @@ namespace ReClassNET.Nodes
 			{
 				if (float.TryParse(spot.Text, out var val))
 				{
-					spot.Memory.Process.WriteRemoteMemory(spot.Address, val);
+					spot.Memory.Process.WriteRemoteMemory(spot.Address + spot.Id * ValueTypeSize, val);
 				}
 			}
 		}
