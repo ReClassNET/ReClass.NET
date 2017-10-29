@@ -11,27 +11,19 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Plugins
 {
-	internal sealed class PluginManager : IEnumerable<PluginInfo>
+	internal sealed class PluginManager
 	{
 		private readonly List<PluginInfo> plugins = new List<PluginInfo>();
 
 		private readonly IPluginHost host;
+
+		public IEnumerable<PluginInfo> Plugins => plugins;
 
 		public PluginManager(IPluginHost host)
 		{
 			Contract.Requires(host != null);
 
 			this.host = host;
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return plugins.GetEnumerator();
-		}
-		
-		public IEnumerator<PluginInfo> GetEnumerator()
-		{
-			return plugins.GetEnumerator();
 		}
 
 		public void LoadAllPlugins(string path, ILogger logger)

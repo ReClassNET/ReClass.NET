@@ -39,7 +39,7 @@ namespace ReClassNET.Forms
 			// Plugins Tab
 
 			pluginsDataGridView.AutoGenerateColumns = false;
-			pluginsDataGridView.DataSource = pluginManager.Select(p => new PluginInfoRow(p)).ToList();
+			pluginsDataGridView.DataSource = pluginManager.Plugins.Select(p => new PluginInfoRow(p)).ToList();
 
 			UpdatePluginDescription();
 
@@ -71,8 +71,7 @@ namespace ReClassNET.Forms
 
 		private void functionsProvidersComboBox_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			var provider = functionsProvidersComboBox.SelectedItem as string;
-			if (provider == null)
+			if (!(functionsProvidersComboBox.SelectedItem is string provider))
 			{
 				return;
 			}
