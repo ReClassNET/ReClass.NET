@@ -2,10 +2,12 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
+using ReClassNET.Native;
+using ReClassNET.Util;
 
 namespace ReClassNET.Plugins
 {
-	class PluginInfo
+	internal class PluginInfo : IDisposable
 	{
 		public const string PluginName = "ReClass.NET Plugin";
 		public const string PluginNativeName = "ReClass.NET Native Plugin";
@@ -44,6 +46,40 @@ namespace ReClassNET.Plugins
 			{
 				Name = Path.GetFileNameWithoutExtension(FilePath);
 			}
+		}
+
+		~PluginInfo()
+		{
+			ReleaseUnmanagedResources();
+		}
+
+		private void ReleaseUnmanagedResources()
+		{
+			if (!NativeHandle.IsNull())
+			{
+				NativeMethods.FreeLibrary(NativeHandle);
+
+				NativeHandle = IntPtr.Zero;
+			}
+		}
+
+		public void Dispose()
+		{
+			if (Interface != null)
+			{
+				try
+				{
+					Interface.Terminate();
+				}
+				catch
+				{
+
+				}
+			}
+
+			ReleaseUnmanagedResources();
+
+			GC.SuppressFinalize(this);
 		}
 	}
 }

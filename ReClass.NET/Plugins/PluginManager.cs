@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -80,14 +79,7 @@ namespace ReClassNET.Plugins
 					if (!pi.IsNative)
 					{
 						pi.Interface = CreatePluginInstance(pi.FilePath);
-					}
-					else
-					{
-						pi.NativeHandle = CreateNativePluginInstance(pi.FilePath);
-					}
 
-					if (!pi.IsNative)
-					{
 						if (!pi.Interface.Initialize(host))
 						{
 							continue;
@@ -95,6 +87,8 @@ namespace ReClassNET.Plugins
 					}
 					else
 					{
+						pi.NativeHandle = CreateNativePluginInstance(pi.FilePath);
+
 						Program.CoreFunctions.RegisterFunctions(
 							pi.Name,
 							new NativeCoreWrapper(pi.NativeHandle)
@@ -112,25 +106,7 @@ namespace ReClassNET.Plugins
 
 		public void UnloadAllPlugins()
 		{
-			foreach (var plugin in plugins)
-			{
-				if (plugin.Interface != null)
-				{
-					try
-					{
-						plugin.Interface.Terminate();
-					}
-					catch
-					{
-
-					}
-				}
-				else if (!plugin.NativeHandle.IsNull())
-				{
-					NativeMethods.FreeLibrary(plugin.NativeHandle);
-				}
-			}
-
+			plugins.ForEach(p => p.Dispose());
 			plugins.Clear();
 		}
 
