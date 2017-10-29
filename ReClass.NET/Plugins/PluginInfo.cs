@@ -48,6 +48,8 @@ namespace ReClassNET.Plugins
 			}
 		}
 
+		#region IDisposable Support
+
 		~PluginInfo()
 		{
 			ReleaseUnmanagedResources();
@@ -81,5 +83,7 @@ namespace ReClassNET.Plugins
 
 			GC.SuppressFinalize(this);
 		}
+
+		#endregion
 	}
 }
