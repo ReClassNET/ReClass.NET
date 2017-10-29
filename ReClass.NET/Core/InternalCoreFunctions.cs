@@ -1,11 +1,19 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using ReClassNET.Native;
+using ReClassNET.Util;
 
 namespace ReClassNET.Core
 {
-	internal class InternalCoreFunctions : NativeCoreWrapper
+	internal class InternalCoreFunctions : NativeCoreWrapper, IDisposable
 	{
+		private const string CoreFunctionsModuleWindows = "NativeCore.dll";
+		private const string CoreFunctionsModuleUnix = "NativeCore.so";
+
+		private readonly IntPtr handle;
+
 		[return: MarshalAs(UnmanagedType.I1)]
 		private delegate bool DisassembleCodeDelegate(IntPtr address, IntPtr length, IntPtr virtualAddress, out InstructionData instruction);
 
@@ -21,15 +29,52 @@ namespace ReClassNET.Core
 		private readonly GetPressedKeysDelegate getPressedKeysDelegate;
 		private readonly ReleaseInputDelegate releaseInputDelegate;
 
-		public InternalCoreFunctions(IntPtr handle)
+		private InternalCoreFunctions(IntPtr handle)
 			: base(handle)
 		{
+			this.handle = handle;
+
 			disassembleCodeDelegate = GetFunctionDelegate<DisassembleCodeDelegate>(handle, "DisassembleCode");
 
 			initializeInputDelegate = GetFunctionDelegate<InitializeInputDelegate>(handle, "InitializeInput");
 			getPressedKeysDelegate = GetFunctionDelegate<GetPressedKeysDelegate>(handle, "GetPressedKeys");
 			releaseInputDelegate = GetFunctionDelegate<ReleaseInputDelegate>(handle, "ReleaseInput");
 		}
+
+		public static InternalCoreFunctions Create()
+		{
+			var libraryName = NativeMethods.IsUnix() ? CoreFunctionsModuleUnix : CoreFunctionsModuleWindows;
+			var libraryPath = Path.Combine(PathUtil.ExecutableFolderPath, libraryName);
+
+			var handle = NativeMethods.LoadLibrary(libraryPath);
+			if (handle.IsNull())
+			{
+				throw new FileNotFoundException(libraryPath);
+			}
+
+			return new InternalCoreFunctions(handle);
+		}
+
+		#region IDisposable Support
+
+		~InternalCoreFunctions()
+		{
+			ReleaseUnmanagedResources();
+		}
+
+		private void ReleaseUnmanagedResources()
+		{
+			NativeMethods.FreeLibrary(handle);
+		}
+
+		public void Dispose()
+		{
+			ReleaseUnmanagedResources();
+
+			GC.SuppressFinalize(this);
+		}
+
+		#endregion
 
 		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, out InstructionData instruction)
 		{

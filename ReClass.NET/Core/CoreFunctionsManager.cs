@@ -2,25 +2,18 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using ReClassNET.Debugger;
 using ReClassNET.Memory;
-using ReClassNET.Native;
 using ReClassNET.Util;
 
 namespace ReClassNET.Core
 {
 	public class CoreFunctionsManager : IDisposable
 	{
-		private const string CoreFunctionsModuleWindows = "NativeCore.dll";
-		private const string CoreFunctionsModuleUnix = "NativeCore.so";
-
 		private readonly Dictionary<string, ICoreProcessFunctions> functionsRegistry = new Dictionary<string, ICoreProcessFunctions>();
 
 		public IEnumerable<string> FunctionProviders => functionsRegistry.Keys;
-
-		private IntPtr internalCoreFunctionsHandle;
 
 		private readonly InternalCoreFunctions internalCoreFunctions;
 
@@ -28,16 +21,7 @@ namespace ReClassNET.Core
 
 		public CoreFunctionsManager()
 		{
-			var libraryName = NativeMethods.IsUnix() ? CoreFunctionsModuleUnix : CoreFunctionsModuleWindows;
-
-			internalCoreFunctionsHandle = NativeMethods.LoadLibrary("./" + libraryName);
-
-			if (internalCoreFunctionsHandle.IsNull())
-			{
-				throw new FileNotFoundException(libraryName);
-			}
-
-			internalCoreFunctions = new InternalCoreFunctions(internalCoreFunctionsHandle);
+			internalCoreFunctions = InternalCoreFunctions.Create();
 
 			RegisterFunctions("Default", internalCoreFunctions);
 
@@ -46,26 +30,9 @@ namespace ReClassNET.Core
 
 		#region IDisposable Support
 
-		~CoreFunctionsManager()
-		{
-			Dispose(false);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!internalCoreFunctionsHandle.IsNull())
-			{
-				NativeMethods.FreeLibrary(internalCoreFunctionsHandle);
-
-				internalCoreFunctionsHandle = IntPtr.Zero;
-			}
-		}
-
 		public void Dispose()
 		{
-			Dispose(true);
-
-			GC.SuppressFinalize(this);
+			internalCoreFunctions.Dispose();
 		}
 
 		#endregion
