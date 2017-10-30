@@ -1,5 +1,5 @@
 # ReClass.NET
-This is a port of ReClass to the .NET platform with additional features.
+This is a port of ReClass to the .NET platform with lots of additional features.
 
 ![](https://abload.de/img/main4hsbj.jpg)
 
@@ -30,6 +30,7 @@ This is a port of ReClass to the .NET platform with additional features.
 - Process Selection Dialog with filtering
 - Memory Viewer
 - Memory Scanner
+  - Import files from Cheat Engine and CrySearch
   - Scan for values correlated to your input
 - Class address calculator
 - Code Generator (C++ / C#)
@@ -49,12 +50,13 @@ This is a port of ReClass to the .NET platform with additional features.
 - [MemoryPipe Plugin](https://github.com/KN4CK3R/ReClass.NET-MemoryPipePlugin)
 - [LoadBinary Plugin](https://github.com/KN4CK3R/ReClass.NET-LoadBinaryPlugin)
 - [Handle Abuser Plugin](https://github.com/KN4CK3R/ReClass.NET-HandleAbuser)
+- [Unreal Plugin](https://github.com/DrP3pp3r/ReClass.NET-UnrealPlugin) (by [DrP3pp3r](https://github.com/DrP3pp3r))
 
 To install a plugin just copy it in the "Plugins" folder.
 If you want to develop your own plugin just learn from the code of the [Sample Plugins](https://github.com/KN4CK3R/ReClass.NET-SamplePlugin) and [Frostbite Plugin](https://github.com/KN4CK3R/ReClass.NET-FrostbitePlugin) repositories. If you have developed a nice plugin, leave me a message and I will add it to the list above.
 
 ## Installation
-Just download the [latest version](https://github.com/KN4CK3R/ReClass.NET/releases) and start the x86 / x64 version.
+Just download the [latest version](https://github.com/KN4CK3R/ReClass.NET/releases) and start the x86 / x64 version or let the launcher decide.
 
 ## Tips
 - Lots of elements have a context menu. Just right-click it and see what you can do there.
@@ -69,7 +71,7 @@ Just download the [latest version](https://github.com/KN4CK3R/ReClass.NET/releas
   Valid operations are read ([..]), add (+), sub (-), mul (*) and div (/). Please note that all operations are integer calculations.
 
 ## Compiling
-If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file.
+If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file with Visual Studio 2017.
 Compile the project and copy the dependencies to the output folder.
 
 ## Videos
@@ -113,3 +115,4 @@ Settings
 - [ReUnioN](https://github.com/ReUnioN)
 - leveln
 - [buddyfavors](https://github.com/buddyfavors)
+- [DrP3pp3r](https://github.com/DrP3pp3r)
