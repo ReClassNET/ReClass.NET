@@ -13,6 +13,7 @@
 		private const string SerialisationClassName = "__Serialization_Class__";
 
 		public const string XmlRootElement = "reclass";
+		public const string XmlCustomDataElement = "custom_data";
 		public const string XmlClassesElement = "classes";
 		public const string XmlClassElement = "class";
 		public const string XmlNodeElement = "node";

@@ -19,6 +19,12 @@ namespace ReClassNET
 
 		public string Path { get; set; }
 
+		/// <summary>
+		/// Key-Value map with custom data for plugins to store project related data.
+		/// The preferred key format is {Plugin Name}_{Key Name}.
+		/// </summary>
+		public Dictionary<string, string> CustomData { get; } = new Dictionary<string, string>();
+
 		public void Dispose()
 		{
 			Clear();

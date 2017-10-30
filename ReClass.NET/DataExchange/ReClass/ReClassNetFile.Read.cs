@@ -49,6 +49,15 @@ namespace ReClassNET.DataExchange.ReClass
 						logger.Log(LogLevel.Warning, $"The platform of the file ({platform}) doesn't match the program platform ({Constants.Platform}).");
 					}
 
+					var customDataElement = document.Root.Element(XmlCustomDataElement);
+					if (customDataElement != null)
+					{
+						foreach (var kv in customDataElement.Elements())
+						{
+							project.CustomData[kv.Name.ToString()] = kv.Value;
+						}
+					}
+
 					var classes = new List<Tuple<XElement, ClassNode>>();
 
 					foreach (var element in document.Root

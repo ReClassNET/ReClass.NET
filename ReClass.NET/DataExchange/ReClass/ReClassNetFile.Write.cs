@@ -33,7 +33,8 @@ namespace ReClassNET.DataExchange.ReClass
 							XmlRootElement,
 							new XAttribute(XmlVersionAttribute, Version1),
 							new XAttribute(XmlPlatformAttribute, Constants.Platform),
-							new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger))
+							new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger)),
+							new XElement(XmlCustomDataElement, project.CustomData.Select(kv => new XElement(kv.Key, kv.Value)))
 						)
 					);
 
