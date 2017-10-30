@@ -162,7 +162,7 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ClassNode SelectedClass
 		{
-			get { return selectedClass; }
+			get => selectedClass;
 			set
 			{
 				if (selectedClass != value)
@@ -170,7 +170,7 @@ namespace ReClassNET.UI
 					selectedClass = value;
 					if (selectedClass != null)
 					{
-						classesTreeView.SelectedNode = root.Nodes.Cast<TreeNode>().FirstOrDefault(n => n.Tag == selectedClass);
+						classesTreeView.SelectedNode = root.Nodes.Cast<ClassTreeNode>().FirstOrDefault(n => n.ClassNode == selectedClass);
 					}
 
 					SelectionChanged?.Invoke(this, selectedClass);
