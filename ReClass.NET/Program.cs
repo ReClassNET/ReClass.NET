@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Core;
-using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
@@ -64,7 +63,7 @@ namespace ReClassNET
 
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-			Settings = Settings.Load();
+			Settings = SettingsSerializer.Load();
 			Logger = new GuiLogger();
 #if DEBUG
 			using (var coreFunctions = new CoreFunctionsManager())
@@ -97,7 +96,7 @@ namespace ReClassNET
 			}
 #endif
 
-			Settings.Save(Settings);
+			SettingsSerializer.Save(Settings);
 		}
 
 		/// <summary>Shows the exception in a special form.</summary>

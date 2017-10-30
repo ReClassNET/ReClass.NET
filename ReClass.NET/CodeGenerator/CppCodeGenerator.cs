@@ -33,7 +33,7 @@ namespace ReClassNET.CodeGenerator
 			[typeof(Utf16TextNode)] = Program.Settings.TypeUTF16Text,
 			[typeof(Utf16TextPtrNode)] = Program.Settings.TypeUTF16TextPtr,
 			[typeof(Utf32TextNode)] = Program.Settings.TypeUTF32Text,
-			[typeof(Utf32TextPtrNode)] = Program.Settings.TypeUTF32PtrText,
+			[typeof(Utf32TextPtrNode)] = Program.Settings.TypeUTF32TextPtr,
 			[typeof(Vector2Node)] = Program.Settings.TypeVector2,
 			[typeof(Vector3Node)] = Program.Settings.TypeVector3,
 			[typeof(Vector4Node)] = Program.Settings.TypeVector4

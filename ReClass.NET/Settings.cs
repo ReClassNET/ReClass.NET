@@ -1,69 +1,10 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-using ReClassNET.Util;
 
 namespace ReClassNET
 {
 	public class Settings
 	{
-		public static Settings Load()
-		{
-			EnsureSettingsDirectoryAvailable();
-
-			try
-			{
-				var path = Path.Combine(PathUtil.SettingsFolderPath, Constants.SettingsFile);
-
-				if (File.Exists(path))
-				{
-					using (var sr = new StreamReader(path))
-					{
-						return (Settings)new XmlSerializer(typeof(Settings)).Deserialize(sr);
-					}
-				}
-			}
-			catch
-			{
-				
-			}
-
-			return new Settings();
-		}
-
-		public static void Save(Settings settings)
-		{
-			Contract.Requires(settings != null);
-
-			EnsureSettingsDirectoryAvailable();
-
-			var path = Path.Combine(PathUtil.SettingsFolderPath, Constants.SettingsFile);
-
-			using (var sr = new StreamWriter(path))
-			{
-				new XmlSerializer(typeof(Settings)).Serialize(sr, settings);
-			}
-		}
-
-		private static void EnsureSettingsDirectoryAvailable()
-		{
-			try
-			{
-				if (Directory.Exists(PathUtil.SettingsFolderPath) == false)
-				{
-					Directory.CreateDirectory(PathUtil.SettingsFolderPath);
-				}
-			}
-			catch (Exception)
-			{
-				
-			}
-		}
-
 		// Application Settings
 
 		public string LastProcess { get; set; } = string.Empty;
@@ -98,55 +39,37 @@ namespace ReClassNET
 
 		// Colors
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color BackgroundColor { get; set; } = Color.FromArgb(255, 255, 255);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color SelectedColor { get; set; } = Color.FromArgb(240, 240, 240);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color HiddenColor { get; set; } = Color.FromArgb(240, 240, 240);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color OffsetColor { get; set; } = Color.FromArgb(255, 0, 0);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color AddressColor { get; set; } = Color.FromArgb(0, 200, 0);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color HexColor { get; set; } = Color.FromArgb(0, 0, 0);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color TypeColor { get; set; } = Color.FromArgb(0, 0, 255);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color NameColor { get; set; } = Color.FromArgb(32, 32, 128);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color ValueColor { get; set; } = Color.FromArgb(255, 128, 0);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color IndexColor { get; set; } = Color.FromArgb(32, 200, 200);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color CommentColor { get; set; } = Color.FromArgb(0, 200, 0);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color TextColor { get; set; } = Color.FromArgb(0, 0, 255);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color VTableColor { get; set; } = Color.FromArgb(0, 255, 0);
 
-		[XmlElement(Type = typeof(XmlColorWrapper))]
 		public Color PluginColor { get; set; } = Color.FromArgb(255, 0, 255);
-
-		[XmlElement(Type = typeof(XmlColorWrapper))]
-		public Color CustomColor { get; set; } = Color.FromArgb(64, 128, 64);
 
 		private static readonly Color[] highlightColors = {
 			Color.Aqua, Color.Aquamarine, Color.Blue, Color.BlueViolet, Color.Chartreuse, Color.Crimson, Color.LawnGreen, Color.Magenta
 		};
-		[XmlIgnore]
 		public Color HighlightColor => highlightColors[Program.GlobalRandom.Next(highlightColors.Length)];
 
 		// Type Definitions
@@ -181,62 +104,12 @@ namespace ReClassNET
 		public string TypeUTF16Text { get; set; } = "wchar_t"; // Should be char16_t, but this type isn't well supported at the moment.
 		public string TypeUTF16TextPtr { get; set; } = "wchar_t*";
 		public string TypeUTF32Text { get; set; } = "char32_t";
-		public string TypeUTF32PtrText { get; set; } = "char32_t*";
+		public string TypeUTF32TextPtr { get; set; } = "char32_t*";
 
 		public string TypeFunctionPtr { get; set; } = "void*";
 
+		public Dictionary<string, string> CustomData { get; } = new Dictionary<string, string>();
+
 		public Settings Clone() => MemberwiseClone() as Settings;
-	}
-
-	public class XmlColorWrapper : IXmlSerializable
-	{
-		private Color color;
-
-		public XmlColorWrapper()
-			: this(Color.Empty)
-		{
-
-		}
-
-		public XmlColorWrapper(Color color)
-		{
-			this.color = color;
-		}
-
-		public XmlSchema GetSchema()
-		{
-			return null;
-		}
-
-		public void ReadXml(XmlReader reader)
-		{
-			color = Color.FromArgb((int)(0xFF000000 | reader.ReadElementContentAsInt()));
-		}
-
-		public void WriteXml(XmlWriter writer)
-		{
-			writer.WriteString(color.ToRgb().ToString());
-		}
-
-
-		public static implicit operator XmlColorWrapper(Color color)
-		{
-			if (color != Color.Empty)
-			{
-				return new XmlColorWrapper(color);
-			}
-
-			return null;
-		}
-
-		public static implicit operator Color(XmlColorWrapper wrapper)
-		{
-			if (wrapper != null)
-			{
-				return wrapper.color;
-			}
-
-			return Color.Empty;
-		}
 	}
 }
