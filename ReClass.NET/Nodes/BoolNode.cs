@@ -34,7 +34,7 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "=") + view.Font.Width;
 
-			var value = view.Memory.ReadByte(Offset);
+			var value = view.Memory.ReadUInt8(Offset);
 			x = AddText(view, x, y, view.Settings.ValueColor, 0, value == 0 ? "false" : "true") + view.Font.Width;
 
 			x = AddComment(view, x, y);

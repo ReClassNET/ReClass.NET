@@ -7,14 +7,9 @@ namespace ReClassNET.Nodes
 {
 	public class Utf32TextPtrNode : BaseTextPtrNode
 	{
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			var ptr = view.Memory.ReadObject<IntPtr>(Offset);
+			var ptr = view.Memory.ReadIntPtr(Offset);
 			var str = view.Memory.Process.ReadRemoteString(Encoding.UTF32, ptr, 256);
 
 			return DrawText(view, x, y, "Text32Ptr", str);

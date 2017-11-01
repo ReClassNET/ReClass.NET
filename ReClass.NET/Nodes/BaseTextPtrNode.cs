@@ -7,7 +7,6 @@ namespace ReClassNET.Nodes
 {
 	public abstract class BaseTextPtrNode : BaseNode
 	{
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
 
 		/// <summary>Draws this node.</summary>

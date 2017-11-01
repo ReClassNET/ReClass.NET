@@ -6,21 +6,13 @@ namespace ReClassNET.Nodes
 {
 	public class FloatNode : BaseNumericNode
 	{
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 4;
 
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			return DrawNumeric(view, x, y, Icons.Float, "Float", view.Memory.ReadObject<float>(Offset).ToString("0.000"));
+			return DrawNumeric(view, x, y, Icons.Float, "Float", ReadValueFromMemory(view.Memory).ToString("0.000"));
 		}
 
-		/// <summary>Updates the node from the given spot. Sets the value of the node.</summary>
-		/// <param name="spot">The spot.</param>
 		public override void Update(HotSpot spot)
 		{
 			base.Update(spot);
@@ -36,7 +28,7 @@ namespace ReClassNET.Nodes
 
 		public float ReadValueFromMemory(MemoryBuffer memory)
 		{
-			return memory.ReadObject<float>(Offset);
+			return memory.ReadFloat(Offset);
 		}
 	}
 }

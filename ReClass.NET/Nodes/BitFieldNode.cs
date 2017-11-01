@@ -42,10 +42,8 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => size;
 
-		/// <summary>Default constructor.</summary>
 		public BitFieldNode()
 		{
 			Bits = IntPtr.Size * 8;
@@ -53,8 +51,6 @@ namespace ReClassNET.Nodes
 			levelsOpen.DefaultValue = true;
 		}
 
-		/// <summary>Initializes this object with a bit count which equals the other nodes memory size.</summary>
-		/// <param name="node">The node to copy from.</param>
 		public override void CopyFromNode(BaseNode node)
 		{
 			base.CopyFromNode(node);
@@ -74,26 +70,21 @@ namespace ReClassNET.Nodes
 			switch(bits)
 			{
 				case 64:
-					str = Convert.ToString(memory.ReadObject<long>(Offset), 2);
+					str = Convert.ToString(memory.ReadInt64(Offset), 2);
 					break;
 				case 32:
-					str = Convert.ToString(memory.ReadObject<int>(Offset), 2);
+					str = Convert.ToString(memory.ReadInt32(Offset), 2);
 					break;
 				case 16:
-					str = Convert.ToString(memory.ReadObject<short>(Offset), 2);
+					str = Convert.ToString(memory.ReadInt16(Offset), 2);
 					break;
 				default:
-					str = Convert.ToString(memory.ReadObject<byte>(Offset), 2);
+					str = Convert.ToString(memory.ReadUInt8(Offset), 2);
 					break;
 			}
 			return str.PadLeft(bits, '0');
 		}
 
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			if (IsHidden)
@@ -170,8 +161,6 @@ namespace ReClassNET.Nodes
 			return height;
 		}
 
-		/// <summary>Updates the node from the given spot. Sets the value of the selected bit.</summary>
-		/// <param name="spot">The spot.</param>
 		public override void Update(HotSpot spot)
 		{
 			base.Update(spot);
@@ -180,18 +169,18 @@ namespace ReClassNET.Nodes
 			{
 				if (spot.Text == "1" || spot.Text == "0")
 				{
-					var bit = (bits - 1) - spot.Id;
+					var bit = bits - 1 - spot.Id;
 					var add = bit / 8;
 					bit = bit % 8;
 
-					var val = spot.Memory.ReadObject<sbyte>(Offset + add);
+					var val = spot.Memory.ReadUInt8(Offset + add);
 					if (spot.Text == "1")
 					{
-						val |= (sbyte)(1 << bit);
+						val |= (byte)(1 << bit);
 					}
 					else
 					{
-						val &= (sbyte)~(1 << bit);
+						val &= (byte)~(1 << bit);
 					}
 					spot.Memory.Process.WriteRemoteMemory(spot.Address + add, val);
 				}

@@ -120,13 +120,13 @@ namespace ReClassNET.Memory
 				{
 					return typeof(FunctionPtrNode);
 				}
-				else if (section.Category == SectionCategory.DATA || section.Category == SectionCategory.HEAP) // If the section contains data, it is at least a pointer to a class or something.
+				if (section.Category == SectionCategory.DATA || section.Category == SectionCategory.HEAP) // If the section contains data, it is at least a pointer to a class or something.
 				{
 					// Check if it is a vtable. Check if the first 3 values are pointers to a code section.
 					bool valid = true;
 					for (var i = 0; i < 3; ++i)
 					{
-						var pointee = memory.Process.ReadRemoteObject<IntPtr>(address);
+						var pointee = memory.Process.ReadRemoteIntPtr(address);
 						if (memory.Process.GetSectionToPointer(pointee)?.Category != SectionCategory.CODE)
 						{
 							valid = false;

@@ -9,7 +9,6 @@ namespace ReClassNET.Nodes
 	{
 		private readonly MemoryBuffer memory = new MemoryBuffer();
 
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
 
 		public override bool PerformCycleCheck => false;
@@ -22,11 +21,6 @@ namespace ReClassNET.Nodes
 			InnerNode = node;
 		}
 
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			if (IsHidden)
@@ -63,7 +57,7 @@ namespace ReClassNET.Nodes
 
 			if (levelsOpen[view.Level])
 			{
-				var ptr = view.Memory.ReadObject<IntPtr>(Offset);
+				var ptr = view.Memory.ReadIntPtr(Offset);
 
 				memory.Size = InnerNode.MemorySize;
 				memory.Process = view.Memory.Process;

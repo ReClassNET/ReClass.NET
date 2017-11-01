@@ -10,12 +10,11 @@ namespace ReClassNET.Nodes
 {
 	public abstract class BaseFunctionPtrNode : BaseFunctionNode
 	{
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => IntPtr.Size;
 
 		public override string GetToolTipText(HotSpot spot, MemoryBuffer memory)
 		{
-			var ptr = memory.ReadObject<IntPtr>(Offset);
+			var ptr = memory.ReadIntPtr(Offset);
 
 			DisassembleRemoteCode(memory, ptr);
 
@@ -56,7 +55,7 @@ namespace ReClassNET.Nodes
 
 			if (view.Settings.ShowCommentSymbol)
 			{
-				var value = view.Memory.ReadObject<IntPtr>(Offset);
+				var value = view.Memory.ReadIntPtr(Offset);
 
 				var module = view.Memory.Process.GetModuleToPointer(value);
 				if (module != null)
@@ -74,7 +73,7 @@ namespace ReClassNET.Nodes
 
 			if (levelsOpen[view.Level])
 			{
-				var ptr = view.Memory.ReadObject<IntPtr>(Offset);
+				var ptr = view.Memory.ReadIntPtr(Offset);
 
 				DisassembleRemoteCode(view.Memory, ptr);
 

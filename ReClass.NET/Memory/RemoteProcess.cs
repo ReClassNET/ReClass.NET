@@ -210,6 +210,122 @@ namespace ReClassNET.Memory
 			return obj;
 		}
 
+		#region Read Remote Primitive Types
+
+		/// <summary>Reads a <see cref="sbyte"/> from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The data read as <see cref="sbyte"/> or 0 if the read fails.</returns>
+		public sbyte ReadRemoteInt8(IntPtr address)
+		{
+			var data = ReadRemoteMemory(address, sizeof(sbyte));
+
+			return (sbyte)data[0];
+		}
+
+		/// <summary>Reads a <see cref="byte"/> from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The data read as <see cref="byte"/> or 0 if the read fails.</returns>
+		public byte ReadRemoteUInt8(IntPtr address)
+		{
+			var data = ReadRemoteMemory(address, sizeof(byte));
+
+			return data[0];
+		}
+
+		/// <summary>Reads a <see cref="short"/> from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The data read as <see cref="short"/> or 0 if the read fails.</returns>
+		public short ReadRemoteInt16(IntPtr address)
+		{
+			var data = ReadRemoteMemory(address, sizeof(short));
+
+			return BitConverter.ToInt16(data, 0);
+		}
+
+		/// <summary>Reads a <see cref="ushort"/> from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The data read as <see cref="ushort"/> or 0 if the read fails.</returns>
+		public ushort ReadRemoteUInt16(IntPtr address)
+		{
+			var data = ReadRemoteMemory(address, sizeof(ushort));
+
+			return BitConverter.ToUInt16(data, 0);
+		}
+
+		/// <summary>Reads a <see cref="int"/> from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The data read as <see cref="int"/> or 0 if the read fails.</returns>
+		public int ReadRemoteInt32(IntPtr address)
+		{
+			var data = ReadRemoteMemory(address, sizeof(int));
+
+			return BitConverter.ToInt32(data, 0);
+		}
+
+		/// <summary>Reads a <see cref="uint"/> from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The data read as <see cref="uint"/> or 0 if the read fails.</returns>
+		public uint ReadRemoteUInt32(IntPtr address)
+		{
+			var data = ReadRemoteMemory(address, sizeof(uint));
+
+			return BitConverter.ToUInt32(data, 0);
+		}
+
+		/// <summary>Reads a <see cref="long"/> from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The data read as <see cref="long"/> or 0 if the read fails.</returns>
+		public long ReadRemoteInt64(IntPtr address)
+		{
+			var data = ReadRemoteMemory(address, sizeof(long));
+
+			return BitConverter.ToInt64(data, 0);
+		}
+
+		/// <summary>Reads a <see cref="ulong"/> from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The data read as <see cref="ulong"/> or 0 if the read fails.</returns>
+		public ulong ReadRemoteUInt64(IntPtr address)
+		{
+			var data = ReadRemoteMemory(address, sizeof(ulong));
+
+			return BitConverter.ToUInt64(data, 0);
+		}
+
+		/// <summary>Reads a <see cref="float"/> from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The data read as <see cref="float"/> or 0 if the read fails.</returns>
+		public float ReadRemoteFloat(IntPtr address)
+		{
+			var data = ReadRemoteMemory(address, sizeof(float));
+
+			return BitConverter.ToSingle(data, 0);
+		}
+
+		/// <summary>Reads a <see cref="double"/> from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The data read as <see cref="double"/> or 0 if the read fails.</returns>
+		public double ReadRemoteDouble(IntPtr address)
+		{
+			var data = ReadRemoteMemory(address, sizeof(double));
+
+			return BitConverter.ToDouble(data, 0);
+		}
+
+		/// <summary>Reads a <see cref="IntPtr"/> from the address in the remote process.</summary>
+		/// <param name="address">The address to read from.</param>
+		/// <returns>The data read as <see cref="IntPtr"/> or 0 if the read fails.</returns>
+		public IntPtr ReadRemoteIntPtr(IntPtr address)
+		{
+#if RECLASSNET64
+			return (IntPtr)ReadRemoteInt64(address);
+#else
+			return (IntPtr)ReadRemoteInt32(address);
+#endif
+		}
+
+		#endregion
+
 		/// <summary>Reads a string from the address in the remote process with the given length using the provided encoding.</summary>
 		/// <param name="encoding">The encoding used by the string.</param>
 		/// <param name="address">The address of the string.</param>
@@ -285,7 +401,7 @@ namespace ReClassNET.Memory
 			{
 				if (!rttiCache.TryGetValue(address, out var rtti))
 				{
-					var objectLocatorPtr = ReadRemoteObject<IntPtr>(address - IntPtr.Size);
+					var objectLocatorPtr = ReadRemoteIntPtr(address - IntPtr.Size);
 					if (objectLocatorPtr.MayBeValid())
 					{
 
@@ -306,22 +422,22 @@ namespace ReClassNET.Memory
 
 		private string ReadRemoteRuntimeTypeInformation32(IntPtr address)
 		{
-			var classHierarchyDescriptorPtr = ReadRemoteObject<IntPtr>(address + 0x10);
+			var classHierarchyDescriptorPtr = ReadRemoteIntPtr(address + 0x10);
 			if (classHierarchyDescriptorPtr.MayBeValid())
 			{
-				var baseClassCount = ReadRemoteObject<int>(classHierarchyDescriptorPtr + 8);
+				var baseClassCount = ReadRemoteInt32(classHierarchyDescriptorPtr + 8);
 				if (baseClassCount > 0 && baseClassCount < 25)
 				{
-					var baseClassArrayPtr = ReadRemoteObject<IntPtr>(classHierarchyDescriptorPtr + 0xC);
+					var baseClassArrayPtr = ReadRemoteIntPtr(classHierarchyDescriptorPtr + 0xC);
 					if (baseClassArrayPtr.MayBeValid())
 					{
 						var sb = new StringBuilder();
 						for (var i = 0; i < baseClassCount; ++i)
 						{
-							var baseClassDescriptorPtr = ReadRemoteObject<IntPtr>(baseClassArrayPtr + (4 * i));
+							var baseClassDescriptorPtr = ReadRemoteIntPtr(baseClassArrayPtr + (4 * i));
 							if (baseClassDescriptorPtr.MayBeValid())
 							{
-								var typeDescriptorPtr = ReadRemoteObject<IntPtr>(baseClassDescriptorPtr);
+								var typeDescriptorPtr = ReadRemoteIntPtr(baseClassDescriptorPtr);
 								if (typeDescriptorPtr.MayBeValid())
 								{
 									var name = ReadRemoteUTF8StringUntilFirstNullCharacter(typeDescriptorPtr + 0x0C, 60);
@@ -355,20 +471,20 @@ namespace ReClassNET.Memory
 
 		private string ReadRemoteRuntimeTypeInformation64(IntPtr address)
 		{
-			int baseOffset = ReadRemoteObject<int>(address + 0x14);
+			int baseOffset = ReadRemoteInt32(address + 0x14);
 			if (baseOffset != 0)
 			{
 				var baseAddress = address - baseOffset;
 
-				var classHierarchyDescriptorOffset = ReadRemoteObject<int>(address + 0x10);
+				var classHierarchyDescriptorOffset = ReadRemoteInt32(address + 0x10);
 				if (classHierarchyDescriptorOffset != 0)
 				{
 					var classHierarchyDescriptorPtr = baseAddress + classHierarchyDescriptorOffset;
 
-					var baseClassCount = ReadRemoteObject<int>(classHierarchyDescriptorPtr + 0x08);
+					var baseClassCount = ReadRemoteInt32(classHierarchyDescriptorPtr + 0x08);
 					if (baseClassCount > 0 && baseClassCount < 25)
 					{
-						var baseClassArrayOffset = ReadRemoteObject<int>(classHierarchyDescriptorPtr + 0x0C);
+						var baseClassArrayOffset = ReadRemoteInt32(classHierarchyDescriptorPtr + 0x0C);
 						if (baseClassArrayOffset != 0)
 						{
 							var baseClassArrayPtr = baseAddress + baseClassArrayOffset;
@@ -376,12 +492,12 @@ namespace ReClassNET.Memory
 							var sb = new StringBuilder();
 							for (var i = 0; i < baseClassCount; ++i)
 							{
-								var baseClassDescriptorOffset = ReadRemoteObject<int>(baseClassArrayPtr + (4 * i));
+								var baseClassDescriptorOffset = ReadRemoteInt32(baseClassArrayPtr + (4 * i));
 								if (baseClassDescriptorOffset != 0)
 								{
 									var baseClassDescriptorPtr = baseAddress + baseClassDescriptorOffset;
 
-									var typeDescriptorOffset = ReadRemoteObject<int>(baseClassDescriptorPtr);
+									var typeDescriptorOffset = ReadRemoteInt32(baseClassDescriptorPtr);
 									if (typeDescriptorOffset != 0)
 									{
 										var typeDescriptorPtr = baseAddress + typeDescriptorOffset;
