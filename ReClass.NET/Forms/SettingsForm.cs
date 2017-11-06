@@ -11,6 +11,8 @@ namespace ReClassNET.Forms
 	{
 		private readonly Settings settings;
 
+		public TabControl SettingsTabControl => settingsTabControl;
+
 		public SettingsForm(Settings settings)
 		{
 			Contract.Requires(settings != null);
