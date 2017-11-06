@@ -31,10 +31,22 @@ namespace ReClassNET.Memory
 
 			var buffer = process.ReadRemoteMemory(address, length);
 
-			var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+			return DisassembleCode(buffer, address);
+		}
+
+		/// <summary>Disassembles the code in the given data.</summary>
+		/// <param name="data">The data to disassemble.</param>
+		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
+		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
+		public IEnumerable<DisassembledInstruction> DisassembleCode(byte[] data, IntPtr virtualAddress)
+		{
+			Contract.Requires(data != null);
+			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
+
+			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
 			try
 			{
-				return DisassembleCode(handle.AddrOfPinnedObject(), length, address);
+				return DisassembleCode(handle.AddrOfPinnedObject(), data.Length, virtualAddress);
 			}
 			finally
 			{
@@ -90,10 +102,22 @@ namespace ReClassNET.Memory
 
 			var buffer = process.ReadRemoteMemory(address, maxLength);
 
-			var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+			return DisassembleFunction(buffer, address);
+		}
+
+		/// <summary>Disassembles the code in the given data.</summary>
+		/// <param name="data">The data to disassemble.</param>
+		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
+		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
+		public IEnumerable<DisassembledInstruction> DisassembleFunction(byte[] data, IntPtr virtualAddress)
+		{
+			Contract.Requires(data != null);
+			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
+
+			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
 			try
 			{
-				return DisassembleFunction(handle.AddrOfPinnedObject(), maxLength, address);
+				return DisassembleFunction(handle.AddrOfPinnedObject(), data.Length, virtualAddress);
 			}
 			finally
 			{
