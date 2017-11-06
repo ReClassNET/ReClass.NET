@@ -460,6 +460,7 @@
     <Compile Include="Util\Util.cs" />
     <Compile Include="Util\ValueTypeWrapper.cs" />
     <Compile Include="Util\WinUtil.cs" />
+    <Compile Include="Util\XElementSerializer.cs" />
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
