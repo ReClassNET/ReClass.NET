@@ -924,6 +924,9 @@
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Undo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Add.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>powershell -Command "((Get-Date).ToUniversalTime()).ToString(\"yyyy\/MM\/dd HH:mm:ss\") | Out-File '$(ProjectDir)Resources\BuildDate.txt'"</PreBuildEvent>
