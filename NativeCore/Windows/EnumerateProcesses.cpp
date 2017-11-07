@@ -60,7 +60,7 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 		{
 			do
 			{
-				const auto process = OpenRemoteProcess(reinterpret_cast<RC_Pointer>(pe32.th32ProcessID), ProcessAccess::Read);
+				const auto process = OpenRemoteProcess(reinterpret_cast<RC_Pointer>(static_cast<size_t>(pe32.th32ProcessID)), ProcessAccess::Read);
 				if (IsProcessValid(process))
 				{
 					const auto platform = GetProcessPlatform(process);
@@ -74,7 +74,7 @@ void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 						data.Id = pe32.th32ProcessID;
 						GetModuleFileNameExW(process, nullptr, reinterpret_cast<LPWSTR>(data.Path), PATH_MAXIMUM_LENGTH);
 						const auto name = fs::path(data.Path).filename().u16string();
-						str16cpy(data.Name, name.c_str(), std::min<int>(name.length(), PATH_MAXIMUM_LENGTH - 1));
+						str16cpy(data.Name, name.c_str(), std::min<size_t>(name.length(), PATH_MAXIMUM_LENGTH - 1));
 
 						callbackProcess(&data);
 					}

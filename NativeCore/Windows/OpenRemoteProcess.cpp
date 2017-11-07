@@ -18,7 +18,7 @@ RC_Pointer __stdcall OpenRemoteProcess(RC_Pointer id, ProcessAccess desiredAcces
 			break;
 	}
 
-	auto handle = OpenProcess(access, FALSE, reinterpret_cast<DWORD>(id));
+	const auto handle = OpenProcess(access, FALSE, static_cast<DWORD>(reinterpret_cast<size_t>(id)));
 
 	if (handle == nullptr || handle == INVALID_HANDLE_VALUE)
 	{
