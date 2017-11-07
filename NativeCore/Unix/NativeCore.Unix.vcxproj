@@ -55,25 +55,25 @@
     <TargetName>NativeCore</TargetName>
     <TargetExt>.so</TargetExt>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
-    <IntDir>$(SolutionDir)\obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>NativeCore</TargetName>
     <TargetExt>.so</TargetExt>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
-    <IntDir>$(SolutionDir)\obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <TargetName>NativeCore</TargetName>
     <TargetExt>.so</TargetExt>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
-    <IntDir>$(SolutionDir)\obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <TargetName>NativeCore</TargetName>
     <TargetExt>.so</TargetExt>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
-    <IntDir>$(SolutionDir)\obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\beaengine\src\BeaEngine.c">
