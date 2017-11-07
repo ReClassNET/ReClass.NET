@@ -21,7 +21,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\x86\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Debug\x86\</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)\obj\$(Configuration)\x86\$(MSBuildProjectName)\</IntermediateOutputPath>
     <DefineConstants>TRACE;DEBUG;RECLASSNET32</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -74,7 +75,8 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\x86\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Release\x86\</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)\obj\$(Configuration)\x86\$(MSBuildProjectName)\</IntermediateOutputPath>
     <DefineConstants>TRACE;RECLASSNET32;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -84,7 +86,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\x64\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Debug\x64\</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)\obj\$(Configuration)\x64\$(MSBuildProjectName)\</IntermediateOutputPath>
     <DefineConstants>TRACE;DEBUG;RECLASSNET64</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -94,7 +97,8 @@
     <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\x64\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Release\x64\</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)\obj\$(Configuration)\x64\$(MSBuildProjectName)\</IntermediateOutputPath>
     <DefineConstants>TRACE;RECLASSNET64;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
