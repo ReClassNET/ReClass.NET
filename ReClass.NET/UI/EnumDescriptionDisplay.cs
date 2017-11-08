@@ -8,7 +8,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {
-	internal class EnumDescriptionDisplay<TEnum> where TEnum : struct
+	public class EnumDescriptionDisplay<TEnum> where TEnum : struct
 	{
 		public TEnum Value { get; internal set; }
 		public string Description { get; internal set; }
