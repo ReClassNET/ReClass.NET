@@ -294,6 +294,9 @@
     <Compile Include="UI\DualValueBox.Designer.cs">
       <DependentUpon>DualValueBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\EnumComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\EnumDescriptionDisplay.cs" />
     <Compile Include="UI\HotkeyBox.cs">
       <SubType>UserControl</SubType>

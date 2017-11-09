@@ -20,14 +20,16 @@ namespace ReClassNET.Forms
 {
 	public partial class ScannerForm : IconForm
 	{
+		// The designer can't handle generic controls...
+		private class ScanCompareTypeComboBox : EnumComboBox<ScanCompareType> { }
+		private class ScanValueTypeComboBox : EnumComboBox<ScanValueType> { }
+
 		private const int MaxVisibleResults = 10000;
 
 		private bool isFirstScan;
 
 		private Scanner scanner;
 
-		private ScanCompareType SelectedCompareType => ((EnumDescriptionDisplay<ScanCompareType>)compareTypeComboBox.SelectedItem)?.Value ?? default(ScanCompareType);
-		private ScanValueType SelectedValueType => ((EnumDescriptionDisplay<ScanValueType>)valueTypeComboBox.SelectedItem)?.Value ?? default(ScanValueType);
 
 		private string addressFilePath;
 
@@ -37,8 +39,6 @@ namespace ReClassNET.Forms
 
 			toolStripPanel.Renderer = new CustomToolStripProfessionalRenderer(true, false);
 			menuToolStrip.Renderer = new CustomToolStripProfessionalRenderer(false, false);
-
-			valueTypeComboBox.DataSource = EnumDescriptionDisplay<ScanValueType>.Create();
 
 			SetGuiFromSettings(ScanSettings.Default);
 
@@ -420,7 +420,7 @@ namespace ReClassNET.Forms
 			var enableValueBox = true;
 			var enableDualInput = false;
 
-			switch (SelectedCompareType)
+			switch (compareTypeComboBox.SelectedValue)
 			{
 				case ScanCompareType.Unknown:
 					enableHexCheckBox = false;
@@ -432,7 +432,7 @@ namespace ReClassNET.Forms
 					break;
 			}
 
-			switch (SelectedValueType)
+			switch (valueTypeComboBox.SelectedValue)
 			{
 				case ScanValueType.Float:
 				case ScanValueType.Double:
@@ -455,7 +455,7 @@ namespace ReClassNET.Forms
 		{
 			SetValidCompareTypes();
 
-			var valueType = SelectedValueType;
+			var valueType = valueTypeComboBox.SelectedValue;
 
 			switch (valueType)
 			{
@@ -498,23 +498,25 @@ namespace ReClassNET.Forms
 		/// </summary>
 		private void SetValidCompareTypes()
 		{
-			var compareType = SelectedCompareType;
-			var valueType = SelectedValueType;
+			var compareType = compareTypeComboBox.SelectedValue;
+			var valueType = valueTypeComboBox.SelectedValue;
 			if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)
 			{
-				compareTypeComboBox.DataSource = EnumDescriptionDisplay<ScanCompareType>.CreateExact(ScanCompareType.Equal);
+				compareTypeComboBox.SetAvailableValues(ScanCompareType.Equal);
+			}
+			else if (isFirstScan)
+			{
+				compareTypeComboBox.SetAvailableValuesExclude(
+					ScanCompareType.Changed, ScanCompareType.NotChanged, ScanCompareType.Decreased,
+					ScanCompareType.DecreasedOrEqual, ScanCompareType.Increased, ScanCompareType.IncreasedOrEqual
+				);
 			}
 			else
 			{
-				compareTypeComboBox.DataSource = isFirstScan
-					? EnumDescriptionDisplay<ScanCompareType>.CreateExclude(
-						ScanCompareType.Changed, ScanCompareType.NotChanged, ScanCompareType.Decreased, ScanCompareType.DecreasedOrEqual,
-						ScanCompareType.Increased, ScanCompareType.IncreasedOrEqual
-					)
-					: EnumDescriptionDisplay<ScanCompareType>.CreateExclude(ScanCompareType.Unknown);
+				compareTypeComboBox.SetAvailableValuesExclude(ScanCompareType.Unknown);
 			}
 
-			compareTypeComboBox.SelectedItem = compareTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanCompareType>>().PredicateOrFirst(e => e.Value == compareType);
+			compareTypeComboBox.SelectedValue = compareType;
 		}
 
 		/// <summary>
@@ -627,7 +629,7 @@ namespace ReClassNET.Forms
 
 			var settings = new ScanSettings
 			{
-				ValueType = SelectedValueType
+				ValueType = valueTypeComboBox.SelectedValue
 			};
 
 			long.TryParse(startAddressTextBox.Text, NumberStyles.HexNumber, null, out var startAddressVar);
@@ -671,7 +673,7 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(settings != null);
 
-			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().PredicateOrFirst(e => e.Value == settings.ValueType);
+			valueTypeComboBox.SelectedValue = settings.ValueType;
 
 			startAddressTextBox.Text = settings.StartAddress.ToString(Constants.StringHexFormat);
 			stopAddressTextBox.Text = settings.StopAddress.ToString(Constants.StringHexFormat);
@@ -706,7 +708,7 @@ namespace ReClassNET.Forms
 			Contract.Requires(settings != null);
 			Contract.Ensures(Contract.Result<IScanComparer>() != null);
 
-			var compareType = SelectedCompareType;
+			var compareType = compareTypeComboBox.SelectedValue;
 			var checkBothInputFields = compareType == ScanCompareType.Between || compareType == ScanCompareType.BetweenOrEqual;
 
 			if (settings.ValueType == ScanValueType.Byte || settings.ValueType == ScanValueType.Short || settings.ValueType == ScanValueType.Integer || settings.ValueType == ScanValueType.Long)

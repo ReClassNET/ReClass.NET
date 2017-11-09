@@ -1,0 +1,110 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Windows.Forms;
+using ReClassNET.Util;
+
+namespace ReClassNET.UI
+{
+	public class EnumComboBox<TEnum> : ComboBox where TEnum : struct
+	{
+		#region Properties
+
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public new ObjectCollection Items => new ObjectCollection(this);
+
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public new AutoCompleteMode AutoCompleteMode { get => AutoCompleteMode.None; set { } }
+
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public new ComboBoxStyle DropDownStyle { get => ComboBoxStyle.DropDownList; set { } }
+
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public new string DisplayMember { get; set; }
+
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public new string ValueMember { get; set; }
+
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public new object DataSource { get; set; }
+
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public new TEnum SelectedValue
+		{
+			get => ((EnumDescriptionDisplay<TEnum>)base.SelectedItem)?.Value ?? default(TEnum);
+			set => base.SelectedItem = base.Items.Cast<EnumDescriptionDisplay<TEnum>>().PredicateOrFirst(e => e.Value.Equals(value));
+		}
+
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public new TEnum SelectedItem
+		{
+			get => SelectedValue;
+			set => SelectedValue = value;
+		}
+
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public new string SelectedText
+		{
+			get => ((EnumDescriptionDisplay<TEnum>)base.SelectedItem).Description;
+			set => base.SelectedItem = base.Items.Cast<EnumDescriptionDisplay<TEnum>>().PredicateOrFirst(e => e.Description.Equals(value));
+		}
+
+		#endregion
+
+		public EnumComboBox()
+		{
+			base.AutoCompleteMode = AutoCompleteMode.None;
+			base.DropDownStyle = ComboBoxStyle.DropDownList;
+			base.DisplayMember = nameof(EnumDescriptionDisplay<TEnum>.Description);
+			base.ValueMember = nameof(EnumDescriptionDisplay<TEnum>.Value);
+
+			SetValues(EnumDescriptionDisplay<TEnum>.Create());
+			if (base.Items.Count != 0)
+			{
+				SelectedIndex = 0;
+			}
+		}
+
+		public void SetAvailableValues(TEnum item1, params TEnum[] items)
+		{
+			SetAvailableValues(item1.Yield().Concat(items));
+		}
+
+		public void SetAvailableValues(IEnumerable<TEnum> values)
+		{
+			Contract.Requires(values != null);
+
+			SetValues(EnumDescriptionDisplay<TEnum>.CreateExact(values));
+		}
+
+		public void SetAvailableValuesExclude(TEnum item1, params TEnum[] items)
+		{
+			SetAvailableValuesExclude(item1.Yield().Concat(items));
+		}
+
+		public void SetAvailableValuesExclude(IEnumerable<TEnum> values)
+		{
+			Contract.Requires(values != null);
+
+			SetValues(EnumDescriptionDisplay<TEnum>.CreateExclude(values));
+		}
+
+		private void SetValues(List<EnumDescriptionDisplay<TEnum>> values)
+		{
+			Contract.Requires(values != null);
+
+			base.Items.Clear();
+			base.Items.AddRange(values.ToArray());
+		}
+	}
+}

@@ -31,9 +31,9 @@
 			this.components = new System.ComponentModel.Container();
 			this.bannerBox = new ReClassNET.UI.BannerBox();
 			this.filterGroupBox = new System.Windows.Forms.GroupBox();
-			this.valueTypeComboBox = new System.Windows.Forms.ComboBox();
+			this.valueTypeComboBox = new ScanValueTypeComboBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.compareTypeComboBox = new System.Windows.Forms.ComboBox();
+			this.compareTypeComboBox = new ScanCompareTypeComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.isHexCheckBox = new System.Windows.Forms.CheckBox();
 			this.dualValueBox = new ReClassNET.UI.DualValueBox();
@@ -130,14 +130,11 @@
 			// 
 			// valueTypeComboBox
 			// 
-			this.valueTypeComboBox.DisplayMember = "Description";
-			this.valueTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.valueTypeComboBox.FormattingEnabled = true;
 			this.valueTypeComboBox.Location = new System.Drawing.Point(72, 74);
 			this.valueTypeComboBox.Name = "valueTypeComboBox";
 			this.valueTypeComboBox.Size = new System.Drawing.Size(224, 21);
 			this.valueTypeComboBox.TabIndex = 8;
-			this.valueTypeComboBox.ValueMember = "Value";
 			this.valueTypeComboBox.SelectionChangeCommitted += new System.EventHandler(this.valueTypeComboBox_SelectionChangeCommitted);
 			// 
 			// label3
@@ -151,14 +148,11 @@
 			// 
 			// compareTypeComboBox
 			// 
-			this.compareTypeComboBox.DisplayMember = "Description";
-			this.compareTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.compareTypeComboBox.FormattingEnabled = true;
 			this.compareTypeComboBox.Location = new System.Drawing.Point(72, 50);
 			this.compareTypeComboBox.Name = "compareTypeComboBox";
 			this.compareTypeComboBox.Size = new System.Drawing.Size(224, 21);
 			this.compareTypeComboBox.TabIndex = 5;
-			this.compareTypeComboBox.ValueMember = "Value";
 			this.compareTypeComboBox.SelectionChangeCommitted += new System.EventHandler(this.scanTypeComboBox_SelectionChangeCommitted);
 			// 
 			// label1
@@ -766,9 +760,9 @@
 		private System.Windows.Forms.GroupBox filterGroupBox;
 		private UI.DualValueBox dualValueBox;
 		private System.Windows.Forms.CheckBox isHexCheckBox;
-		private System.Windows.Forms.ComboBox compareTypeComboBox;
+		private ScanCompareTypeComboBox compareTypeComboBox;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.ComboBox valueTypeComboBox;
+		private ScanValueTypeComboBox valueTypeComboBox;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.GroupBox scanOptionsGroupBox;
 		private System.Windows.Forms.TextBox fastScanAlignmentTextBox;
