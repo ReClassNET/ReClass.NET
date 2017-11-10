@@ -112,7 +112,9 @@ namespace ReClassNET.MemoryScanner
 
 			return process.Sections
 				.Where(s => !s.Protection.HasFlag(SectionProtection.Guard))
-				.Where(s => s.Start.InRange(Settings.StartAddress, Settings.StopAddress))
+				.Where(s => s.Start.InRange(Settings.StartAddress, Settings.StopAddress)
+							|| Settings.StartAddress.InRange(s.Start, s.End)
+							|| Settings.StopAddress.InRange(s.Start, s.End))
 				.Where(s =>
 				{
 					switch (s.Type)
