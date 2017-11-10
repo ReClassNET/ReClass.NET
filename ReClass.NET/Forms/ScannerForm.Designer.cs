@@ -130,7 +130,6 @@
 			// 
 			// valueTypeComboBox
 			// 
-			this.valueTypeComboBox.FormattingEnabled = true;
 			this.valueTypeComboBox.Location = new System.Drawing.Point(72, 74);
 			this.valueTypeComboBox.Name = "valueTypeComboBox";
 			this.valueTypeComboBox.Size = new System.Drawing.Size(224, 21);
@@ -148,7 +147,6 @@
 			// 
 			// compareTypeComboBox
 			// 
-			this.compareTypeComboBox.FormattingEnabled = true;
 			this.compareTypeComboBox.Location = new System.Drawing.Point(72, 50);
 			this.compareTypeComboBox.Name = "compareTypeComboBox";
 			this.compareTypeComboBox.Size = new System.Drawing.Size(224, 21);

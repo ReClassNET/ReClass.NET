@@ -100,7 +100,6 @@
 			// 
 			this.valueTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.valueTypeComboBox.FormattingEnabled = true;
 			this.valueTypeComboBox.Location = new System.Drawing.Point(66, 149);
 			this.valueTypeComboBox.Name = "valueTypeComboBox";
 			this.valueTypeComboBox.Size = new System.Drawing.Size(216, 21);

@@ -29,6 +29,10 @@ namespace ReClassNET.UI
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
+		public new bool FormattingEnabled { get; set; }
+
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public new string ValueMember { get; set; }
 
 		[Browsable(false)]
@@ -65,6 +69,7 @@ namespace ReClassNET.UI
 		{
 			base.AutoCompleteMode = AutoCompleteMode.None;
 			base.DropDownStyle = ComboBoxStyle.DropDownList;
+			base.FormattingEnabled = false;
 			base.DisplayMember = nameof(EnumDescriptionDisplay<TEnum>.Description);
 			base.ValueMember = nameof(EnumDescriptionDisplay<TEnum>.Value);
 
