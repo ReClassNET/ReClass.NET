@@ -21,8 +21,8 @@ namespace ReClassNET.Forms
 	public partial class ScannerForm : IconForm
 	{
 		// The designer can't handle generic controls...
-		public class ScanCompareTypeComboBox : EnumComboBox<ScanCompareType> { }
-		public class ScanValueTypeComboBox : EnumComboBox<ScanValueType> { }
+		internal class ScanCompareTypeComboBox : EnumComboBox<ScanCompareType> { }
+		internal class ScanValueTypeComboBox : EnumComboBox<ScanValueType> { }
 
 		private const int MaxVisibleResults = 10000;
 
