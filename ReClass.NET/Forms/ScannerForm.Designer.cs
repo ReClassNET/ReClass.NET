@@ -31,9 +31,9 @@
 			this.components = new System.ComponentModel.Container();
 			this.bannerBox = new ReClassNET.UI.BannerBox();
 			this.filterGroupBox = new System.Windows.Forms.GroupBox();
-			this.valueTypeComboBox = new ScanValueTypeComboBox();
+			this.valueTypeComboBox = new ReClassNET.Forms.ScannerForm.ScanValueTypeComboBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.compareTypeComboBox = new ScanCompareTypeComboBox();
+			this.compareTypeComboBox = new ReClassNET.Forms.ScannerForm.ScanCompareTypeComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.isHexCheckBox = new System.Windows.Forms.CheckBox();
 			this.dualValueBox = new ReClassNET.UI.DualValueBox();
@@ -515,6 +515,7 @@
             this.addressToolStripMenuItem,
             this.valueTypeToolStripMenuItem,
             this.valueToolStripMenuItem});
+			this.changeToolStripMenuItem.Enabled = false;
 			this.changeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Textfield_Rename;
 			this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
 			this.changeToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
@@ -523,25 +524,25 @@
 			// descriptionToolStripMenuItem
 			// 
 			this.descriptionToolStripMenuItem.Name = "descriptionToolStripMenuItem";
-			this.descriptionToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.descriptionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.descriptionToolStripMenuItem.Text = "Description";
 			// 
 			// addressToolStripMenuItem
 			// 
 			this.addressToolStripMenuItem.Name = "addressToolStripMenuItem";
-			this.addressToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.addressToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.addressToolStripMenuItem.Text = "Address";
 			// 
 			// valueTypeToolStripMenuItem
 			// 
 			this.valueTypeToolStripMenuItem.Name = "valueTypeToolStripMenuItem";
-			this.valueTypeToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.valueTypeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.valueTypeToolStripMenuItem.Text = "Value Type";
 			// 
 			// valueToolStripMenuItem
 			// 
 			this.valueToolStripMenuItem.Name = "valueToolStripMenuItem";
-			this.valueToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.valueToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.valueToolStripMenuItem.Text = "Value";
 			// 
 			// toolStripSeparator2
