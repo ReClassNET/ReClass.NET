@@ -13,34 +13,42 @@ namespace ReClassNET.UI
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new ObjectCollection Items => new ObjectCollection(this);
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new AutoCompleteMode AutoCompleteMode { get => AutoCompleteMode.None; set { } }
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new ComboBoxStyle DropDownStyle { get => ComboBoxStyle.DropDownList; set { } }
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new string DisplayMember { get; set; }
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new bool FormattingEnabled { get; set; }
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new string ValueMember { get; set; }
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new object DataSource { get; set; }
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new TEnum SelectedValue
 		{
 			get => ((EnumDescriptionDisplay<TEnum>)base.SelectedItem)?.Value ?? default(TEnum);
@@ -49,6 +57,7 @@ namespace ReClassNET.UI
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new TEnum SelectedItem
 		{
 			get => SelectedValue;
@@ -57,6 +66,7 @@ namespace ReClassNET.UI
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new string SelectedText
 		{
 			get => ((EnumDescriptionDisplay<TEnum>)base.SelectedItem).Description;
