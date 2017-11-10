@@ -12,6 +12,8 @@ namespace ReClassNET.Forms
 {
 	public partial class InputCorrelatorForm : IconForm
 	{
+		private class ScanValueTypeComboBox : EnumComboBox<ScanValueType> { }
+
 		private static readonly TimeSpan refineInterval = TimeSpan.FromMilliseconds(400);
 
 		private readonly ScannerForm scannerForm;
@@ -29,7 +31,7 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
-			valueTypeComboBox.DataSource = EnumDescriptionDisplay<ScanValueType>.CreateExact(
+			valueTypeComboBox.SetAvailableValues(
 				ScanValueType.Byte,
 				ScanValueType.Short,
 				ScanValueType.Integer,
@@ -37,7 +39,7 @@ namespace ReClassNET.Forms
 				ScanValueType.Float,
 				ScanValueType.Double
 			);
-			valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().FirstOrDefault(e => e.Value == ScanValueType.Integer);
+			valueTypeComboBox.SelectedValue = ScanValueType.Integer;
 
 			input = new KeyboardInput();
 
@@ -111,7 +113,7 @@ namespace ReClassNET.Forms
 					Program.RemoteProcess,
 					input,
 					hotkeyListBox.Items.Cast<KeyboardHotkey>(),
-					((EnumDescriptionDisplay<ScanValueType>)valueTypeComboBox.SelectedItem).Value
+					valueTypeComboBox.SelectedValue
 				);
 
 				settingsGroupBox.Enabled = false;

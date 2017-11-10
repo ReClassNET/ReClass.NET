@@ -34,7 +34,7 @@
 			this.settingsGroupBox = new System.Windows.Forms.GroupBox();
 			this.removeButton = new System.Windows.Forms.Button();
 			this.addButton = new System.Windows.Forms.Button();
-			this.valueTypeComboBox = new System.Windows.Forms.ComboBox();
+			this.valueTypeComboBox = new ScanValueTypeComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.hotkeyListBox = new System.Windows.Forms.ListBox();
 			this.hotkeyBox = new ReClassNET.UI.HotkeyBox();
@@ -100,8 +100,6 @@
 			// 
 			this.valueTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.valueTypeComboBox.DisplayMember = "Description";
-			this.valueTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.valueTypeComboBox.FormattingEnabled = true;
 			this.valueTypeComboBox.Location = new System.Drawing.Point(66, 149);
 			this.valueTypeComboBox.Name = "valueTypeComboBox";
@@ -188,7 +186,7 @@
 		private System.Windows.Forms.ListBox hotkeyListBox;
 		private System.Windows.Forms.Button removeButton;
 		private System.Windows.Forms.Button addButton;
-		private System.Windows.Forms.ComboBox valueTypeComboBox;
+		private ScanValueTypeComboBox valueTypeComboBox;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Button startStopButton;
 		private System.Windows.Forms.Label infoLabel;
