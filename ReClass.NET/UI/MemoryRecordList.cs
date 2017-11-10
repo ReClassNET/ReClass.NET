@@ -120,6 +120,10 @@ namespace ReClassNET.UI
 				if (e.RowIndex != -1)
 				{
 					var row = resultDataGridView.Rows[e.RowIndex];
+					if (!row.Selected && !(ModifierKeys == Keys.Shift || ModifierKeys == Keys.Control))
+					{
+						resultDataGridView.ClearSelection();
+					}
 					row.Selected = true;
 				}
 			}
