@@ -328,7 +328,10 @@ namespace ReClassNET.Forms
 
 		private void removeSelectedRecordsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			addressListMemoryRecordList.Records.Remove(addressListMemoryRecordList.SelectedRecord);
+			foreach (var record in addressListMemoryRecordList.SelectedRecords)
+			{
+				addressListMemoryRecordList.Records.Remove(record);
+			}
 		}
 
 		private void setCurrentClassAddressToolStripMenuItem_Click(object sender, EventArgs e)
