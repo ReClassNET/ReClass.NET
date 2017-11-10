@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner.Comparer
 {
@@ -12,6 +13,15 @@ namespace ReClassNET.MemoryScanner.Comparer
 		public ByteMemoryComparer(ScanCompareType compareType, byte value1, byte value2)
 		{
 			CompareType = compareType;
+
+			if (compareType == ScanCompareType.Between || compareType == ScanCompareType.BetweenOrEqual)
+			{
+				if (value1 > value2)
+				{
+					Utils.Swap(ref value1, ref value2);
+				}
+			}
+
 			Value1 = value1;
 			Value2 = value2;
 		}

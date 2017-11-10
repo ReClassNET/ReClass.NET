@@ -46,6 +46,13 @@ namespace ReClassNET.Util
 			return item2;
 		}
 
+		public static void Swap<T>(ref T lhs, ref T rhs)
+		{
+			var temp = lhs;
+			lhs = rhs;
+			rhs = temp;
+		}
+
 		public static Size AggregateNodeSizes(Size baseSize, Size newSize)
 		{
 			return new Size(Math.Max(baseSize.Width, newSize.Width), baseSize.Height + newSize.Height);

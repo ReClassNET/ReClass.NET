@@ -19,6 +19,15 @@ namespace ReClassNET.MemoryScanner.Comparer
 		public FloatMemoryComparer(ScanCompareType compareType, ScanRoundMode roundType, int significantDigits, float value1, float value2)
 		{
 			CompareType = compareType;
+
+			if (compareType == ScanCompareType.Between || compareType == ScanCompareType.BetweenOrEqual)
+			{
+				if (value1 > value2)
+				{
+					Utils.Swap(ref value1, ref value2);
+				}
+			}
+
 			RoundType = roundType;
 			this.significantDigits = Math.Max(significantDigits, 1);
 			Value1 = (float)Math.Round(value1, this.significantDigits, MidpointRounding.AwayFromZero);
