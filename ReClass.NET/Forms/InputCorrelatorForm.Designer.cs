@@ -34,7 +34,7 @@
 			this.settingsGroupBox = new System.Windows.Forms.GroupBox();
 			this.removeButton = new System.Windows.Forms.Button();
 			this.addButton = new System.Windows.Forms.Button();
-			this.valueTypeComboBox = new ScanValueTypeComboBox();
+			this.valueTypeComboBox = new ScannerForm.ScanValueTypeComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.hotkeyListBox = new System.Windows.Forms.ListBox();
 			this.hotkeyBox = new ReClassNET.UI.HotkeyBox();
@@ -186,7 +186,7 @@
 		private System.Windows.Forms.ListBox hotkeyListBox;
 		private System.Windows.Forms.Button removeButton;
 		private System.Windows.Forms.Button addButton;
-		private ScanValueTypeComboBox valueTypeComboBox;
+		private ScannerForm.ScanValueTypeComboBox valueTypeComboBox;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Button startStopButton;
 		private System.Windows.Forms.Label infoLabel;

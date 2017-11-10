@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.Input;
 using ReClassNET.MemoryScanner;
-using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
 	public partial class InputCorrelatorForm : IconForm
 	{
-		private class ScanValueTypeComboBox : EnumComboBox<ScanValueType> { }
-
 		private static readonly TimeSpan refineInterval = TimeSpan.FromMilliseconds(400);
 
 		private readonly ScannerForm scannerForm;
