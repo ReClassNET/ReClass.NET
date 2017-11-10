@@ -50,6 +50,8 @@ namespace ReClassNET.UI
 			get => classNode;
 			set
 			{
+				editBox.Visible = false;
+
 				ClearSelection();
 
 				OnSelectionChanged();
