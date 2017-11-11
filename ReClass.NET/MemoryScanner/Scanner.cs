@@ -211,10 +211,22 @@ namespace ReClassNET.MemoryScanner
 					() => new ScannerContext(Settings, comparer, initialBufferSize), // Create a new context for every worker (thread).
 					(s, state, _, context) =>
 					{
+						var start = s.Start;
 						var size = s.Size.ToInt32();
+
+						if (Settings.StartAddress.InRange(s.Start, s.End))
+						{
+							start = Settings.StartAddress;
+							size = size - Settings.StartAddress.Sub(s.Start).ToInt32();
+						}
+						if (Settings.StopAddress.InRange(s.Start, s.End))
+						{
+							size = size - s.End.Sub(Settings.StopAddress).ToInt32();
+						}
+
 						context.EnsureBufferSize(size);
 						var buffer = context.Buffer;
-						if (process.ReadRemoteMemoryIntoBuffer(s.Start, ref buffer, 0, size)) // Fill the buffer.
+						if (process.ReadRemoteMemoryIntoBuffer(start, ref buffer, 0, size)) // Fill the buffer.
 						{
 							var results = context.Worker.Search(buffer, size) // Search for results.
 								.OrderBy(r => r.Address, IntPtrComparer.Instance)
