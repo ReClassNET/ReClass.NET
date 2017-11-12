@@ -324,6 +324,7 @@
     <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
     <Compile Include="Util\CircularBuffer.cs" />
     <Compile Include="Util\CommandLineArgs.cs" />
+    <Compile Include="Util\CustomConfig.cs" />
     <Compile Include="Util\Extension.BinaryReaderWriter.cs" />
     <Compile Include="Util\Extension.DataGridView.cs" />
     <Compile Include="Util\Extension.Dictionary.cs" />

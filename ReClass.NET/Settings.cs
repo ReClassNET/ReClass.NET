@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using ReClassNET.Util;
 
 namespace ReClassNET
 {
@@ -108,7 +109,7 @@ namespace ReClassNET
 
 		public string TypeFunctionPtr { get; set; } = "void*";
 
-		public Dictionary<string, string> CustomData { get; } = new Dictionary<string, string>();
+		public CustomConfig CustomData { get; } = new CustomConfig();
 
 		public Settings Clone() => MemberwiseClone() as Settings;
 	}

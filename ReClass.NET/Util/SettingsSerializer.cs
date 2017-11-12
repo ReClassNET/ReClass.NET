@@ -101,10 +101,7 @@ namespace ReClassNET.Util
 					var customData = root?.Element(XmlCustomDataElement);
 					if (customData != null)
 					{
-						foreach (var kv in XElementSerializer.ToDictionary(customData))
-						{
-							settings.CustomData[kv.Key] = kv.Value;
-						}
+						settings.CustomData.Deserialize(customData);
 					}
 				}
 			}
@@ -115,10 +112,6 @@ namespace ReClassNET.Util
 
 			return settings;
 		}
-
-		
-
-		
 
 		#endregion
 
@@ -202,7 +195,7 @@ namespace ReClassNET.Util
 							XElementSerializer.ToXml(nameof(settings.TypeUTF32TextPtr), settings.TypeUTF32TextPtr),
 							XElementSerializer.ToXml(nameof(settings.TypeFunctionPtr), settings.TypeFunctionPtr)
 						),
-						XElementSerializer.ToXml(XmlCustomDataElement, settings.CustomData)
+						settings.CustomData.Serialize(XmlCustomDataElement)
 					)
 				);
 
