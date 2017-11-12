@@ -233,7 +233,7 @@ namespace ReClassNET.MemoryScanner
 								.ToList();
 							if (results.Count > 0)
 							{
-								var block = CreateResultBlock(results, s.Start, comparer.ValueSize);
+								var block = CreateResultBlock(results, start, comparer.ValueSize);
 								store.AddBlock(block); // Store the result block.
 							}
 						}
