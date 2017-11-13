@@ -16,7 +16,7 @@ namespace ReClassNET.Nodes
 
 			address = value.IntPtr;
 
-			return memory.Process.GetNamedAddress(value.IntPtr) != null;
+			return memory.Process?.GetNamedAddress(value.IntPtr) != null;
 		}
 
 		/// <summary>Gets informations about this node to show in a tool tip.</summary>
