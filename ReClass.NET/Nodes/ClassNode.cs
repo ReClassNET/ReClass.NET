@@ -190,14 +190,13 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		public void UpdateAddress(MemoryBuffer memory)
+		public void UpdateAddress(RemoteProcess process)
 		{
-			Contract.Requires(memory != null);
-			Contract.Requires(memory.Process != null);
+			Contract.Requires(process != null);
 
 			try
 			{
-				Offset = memory.Process.ParseAddress(AddressFormula);
+				Offset = process.ParseAddress(AddressFormula);
 			}
 			catch (ParseException)
 			{

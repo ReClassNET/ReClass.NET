@@ -59,9 +59,9 @@ namespace ReClassNET.UI
 				classNode = value;
 
 				VerticalScroll.Value = 0;
-				if (classNode != null && Memory != null)
+				if (classNode != null && Memory != null && Memory.Process != null)
 				{
-					classNode.UpdateAddress(Memory);
+					classNode.UpdateAddress(Memory.Process);
 				}
 				Invalidate();
 			}
@@ -160,7 +160,11 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			ClassNode.UpdateAddress(Memory);
+			if (Memory.Process != null)
+			{
+				ClassNode.UpdateAddress(Memory.Process);
+			}
+
 			if (memoryPreviewPopUp.Visible)
 			{
 				memoryPreviewPopUp.UpdateMemory();
