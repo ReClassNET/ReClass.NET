@@ -93,7 +93,14 @@ namespace ReClassNET.Memory
 
 		public void Update(IntPtr address, bool setHistory)
 		{
-			Contract.Requires(Process != null);
+			if (Process == null)
+			{
+				data.FillWithZero();
+
+				hasHistory = false;
+
+				return;
+			}
 
 			if (setHistory)
 			{
