@@ -13,7 +13,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET
 {
-	static class Program
+	public static class Program
 	{
 		public static CommandLineArgs CommandLineArgs { get; private set; }
 
