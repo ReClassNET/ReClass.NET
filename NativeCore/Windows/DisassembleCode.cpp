@@ -14,7 +14,7 @@ bool __stdcall DisassembleCode(RC_Pointer address, RC_Size length, RC_Pointer vi
 	disasm.EIP = reinterpret_cast<UIntPtr>(address);
 	disasm.SecurityBlock = static_cast<UInt32>(length);
 
-	auto disamLength = Disasm(&disasm);
+	const auto disamLength = Disasm(&disasm);
 	if (disamLength == OUT_OF_BLOCK || disamLength == UNKNOWN_OPCODE)
 	{
 		return false;
