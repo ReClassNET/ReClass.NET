@@ -75,9 +75,11 @@ namespace ReClassNET.Nodes
 
 				if (view.Settings.ShowCommentPluginInfo)
 				{
+					var nodeAddress = view.Address.Add(Offset);
+
 					foreach (var reader in NodeInfoReader)
 					{
-						var info = reader.ReadNodeInfo(this, ivalue, view.Memory);
+						var info = reader.ReadNodeInfo(this, nodeAddress, ivalue, view.Memory);
 						if (info != null)
 						{
 							x = AddText(view, x, y, view.Settings.PluginColor, HotSpot.ReadOnlyId, info) + view.Font.Width;
