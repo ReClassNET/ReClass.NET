@@ -16,6 +16,9 @@ namespace ReClassNET.MemoryScanner
 		private readonly KeyboardInput input;
 		private readonly List<KeyboardHotkey> hotkeys;
 
+		/// <summary>
+		/// Gets the count of executed scans.
+		/// </summary>
 		public int ScanCount { get; private set; }
 
 		public InputCorrelatedScanner(RemoteProcess process, KeyboardInput input, IEnumerable<KeyboardHotkey> hotkeys, ScanValueType valueType)
@@ -30,6 +33,11 @@ namespace ReClassNET.MemoryScanner
 			this.hotkeys = hotkeys.ToList();
 		}
 
+		/// <summary>
+		/// Creates <see cref="ScanSettings"/> from the given <see cref="ScanValueType"/>.
+		/// </summary>
+		/// <param name="valueType">The <see cref="ScanValueType"/> to use.</param>
+		/// <returns>The created <see cref="ScanSettings"/>.</returns>
 		private static ScanSettings CreateScanSettings(ScanValueType valueType)
 		{
 			Contract.Ensures(Contract.Result<ScanSettings>() != null);
@@ -39,6 +47,11 @@ namespace ReClassNET.MemoryScanner
 			return settings;
 		}
 
+		/// <summary>
+		/// Creates a <see cref="IScanComparer"/> for the given <see cref="ScanCompareType"/> and <see cref="ScanValueType"/>.
+		/// </summary>
+		/// <param name="compareType">The <see cref="ScanCompareType"/> to use.</param>
+		/// <returns>The created <see cref="IScanComparer"/>.</returns>
 		private IScanComparer CreateScanComparer(ScanCompareType compareType)
 		{
 			Contract.Ensures(Contract.Result<IScanComparer>() != null);
@@ -62,6 +75,10 @@ namespace ReClassNET.MemoryScanner
 			}
 		}
 
+		/// <summary>
+		/// Initializes the scanner. Needs to get called at first.
+		/// </summary>
+		/// <returns>A task that represents the asynchronous operation.</returns>
 		public Task Initialize()
 		{
 			return Search(CreateScanComparer(ScanCompareType.Unknown), CancellationToken.None, null);
@@ -69,19 +86,30 @@ namespace ReClassNET.MemoryScanner
 
 		private bool shouldHaveChangedSinceLastScan = false;
 
+		/// <summary>
+		/// Checks if the registered keys got pressed.
+		/// </summary>
 		public void CorrelateInput()
 		{
-			if (!shouldHaveChangedSinceLastScan)
+			if (shouldHaveChangedSinceLastScan)
 			{
-				var keys = input.GetPressedKeys().Select(k => k & Keys.KeyCode).Where(k => k != Keys.None).ToArray();
+				return;
+			}
 
-				if (keys.Length != 0 && hotkeys.Any(h => h.Matches(keys)))
-				{
-					shouldHaveChangedSinceLastScan = true;
-				}
+			var keys = input.GetPressedKeys().Select(k => k & Keys.KeyCode).Where(k => k != Keys.None).ToArray();
+
+			if (keys.Length != 0 && hotkeys.Any(h => h.Matches(keys)))
+			{
+				shouldHaveChangedSinceLastScan = true;
 			}
 		}
 
+		/// <summary>
+		/// Performs a new scan to refine the current scan result.
+		/// </summary>
+		/// <param name="ct">The <see cref="CancellationToken"/> to abort the scan.</param>
+		/// <param name="progress">Used to report the progress of the scan.</param>
+		/// <returns>A task that represents the asynchronous operation.</returns>
 		public async Task RefineResults(CancellationToken ct, IProgress<int> progress)
 		{
 			var compareType = shouldHaveChangedSinceLastScan ? ScanCompareType.Changed : ScanCompareType.NotChanged;
