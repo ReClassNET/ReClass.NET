@@ -29,7 +29,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -74,28 +74,28 @@
     <TargetName>$(ProjectName)</TargetName>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Dependencies\distorm\include;..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Dependencies\distorm\include;..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Dependencies\distorm\include;..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Dependencies\distorm\include;..\Dependencies\beaengine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -167,6 +167,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\beaengine\src\BeaEngine.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\decoder.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\distorm.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\instructions.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\insts.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\mnemonics.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\operands.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\prefix.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\textdefs.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\wstring.c" />
     <ClCompile Include="CloseRemoteProcess.cpp" />
     <ClCompile Include="ControlRemoteProcess.cpp" />
     <ClCompile Include="Debugger.cpp" />

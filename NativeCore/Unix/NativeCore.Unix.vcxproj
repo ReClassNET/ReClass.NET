@@ -76,16 +76,15 @@
     <IntDir>$(SolutionDir)obj\$(Configuration)\$(PlatformTarget)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="..\Dependencies\beaengine\src\BeaEngine.c">
-      <RemoteFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/home/kn4ck3r/projects/Dependencies/beaengine/src/BeaEngine.c</RemoteFile>
-      <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</RemoteCopyFile>
-      <RemoteFile Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">/home/kn4ck3r/projects/Dependencies/beaengine/src/BeaEngine.c</RemoteFile>
-      <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">false</RemoteCopyFile>
-      <RemoteFile Condition="'$(Configuration)|$(Platform)'=='Release|x86'">/home/kn4ck3r/projects/Dependencies/beaengine/src/BeaEngine.c</RemoteFile>
-      <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Release|x86'">false</RemoteCopyFile>
-      <RemoteFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/home/kn4ck3r/projects/Dependencies/beaengine/src/BeaEngine.c</RemoteFile>
-      <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</RemoteCopyFile>
-    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\decoder.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\distorm.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\instructions.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\insts.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\mnemonics.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\operands.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\prefix.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\textdefs.c" />
+    <ClCompile Include="..\Dependencies\distorm\src\wstring.c" />
     <ClCompile Include="CloseRemoteProcess.cpp" />
     <ClCompile Include="ControlRemoteProcess.cpp" />
     <ClCompile Include="Debugger.cpp" />
@@ -107,7 +106,7 @@
     <ClCompile>
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
-      <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Dependencies/distorm/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>RECLASSNET64</PreprocessorDefinitions>
       <AdditionalOptions>-m64 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -120,7 +119,7 @@
     <ClCompile>
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
-      <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Dependencies/distorm/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>RECLASSNET64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>-m64 %(AdditionalOptions)</AdditionalOptions>
       <DebugInformationFormat>None</DebugInformationFormat>
@@ -138,7 +137,7 @@
     <ClCompile>
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
-      <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Dependencies/distorm/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>RECLASSNET32</PreprocessorDefinitions>
     </ClCompile>
@@ -151,7 +150,7 @@
     <ClCompile>
       <PositionIndependentCode>true</PositionIndependentCode>
       <CppLanguageStandard>c++1y</CppLanguageStandard>
-      <AdditionalIncludeDirectories>../Dependencies/beaengine/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Dependencies/distorm/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>RECLASSNET32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>None</DebugInformationFormat>

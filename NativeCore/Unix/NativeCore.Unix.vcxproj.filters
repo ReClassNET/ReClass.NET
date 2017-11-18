@@ -7,6 +7,9 @@
     <Filter Include="Dependencies">
       <UniqueIdentifier>{eaf85ecc-eda1-49c6-a3be-14f2f8f4002c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dependencies\distorm">
+      <UniqueIdentifier>{5b0453e9-b429-4dfd-bcbb-f3756d073e60}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CloseRemoteProcess.cpp">
@@ -39,11 +42,35 @@
     <ClCompile Include="WriteRemoteMemory.cpp">
       <Filter>Functions</Filter>
     </ClCompile>
-    <ClCompile Include="..\Dependencies\beaengine\src\BeaEngine.c">
-      <Filter>Dependencies</Filter>
-    </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\decoder.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\distorm.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\instructions.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\insts.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\mnemonics.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\operands.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\prefix.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\textdefs.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\wstring.c">
+      <Filter>Dependencies\distorm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

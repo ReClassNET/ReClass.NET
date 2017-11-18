@@ -37,6 +37,33 @@
     <ClCompile Include="Input.cpp">
       <Filter>Functions</Filter>
     </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\decoder.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\distorm.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\instructions.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\insts.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\mnemonics.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\operands.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\prefix.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\textdefs.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\distorm\src\wstring.c">
+      <Filter>Dependencies\distorm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="exports.def" />
@@ -47,6 +74,9 @@
     </Filter>
     <Filter Include="Functions">
       <UniqueIdentifier>{b74771cf-fe41-431f-b0fe-91f421240d53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\distorm">
+      <UniqueIdentifier>{4b8b2ee0-6a06-4e69-bce3-ff446bfa6b82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
