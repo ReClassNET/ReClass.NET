@@ -166,7 +166,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Dependencies\beaengine\src\BeaEngine.c" />
     <ClCompile Include="..\Dependencies\distorm\src\decoder.c" />
     <ClCompile Include="..\Dependencies\distorm\src\distorm.c" />
     <ClCompile Include="..\Dependencies\distorm\src\instructions.c" />

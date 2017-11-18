@@ -31,9 +31,6 @@
     <ClCompile Include="Debugger.cpp">
       <Filter>Functions</Filter>
     </ClCompile>
-    <ClCompile Include="..\Dependencies\beaengine\src\BeaEngine.c">
-      <Filter>Dependencies</Filter>
-    </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Functions</Filter>
     </ClCompile>
