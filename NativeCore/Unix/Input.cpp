@@ -1,5 +1,5 @@
 #include "NativeCore.hpp"
-#include "../Keys.hpp"
+#include "../Shared/Keys.hpp"
 
 void ReleaseInput();
 

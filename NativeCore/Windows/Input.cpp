@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "NativeCore.hpp"
-#include "../Keys.hpp"
+#include "../Shared/Keys.hpp"
 
 Keys mapping[];
 
