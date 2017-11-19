@@ -21,7 +21,7 @@ bool __stdcall DisassembleCode(RC_Pointer address, RC_Size length, RC_Pointer vi
 	unsigned int instructionCount = 0;
 
 	const auto res = distorm_decompose(&info, decodedInstructions, 1, &instructionCount);
-	if (res == DECRES_INPUTERR || !(res == DECRES_SUCCESS || res == DECRES_MEMORYERR) || instructionCount == 1)
+	if (res == DECRES_INPUTERR || !(res == DECRES_SUCCESS || res == DECRES_MEMORYERR) || instructionCount != 1)
 	{
 		return false;
 	}
