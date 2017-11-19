@@ -103,13 +103,13 @@ static void distorm_format_size(_WString* str, const _DInst* di, int opNum)
 		switch (di->ops[opNum].size)
 		{
 			case 0: break; /* OT_MEM's unknown size. */
-			case 8: strcat_WSN(str, "BYTE "); break;
-			case 16: strcat_WSN(str, "WORD "); break;
-			case 32: strcat_WSN(str, "DWORD "); break;
-			case 64: strcat_WSN(str, "QWORD "); break;
-			case 80: strcat_WSN(str, "TBYTE "); break;
-			case 128: strcat_WSN(str, "DQWORD "); break;
-			case 256: strcat_WSN(str, "YWORD "); break;
+			case 8: strcat_WSN(str, "byte "); break;
+			case 16: strcat_WSN(str, "word "); break;
+			case 32: strcat_WSN(str, "dword "); break;
+			case 64: strcat_WSN(str, "qword "); break;
+			case 80: strcat_WSN(str, "tbyte "); break;
+			case 128: strcat_WSN(str, "dqword "); break;
+			case 256: strcat_WSN(str, "yword "); break;
 			default: /* Big oh uh if it gets here. */ break;
 		}
 	}
@@ -173,15 +173,15 @@ static void distorm_format_signed_disp(_WString* str, const _DInst* di, uint64_t
 	switch (FLAG_GET_PREFIX(di->flags))
 	{
 		case FLAG_LOCK:
-			strcpy_WSN(str, "LOCK ");
+			strcpy_WSN(str, "lock ");
 		break;
 		case FLAG_REP:
 			/* REP prefix for CMPS and SCAS is really a REPZ. */
-			if ((di->opcode == I_CMPS) || (di->opcode == I_SCAS)) strcpy_WSN(str, "REPZ ");
-			else strcpy_WSN(str, "REP ");
+			if ((di->opcode == I_CMPS) || (di->opcode == I_SCAS)) strcpy_WSN(str, "repz ");
+			else strcpy_WSN(str, "rep ");
 		break;
 		case FLAG_REPNZ:
-			strcpy_WSN(str, "REPNZ ");
+			strcpy_WSN(str, "repnz ");
 		break;
 		default:
 			/* Init mnemonic string, cause next touch is concatenation. */

@@ -14,271 +14,271 @@ This library is licensed under the BSD license. See the file COPYING.
 #ifndef DISTORM_LIGHT
 
 const unsigned char _MNEMONICS[] =
-"\x09" "UNDEFINED\0" "\x03" "ADD\0" "\x04" "PUSH\0" "\x03" "POP\0" "\x02" "OR\0" \
-"\x03" "ADC\0" "\x03" "SBB\0" "\x03" "AND\0" "\x03" "DAA\0" "\x03" "SUB\0" \
-"\x03" "DAS\0" "\x03" "XOR\0" "\x03" "AAA\0" "\x03" "CMP\0" "\x03" "AAS\0" \
-"\x03" "INC\0" "\x03" "DEC\0" "\x05" "PUSHA\0" "\x04" "POPA\0" "\x05" "BOUND\0" \
-"\x04" "ARPL\0" "\x04" "IMUL\0" "\x03" "INS\0" "\x04" "OUTS\0" "\x02" "JO\0" \
-"\x03" "JNO\0" "\x02" "JB\0" "\x03" "JAE\0" "\x02" "JZ\0" "\x03" "JNZ\0" "\x03" "JBE\0" \
-"\x02" "JA\0" "\x02" "JS\0" "\x03" "JNS\0" "\x02" "JP\0" "\x03" "JNP\0" "\x02" "JL\0" \
-"\x03" "JGE\0" "\x03" "JLE\0" "\x02" "JG\0" "\x04" "TEST\0" "\x04" "XCHG\0" \
-"\x03" "MOV\0" "\x03" "LEA\0" "\x03" "CBW\0" "\x04" "CWDE\0" "\x04" "CDQE\0" \
-"\x03" "CWD\0" "\x03" "CDQ\0" "\x03" "CQO\0" "\x08" "CALL FAR\0" "\x05" "PUSHF\0" \
-"\x04" "POPF\0" "\x04" "SAHF\0" "\x04" "LAHF\0" "\x04" "MOVS\0" "\x04" "CMPS\0" \
-"\x04" "STOS\0" "\x04" "LODS\0" "\x04" "SCAS\0" "\x03" "RET\0" "\x03" "LES\0" \
-"\x03" "LDS\0" "\x05" "ENTER\0" "\x05" "LEAVE\0" "\x04" "RETF\0" "\x05" "INT 3\0" \
-"\x03" "INT\0" "\x04" "INTO\0" "\x04" "IRET\0" "\x03" "AAM\0" "\x03" "AAD\0" \
-"\x04" "SALC\0" "\x04" "XLAT\0" "\x06" "LOOPNZ\0" "\x05" "LOOPZ\0" "\x04" "LOOP\0" \
-"\x04" "JCXZ\0" "\x05" "JECXZ\0" "\x05" "JRCXZ\0" "\x02" "IN\0" "\x03" "OUT\0" \
-"\x04" "CALL\0" "\x03" "JMP\0" "\x07" "JMP FAR\0" "\x04" "INT1\0" "\x03" "HLT\0" \
-"\x03" "CMC\0" "\x03" "CLC\0" "\x03" "STC\0" "\x03" "CLI\0" "\x03" "STI\0" \
-"\x03" "CLD\0" "\x03" "STD\0" "\x03" "LAR\0" "\x03" "LSL\0" "\x07" "SYSCALL\0" \
-"\x04" "CLTS\0" "\x06" "SYSRET\0" "\x04" "INVD\0" "\x06" "WBINVD\0" "\x03" "UD2\0" \
-"\x05" "FEMMS\0" "\x03" "NOP\0" "\x05" "WRMSR\0" "\x05" "RDTSC\0" "\x05" "RDMSR\0" \
-"\x05" "RDPMC\0" "\x08" "SYSENTER\0" "\x07" "SYSEXIT\0" "\x06" "GETSEC\0" "\x05" "CMOVO\0" \
-"\x06" "CMOVNO\0" "\x05" "CMOVB\0" "\x06" "CMOVAE\0" "\x05" "CMOVZ\0" "\x06" "CMOVNZ\0" \
-"\x06" "CMOVBE\0" "\x05" "CMOVA\0" "\x05" "CMOVS\0" "\x06" "CMOVNS\0" "\x05" "CMOVP\0" \
-"\x06" "CMOVNP\0" "\x05" "CMOVL\0" "\x06" "CMOVGE\0" "\x06" "CMOVLE\0" "\x05" "CMOVG\0" \
-"\x04" "SETO\0" "\x05" "SETNO\0" "\x04" "SETB\0" "\x05" "SETAE\0" "\x04" "SETZ\0" \
-"\x05" "SETNZ\0" "\x05" "SETBE\0" "\x04" "SETA\0" "\x04" "SETS\0" "\x05" "SETNS\0" \
-"\x04" "SETP\0" "\x05" "SETNP\0" "\x04" "SETL\0" "\x05" "SETGE\0" "\x05" "SETLE\0" \
-"\x04" "SETG\0" "\x05" "CPUID\0" "\x02" "BT\0" "\x04" "SHLD\0" "\x03" "RSM\0" \
-"\x03" "BTS\0" "\x04" "SHRD\0" "\x07" "CMPXCHG\0" "\x03" "LSS\0" "\x03" "BTR\0" \
-"\x03" "LFS\0" "\x03" "LGS\0" "\x05" "MOVZX\0" "\x03" "BTC\0" "\x05" "MOVSX\0" \
-"\x04" "XADD\0" "\x06" "MOVNTI\0" "\x05" "BSWAP\0" "\x03" "ROL\0" "\x03" "ROR\0" \
-"\x03" "RCL\0" "\x03" "RCR\0" "\x03" "SHL\0" "\x03" "SHR\0" "\x03" "SAL\0" \
-"\x03" "SAR\0" "\x06" "XABORT\0" "\x06" "XBEGIN\0" "\x04" "FADD\0" "\x04" "FMUL\0" \
-"\x04" "FCOM\0" "\x05" "FCOMP\0" "\x04" "FSUB\0" "\x05" "FSUBR\0" "\x04" "FDIV\0" \
-"\x05" "FDIVR\0" "\x03" "FLD\0" "\x03" "FST\0" "\x04" "FSTP\0" "\x06" "FLDENV\0" \
-"\x05" "FLDCW\0" "\x04" "FXCH\0" "\x04" "FNOP\0" "\x04" "FCHS\0" "\x04" "FABS\0" \
-"\x04" "FTST\0" "\x04" "FXAM\0" "\x04" "FLD1\0" "\x06" "FLDL2T\0" "\x06" "FLDL2E\0" \
-"\x05" "FLDPI\0" "\x06" "FLDLG2\0" "\x06" "FLDLN2\0" "\x04" "FLDZ\0" "\x05" "F2XM1\0" \
-"\x05" "FYL2X\0" "\x05" "FPTAN\0" "\x06" "FPATAN\0" "\x07" "FXTRACT\0" "\x06" "FPREM1\0" \
-"\x07" "FDECSTP\0" "\x07" "FINCSTP\0" "\x05" "FPREM\0" "\x07" "FYL2XP1\0" "\x05" "FSQRT\0" \
-"\x07" "FSINCOS\0" "\x07" "FRNDINT\0" "\x06" "FSCALE\0" "\x04" "FSIN\0" "\x04" "FCOS\0" \
-"\x05" "FIADD\0" "\x05" "FIMUL\0" "\x05" "FICOM\0" "\x06" "FICOMP\0" "\x05" "FISUB\0" \
-"\x06" "FISUBR\0" "\x05" "FIDIV\0" "\x06" "FIDIVR\0" "\x06" "FCMOVB\0" "\x06" "FCMOVE\0" \
-"\x07" "FCMOVBE\0" "\x06" "FCMOVU\0" "\x07" "FUCOMPP\0" "\x04" "FILD\0" "\x06" "FISTTP\0" \
-"\x04" "FIST\0" "\x05" "FISTP\0" "\x07" "FCMOVNB\0" "\x07" "FCMOVNE\0" "\x08" "FCMOVNBE\0" \
-"\x07" "FCMOVNU\0" "\x04" "FENI\0" "\x06" "FEDISI\0" "\x06" "FSETPM\0" "\x06" "FUCOMI\0" \
-"\x05" "FCOMI\0" "\x06" "FRSTOR\0" "\x05" "FFREE\0" "\x05" "FUCOM\0" "\x06" "FUCOMP\0" \
-"\x05" "FADDP\0" "\x05" "FMULP\0" "\x06" "FCOMPP\0" "\x06" "FSUBRP\0" "\x05" "FSUBP\0" \
-"\x06" "FDIVRP\0" "\x05" "FDIVP\0" "\x04" "FBLD\0" "\x05" "FBSTP\0" "\x07" "FUCOMIP\0" \
-"\x06" "FCOMIP\0" "\x03" "NOT\0" "\x03" "NEG\0" "\x03" "MUL\0" "\x03" "DIV\0" \
-"\x04" "IDIV\0" "\x04" "SLDT\0" "\x03" "STR\0" "\x04" "LLDT\0" "\x03" "LTR\0" \
-"\x04" "VERR\0" "\x04" "VERW\0" "\x04" "SGDT\0" "\x04" "SIDT\0" "\x04" "LGDT\0" \
-"\x04" "LIDT\0" "\x04" "SMSW\0" "\x04" "LMSW\0" "\x06" "INVLPG\0" "\x06" "VMCALL\0" \
-"\x08" "VMLAUNCH\0" "\x08" "VMRESUME\0" "\x06" "VMXOFF\0" "\x07" "MONITOR\0" \
-"\x05" "MWAIT\0" "\x06" "XGETBV\0" "\x06" "XSETBV\0" "\x06" "VMFUNC\0" "\x04" "XEND\0" \
-"\x05" "VMRUN\0" "\x07" "VMMCALL\0" "\x06" "VMLOAD\0" "\x06" "VMSAVE\0" "\x04" "STGI\0" \
-"\x04" "CLGI\0" "\x06" "SKINIT\0" "\x07" "INVLPGA\0" "\x06" "SWAPGS\0" "\x06" "RDTSCP\0" \
-"\x08" "PREFETCH\0" "\x09" "PREFETCHW\0" "\x05" "PI2FW\0" "\x05" "PI2FD\0" \
-"\x05" "PF2IW\0" "\x05" "PF2ID\0" "\x06" "PFNACC\0" "\x07" "PFPNACC\0" "\x07" "PFCMPGE\0" \
-"\x05" "PFMIN\0" "\x05" "PFRCP\0" "\x07" "PFRSQRT\0" "\x05" "PFSUB\0" "\x05" "PFADD\0" \
-"\x07" "PFCMPGT\0" "\x05" "PFMAX\0" "\x08" "PFRCPIT1\0" "\x08" "PFRSQIT1\0" \
-"\x06" "PFSUBR\0" "\x05" "PFACC\0" "\x07" "PFCMPEQ\0" "\x05" "PFMUL\0" "\x08" "PFRCPIT2\0" \
-"\x07" "PMULHRW\0" "\x06" "PSWAPD\0" "\x07" "PAVGUSB\0" "\x06" "MOVUPS\0" "\x06" "MOVUPD\0" \
-"\x05" "MOVSS\0" "\x05" "MOVSD\0" "\x07" "VMOVUPS\0" "\x07" "VMOVUPD\0" "\x06" "VMOVSS\0" \
-"\x06" "VMOVSD\0" "\x07" "MOVHLPS\0" "\x06" "MOVLPS\0" "\x06" "MOVLPD\0" "\x08" "MOVSLDUP\0" \
-"\x07" "MOVDDUP\0" "\x08" "VMOVHLPS\0" "\x07" "VMOVLPS\0" "\x07" "VMOVLPD\0" \
-"\x09" "VMOVSLDUP\0" "\x08" "VMOVDDUP\0" "\x08" "UNPCKLPS\0" "\x08" "UNPCKLPD\0" \
-"\x09" "VUNPCKLPS\0" "\x09" "VUNPCKLPD\0" "\x08" "UNPCKHPS\0" "\x08" "UNPCKHPD\0" \
-"\x09" "VUNPCKHPS\0" "\x09" "VUNPCKHPD\0" "\x07" "MOVLHPS\0" "\x06" "MOVHPS\0" \
-"\x06" "MOVHPD\0" "\x08" "MOVSHDUP\0" "\x08" "VMOVLHPS\0" "\x07" "VMOVHPS\0" \
-"\x07" "VMOVHPD\0" "\x09" "VMOVSHDUP\0" "\x0b" "PREFETCHNTA\0" "\x0a" "PREFETCHT0\0" \
-"\x0a" "PREFETCHT1\0" "\x0a" "PREFETCHT2\0" "\x06" "MOVAPS\0" "\x06" "MOVAPD\0" \
-"\x07" "VMOVAPS\0" "\x07" "VMOVAPD\0" "\x08" "CVTPI2PS\0" "\x08" "CVTPI2PD\0" \
-"\x08" "CVTSI2SS\0" "\x08" "CVTSI2SD\0" "\x09" "VCVTSI2SS\0" "\x09" "VCVTSI2SD\0" \
-"\x07" "MOVNTPS\0" "\x07" "MOVNTPD\0" "\x07" "MOVNTSS\0" "\x07" "MOVNTSD\0" \
-"\x08" "VMOVNTPS\0" "\x08" "VMOVNTPD\0" "\x09" "CVTTPS2PI\0" "\x09" "CVTTPD2PI\0" \
-"\x09" "CVTTSS2SI\0" "\x09" "CVTTSD2SI\0" "\x0a" "VCVTTSS2SI\0" "\x0a" "VCVTTSD2SI\0" \
-"\x08" "CVTPS2PI\0" "\x08" "CVTPD2PI\0" "\x08" "CVTSS2SI\0" "\x08" "CVTSD2SI\0" \
-"\x09" "VCVTSS2SI\0" "\x09" "VCVTSD2SI\0" "\x07" "UCOMISS\0" "\x07" "UCOMISD\0" \
-"\x08" "VUCOMISS\0" "\x08" "VUCOMISD\0" "\x06" "COMISS\0" "\x06" "COMISD\0" \
-"\x07" "VCOMISS\0" "\x07" "VCOMISD\0" "\x08" "MOVMSKPS\0" "\x08" "MOVMSKPD\0" \
-"\x09" "VMOVMSKPS\0" "\x09" "VMOVMSKPD\0" "\x06" "SQRTPS\0" "\x06" "SQRTPD\0" \
-"\x06" "SQRTSS\0" "\x06" "SQRTSD\0" "\x07" "VSQRTPS\0" "\x07" "VSQRTPD\0" "\x07" "VSQRTSS\0" \
-"\x07" "VSQRTSD\0" "\x07" "RSQRTPS\0" "\x07" "RSQRTSS\0" "\x08" "VRSQRTPS\0" \
-"\x08" "VRSQRTSS\0" "\x05" "RCPPS\0" "\x05" "RCPSS\0" "\x06" "VRCPPS\0" "\x06" "VRCPSS\0" \
-"\x05" "ANDPS\0" "\x05" "ANDPD\0" "\x06" "VANDPS\0" "\x06" "VANDPD\0" "\x06" "ANDNPS\0" \
-"\x06" "ANDNPD\0" "\x07" "VANDNPS\0" "\x07" "VANDNPD\0" "\x04" "ORPS\0" "\x04" "ORPD\0" \
-"\x05" "VORPS\0" "\x05" "VORPD\0" "\x05" "XORPS\0" "\x05" "XORPD\0" "\x06" "VXORPS\0" \
-"\x06" "VXORPD\0" "\x05" "ADDPS\0" "\x05" "ADDPD\0" "\x05" "ADDSS\0" "\x05" "ADDSD\0" \
-"\x06" "VADDPS\0" "\x06" "VADDPD\0" "\x06" "VADDSS\0" "\x06" "VADDSD\0" "\x05" "MULPS\0" \
-"\x05" "MULPD\0" "\x05" "MULSS\0" "\x05" "MULSD\0" "\x06" "VMULPS\0" "\x06" "VMULPD\0" \
-"\x06" "VMULSS\0" "\x06" "VMULSD\0" "\x08" "CVTPS2PD\0" "\x08" "CVTPD2PS\0" \
-"\x08" "CVTSS2SD\0" "\x08" "CVTSD2SS\0" "\x09" "VCVTPS2PD\0" "\x09" "VCVTPD2PS\0" \
-"\x09" "VCVTSS2SD\0" "\x09" "VCVTSD2SS\0" "\x08" "CVTDQ2PS\0" "\x08" "CVTPS2DQ\0" \
-"\x09" "CVTTPS2DQ\0" "\x09" "VCVTDQ2PS\0" "\x09" "VCVTPS2DQ\0" "\x0a" "VCVTTPS2DQ\0" \
-"\x05" "SUBPS\0" "\x05" "SUBPD\0" "\x05" "SUBSS\0" "\x05" "SUBSD\0" "\x06" "VSUBPS\0" \
-"\x06" "VSUBPD\0" "\x06" "VSUBSS\0" "\x06" "VSUBSD\0" "\x05" "MINPS\0" "\x05" "MINPD\0" \
-"\x05" "MINSS\0" "\x05" "MINSD\0" "\x06" "VMINPS\0" "\x06" "VMINPD\0" "\x06" "VMINSS\0" \
-"\x06" "VMINSD\0" "\x05" "DIVPS\0" "\x05" "DIVPD\0" "\x05" "DIVSS\0" "\x05" "DIVSD\0" \
-"\x06" "VDIVPS\0" "\x06" "VDIVPD\0" "\x06" "VDIVSS\0" "\x06" "VDIVSD\0" "\x05" "MAXPS\0" \
-"\x05" "MAXPD\0" "\x05" "MAXSS\0" "\x05" "MAXSD\0" "\x06" "VMAXPS\0" "\x06" "VMAXPD\0" \
-"\x06" "VMAXSS\0" "\x06" "VMAXSD\0" "\x09" "PUNPCKLBW\0" "\x0a" "VPUNPCKLBW\0" \
-"\x09" "PUNPCKLWD\0" "\x0a" "VPUNPCKLWD\0" "\x09" "PUNPCKLDQ\0" "\x0a" "VPUNPCKLDQ\0" \
-"\x08" "PACKSSWB\0" "\x09" "VPACKSSWB\0" "\x07" "PCMPGTB\0" "\x08" "VPCMPGTB\0" \
-"\x07" "PCMPGTW\0" "\x08" "VPCMPGTW\0" "\x07" "PCMPGTD\0" "\x08" "VPCMPGTD\0" \
-"\x08" "PACKUSWB\0" "\x09" "VPACKUSWB\0" "\x09" "PUNPCKHBW\0" "\x0a" "VPUNPCKHBW\0" \
-"\x09" "PUNPCKHWD\0" "\x0a" "VPUNPCKHWD\0" "\x09" "PUNPCKHDQ\0" "\x0a" "VPUNPCKHDQ\0" \
-"\x08" "PACKSSDW\0" "\x09" "VPACKSSDW\0" "\x0a" "PUNPCKLQDQ\0" "\x0b" "VPUNPCKLQDQ\0" \
-"\x0a" "PUNPCKHQDQ\0" "\x0b" "VPUNPCKHQDQ\0" "\x04" "MOVD\0" "\x04" "MOVQ\0" \
-"\x05" "VMOVD\0" "\x05" "VMOVQ\0" "\x06" "MOVDQA\0" "\x06" "MOVDQU\0" "\x07" "VMOVDQA\0" \
-"\x07" "VMOVDQU\0" "\x06" "PSHUFW\0" "\x06" "PSHUFD\0" "\x07" "PSHUFHW\0" "\x07" "PSHUFLW\0" \
-"\x07" "VPSHUFD\0" "\x08" "VPSHUFHW\0" "\x08" "VPSHUFLW\0" "\x07" "PCMPEQB\0" \
-"\x08" "VPCMPEQB\0" "\x07" "PCMPEQW\0" "\x08" "VPCMPEQW\0" "\x07" "PCMPEQD\0" \
-"\x08" "VPCMPEQD\0" "\x04" "EMMS\0" "\x0a" "VZEROUPPER\0" "\x08" "VZEROALL\0" \
-"\x06" "VMREAD\0" "\x05" "EXTRQ\0" "\x07" "INSERTQ\0" "\x07" "VMWRITE\0" "\x08" "CVTPH2PS\0" \
-"\x08" "CVTPS2PH\0" "\x06" "HADDPD\0" "\x06" "HADDPS\0" "\x07" "VHADDPD\0" \
-"\x07" "VHADDPS\0" "\x06" "HSUBPD\0" "\x06" "HSUBPS\0" "\x07" "VHSUBPD\0" "\x07" "VHSUBPS\0" \
-"\x05" "XSAVE\0" "\x07" "XSAVE64\0" "\x06" "LFENCE\0" "\x06" "XRSTOR\0" "\x08" "XRSTOR64\0" \
-"\x06" "MFENCE\0" "\x08" "XSAVEOPT\0" "\x0a" "XSAVEOPT64\0" "\x06" "SFENCE\0" \
-"\x07" "CLFLUSH\0" "\x06" "POPCNT\0" "\x03" "BSF\0" "\x05" "TZCNT\0" "\x03" "BSR\0" \
-"\x05" "LZCNT\0" "\x07" "CMPEQPS\0" "\x07" "CMPLTPS\0" "\x07" "CMPLEPS\0" "\x0a" "CMPUNORDPS\0" \
-"\x08" "CMPNEQPS\0" "\x08" "CMPNLTPS\0" "\x08" "CMPNLEPS\0" "\x08" "CMPORDPS\0" \
-"\x07" "CMPEQPD\0" "\x07" "CMPLTPD\0" "\x07" "CMPLEPD\0" "\x0a" "CMPUNORDPD\0" \
-"\x08" "CMPNEQPD\0" "\x08" "CMPNLTPD\0" "\x08" "CMPNLEPD\0" "\x08" "CMPORDPD\0" \
-"\x07" "CMPEQSS\0" "\x07" "CMPLTSS\0" "\x07" "CMPLESS\0" "\x0a" "CMPUNORDSS\0" \
-"\x08" "CMPNEQSS\0" "\x08" "CMPNLTSS\0" "\x08" "CMPNLESS\0" "\x08" "CMPORDSS\0" \
-"\x07" "CMPEQSD\0" "\x07" "CMPLTSD\0" "\x07" "CMPLESD\0" "\x0a" "CMPUNORDSD\0" \
-"\x08" "CMPNEQSD\0" "\x08" "CMPNLTSD\0" "\x08" "CMPNLESD\0" "\x08" "CMPORDSD\0" \
-"\x08" "VCMPEQPS\0" "\x08" "VCMPLTPS\0" "\x08" "VCMPLEPS\0" "\x0b" "VCMPUNORDPS\0" \
-"\x09" "VCMPNEQPS\0" "\x09" "VCMPNLTPS\0" "\x09" "VCMPNLEPS\0" "\x09" "VCMPORDPS\0" \
-"\x0b" "VCMPEQ_UQPS\0" "\x09" "VCMPNGEPS\0" "\x09" "VCMPNGTPS\0" "\x0b" "VCMPFALSEPS\0" \
-"\x0c" "VCMPNEQ_OQPS\0" "\x08" "VCMPGEPS\0" "\x08" "VCMPGTPS\0" "\x0a" "VCMPTRUEPS\0" \
-"\x0b" "VCMPEQ_OSPS\0" "\x0b" "VCMPLT_OQPS\0" "\x0b" "VCMPLE_OQPS\0" "\x0d" "VCMPUNORD_SPS\0" \
-"\x0c" "VCMPNEQ_USPS\0" "\x0c" "VCMPNLT_UQPS\0" "\x0c" "VCMPNLE_UQPS\0" "\x0b" "VCMPORD_SPS\0" \
-"\x0b" "VCMPEQ_USPS\0" "\x0c" "VCMPNGE_UQPS\0" "\x0c" "VCMPNGT_UQPS\0" "\x0e" "VCMPFALSE_OSPS\0" \
-"\x0c" "VCMPNEQ_OSPS\0" "\x0b" "VCMPGE_OQPS\0" "\x0b" "VCMPGT_OQPS\0" "\x0d" "VCMPTRUE_USPS\0" \
-"\x08" "VCMPEQPD\0" "\x08" "VCMPLTPD\0" "\x08" "VCMPLEPD\0" "\x0b" "VCMPUNORDPD\0" \
-"\x09" "VCMPNEQPD\0" "\x09" "VCMPNLTPD\0" "\x09" "VCMPNLEPD\0" "\x09" "VCMPORDPD\0" \
-"\x0b" "VCMPEQ_UQPD\0" "\x09" "VCMPNGEPD\0" "\x09" "VCMPNGTPD\0" "\x0b" "VCMPFALSEPD\0" \
-"\x0c" "VCMPNEQ_OQPD\0" "\x08" "VCMPGEPD\0" "\x08" "VCMPGTPD\0" "\x0a" "VCMPTRUEPD\0" \
-"\x0b" "VCMPEQ_OSPD\0" "\x0b" "VCMPLT_OQPD\0" "\x0b" "VCMPLE_OQPD\0" "\x0d" "VCMPUNORD_SPD\0" \
-"\x0c" "VCMPNEQ_USPD\0" "\x0c" "VCMPNLT_UQPD\0" "\x0c" "VCMPNLE_UQPD\0" "\x0b" "VCMPORD_SPD\0" \
-"\x0b" "VCMPEQ_USPD\0" "\x0c" "VCMPNGE_UQPD\0" "\x0c" "VCMPNGT_UQPD\0" "\x0e" "VCMPFALSE_OSPD\0" \
-"\x0c" "VCMPNEQ_OSPD\0" "\x0b" "VCMPGE_OQPD\0" "\x0b" "VCMPGT_OQPD\0" "\x0d" "VCMPTRUE_USPD\0" \
-"\x08" "VCMPEQSS\0" "\x08" "VCMPLTSS\0" "\x08" "VCMPLESS\0" "\x0b" "VCMPUNORDSS\0" \
-"\x09" "VCMPNEQSS\0" "\x09" "VCMPNLTSS\0" "\x09" "VCMPNLESS\0" "\x09" "VCMPORDSS\0" \
-"\x0b" "VCMPEQ_UQSS\0" "\x09" "VCMPNGESS\0" "\x09" "VCMPNGTSS\0" "\x0b" "VCMPFALSESS\0" \
-"\x0c" "VCMPNEQ_OQSS\0" "\x08" "VCMPGESS\0" "\x08" "VCMPGTSS\0" "\x0a" "VCMPTRUESS\0" \
-"\x0b" "VCMPEQ_OSSS\0" "\x0b" "VCMPLT_OQSS\0" "\x0b" "VCMPLE_OQSS\0" "\x0d" "VCMPUNORD_SSS\0" \
-"\x0c" "VCMPNEQ_USSS\0" "\x0c" "VCMPNLT_UQSS\0" "\x0c" "VCMPNLE_UQSS\0" "\x0b" "VCMPORD_SSS\0" \
-"\x0b" "VCMPEQ_USSS\0" "\x0c" "VCMPNGE_UQSS\0" "\x0c" "VCMPNGT_UQSS\0" "\x0e" "VCMPFALSE_OSSS\0" \
-"\x0c" "VCMPNEQ_OSSS\0" "\x0b" "VCMPGE_OQSS\0" "\x0b" "VCMPGT_OQSS\0" "\x0d" "VCMPTRUE_USSS\0" \
-"\x08" "VCMPEQSD\0" "\x08" "VCMPLTSD\0" "\x08" "VCMPLESD\0" "\x0b" "VCMPUNORDSD\0" \
-"\x09" "VCMPNEQSD\0" "\x09" "VCMPNLTSD\0" "\x09" "VCMPNLESD\0" "\x09" "VCMPORDSD\0" \
-"\x0b" "VCMPEQ_UQSD\0" "\x09" "VCMPNGESD\0" "\x09" "VCMPNGTSD\0" "\x0b" "VCMPFALSESD\0" \
-"\x0c" "VCMPNEQ_OQSD\0" "\x08" "VCMPGESD\0" "\x08" "VCMPGTSD\0" "\x0a" "VCMPTRUESD\0" \
-"\x0b" "VCMPEQ_OSSD\0" "\x0b" "VCMPLT_OQSD\0" "\x0b" "VCMPLE_OQSD\0" "\x0d" "VCMPUNORD_SSD\0" \
-"\x0c" "VCMPNEQ_USSD\0" "\x0c" "VCMPNLT_UQSD\0" "\x0c" "VCMPNLE_UQSD\0" "\x0b" "VCMPORD_SSD\0" \
-"\x0b" "VCMPEQ_USSD\0" "\x0c" "VCMPNGE_UQSD\0" "\x0c" "VCMPNGT_UQSD\0" "\x0e" "VCMPFALSE_OSSD\0" \
-"\x0c" "VCMPNEQ_OSSD\0" "\x0b" "VCMPGE_OQSD\0" "\x0b" "VCMPGT_OQSD\0" "\x0d" "VCMPTRUE_USSD\0" \
-"\x06" "PINSRW\0" "\x07" "VPINSRW\0" "\x06" "PEXTRW\0" "\x07" "VPEXTRW\0" "\x06" "SHUFPS\0" \
-"\x06" "SHUFPD\0" "\x07" "VSHUFPS\0" "\x07" "VSHUFPD\0" "\x09" "CMPXCHG8B\0" \
-"\x0a" "CMPXCHG16B\0" "\x07" "VMPTRST\0" "\x08" "ADDSUBPD\0" "\x08" "ADDSUBPS\0" \
-"\x09" "VADDSUBPD\0" "\x09" "VADDSUBPS\0" "\x05" "PSRLW\0" "\x06" "VPSRLW\0" \
-"\x05" "PSRLD\0" "\x06" "VPSRLD\0" "\x05" "PSRLQ\0" "\x06" "VPSRLQ\0" "\x05" "PADDQ\0" \
-"\x06" "VPADDQ\0" "\x06" "PMULLW\0" "\x07" "VPMULLW\0" "\x07" "MOVQ2DQ\0" "\x07" "MOVDQ2Q\0" \
-"\x08" "PMOVMSKB\0" "\x09" "VPMOVMSKB\0" "\x07" "PSUBUSB\0" "\x08" "VPSUBUSB\0" \
-"\x07" "PSUBUSW\0" "\x08" "VPSUBUSW\0" "\x06" "PMINUB\0" "\x07" "VPMINUB\0" \
-"\x04" "PAND\0" "\x05" "VPAND\0" "\x07" "PADDUSB\0" "\x08" "VPADDUSW\0" "\x07" "PADDUSW\0" \
-"\x06" "PMAXUB\0" "\x07" "VPMAXUB\0" "\x05" "PANDN\0" "\x06" "VPANDN\0" "\x05" "PAVGB\0" \
-"\x06" "VPAVGB\0" "\x05" "PSRAW\0" "\x06" "VPSRAW\0" "\x05" "PSRAD\0" "\x06" "VPSRAD\0" \
-"\x05" "PAVGW\0" "\x06" "VPAVGW\0" "\x07" "PMULHUW\0" "\x08" "VPMULHUW\0" "\x06" "PMULHW\0" \
-"\x07" "VPMULHW\0" "\x09" "CVTTPD2DQ\0" "\x08" "CVTDQ2PD\0" "\x08" "CVTPD2DQ\0" \
-"\x0a" "VCVTTPD2DQ\0" "\x09" "VCVTDQ2PD\0" "\x09" "VCVTPD2DQ\0" "\x06" "MOVNTQ\0" \
-"\x07" "MOVNTDQ\0" "\x08" "VMOVNTDQ\0" "\x06" "PSUBSB\0" "\x07" "VPSUBSB\0" \
-"\x06" "PSUBSW\0" "\x07" "VPSUBSW\0" "\x06" "PMINSW\0" "\x07" "VPMINSW\0" "\x03" "POR\0" \
-"\x04" "VPOR\0" "\x06" "PADDSB\0" "\x07" "VPADDSB\0" "\x06" "PADDSW\0" "\x07" "VPADDSW\0" \
-"\x06" "PMAXSW\0" "\x07" "VPMAXSW\0" "\x04" "PXOR\0" "\x05" "VPXOR\0" "\x05" "LDDQU\0" \
-"\x06" "VLDDQU\0" "\x05" "PSLLW\0" "\x06" "VPSLLW\0" "\x05" "PSLLD\0" "\x06" "VPSLLD\0" \
-"\x05" "PSLLQ\0" "\x06" "VPSLLQ\0" "\x07" "PMULUDQ\0" "\x08" "VPMULUDQ\0" "\x07" "PMADDWD\0" \
-"\x08" "VPMADDWD\0" "\x06" "PSADBW\0" "\x07" "VPSADBW\0" "\x08" "MASKMOVQ\0" \
-"\x0a" "MASKMOVDQU\0" "\x0b" "VMASKMOVDQU\0" "\x05" "PSUBB\0" "\x06" "VPSUBB\0" \
-"\x05" "PSUBW\0" "\x06" "VPSUBW\0" "\x05" "PSUBD\0" "\x06" "VPSUBD\0" "\x05" "PSUBQ\0" \
-"\x06" "VPSUBQ\0" "\x05" "PADDB\0" "\x06" "VPADDB\0" "\x05" "PADDW\0" "\x06" "VPADDW\0" \
-"\x05" "PADDD\0" "\x06" "VPADDD\0" "\x07" "FNSTENV\0" "\x06" "FSTENV\0" "\x06" "FNSTCW\0" \
-"\x05" "FSTCW\0" "\x06" "FNCLEX\0" "\x05" "FCLEX\0" "\x06" "FNINIT\0" "\x05" "FINIT\0" \
-"\x06" "FNSAVE\0" "\x05" "FSAVE\0" "\x06" "FNSTSW\0" "\x05" "FSTSW\0" "\x06" "PSHUFB\0" \
-"\x07" "VPSHUFB\0" "\x06" "PHADDW\0" "\x07" "VPHADDW\0" "\x06" "PHADDD\0" "\x07" "VPHADDD\0" \
-"\x07" "PHADDSW\0" "\x08" "VPHADDSW\0" "\x09" "PMADDUBSW\0" "\x0a" "VPMADDUBSW\0" \
-"\x06" "PHSUBW\0" "\x07" "VPHSUBW\0" "\x06" "PHSUBD\0" "\x07" "VPHSUBD\0" "\x07" "PHSUBSW\0" \
-"\x08" "VPHSUBSW\0" "\x06" "PSIGNB\0" "\x07" "VPSIGNB\0" "\x06" "PSIGNW\0" \
-"\x07" "VPSIGNW\0" "\x06" "PSIGND\0" "\x07" "VPSIGND\0" "\x08" "PMULHRSW\0" \
-"\x09" "VPMULHRSW\0" "\x09" "VPERMILPS\0" "\x09" "VPERMILPD\0" "\x07" "VTESTPS\0" \
-"\x07" "VTESTPD\0" "\x08" "PBLENDVB\0" "\x08" "BLENDVPS\0" "\x08" "BLENDVPD\0" \
-"\x05" "PTEST\0" "\x06" "VPTEST\0" "\x0c" "VBROADCASTSS\0" "\x0c" "VBROADCASTSD\0" \
-"\x0e" "VBROADCASTF128\0" "\x05" "PABSB\0" "\x06" "VPABSB\0" "\x05" "PABSW\0" \
-"\x06" "VPABSW\0" "\x05" "PABSD\0" "\x06" "VPABSD\0" "\x08" "PMOVSXBW\0" "\x09" "VPMOVSXBW\0" \
-"\x08" "PMOVSXBD\0" "\x09" "VPMOVSXBD\0" "\x08" "PMOVSXBQ\0" "\x09" "VPMOVSXBQ\0" \
-"\x08" "PMOVSXWD\0" "\x09" "VPMOVSXWD\0" "\x08" "PMOVSXWQ\0" "\x09" "VPMOVSXWQ\0" \
-"\x08" "PMOVSXDQ\0" "\x09" "VPMOVSXDQ\0" "\x06" "PMULDQ\0" "\x07" "VPMULDQ\0" \
-"\x07" "PCMPEQQ\0" "\x08" "VPCMPEQQ\0" "\x08" "MOVNTDQA\0" "\x09" "VMOVNTDQA\0" \
-"\x08" "PACKUSDW\0" "\x09" "VPACKUSDW\0" "\x0a" "VMASKMOVPS\0" "\x0a" "VMASKMOVPD\0" \
-"\x08" "PMOVZXBW\0" "\x09" "VPMOVZXBW\0" "\x08" "PMOVZXBD\0" "\x09" "VPMOVZXBD\0" \
-"\x08" "PMOVZXBQ\0" "\x09" "VPMOVZXBQ\0" "\x08" "PMOVZXWD\0" "\x09" "VPMOVZXWD\0" \
-"\x08" "PMOVZXWQ\0" "\x09" "VPMOVZXWQ\0" "\x08" "PMOVZXDQ\0" "\x09" "VPMOVZXDQ\0" \
-"\x07" "PCMPGTQ\0" "\x08" "VPCMPGTQ\0" "\x06" "PMINSB\0" "\x07" "VPMINSB\0" \
-"\x06" "PMINSD\0" "\x07" "VPMINSD\0" "\x06" "PMINUW\0" "\x07" "VPMINUW\0" "\x06" "PMINUD\0" \
-"\x07" "VPMINUD\0" "\x06" "PMAXSB\0" "\x07" "VPMAXSB\0" "\x06" "PMAXSD\0" "\x07" "VPMAXSD\0" \
-"\x06" "PMAXUW\0" "\x07" "VPMAXUW\0" "\x06" "PMAXUD\0" "\x07" "VPMAXUD\0" "\x06" "PMULLD\0" \
-"\x07" "VPMULLD\0" "\x0a" "PHMINPOSUW\0" "\x0b" "VPHMINPOSUW\0" "\x06" "INVEPT\0" \
-"\x07" "INVVPID\0" "\x07" "INVPCID\0" "\x0e" "VFMADDSUB132PS\0" "\x0e" "VFMADDSUB132PD\0" \
-"\x0e" "VFMSUBADD132PS\0" "\x0e" "VFMSUBADD132PD\0" "\x0b" "VFMADD132PS\0" \
-"\x0b" "VFMADD132PD\0" "\x0b" "VFMADD132SS\0" "\x0b" "VFMADD132SD\0" "\x0b" "VFMSUB132PS\0" \
-"\x0b" "VFMSUB132PD\0" "\x0b" "VFMSUB132SS\0" "\x0b" "VFMSUB132SD\0" "\x0c" "VFNMADD132PS\0" \
-"\x0c" "VFNMADD132PD\0" "\x0c" "VFNMADD132SS\0" "\x0c" "VFNMADD132SD\0" "\x0c" "VFNMSUB132PS\0" \
-"\x0c" "VFNMSUB132PD\0" "\x0c" "VFNMSUB132SS\0" "\x0c" "VFNMSUB132SD\0" "\x0e" "VFMADDSUB213PS\0" \
-"\x0e" "VFMADDSUB213PD\0" "\x0e" "VFMSUBADD213PS\0" "\x0e" "VFMSUBADD213PD\0" \
-"\x0b" "VFMADD213PS\0" "\x0b" "VFMADD213PD\0" "\x0b" "VFMADD213SS\0" "\x0b" "VFMADD213SD\0" \
-"\x0b" "VFMSUB213PS\0" "\x0b" "VFMSUB213PD\0" "\x0b" "VFMSUB213SS\0" "\x0b" "VFMSUB213SD\0" \
-"\x0c" "VFNMADD213PS\0" "\x0c" "VFNMADD213PD\0" "\x0c" "VFNMADD213SS\0" "\x0c" "VFNMADD213SD\0" \
-"\x0c" "VFNMSUB213PS\0" "\x0c" "VFNMSUB213PD\0" "\x0c" "VFNMSUB213SS\0" "\x0c" "VFNMSUB213SD\0" \
-"\x0e" "VFMADDSUB231PS\0" "\x0e" "VFMADDSUB231PD\0" "\x0e" "VFMSUBADD231PS\0" \
-"\x0e" "VFMSUBADD231PD\0" "\x0b" "VFMADD231PS\0" "\x0b" "VFMADD231PD\0" "\x0b" "VFMADD231SS\0" \
-"\x0b" "VFMADD231SD\0" "\x0b" "VFMSUB231PS\0" "\x0b" "VFMSUB231PD\0" "\x0b" "VFMSUB231SS\0" \
-"\x0b" "VFMSUB231SD\0" "\x0c" "VFNMADD231PS\0" "\x0c" "VFNMADD231PD\0" "\x0c" "VFNMADD231SS\0" \
-"\x0c" "VFNMADD231SD\0" "\x0c" "VFNMSUB231PS\0" "\x0c" "VFNMSUB231PD\0" "\x0c" "VFNMSUB231SS\0" \
-"\x0c" "VFNMSUB231SD\0" "\x06" "AESIMC\0" "\x07" "VAESIMC\0" "\x06" "AESENC\0" \
-"\x07" "VAESENC\0" "\x0a" "AESENCLAST\0" "\x0b" "VAESENCLAST\0" "\x06" "AESDEC\0" \
-"\x07" "VAESDEC\0" "\x0a" "AESDECLAST\0" "\x0b" "VAESDECLAST\0" "\x05" "MOVBE\0" \
-"\x05" "CRC32\0" "\x0a" "VPERM2F128\0" "\x07" "ROUNDPS\0" "\x08" "VROUNDPS\0" \
-"\x07" "ROUNDPD\0" "\x08" "VROUNDPD\0" "\x07" "ROUNDSS\0" "\x08" "VROUNDSS\0" \
-"\x07" "ROUNDSD\0" "\x08" "VROUNDSD\0" "\x07" "BLENDPS\0" "\x08" "VBLENDPS\0" \
-"\x07" "BLENDPD\0" "\x08" "VBLENDPD\0" "\x07" "PBLENDW\0" "\x08" "VPBLENDW\0" \
-"\x07" "PALIGNR\0" "\x08" "VPALIGNR\0" "\x06" "PEXTRB\0" "\x07" "VPEXTRB\0" \
-"\x06" "PEXTRD\0" "\x06" "PEXTRQ\0" "\x07" "VPEXTRD\0" "\x07" "VPEXTRQ\0" "\x09" "EXTRACTPS\0" \
-"\x0a" "VEXTRACTPS\0" "\x0b" "VINSERTF128\0" "\x0c" "VEXTRACTF128\0" "\x06" "PINSRB\0" \
-"\x07" "VPINSRB\0" "\x08" "INSERTPS\0" "\x09" "VINSERTPS\0" "\x06" "PINSRD\0" \
-"\x06" "PINSRQ\0" "\x07" "VPINSRD\0" "\x07" "VPINSRQ\0" "\x04" "DPPS\0" "\x05" "VDPPS\0" \
-"\x04" "DPPD\0" "\x05" "VDPPD\0" "\x07" "MPSADBW\0" "\x08" "VMPSADBW\0" "\x09" "PCLMULQDQ\0" \
-"\x0a" "VPCLMULQDQ\0" "\x09" "VBLENDVPS\0" "\x09" "VBLENDVPD\0" "\x09" "VPBLENDVB\0" \
-"\x09" "PCMPESTRM\0" "\x0a" "VPCMPESTRM\0" "\x09" "PCMPESTRI\0" "\x0a" "VPCMPESTRI\0" \
-"\x09" "PCMPISTRM\0" "\x0a" "VPCMPISTRM\0" "\x09" "PCMPISTRI\0" "\x0a" "VPCMPISTRI\0" \
-"\x0f" "AESKEYGENASSIST\0" "\x10" "VAESKEYGENASSIST\0" "\x06" "PSRLDQ\0" "\x07" "VPSRLDQ\0" \
-"\x06" "PSLLDQ\0" "\x07" "VPSLLDQ\0" "\x06" "FXSAVE\0" "\x08" "FXSAVE64\0" \
-"\x08" "RDFSBASE\0" "\x07" "FXRSTOR\0" "\x09" "FXRSTOR64\0" "\x08" "RDGSBASE\0" \
-"\x07" "LDMXCSR\0" "\x08" "WRFSBASE\0" "\x08" "VLDMXCSR\0" "\x07" "STMXCSR\0" \
-"\x08" "WRGSBASE\0" "\x08" "VSTMXCSR\0" "\x07" "VMPTRLD\0" "\x07" "VMCLEAR\0" \
-"\x05" "VMXON\0" "\x06" "MOVSXD\0" "\x05" "PAUSE\0" "\x04" "WAIT\0" "\x06" "RDRAND\0" \
-"\x06" "_3DNOW\0";
+"\x09" "undefined\0" "\x03" "add\0" "\x04" "push\0" "\x03" "pop\0" "\x02" "or\0" \
+"\x03" "adc\0" "\x03" "sbb\0" "\x03" "and\0" "\x03" "daa\0" "\x03" "sub\0" \
+"\x03" "das\0" "\x03" "xor\0" "\x03" "aaa\0" "\x03" "cmp\0" "\x03" "aas\0" \
+"\x03" "inc\0" "\x03" "dec\0" "\x05" "pusha\0" "\x04" "popa\0" "\x05" "bound\0" \
+"\x04" "arpl\0" "\x04" "imul\0" "\x03" "ins\0" "\x04" "outs\0" "\x02" "jo\0" \
+"\x03" "jno\0" "\x02" "jb\0" "\x03" "jae\0" "\x02" "jz\0" "\x03" "jnz\0" "\x03" "jbe\0" \
+"\x02" "ja\0" "\x02" "js\0" "\x03" "jns\0" "\x02" "jp\0" "\x03" "jnp\0" "\x02" "jl\0" \
+"\x03" "jge\0" "\x03" "jle\0" "\x02" "jg\0" "\x04" "test\0" "\x04" "xchg\0" \
+"\x03" "mov\0" "\x03" "lea\0" "\x03" "cbw\0" "\x04" "cwde\0" "\x04" "cdqe\0" \
+"\x03" "cwd\0" "\x03" "cdq\0" "\x03" "cqo\0" "\x08" "call far\0" "\x05" "pushf\0" \
+"\x04" "popf\0" "\x04" "sahf\0" "\x04" "lahf\0" "\x04" "movs\0" "\x04" "cmps\0" \
+"\x04" "stos\0" "\x04" "lods\0" "\x04" "scas\0" "\x03" "ret\0" "\x03" "les\0" \
+"\x03" "lds\0" "\x05" "enter\0" "\x05" "leave\0" "\x04" "retf\0" "\x05" "int 3\0" \
+"\x03" "int\0" "\x04" "into\0" "\x04" "iret\0" "\x03" "aam\0" "\x03" "aad\0" \
+"\x04" "salc\0" "\x04" "xlat\0" "\x06" "loopnz\0" "\x05" "loopz\0" "\x04" "loop\0" \
+"\x04" "jcxz\0" "\x05" "jecxz\0" "\x05" "jrcxz\0" "\x02" "in\0" "\x03" "out\0" \
+"\x04" "call\0" "\x03" "jmp\0" "\x07" "jmp far\0" "\x04" "int1\0" "\x03" "hlt\0" \
+"\x03" "cmc\0" "\x03" "clc\0" "\x03" "stc\0" "\x03" "cli\0" "\x03" "sti\0" \
+"\x03" "cld\0" "\x03" "std\0" "\x03" "lar\0" "\x03" "lsl\0" "\x07" "syscall\0" \
+"\x04" "clts\0" "\x06" "sysret\0" "\x04" "invd\0" "\x06" "wbinvd\0" "\x03" "ud2\0" \
+"\x05" "femms\0" "\x03" "nop\0" "\x05" "wrmsr\0" "\x05" "rdtsc\0" "\x05" "rdmsr\0" \
+"\x05" "rdpmc\0" "\x08" "sysenter\0" "\x07" "sysexit\0" "\x06" "getsec\0" "\x05" "cmovo\0" \
+"\x06" "cmovno\0" "\x05" "cmovb\0" "\x06" "cmovae\0" "\x05" "cmovz\0" "\x06" "cmovnz\0" \
+"\x06" "cmovbe\0" "\x05" "cmova\0" "\x05" "cmovs\0" "\x06" "cmovns\0" "\x05" "cmovp\0" \
+"\x06" "cmovnp\0" "\x05" "cmovl\0" "\x06" "cmovge\0" "\x06" "cmovle\0" "\x05" "cmovg\0" \
+"\x04" "seto\0" "\x05" "setno\0" "\x04" "setb\0" "\x05" "setae\0" "\x04" "setz\0" \
+"\x05" "setnz\0" "\x05" "setbe\0" "\x04" "seta\0" "\x04" "sets\0" "\x05" "setns\0" \
+"\x04" "setp\0" "\x05" "setnp\0" "\x04" "setl\0" "\x05" "setge\0" "\x05" "setle\0" \
+"\x04" "setg\0" "\x05" "cpuid\0" "\x02" "bt\0" "\x04" "shld\0" "\x03" "rsm\0" \
+"\x03" "bts\0" "\x04" "shrd\0" "\x07" "cmpxchg\0" "\x03" "lss\0" "\x03" "btr\0" \
+"\x03" "lfs\0" "\x03" "lgs\0" "\x05" "movzx\0" "\x03" "btc\0" "\x05" "movsx\0" \
+"\x04" "xadd\0" "\x06" "movnti\0" "\x05" "bswap\0" "\x03" "rol\0" "\x03" "ror\0" \
+"\x03" "rcl\0" "\x03" "rcr\0" "\x03" "shl\0" "\x03" "shr\0" "\x03" "sal\0" \
+"\x03" "sar\0" "\x06" "xabort\0" "\x06" "xbegin\0" "\x04" "fadd\0" "\x04" "fmul\0" \
+"\x04" "fcom\0" "\x05" "fcomp\0" "\x04" "fsub\0" "\x05" "fsubr\0" "\x04" "fdiv\0" \
+"\x05" "fdivr\0" "\x03" "fld\0" "\x03" "fst\0" "\x04" "fstp\0" "\x06" "fldenv\0" \
+"\x05" "fldcw\0" "\x04" "fxch\0" "\x04" "fnop\0" "\x04" "fchs\0" "\x04" "fabs\0" \
+"\x04" "ftst\0" "\x04" "fxam\0" "\x04" "fld1\0" "\x06" "fldl2t\0" "\x06" "fldl2e\0" \
+"\x05" "fldpi\0" "\x06" "fldlg2\0" "\x06" "fldln2\0" "\x04" "fldz\0" "\x05" "f2xm1\0" \
+"\x05" "fyl2x\0" "\x05" "fptan\0" "\x06" "fpatan\0" "\x07" "fxtract\0" "\x06" "fprem1\0" \
+"\x07" "fdecstp\0" "\x07" "fincstp\0" "\x05" "fprem\0" "\x07" "fyl2xp1\0" "\x05" "fsqrt\0" \
+"\x07" "fsincos\0" "\x07" "frndint\0" "\x06" "fscale\0" "\x04" "fsin\0" "\x04" "fcos\0" \
+"\x05" "fiadd\0" "\x05" "fimul\0" "\x05" "ficom\0" "\x06" "ficomp\0" "\x05" "fisub\0" \
+"\x06" "fisubr\0" "\x05" "fidiv\0" "\x06" "fidivr\0" "\x06" "fcmovb\0" "\x06" "fcmove\0" \
+"\x07" "fcmovbe\0" "\x06" "fcmovu\0" "\x07" "fucompp\0" "\x04" "fild\0" "\x06" "fisttp\0" \
+"\x04" "fist\0" "\x05" "fistp\0" "\x07" "fcmovnb\0" "\x07" "fcmovne\0" "\x08" "fcmovnbe\0" \
+"\x07" "fcmovnu\0" "\x04" "feni\0" "\x06" "fedisi\0" "\x06" "fsetpm\0" "\x06" "fucomi\0" \
+"\x05" "fcomi\0" "\x06" "frstor\0" "\x05" "ffree\0" "\x05" "fucom\0" "\x06" "fucomp\0" \
+"\x05" "faddp\0" "\x05" "fmulp\0" "\x06" "fcompp\0" "\x06" "fsubrp\0" "\x05" "fsubp\0" \
+"\x06" "fdivrp\0" "\x05" "fdivp\0" "\x04" "fbld\0" "\x05" "fbstp\0" "\x07" "fucomip\0" \
+"\x06" "fcomip\0" "\x03" "not\0" "\x03" "neg\0" "\x03" "mul\0" "\x03" "div\0" \
+"\x04" "idiv\0" "\x04" "sldt\0" "\x03" "str\0" "\x04" "lldt\0" "\x03" "ltr\0" \
+"\x04" "verr\0" "\x04" "verw\0" "\x04" "sgdt\0" "\x04" "sidt\0" "\x04" "lgdt\0" \
+"\x04" "lidt\0" "\x04" "smsw\0" "\x04" "lmsw\0" "\x06" "invlpg\0" "\x06" "vmcall\0" \
+"\x08" "vmlaunch\0" "\x08" "vmresume\0" "\x06" "vmxoff\0" "\x07" "monitor\0" \
+"\x05" "mwait\0" "\x06" "xgetbv\0" "\x06" "xsetbv\0" "\x06" "vmfunc\0" "\x04" "xend\0" \
+"\x05" "vmrun\0" "\x07" "vmmcall\0" "\x06" "vmload\0" "\x06" "vmsave\0" "\x04" "stgi\0" \
+"\x04" "clgi\0" "\x06" "skinit\0" "\x07" "invlpga\0" "\x06" "swapgs\0" "\x06" "rdtscp\0" \
+"\x08" "prefetch\0" "\x09" "prefetchw\0" "\x05" "pi2fw\0" "\x05" "pi2fd\0" \
+"\x05" "pf2iw\0" "\x05" "pf2id\0" "\x06" "pfnacc\0" "\x07" "pfpnacc\0" "\x07" "pfcmpge\0" \
+"\x05" "pfmin\0" "\x05" "pfrcp\0" "\x07" "pfrsqrt\0" "\x05" "pfsub\0" "\x05" "pfadd\0" \
+"\x07" "pfcmpgt\0" "\x05" "pfmax\0" "\x08" "pfrcpit1\0" "\x08" "pfrsqit1\0" \
+"\x06" "pfsubr\0" "\x05" "pfacc\0" "\x07" "pfcmpeq\0" "\x05" "pfmul\0" "\x08" "pfrcpit2\0" \
+"\x07" "pmulhrw\0" "\x06" "pswapd\0" "\x07" "pavgusb\0" "\x06" "movups\0" "\x06" "movupd\0" \
+"\x05" "movss\0" "\x05" "movsd\0" "\x07" "vmovups\0" "\x07" "vmovupd\0" "\x06" "vmovss\0" \
+"\x06" "vmovsd\0" "\x07" "movhlps\0" "\x06" "movlps\0" "\x06" "movlpd\0" "\x08" "movsldup\0" \
+"\x07" "movddup\0" "\x08" "vmovhlps\0" "\x07" "vmovlps\0" "\x07" "vmovlpd\0" \
+"\x09" "vmovsldup\0" "\x08" "vmovddup\0" "\x08" "unpcklps\0" "\x08" "unpcklpd\0" \
+"\x09" "vunpcklps\0" "\x09" "vunpcklpd\0" "\x08" "unpckhps\0" "\x08" "unpckhpd\0" \
+"\x09" "vunpckhps\0" "\x09" "vunpckhpd\0" "\x07" "movlhps\0" "\x06" "movhps\0" \
+"\x06" "movhpd\0" "\x08" "movshdup\0" "\x08" "vmovlhps\0" "\x07" "vmovhps\0" \
+"\x07" "vmovhpd\0" "\x09" "vmovshdup\0" "\x0b" "prefetchnta\0" "\x0a" "prefetcht0\0" \
+"\x0a" "prefetcht1\0" "\x0a" "prefetcht2\0" "\x06" "movaps\0" "\x06" "movapd\0" \
+"\x07" "vmovaps\0" "\x07" "vmovapd\0" "\x08" "cvtpi2ps\0" "\x08" "cvtpi2pd\0" \
+"\x08" "cvtsi2ss\0" "\x08" "cvtsi2sd\0" "\x09" "vcvtsi2ss\0" "\x09" "vcvtsi2sd\0" \
+"\x07" "movntps\0" "\x07" "movntpd\0" "\x07" "movntss\0" "\x07" "movntsd\0" \
+"\x08" "vmovntps\0" "\x08" "vmovntpd\0" "\x09" "cvttps2pi\0" "\x09" "cvttpd2pi\0" \
+"\x09" "cvttss2si\0" "\x09" "cvttsd2si\0" "\x0a" "vcvttss2si\0" "\x0a" "vcvttsd2si\0" \
+"\x08" "cvtps2pi\0" "\x08" "cvtpd2pi\0" "\x08" "cvtss2si\0" "\x08" "cvtsd2si\0" \
+"\x09" "vcvtss2si\0" "\x09" "vcvtsd2si\0" "\x07" "ucomiss\0" "\x07" "ucomisd\0" \
+"\x08" "vucomiss\0" "\x08" "vucomisd\0" "\x06" "comiss\0" "\x06" "comisd\0" \
+"\x07" "vcomiss\0" "\x07" "vcomisd\0" "\x08" "movmskps\0" "\x08" "movmskpd\0" \
+"\x09" "vmovmskps\0" "\x09" "vmovmskpd\0" "\x06" "sqrtps\0" "\x06" "sqrtpd\0" \
+"\x06" "sqrtss\0" "\x06" "sqrtsd\0" "\x07" "vsqrtps\0" "\x07" "vsqrtpd\0" "\x07" "vsqrtss\0" \
+"\x07" "vsqrtsd\0" "\x07" "rsqrtps\0" "\x07" "rsqrtss\0" "\x08" "vrsqrtps\0" \
+"\x08" "vrsqrtss\0" "\x05" "rcpps\0" "\x05" "rcpss\0" "\x06" "vrcpps\0" "\x06" "vrcpss\0" \
+"\x05" "andps\0" "\x05" "andpd\0" "\x06" "vandps\0" "\x06" "vandpd\0" "\x06" "andnps\0" \
+"\x06" "andnpd\0" "\x07" "vandnps\0" "\x07" "vandnpd\0" "\x04" "orps\0" "\x04" "orpd\0" \
+"\x05" "vorps\0" "\x05" "vorpd\0" "\x05" "xorps\0" "\x05" "xorpd\0" "\x06" "vxorps\0" \
+"\x06" "vxorpd\0" "\x05" "addps\0" "\x05" "addpd\0" "\x05" "addss\0" "\x05" "addsd\0" \
+"\x06" "vaddps\0" "\x06" "vaddpd\0" "\x06" "vaddss\0" "\x06" "vaddsd\0" "\x05" "mulps\0" \
+"\x05" "mulpd\0" "\x05" "mulss\0" "\x05" "mulsd\0" "\x06" "vmulps\0" "\x06" "vmulpd\0" \
+"\x06" "vmulss\0" "\x06" "vmulsd\0" "\x08" "cvtps2pd\0" "\x08" "cvtpd2ps\0" \
+"\x08" "cvtss2sd\0" "\x08" "cvtsd2ss\0" "\x09" "vcvtps2pd\0" "\x09" "vcvtpd2ps\0" \
+"\x09" "vcvtss2sd\0" "\x09" "vcvtsd2ss\0" "\x08" "cvtdq2ps\0" "\x08" "cvtps2dq\0" \
+"\x09" "cvttps2dq\0" "\x09" "vcvtdq2ps\0" "\x09" "vcvtps2dq\0" "\x0a" "vcvttps2dq\0" \
+"\x05" "subps\0" "\x05" "subpd\0" "\x05" "subss\0" "\x05" "subsd\0" "\x06" "vsubps\0" \
+"\x06" "vsubpd\0" "\x06" "vsubss\0" "\x06" "vsubsd\0" "\x05" "minps\0" "\x05" "minpd\0" \
+"\x05" "minss\0" "\x05" "minsd\0" "\x06" "vminps\0" "\x06" "vminpd\0" "\x06" "vminss\0" \
+"\x06" "vminsd\0" "\x05" "divps\0" "\x05" "divpd\0" "\x05" "divss\0" "\x05" "divsd\0" \
+"\x06" "vdivps\0" "\x06" "vdivpd\0" "\x06" "vdivss\0" "\x06" "vdivsd\0" "\x05" "maxps\0" \
+"\x05" "maxpd\0" "\x05" "maxss\0" "\x05" "maxsd\0" "\x06" "vmaxps\0" "\x06" "vmaxpd\0" \
+"\x06" "vmaxss\0" "\x06" "vmaxsd\0" "\x09" "punpcklbw\0" "\x0a" "vpunpcklbw\0" \
+"\x09" "punpcklwd\0" "\x0a" "vpunpcklwd\0" "\x09" "punpckldq\0" "\x0a" "vpunpckldq\0" \
+"\x08" "packsswb\0" "\x09" "vpacksswb\0" "\x07" "pcmpgtb\0" "\x08" "vpcmpgtb\0" \
+"\x07" "pcmpgtw\0" "\x08" "vpcmpgtw\0" "\x07" "pcmpgtd\0" "\x08" "vpcmpgtd\0" \
+"\x08" "packuswb\0" "\x09" "vpackuswb\0" "\x09" "punpckhbw\0" "\x0a" "vpunpckhbw\0" \
+"\x09" "punpckhwd\0" "\x0a" "vpunpckhwd\0" "\x09" "punpckhdq\0" "\x0a" "vpunpckhdq\0" \
+"\x08" "packssdw\0" "\x09" "vpackssdw\0" "\x0a" "punpcklqdq\0" "\x0b" "vpunpcklqdq\0" \
+"\x0a" "punpckhqdq\0" "\x0b" "vpunpckhqdq\0" "\x04" "movd\0" "\x04" "movq\0" \
+"\x05" "vmovd\0" "\x05" "vmovq\0" "\x06" "movdqa\0" "\x06" "movdqu\0" "\x07" "vmovdqa\0" \
+"\x07" "vmovdqu\0" "\x06" "pshufw\0" "\x06" "pshufd\0" "\x07" "pshufhw\0" "\x07" "pshuflw\0" \
+"\x07" "vpshufd\0" "\x08" "vpshufhw\0" "\x08" "vpshuflw\0" "\x07" "pcmpeqb\0" \
+"\x08" "vpcmpeqb\0" "\x07" "pcmpeqw\0" "\x08" "vpcmpeqw\0" "\x07" "pcmpeqd\0" \
+"\x08" "vpcmpeqd\0" "\x04" "emms\0" "\x0a" "vzeroupper\0" "\x08" "vzeroall\0" \
+"\x06" "vmread\0" "\x05" "extrq\0" "\x07" "insertq\0" "\x07" "vmwrite\0" "\x08" "cvtph2ps\0" \
+"\x08" "cvtps2ph\0" "\x06" "haddpd\0" "\x06" "haddps\0" "\x07" "vhaddpd\0" \
+"\x07" "vhaddps\0" "\x06" "hsubpd\0" "\x06" "hsubps\0" "\x07" "vhsubpd\0" "\x07" "vhsubps\0" \
+"\x05" "xsave\0" "\x07" "xsave64\0" "\x06" "lfence\0" "\x06" "xrstor\0" "\x08" "xrstor64\0" \
+"\x06" "mfence\0" "\x08" "xsaveopt\0" "\x0a" "xsaveopt64\0" "\x06" "sfence\0" \
+"\x07" "clflush\0" "\x06" "popcnt\0" "\x03" "bsf\0" "\x05" "tzcnt\0" "\x03" "bsr\0" \
+"\x05" "lzcnt\0" "\x07" "cmpeqps\0" "\x07" "cmpltps\0" "\x07" "cmpleps\0" "\x0a" "cmpunordps\0" \
+"\x08" "cmpneqps\0" "\x08" "cmpnltps\0" "\x08" "cmpnleps\0" "\x08" "cmpordps\0" \
+"\x07" "cmpeqpd\0" "\x07" "cmpltpd\0" "\x07" "cmplepd\0" "\x0a" "cmpunordpd\0" \
+"\x08" "cmpneqpd\0" "\x08" "cmpnltpd\0" "\x08" "cmpnlepd\0" "\x08" "cmpordpd\0" \
+"\x07" "cmpeqss\0" "\x07" "cmpltss\0" "\x07" "cmpless\0" "\x0a" "cmpunordss\0" \
+"\x08" "cmpneqss\0" "\x08" "cmpnltss\0" "\x08" "cmpnless\0" "\x08" "cmpordss\0" \
+"\x07" "cmpeqsd\0" "\x07" "cmpltsd\0" "\x07" "cmplesd\0" "\x0a" "cmpunordsd\0" \
+"\x08" "cmpneqsd\0" "\x08" "cmpnltsd\0" "\x08" "cmpnlesd\0" "\x08" "cmpordsd\0" \
+"\x08" "vcmpeqps\0" "\x08" "vcmpltps\0" "\x08" "vcmpleps\0" "\x0b" "vcmpunordps\0" \
+"\x09" "vcmpneqps\0" "\x09" "vcmpnltps\0" "\x09" "vcmpnleps\0" "\x09" "vcmpordps\0" \
+"\x0b" "vcmpeq_uqps\0" "\x09" "vcmpngeps\0" "\x09" "vcmpngtps\0" "\x0b" "vcmpfalseps\0" \
+"\x0c" "vcmpneq_oqps\0" "\x08" "vcmpgeps\0" "\x08" "vcmpgtps\0" "\x0a" "vcmptrueps\0" \
+"\x0b" "vcmpeq_osps\0" "\x0b" "vcmplt_oqps\0" "\x0b" "vcmple_oqps\0" "\x0d" "vcmpunord_sps\0" \
+"\x0c" "vcmpneq_usps\0" "\x0c" "vcmpnlt_uqps\0" "\x0c" "vcmpnle_uqps\0" "\x0b" "vcmpord_sps\0" \
+"\x0b" "vcmpeq_usps\0" "\x0c" "vcmpnge_uqps\0" "\x0c" "vcmpngt_uqps\0" "\x0e" "vcmpfalse_osps\0" \
+"\x0c" "vcmpneq_osps\0" "\x0b" "vcmpge_oqps\0" "\x0b" "vcmpgt_oqps\0" "\x0d" "vcmptrue_usps\0" \
+"\x08" "vcmpeqpd\0" "\x08" "vcmpltpd\0" "\x08" "vcmplepd\0" "\x0b" "vcmpunordpd\0" \
+"\x09" "vcmpneqpd\0" "\x09" "vcmpnltpd\0" "\x09" "vcmpnlepd\0" "\x09" "vcmpordpd\0" \
+"\x0b" "vcmpeq_uqpd\0" "\x09" "vcmpngepd\0" "\x09" "vcmpngtpd\0" "\x0b" "vcmpfalsepd\0" \
+"\x0c" "vcmpneq_oqpd\0" "\x08" "vcmpgepd\0" "\x08" "vcmpgtpd\0" "\x0a" "vcmptruepd\0" \
+"\x0b" "vcmpeq_ospd\0" "\x0b" "vcmplt_oqpd\0" "\x0b" "vcmple_oqpd\0" "\x0d" "vcmpunord_spd\0" \
+"\x0c" "vcmpneq_uspd\0" "\x0c" "vcmpnlt_uqpd\0" "\x0c" "vcmpnle_uqpd\0" "\x0b" "vcmpord_spd\0" \
+"\x0b" "vcmpeq_uspd\0" "\x0c" "vcmpnge_uqpd\0" "\x0c" "vcmpngt_uqpd\0" "\x0e" "vcmpfalse_ospd\0" \
+"\x0c" "vcmpneq_ospd\0" "\x0b" "vcmpge_oqpd\0" "\x0b" "vcmpgt_oqpd\0" "\x0d" "vcmptrue_uspd\0" \
+"\x08" "vcmpeqss\0" "\x08" "vcmpltss\0" "\x08" "vcmpless\0" "\x0b" "vcmpunordss\0" \
+"\x09" "vcmpneqss\0" "\x09" "vcmpnltss\0" "\x09" "vcmpnless\0" "\x09" "vcmpordss\0" \
+"\x0b" "vcmpeq_uqss\0" "\x09" "vcmpngess\0" "\x09" "vcmpngtss\0" "\x0b" "vcmpfalsess\0" \
+"\x0c" "vcmpneq_oqss\0" "\x08" "vcmpgess\0" "\x08" "vcmpgtss\0" "\x0a" "vcmptruess\0" \
+"\x0b" "vcmpeq_osss\0" "\x0b" "vcmplt_oqss\0" "\x0b" "vcmple_oqss\0" "\x0d" "vcmpunord_sss\0" \
+"\x0c" "vcmpneq_usss\0" "\x0c" "vcmpnlt_uqss\0" "\x0c" "vcmpnle_uqss\0" "\x0b" "vcmpord_sss\0" \
+"\x0b" "vcmpeq_usss\0" "\x0c" "vcmpnge_uqss\0" "\x0c" "vcmpngt_uqss\0" "\x0e" "vcmpfalse_osss\0" \
+"\x0c" "vcmpneq_osss\0" "\x0b" "vcmpge_oqss\0" "\x0b" "vcmpgt_oqss\0" "\x0d" "vcmptrue_usss\0" \
+"\x08" "vcmpeqsd\0" "\x08" "vcmpltsd\0" "\x08" "vcmplesd\0" "\x0b" "vcmpunordsd\0" \
+"\x09" "vcmpneqsd\0" "\x09" "vcmpnltsd\0" "\x09" "vcmpnlesd\0" "\x09" "vcmpordsd\0" \
+"\x0b" "vcmpeq_uqsd\0" "\x09" "vcmpngesd\0" "\x09" "vcmpngtsd\0" "\x0b" "vcmpfalsesd\0" \
+"\x0c" "vcmpneq_oqsd\0" "\x08" "vcmpgesd\0" "\x08" "vcmpgtsd\0" "\x0a" "vcmptruesd\0" \
+"\x0b" "vcmpeq_ossd\0" "\x0b" "vcmplt_oqsd\0" "\x0b" "vcmple_oqsd\0" "\x0d" "vcmpunord_ssd\0" \
+"\x0c" "vcmpneq_ussd\0" "\x0c" "vcmpnlt_uqsd\0" "\x0c" "vcmpnle_uqsd\0" "\x0b" "vcmpord_ssd\0" \
+"\x0b" "vcmpeq_ussd\0" "\x0c" "vcmpnge_uqsd\0" "\x0c" "vcmpngt_uqsd\0" "\x0e" "vcmpfalse_ossd\0" \
+"\x0c" "vcmpneq_ossd\0" "\x0b" "vcmpge_oqsd\0" "\x0b" "vcmpgt_oqsd\0" "\x0d" "vcmptrue_ussd\0" \
+"\x06" "pinsrw\0" "\x07" "vpinsrw\0" "\x06" "pextrw\0" "\x07" "vpextrw\0" "\x06" "shufps\0" \
+"\x06" "shufpd\0" "\x07" "vshufps\0" "\x07" "vshufpd\0" "\x09" "cmpxchg8b\0" \
+"\x0a" "cmpxchg16b\0" "\x07" "vmptrst\0" "\x08" "addsubpd\0" "\x08" "addsubps\0" \
+"\x09" "vaddsubpd\0" "\x09" "vaddsubps\0" "\x05" "psrlw\0" "\x06" "vpsrlw\0" \
+"\x05" "psrld\0" "\x06" "vpsrld\0" "\x05" "psrlq\0" "\x06" "vpsrlq\0" "\x05" "paddq\0" \
+"\x06" "vpaddq\0" "\x06" "pmullw\0" "\x07" "vpmullw\0" "\x07" "movq2dq\0" "\x07" "movdq2q\0" \
+"\x08" "pmovmskb\0" "\x09" "vpmovmskb\0" "\x07" "psubusb\0" "\x08" "vpsubusb\0" \
+"\x07" "psubusw\0" "\x08" "vpsubusw\0" "\x06" "pminub\0" "\x07" "vpminub\0" \
+"\x04" "pand\0" "\x05" "vpand\0" "\x07" "paddusb\0" "\x08" "vpaddusw\0" "\x07" "paddusw\0" \
+"\x06" "pmaxub\0" "\x07" "vpmaxub\0" "\x05" "pandn\0" "\x06" "vpandn\0" "\x05" "pavgb\0" \
+"\x06" "vpavgb\0" "\x05" "psraw\0" "\x06" "vpsraw\0" "\x05" "psrad\0" "\x06" "vpsrad\0" \
+"\x05" "pavgw\0" "\x06" "vpavgw\0" "\x07" "pmulhuw\0" "\x08" "vpmulhuw\0" "\x06" "pmulhw\0" \
+"\x07" "vpmulhw\0" "\x09" "cvttpd2dq\0" "\x08" "cvtdq2pd\0" "\x08" "cvtpd2dq\0" \
+"\x0a" "vcvttpd2dq\0" "\x09" "vcvtdq2pd\0" "\x09" "vcvtpd2dq\0" "\x06" "movntq\0" \
+"\x07" "movntdq\0" "\x08" "vmovntdq\0" "\x06" "psubsb\0" "\x07" "vpsubsb\0" \
+"\x06" "psubsw\0" "\x07" "vpsubsw\0" "\x06" "pminsw\0" "\x07" "vpminsw\0" "\x03" "por\0" \
+"\x04" "vpor\0" "\x06" "paddsb\0" "\x07" "vpaddsb\0" "\x06" "paddsw\0" "\x07" "vpaddsw\0" \
+"\x06" "pmaxsw\0" "\x07" "vpmaxsw\0" "\x04" "pxor\0" "\x05" "vpxor\0" "\x05" "lddqu\0" \
+"\x06" "vlddqu\0" "\x05" "psllw\0" "\x06" "vpsllw\0" "\x05" "pslld\0" "\x06" "vpslld\0" \
+"\x05" "psllq\0" "\x06" "vpsllq\0" "\x07" "pmuludq\0" "\x08" "vpmuludq\0" "\x07" "pmaddwd\0" \
+"\x08" "vpmaddwd\0" "\x06" "psadbw\0" "\x07" "vpsadbw\0" "\x08" "maskmovq\0" \
+"\x0a" "maskmovdqu\0" "\x0b" "vmaskmovdqu\0" "\x05" "psubb\0" "\x06" "vpsubb\0" \
+"\x05" "psubw\0" "\x06" "vpsubw\0" "\x05" "psubd\0" "\x06" "vpsubd\0" "\x05" "psubq\0" \
+"\x06" "vpsubq\0" "\x05" "paddb\0" "\x06" "vpaddb\0" "\x05" "paddw\0" "\x06" "vpaddw\0" \
+"\x05" "paddd\0" "\x06" "vpaddd\0" "\x07" "fnstenv\0" "\x06" "fstenv\0" "\x06" "fnstcw\0" \
+"\x05" "fstcw\0" "\x06" "fnclex\0" "\x05" "fclex\0" "\x06" "fninit\0" "\x05" "finit\0" \
+"\x06" "fnsave\0" "\x05" "fsave\0" "\x06" "fnstsw\0" "\x05" "fstsw\0" "\x06" "pshufb\0" \
+"\x07" "vpshufb\0" "\x06" "phaddw\0" "\x07" "vphaddw\0" "\x06" "phaddd\0" "\x07" "vphaddd\0" \
+"\x07" "phaddsw\0" "\x08" "vphaddsw\0" "\x09" "pmaddubsw\0" "\x0a" "vpmaddubsw\0" \
+"\x06" "phsubw\0" "\x07" "vphsubw\0" "\x06" "phsubd\0" "\x07" "vphsubd\0" "\x07" "phsubsw\0" \
+"\x08" "vphsubsw\0" "\x06" "psignb\0" "\x07" "vpsignb\0" "\x06" "psignw\0" \
+"\x07" "vpsignw\0" "\x06" "psignd\0" "\x07" "vpsignd\0" "\x08" "pmulhrsw\0" \
+"\x09" "vpmulhrsw\0" "\x09" "vpermilps\0" "\x09" "vpermilpd\0" "\x07" "vtestps\0" \
+"\x07" "vtestpd\0" "\x08" "pblendvb\0" "\x08" "blendvps\0" "\x08" "blendvpd\0" \
+"\x05" "ptest\0" "\x06" "vptest\0" "\x0c" "vbroadcastss\0" "\x0c" "vbroadcastsd\0" \
+"\x0e" "vbroadcastf128\0" "\x05" "pabsb\0" "\x06" "vpabsb\0" "\x05" "pabsw\0" \
+"\x06" "vpabsw\0" "\x05" "pabsd\0" "\x06" "vpabsd\0" "\x08" "pmovsxbw\0" "\x09" "vpmovsxbw\0" \
+"\x08" "pmovsxbd\0" "\x09" "vpmovsxbd\0" "\x08" "pmovsxbq\0" "\x09" "vpmovsxbq\0" \
+"\x08" "pmovsxwd\0" "\x09" "vpmovsxwd\0" "\x08" "pmovsxwq\0" "\x09" "vpmovsxwq\0" \
+"\x08" "pmovsxdq\0" "\x09" "vpmovsxdq\0" "\x06" "pmuldq\0" "\x07" "vpmuldq\0" \
+"\x07" "pcmpeqq\0" "\x08" "vpcmpeqq\0" "\x08" "movntdqa\0" "\x09" "vmovntdqa\0" \
+"\x08" "packusdw\0" "\x09" "vpackusdw\0" "\x0a" "vmaskmovps\0" "\x0a" "vmaskmovpd\0" \
+"\x08" "pmovzxbw\0" "\x09" "vpmovzxbw\0" "\x08" "pmovzxbd\0" "\x09" "vpmovzxbd\0" \
+"\x08" "pmovzxbq\0" "\x09" "vpmovzxbq\0" "\x08" "pmovzxwd\0" "\x09" "vpmovzxwd\0" \
+"\x08" "pmovzxwq\0" "\x09" "vpmovzxwq\0" "\x08" "pmovzxdq\0" "\x09" "vpmovzxdq\0" \
+"\x07" "pcmpgtq\0" "\x08" "vpcmpgtq\0" "\x06" "pminsb\0" "\x07" "vpminsb\0" \
+"\x06" "pminsd\0" "\x07" "vpminsd\0" "\x06" "pminuw\0" "\x07" "vpminuw\0" "\x06" "pminud\0" \
+"\x07" "vpminud\0" "\x06" "pmaxsb\0" "\x07" "vpmaxsb\0" "\x06" "pmaxsd\0" "\x07" "vpmaxsd\0" \
+"\x06" "pmaxuw\0" "\x07" "vpmaxuw\0" "\x06" "pmaxud\0" "\x07" "vpmaxud\0" "\x06" "pmulld\0" \
+"\x07" "vpmulld\0" "\x0a" "phminposuw\0" "\x0b" "vphminposuw\0" "\x06" "invept\0" \
+"\x07" "invvpid\0" "\x07" "invpcid\0" "\x0e" "vfmaddsub132ps\0" "\x0e" "vfmaddsub132pd\0" \
+"\x0e" "vfmsubadd132ps\0" "\x0e" "vfmsubadd132pd\0" "\x0b" "vfmadd132ps\0" \
+"\x0b" "vfmadd132pd\0" "\x0b" "vfmadd132ss\0" "\x0b" "vfmadd132sd\0" "\x0b" "vfmsub132ps\0" \
+"\x0b" "vfmsub132pd\0" "\x0b" "vfmsub132ss\0" "\x0b" "vfmsub132sd\0" "\x0c" "vfnmadd132ps\0" \
+"\x0c" "vfnmadd132pd\0" "\x0c" "vfnmadd132ss\0" "\x0c" "vfnmadd132sd\0" "\x0c" "vfnmsub132ps\0" \
+"\x0c" "vfnmsub132pd\0" "\x0c" "vfnmsub132ss\0" "\x0c" "vfnmsub132sd\0" "\x0e" "vfmaddsub213ps\0" \
+"\x0e" "vfmaddsub213pd\0" "\x0e" "vfmsubadd213ps\0" "\x0e" "vfmsubadd213pd\0" \
+"\x0b" "vfmadd213ps\0" "\x0b" "vfmadd213pd\0" "\x0b" "vfmadd213ss\0" "\x0b" "vfmadd213sd\0" \
+"\x0b" "vfmsub213ps\0" "\x0b" "vfmsub213pd\0" "\x0b" "vfmsub213ss\0" "\x0b" "vfmsub213sd\0" \
+"\x0c" "vfnmadd213ps\0" "\x0c" "vfnmadd213pd\0" "\x0c" "vfnmadd213ss\0" "\x0c" "vfnmadd213sd\0" \
+"\x0c" "vfnmsub213ps\0" "\x0c" "vfnmsub213pd\0" "\x0c" "vfnmsub213ss\0" "\x0c" "vfnmsub213sd\0" \
+"\x0e" "vfmaddsub231ps\0" "\x0e" "vfmaddsub231pd\0" "\x0e" "vfmsubadd231ps\0" \
+"\x0e" "vfmsubadd231pd\0" "\x0b" "vfmadd231ps\0" "\x0b" "vfmadd231pd\0" "\x0b" "vfmadd231ss\0" \
+"\x0b" "vfmadd231sd\0" "\x0b" "vfmsub231ps\0" "\x0b" "vfmsub231pd\0" "\x0b" "vfmsub231ss\0" \
+"\x0b" "vfmsub231sd\0" "\x0c" "vfnmadd231ps\0" "\x0c" "vfnmadd231pd\0" "\x0c" "vfnmadd231ss\0" \
+"\x0c" "vfnmadd231sd\0" "\x0c" "vfnmsub231ps\0" "\x0c" "vfnmsub231pd\0" "\x0c" "vfnmsub231ss\0" \
+"\x0c" "vfnmsub231sd\0" "\x06" "aesimc\0" "\x07" "vaesimc\0" "\x06" "aesenc\0" \
+"\x07" "vaesenc\0" "\x0a" "aesenclast\0" "\x0b" "vaesenclast\0" "\x06" "aesdec\0" \
+"\x07" "vaesdec\0" "\x0a" "aesdeclast\0" "\x0b" "vaesdeclast\0" "\x05" "movbe\0" \
+"\x05" "crc32\0" "\x0a" "vperm2f128\0" "\x07" "roundps\0" "\x08" "vroundps\0" \
+"\x07" "roundpd\0" "\x08" "vroundpd\0" "\x07" "roundss\0" "\x08" "vroundss\0" \
+"\x07" "roundsd\0" "\x08" "vroundsd\0" "\x07" "blendps\0" "\x08" "vblendps\0" \
+"\x07" "blendpd\0" "\x08" "vblendpd\0" "\x07" "pblendw\0" "\x08" "vpblendw\0" \
+"\x07" "palignr\0" "\x08" "vpalignr\0" "\x06" "pextrb\0" "\x07" "vpextrb\0" \
+"\x06" "pextrd\0" "\x06" "pextrq\0" "\x07" "vpextrd\0" "\x07" "vpextrq\0" "\x09" "extractps\0" \
+"\x0a" "vextractps\0" "\x0b" "vinsertf128\0" "\x0c" "vextractf128\0" "\x06" "pinsrb\0" \
+"\x07" "vpinsrb\0" "\x08" "insertps\0" "\x09" "vinsertps\0" "\x06" "pinsrd\0" \
+"\x06" "pinsrq\0" "\x07" "vpinsrd\0" "\x07" "vpinsrq\0" "\x04" "dpps\0" "\x05" "vdpps\0" \
+"\x04" "dppd\0" "\x05" "vdppd\0" "\x07" "mpsadbw\0" "\x08" "vmpsadbw\0" "\x09" "pclmulqdq\0" \
+"\x0a" "vpclmulqdq\0" "\x09" "vblendvps\0" "\x09" "vblendvpd\0" "\x09" "vpblendvb\0" \
+"\x09" "pcmpestrm\0" "\x0a" "vpcmpestrm\0" "\x09" "pcmpestri\0" "\x0a" "vpcmpestri\0" \
+"\x09" "pcmpistrm\0" "\x0a" "vpcmpistrm\0" "\x09" "pcmpistri\0" "\x0a" "vpcmpistri\0" \
+"\x0f" "aeskeygenassist\0" "\x10" "vaeskeygenassist\0" "\x06" "psrldq\0" "\x07" "vpsrldq\0" \
+"\x06" "pslldq\0" "\x07" "vpslldq\0" "\x06" "fxsave\0" "\x08" "fxsave64\0" \
+"\x08" "rdfsbase\0" "\x07" "fxrstor\0" "\x09" "fxrstor64\0" "\x08" "rdgsbase\0" \
+"\x07" "ldmxcsr\0" "\x08" "wrfsbase\0" "\x08" "vldmxcsr\0" "\x07" "stmxcsr\0" \
+"\x08" "wrgsbase\0" "\x08" "vstmxcsr\0" "\x07" "vmptrld\0" "\x07" "vmclear\0" \
+"\x05" "vmxon\0" "\x06" "movsxd\0" "\x05" "pause\0" "\x04" "wait\0" "\x06" "rdrand\0" \
+"\x06" "_3dnow\0";
 
 const _WRegister _REGISTERS[] = {
-	{ 3, "RAX" }, { 3, "RCX" }, { 3, "RDX" }, { 3, "RBX" }, { 3, "RSP" }, { 3, "RBP" }, { 3, "RSI" }, { 3, "RDI" }, { 2, "R8" }, { 2, "R9" }, { 3, "R10" }, { 3, "R11" }, { 3, "R12" }, { 3, "R13" }, { 3, "R14" }, { 3, "R15" },
-	{ 3, "EAX" }, { 3, "ECX" }, { 3, "EDX" }, { 3, "EBX" }, { 3, "ESP" }, { 3, "EBP" }, { 3, "ESI" }, { 3, "EDI" }, { 3, "R8D" }, { 3, "R9D" }, { 4, "R10D" }, { 4, "R11D" }, { 4, "R12D" }, { 4, "R13D" }, { 4, "R14D" }, { 4, "R15D" },
-	{ 2, "AX" }, { 2, "CX" }, { 2, "DX" }, { 2, "BX" }, { 2, "SP" }, { 2, "BP" }, { 2, "SI" }, { 2, "DI" }, { 3, "R8W" }, { 3, "R9W" }, { 4, "R10W" }, { 4, "R11W" }, { 4, "R12W" }, { 4, "R13W" }, { 4, "R14W" }, { 4, "R15W" },
-	{ 2, "AL" }, { 2, "CL" }, { 2, "DL" }, { 2, "BL" }, { 2, "AH" }, { 2, "CH" }, { 2, "DH" }, { 2, "BH" }, { 3, "R8B" }, { 3, "R9B" }, { 4, "R10B" }, { 4, "R11B" }, { 4, "R12B" }, { 4, "R13B" }, { 4, "R14B" }, { 4, "R15B" },
-	{ 3, "SPL" }, { 3, "BPL" }, { 3, "SIL" }, { 3, "DIL" },
-	{ 2, "ES" }, { 2, "CS" }, { 2, "SS" }, { 2, "DS" }, { 2, "FS" }, { 2, "GS" },
-	{ 3, "RIP" },
-	{ 3, "ST0" }, { 3, "ST1" }, { 3, "ST2" }, { 3, "ST3" }, { 3, "ST4" }, { 3, "ST5" }, { 3, "ST6" }, { 3, "ST7" },
-	{ 3, "MM0" }, { 3, "MM1" }, { 3, "MM2" }, { 3, "MM3" }, { 3, "MM4" }, { 3, "MM5" }, { 3, "MM6" }, { 3, "MM7" },
-	{ 4, "XMM0" }, { 4, "XMM1" }, { 4, "XMM2" }, { 4, "XMM3" }, { 4, "XMM4" }, { 4, "XMM5" }, { 4, "XMM6" }, { 4, "XMM7" }, { 4, "XMM8" }, { 4, "XMM9" }, { 5, "XMM10" }, { 5, "XMM11" }, { 5, "XMM12" }, { 5, "XMM13" }, { 5, "XMM14" }, { 5, "XMM15" },
-	{ 4, "YMM0" }, { 4, "YMM1" }, { 4, "YMM2" }, { 4, "YMM3" }, { 4, "YMM4" }, { 4, "YMM5" }, { 4, "YMM6" }, { 4, "YMM7" }, { 4, "YMM8" }, { 4, "YMM9" }, { 5, "YMM10" }, { 5, "YMM11" }, { 5, "YMM12" }, { 5, "YMM13" }, { 5, "YMM14" }, { 5, "YMM15" },
-	{ 3, "CR0" }, { 0, "" }, { 3, "CR2" }, { 3, "CR3" }, { 3, "CR4" }, { 0, "" }, { 0, "" }, { 0, "" }, { 3, "CR8" },
-	{ 3, "DR0" }, { 3, "DR1" }, { 3, "DR2" }, { 3, "DR3" }, { 0, "" }, { 0, "" }, { 3, "DR6" }, { 3, "DR7" }
+	{ 3, "rax" }, { 3, "rcx" }, { 3, "rdx" }, { 3, "rbx" }, { 3, "rsp" }, { 3, "rbp" }, { 3, "rsi" }, { 3, "rdi" }, { 2, "r8" }, { 2, "r9" }, { 3, "r10" }, { 3, "r11" }, { 3, "r12" }, { 3, "r13" }, { 3, "r14" }, { 3, "r15" },
+	{ 3, "eax" }, { 3, "ecx" }, { 3, "edx" }, { 3, "ebx" }, { 3, "esp" }, { 3, "ebp" }, { 3, "esi" }, { 3, "edi" }, { 3, "r8d" }, { 3, "r9d" }, { 4, "r10d" }, { 4, "r11d" }, { 4, "r12d" }, { 4, "r13d" }, { 4, "r14d" }, { 4, "r15d" },
+	{ 2, "ax" }, { 2, "cx" }, { 2, "dx" }, { 2, "bx" }, { 2, "sp" }, { 2, "bp" }, { 2, "si" }, { 2, "di" }, { 3, "r8w" }, { 3, "r9w" }, { 4, "r10w" }, { 4, "r11w" }, { 4, "r12w" }, { 4, "r13w" }, { 4, "r14w" }, { 4, "r15w" },
+	{ 2, "al" }, { 2, "cl" }, { 2, "dl" }, { 2, "bl" }, { 2, "ah" }, { 2, "ch" }, { 2, "dh" }, { 2, "bh" }, { 3, "r8b" }, { 3, "r9b" }, { 4, "r10b" }, { 4, "r11b" }, { 4, "r12b" }, { 4, "r13b" }, { 4, "r14b" }, { 4, "r15b" },
+	{ 3, "spl" }, { 3, "bpl" }, { 3, "sil" }, { 3, "dil" },
+	{ 2, "es" }, { 2, "cs" }, { 2, "ss" }, { 2, "ds" }, { 2, "fs" }, { 2, "gs" },
+	{ 3, "rip" },
+	{ 3, "st0" }, { 3, "st1" }, { 3, "st2" }, { 3, "st3" }, { 3, "st4" }, { 3, "st5" }, { 3, "st6" }, { 3, "st7" },
+	{ 3, "mm0" }, { 3, "mm1" }, { 3, "mm2" }, { 3, "mm3" }, { 3, "mm4" }, { 3, "mm5" }, { 3, "mm6" }, { 3, "mm7" },
+	{ 4, "xmm0" }, { 4, "xmm1" }, { 4, "xmm2" }, { 4, "xmm3" }, { 4, "xmm4" }, { 4, "xmm5" }, { 4, "xmm6" }, { 4, "xmm7" }, { 4, "xmm8" }, { 4, "xmm9" }, { 5, "xmm10" }, { 5, "xmm11" }, { 5, "xmm12" }, { 5, "xmm13" }, { 5, "xmm14" }, { 5, "xmm15" },
+	{ 4, "ymm0" }, { 4, "ymm1" }, { 4, "ymm2" }, { 4, "ymm3" }, { 4, "ymm4" }, { 4, "ymm5" }, { 4, "ymm6" }, { 4, "ymm7" }, { 4, "ymm8" }, { 4, "ymm9" }, { 5, "ymm10" }, { 5, "ymm11" }, { 5, "ymm12" }, { 5, "ymm13" }, { 5, "ymm14" }, { 5, "ymm15" },
+	{ 3, "cr0" }, { 0, "" }, { 3, "cr2" }, { 3, "cr3" }, { 3, "cr4" }, { 0, "" }, { 0, "" }, { 0, "" }, { 3, "cr8" },
+	{ 3, "dr0" }, { 3, "dr1" }, { 3, "dr2" }, { 3, "dr3" }, { 0, "" }, { 0, "" }, { 3, "dr6" }, { 3, "dr7" }
 };
 
 #endif /* DISTORM_LIGHT */
