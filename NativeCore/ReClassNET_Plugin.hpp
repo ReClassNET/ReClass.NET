@@ -1,4 +1,6 @@
 #pragma once
+#ifndef __RECLASS_NET_PLUGIN_H__
+#define __RECLASS_NET_PLUGIN_H__
 
 #include <type_traits>
 #include <algorithm>
@@ -6,6 +8,12 @@
 #include <codecvt>
 #include <locale>
 #include <cstring>
+
+// OS Specific
+
+#ifdef __linux__
+	#define __stdcall
+#endif
 
 // Types
 
@@ -285,3 +293,5 @@ inline char16_t* str16cpy(char16_t* destination, const char16_t* source, size_t 
 	}
 	return destination;
 }
+
+#endif

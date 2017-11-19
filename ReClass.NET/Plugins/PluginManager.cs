@@ -42,6 +42,8 @@ namespace ReClassNET.Plugins
 				LoadPlugins(directory.GetFiles("*.dll"), logger);
 
 				LoadPlugins(directory.GetFiles("*.exe"), logger);
+
+				LoadPlugins(directory.GetFiles("*.so"), logger);
 			}
 			catch (Exception ex)
 			{
@@ -63,10 +65,10 @@ namespace ReClassNET.Plugins
 				{
 					fvi = FileVersionInfo.GetVersionInfo(fi.FullName);
 
-					if (fvi.ProductName != PluginInfo.PluginName && fvi.ProductName != PluginInfo.PluginNativeName)
+					/*if (fvi.ProductName != PluginInfo.PluginName && fvi.ProductName != PluginInfo.PluginNativeName)
 					{
 						continue;
-					}
+					}*/
 				}
 				catch
 				{
