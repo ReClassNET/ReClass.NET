@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Text;
 using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner
@@ -23,6 +24,26 @@ namespace ReClassNET.MemoryScanner
 			public bool HasWildcard => nibble1.IsWildcard || nibble2.IsWildcard;
 
 			public byte ByteValue => !HasWildcard ? (byte)((nibble1.Value << 4) + nibble2.Value) : throw new InvalidOperationException();
+
+			public static PatternByte AsByte(byte b)
+			{
+				var pb = new PatternByte
+				{
+					nibble1 = { Value = (b >> 4) & 0xF },
+					nibble2 = { Value = b & 0xF }
+				};
+				return pb;
+			}
+
+			public static PatternByte AsWildcard()
+			{
+				var pb = new PatternByte
+				{
+					nibble1 = { IsWildcard = true },
+					nibble2 = { IsWildcard = true }
+				};
+				return pb;
+			}
 
 			private static bool IsHexValue(char c)
 			{
@@ -82,6 +103,16 @@ namespace ReClassNET.MemoryScanner
 				}
 				return matched == 2;
 			}
+
+			public override string ToString()
+			{
+				var sb = new StringBuilder();
+				if (nibble1.IsWildcard) sb.Append('?');
+				else sb.AppendFormat("{0:X}", nibble1.Value);
+				if (nibble2.IsWildcard) sb.Append('?');
+				else sb.AppendFormat("{0:X}", nibble2.Value);
+				return sb.ToString();
+			}
 		}
 
 		private readonly List<PatternByte> pattern = new List<PatternByte>();
@@ -134,6 +165,20 @@ namespace ReClassNET.MemoryScanner
 			return pattern;
 		}
 
+		public static BytePattern From(IEnumerable<Tuple<byte, bool>> data)
+		{
+			var pattern = new BytePattern();
+
+			foreach (var i in data)
+			{
+				var pb = i.Item2 ? PatternByte.AsWildcard() : PatternByte.AsByte(i.Item1);
+
+				pattern.pattern.Add(pb);
+			}
+
+			return pattern;
+		}
+
 		/// <summary>
 		/// Tests if the provided byte array matches the byte pattern at the provided index.
 		/// </summary>
@@ -171,6 +216,11 @@ namespace ReClassNET.MemoryScanner
 			}
 
 			return pattern.Select(pb => pb.ByteValue).ToArray();
+		}
+
+		public override string ToString()
+		{
+			return string.Join(" ", pattern.Select(p => p.ToString()));
 		}
 	}
 }

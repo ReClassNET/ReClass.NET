@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../ReClassNET_Plugin.hpp"
+#include "../Shared/Keys.hpp"
 
 void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess);
 void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer handle, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule);
@@ -19,3 +20,7 @@ void __stdcall DetachDebuggerFromProcess(RC_Pointer id);
 bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds);
 void __stdcall HandleDebugEvent(DebugEvent* evt);
 bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set);
+
+RC_Pointer __stdcall InitializeInput();
+bool __stdcall GetPressedKeys(RC_Pointer handle, Keys* state[], int* count);
+void __stdcall ReleaseInput(RC_Pointer handle);

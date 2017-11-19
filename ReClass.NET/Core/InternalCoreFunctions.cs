@@ -15,7 +15,7 @@ namespace ReClassNET.Core
 		private readonly IntPtr handle;
 
 		[return: MarshalAs(UnmanagedType.I1)]
-		private delegate bool DisassembleCodeDelegate(IntPtr address, IntPtr length, IntPtr virtualAddress, out InstructionData instruction);
+		private delegate bool DisassembleCodeDelegate(IntPtr address, IntPtr length, IntPtr virtualAddress, [MarshalAs(UnmanagedType.I1)] bool determineStaticInstructionBytes, out InstructionData instruction);
 
 		private delegate IntPtr InitializeInputDelegate();
 
@@ -76,9 +76,9 @@ namespace ReClassNET.Core
 
 		#endregion
 
-		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, out InstructionData instruction)
+		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, bool determineStaticInstructionBytes, out InstructionData instruction)
 		{
-			return disassembleCodeDelegate(address, (IntPtr)length, virtualAddress, out instruction);
+			return disassembleCodeDelegate(address, (IntPtr)length, virtualAddress, determineStaticInstructionBytes, out instruction);
 		}
 
 		public IntPtr InitializeInput()

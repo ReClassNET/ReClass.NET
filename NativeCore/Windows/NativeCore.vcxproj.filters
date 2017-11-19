@@ -61,6 +61,9 @@
     <ClCompile Include="..\Dependencies\distorm\src\wstring.c">
       <Filter>Dependencies\distorm</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\DistormHelper.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="exports.def" />
@@ -75,10 +78,12 @@
     <Filter Include="Dependencies\distorm">
       <UniqueIdentifier>{4b8b2ee0-6a06-4e69-bce3-ff446bfa6b82}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{faf06b55-02ad-4707-a65d-37e1c0d13640}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NativeCore.hpp" />
     <ClInclude Include="..\ReClassNET_Plugin.hpp" />
-    <ClInclude Include="..\Keys.hpp" />
   </ItemGroup>
 </Project>

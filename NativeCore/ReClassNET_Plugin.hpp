@@ -124,6 +124,7 @@ struct InstructionData
 {
 	int Length;
 	uint8_t Data[15];
+	int StaticInstructionBytes;
 	RC_UnicodeChar Instruction[64];
 };
 

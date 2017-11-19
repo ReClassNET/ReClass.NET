@@ -69,6 +69,8 @@ namespace ReClassNET.Core
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 15)]
 		public byte[] Data;
 
+		public int StaticInstructionBytes;
+
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
 		public string Instruction;
 	};

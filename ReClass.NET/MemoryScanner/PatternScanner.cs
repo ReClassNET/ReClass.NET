@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Runtime.InteropServices;
 using ReClassNET.Memory;
+using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner
 {
@@ -83,6 +86,52 @@ namespace ReClassNET.MemoryScanner
 			}
 
 			return -1;
+		}
+
+		/// <summary>
+		/// Creates a <see cref="BytePattern"/> for the given address range.
+		/// </summary>
+		/// <param name="process">The process to use.</param>
+		/// <param name="start">The start of the address range.</param>
+		/// <param name="size">The size of the address range.</param>
+		/// <returns>A <see cref="BytePattern"/> describing the address range.</returns>
+		public static BytePattern CreatePatternFromCode(RemoteProcess process, IntPtr start, int size)
+		{
+			var data = new List<Tuple<byte, bool>>();
+
+			var buffer = process.ReadRemoteMemory(start, size);
+
+			var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+			try
+			{
+				var eip = handle.AddrOfPinnedObject();
+				var end = eip + size;
+
+				while (eip.CompareTo(end) == -1)
+				{
+					var res = process.CoreFunctions.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, IntPtr.Zero, true, out var instruction);
+					if (!res)
+					{
+						break;
+					}
+
+					for (var i = 0; i < instruction.Length; ++i)
+					{
+						data.Add(Tuple.Create(instruction.Data[i], i >= instruction.StaticInstructionBytes));
+					}
+
+					eip += instruction.Length;
+				}
+			}
+			finally
+			{
+				if (handle.IsAllocated)
+				{
+					handle.Free();
+				}
+			}
+
+			return BytePattern.From(data);
 		}
 	}
 }

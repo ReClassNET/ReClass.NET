@@ -4,7 +4,7 @@
 #include <sstream>
 
 #include "../ReClassNET_Plugin.hpp"
-#include "../Keys.hpp"
+#include "../Shared/Keys.hpp"
 
 extern "C"
 {

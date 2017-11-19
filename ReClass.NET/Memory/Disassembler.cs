@@ -71,7 +71,7 @@ namespace ReClassNET.Memory
 
 			while (eip.CompareTo(end) == -1)
 			{
-				var res = coreFunctions.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, virtualAddress, out var instruction);
+				var res = coreFunctions.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, virtualAddress, false, out var instruction);
 				if (!res)
 				{
 					break;
@@ -189,7 +189,7 @@ namespace ReClassNET.Memory
 							for (var i = 1; i < 15; ++i)
 							{
 								x = address + 65 + i;
-								if (coreFunctions.DisassembleCode(x, end.Sub(x).ToInt32() + 1, virtualAddress, out instruction))
+								if (coreFunctions.DisassembleCode(x, end.Sub(x).ToInt32() + 1, virtualAddress, false, out instruction))
 								{
 									if (x + instruction.Length == end)
 									{
@@ -217,7 +217,7 @@ namespace ReClassNET.Memory
 			var y = virtualAddress - distance;
 			while (x.CompareTo(address) == -1) // aka x < address
 			{
-				if (coreFunctions.DisassembleCode(x, address.Sub(x).ToInt32() + 1, y, out instruction))
+				if (coreFunctions.DisassembleCode(x, address.Sub(x).ToInt32() + 1, y, false, out instruction))
 				{
 					x += instruction.Length;
 					y += instruction.Length;

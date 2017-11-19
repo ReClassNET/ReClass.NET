@@ -85,6 +85,7 @@
     <ClCompile Include="..\Dependencies\distorm\src\prefix.c" />
     <ClCompile Include="..\Dependencies\distorm\src\textdefs.c" />
     <ClCompile Include="..\Dependencies\distorm\src\wstring.c" />
+    <ClCompile Include="..\Shared\DistormHelper.cpp" />
     <ClCompile Include="CloseRemoteProcess.cpp" />
     <ClCompile Include="ControlRemoteProcess.cpp" />
     <ClCompile Include="Debugger.cpp" />
@@ -98,7 +99,6 @@
     <ClCompile Include="WriteRemoteMemory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Keys.hpp" />
     <ClInclude Include="..\ReClassNET_Plugin.hpp" />
     <ClInclude Include="NativeCore.hpp" />
   </ItemGroup>

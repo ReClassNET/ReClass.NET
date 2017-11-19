@@ -10,6 +10,9 @@
     <Filter Include="Dependencies\distorm">
       <UniqueIdentifier>{5b0453e9-b429-4dfd-bcbb-f3756d073e60}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{976c6ca6-4172-4080-8162-a7913375df1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CloseRemoteProcess.cpp">
@@ -72,10 +75,12 @@
     <ClCompile Include="..\Dependencies\distorm\src\wstring.c">
       <Filter>Dependencies\distorm</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\DistormHelper.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NativeCore.hpp" />
     <ClInclude Include="..\ReClassNET_Plugin.hpp" />
-    <ClInclude Include="..\Keys.hpp" />
   </ItemGroup>
 </Project>
