@@ -10,8 +10,14 @@ namespace ReClassNET.MemoryScanner
 {
 	public enum PatternFormat
 	{
-		Code,
-		Combined
+		/// <summary>
+		/// Example: AA BB ?? D? ?E FF
+		/// </summary>
+		Combined,
+		/// <summary>
+		/// Example: \xAA\xBB\x00\x00\x00\xFF xx???x
+		/// </summary>
+		PatternAndMask
 	}
 
 	public class BytePattern
@@ -114,7 +120,7 @@ namespace ReClassNET.MemoryScanner
 			{
 				switch (format)
 				{
-					case PatternFormat.Code:
+					case PatternFormat.PatternAndMask:
 						return HasWildcard ? Tuple.Create("\\x00", "?") : Tuple.Create($"\\x{ByteValue:X02}", "x");
 					case PatternFormat.Combined:
 						var sb = new StringBuilder();
@@ -234,15 +240,20 @@ namespace ReClassNET.MemoryScanner
 			return pattern.Select(pb => pb.ByteValue).ToArray();
 		}
 
+		/// <summary>
+		/// Formats the <see cref="BytePattern"/> in the specified <see cref="PatternFormat"/>.
+		/// </summary>
+		/// <param name="format">The format of the pattern.</param>
+		/// <returns>A tuple containing the format. If <paramref name="format"/> is not <see cref="PatternFormat.PatternAndMask"/> the second item is null.</returns>
 		public Tuple<string, string> ToString(PatternFormat format)
 		{
 			switch (format)
 			{
-				case PatternFormat.Code:
+				case PatternFormat.PatternAndMask:
 					var sb1 = new StringBuilder();
 					var sb2 = new StringBuilder();
 					pattern
-						.Select(p => p.ToString(PatternFormat.Code))
+						.Select(p => p.ToString(PatternFormat.PatternAndMask))
 						.ForEach(t =>
 						{
 							sb1.Append(t.Item1);
