@@ -26,12 +26,7 @@ namespace ReClassNET.Memory
 			{
 				using (var i = NativeMethods.GetIconForFile(Path))
 				{
-					if (i == null)
-					{
-						return null;
-					}
-					
-					return i.ToBitmap();
+					return i?.ToBitmap();
 				}
 			});
 		}
