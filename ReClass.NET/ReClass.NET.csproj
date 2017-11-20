@@ -932,7 +932,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>powershell -Command "((Get-Date).ToUniversalTime()).ToString(\"yyyy\/MM\/dd HH:mm:ss\") | Out-File '$(ProjectDir)Resources\BuildDate.txt'"</PreBuildEvent>
+    <PreBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">powershell -Command "((Get-Date).ToUniversalTime()).ToString(\"yyyy\/MM\/dd HH:mm:ss\") | Out-File '$(ProjectDir)Resources\BuildDate.txt'"</PreBuildEvent>
+    <PreBuildEvent Condition=" '$(OS)' == 'Unix' ">date +"%Y/%m/%d %H:%M:%S" > $(ProjectDir)/Resources/BuildDate.txt</PreBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
