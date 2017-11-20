@@ -8,6 +8,12 @@ using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner
 {
+	public enum PatternFormat
+	{
+		Code,
+		Combined
+	}
+
 	public class BytePattern
 	{
 		private struct PatternByte
@@ -104,15 +110,25 @@ namespace ReClassNET.MemoryScanner
 				return matched == 2;
 			}
 
-			public override string ToString()
+			public Tuple<string, string> ToString(PatternFormat format)
 			{
-				var sb = new StringBuilder();
-				if (nibble1.IsWildcard) sb.Append('?');
-				else sb.AppendFormat("{0:X}", nibble1.Value);
-				if (nibble2.IsWildcard) sb.Append('?');
-				else sb.AppendFormat("{0:X}", nibble2.Value);
-				return sb.ToString();
+				switch (format)
+				{
+					case PatternFormat.Code:
+						return HasWildcard ? Tuple.Create("\\x00", "?") : Tuple.Create($"\\x{ByteValue:X02}", "x");
+					case PatternFormat.Combined:
+						var sb = new StringBuilder();
+						if (nibble1.IsWildcard) sb.Append('?');
+						else sb.AppendFormat("{0:X}", nibble1.Value);
+						if (nibble2.IsWildcard) sb.Append('?');
+						else sb.AppendFormat("{0:X}", nibble2.Value);
+						return Tuple.Create<string, string>(sb.ToString(), null);
+					default:
+						throw new ArgumentOutOfRangeException(nameof(format), format, null);
+				}
 			}
+
+			public override string ToString() => ToString(PatternFormat.Combined).Item1;
 		}
 
 		private readonly List<PatternByte> pattern = new List<PatternByte>();
@@ -218,9 +234,28 @@ namespace ReClassNET.MemoryScanner
 			return pattern.Select(pb => pb.ByteValue).ToArray();
 		}
 
-		public override string ToString()
+		public Tuple<string, string> ToString(PatternFormat format)
 		{
-			return string.Join(" ", pattern.Select(p => p.ToString()));
+			switch (format)
+			{
+				case PatternFormat.Code:
+					var sb1 = new StringBuilder();
+					var sb2 = new StringBuilder();
+					pattern
+						.Select(p => p.ToString(PatternFormat.Code))
+						.ForEach(t =>
+						{
+							sb1.Append(t.Item1);
+							sb2.Append(t.Item2);
+						});
+					return Tuple.Create(sb1.ToString(), sb2.ToString());
+				case PatternFormat.Combined:
+					return Tuple.Create<string, string>(string.Join(" ", pattern.Select(p => p.ToString(PatternFormat.Combined).Item1)), null);
+				default:
+					throw new ArgumentOutOfRangeException(nameof(format), format, null);
+			}
 		}
+
+		public override string ToString() => ToString(PatternFormat.Combined).Item1;
 	}
 }
