@@ -7,6 +7,12 @@
 #include <locale>
 #include <cstring>
 
+// OS Specific
+
+#ifdef __linux__
+	#define __stdcall __attribute__((__stdcall__))
+#endif
+
 // Types
 
 using RC_Pointer = void*;

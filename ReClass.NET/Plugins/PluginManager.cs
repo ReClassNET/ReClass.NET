@@ -39,9 +39,11 @@ namespace ReClassNET.Plugins
 
 				var directory = new DirectoryInfo(path);
 
-				LoadPlugins(directory.GetFiles("*.dll"), logger);
+				LoadPlugins(directory.GetFiles("*.dll"), logger, true);
 
-				LoadPlugins(directory.GetFiles("*.exe"), logger);
+				LoadPlugins(directory.GetFiles("*.exe"), logger, true);
+
+				LoadPlugins(directory.GetFiles("*.so"), logger, false);
 			}
 			catch (Exception ex)
 			{
@@ -49,7 +51,7 @@ namespace ReClassNET.Plugins
 			}
 		}
 
-		private void LoadPlugins(IEnumerable<FileInfo> files, ILogger logger)
+		private void LoadPlugins(IEnumerable<FileInfo> files, ILogger logger, bool checkProductName)
 		{
 			// TODO: How to include plugin infos for unix files as they don't have embedded version info.
 
@@ -63,7 +65,7 @@ namespace ReClassNET.Plugins
 				{
 					fvi = FileVersionInfo.GetVersionInfo(fi.FullName);
 
-					if (fvi.ProductName != PluginInfo.PluginName && fvi.ProductName != PluginInfo.PluginNativeName)
+					if (checkProductName && fvi.ProductName != PluginInfo.PluginName && fvi.ProductName != PluginInfo.PluginNativeName)
 					{
 						continue;
 					}
