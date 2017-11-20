@@ -10,7 +10,11 @@
 // OS Specific
 
 #ifdef __linux__
-	#define __stdcall __attribute__((__stdcall__))
+	#define RC_CallConv
+#elif _WIN32
+	#define RC_CallConv __stdcall
+#else
+	static_assert(false, "Missing RC_CallConv specification");
 #endif
 
 // Types

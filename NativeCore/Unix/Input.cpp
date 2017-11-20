@@ -1,19 +1,17 @@
 #include "NativeCore.hpp"
 #include "../Shared/Keys.hpp"
 
-void ReleaseInput();
-
-RC_Pointer InitializeInput()
+RC_Pointer RC_CallConv InitializeInput()
 {
 	return nullptr;
 }
 
-bool GetPressedKeys(RC_Pointer handle, Keys* state[], int* count)
+bool RC_CallConv GetPressedKeys(RC_Pointer handle, Keys* state[], int* count)
 {
 	return false;
 }
 
-void ReleaseInput(RC_Pointer handle)
+void RC_CallConv ReleaseInput(RC_Pointer handle)
 {
 
 }

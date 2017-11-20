@@ -79,7 +79,7 @@ Platform GetProcessPlatform(const std::string& auxvPath)
 	return platform;
 }
 
-extern "C" void EnumerateProcesses(EnumerateProcessCallback callbackProcess)
+extern "C" void RC_CallConv EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 {
 	if (callbackProcess == nullptr)
 	{

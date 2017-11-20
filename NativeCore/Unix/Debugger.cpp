@@ -51,7 +51,7 @@ pid_t waitpid_timeout(int* status, int timeoutInMilliseconds, bool& timedOut)
 	return waitpid_timeout(-1, status, 0, timeoutInMilliseconds, timedOut);
 }
 
-extern "C" bool AttachDebuggerToProcess(RC_Pointer id)
+extern "C" bool RC_CallConv AttachDebuggerToProcess(RC_Pointer id)
 {
 	//TODO: Attach to all threads.
 
@@ -64,14 +64,14 @@ extern "C" bool AttachDebuggerToProcess(RC_Pointer id)
 	return false;
 }
 
-extern "C" void DetachDebuggerFromProcess(RC_Pointer id)
+extern "C" void RC_CallConv DetachDebuggerFromProcess(RC_Pointer id)
 {
 	//TODO: Detach to all threads.
 
 	ptrace(PTRACE_DETACH, static_cast<pid_t>(reinterpret_cast<intptr_t>(id)), nullptr, nullptr);
 }
 
-extern "C" bool AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
+extern "C" bool RC_CallConv AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 {
 	int status;
 	bool timedOut;
@@ -169,7 +169,7 @@ extern "C" bool AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 	return result;
 }
 
-extern "C" void HandleDebugEvent(DebugEvent* evt)
+extern "C" void RC_CallConv HandleDebugEvent(DebugEvent* evt)
 {
 	auto tid = static_cast<pid_t>(reinterpret_cast<intptr_t>(evt->ThreadId));
 
@@ -196,7 +196,7 @@ extern "C" void HandleDebugEvent(DebugEvent* evt)
 	}
 }
 
-extern "C" bool SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
+extern "C" bool RC_CallConv SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
 {
 	if (reg == HardwareBreakpointRegister::InvalidRegister)
 	{

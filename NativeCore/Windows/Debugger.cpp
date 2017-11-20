@@ -3,7 +3,7 @@
 
 #include "NativeCore.hpp"
 
-bool __stdcall AttachDebuggerToProcess(RC_Pointer id)
+bool RC_CallConv AttachDebuggerToProcess(RC_Pointer id)
 {
 	if (!DebugActiveProcess(static_cast<DWORD>(reinterpret_cast<size_t>(id))))
 	{
@@ -15,12 +15,12 @@ bool __stdcall AttachDebuggerToProcess(RC_Pointer id)
 	return true;
 }
 
-void __stdcall DetachDebuggerFromProcess(RC_Pointer id)
+void RC_CallConv DetachDebuggerFromProcess(RC_Pointer id)
 {
 	DebugActiveProcessStop(static_cast<DWORD>(reinterpret_cast<size_t>(id)));
 }
 
-bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
+bool RC_CallConv AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 {
 	DEBUG_EVENT _evt = { };
 	if (!WaitForDebugEvent(&_evt, timeoutInMilliseconds))
@@ -127,7 +127,7 @@ bool __stdcall AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 	return result;
 }
 
-void __stdcall HandleDebugEvent(DebugEvent* evt)
+void RC_CallConv HandleDebugEvent(DebugEvent* evt)
 {
 	DWORD continueStatus = 0;
 	switch (evt->ContinueStatus)
@@ -143,7 +143,7 @@ void __stdcall HandleDebugEvent(DebugEvent* evt)
 	ContinueDebugEvent(static_cast<DWORD>(reinterpret_cast<size_t>(evt->ProcessId)), static_cast<DWORD>(reinterpret_cast<size_t>(evt->ThreadId)), continueStatus);
 }
 
-bool __stdcall SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
+bool RC_CallConv SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
 {
 	if (reg == HardwareBreakpointRegister::InvalidRegister)
 	{

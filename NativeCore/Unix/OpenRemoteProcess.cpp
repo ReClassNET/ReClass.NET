@@ -1,6 +1,6 @@
 #include "NativeCore.hpp"
 
-extern "C" RC_Pointer OpenRemoteProcess(RC_Pointer id, ProcessAccess desiredAccess)
+extern "C" RC_Pointer RC_CallConv OpenRemoteProcess(RC_Pointer id, ProcessAccess desiredAccess)
 {
 	return id;
 }

@@ -2,7 +2,7 @@
 
 #include "NativeCore.hpp"
 
-void __stdcall CloseRemoteProcess(RC_Pointer handle)
+void RC_CallConv CloseRemoteProcess(RC_Pointer handle)
 {
 	CloseHandle(handle);
 }

@@ -36,7 +36,7 @@ std::istream& operator >> (std::istream& s, SectionProtection& protection)
 	return s;
 }
 
-extern "C" void EnumerateRemoteSectionsAndModules(RC_Pointer handle, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
+extern "C" void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer handle, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
 {
 	if (callbackSection == nullptr && callbackModule == nullptr)
 	{

@@ -3,17 +3,17 @@
 
 #include "NativeCore.hpp"
 
-void __stdcall ControlRemoteProcess(RC_Pointer handle, ControlRemoteProcessAction action)
+void RC_CallConv ControlRemoteProcess(RC_Pointer handle, ControlRemoteProcessAction action)
 {
 	if (action == ControlRemoteProcessAction::Suspend || action == ControlRemoteProcessAction::Resume)
 	{
-		auto processId = GetProcessId(handle);
+		const auto processId = GetProcessId(handle);
 		if (processId != 0)
 		{
-			auto snapshotHandle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+			const auto snapshotHandle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 			if (snapshotHandle != INVALID_HANDLE_VALUE)
 			{
-				auto fn = action == ControlRemoteProcessAction::Suspend ? SuspendThread : ResumeThread;
+				const auto fn = action == ControlRemoteProcessAction::Suspend ? SuspendThread : ResumeThread;
 
 				THREADENTRY32 te32 = {};
 				te32.dwSize = sizeof(THREADENTRY32);
@@ -23,7 +23,7 @@ void __stdcall ControlRemoteProcess(RC_Pointer handle, ControlRemoteProcessActio
 					{
 						if (te32.th32OwnerProcessID == processId)
 						{
-							auto threadHandle = OpenThread(THREAD_SUSPEND_RESUME, FALSE, te32.th32ThreadID);
+							const auto threadHandle = OpenThread(THREAD_SUSPEND_RESUME, FALSE, te32.th32ThreadID);
 							if (threadHandle)
 							{
 								fn(threadHandle);

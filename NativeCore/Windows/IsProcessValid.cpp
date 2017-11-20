@@ -2,14 +2,14 @@
 
 #include "NativeCore.hpp"
 
-bool __stdcall IsProcessValid(RC_Pointer handle)
+bool RC_CallConv IsProcessValid(RC_Pointer handle)
 {
 	if (!handle || handle == INVALID_HANDLE_VALUE)
 	{
 		return false;
 	}
 
-	auto retn = WaitForSingleObject(handle, 0);
+	const auto retn = WaitForSingleObject(handle, 0);
 	if (retn == WAIT_FAILED)
 	{
 		return false;

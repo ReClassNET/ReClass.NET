@@ -5,7 +5,7 @@
 
 #include "NativeCore.hpp"
 
-void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
+void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
 {
 	if (callbackSection == nullptr && callbackModule == nullptr)
 	{
@@ -55,7 +55,7 @@ void __stdcall EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRe
 		address = reinterpret_cast<size_t>(memInfo.BaseAddress) + memInfo.RegionSize;
 	}
 
-	auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetProcessId(process));
+	const auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetProcessId(process));
 	if (handle != INVALID_HANDLE_VALUE)
 	{
 		MODULEENTRY32W me32 = {};

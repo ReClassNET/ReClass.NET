@@ -2,7 +2,7 @@
 
 #include "NativeCore.hpp"
 
-extern "C" bool ReadRemoteMemory(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int offset, int size)
+extern "C" bool RC_CallConv ReadRemoteMemory(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int offset, int size)
 {
 	iovec local[1];
 	iovec remote[1];

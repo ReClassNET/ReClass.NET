@@ -44,7 +44,7 @@ Platform GetProcessPlatform(HANDLE process)
 	return Platform::Unknown;
 }
 
-void __stdcall EnumerateProcesses(EnumerateProcessCallback callbackProcess)
+void RC_CallConv EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 {
 	if (callbackProcess == nullptr)
 	{
