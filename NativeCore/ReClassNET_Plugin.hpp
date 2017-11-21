@@ -261,10 +261,10 @@ struct DebugRegister7
 
 #pragma pack(pop)
 
-typedef void(__stdcall *EnumerateProcessCallback)(EnumerateProcessData* data);
+typedef void(RC_CallConv EnumerateProcessCallback)(EnumerateProcessData* data);
 
-typedef void(__stdcall EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
-typedef void(__stdcall EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
+typedef void(RC_CallConv EnumerateRemoteSectionsCallback)(EnumerateRemoteSectionData* data);
+typedef void(RC_CallConv EnumerateRemoteModulesCallback)(EnumerateRemoteModuleData* data);
 
 // Helpers
 
