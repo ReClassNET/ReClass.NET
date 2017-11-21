@@ -66,9 +66,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="exports.def" />
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Dependencies">
       <UniqueIdentifier>{9285bf7e-f1bc-42eb-b760-942eeefb0133}</UniqueIdentifier>
     </Filter>

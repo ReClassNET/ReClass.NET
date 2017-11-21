@@ -3,7 +3,7 @@
 
 #include "NativeCore.hpp"
 
-void RC_CallConv ControlRemoteProcess(RC_Pointer handle, ControlRemoteProcessAction action)
+extern "C" void RC_CallConv ControlRemoteProcess(RC_Pointer handle, ControlRemoteProcessAction action)
 {
 	if (action == ControlRemoteProcessAction::Suspend || action == ControlRemoteProcessAction::Resume)
 	{

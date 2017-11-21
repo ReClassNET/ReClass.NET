@@ -5,7 +5,12 @@
 
 #include "NativeCore.hpp"
 
-void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
+bool CompareAddress(const EnumerateRemoteSectionData& lhs, const LPVOID& rhs)
+{
+	return lhs.BaseAddress < rhs;
+}
+
+extern "C" void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
 {
 	if (callbackSection == nullptr && callbackModule == nullptr)
 	{
@@ -76,10 +81,7 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 
 				if (callbackSection != nullptr)
 				{
-					auto it = std::lower_bound(std::begin(sections), std::end(sections), static_cast<LPVOID>(me32.modBaseAddr), [&sections](const auto& lhs, const LPVOID& rhs)
-					{
-						return lhs.BaseAddress < rhs;
-					});
+					const auto it = std::lower_bound(std::begin(sections), std::end(sections), static_cast<LPVOID>(me32.modBaseAddr), CompareAddress);
 
 					IMAGE_DOS_HEADER DosHdr = {};
 					IMAGE_NT_HEADERS NtHdr = {};
@@ -93,7 +95,7 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 					{
 						auto&& sectionHeader = sectionHeaders[i];
 
-						auto sectionAddress = reinterpret_cast<size_t>(me32.modBaseAddr) + sectionHeader.VirtualAddress;
+						const auto sectionAddress = reinterpret_cast<size_t>(me32.modBaseAddr) + sectionHeader.VirtualAddress;
 						for (auto j = it; j != std::end(sections); ++j)
 						{
 							if (sectionAddress >= reinterpret_cast<size_t>(j->BaseAddress) && sectionAddress < reinterpret_cast<size_t>(j->BaseAddress) + static_cast<size_t>(j->Size))

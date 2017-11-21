@@ -189,9 +189,6 @@
     <ClCompile Include="WriteRemoteMemory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="exports.def" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\ReClassNET_Plugin.hpp" />
     <ClInclude Include="NativeCore.hpp" />
   </ItemGroup>
