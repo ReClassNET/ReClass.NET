@@ -2,7 +2,7 @@
 
 #include "NativeCore.hpp"
 
-extern "C" bool RC_CallConv IsProcessValid(RC_Pointer handle)
+bool RC_CallConv IsProcessValid(RC_Pointer handle)
 {
 	if (!handle || handle == INVALID_HANDLE_VALUE)
 	{

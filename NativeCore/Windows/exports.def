@@ -1,0 +1,19 @@
+LIBRARY
+EXPORTS
+	IsProcessValid
+	OpenRemoteProcess
+	CloseRemoteProcess
+	ReadRemoteMemory
+	WriteRemoteMemory
+	EnumerateProcesses
+	EnumerateRemoteSectionsAndModules
+	DisassembleCode
+	ControlRemoteProcess
+	AttachDebuggerToProcess
+	DetachDebuggerFromProcess
+	AwaitDebugEvent
+	HandleDebugEvent
+	SetHardwareBreakpoint
+	InitializeInput
+	GetPressedKeys
+	ReleaseInput

@@ -120,7 +120,7 @@ private:
 	std::vector<Keys> currentState;
 };
 
-extern "C" RC_Pointer RC_CallConv InitializeInput()
+RC_Pointer RC_CallConv InitializeInput()
 {
 	auto input = new DirectInput();
 	if (!input->Initialize())
@@ -132,12 +132,12 @@ extern "C" RC_Pointer RC_CallConv InitializeInput()
 	return static_cast<RC_Pointer>(input);
 }
 
-extern "C" bool RC_CallConv GetPressedKeys(RC_Pointer handle, Keys* keys[], int* count)
+bool RC_CallConv GetPressedKeys(RC_Pointer handle, Keys* keys[], int* count)
 {
 	return static_cast<DirectInput*>(handle)->ReadKeyboardState(keys, count);
 }
 
-extern "C" void RC_CallConv ReleaseInput(RC_Pointer handle)
+void RC_CallConv ReleaseInput(RC_Pointer handle)
 {
 	delete static_cast<DirectInput*>(handle);
 }

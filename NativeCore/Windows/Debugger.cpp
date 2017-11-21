@@ -3,7 +3,7 @@
 
 #include "NativeCore.hpp"
 
-extern "C" bool RC_CallConv AttachDebuggerToProcess(RC_Pointer id)
+bool RC_CallConv AttachDebuggerToProcess(RC_Pointer id)
 {
 	if (!DebugActiveProcess(static_cast<DWORD>(reinterpret_cast<size_t>(id))))
 	{
@@ -15,12 +15,12 @@ extern "C" bool RC_CallConv AttachDebuggerToProcess(RC_Pointer id)
 	return true;
 }
 
-extern "C" void RC_CallConv DetachDebuggerFromProcess(RC_Pointer id)
+void RC_CallConv DetachDebuggerFromProcess(RC_Pointer id)
 {
 	DebugActiveProcessStop(static_cast<DWORD>(reinterpret_cast<size_t>(id)));
 }
 
-extern "C" bool RC_CallConv AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
+bool RC_CallConv AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 {
 	DEBUG_EVENT _evt = { };
 	if (!WaitForDebugEvent(&_evt, timeoutInMilliseconds))
@@ -127,7 +127,7 @@ extern "C" bool RC_CallConv AwaitDebugEvent(DebugEvent* evt, int timeoutInMillis
 	return result;
 }
 
-extern "C" void RC_CallConv HandleDebugEvent(DebugEvent* evt)
+void RC_CallConv HandleDebugEvent(DebugEvent* evt)
 {
 	DWORD continueStatus = 0;
 	switch (evt->ContinueStatus)
@@ -143,7 +143,7 @@ extern "C" void RC_CallConv HandleDebugEvent(DebugEvent* evt)
 	ContinueDebugEvent(static_cast<DWORD>(reinterpret_cast<size_t>(evt->ProcessId)), static_cast<DWORD>(reinterpret_cast<size_t>(evt->ThreadId)), continueStatus);
 }
 
-extern "C" bool RC_CallConv SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
+bool RC_CallConv SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
 {
 	if (reg == HardwareBreakpointRegister::InvalidRegister)
 	{
