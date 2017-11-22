@@ -1,13 +1,13 @@
 WORKDIR = `pwd`
 
 CC = gcc
-CXX = g++
+CXX = gcc
 AR = ar
 LD = g++
 WINDRES = windres
 
 INC = -I../Dependencies/distorm/include
-CFLAGS = -Wall -fPIC -D RECLASSNET64=1
+CFLAGS = -Wall -fPIC -fpermissive -DRECLASSNET64=1
 RESINC =
 LIBDIR =
 LIB = -lstdc++fs
