@@ -1,6 +1,7 @@
 #include "DistormHelper.hpp"
 
 #include <distorm.h>
+#include <mnemonics.h>
 extern "C"
 {
 #include <../src/instructions.h>
