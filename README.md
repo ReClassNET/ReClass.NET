@@ -116,3 +116,4 @@ Settings
 - leveln
 - [buddyfavors](https://github.com/buddyfavors)
 - [DrP3pp3r](https://github.com/DrP3pp3r)
+- [ko1N](https://github.com/ko1N)
