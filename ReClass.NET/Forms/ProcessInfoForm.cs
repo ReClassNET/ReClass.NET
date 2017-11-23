@@ -3,6 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.Memory;
 using ReClassNET.Native;
@@ -33,26 +34,52 @@ namespace ReClassNET.Forms
 			{
 				moduleIconDataGridViewImageColumn.Visible = false;
 			}
+		}
 
-			if (Program.RemoteProcess.IsValid)
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			GlobalWindowManager.AddWindow(this);
+		}
+
+		protected override void OnFormClosed(FormClosedEventArgs e)
+		{
+			base.OnFormClosed(e);
+
+			GlobalWindowManager.RemoveWindow(this);
+		}
+
+		#region Event Handler
+
+		private async void ProcessInfoForm_Load(object sender, EventArgs e)
+		{
+			if (!Program.RemoteProcess.IsValid)
 			{
-				var sections = new DataTable();
-				sections.Columns.Add("address", typeof(string));
-				sections.Columns.Add("size", typeof(string));
-				sections.Columns.Add("name", typeof(string));
-				sections.Columns.Add("protection", typeof(string));
-				sections.Columns.Add("type", typeof(string));
-				sections.Columns.Add("module", typeof(string));
-				sections.Columns.Add("section", typeof(Section));
+				return;
+			}
 
-				var modules = new DataTable();
-				modules.Columns.Add("icon", typeof(Icon));
-				modules.Columns.Add("name", typeof(string));
-				modules.Columns.Add("address", typeof(string));
-				modules.Columns.Add("size", typeof(string));
-				modules.Columns.Add("path", typeof(string));
-				modules.Columns.Add("module", typeof(Module));
+			tabControl.Enabled = false;
 
+			var sections = new DataTable();
+			sections.Columns.Add("address", typeof(string));
+			sections.Columns.Add("size", typeof(string));
+			sections.Columns.Add("name", typeof(string));
+			sections.Columns.Add("protection", typeof(string));
+			sections.Columns.Add("type", typeof(string));
+			sections.Columns.Add("module", typeof(string));
+			sections.Columns.Add("section", typeof(Section));
+
+			var modules = new DataTable();
+			modules.Columns.Add("icon", typeof(Icon));
+			modules.Columns.Add("name", typeof(string));
+			modules.Columns.Add("address", typeof(string));
+			modules.Columns.Add("size", typeof(string));
+			modules.Columns.Add("path", typeof(string));
+			modules.Columns.Add("module", typeof(Module));
+
+			await Task.Run(() =>
+			{
 				Program.RemoteProcess.EnumerateRemoteSectionsAndModules(
 					delegate (Section section)
 					{
@@ -78,27 +105,13 @@ namespace ReClassNET.Forms
 						modules.Rows.Add(row);
 					}
 				);
+			});
 
-				sectionsDataGridView.DataSource = sections;
-				modulesDataGridView.DataSource = modules;
-			}
+			sectionsDataGridView.DataSource = sections;
+			modulesDataGridView.DataSource = modules;
+
+			tabControl.Enabled = true;
 		}
-
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-			GlobalWindowManager.AddWindow(this);
-		}
-
-		protected override void OnFormClosed(FormClosedEventArgs e)
-		{
-			base.OnFormClosed(e);
-
-			GlobalWindowManager.RemoveWindow(this);
-		}
-
-		#region Event Handler
 
 		private void SelectRow_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
 		{

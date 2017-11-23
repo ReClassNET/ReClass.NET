@@ -128,7 +128,7 @@
 			// 
 			// addressColumn
 			// 
-			this.addressColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.addressColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.addressColumn.DataPropertyName = "address";
 			this.addressColumn.HeaderText = "Address";
 			this.addressColumn.Name = "addressColumn";
@@ -137,7 +137,7 @@
 			// 
 			// sizeColumn
 			// 
-			this.sizeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.sizeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.sizeColumn.DataPropertyName = "size";
 			this.sizeColumn.HeaderText = "Size";
 			this.sizeColumn.Name = "sizeColumn";
@@ -146,7 +146,7 @@
 			// 
 			// nameColumn
 			// 
-			this.nameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.nameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.nameColumn.DataPropertyName = "name";
 			this.nameColumn.HeaderText = "Name";
 			this.nameColumn.Name = "nameColumn";
@@ -155,7 +155,7 @@
 			// 
 			// protectionColumn
 			// 
-			this.protectionColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.protectionColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.protectionColumn.DataPropertyName = "protection";
 			this.protectionColumn.HeaderText = "Protection";
 			this.protectionColumn.Name = "protectionColumn";
@@ -164,7 +164,7 @@
 			// 
 			// typeColumn
 			// 
-			this.typeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.typeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.typeColumn.DataPropertyName = "type";
 			this.typeColumn.HeaderText = "Type";
 			this.typeColumn.Name = "typeColumn";
@@ -252,7 +252,7 @@
 			// 
 			// moduleNameDataGridViewTextBoxColumn
 			// 
-			this.moduleNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.moduleNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.moduleNameDataGridViewTextBoxColumn.DataPropertyName = "name";
 			this.moduleNameDataGridViewTextBoxColumn.HeaderText = "Module";
 			this.moduleNameDataGridViewTextBoxColumn.Name = "moduleNameDataGridViewTextBoxColumn";
@@ -261,7 +261,7 @@
 			// 
 			// moduleAddressDataGridViewTextBoxColumn
 			// 
-			this.moduleAddressDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.moduleAddressDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.moduleAddressDataGridViewTextBoxColumn.DataPropertyName = "address";
 			this.moduleAddressDataGridViewTextBoxColumn.HeaderText = "Address";
 			this.moduleAddressDataGridViewTextBoxColumn.Name = "moduleAddressDataGridViewTextBoxColumn";
@@ -270,7 +270,7 @@
 			// 
 			// moduleSizeDataGridViewTextBoxColumn
 			// 
-			this.moduleSizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.moduleSizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.moduleSizeDataGridViewTextBoxColumn.DataPropertyName = "size";
 			this.moduleSizeDataGridViewTextBoxColumn.HeaderText = "Size";
 			this.moduleSizeDataGridViewTextBoxColumn.Name = "moduleSizeDataGridViewTextBoxColumn";
@@ -307,6 +307,7 @@
 			this.Name = "ProcessInfoForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "ReClass.NET - Process Informations";
+			this.Load += new System.EventHandler(this.ProcessInfoForm_Load);
 			this.contextMenuStrip.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.sectionsDataGridView)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox1)).EndInit();
