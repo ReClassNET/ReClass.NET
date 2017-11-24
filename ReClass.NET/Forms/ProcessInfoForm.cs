@@ -59,8 +59,6 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			tabControl.Enabled = false;
-
 			var sections = new DataTable();
 			sections.Columns.Add("address", typeof(string));
 			sections.Columns.Add("size", typeof(string));
@@ -109,8 +107,6 @@ namespace ReClassNET.Forms
 
 			sectionsDataGridView.DataSource = sections;
 			modulesDataGridView.DataSource = modules;
-
-			tabControl.Enabled = true;
 		}
 
 		private void SelectRow_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
