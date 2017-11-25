@@ -7,7 +7,7 @@ LD = g++
 WINDRES = windres
 
 INC = -I../Dependencies/distorm/include
-CFLAGS = -Wall -fPIC -fpermissive -DRECLASSNET64=1
+CFLAGS = -Wall -fPIC -DRECLASSNET64=1
 RESINC =
 LIBDIR =
 LIB = -lstdc++fs
