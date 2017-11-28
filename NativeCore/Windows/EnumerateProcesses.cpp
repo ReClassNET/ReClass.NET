@@ -29,7 +29,7 @@ Platform GetProcessPlatform(HANDLE process)
 		case PROCESSOR_ARCHITECTURE_INTEL:
 			return Platform::X86;
 		case PROCESSOR_ARCHITECTURE_AMD64:
-			BOOL isWow64 = FALSE;
+			auto isWow64 = FALSE;
 			if (IsWow64Process(process, &isWow64))
 			{
 				return isWow64 ? Platform::X86 : Platform::X64;
