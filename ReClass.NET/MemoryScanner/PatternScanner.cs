@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
+using ReClassNET.Core;
 using ReClassNET.Memory;
 using ReClassNET.Util;
 
@@ -105,23 +106,15 @@ namespace ReClassNET.MemoryScanner
 			try
 			{
 				var eip = handle.AddrOfPinnedObject();
-				var end = eip + size;
 
-				while (eip.CompareTo(end) == -1)
+				process.CoreFunctions.DisassembleCode(eip, size, IntPtr.Zero, true, (ref InstructionData instruction) =>
 				{
-					var res = process.CoreFunctions.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, IntPtr.Zero, true, out var instruction);
-					if (!res)
-					{
-						break;
-					}
-
 					for (var i = 0; i < instruction.Length; ++i)
 					{
 						data.Add(Tuple.Create(instruction.Data[i], i >= instruction.StaticInstructionBytes));
 					}
-
-					eip += instruction.Length;
-				}
+					return true;
+				});
 			}
 			finally
 			{

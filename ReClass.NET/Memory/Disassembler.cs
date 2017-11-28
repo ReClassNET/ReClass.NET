@@ -71,7 +71,15 @@ namespace ReClassNET.Memory
 
 			while (eip.CompareTo(end) == -1)
 			{
-				var res = coreFunctions.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, virtualAddress, false, out var instruction);
+				var instruction = default(InstructionData);
+
+				// Grab only one instruction.
+				var res = coreFunctions.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, virtualAddress, false, (ref InstructionData data) =>
+				{
+					instruction = data;
+
+					return false;
+				});
 				if (!res)
 				{
 					break;
@@ -170,64 +178,40 @@ namespace ReClassNET.Memory
 		/// <returns>The previous instruction.</returns>
 		private DisassembledInstruction GetPreviousInstruction(IntPtr address, IntPtr virtualAddress)
 		{
-			var end = address + 80;
+			var instruction = default(InstructionData);
 
-			var instruction = new InstructionData();
-
-			var x = GetPreviousInstructionHelper(end, 80, virtualAddress, ref instruction);
-			if (x != end)
+			foreach (var offset in new[] { 80, 40, 20, 10, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 })
 			{
-				x = GetPreviousInstructionHelper(end, 40, virtualAddress, ref instruction);
-				if (x != end)
+				var currentAddress = address - offset;
+
+				coreFunctions.DisassembleCode(currentAddress, offset + 1, virtualAddress - offset, false, (ref InstructionData data) =>
 				{
-					x = GetPreviousInstructionHelper(end, 20, virtualAddress, ref instruction);
-					if (x != end)
+					var nextAddress = currentAddress + data.Length;
+					if (nextAddress.CompareTo(address) > -1)
 					{
-						x = GetPreviousInstructionHelper(end, 10, virtualAddress, ref instruction);
-						if (x != end)
-						{
-							for (var i = 1; i < 15; ++i)
-							{
-								x = address + 65 + i;
-								if (coreFunctions.DisassembleCode(x, end.Sub(x).ToInt32() + 1, virtualAddress, false, out instruction))
-								{
-									if (x + instruction.Length == end)
-									{
-										break;
-									}
-								}
-							}
-						}
+						return false;
 					}
+
+					instruction = data;
+
+					currentAddress = nextAddress;
+
+					return true;
+				});
+
+				if (currentAddress == address)
+				{
+					return new DisassembledInstruction
+					{
+						Address = virtualAddress - instruction.Length,
+						Length = instruction.Length,
+						Data = instruction.Data,
+						Instruction = instruction.Instruction
+					};
 				}
 			}
 
-			return new DisassembledInstruction
-			{
-				Address = virtualAddress - instruction.Length,
-				Length = instruction.Length,
-				Data = instruction.Data,
-				Instruction = instruction.Instruction
-			};
-		}
-
-		private IntPtr GetPreviousInstructionHelper(IntPtr address, int distance, IntPtr virtualAddress, ref InstructionData instruction)
-		{
-			var x = address - distance;
-			var y = virtualAddress - distance;
-			while (x.CompareTo(address) == -1) // aka x < address
-			{
-				if (coreFunctions.DisassembleCode(x, address.Sub(x).ToInt32() + 1, y, false, out instruction))
-				{
-					x += instruction.Length;
-					y += instruction.Length;
-				}
-				else
-				{
-					break;
-				}
-			}
-			return x;
+			return null;
 		}
 
 		/// <summary>Tries to find the start address of the function <paramref name="address"/> points into.</summary>

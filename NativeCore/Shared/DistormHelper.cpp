@@ -7,18 +7,18 @@ extern "C"
 #include <../src/instructions.h>
 }
 
-bool AreOperandsStatic(_DInst *instruction, const int prefixLength)
+bool AreOperandsStatic(const _DInst &instruction, const int prefixLength)
 {
-	const auto fc = META_GET_FC(instruction->meta);
+	const auto fc = META_GET_FC(instruction.meta);
 	if (fc == FC_UNC_BRANCH || fc == FC_CND_BRANCH)
 	{
-		if (instruction->size - prefixLength < 5)
+		if (instruction.size - prefixLength < 5)
 		{
 			return true;
 		}
 	}
 
-	const auto ops = instruction->ops;
+	const auto ops = instruction.ops;
 	for (auto i = 0; i < OPERANDS_NO; i++)
 	{
 		switch (ops[i].type)
@@ -37,7 +37,7 @@ bool AreOperandsStatic(_DInst *instruction, const int prefixLength)
 		case O_DISP:
 		case O_SMEM:
 		case O_MEM:
-			if (instruction->dispSize < 32)
+			if (instruction.dispSize < 32)
 			{
 				continue;
 			}
@@ -58,12 +58,12 @@ bool AreOperandsStatic(_DInst *instruction, const int prefixLength)
 	return true;
 }
 
-int GetStaticInstructionBytes(_DInst *instruction, const uint8_t *data)
+int GetStaticInstructionBytes(const _DInst &instruction, const uint8_t *data)
 {
 	_CodeInfo info = {};
 	info.codeOffset = reinterpret_cast<_OffsetType>(data);
 	info.code = data;
-	info.codeLen = instruction->size;
+	info.codeLen = instruction.size;
 	info.features = DF_NONE;
 #ifdef RECLASSNET32
 	info.dt = Decode32Bits;
@@ -88,13 +88,13 @@ int GetStaticInstructionBytes(_DInst *instruction, const uint8_t *data)
 
 	if (AreOperandsStatic(instruction, prefixLength))
 	{
-		return instruction->size;
+		return instruction.size;
 	}
 
-	return instruction->size - info.codeLen;
+	return instruction.size - info.codeLen;
 }
 
-bool DisassembleCodeImpl(const RC_Pointer address, const RC_Size length, const RC_Pointer virtualAddress, const bool determineStaticInstructionBytes, InstructionData* instruction)
+_CodeInfo CreateCodeInfo(const RC_Pointer address, const RC_Size length, const RC_Pointer virtualAddress)
 {
 	_CodeInfo info = {};
 	info.codeOffset = reinterpret_cast<_OffsetType>(virtualAddress);
@@ -108,34 +108,27 @@ bool DisassembleCodeImpl(const RC_Pointer address, const RC_Size length, const R
 	info.dt = Decode64Bits;
 #endif
 
-	_DInst decodedInstructions[1] = {};
-	unsigned int instructionCount = 0;
+	return info;
+}
 
-	const auto res = distorm_decompose(&info, decodedInstructions, 1, &instructionCount);
-	if (res == DECRES_INPUTERR || !(res == DECRES_SUCCESS || res == DECRES_MEMORYERR) || instructionCount != 1)
-	{
-		return false;
-	}
-
-	_DecodedInst instructionInfo = {};
-	distorm_format(&info, &decodedInstructions[0], &instructionInfo);
-
-	instruction->Length = instructionInfo.size;
-	std::memcpy(instruction->Data, address, instructionInfo.size);
+void FillInstructionData(const RC_Pointer address, const _DInst& instruction, const _DecodedInst& instructionInfo, const bool determineStaticInstructionBytes, InstructionData* data)
+{
+	data->Length = instructionInfo.size;
+	std::memcpy(data->Data, address, instructionInfo.size);
 
 	MultiByteToUnicode(
 		reinterpret_cast<const char*>(instructionInfo.mnemonic.p),
-		instruction->Instruction,
+		data->Instruction,
 		instructionInfo.mnemonic.length
 	);
 	if (instructionInfo.operands.length != 0)
 	{
-		instruction->Instruction[instructionInfo.mnemonic.length] = ' ';
+		data->Instruction[instructionInfo.mnemonic.length] = ' ';
 
 		MultiByteToUnicode(
 			reinterpret_cast<const char*>(instructionInfo.operands.p),
 			0,
-			instruction->Instruction,
+			data->Instruction,
 			instructionInfo.mnemonic.length + 1,
 			std::min<int>(64 - 1 - instructionInfo.mnemonic.length, instructionInfo.operands.length)
 		);
@@ -143,15 +136,57 @@ bool DisassembleCodeImpl(const RC_Pointer address, const RC_Size length, const R
 
 	if (determineStaticInstructionBytes)
 	{
-		instruction->StaticInstructionBytes = GetStaticInstructionBytes(
-			&decodedInstructions[0],
+		data->StaticInstructionBytes = GetStaticInstructionBytes(
+			instruction,
 			reinterpret_cast<const uint8_t*>(address)
 		);
 	}
 	else
 	{
-		instruction->StaticInstructionBytes = -1;
+		data->StaticInstructionBytes = -1;
 	}
+}
 
-	return true;
+bool DisassembleInstructionsImpl(const RC_Pointer address, const RC_Size length, const RC_Pointer virtualAddress, const bool determineStaticInstructionBytes, EnumerateInstructionCallback callback)
+{
+	auto info = CreateCodeInfo(address, length, virtualAddress);
+
+	const unsigned MaxInstructions = 50;
+
+	_DInst decodedInstructions[MaxInstructions] = {};
+	unsigned count = 0;
+
+	while (true)
+	{
+		const auto res = distorm_decompose(&info, decodedInstructions, MaxInstructions, &count);
+		if (res == DECRES_INPUTERR)
+		{
+			return false;
+		}
+
+		for (auto i = 0u; i < count; ++i)
+		{
+			_DecodedInst instructionInfo = {};
+			distorm_format(&info, &decodedInstructions[i], &instructionInfo);
+
+			InstructionData data;
+			FillInstructionData(address, decodedInstructions[i], instructionInfo, determineStaticInstructionBytes, &data);
+
+			if (callback(&data) == false)
+			{
+				return true;
+			}
+		}
+
+		if (res == DECRES_SUCCESS || count == 0)
+		{
+			return true;
+		}
+
+		const auto offset = decodedInstructions[count - 1].addr - info.codeOffset;
+
+		info.codeOffset += offset;
+		info.code += offset;
+		info.codeLen -= offset;
+	}
 }

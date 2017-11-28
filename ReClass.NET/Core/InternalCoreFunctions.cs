@@ -7,6 +7,8 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Core
 {
+	public delegate bool EnumerateInstructionCallback(ref InstructionData data);
+
 	internal class InternalCoreFunctions : NativeCoreWrapper, IDisposable
 	{
 		private const string CoreFunctionsModuleWindows = "NativeCore.dll";
@@ -15,7 +17,7 @@ namespace ReClassNET.Core
 		private readonly IntPtr handle;
 
 		[return: MarshalAs(UnmanagedType.I1)]
-		private delegate bool DisassembleCodeDelegate(IntPtr address, IntPtr length, IntPtr virtualAddress, [MarshalAs(UnmanagedType.I1)] bool determineStaticInstructionBytes, out InstructionData instruction);
+		private delegate bool DisassembleCodeDelegate(IntPtr address, IntPtr length, IntPtr virtualAddress, [MarshalAs(UnmanagedType.I1)] bool determineStaticInstructionBytes, [MarshalAs(UnmanagedType.FunctionPtr)] EnumerateInstructionCallback callback);
 
 		private delegate IntPtr InitializeInputDelegate();
 
@@ -76,9 +78,9 @@ namespace ReClassNET.Core
 
 		#endregion
 
-		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, bool determineStaticInstructionBytes, out InstructionData instruction)
+		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, bool determineStaticInstructionBytes, EnumerateInstructionCallback callback)
 		{
-			return disassembleCodeDelegate(address, (IntPtr)length, virtualAddress, determineStaticInstructionBytes, out instruction);
+			return disassembleCodeDelegate(address, (IntPtr)length, virtualAddress, determineStaticInstructionBytes, callback);
 		}
 
 		public IntPtr InitializeInput()

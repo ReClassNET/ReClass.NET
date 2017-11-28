@@ -174,9 +174,9 @@ namespace ReClassNET.Core
 
 		#region Internal Core Functions
 
-		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, bool determineStaticInstructionBytes, out InstructionData instruction)
+		public bool DisassembleCode(IntPtr address, int length, IntPtr virtualAddress, bool determineStaticInstructionBytes, EnumerateInstructionCallback callback)
 		{
-			return internalCoreFunctions.DisassembleCode(address, length, virtualAddress, determineStaticInstructionBytes, out instruction);
+			return internalCoreFunctions.DisassembleCode(address, length, virtualAddress, determineStaticInstructionBytes, callback);
 		}
 
 		public IntPtr InitializeInput()
