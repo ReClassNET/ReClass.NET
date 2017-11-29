@@ -172,7 +172,7 @@ bool DisassembleInstructionsImpl(const RC_Pointer address, const RC_Size length,
 			_DecodedInst instructionInfo = {};
 			distorm_format(&info, &decodedInstructions[i], &instructionInfo);
 
-			InstructionData data;
+			InstructionData data = {};
 			FillInstructionData(instructionAddress, decodedInstructions[i], instructionInfo, determineStaticInstructionBytes, &data);
 
 			if (callback(&data) == false)
