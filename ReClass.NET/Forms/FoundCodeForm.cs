@@ -219,15 +219,20 @@ namespace ReClassNET.Forms
 			else
 			{
 				var disassembler = new Disassembler(process.CoreFunctions);
+
 				var causedByInstruction = disassembler.RemoteGetPreviousInstruction(process, context.Value.ExceptionAddress);
+				if (causedByInstruction == null)
+				{
+					return;
+				}
 
 				var instructions = new DisassembledInstruction[5];
 				instructions[2] = causedByInstruction;
 				instructions[1] = disassembler.RemoteGetPreviousInstruction(process, instructions[2].Address);
 				instructions[0] = disassembler.RemoteGetPreviousInstruction(process, instructions[1].Address);
 
-				int i = 3;
-				foreach (var instruction in disassembler.RemoteDisassembleCode(process, context.Value.ExceptionAddress, 30).Take(2))
+				var i = 3;
+				foreach (var instruction in disassembler.RemoteDisassembleCode(process, context.Value.ExceptionAddress, 2 * Disassembler.MaximumInstructionLength, 2))
 				{
 					instructions[i++] = instruction;
 				}
