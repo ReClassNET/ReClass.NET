@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Runtime.InteropServices;
 using ReClassNET.Core;
 using ReClassNET.Util;
@@ -10,6 +9,9 @@ namespace ReClassNET.Memory
 {
 	public class Disassembler
 	{
+		// The maximum number of bytes of a x86-64 instruction.
+		public const int MaximumInstructionLength = 15;
+
 		private readonly CoreFunctionsManager coreFunctions;
 
 		public Disassembler(CoreFunctionsManager coreFunctions)
@@ -22,31 +24,55 @@ namespace ReClassNET.Memory
 		/// <summary>Disassembles the code in the given range (<paramref name="address"/>, <paramref name="length"/>) in the remote process.</summary>
 		/// <param name="process">The process to read from.</param>
 		/// <param name="address">The address of the code.</param>
-		/// <param name="length">The length of the code.</param>
+		/// <param name="length">The length of the code in bytes.</param>
 		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
-		public IEnumerable<DisassembledInstruction> RemoteDisassembleCode(RemoteProcess process, IntPtr address, int length)
+		public IList<DisassembledInstruction> RemoteDisassembleCode(RemoteProcess process, IntPtr address, int length)
 		{
 			Contract.Requires(process != null);
-			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
+			Contract.Ensures(Contract.Result<IList<DisassembledInstruction>>() != null);
+
+			return RemoteDisassembleCode(process, address, length, -1);
+		}
+
+		/// <summary>Disassembles the code in the given range (<paramref name="address"/>, <paramref name="length"/>) in the remote process.</summary>
+		/// <param name="process">The process to read from.</param>
+		/// <param name="address">The address of the code.</param>
+		/// <param name="length">The length of the code in bytes.</param>
+		/// <param name="maxInstructions">The maximum number of instructions to disassemble. If <paramref name="maxInstructions"/> is -1, all available instructions get returned.</param>
+		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
+		public IList<DisassembledInstruction> RemoteDisassembleCode(RemoteProcess process, IntPtr address, int length, int maxInstructions)
+		{
+			Contract.Requires(process != null);
+			Contract.Ensures(Contract.Result<IList<DisassembledInstruction>>() != null);
 
 			var buffer = process.ReadRemoteMemory(address, length);
 
-			return DisassembleCode(buffer, address);
+			return DisassembleCode(buffer, address, maxInstructions);
 		}
 
 		/// <summary>Disassembles the code in the given data.</summary>
 		/// <param name="data">The data to disassemble.</param>
 		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
+		/// <param name="maxInstructions">The maximum number of instructions to disassemble. If <paramref name="maxInstructions"/> is -1, all available instructions get returned.</param>
 		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
-		public IEnumerable<DisassembledInstruction> DisassembleCode(byte[] data, IntPtr virtualAddress)
+		public IList<DisassembledInstruction> DisassembleCode(byte[] data, IntPtr virtualAddress, int maxInstructions)
 		{
 			Contract.Requires(data != null);
-			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
+			Contract.Ensures(Contract.Result<IList<DisassembledInstruction>>() != null);
 
 			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
 			try
 			{
-				return DisassembleCode(handle.AddrOfPinnedObject(), data.Length, virtualAddress);
+				var instructions = new List<DisassembledInstruction>();
+
+				coreFunctions.DisassembleCode(handle.AddrOfPinnedObject(), data.Length, virtualAddress, false, (ref InstructionData instruction) =>
+				{
+					instructions.Add(new DisassembledInstruction(ref instruction));
+
+					return maxInstructions == -1 || instructions.Count < maxInstructions;
+				});
+
+				return instructions;
 			}
 			finally
 			{
@@ -54,41 +80,6 @@ namespace ReClassNET.Memory
 				{
 					handle.Free();
 				}
-			}
-		}
-
-		/// <summary>Disassembles the code in the given range (<paramref name="address"/>, <paramref name="length"/>).</summary>
-		/// <param name="address">The address of the code.</param>
-		/// <param name="length">The length of the code.</param>
-		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
-		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
-		public IEnumerable<DisassembledInstruction> DisassembleCode(IntPtr address, int length, IntPtr virtualAddress)
-		{
-			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
-
-			var eip = address;
-			var end = address + length;
-
-			while (eip.CompareTo(end) == -1)
-			{
-				var instruction = default(InstructionData);
-
-				// Grab only one instruction.
-				var res = coreFunctions.DisassembleCode(eip, end.Sub(eip).ToInt32() + 1, virtualAddress, false, (ref InstructionData data) =>
-				{
-					instruction = data;
-
-					return false;
-				});
-				if (!res)
-				{
-					break;
-				}
-
-				yield return new DisassembledInstruction(ref instruction);
-
-				eip += instruction.Length;
-				virtualAddress += instruction.Length;
 			}
 		}
 
@@ -119,7 +110,22 @@ namespace ReClassNET.Memory
 			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
 			try
 			{
-				return DisassembleFunction(handle.AddrOfPinnedObject(), data.Length, virtualAddress);
+				var instructions = new List<DisassembledInstruction>();
+
+				// Read until first CC.
+				coreFunctions.DisassembleCode(handle.AddrOfPinnedObject(), data.Length, virtualAddress, false, (ref InstructionData result) =>
+				{
+					if (result.Length == 1 && result.Data[0] == 0xCC)
+					{
+						return false;
+					}
+
+					instructions.Add(new DisassembledInstruction(ref result));
+
+					return true;
+				});
+
+				return instructions;
 			}
 			finally
 			{
@@ -128,33 +134,6 @@ namespace ReClassNET.Memory
 					handle.Free();
 				}
 			}
-		}
-
-		/// <summary>Disassembles the code in the given range (<paramref name="address"/>, <paramref name="maxLength"/>) until the first 0xCC instruction.</summary>
-		/// <param name="address">The address of the code.</param>
-		/// <param name="maxLength">The maxLength of the code.</param>
-		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
-		/// <returns>A list of <see cref="DisassembledInstruction"/> which belong to the function.</returns>
-		public IList<DisassembledInstruction> DisassembleFunction(IntPtr address, int maxLength, IntPtr virtualAddress)
-		{
-			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
-
-			var instructions = new List<DisassembledInstruction>();
-
-			// Read until first CC.
-			coreFunctions.DisassembleCode(address, maxLength, virtualAddress, false, (ref InstructionData data) =>
-			{
-				if (data.Length == 1 && data.Data[0] == 0xCC)
-				{
-					return false;
-				}
-
-				instructions.Add(new DisassembledInstruction(ref data));
-
-				return true;
-			});
-
-			return instructions;
 		}
 
 		/// <summary>Tries to find and disassembles the instruction prior to the given address.</summary>
@@ -163,12 +142,48 @@ namespace ReClassNET.Memory
 		/// <returns>The prior instruction.</returns>
 		public DisassembledInstruction RemoteGetPreviousInstruction(RemoteProcess process, IntPtr address)
 		{
-			var buffer = process.ReadRemoteMemory(address - 80, 95);
+			var buffer = process.ReadRemoteMemory(address - 6 * MaximumInstructionLength, 7 * MaximumInstructionLength);
 
 			var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 			try
 			{
-				return GetPreviousInstruction(handle.AddrOfPinnedObject(), address);
+				var bufferAddress = handle.AddrOfPinnedObject();
+
+				var instruction = default(InstructionData);
+
+				foreach (var offset in new[]
+				{
+					6 * MaximumInstructionLength,
+					4 * MaximumInstructionLength,
+					2 * MaximumInstructionLength,
+					MaximumInstructionLength,
+					14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+				})
+				{
+					var currentAddress = bufferAddress - offset;
+
+					coreFunctions.DisassembleCode(currentAddress, offset + 1, address - offset, false, (ref InstructionData data) =>
+					{
+						var nextAddress = currentAddress + data.Length;
+						if (nextAddress.CompareTo(address) > -1)
+						{
+							return false;
+						}
+
+						instruction = data;
+
+						currentAddress = nextAddress;
+
+						return true;
+					});
+
+					if (currentAddress == address)
+					{
+						return new DisassembledInstruction(ref instruction);
+					}
+				}
+
+				return null;
 			}
 			finally
 			{
@@ -177,42 +192,6 @@ namespace ReClassNET.Memory
 					handle.Free();
 				}
 			}
-		}
-
-		/// <summary>Gets the previous instruction.</summary>
-		/// <param name="address">The address of the code.</param>
-		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
-		/// <returns>The previous instruction.</returns>
-		private DisassembledInstruction GetPreviousInstruction(IntPtr address, IntPtr virtualAddress)
-		{
-			var instruction = default(InstructionData);
-
-			foreach (var offset in new[] { 80, 40, 20, 10, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 })
-			{
-				var currentAddress = address - offset;
-
-				coreFunctions.DisassembleCode(currentAddress, offset + 1, virtualAddress - offset, false, (ref InstructionData data) =>
-				{
-					var nextAddress = currentAddress + data.Length;
-					if (nextAddress.CompareTo(address) > -1)
-					{
-						return false;
-					}
-
-					instruction = data;
-
-					currentAddress = nextAddress;
-
-					return true;
-				});
-
-				if (currentAddress == address)
-				{
-					return new DisassembledInstruction(ref instruction);
-				}
-			}
-
-			return null;
 		}
 
 		/// <summary>Tries to find the start address of the function <paramref name="address"/> points into.</summary>
@@ -247,9 +226,17 @@ namespace ReClassNET.Memory
 							if (prevInstruction.Length == 1 && prevInstruction.Data[0] == 0xCC)
 							{
 								// Disassemble the code from the start and check if the instructions sum up to address.
-								var length = RemoteDisassembleCode(process, start, address.Sub(start).ToInt32())
-									.Select(inst => inst.Length)
-									.Sum();
+								var length = 0;
+								var res = coreFunctions.DisassembleCode(start, address.Sub(start).ToInt32(), IntPtr.Zero, false, (ref InstructionData data) =>
+								{
+									length += data.Length;
+
+									return true;
+								});
+								if (!res)
+								{
+									continue;
+								}
 
 								if (start + length == address)
 								{
