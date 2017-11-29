@@ -85,13 +85,7 @@ namespace ReClassNET.Memory
 					break;
 				}
 
-				yield return new DisassembledInstruction
-				{
-					Address = virtualAddress,
-					Length = instruction.Length,
-					Data = instruction.Data,
-					Instruction = instruction.Instruction
-				};
+				yield return new DisassembledInstruction(ref instruction);
 
 				eip += instruction.Length;
 				virtualAddress += instruction.Length;
@@ -102,8 +96,8 @@ namespace ReClassNET.Memory
 		/// <param name="process">The process to read from.</param>
 		/// <param name="address">The address of the code.</param>
 		/// <param name="maxLength">The maximum maxLength of the code.</param>
-		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
-		public IEnumerable<DisassembledInstruction> RemoteDisassembleFunction(RemoteProcess process, IntPtr address, int maxLength)
+		/// <returns>A list of <see cref="DisassembledInstruction"/> which belong to the function.</returns>
+		public IList<DisassembledInstruction> RemoteDisassembleFunction(RemoteProcess process, IntPtr address, int maxLength)
 		{
 			Contract.Requires(process != null);
 			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
@@ -116,8 +110,8 @@ namespace ReClassNET.Memory
 		/// <summary>Disassembles the code in the given data.</summary>
 		/// <param name="data">The data to disassemble.</param>
 		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
-		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
-		public IEnumerable<DisassembledInstruction> DisassembleFunction(byte[] data, IntPtr virtualAddress)
+		/// <returns>A list of <see cref="DisassembledInstruction"/> which belong to the function.</returns>
+		public IList<DisassembledInstruction> DisassembleFunction(byte[] data, IntPtr virtualAddress)
 		{
 			Contract.Requires(data != null);
 			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
@@ -140,14 +134,27 @@ namespace ReClassNET.Memory
 		/// <param name="address">The address of the code.</param>
 		/// <param name="maxLength">The maxLength of the code.</param>
 		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
-		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
-		public IEnumerable<DisassembledInstruction> DisassembleFunction(IntPtr address, int maxLength, IntPtr virtualAddress)
+		/// <returns>A list of <see cref="DisassembledInstruction"/> which belong to the function.</returns>
+		public IList<DisassembledInstruction> DisassembleFunction(IntPtr address, int maxLength, IntPtr virtualAddress)
 		{
 			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
 
+			var instructions = new List<DisassembledInstruction>();
+
 			// Read until first CC.
-			return DisassembleCode(address, maxLength, virtualAddress)
-				.TakeWhile(i => !(i.Length == 1 && i.Data[0] == 0xCC));
+			coreFunctions.DisassembleCode(address, maxLength, virtualAddress, false, (ref InstructionData data) =>
+			{
+				if (data.Length == 1 && data.Data[0] == 0xCC)
+				{
+					return false;
+				}
+
+				instructions.Add(new DisassembledInstruction(ref data));
+
+				return true;
+			});
+
+			return instructions;
 		}
 
 		/// <summary>Tries to find and disassembles the instruction prior to the given address.</summary>
@@ -201,13 +208,7 @@ namespace ReClassNET.Memory
 
 				if (currentAddress == address)
 				{
-					return new DisassembledInstruction
-					{
-						Address = virtualAddress - instruction.Length,
-						Length = instruction.Length,
-						Data = instruction.Data,
-						Instruction = instruction.Instruction
-					};
+					return new DisassembledInstruction(ref instruction);
 				}
 			}
 
@@ -274,12 +275,20 @@ namespace ReClassNET.Memory
 
 	public class DisassembledInstruction
 	{
-		public IntPtr Address;
-		public int Length;
-		public byte[] Data;
-		public string Instruction;
+		public IntPtr Address { get; set; }
+		public int Length { get; set; }
+		public byte[] Data { get; set; }
+		public string Instruction { get; set; }
 
 		public bool IsValid => Length > 0;
+
+		public DisassembledInstruction(ref InstructionData data)
+		{
+			Address = data.Address;
+			Length = data.Length;
+			Data = data.Data;
+			Instruction = data.Instruction;
+		}
 
 		public override string ToString() => $"{Address.ToString(Constants.StringHexFormat)} - {Instruction}";
 	}

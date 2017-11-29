@@ -64,6 +64,8 @@ namespace ReClassNET.Core
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
 	public struct InstructionData
 	{
+		public IntPtr Address;
+
 		public int Length;
 
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 15)]

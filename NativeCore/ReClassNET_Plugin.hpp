@@ -132,6 +132,7 @@ struct EnumerateProcessData
 
 struct InstructionData
 {
+	RC_Pointer Address;
 	int Length;
 	uint8_t Data[15];
 	int StaticInstructionBytes;

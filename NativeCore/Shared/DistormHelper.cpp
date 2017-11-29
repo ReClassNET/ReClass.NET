@@ -113,6 +113,7 @@ _CodeInfo CreateCodeInfo(const RC_Pointer address, const RC_Size length, const R
 
 void FillInstructionData(const RC_Pointer address, const _DInst& instruction, const _DecodedInst& instructionInfo, const bool determineStaticInstructionBytes, InstructionData* data)
 {
+	data->Address = reinterpret_cast<RC_Pointer>(instruction.addr);
 	data->Length = instructionInfo.size;
 	std::memcpy(data->Data, address, instructionInfo.size);
 
@@ -156,6 +157,8 @@ bool DisassembleInstructionsImpl(const RC_Pointer address, const RC_Size length,
 	_DInst decodedInstructions[MaxInstructions] = {};
 	unsigned count = 0;
 
+	auto instructionAddress = static_cast<uint8_t*>(address);
+
 	while (true)
 	{
 		const auto res = distorm_decompose(&info, decodedInstructions, MaxInstructions, &count);
@@ -170,12 +173,14 @@ bool DisassembleInstructionsImpl(const RC_Pointer address, const RC_Size length,
 			distorm_format(&info, &decodedInstructions[i], &instructionInfo);
 
 			InstructionData data;
-			FillInstructionData(address, decodedInstructions[i], instructionInfo, determineStaticInstructionBytes, &data);
+			FillInstructionData(instructionAddress, decodedInstructions[i], instructionInfo, determineStaticInstructionBytes, &data);
 
 			if (callback(&data) == false)
 			{
 				return true;
 			}
+
+			instructionAddress += decodedInstructions[i].size;
 		}
 
 		if (res == DECRES_SUCCESS || count == 0)
@@ -183,7 +188,7 @@ bool DisassembleInstructionsImpl(const RC_Pointer address, const RC_Size length,
 			return true;
 		}
 
-		const auto offset = decodedInstructions[count - 1].addr - info.codeOffset;
+		const auto offset = static_cast<unsigned>(decodedInstructions[count - 1].addr - info.codeOffset);
 
 		info.codeOffset += offset;
 		info.code += offset;
