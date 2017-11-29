@@ -58,8 +58,7 @@ namespace ReClassNET.CodeGenerator
 						csb.Append($"class {c.Name}");
 
 						bool skipFirstMember = false;
-						var inheritedFromNode = c.Nodes.FirstOrDefault() as ClassInstanceNode;
-						if (inheritedFromNode != null)
+						if (c.Nodes.FirstOrDefault() is ClassInstanceNode inheritedFromNode)
 						{
 							skipFirstMember = true;
 

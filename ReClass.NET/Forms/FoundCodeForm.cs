@@ -17,8 +17,8 @@ namespace ReClassNET.Forms
 	{
 		private class FoundCodeInfo
 		{
-			public ExceptionDebugInfo DebugInfo;
-			public DisassembledInstruction[] Instructions;
+			public ExceptionDebugInfo DebugInfo { get; set; }
+			public DisassembledInstruction[] Instructions { get; set; }
 		}
 
 		public delegate void StopEventHandler(object sender, EventArgs e);

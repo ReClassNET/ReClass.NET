@@ -6,6 +6,7 @@ namespace ReClassNET.Debugger
 {
 	public delegate void BreakpointHandler(IBreakpoint breakpoint, ref DebugEvent evt);
 
+	[ContractClass(typeof(BreakpointContract))]
 	public interface IBreakpoint
 	{
 		IntPtr Address { get; }
@@ -17,7 +18,7 @@ namespace ReClassNET.Debugger
 	}
 
 	[ContractClassFor(typeof(IBreakpoint))]
-	internal abstract class IBreakpointContract : IBreakpoint
+	internal abstract class BreakpointContract : IBreakpoint
 	{
 		public IntPtr Address => throw new NotImplementedException();
 

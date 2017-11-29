@@ -78,8 +78,7 @@ namespace ReClassNET.Symbols
 		{
 			Contract.Ensures(diaSession != null);
 
-			IDiaSession session;
-			diaSource.Interface.openSession(out session);
+			diaSource.Interface.openSession(out var session);
 
 			diaSession = new ComDisposableWrapper<IDiaSession>(session);
 		}
@@ -90,8 +89,7 @@ namespace ReClassNET.Symbols
 
 			var rva = address.Sub(module.Start);
 
-			IDiaSymbol diaSymbol;
-			diaSession.Interface.findSymbolByRVA((uint)rva.ToInt32(), SymTagEnum.SymTagNull, out diaSymbol);
+			diaSession.Interface.findSymbolByRVA((uint)rva.ToInt32(), SymTagEnum.SymTagNull, out var diaSymbol);
 			if (diaSymbol != null)
 			{
 				using (var symbol = new ComDisposableWrapper<IDiaSymbol>(diaSymbol))

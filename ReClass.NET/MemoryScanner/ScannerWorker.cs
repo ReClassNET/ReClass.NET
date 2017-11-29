@@ -60,7 +60,7 @@ namespace ReClassNET.MemoryScanner
 			foreach (var previous in results)
 			{
 				var offset = previous.Address.ToInt32();
-				if (offset + comparer.ValueSize <= count)
+				if (offset <= endIndex)
 				{
 					if (comparer.Compare(data, offset, previous, out var result))
 					{

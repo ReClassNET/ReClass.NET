@@ -9,7 +9,7 @@ namespace ReClassNET.AddressParser
 {
 	class Interpreter
 	{
-		public IntPtr Execute(Operation operation, RemoteProcess process)
+		public IntPtr Execute(IOperation operation, RemoteProcess process)
 		{
 			Contract.Requires(operation != null);
 			Contract.Requires(process != null);

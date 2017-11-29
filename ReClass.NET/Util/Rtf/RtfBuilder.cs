@@ -9,23 +9,23 @@ namespace ReClassNET.Util.Rtf
 {
 	public partial class RtfBuilder
 	{
-		private static readonly char[] slashable = new[] { '{', '}', '\\' };
+		private static readonly char[] slashable = { '{', '}', '\\' };
 
 		private readonly StringBuilder buffer;
 
-		protected readonly Color DefaultForeColor = Color.Black;
-		protected readonly Color DefaultBackColor = Color.Empty;
-		protected readonly float DefaultFontSize;
+		private readonly Color defaultForeColor = Color.Black;
+		private readonly Color defaultBackColor = Color.Empty;
+		private readonly float defaultFontSize;
 
 		private readonly List<Color> usedColors = new List<Color>();
 		private readonly List<string> usedFonts = new List<string>();
 
-		protected Color foreColor;
-		protected Color backColor;
+		private Color foreColor;
+		private Color backColor;
 
-		protected int fontIndex;
-		protected float fontSize;
-		protected FontStyle fontStyle;
+		private int fontIndex;
+		private float fontSize;
+		private FontStyle fontStyle;
 
 		protected bool isLocked;
 
@@ -41,15 +41,15 @@ namespace ReClassNET.Util.Rtf
 
 			fontIndex = IndexOfFont(defaultFont);
 
-			DefaultFontSize = defaultFontSize;
+			this.defaultFontSize = defaultFontSize;
 			fontSize = defaultFontSize;
 
-			usedColors.Add(DefaultForeColor);
-			usedColors.Add(DefaultBackColor);
+			usedColors.Add(defaultForeColor);
+			usedColors.Add(defaultBackColor);
 
 			fontStyle = FontStyle.Regular;
-			foreColor = DefaultForeColor;
-			backColor = DefaultBackColor;
+			foreColor = defaultForeColor;
+			backColor = defaultBackColor;
 		}
 
 		public RtfBuilder Append(char value)
@@ -271,7 +271,7 @@ namespace ReClassNET.Util.Rtf
 
 			sb.Append(@"\viewkind4\uc1\pard\plain\f0");
 
-			sb.AppendFormat(@"\fs{0} ", DefaultFontSize);
+			sb.AppendFormat(@"\fs{0} ", defaultFontSize);
 			sb.AppendLine();
 
 			sb.Append(buffer);

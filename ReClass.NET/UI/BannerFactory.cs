@@ -31,8 +31,7 @@ namespace ReClassNET.UI
 
 			var bannerId = $"{bannerWidth}x{bannerHeight}:{title}:{text}";
 
-			Image image;
-			if (skipCache || !imageCache.TryGetValue(bannerId, out image))
+			if (skipCache || !imageCache.TryGetValue(bannerId, out var image))
 			{
 				image = new Bitmap(bannerWidth, bannerHeight, PixelFormat.Format24bppRgb);
 				using (var g = Graphics.FromImage(image))

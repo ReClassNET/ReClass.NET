@@ -30,7 +30,6 @@ namespace ReClassNET.MemoryScanner.Comparer
 		bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result);
 	}
 
-
 	[ContractClassFor(typeof(IScanComparer))]
 	internal abstract class ScanComparerContract : IScanComparer
 	{
@@ -50,7 +49,7 @@ namespace ReClassNET.MemoryScanner.Comparer
 			Contract.Requires(data != null);
 			Contract.Requires(index >= 0);
 
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
@@ -59,7 +58,7 @@ namespace ReClassNET.MemoryScanner.Comparer
 			Contract.Requires(index >= 0);
 			Contract.Requires(previous != null);
 
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 	}
 }

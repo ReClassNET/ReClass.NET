@@ -4,7 +4,6 @@ using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using ReClassNET.Core;
 using ReClassNET.Memory;
-using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner
 {

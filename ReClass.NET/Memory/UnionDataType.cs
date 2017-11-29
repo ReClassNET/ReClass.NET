@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace ReClassNET.Memory
 {
 	[StructLayout(LayoutKind.Explicit)]
-	struct UInt8Data
+	public struct UInt8Data
 	{
 		[FieldOffset(0)]
 		public sbyte SByteValue;
@@ -14,7 +14,7 @@ namespace ReClassNET.Memory
 	}
 
 	[StructLayout(LayoutKind.Explicit)]
-	struct UInt16Data
+	public struct UInt16Data
 	{
 		[FieldOffset(0)]
 		public short ShortValue;
@@ -24,7 +24,7 @@ namespace ReClassNET.Memory
 	}
 
 	[StructLayout(LayoutKind.Explicit)]
-	struct UInt32FloatData
+	public struct UInt32FloatData
 	{
 		[FieldOffset(0)]
 		public int IntValue;
@@ -41,26 +41,26 @@ namespace ReClassNET.Memory
 	}
 
 	[StructLayout(LayoutKind.Explicit)]
-	struct UInt64FloatDoubleData
+	public struct UInt64FloatDoubleData
 	{
 		[FieldOffset(0)]
 		public long LongValue;
 
 		public IntPtr IntPtr =>
-#if WIN32
+#if RECLASSNET32
 			unchecked((IntPtr)(int)LongValue);
 #else
-			unchecked((IntPtr)LongValue);
+			(IntPtr)LongValue;
 #endif
 
 		[FieldOffset(0)]
 		public ulong ULongValue;
 
 		public UIntPtr UIntPtr =>
-#if WIN32
+#if RECLASSNET32
 			unchecked((UIntPtr)(uint)ULongValue);
 #else
-			unchecked((UIntPtr)ULongValue);
+			(UIntPtr)ULongValue;
 #endif
 
 		[FieldOffset(0)]

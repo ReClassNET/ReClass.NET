@@ -59,7 +59,7 @@ namespace ReClassNET.UI
 				classNode = value;
 
 				VerticalScroll.Value = 0;
-				if (classNode != null && Memory != null && Memory.Process != null)
+				if (classNode != null && Memory?.Process != null)
 				{
 					classNode.UpdateAddress(Memory.Process);
 				}

@@ -704,7 +704,7 @@ namespace ReClassNET.Forms
 			Contract.Requires(project != null);
 			Contract.Ensures(Contract.ValueAtReturn(out project) != null);
 
-			IReClassImport import = null;
+			IReClassImport import;
 			switch (Path.GetExtension(path)?.ToLower())
 			{
 				case ReClassNetFile.FileExtension:

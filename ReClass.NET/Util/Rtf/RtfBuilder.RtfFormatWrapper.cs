@@ -42,7 +42,7 @@ namespace ReClassNET.Util.Rtf
 					buffer.Append(@"\strike");
 				}
 
-				if (builder.fontSize != builder.DefaultFontSize)
+				if (builder.fontSize != builder.defaultFontSize)
 				{
 					buffer.AppendFormat(@"\fs{0}", builder.fontSize);
 				}
@@ -50,11 +50,11 @@ namespace ReClassNET.Util.Rtf
 				{
 					buffer.AppendFormat(@"\f{0}", builder.fontIndex);
 				}
-				if (builder.foreColor != builder.DefaultForeColor)
+				if (builder.foreColor != builder.defaultForeColor)
 				{
 					buffer.AppendFormat(@"\cf{0}", builder.IndexOfColor(builder.foreColor));
 				}
-				if (builder.backColor != builder.DefaultBackColor)
+				if (builder.backColor != builder.defaultBackColor)
 				{
 					buffer.AppendFormat(@"\highlight{0}", builder.IndexOfColor(builder.backColor));
 				}
@@ -95,11 +95,11 @@ namespace ReClassNET.Util.Rtf
 
 				builder.fontStyle = FontStyle.Regular;
 
-				if (builder.fontSize != builder.DefaultFontSize)
+				if (builder.fontSize != builder.defaultFontSize)
 				{
-					builder.fontSize = builder.DefaultFontSize;
+					builder.fontSize = builder.defaultFontSize;
 
-					buffer.AppendFormat(@"\fs{0} ", builder.DefaultFontSize);
+					buffer.AppendFormat(@"\fs{0} ", builder.defaultFontSize);
 				}
 				if (builder.fontIndex != 0)
 				{
@@ -108,15 +108,15 @@ namespace ReClassNET.Util.Rtf
 					builder.fontIndex = 0;
 				}
 
-				if (builder.foreColor != builder.DefaultForeColor)
+				if (builder.foreColor != builder.defaultForeColor)
 				{
-					builder.foreColor = builder.DefaultForeColor;
+					builder.foreColor = builder.defaultForeColor;
 
 					buffer.Append(@"\cf0");
 				}
-				if (builder.backColor != builder.DefaultBackColor)
+				if (builder.backColor != builder.defaultBackColor)
 				{
-					builder.backColor = builder.DefaultBackColor;
+					builder.backColor = builder.defaultBackColor;
 
 					buffer.Append(@"\highlight0");
 				}

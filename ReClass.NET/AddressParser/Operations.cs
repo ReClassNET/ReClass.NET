@@ -5,12 +5,12 @@ using System.Diagnostics.Contracts;
 
 namespace ReClassNET.AddressParser
 {
-	interface Operation
+	internal interface IOperation
 	{
 
 	}
 
-	class OffsetOperation : Operation
+	internal class OffsetOperation : IOperation
 	{
 		public OffsetOperation(IntPtr value)
 		{
@@ -21,8 +21,7 @@ namespace ReClassNET.AddressParser
 
 		public override bool Equals(object obj)
 		{
-			var other = obj as OffsetOperation;
-			if (other != null)
+			if (obj is OffsetOperation other)
 			{
 				return Value.Equals(other.Value);
 			}
@@ -38,21 +37,21 @@ namespace ReClassNET.AddressParser
 		}
 	}
 
-	class ReadPointerOperation : Operation
+	internal class ReadPointerOperation : IOperation
 	{
-		public ReadPointerOperation(Operation argument)
+		public ReadPointerOperation(IOperation argument)
 		{
 			Contract.Requires(argument != null);
 
 			Argument = argument;
 		}
 
-		public Operation Argument { get; }
+		public IOperation Argument { get; }
 	}
 
-	class AdditionOperation : Operation
+	internal class AdditionOperation : IOperation
 	{
-		public AdditionOperation(Operation argument1, Operation argument2)
+		public AdditionOperation(IOperation argument1, IOperation argument2)
 		{
 			Contract.Requires(argument1 != null);
 			Contract.Requires(argument2 != null);
@@ -61,13 +60,13 @@ namespace ReClassNET.AddressParser
 			Argument2 = argument2;
 		}
 
-		public Operation Argument1 { get; }
-		public Operation Argument2 { get; }
+		public IOperation Argument1 { get; }
+		public IOperation Argument2 { get; }
 	}
 
-	class SubtractionOperation : Operation
+	internal class SubtractionOperation : IOperation
 	{
-		public SubtractionOperation(Operation argument1, Operation argument2)
+		public SubtractionOperation(IOperation argument1, IOperation argument2)
 		{
 			Contract.Requires(argument1 != null);
 			Contract.Requires(argument2 != null);
@@ -76,13 +75,13 @@ namespace ReClassNET.AddressParser
 			Argument2 = argument2;
 		}
 
-		public Operation Argument1 { get; }
-		public Operation Argument2 { get; }
+		public IOperation Argument1 { get; }
+		public IOperation Argument2 { get; }
 	}
 
-	class DivisionOperation : Operation
+	internal class DivisionOperation : IOperation
 	{
-		public DivisionOperation(Operation dividend, Operation divisor)
+		public DivisionOperation(IOperation dividend, IOperation divisor)
 		{
 			Contract.Requires(dividend != null);
 			Contract.Requires(divisor != null);
@@ -91,13 +90,13 @@ namespace ReClassNET.AddressParser
 			Divisor = divisor;
 		}
 
-		public Operation Dividend { get; }
-		public Operation Divisor { get; }
+		public IOperation Dividend { get; }
+		public IOperation Divisor { get; }
 	}
 
-	class MultiplicationOperation : Operation
+	internal class MultiplicationOperation : IOperation
 	{
-		public MultiplicationOperation(Operation argument1, Operation argument2)
+		public MultiplicationOperation(IOperation argument1, IOperation argument2)
 		{
 			Contract.Requires(argument1 != null);
 			Contract.Requires(argument2 != null);
@@ -106,11 +105,11 @@ namespace ReClassNET.AddressParser
 			Argument2 = argument2;
 		}
 
-		public Operation Argument1 { get; }
-		public Operation Argument2 { get; }
+		public IOperation Argument1 { get; }
+		public IOperation Argument2 { get; }
 	}
 
-	class ModuleOffsetOperation : Operation
+	internal class ModuleOffsetOperation : IOperation
 	{
 		public ModuleOffsetOperation(string name)
 		{
@@ -123,8 +122,7 @@ namespace ReClassNET.AddressParser
 
 		public override bool Equals(object obj)
 		{
-			var other = obj as ModuleOffsetOperation;
-			if (other != null)
+			if (obj is ModuleOffsetOperation other)
 			{
 				return Name.Equals(other.Name);
 			}

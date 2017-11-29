@@ -29,8 +29,7 @@ namespace ReClassNET.UI
 			if (property != null && source != null)
 			{
 				var value = property.GetValue(source);
-				var s = value as string;
-				if (s != null)
+				if (value is string s)
 				{
 					Text = s;
 				}

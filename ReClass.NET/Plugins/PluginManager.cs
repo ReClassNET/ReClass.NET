@@ -121,8 +121,7 @@ namespace ReClassNET.Plugins
 
 			var handle = Activator.CreateInstanceFrom(filePath, type);
 
-			var plugin = handle.Unwrap() as Plugin;
-			if (plugin == null)
+			if (!(handle.Unwrap() is Plugin plugin))
 			{
 				throw new FileLoadException();
 			}

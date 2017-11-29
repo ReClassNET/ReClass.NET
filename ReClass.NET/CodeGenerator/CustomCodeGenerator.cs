@@ -7,7 +7,7 @@ using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
 {
-	[ContractClass(typeof(ICustomCodeGeneratorContract))]
+	[ContractClass(typeof(CustomCodeGeneratorContract))]
 	public interface ICustomCodeGenerator
 	{
 		bool CanGenerateCode(BaseNode node, Language language);
@@ -16,7 +16,7 @@ namespace ReClassNET.CodeGenerator
 	}
 
 	[ContractClassFor(typeof(ICustomCodeGenerator))]
-	internal abstract class ICustomCodeGeneratorContract : ICustomCodeGenerator
+	internal abstract class CustomCodeGeneratorContract : ICustomCodeGenerator
 	{
 		public bool CanGenerateCode(BaseNode node, Language language)
 		{

@@ -12,7 +12,7 @@ namespace ReClassNET.Nodes
 		public static readonly NodeUuid Zero = new NodeUuid(false);
 
 		/// <summary>The maximum reserved UUID value.</summary>
-		private static readonly NodeUuid MaxReserved = new NodeUuid(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF, 0xFF });
+		private static readonly NodeUuid maxReserved = new NodeUuid(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF, 0xFF });
 
 		/// <summary>Checks if the given UUID is reserved.</summary>
 		/// <param name="uuid">The uuid.</param>
@@ -21,7 +21,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(uuid != null);
 
-			return uuid.CompareTo(MaxReserved) <= 0;
+			return uuid.CompareTo(maxReserved) <= 0;
 		}
 
 		private byte[] uuidBytes;

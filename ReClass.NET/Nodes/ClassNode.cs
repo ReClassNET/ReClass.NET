@@ -17,9 +17,9 @@ namespace ReClassNET.Nodes
 		public static event ClassCreatedEventHandler ClassCreated;
 
 #if RECLASSNET64
-		public static IntPtr DefaultAddress = (IntPtr)0x140000000;
+		public static IntPtr DefaultAddress { get; } = (IntPtr)0x140000000;
 #else
-		public static IntPtr DefaultAddress = (IntPtr)0x400000;
+		public static IntPtr DefaultAddress { get; } = (IntPtr)0x400000;
 #endif
 
 		/// <summary>Size of the node in bytes.</summary>

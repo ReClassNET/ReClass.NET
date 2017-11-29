@@ -12,9 +12,9 @@ namespace ReClassNET.Nodes
 	{
 		protected class FunctionNodeInstruction
 		{
-			public string Address;
-			public string Data;
-			public string Instruction;
+			public string Address { get; set; }
+			public string Data { get; set; }
+			public string Instruction { get; set; }
 		}
 
 		protected IntPtr address = IntPtr.Zero;

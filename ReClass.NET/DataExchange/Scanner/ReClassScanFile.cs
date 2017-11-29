@@ -100,7 +100,6 @@ namespace ReClassNET.DataExchange.Scanner
 									switch (element.Attribute(XmlEncodingAttribute)?.Value ?? string.Empty)
 									{
 										default:
-										case "UTF8":
 											record.Encoding = Encoding.UTF8;
 											break;
 										case "UTF16":

@@ -212,7 +212,7 @@ namespace ReClassNET.Debugger
 
 	internal class BreakpointSplit
 	{
-		public IntPtr Address;
-		public int Size;
+		public IntPtr Address { get; set; }
+		public int Size { get; set; }
 	}
 }

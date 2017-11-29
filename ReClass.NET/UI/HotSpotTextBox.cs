@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace ReClassNET.UI
 {
-	class HotSpotTextBox : TextBox
+	public class HotSpotTextBox : TextBox
 	{
 		private HotSpot hotSpot;
 
@@ -12,7 +12,7 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public HotSpot HotSpot
 		{
-			get { return hotSpot; }
+			get => hotSpot;
 			set
 			{
 				if (hotSpot != value)
@@ -39,7 +39,7 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new FontEx Font
 		{
-			get { return font; }
+			get => font;
 			set
 			{
 				if (font != value)

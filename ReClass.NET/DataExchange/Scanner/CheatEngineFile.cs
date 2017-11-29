@@ -80,14 +80,7 @@ namespace ReClassNET.DataExchange.Scanner
 									{
 										var isUnicode = (entry.Element(XmlUnicodeElement)?.Value ?? string.Empty) == "1";
 
-										if (isUnicode)
-										{
-											record.Encoding = Encoding.Unicode;
-										}
-										else
-										{
-											record.Encoding = Encoding.UTF8;
-										}
+										record.Encoding = isUnicode ? Encoding.Unicode : Encoding.UTF8;
 									}
 								}
 

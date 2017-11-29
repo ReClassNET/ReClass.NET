@@ -45,8 +45,7 @@ namespace ReClassNET.Debugger
 
 		public override bool Equals(object obj)
 		{
-			var bp = obj as SoftwareBreakpoint;
-			if (bp == null)
+			if (!(obj is SoftwareBreakpoint bp))
 			{
 				return false;
 			}

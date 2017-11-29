@@ -186,7 +186,7 @@ namespace ReClassNET.Native
 				}
 				using (var fileExtensionKey = classesRoot.OpenSubKey(fileExtension, true))
 				{
-					fileExtensionKey.SetValue(string.Empty, extensionId, RegistryValueKind.String);
+					fileExtensionKey?.SetValue(string.Empty, extensionId, RegistryValueKind.String);
 				}
 
 				try
@@ -199,64 +199,64 @@ namespace ReClassNET.Native
 				}
 				using (var extensionInfoKey = classesRoot.OpenSubKey(extensionId, true))
 				{
-					extensionInfoKey.SetValue(string.Empty, applicationName, RegistryValueKind.String);
+					extensionInfoKey?.SetValue(string.Empty, applicationName, RegistryValueKind.String);
 
 					try
 					{
-						extensionInfoKey.CreateSubKey("DefaultIcon");
+						extensionInfoKey?.CreateSubKey("DefaultIcon");
 					}
 					catch (Exception)
 					{
 
 					}
 
-					using (var icon = extensionInfoKey.OpenSubKey("DefaultIcon", true))
+					using (var icon = extensionInfoKey?.OpenSubKey("DefaultIcon", true))
 					{
 						if (applicationPath.IndexOfAny(new[] { ' ', '\t' }) < 0)
 						{
-							icon.SetValue(string.Empty, applicationPath + ",0", RegistryValueKind.String);
+							icon?.SetValue(string.Empty, applicationPath + ",0", RegistryValueKind.String);
 						}
 						else
 						{
-							icon.SetValue(string.Empty, "\"" + applicationPath + "\",0", RegistryValueKind.String);
+							icon?.SetValue(string.Empty, "\"" + applicationPath + "\",0", RegistryValueKind.String);
 						}
 					}
 
 					try
 					{
-						extensionInfoKey.CreateSubKey("shell");
+						extensionInfoKey?.CreateSubKey("shell");
 					}
 					catch (Exception)
 					{
 					}
-					using (var shellKey = extensionInfoKey.OpenSubKey("shell", true))
+					using (var shellKey = extensionInfoKey?.OpenSubKey("shell", true))
 					{
 						try
 						{
-							shellKey.CreateSubKey("open");
+							shellKey?.CreateSubKey("open");
 						}
 						catch (Exception)
 						{
 
 						}
 
-						using (var openKey = shellKey.OpenSubKey("open", true))
+						using (var openKey = shellKey?.OpenSubKey("open", true))
 						{
 
-							openKey.SetValue(string.Empty, $"&Open with {applicationName}", RegistryValueKind.String);
+							openKey?.SetValue(string.Empty, $"&Open with {applicationName}", RegistryValueKind.String);
 
 							try
 							{
-								openKey.CreateSubKey("command");
+								openKey?.CreateSubKey("command");
 							}
 							catch (Exception)
 							{
 
 							}
 
-							using (var commandKey = openKey.OpenSubKey("command", true))
+							using (var commandKey = openKey?.OpenSubKey("command", true))
 							{
-								commandKey.SetValue(string.Empty, $"\"{applicationPath}\" \"%1\"", RegistryValueKind.String);
+								commandKey?.SetValue(string.Empty, $"\"{applicationPath}\" \"%1\"", RegistryValueKind.String);
 							}
 						}
 					}

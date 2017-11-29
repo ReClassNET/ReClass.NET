@@ -34,14 +34,14 @@ namespace ReClassNET.Memory
 
 	public class Section
 	{
-		public IntPtr Start;
-		public IntPtr End;
-		public IntPtr Size;
-		public string Name;
-		public SectionCategory Category;
-		public SectionProtection Protection;
-		public SectionType Type;
-		public string ModuleName;
-		public string ModulePath;
+		public IntPtr Start { get; set; }
+		public IntPtr End { get; set; }
+		public IntPtr Size { get; set; }
+		public string Name { get; set; }
+		public SectionCategory Category { get; set; }
+		public SectionProtection Protection { get; set; }
+		public SectionType Type { get; set; }
+		public string ModuleName { get; set; }
+		public string ModulePath { get; set; }
 	}
 }

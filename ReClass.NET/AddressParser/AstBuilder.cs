@@ -11,7 +11,7 @@ namespace ReClassNET.AddressParser
 	{
 		private readonly Dictionary<char, int> operationPrecedence;
 
-		private readonly Stack<Operation> resultStack = new Stack<Operation>();
+		private readonly Stack<IOperation> resultStack = new Stack<IOperation>();
 		private readonly Stack<Token> operatorStack = new Stack<Token>();
 
 		public AstBuilder()
@@ -29,7 +29,7 @@ namespace ReClassNET.AddressParser
 			};
 		}
 
-		public Operation Build(IEnumerable<Token> tokens)
+		public IOperation Build(IEnumerable<Token> tokens)
 		{
 			Contract.Requires(tokens != null);
 			Contract.Ensures(Contract.ForAll(tokens, t => t != null));
@@ -119,14 +119,14 @@ namespace ReClassNET.AddressParser
 			}
 		}
 
-		private Operation ConvertOperation(Token operationToken)
+		private IOperation ConvertOperation(Token operationToken)
 		{
 			Contract.Requires(operationToken != null);
 
 			try
 			{
-				Operation argument1;
-				Operation argument2;
+				IOperation argument1;
+				IOperation argument2;
 
 				switch ((char)operationToken.Value)
 				{
@@ -163,8 +163,7 @@ namespace ReClassNET.AddressParser
 		{
 			if (resultStack.Count > 1)
 			{
-				var offset = resultStack.Skip(1).FirstOrDefault(o => o is OffsetOperation) as OffsetOperation;
-				if (offset != null)
+				if (resultStack.Skip(1).FirstOrDefault(o => o is OffsetOperation) is OffsetOperation offset)
 				{
 					throw new ParseException($"Unexpected offset '{offset.Value}' found.");
 				}

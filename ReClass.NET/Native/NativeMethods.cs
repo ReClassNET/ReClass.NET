@@ -28,7 +28,7 @@ namespace ReClassNET.Native
 				return isUnix.Value;
 			}
 
-			var p = GetPlatformID();
+			var p = GetPlatformId();
 
 			isUnix = (p == PlatformID.Unix) || (p == PlatformID.MacOSX) || ((int)p == 128);
 
@@ -36,7 +36,7 @@ namespace ReClassNET.Native
 		}
 
 		private static PlatformID? plattformId;
-		public static PlatformID GetPlatformID()
+		public static PlatformID GetPlatformId()
 		{
 			if (plattformId.HasValue)
 			{

@@ -96,8 +96,7 @@ namespace ReClassNET.Symbols
 					{
 						using (var debuggerKey = vsKey.OpenSubKey($@"{subKeyName}\Debugger"))
 						{
-							var symbolCacheDir = debuggerKey?.GetValue("SymbolCacheDir") as string;
-							if (symbolCacheDir != null)
+							if (debuggerKey?.GetValue("SymbolCacheDir") is string symbolCacheDir)
 							{
 								if (Directory.Exists(symbolCacheDir))
 								{
@@ -226,8 +225,7 @@ namespace ReClassNET.Symbols
 
 			lock (symbolReaders)
 			{
-				SymbolReader reader;
-				if (!symbolReaders.TryGetValue(name, out reader))
+				if (!symbolReaders.TryGetValue(name, out var reader))
 				{
 					name = Path.ChangeExtension(name, ".pdb");
 

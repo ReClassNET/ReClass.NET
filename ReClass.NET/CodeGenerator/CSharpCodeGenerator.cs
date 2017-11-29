@@ -87,8 +87,7 @@ namespace ReClassNET.CodeGenerator
 
 			foreach (var member in members.WhereNot(n => n is BaseHexNode))
 			{
-				var bitFieldNode = member as BitFieldNode;
-				if (bitFieldNode != null)
+				if (member is BitFieldNode bitFieldNode)
 				{
 					string type;
 					switch (bitFieldNode.Bits)

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace ReClassNET.UI
 {
-	class SettingsCheckBox : CheckBox, ISettingsBindable
+	public class SettingsCheckBox : CheckBox, ISettingsBindable
 	{
 		private PropertyInfo property;
 		private Settings source;
@@ -29,9 +29,9 @@ namespace ReClassNET.UI
 			if (property != null && source != null)
 			{
 				var value = property.GetValue(source);
-				if (value is bool)
+				if (value is bool b)
 				{
-					Checked = (bool)value;
+					Checked = b;
 				}
 			}
 		}

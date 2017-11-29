@@ -70,9 +70,9 @@ namespace ReClassNET.UI
 			if (property != null && source != null)
 			{
 				var value = property.GetValue(source);
-				if (value is Color)
+				if (value is Color newColor)
 				{
-					Color = (Color)value;
+					Color = newColor;
 				}
 			}
 		}

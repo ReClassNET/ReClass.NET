@@ -22,7 +22,7 @@ namespace ReClassNET.Nodes
 		protected static readonly int TextPadding = Icons.Dimensions;
 		protected static readonly int HiddenHeight = 1;
 
-		private static int NodeIndex = 0;
+		private static int nodeIndex = 0;
 
 		private string name = string.Empty;
 		private string comment = string.Empty;
@@ -68,7 +68,7 @@ namespace ReClassNET.Nodes
 			Contract.Ensures(name != null);
 			Contract.Ensures(comment != null);
 
-			Name = $"N{NodeIndex++:X08}";
+			Name = $"N{nodeIndex++:X08}";
 			Comment = string.Empty;
 
 			levelsOpen[0] = true;
