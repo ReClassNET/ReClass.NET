@@ -99,7 +99,7 @@ _CodeInfo CreateCodeInfo(const RC_Pointer address, const RC_Size length, const R
 	_CodeInfo info = {};
 	info.codeOffset = reinterpret_cast<_OffsetType>(virtualAddress);
 	info.code = reinterpret_cast<const uint8_t*>(address);
-	info.codeLen = length;
+	info.codeLen = static_cast<int>(length);
 	info.features = DF_NONE;
 
 #ifdef RECLASSNET32
