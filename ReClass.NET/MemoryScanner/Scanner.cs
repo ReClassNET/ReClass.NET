@@ -207,39 +207,44 @@ namespace ReClassNET.MemoryScanner
 
 				var result = Parallel.ForEach(
 					sections, // Sections get grouped by the framework to balance the workers.
-					new ParallelOptions { CancellationToken = ct},
 					() => new ScannerContext(Settings, comparer, initialBufferSize), // Create a new context for every worker (thread).
 					(s, state, _, context) =>
 					{
-						var start = s.Start;
-						var size = s.Size.ToInt32();
+						if (!ct.IsCancellationRequested)
+						{
+							var start = s.Start;
+							var size = s.Size.ToInt32();
 
-						if (Settings.StartAddress.InRange(s.Start, s.End))
-						{
-							start = Settings.StartAddress;
-							size = size - Settings.StartAddress.Sub(s.Start).ToInt32();
-						}
-						if (Settings.StopAddress.InRange(s.Start, s.End))
-						{
-							size = size - s.End.Sub(Settings.StopAddress).ToInt32();
-						}
-
-						context.EnsureBufferSize(size);
-						var buffer = context.Buffer;
-						if (process.ReadRemoteMemoryIntoBuffer(start, ref buffer, 0, size)) // Fill the buffer.
-						{
-							var results = context.Worker.Search(buffer, size) // Search for results.
-								.OrderBy(r => r.Address, IntPtrComparer.Instance)
-								.ToList();
-							if (results.Count > 0)
+							if (Settings.StartAddress.InRange(s.Start, s.End))
 							{
-								var block = CreateResultBlock(results, start, comparer.ValueSize);
-								store.AddBlock(block); // Store the result block.
+								start = Settings.StartAddress;
+								size = size - Settings.StartAddress.Sub(s.Start).ToInt32();
 							}
+							if (Settings.StopAddress.InRange(s.Start, s.End))
+							{
+								size = size - s.End.Sub(Settings.StopAddress).ToInt32();
+							}
+
+							context.EnsureBufferSize(size);
+							var buffer = context.Buffer;
+							if (process.ReadRemoteMemoryIntoBuffer(start, ref buffer, 0, size)) // Fill the buffer.
+							{
+								var results = context.Worker.Search(buffer, size, ct) // Search for results.
+									.OrderBy(r => r.Address, IntPtrComparer.Instance)
+									.ToList();
+								if (results.Count > 0)
+								{
+									var block = CreateResultBlock(results, start, comparer.ValueSize);
+									store.AddBlock(block); // Store the result block.
+								}
+							}
+
+							progress?.Report((int)(Interlocked.Increment(ref counter) / totalSectionCount * 100));
 						}
-
-						progress?.Report((int)(Interlocked.Increment(ref counter) / totalSectionCount * 100));
-
+						else
+						{
+							state.Stop();
+						}
 						return context;
 					},
 					w => { }
@@ -285,26 +290,31 @@ namespace ReClassNET.MemoryScanner
 			{
 				var result = Parallel.ForEach(
 					CurrentStore.GetResultBlocks(),
-					new ParallelOptions { CancellationToken = ct },
 					() => new ScannerContext(Settings, comparer, 0),
 					(b, state, _, context) =>
 					{
-						context.EnsureBufferSize(b.Size);
-						var buffer = context.Buffer;
-						if (process.ReadRemoteMemoryIntoBuffer(b.Start, ref buffer, 0, b.Size))
+						if (!ct.IsCancellationRequested)
 						{
-							var results = context.Worker.Search(buffer, buffer.Length, b.Results)
-								.OrderBy(r => r.Address, IntPtrComparer.Instance)
-								.ToList();
-							if (results.Count > 0)
+							context.EnsureBufferSize(b.Size);
+							var buffer = context.Buffer;
+							if (process.ReadRemoteMemoryIntoBuffer(b.Start, ref buffer, 0, b.Size))
 							{
-								var block = CreateResultBlock(results, b.Start, comparer.ValueSize);
-								store.AddBlock(block);
+								var results = context.Worker.Search(buffer, buffer.Length, b.Results, ct)
+									.OrderBy(r => r.Address, IntPtrComparer.Instance)
+									.ToList();
+								if (results.Count > 0)
+								{
+									var block = CreateResultBlock(results, b.Start, comparer.ValueSize);
+									store.AddBlock(block);
+								}
 							}
+
+							progress?.Report((int)(Interlocked.Add(ref counter, b.Results.Count) / totalResultCount * 100));
 						}
-
-						progress?.Report((int)(Interlocked.Add(ref counter, b.Results.Count) / totalResultCount * 100));
-
+						else
+						{
+							state.Stop();
+						}
 						return context;
 					},
 					w => { }

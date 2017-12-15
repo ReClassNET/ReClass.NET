@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Threading;
 using ReClassNET.MemoryScanner.Comparer;
 
 namespace ReClassNET.MemoryScanner
@@ -24,8 +25,9 @@ namespace ReClassNET.MemoryScanner
 		/// </summary>
 		/// <param name="data">The data to scan.</param>
 		/// <param name="count">The length of the <paramref name="data"/> parameter.</param>
+		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
 		/// <returns>An enumeration of all <see cref="ScanResult"/>s.</returns>
-		public IEnumerable<ScanResult> Search(byte[] data, int count)
+		public IEnumerable<ScanResult> Search(byte[] data, int count, CancellationToken ct)
 		{
 			Contract.Requires(data != null);
 
@@ -33,6 +35,11 @@ namespace ReClassNET.MemoryScanner
 
 			for (var i = 0; i < endIndex; i += settings.FastScanAlignment)
 			{
+				if (ct.IsCancellationRequested)
+				{
+					break;
+				}
+
 				if (comparer.Compare(data, i, out var result))
 				{
 					result.Address = (IntPtr)i;
@@ -49,8 +56,9 @@ namespace ReClassNET.MemoryScanner
 		/// <param name="data">The data to scan.</param>
 		/// <param name="count">The length of the <paramref name="data"/> parameter.</param>
 		/// <param name="results">The previous results to use.</param>
+		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
 		/// <returns>An enumeration of all <see cref="ScanResult"/>s.</returns>
-		public IEnumerable<ScanResult> Search(byte[] data, int count, IEnumerable<ScanResult> results)
+		public IEnumerable<ScanResult> Search(byte[] data, int count, IEnumerable<ScanResult> results, CancellationToken ct)
 		{
 			Contract.Requires(data != null);
 			Contract.Requires(results != null);
@@ -59,6 +67,11 @@ namespace ReClassNET.MemoryScanner
 
 			foreach (var previous in results)
 			{
+				if (ct.IsCancellationRequested)
+				{
+					break;
+				}
+
 				var offset = previous.Address.ToInt32();
 				if (offset <= endIndex)
 				{
