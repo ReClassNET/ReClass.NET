@@ -90,6 +90,7 @@
 			this.infoToolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.undoIconButton = new ReClassNET.UI.IconButton();
 			this.showInputCorrelatorIconButton = new ReClassNET.UI.IconButton();
+			this.cancelScanIconButton = new ReClassNET.UI.IconButton();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.filterGroupBox.SuspendLayout();
 			this.scanOptionsGroupBox.SuspendLayout();
@@ -524,25 +525,25 @@
 			// descriptionToolStripMenuItem
 			// 
 			this.descriptionToolStripMenuItem.Name = "descriptionToolStripMenuItem";
-			this.descriptionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.descriptionToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
 			this.descriptionToolStripMenuItem.Text = "Description";
 			// 
 			// addressToolStripMenuItem
 			// 
 			this.addressToolStripMenuItem.Name = "addressToolStripMenuItem";
-			this.addressToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.addressToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
 			this.addressToolStripMenuItem.Text = "Address";
 			// 
 			// valueTypeToolStripMenuItem
 			// 
 			this.valueTypeToolStripMenuItem.Name = "valueTypeToolStripMenuItem";
-			this.valueTypeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.valueTypeToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
 			this.valueTypeToolStripMenuItem.Text = "Value Type";
 			// 
 			// valueToolStripMenuItem
 			// 
 			this.valueToolStripMenuItem.Name = "valueToolStripMenuItem";
-			this.valueToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.valueToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
 			this.valueToolStripMenuItem.Text = "Value";
 			// 
 			// toolStripSeparator2
@@ -712,11 +713,24 @@
 			this.showInputCorrelatorIconButton.TabIndex = 19;
 			this.showInputCorrelatorIconButton.Click += new System.EventHandler(this.showInputCorrelatorIconButton_Click);
 			// 
+			// cancelScanIconButton
+			// 
+			this.cancelScanIconButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Delete;
+			this.cancelScanIconButton.Location = new System.Drawing.Point(517, 54);
+			this.cancelScanIconButton.Name = "cancelScanIconButton";
+			this.cancelScanIconButton.Pressed = false;
+			this.cancelScanIconButton.Selected = false;
+			this.cancelScanIconButton.Size = new System.Drawing.Size(23, 22);
+			this.cancelScanIconButton.TabIndex = 21;
+			this.cancelScanIconButton.Visible = false;
+			this.cancelScanIconButton.Click += new System.EventHandler(this.cancelScanIconButton_Click);
+			// 
 			// ScannerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(612, 584);
+			this.Controls.Add(this.cancelScanIconButton);
 			this.Controls.Add(this.showInputCorrelatorIconButton);
 			this.Controls.Add(this.undoIconButton);
 			this.Controls.Add(this.toolStripPanel);
@@ -816,5 +830,6 @@
 		private System.Windows.Forms.ToolStripMenuItem copyAddressToolStripMenuItem;
 		private UI.IconButton undoIconButton;
 		private UI.IconButton showInputCorrelatorIconButton;
+		private UI.IconButton cancelScanIconButton;
 	}
 }

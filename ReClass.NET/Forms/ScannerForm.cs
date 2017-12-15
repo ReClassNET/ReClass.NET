@@ -29,7 +29,7 @@ namespace ReClassNET.Forms
 		private bool isFirstScan;
 
 		private Scanner scanner;
-
+		private CancellationTokenSource cts;
 
 		private string addressFilePath;
 
@@ -155,6 +155,7 @@ namespace ReClassNET.Forms
 			{
 				firstScanButton.Enabled = false;
 				nextScanButton.Enabled = false;
+				cancelScanIconButton.Visible = true;
 
 				try
 				{
@@ -165,14 +166,13 @@ namespace ReClassNET.Forms
 						scanProgressBar.Value = i;
 						SetResultCount(scanner.TotalResultCount);
 					});
-					var completed = await scanner.Search(comparer, CancellationToken.None, report);
+					cts = new CancellationTokenSource();
 
-					if (completed)
-					{
-						ShowScannerResults(scanner);
+					await scanner.Search(comparer, cts.Token, report);
 
-						undoIconButton.Enabled = scanner.CanUndoLastScan;
-					}
+					ShowScannerResults(scanner);
+
+					undoIconButton.Enabled = scanner.CanUndoLastScan;
 				}
 				catch (Exception ex)
 				{
@@ -181,9 +181,15 @@ namespace ReClassNET.Forms
 
 				firstScanButton.Enabled = true;
 				nextScanButton.Enabled = true;
+				cancelScanIconButton.Visible = false;
 
 				scanProgressBar.Value = 0;
 			}
+		}
+
+		private void cancelScanIconButton_Click(object sender, EventArgs e)
+		{
+			cts?.Cancel();
 		}
 
 		private void memorySearchResultControl_ResultDoubleClick(object sender, MemoryRecord record)
@@ -585,6 +591,7 @@ namespace ReClassNET.Forms
 			}
 
 			firstScanButton.Enabled = false;
+			cancelScanIconButton.Visible = true;
 
 			try
 			{
@@ -595,24 +602,24 @@ namespace ReClassNET.Forms
 					scanProgressBar.Value = i;
 					SetResultCount(scanner.TotalResultCount);
 				});
-				var completed = await scanner.Search(comparer, CancellationToken.None, report);
+				cts = new CancellationTokenSource();
 
-				if (completed)
-				{
-					ShowScannerResults(scanner);
+				await scanner.Search(comparer, cts.Token, report);
 
-					nextScanButton.Enabled = true;
-					valueTypeComboBox.Enabled = false;
+				ShowScannerResults(scanner);
 
-					floatingOptionsGroupBox.Enabled = false;
-					stringOptionsGroupBox.Enabled = false;
-					scanOptionsGroupBox.Enabled = false;
+				cancelScanIconButton.Visible = false;
+				nextScanButton.Enabled = true;
+				valueTypeComboBox.Enabled = false;
 
-					isFirstScan = false;
+				floatingOptionsGroupBox.Enabled = false;
+				stringOptionsGroupBox.Enabled = false;
+				scanOptionsGroupBox.Enabled = false;
 
-					SetValidCompareTypes();
-					OnCompareTypeChanged();
-				}
+				isFirstScan = false;
+
+				SetValidCompareTypes();
+				OnCompareTypeChanged();
 			}
 			finally
 			{
