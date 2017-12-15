@@ -81,7 +81,7 @@ namespace ReClassNET.MemoryScanner
 		/// <returns>A task that represents the asynchronous operation.</returns>
 		public Task Initialize()
 		{
-			return Search(CreateScanComparer(ScanCompareType.Unknown), CancellationToken.None, null);
+			return Search(CreateScanComparer(ScanCompareType.Unknown), null, CancellationToken.None);
 		}
 
 		private bool shouldHaveChangedSinceLastScan = false;
@@ -120,7 +120,7 @@ namespace ReClassNET.MemoryScanner
 				await Task.Delay(TimeSpan.FromMilliseconds(200), ct);
 			}
 
-			await Search(CreateScanComparer(compareType), ct, progress);
+			await Search(CreateScanComparer(compareType), progress, ct);
 
 			shouldHaveChangedSinceLastScan = false;
 
