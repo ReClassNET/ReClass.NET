@@ -168,7 +168,7 @@ namespace ReClassNET.Forms
 					});
 					cts = new CancellationTokenSource();
 
-					await scanner.Search(comparer, cts.Token, report);
+					await scanner.Search(comparer, report, cts.Token);
 
 					ShowScannerResults(scanner);
 
@@ -604,7 +604,7 @@ namespace ReClassNET.Forms
 				});
 				cts = new CancellationTokenSource();
 
-				await scanner.Search(comparer, cts.Token, report);
+				await scanner.Search(comparer, report, cts.Token);
 
 				ShowScannerResults(scanner);
 

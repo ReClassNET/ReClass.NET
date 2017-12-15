@@ -163,22 +163,22 @@ namespace ReClassNET.MemoryScanner
 		/// The results are stored in the store.
 		/// </summary>
 		/// <param name="comparer">The comparer to scan for values.</param>
-		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
 		/// <param name="progress">The <see cref="IProgress{T}"/> object to report the current progress.</param>
+		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
 		/// <returns> The asynchronous result indicating if the scan completed.</returns>
-		public Task<bool> Search(IScanComparer comparer, CancellationToken ct, IProgress<int> progress)
+		public Task<bool> Search(IScanComparer comparer, IProgress<int> progress, CancellationToken ct)
 		{
-			return isFirstScan ? FirstScan(comparer, ct, progress) : NextScan(comparer, ct, progress);
+			return isFirstScan ? FirstScan(comparer, progress, ct) : NextScan(comparer, progress, ct);
 		}
 
 		/// <summary>
 		/// Starts an async first scan with the provided <see cref="IScanComparer"/>.
 		/// </summary>
 		/// <param name="comparer">The comparer to scan for values.</param>
-		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
 		/// <param name="progress">The <see cref="IProgress{T}"/> object to report the current progress.</param>
+		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
 		/// <returns> The asynchronous result indicating if the scan completed.</returns>
-		private Task<bool> FirstScan(IScanComparer comparer, CancellationToken ct, IProgress<int> progress)
+		private Task<bool> FirstScan(IScanComparer comparer, IProgress<int> progress, CancellationToken ct)
 		{
 			Contract.Requires(comparer != null);
 			Contract.Ensures(Contract.Result<Task<bool>>() != null);
@@ -255,14 +255,9 @@ namespace ReClassNET.MemoryScanner
 				var previousStore = stores.Enqueue(store);
 				previousStore?.Dispose();
 
-				if (result.IsCompleted)
-				{
-					isFirstScan = false;
+				isFirstScan = false;
 
-					return true;
-				}
-
-				return false;
+				return result.IsCompleted;
 			}, ct);
 		}
 
@@ -271,10 +266,10 @@ namespace ReClassNET.MemoryScanner
 		/// The next scan uses the previous results to refine the results.
 		/// </summary>
 		/// <param name="comparer">The comparer to scan for values.</param>
-		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
 		/// <param name="progress">The <see cref="IProgress{T}"/> object to report the current progress.</param>
+		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
 		/// <returns> The asynchronous result indicating if the scan completed.</returns>
-		private Task<bool> NextScan(IScanComparer comparer, CancellationToken ct, IProgress<int> progress)
+		private Task<bool> NextScan(IScanComparer comparer, IProgress<int> progress, CancellationToken ct)
 		{
 			Contract.Requires(comparer != null);
 			Contract.Ensures(Contract.Result<Task<bool>>() != null);
