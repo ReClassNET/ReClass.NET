@@ -163,7 +163,7 @@ namespace ReClassNET.DataExchange.ReClass
 				}
 
 				node.Name = element.Attribute("Name")?.Value ?? string.Empty;
-				node.Comment = element.Attribute("Comments")?.Value ?? string.Empty;
+				node.Comment = element.Attribute("Comment")?.Value ?? string.Empty;
 
 				// Convert the Custom node into normal hex nodes.
 				if (node is CustomNode)
@@ -242,7 +242,7 @@ namespace ReClassNET.DataExchange.ReClass
 							.Select(e => new VMethodNode
 							{
 								Name = e.Attribute("Name")?.Value ?? string.Empty,
-								Comment = e.Attribute("Comments")?.Value ?? string.Empty
+								Comment = e.Attribute("Comment")?.Value ?? string.Empty
 							})
 							.ForEach(vtableNode.AddNode);
 						break;
