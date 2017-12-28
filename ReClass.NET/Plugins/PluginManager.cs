@@ -39,11 +39,11 @@ namespace ReClassNET.Plugins
 
 				var directory = new DirectoryInfo(path);
 
-				LoadPlugins(directory.GetFiles("*.dll"), logger, true);
+				LoadPlugins(directory.GetFiles("*.dll", SearchOption.AllDirectories), logger, true);
 
-				LoadPlugins(directory.GetFiles("*.exe"), logger, true);
+				LoadPlugins(directory.GetFiles("*.exe", SearchOption.AllDirectories), logger, true);
 
-				LoadPlugins(directory.GetFiles("*.so"), logger, false);
+				LoadPlugins(directory.GetFiles("*.so", SearchOption.AllDirectories), logger, false);
 			}
 			catch (Exception ex)
 			{
