@@ -693,6 +693,7 @@
 			// 
 			// undoIconButton
 			// 
+			this.undoIconButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.undoIconButton.Image = global::ReClassNET.Properties.Resources.B16x16_Undo;
 			this.undoIconButton.Location = new System.Drawing.Point(256, 54);
 			this.undoIconButton.Name = "undoIconButton";
@@ -704,6 +705,7 @@
 			// 
 			// showInputCorrelatorIconButton
 			// 
+			this.showInputCorrelatorIconButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.showInputCorrelatorIconButton.Image = global::ReClassNET.Properties.Resources.B16x16_Canvas_Size;
 			this.showInputCorrelatorIconButton.Location = new System.Drawing.Point(580, 378);
 			this.showInputCorrelatorIconButton.Name = "showInputCorrelatorIconButton";
