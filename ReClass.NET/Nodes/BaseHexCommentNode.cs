@@ -15,18 +15,16 @@ namespace ReClassNET.Nodes
 
 			if (view.Settings.ShowCommentFloat)
 			{
-				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, $"({(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000})");
+				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, $"{(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000}") + view.Font.Width;
 			}
 			if (view.Settings.ShowCommentInteger)
 			{
-				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, ivalue == IntPtr.Zero ? "(0)" : $"({ivalue.ToInt64()}|0x{uvalue.ToUInt64():X})");
+				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, ivalue == IntPtr.Zero ? "0" : $"{ivalue.ToInt64()} (0x{uvalue.ToUInt64():X})") + view.Font.Width;
 			}
 
 			var namedAddress = view.Memory.Process.GetNamedAddress(ivalue);
 			if (!string.IsNullOrEmpty(namedAddress))
 			{
-				x += view.Font.Width;
-
 				if (view.Settings.ShowCommentPointer)
 				{
 					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, "->") + view.Font.Width;
