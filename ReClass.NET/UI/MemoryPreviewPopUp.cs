@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
+using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {
@@ -114,8 +115,11 @@ namespace ReClassNET.UI
 
 				viewInfo.Context = e.Graphics;
 
-				e.Graphics.FillRectangle(Brushes.White, Bounds);
-				using (var pen = new Pen(Brushes.Black, 1))
+				using (var brush = new SolidBrush(viewInfo.Settings.BackgroundColor))
+				{
+					e.Graphics.FillRectangle(brush, ClientRectangle);
+				}
+				using (var pen = new Pen(viewInfo.Settings.BackgroundColor.Invert(), 1))
 				{
 					e.Graphics.DrawRectangle(pen, new Rectangle(Bounds.X, Bounds.Y, Bounds.Width - 1, Bounds.Height - 1));
 				}
