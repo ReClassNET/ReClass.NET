@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET
 {
-	internal class Constants
+	public class Constants
 	{
 		public const string ApplicationName = "ReClass.NET";
 
