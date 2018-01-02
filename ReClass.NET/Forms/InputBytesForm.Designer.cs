@@ -52,12 +52,10 @@
 			// hexRadioButton
 			// 
 			this.hexRadioButton.AutoSize = true;
-			this.hexRadioButton.Checked = true;
-			this.hexRadioButton.Location = new System.Drawing.Point(8, 51);
+			this.hexRadioButton.Location = new System.Drawing.Point(77, 51);
 			this.hexRadioButton.Name = "hexRadioButton";
 			this.hexRadioButton.Size = new System.Drawing.Size(44, 17);
 			this.hexRadioButton.TabIndex = 2;
-			this.hexRadioButton.TabStop = true;
 			this.hexRadioButton.Text = "Hex";
 			this.hexRadioButton.UseVisualStyleBackColor = true;
 			this.hexRadioButton.CheckedChanged += new System.EventHandler(this.hexRadioButton_CheckedChanged);
@@ -65,10 +63,12 @@
 			// decimalRadioButton
 			// 
 			this.decimalRadioButton.AutoSize = true;
-			this.decimalRadioButton.Location = new System.Drawing.Point(58, 51);
+			this.decimalRadioButton.Checked = true;
+			this.decimalRadioButton.Location = new System.Drawing.Point(8, 51);
 			this.decimalRadioButton.Name = "decimalRadioButton";
 			this.decimalRadioButton.Size = new System.Drawing.Size(63, 17);
 			this.decimalRadioButton.TabIndex = 3;
+			this.decimalRadioButton.TabStop = true;
 			this.decimalRadioButton.Text = "Decimal";
 			this.decimalRadioButton.UseVisualStyleBackColor = true;
 			// 
@@ -112,7 +112,7 @@
 			// 
 			this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.okButton.Image = global::ReClassNET.Properties.Resources.B16x16_Accept;
-			this.okButton.Location = new System.Drawing.Point(102, 121);
+			this.okButton.Location = new System.Drawing.Point(146, 121);
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size(75, 23);
 			this.okButton.TabIndex = 8;
@@ -125,7 +125,7 @@
 			this.bytesNumericUpDown.Hexadecimal = true;
 			this.bytesNumericUpDown.Location = new System.Drawing.Point(8, 25);
 			this.bytesNumericUpDown.Name = "bytesNumericUpDown";
-			this.bytesNumericUpDown.Size = new System.Drawing.Size(168, 20);
+			this.bytesNumericUpDown.Size = new System.Drawing.Size(212, 20);
 			this.bytesNumericUpDown.TabIndex = 9;
 			this.bytesNumericUpDown.ValueChanged += new System.EventHandler(this.bytesNumericUpDown_ValueChanged);
 			// 
@@ -134,7 +134,7 @@
 			this.AcceptButton = this.okButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(184, 151);
+			this.ClientSize = new System.Drawing.Size(228, 151);
 			this.Controls.Add(this.bytesNumericUpDown);
 			this.Controls.Add(this.okButton);
 			this.Controls.Add(this.newSizeLabel);
@@ -144,6 +144,7 @@
 			this.Controls.Add(this.decimalRadioButton);
 			this.Controls.Add(this.hexRadioButton);
 			this.Controls.Add(this.label1);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "InputBytesForm";
