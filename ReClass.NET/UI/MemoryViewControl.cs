@@ -803,6 +803,7 @@ namespace ReClassNET.UI
 			copyAddressToolStripMenuItem.Enabled = !nodeIsClass;
 
 			showCodeOfClassToolStripMenuItem.Enabled = nodeIsClass;
+			shrinkClassToolStripMenuItem.Enabled = nodeIsClass;
 		}
 
 		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -960,6 +961,28 @@ namespace ReClassNET.UI
 			if (selectedNodes.Count > 0)
 			{
 				Clipboard.SetText(selectedNodes.First().Address.ToString("X"));
+			}
+		}
+
+		private void showCodeOfClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (selectedNodes.FirstOrDefault()?.Node is ClassNode node)
+			{
+				LinkedWindowFeatures.ShowCodeGeneratorForm(node.Yield());
+			}
+		}
+
+		private void shrinkClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var node = selectedNodes.Select(s => s.Node).FirstOrDefault();
+			if (!(node is ClassNode classNode))
+			{
+				return;
+			}
+
+			foreach (var nodeToDelete in classNode.Nodes.Reverse().TakeWhile(n => n is BaseHexNode))
+			{
+				classNode.RemoveNode(nodeToDelete);
 			}
 		}
 
@@ -1221,14 +1244,6 @@ namespace ReClassNET.UI
 			}
 
 			LinkedWindowFeatures.FindWhatInteractsWithAddress(selectedNode.Address, selectedNode.Node.MemorySize, writeOnly);
-		}
-
-		private void showCodeOfClassToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (selectedNodes.FirstOrDefault()?.Node is ClassNode node)
-			{
-				LinkedWindowFeatures.ShowCodeGeneratorForm(node.Yield());
-			}
 		}
 	}
 }
