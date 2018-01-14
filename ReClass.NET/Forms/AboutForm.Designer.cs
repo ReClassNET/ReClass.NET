@@ -175,6 +175,9 @@
 			this.Controls.Add(this.platformLabel);
 			this.Controls.Add(this.infoLabel);
 			this.Controls.Add(this.bannerBox);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "AboutForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "ReClass.NET - Info";
