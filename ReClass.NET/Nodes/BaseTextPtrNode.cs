@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.Text;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -9,23 +11,27 @@ namespace ReClassNET.Nodes
 	{
 		public override int MemorySize => IntPtr.Size;
 
+		/// <summary>The encoding of the string.</summary>
+		public abstract Encoding Encoding { get; }
+
 		/// <summary>Draws this node.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <param name="type">The name of the type.</param>
-		/// <param name="text">The text.</param>
 		/// <returns>The pixel size the node occupies.</returns>
-		public Size DrawText(ViewInfo view, int x, int y, string type, string text)
+		public Size DrawText(ViewInfo view, int x, int y, string type)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
-			Contract.Requires(text != null);
 
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
 			}
+
+			var ptr = view.Memory.ReadIntPtr(Offset);
+			var text = view.Memory.Process.ReadRemoteString(Encoding, ptr, 64 * Encoding.GetSimpleByteCountPerChar());
 
 			DrawInvalidMemoryIndicator(view, y);
 

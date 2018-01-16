@@ -6,12 +6,11 @@ namespace ReClassNET.Nodes
 {
 	public class Utf8TextPtrNode : BaseTextPtrNode
 	{
+		public override Encoding Encoding => Encoding.UTF8;
+
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			var ptr = view.Memory.ReadIntPtr(Offset);
-			var str = view.Memory.Process.ReadRemoteString(Encoding.UTF8, ptr, 64);
-
-			return DrawText(view, x, y, "Text8Ptr", str);
+			return DrawText(view, x, y, "Text8Ptr");
 		}
 	}
 }
