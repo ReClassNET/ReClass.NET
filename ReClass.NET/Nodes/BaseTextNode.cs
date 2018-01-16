@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Text;
 using ReClassNET.Memory;
@@ -8,7 +7,6 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	[ContractClass(typeof(BaseTextNodeContract))]
 	public abstract class BaseTextNode : BaseNode
 	{
 		public int Length { get; set; }
@@ -16,10 +14,11 @@ namespace ReClassNET.Nodes
 		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => Length * CharacterSize;
 
-		/// <summary>Size of one character in bytes.</summary>
-		public abstract int CharacterSize { get; }
-
+		/// <summary>The encoding of the string.</summary>
 		public abstract Encoding Encoding { get; }
+
+		/// <summary>Size of one character in bytes.</summary>
+		private int CharacterSize => Encoding.GetSimpleByteCountPerChar();
 
 		public override void CopyFromNode(BaseNode node)
 		{
@@ -90,20 +89,6 @@ namespace ReClassNET.Nodes
 		public string ReadValueFromMemory(MemoryBuffer memory)
 		{
 			return memory.ReadString(Encoding, Offset, MemorySize);
-		}
-	}
-
-	[ContractClassFor(typeof(BaseTextNode))]
-	internal abstract class BaseTextNodeContract : BaseTextNode
-	{
-		public override int CharacterSize
-		{
-			get
-			{
-				Contract.Ensures(Contract.Result<int>() > 0);
-
-				throw new NotImplementedException();
-			}
 		}
 	}
 }
