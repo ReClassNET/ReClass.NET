@@ -34,7 +34,7 @@
 			this.settingsGroupBox = new System.Windows.Forms.GroupBox();
 			this.removeButton = new System.Windows.Forms.Button();
 			this.addButton = new System.Windows.Forms.Button();
-			this.valueTypeComboBox = new ScannerForm.ScanValueTypeComboBox();
+			this.valueTypeComboBox = new ReClassNET.Forms.ScannerForm.ScanValueTypeComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.hotkeyListBox = new System.Windows.Forms.ListBox();
 			this.hotkeyBox = new ReClassNET.UI.HotkeyBox();
@@ -165,6 +165,8 @@
 			this.Controls.Add(this.settingsGroupBox);
 			this.Controls.Add(this.bannerBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "InputCorrelatorForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Input Correlator";
