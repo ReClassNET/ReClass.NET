@@ -53,7 +53,7 @@ namespace ReClassNET.Forms
 
 			if (!string.IsNullOrEmpty(filterNameTextBox.Text))
 			{
-				classes = classes.Where(c => c.Name.Contains(filterNameTextBox.Text));
+				classes = classes.Where(c => c.Name.IndexOf(filterNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
 			}
 
 			classesListBox.DataSource = classes.ToList();
