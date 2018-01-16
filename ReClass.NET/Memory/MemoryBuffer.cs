@@ -502,7 +502,17 @@ namespace ReClassNET.Memory
 			return sb.ToString();
 		}
 
-		private string ReadString(Encoding encoding, int offset, int length)
+		public string ReadString(Encoding encoding, IntPtr offset, int length)
+		{
+			Contract.Requires(encoding != null);
+			Contract.Requires(offset.ToInt32() >= 0);
+			Contract.Requires(length >= 0);
+			Contract.Ensures(Contract.Result<string>() != null);
+
+			return ReadString(encoding, offset.ToInt32(), length);
+		}
+
+		public string ReadString(Encoding encoding, int offset, int length)
 		{
 			Contract.Requires(encoding != null);
 			Contract.Requires(offset >= 0);
@@ -523,33 +533,6 @@ namespace ReClassNET.Memory
 				}
 			}
 			return sb.ToString();
-		}
-
-		public string ReadUtf8String(IntPtr offset, int length)
-		{
-			Contract.Requires(offset.ToInt32() >= 0);
-			Contract.Requires(length >= 0);
-			Contract.Ensures(Contract.Result<string>() != null);
-
-			return ReadString(Encoding.UTF8, offset.ToInt32(), length);
-		}
-
-		public string ReadUtf16String(IntPtr offset, int length)
-		{
-			Contract.Requires(offset.ToInt32() >= 0);
-			Contract.Requires(length >= 0);
-			Contract.Ensures(Contract.Result<string>() != null);
-
-			return ReadString(Encoding.Unicode, offset.ToInt32(), length);
-		}
-
-		public string ReadUtf32String(IntPtr offset, int length)
-		{
-			Contract.Requires(offset.ToInt32() >= 0);
-			Contract.Requires(length >= 0);
-			Contract.Ensures(Contract.Result<string>() != null);
-
-			return ReadString(Encoding.UTF32, offset.ToInt32(), length);
 		}
 
 		public bool HasChanged(IntPtr offset, int length)

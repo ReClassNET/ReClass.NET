@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Text;
+using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -25,16 +26,18 @@ namespace ReClassNET.Nodes
 			Length = node.MemorySize / CharacterSize;
 		}
 
-		protected Size DrawText(ViewInfo view, int x, int y, string type, int length, string text)
+		protected Size DrawText(ViewInfo view, int x, int y, string type)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
-			Contract.Requires(text != null);
 
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
 			}
+
+			var length = MemorySize / CharacterSize;
+			var text = ReadValueFromMemory(view.Memory);
 
 			DrawInvalidMemoryIndicator(view, y);
 
@@ -82,6 +85,11 @@ namespace ReClassNET.Nodes
 					ParentNode.ChildHasChanged(this);
 				}
 			}
+		}
+
+		public string ReadValueFromMemory(MemoryBuffer memory)
+		{
+			return memory.ReadString(Encoding, Offset, MemorySize);
 		}
 	}
 
