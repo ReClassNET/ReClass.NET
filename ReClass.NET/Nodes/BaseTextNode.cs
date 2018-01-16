@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.Text;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -16,6 +17,8 @@ namespace ReClassNET.Nodes
 
 		/// <summary>Size of one character in bytes.</summary>
 		public abstract int CharacterSize { get; }
+
+		public abstract Encoding Encoding { get; }
 
 		public override void CopyFromNode(BaseNode node)
 		{
@@ -50,7 +53,7 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "]") + view.Font.Width;
 
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "= '");
-			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text.LimitLength(150));
+			x = AddText(view, x, y, view.Settings.TextColor, 1, text.LimitLength(150));
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
 
 			x = AddComment(view, x, y);
