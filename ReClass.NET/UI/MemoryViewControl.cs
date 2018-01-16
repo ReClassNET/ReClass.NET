@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ReClassNET.DataExchange.ReClass;
+using ReClassNET.Forms;
 using ReClassNET.Memory;
 using ReClassNET.MemoryScanner;
 using ReClassNET.MemoryScanner.Comparer;
@@ -381,8 +382,6 @@ namespace ReClassNET.UI
 						}
 						else if (hotSpot.Type == HotSpotType.ChangeType)
 						{
-							IEnumerable<TypeToolStripMenuItem> items = null;
-
 							if (hitObject is FunctionNode functionNode)
 							{
 								var noneClass = new ClassNode(false)
@@ -390,69 +389,39 @@ namespace ReClassNET.UI
 									Name = "None"
 								};
 
-								void ChangeTypeHandler(object sender2, EventArgs e2)
+								using (var csf = new ClassSelectionForm(noneClass.Yield().Concat(project.Classes.OrderBy(c => c.Name))))
 								{
-									if (!((sender2 as TypeToolStripMenuItem)?.Tag is ClassNode selectedClassNode))
+									if (csf.ShowDialog() == DialogResult.OK)
 									{
-										return;
-									}
-
-									if (selectedClassNode == noneClass)
-									{
-										selectedClassNode = null;
-									}
-
-									functionNode.BelongsToClass = selectedClassNode;
-								}
-
-								items = noneClass.Yield()
-									.Concat(project.Classes.OrderBy(c => c.Name))
-									.Select(c =>
-									{
-										var b = new TypeToolStripMenuItem
+										var selectedClassNode = csf.SelectedClass;
+										if (selectedClassNode != null)
 										{
-											Text = c.Name,
-											Tag = c
-										};
-										b.Click += ChangeTypeHandler;
-										return b;
-									});
-							}
+											if (selectedClassNode == noneClass)
+											{
+												selectedClassNode = null;
+											}
 
-							if (hitObject is BaseReferenceNode refNode)
-							{
-								void ChangeInnerNodeHandler(object sender2, EventArgs e2)
-								{
-									if (!((sender2 as TypeToolStripMenuItem)?.Tag is ClassNode selectedClassNode))
-									{
-										return;
-									}
-
-									if (!refNode.PerformCycleCheck || IsCycleFree(refNode.ParentNode as ClassNode, selectedClassNode))
-									{
-										refNode.ChangeInnerNode(selectedClassNode);
+											functionNode.BelongsToClass = selectedClassNode;
+										}
 									}
 								}
-
-								items = project.Classes
-									.OrderBy(c => c.Name)
-									.Select(c =>
-									{
-										var b = new TypeToolStripMenuItem
-										{
-											Text = c.Name,
-											Tag = c
-										};
-										b.Click += ChangeInnerNodeHandler;
-										return b;
-									});
 							}
-
-							if (items != null)
+							else if (hitObject is BaseReferenceNode refNode)
 							{
-								var menu = new ContextMenuStrip();
-								menu.Items.AddRange(items.ToArray());
-								menu.Show(this, e.Location);
+								using (var csf = new ClassSelectionForm(project.Classes.OrderBy(c => c.Name)))
+								{
+									if (csf.ShowDialog() == DialogResult.OK)
+									{
+										var selectedClassNode = csf.SelectedClass;
+										if (selectedClassNode != null)
+										{
+											if (!refNode.PerformCycleCheck || IsCycleFree(refNode.ParentNode as ClassNode, selectedClassNode))
+											{
+												refNode.ChangeInnerNode(selectedClassNode);
+											}
+										}
+									}
+								}
 							}
 
 							break;
