@@ -38,12 +38,12 @@
 			this.versionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.authorColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.nativesTabPage = new System.Windows.Forms.TabPage();
+			this.label2 = new System.Windows.Forms.Label();
 			this.functionsProvidersComboBox = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.getMoreLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.closeButton = new System.Windows.Forms.Button();
 			this.bannerBox = new ReClassNET.UI.BannerBox();
-			this.label2 = new System.Windows.Forms.Label();
 			this.tabControl.SuspendLayout();
 			this.pluginsTabPage.SuspendLayout();
 			this.descriptionGroupBox.SuspendLayout();
@@ -167,6 +167,15 @@
 			this.nativesTabPage.Text = "Native Helper";
 			this.nativesTabPage.UseVisualStyleBackColor = true;
 			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(6, 66);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(98, 13);
+			this.label2.TabIndex = 21;
+			this.label2.Text = "Functions Provider:";
+			// 
 			// functionsProvidersComboBox
 			// 
 			this.functionsProvidersComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -222,15 +231,6 @@
 			this.bannerBox.Text = "Here you can configure all loaded ReClass.NET plugins.";
 			this.bannerBox.Title = "Plugins";
 			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(6, 66);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(98, 13);
-			this.label2.TabIndex = 21;
-			this.label2.Text = "Functions Provider:";
-			// 
 			// PluginForm
 			// 
 			this.AcceptButton = this.closeButton;
@@ -242,6 +242,8 @@
 			this.Controls.Add(this.getMoreLinkLabel);
 			this.Controls.Add(this.tabControl);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "PluginForm";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
