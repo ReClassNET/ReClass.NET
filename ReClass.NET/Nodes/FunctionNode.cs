@@ -73,7 +73,7 @@ namespace ReClassNET.Nodes
 
 				y += view.Font.Height;
 				x = AddText(view, tx, y, view.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
-				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>");
+				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>") + view.Font.Width;
 				x = AddIcon(view, x, y, Icons.Change, 1, HotSpotType.ChangeType);
 				size.Width = Math.Max(size.Width, x - origX);
 				size.Height += view.Font.Height;
