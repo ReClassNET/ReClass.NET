@@ -67,7 +67,7 @@ namespace ReClassNET.Nodes
 
 				instructions.Add(new FunctionNodeInstruction
 				{
-					Address = instruction.Address.ToString(Constants.StringHexFormat),
+					Address = instruction.Address.ToString(Constants.AddressHexFormat),
 					Data = string.Join(" ", instruction.Data.Take(instruction.Length).Select(b => $"{b:X2}")),
 					Instruction = instruction.Instruction
 				});

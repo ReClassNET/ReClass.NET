@@ -277,6 +277,6 @@ namespace ReClassNET.Memory
 			Instruction = data.Instruction;
 		}
 
-		public override string ToString() => $"{Address.ToString(Constants.StringHexFormat)} - {Instruction}";
+		public override string ToString() => $"{Address.ToString(Constants.AddressHexFormat)} - {Instruction}";
 	}
 }

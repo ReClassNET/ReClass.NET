@@ -685,8 +685,8 @@ namespace ReClassNET.Forms
 
 			valueTypeComboBox.SelectedValue = settings.ValueType;
 
-			startAddressTextBox.Text = settings.StartAddress.ToString(Constants.StringHexFormat);
-			stopAddressTextBox.Text = settings.StopAddress.ToString(Constants.StringHexFormat);
+			startAddressTextBox.Text = settings.StartAddress.ToString(Constants.AddressHexFormat);
+			stopAddressTextBox.Text = settings.StopAddress.ToString(Constants.AddressHexFormat);
 
 			fastScanCheckBox.Checked = settings.EnableFastScan;
 			fastScanAlignmentTextBox.Text = Math.Max(1, settings.FastScanAlignment).ToString();

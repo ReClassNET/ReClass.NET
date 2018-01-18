@@ -82,8 +82,8 @@ namespace ReClassNET.Forms
 					delegate (Section section)
 					{
 						var row = sections.NewRow();
-						row["address"] = section.Start.ToString(Constants.StringHexFormat);
-						row["size"] = section.Size.ToString(Constants.StringHexFormat);
+						row["address"] = section.Start.ToString(Constants.AddressHexFormat);
+						row["size"] = section.Size.ToString(Constants.AddressHexFormat);
 						row["name"] = section.Name;
 						row["protection"] = section.Protection.ToString();
 						row["type"] = section.Type.ToString();
@@ -96,8 +96,8 @@ namespace ReClassNET.Forms
 						var row = modules.NewRow();
 						row["icon"] = NativeMethods.GetIconForFile(module.Path);
 						row["name"] = module.Name;
-						row["address"] = module.Start.ToString(Constants.StringHexFormat);
-						row["size"] = module.Size.ToString(Constants.StringHexFormat);
+						row["address"] = module.Start.ToString(Constants.AddressHexFormat);
+						row["size"] = module.Size.ToString(Constants.AddressHexFormat);
 						row["path"] = module.Path;
 						row["module"] = module;
 						modules.Rows.Add(row);

@@ -34,7 +34,7 @@ namespace ReClassNET.MemoryScanner
 
 		public IntPtr RealAddress { get; private set; }
 	
-		public string AddressStr => RealAddress.ToString(Constants.StringHexFormat);
+		public string AddressStr => RealAddress.ToString(Constants.AddressHexFormat);
 
 		public string ModuleName
 		{

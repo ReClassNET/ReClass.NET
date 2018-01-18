@@ -249,7 +249,7 @@ namespace ReClassNET.Nodes
 
 			if (view.Settings.ShowNodeAddress)
 			{
-				x = AddText(view, x, y, view.Settings.AddressColor, HotSpot.AddressId, view.Address.Add(Offset).ToString(Constants.StringHexFormat)) + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.AddressColor, HotSpot.AddressId, view.Address.Add(Offset).ToString(Constants.AddressHexFormat)) + view.Font.Width;
 			}
 
 			return x;

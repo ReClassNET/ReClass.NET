@@ -83,7 +83,7 @@ namespace ReClassNET.Forms
 		private void DisplayNamedAddresses()
 		{
 			namedAddressesListBox.DataSource = process.NamedAddresses
-				.Select(kv => new BindingDisplayWrapper<KeyValuePair<IntPtr, string>>(kv, v => $"0x{v.Key.ToString(Constants.StringHexFormat)}: {v.Value}"))
+				.Select(kv => new BindingDisplayWrapper<KeyValuePair<IntPtr, string>>(kv, v => $"0x{v.Key.ToString(Constants.AddressHexFormat)}: {v.Value}"))
 				.ToList();
 
 			namedAddressesListBox_SelectedIndexChanged(null, null);

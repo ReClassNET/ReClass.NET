@@ -43,11 +43,11 @@ namespace ReClassNET.Forms
 
 			if (trigger == HardwareBreakpointTrigger.Write)
 			{
-				Text = "Find out what writes to " + address.ToString(Constants.StringHexFormat);
+				Text = "Find out what writes to " + address.ToString(Constants.AddressHexFormat);
 			}
 			else
 			{
-				Text = "Find out what accesses " + address.ToString(Constants.StringHexFormat);
+				Text = "Find out what accesses " + address.ToString(Constants.AddressHexFormat);
 			}
 
 			bannerBox.Text = Text;
@@ -88,7 +88,7 @@ namespace ReClassNET.Forms
 
 			for (var i = 0; i < 5; ++i)
 			{
-				var code = $"{info.Instructions[i].Address.ToString(Constants.StringHexFormat)} - {info.Instructions[i].Instruction}";
+				var code = $"{info.Instructions[i].Address.ToString(Constants.AddressHexFormat)} - {info.Instructions[i].Instruction}";
 				if (i == 2)
 				{
 					sb.AppendLine(code + " <<<");
@@ -102,34 +102,34 @@ namespace ReClassNET.Forms
 			sb.AppendLine();
 
 #if RECLASSNET64
-			sb.AppendLine($"RAX = {info.DebugInfo.Registers.Rax.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"RBX = {info.DebugInfo.Registers.Rbx.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"RCX = {info.DebugInfo.Registers.Rcx.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"RDX = {info.DebugInfo.Registers.Rdx.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"RDI = {info.DebugInfo.Registers.Rdi.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"RSI = {info.DebugInfo.Registers.Rsi.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"RSP = {info.DebugInfo.Registers.Rsp.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"RBP = {info.DebugInfo.Registers.Rbp.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"RIP = {info.DebugInfo.Registers.Rip.ToString(Constants.StringHexFormat)}");
+			sb.AppendLine($"RAX = {info.DebugInfo.Registers.Rax.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"RBX = {info.DebugInfo.Registers.Rbx.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"RCX = {info.DebugInfo.Registers.Rcx.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"RDX = {info.DebugInfo.Registers.Rdx.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"RDI = {info.DebugInfo.Registers.Rdi.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"RSI = {info.DebugInfo.Registers.Rsi.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"RSP = {info.DebugInfo.Registers.Rsp.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"RBP = {info.DebugInfo.Registers.Rbp.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"RIP = {info.DebugInfo.Registers.Rip.ToString(Constants.AddressHexFormat)}");
 
-			sb.AppendLine($"R8  = {info.DebugInfo.Registers.R8.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"R9  = {info.DebugInfo.Registers.R9.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"R10 = {info.DebugInfo.Registers.R10.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"R11 = {info.DebugInfo.Registers.R11.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"R12 = {info.DebugInfo.Registers.R12.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"R13 = {info.DebugInfo.Registers.R13.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"R14 = {info.DebugInfo.Registers.R14.ToString(Constants.StringHexFormat)}");
-			sb.Append($"R15 = {info.DebugInfo.Registers.R15.ToString(Constants.StringHexFormat)}");
+			sb.AppendLine($"R8  = {info.DebugInfo.Registers.R8.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"R9  = {info.DebugInfo.Registers.R9.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"R10 = {info.DebugInfo.Registers.R10.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"R11 = {info.DebugInfo.Registers.R11.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"R12 = {info.DebugInfo.Registers.R12.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"R13 = {info.DebugInfo.Registers.R13.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"R14 = {info.DebugInfo.Registers.R14.ToString(Constants.AddressHexFormat)}");
+			sb.Append($"R15 = {info.DebugInfo.Registers.R15.ToString(Constants.AddressHexFormat)}");
 #else
-			sb.AppendLine($"EAX = {info.DebugInfo.Registers.Eax.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"EBX = {info.DebugInfo.Registers.Ebx.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"ECX = {info.DebugInfo.Registers.Ecx.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"EDX = {info.DebugInfo.Registers.Edx.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"EDI = {info.DebugInfo.Registers.Edi.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"ESI = {info.DebugInfo.Registers.Esi.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"ESP = {info.DebugInfo.Registers.Esp.ToString(Constants.StringHexFormat)}");
-			sb.AppendLine($"EBP = {info.DebugInfo.Registers.Ebp.ToString(Constants.StringHexFormat)}");
-			sb.Append($"EIP = {info.DebugInfo.Registers.Eip.ToString(Constants.StringHexFormat)}");
+			sb.AppendLine($"EAX = {info.DebugInfo.Registers.Eax.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"EBX = {info.DebugInfo.Registers.Ebx.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"ECX = {info.DebugInfo.Registers.Ecx.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"EDX = {info.DebugInfo.Registers.Edx.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"EDI = {info.DebugInfo.Registers.Edi.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"ESI = {info.DebugInfo.Registers.Esi.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"ESP = {info.DebugInfo.Registers.Esp.ToString(Constants.AddressHexFormat)}");
+			sb.AppendLine($"EBP = {info.DebugInfo.Registers.Ebp.ToString(Constants.AddressHexFormat)}");
+			sb.Append($"EIP = {info.DebugInfo.Registers.Eip.ToString(Constants.AddressHexFormat)}");
 #endif
 
 			infoTextBox.Text = sb.ToString();

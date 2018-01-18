@@ -21,11 +21,11 @@
 #if RECLASSNET64
 		public const string Platform = "x64";
 
-		public const string StringHexFormat = "X016";
+		public const string AddressHexFormat = "X016";
 #else
 		public const string Platform = "x86";
 
-		public const string StringHexFormat = "X08";
+		public const string AddressHexFormat = "X08";
 #endif
 
 		public const string SettingsFile = "settings.xml";

@@ -141,7 +141,7 @@ namespace ReClassNET.DataExchange.Scanner
 										XmlRecordElement,
 										new XAttribute(XmlValueTypeAttribute, r.ValueType.ToString()),
 										new XAttribute(XmlDescriptionAttribute, r.Description ?? string.Empty),
-										new XAttribute(XmlAddressAttribute, r.AddressOrOffset.ToString(Constants.StringHexFormat))
+										new XAttribute(XmlAddressAttribute, r.AddressOrOffset.ToString(Constants.AddressHexFormat))
 									);
 									if (r.IsRelativeAddress)
 									{
