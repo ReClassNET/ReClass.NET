@@ -307,6 +307,11 @@ namespace ReClassNET.Forms
 			new ScannerForm().Show();
 		}
 
+		private void namedAddressesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			new NamedAddressesForm(Program.RemoteProcess).Show();
+		}
+
 		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using (var ofd = new OpenFileDialog())

@@ -132,6 +132,7 @@
 			this.resumeProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.suspendProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.terminateProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.namedAddressesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cleanUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
@@ -1071,6 +1072,7 @@
 			this.processToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.processInformationsToolStripMenuItem,
             this.memorySearcherToolStripMenuItem,
+            this.namedAddressesToolStripMenuItem,
             this.toolStripSeparator17,
             this.loadSymbolToolStripMenuItem,
             this.loadSymbolsToolStripMenuItem,
@@ -1086,28 +1088,28 @@
 			// 
 			this.processInformationsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Category;
 			this.processInformationsToolStripMenuItem.Name = "processInformationsToolStripMenuItem";
-			this.processInformationsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-			this.processInformationsToolStripMenuItem.Text = "Process Informations";
+			this.processInformationsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+			this.processInformationsToolStripMenuItem.Text = "Process Informations...";
 			this.processInformationsToolStripMenuItem.Click += new System.EventHandler(this.memoryViewerToolStripMenuItem_Click);
 			// 
 			// memorySearcherToolStripMenuItem
 			// 
 			this.memorySearcherToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
 			this.memorySearcherToolStripMenuItem.Name = "memorySearcherToolStripMenuItem";
-			this.memorySearcherToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-			this.memorySearcherToolStripMenuItem.Text = "Memory Searcher";
+			this.memorySearcherToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+			this.memorySearcherToolStripMenuItem.Text = "Memory Searcher...";
 			this.memorySearcherToolStripMenuItem.Click += new System.EventHandler(this.memorySearcherToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator17
 			// 
 			this.toolStripSeparator17.Name = "toolStripSeparator17";
-			this.toolStripSeparator17.Size = new System.Drawing.Size(182, 6);
+			this.toolStripSeparator17.Size = new System.Drawing.Size(191, 6);
 			// 
 			// loadSymbolToolStripMenuItem
 			// 
 			this.loadSymbolToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Pdb;
 			this.loadSymbolToolStripMenuItem.Name = "loadSymbolToolStripMenuItem";
-			this.loadSymbolToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+			this.loadSymbolToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.loadSymbolToolStripMenuItem.Text = "Load Symbol...";
 			this.loadSymbolToolStripMenuItem.Click += new System.EventHandler(this.loadSymbolToolStripMenuItem_Click);
 			// 
@@ -1115,20 +1117,20 @@
 			// 
 			this.loadSymbolsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("loadSymbolsToolStripMenuItem.Image")));
 			this.loadSymbolsToolStripMenuItem.Name = "loadSymbolsToolStripMenuItem";
-			this.loadSymbolsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+			this.loadSymbolsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.loadSymbolsToolStripMenuItem.Text = "Load all Symbols";
 			this.loadSymbolsToolStripMenuItem.Click += new System.EventHandler(this.loadSymbolsToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(182, 6);
+			this.toolStripSeparator4.Size = new System.Drawing.Size(191, 6);
 			// 
 			// resumeProcessToolStripMenuItem
 			// 
 			this.resumeProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Control_Play;
 			this.resumeProcessToolStripMenuItem.Name = "resumeProcessToolStripMenuItem";
-			this.resumeProcessToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+			this.resumeProcessToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.resumeProcessToolStripMenuItem.Text = "Resume";
 			this.resumeProcessToolStripMenuItem.Click += new System.EventHandler(this.ControlRemoteProcessToolStripMenuItem_Click);
 			// 
@@ -1136,7 +1138,7 @@
 			// 
 			this.suspendProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Control_Pause;
 			this.suspendProcessToolStripMenuItem.Name = "suspendProcessToolStripMenuItem";
-			this.suspendProcessToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+			this.suspendProcessToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.suspendProcessToolStripMenuItem.Text = "Suspend";
 			this.suspendProcessToolStripMenuItem.Click += new System.EventHandler(this.ControlRemoteProcessToolStripMenuItem_Click);
 			// 
@@ -1144,9 +1146,17 @@
 			// 
 			this.terminateProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Control_Stop;
 			this.terminateProcessToolStripMenuItem.Name = "terminateProcessToolStripMenuItem";
-			this.terminateProcessToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+			this.terminateProcessToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.terminateProcessToolStripMenuItem.Text = "Kill";
 			this.terminateProcessToolStripMenuItem.Click += new System.EventHandler(this.ControlRemoteProcessToolStripMenuItem_Click);
+			// 
+			// namedAddressesToolStripMenuItem
+			// 
+			this.namedAddressesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Custom_Type;
+			this.namedAddressesToolStripMenuItem.Name = "namedAddressesToolStripMenuItem";
+			this.namedAddressesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+			this.namedAddressesToolStripMenuItem.Text = "Named Addresses...";
+			this.namedAddressesToolStripMenuItem.Click += new System.EventHandler(this.namedAddressesToolStripMenuItem_Click);
 			// 
 			// projectToolStripMenuItem
 			// 
@@ -1177,7 +1187,7 @@
 			this.generateCppCodeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Code_Cpp;
 			this.generateCppCodeToolStripMenuItem.Name = "generateCppCodeToolStripMenuItem";
 			this.generateCppCodeToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-			this.generateCppCodeToolStripMenuItem.Text = "Generate C++ Code";
+			this.generateCppCodeToolStripMenuItem.Text = "Generate C++ Code...";
 			this.generateCppCodeToolStripMenuItem.Click += new System.EventHandler(this.generateCppCodeToolStripMenuItem_Click);
 			// 
 			// generateCSharpCodeToolStripMenuItem
@@ -1185,7 +1195,7 @@
 			this.generateCSharpCodeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Code_Csharp;
 			this.generateCSharpCodeToolStripMenuItem.Name = "generateCSharpCodeToolStripMenuItem";
 			this.generateCSharpCodeToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-			this.generateCSharpCodeToolStripMenuItem.Text = "Generate C# Code";
+			this.generateCSharpCodeToolStripMenuItem.Text = "Generate C# Code...";
 			this.generateCSharpCodeToolStripMenuItem.Click += new System.EventHandler(this.generateCSharpCodeToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
@@ -1200,7 +1210,7 @@
 			// 
 			this.aboutToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Information;
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
@@ -1348,6 +1358,7 @@
 		private System.Windows.Forms.ToolStripMenuItem memorySearcherToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem reattachToProcessToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSplitButton attachToProcessToolStripSplitButton;
+		private System.Windows.Forms.ToolStripMenuItem namedAddressesToolStripMenuItem;
 	}
 }
 

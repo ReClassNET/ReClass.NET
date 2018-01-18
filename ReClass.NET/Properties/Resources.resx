@@ -499,4 +499,7 @@
   <data name="B16x16_Button_Add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\B16x16_Button_Add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="B16x16_Button_Remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\B16x16_Button_Remove.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

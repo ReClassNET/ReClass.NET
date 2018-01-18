@@ -167,6 +167,12 @@
     <Compile Include="Debugger\RemoteDebugger.Extensions.cs" />
     <Compile Include="Debugger\RemoteDebugger.Thread.cs" />
     <Compile Include="Debugger\SoftwareBreakpoint.cs" />
+    <Compile Include="Forms\NamedAddressesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NamedAddressesForm.Designer.cs">
+      <DependentUpon>NamedAddressesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ClassSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,6 +269,7 @@
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\BannerFactory.cs" />
+    <Compile Include="UI\BindingDisplayWrapper.cs" />
     <Compile Include="UI\DpiUtil.cs" />
     <Compile Include="Nodes\INodeInfoReader.cs" />
     <Compile Include="UI\ClassNodeView.cs">
@@ -483,8 +490,12 @@
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NamedAddressesForm.resx">
+      <DependentUpon>NamedAddressesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ClassSelectionForm.resx">
       <DependentUpon>ClassSelectionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CodeForm.resx">
       <DependentUpon>CodeForm.cs</DependentUpon>
@@ -942,6 +953,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Button_Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Remove.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

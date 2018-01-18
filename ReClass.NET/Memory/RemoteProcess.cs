@@ -81,6 +81,9 @@ namespace ReClassNET.Memory
 			}
 		}
 
+		/// <summary>A map of named addresses.</summary>
+		public Dictionary<IntPtr, string> NamedAddresses { get; } = new Dictionary<IntPtr, string>();
+
 		public bool IsValid => process != null && coreFunctions.IsProcessValid(handle);
 
 		public RemoteProcess(CoreFunctionsManager coreFunctions)
@@ -605,6 +608,11 @@ namespace ReClassNET.Memory
 		/// <returns>The named address or null if no mapping exists.</returns>
 		public string GetNamedAddress(IntPtr address)
 		{
+			if (NamedAddresses.TryGetValue(address, out var namedAddress))
+			{
+				return namedAddress;
+			}
+
 			var section = GetSectionToPointer(address);
 			if (section != null)
 			{
@@ -613,7 +621,7 @@ namespace ReClassNET.Memory
 					// Code and Data sections belong to a module.
 					return $"<{section.Category}>{section.ModuleName}.{address.ToString("X")}";
 				}
-				else if (section.Category == SectionCategory.HEAP)
+				if (section.Category == SectionCategory.HEAP)
 				{
 					return $"<HEAP>{address.ToString("X")}";
 				}
