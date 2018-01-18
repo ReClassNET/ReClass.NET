@@ -59,7 +59,7 @@ namespace ReClassNET.Forms
 		}
 	}
 
-	class RtfFormatter : IFormatter
+	internal class RtfFormatter : IFormatter
 	{
 		private readonly RtfBuilder builder = new RtfBuilder(RtfFont.Consolas, 20);
 
