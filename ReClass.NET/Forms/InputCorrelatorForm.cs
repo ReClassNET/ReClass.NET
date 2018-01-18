@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.Input;
 using ReClassNET.MemoryScanner;
+using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
@@ -43,6 +44,20 @@ namespace ReClassNET.Forms
 			hotkeyBox.Input = input;
 
 			infoLabel.Text = string.Empty;
+		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			GlobalWindowManager.AddWindow(this);
+		}
+
+		protected override void OnFormClosed(FormClosedEventArgs e)
+		{
+			base.OnFormClosed(e);
+
+			GlobalWindowManager.RemoveWindow(this);
 		}
 
 		#region Event Handler
