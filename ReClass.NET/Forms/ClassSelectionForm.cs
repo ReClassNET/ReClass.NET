@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.Nodes;
+using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
@@ -27,6 +24,20 @@ namespace ReClassNET.Forms
 			InitializeComponent();
 
 			ShowFilteredClasses();
+		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			GlobalWindowManager.AddWindow(this);
+		}
+
+		protected override void OnFormClosed(FormClosedEventArgs e)
+		{
+			base.OnFormClosed(e);
+
+			GlobalWindowManager.RemoveWindow(this);
 		}
 
 		private void filterNameTextBox_TextChanged(object sender, EventArgs e)
