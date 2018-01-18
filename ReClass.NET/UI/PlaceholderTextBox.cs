@@ -63,7 +63,10 @@ namespace ReClassNET.UI
 
 			if (string.IsNullOrEmpty(Text) && Focused == false)
 			{
-				e.Graphics.DrawString(PlaceholderText ?? string.Empty, Font, new SolidBrush(PlaceholderColor), new PointF(-1.0f, 1.0f));
+				using (var brush = new SolidBrush(PlaceholderColor))
+				{
+					e.Graphics.DrawString(PlaceholderText ?? string.Empty, Font, brush, new PointF(-1.0f, 1.0f));
+				}
 			}
 		}
 	}

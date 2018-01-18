@@ -65,12 +65,8 @@
 			// 
 			this.filterNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.filterNameTextBox.BackColor = System.Drawing.SystemColors.Window;
-			this.filterNameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.filterNameTextBox.ForeColor = System.Drawing.SystemColors.WindowText;
 			this.filterNameTextBox.Location = new System.Drawing.Point(12, 54);
 			this.filterNameTextBox.Name = "filterNameTextBox";
-			this.filterNameTextBox.PlaceholderColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.filterNameTextBox.PlaceholderText = "Filter by Class Name...";
 			this.filterNameTextBox.Size = new System.Drawing.Size(492, 20);
 			this.filterNameTextBox.TabIndex = 1;
