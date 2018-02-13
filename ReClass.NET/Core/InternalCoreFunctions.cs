@@ -51,7 +51,7 @@ namespace ReClassNET.Core
 			var handle = NativeMethods.LoadLibrary(libraryPath);
 			if (handle.IsNull())
 			{
-				throw new FileNotFoundException(libraryPath);
+				throw new FileNotFoundException($"Failed to load native core functions! Couldnt find at location {libraryPath}");
 			}
 
 			return new InternalCoreFunctions(handle);
