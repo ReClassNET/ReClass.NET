@@ -123,17 +123,10 @@ namespace ReClassNET.Memory
 				if (section.Category == SectionCategory.DATA || section.Category == SectionCategory.HEAP) // If the section contains data, it is at least a pointer to a class or something.
 				{
 					// Check if it is a vtable. Check if the first 3 values are pointers to a code section.
-					bool valid = true;
-					for (var i = 0; i < 3; ++i)
-					{
-						var pointee = memory.Process.ReadRemoteIntPtr(address);
-						if (memory.Process.GetSectionToPointer(pointee)?.Category != SectionCategory.CODE)
-						{
-							valid = false;
-							break;
-						}
-					}
-					if (valid)
+					var possibleVmt = memory.Process.ReadRemoteObject<ThreePointersData>(address);
+					if (memory.Process.GetSectionToPointer(possibleVmt.Pointer1)?.Category == SectionCategory.CODE
+						&& memory.Process.GetSectionToPointer(possibleVmt.Pointer2)?.Category == SectionCategory.CODE
+						&& memory.Process.GetSectionToPointer(possibleVmt.Pointer3)?.Category == SectionCategory.CODE)
 					{
 						return typeof(VTableNode);
 					}
