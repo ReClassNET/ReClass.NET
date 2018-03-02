@@ -250,8 +250,6 @@ namespace ReClassNET.UI
 
 			bool invalidate = false;
 
-			editBox.Visible = false;
-
 			foreach (var hotSpot in hotSpots)
 			{
 				if (hotSpot.Rect.Contains(e.Location))
@@ -433,6 +431,8 @@ namespace ReClassNET.UI
 					}
 				}
 			}
+
+			editBox.Visible = false;
 
 			if (invalidate)
 			{
