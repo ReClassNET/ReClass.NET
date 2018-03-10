@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using ReClassNET.Memory;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -46,6 +48,11 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name}>") + view.Font.Width;
 			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeType) + view.Font.Width;
 
+			var ptr = view.Memory.ReadIntPtr(Offset);
+
+			x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, "->") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.ValueColor, 0, "0x" + ptr.ToString(Constants.AddressHexFormat)) + view.Font.Width;
+
 			x = AddComment(view, x, y);
 
 			AddTypeDrop(view, y);
@@ -57,8 +64,6 @@ namespace ReClassNET.Nodes
 
 			if (levelsOpen[view.Level])
 			{
-				var ptr = view.Memory.ReadIntPtr(Offset);
-
 				memory.Size = InnerNode.MemorySize;
 				memory.Process = view.Memory.Process;
 				memory.Update(ptr);
@@ -89,6 +94,25 @@ namespace ReClassNET.Nodes
 				height += InnerNode.CalculateDrawnHeight(view);
 			}
 			return height;
+		}
+
+		public override void Update(HotSpot spot)
+		{
+			base.Update(spot);
+
+			if (spot.Id == 0)
+			{
+				if (spot.Text.TryGetHexString(out var hexValue) && long.TryParse(hexValue, NumberStyles.HexNumber, null, out var val))
+				{
+#if RECLASSNET64
+					var address = (IntPtr)val;
+#else
+					var address = (IntPtr)unchecked((int)val);
+#endif
+
+					spot.Memory.Process.WriteRemoteMemory(spot.Address, address);
+				}
+			}
 		}
 	}
 }
