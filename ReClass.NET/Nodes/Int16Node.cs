@@ -22,7 +22,7 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id == 0 || spot.Id == 1)
 			{
-				if (short.TryParse(spot.Text, out var val) || spot.Text.TryGetHexString(out var hexValue) && short.TryParse(hexValue, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out val))
+				if (short.TryParse(spot.Text, out var val) || spot.Text.TryGetHexString(out var hexValue) && short.TryParse(hexValue, NumberStyles.HexNumber, null, out val))
 				{
 					spot.Memory.Process.WriteRemoteMemory(spot.Address, val);
 				}
