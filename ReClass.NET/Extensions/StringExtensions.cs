@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ReClassNET.Util
 {
@@ -83,6 +84,15 @@ namespace ReClassNET.Util
 				return s;
 			}
 			return s.Substring(0, length);
+		}
+
+		private static readonly Regex HexRegex = new Regex("(0x|h)?([0-9A-F]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+		public static bool TryGetHexString(this string s, out string value)
+		{
+			var match = HexRegex.Match(s);
+			value = match.Success ? match.Groups[2].Value : null;
+
+			return match.Success;
 		}
 	}
 }
