@@ -105,11 +105,11 @@ namespace ReClassNET.UI
 
 		private void OnCommit()
 		{
+			Visible = false;
+
 			hotSpot.Text = Text.Trim();
 
 			Committed?.Invoke(this, EventArgs.Empty);
-
-			Visible = false;
 		}
 	}
 }
