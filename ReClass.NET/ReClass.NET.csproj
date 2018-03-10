@@ -342,18 +342,18 @@
     <Compile Include="Util\CircularBuffer.cs" />
     <Compile Include="Util\CommandLineArgs.cs" />
     <Compile Include="Util\CustomConfig.cs" />
-    <Compile Include="Extensions\Extension.BinaryReaderWriter.cs" />
-    <Compile Include="Extensions\Extension.Color.cs" />
-    <Compile Include="Extensions\Extension.DataGridView.cs" />
-    <Compile Include="Extensions\Extension.Dictionary.cs" />
-    <Compile Include="Extensions\Extension.Encoding.cs" />
-    <Compile Include="Extensions\Extension.FloatingPoint.cs" />
-    <Compile Include="Extensions\Extension.Graphics.cs" />
-    <Compile Include="Extensions\Extension.IntPtr.cs" />
-    <Compile Include="Extensions\Extension.RichTextBox.cs" />
-    <Compile Include="Extensions\Extension.Size.cs" />
-    <Compile Include="Extensions\Extension.String.cs" />
-    <Compile Include="Extensions\Extension.StringReader.cs" />
+    <Compile Include="Extensions\BinaryReaderWriterExtensions.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\DataGridViewExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\EncodingExtensions.cs" />
+    <Compile Include="Extensions\FloatingPointExtensions.cs" />
+    <Compile Include="Extensions\GraphicsExtensions.cs" />
+    <Compile Include="Extensions\IntPtrExtensions.cs" />
+    <Compile Include="Extensions\RichTextBoxExtensions.cs" />
+    <Compile Include="Extensions\SizeExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\StringReaderExtensions.cs" />
     <Compile Include="Util\GrowingList.cs" />
     <Compile Include="Forms\PluginForm.cs">
       <SubType>Form</SubType>
@@ -475,7 +475,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\ViewInfo.cs" />
-    <Compile Include="Extensions\Extension.Linq.cs" />
+    <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Util\IntPtrComparer.cs" />
     <Compile Include="Util\PathUtil.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.cs" />
