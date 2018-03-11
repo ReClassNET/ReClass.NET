@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using ReClassNET.Extensions;
 using ReClassNET.Util;
 
 namespace ReClassNET.Native

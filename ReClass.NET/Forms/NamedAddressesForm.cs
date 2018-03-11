@@ -4,6 +4,7 @@ using System.Data;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Windows.Forms;
+using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;

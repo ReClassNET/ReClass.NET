@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using System.Text;
+using ReClassNET.Extensions;
 using ReClassNET.Util;
 
 namespace ReClassNET.Memory

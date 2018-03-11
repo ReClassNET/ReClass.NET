@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Extensions
 {
 	public static class IntPtrExtension
 	{

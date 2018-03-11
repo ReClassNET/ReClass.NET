@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ReClassNET.DataExchange.ReClass;
+using ReClassNET.Extensions;
 using ReClassNET.Forms;
 using ReClassNET.Memory;
 using ReClassNET.MemoryScanner;

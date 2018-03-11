@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
+using ReClassNET.Extensions;
 
 namespace ReClassNET.Util
 {

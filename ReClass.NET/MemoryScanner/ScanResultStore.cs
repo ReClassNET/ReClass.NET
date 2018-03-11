@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
+using ReClassNET.Extensions;
 using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner

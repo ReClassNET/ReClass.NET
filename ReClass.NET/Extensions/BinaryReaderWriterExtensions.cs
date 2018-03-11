@@ -2,7 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.IO;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Extensions
 {
 	public static class BinaryReaderWriterExtension
 	{

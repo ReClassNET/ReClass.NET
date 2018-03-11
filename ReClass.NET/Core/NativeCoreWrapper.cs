@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using ReClassNET.Debugger;
+using ReClassNET.Extensions;
 using ReClassNET.Native;
 using ReClassNET.Util;
 

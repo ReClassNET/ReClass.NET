@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Extensions
 {
 	public static class LinqExtension
 	{

@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Text;
 using Dia2Lib;
+using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.Native;
 using ReClassNET.Util;

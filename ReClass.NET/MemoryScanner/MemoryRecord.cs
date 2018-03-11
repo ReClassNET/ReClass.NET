@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text;
+using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.Util;
 

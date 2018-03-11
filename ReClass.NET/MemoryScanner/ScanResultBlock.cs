@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using ReClassNET.Extensions;
 using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner

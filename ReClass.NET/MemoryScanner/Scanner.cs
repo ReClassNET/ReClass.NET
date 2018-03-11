@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.MemoryScanner.Comparer;
 using ReClassNET.Util;

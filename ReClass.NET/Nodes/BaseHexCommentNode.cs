@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using ReClassNET.Extensions;
 using ReClassNET.UI;
 using ReClassNET.Util;
 

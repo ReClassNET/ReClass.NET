@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using ReClassNET.Nodes;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Extensions
 {
 	public static class Extensions
 	{
