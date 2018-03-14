@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using ReClassNET.Core;
+using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Native;
 using ReClassNET.Util;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Extensions
 {
 	public static class DataGridViewExtension
 	{

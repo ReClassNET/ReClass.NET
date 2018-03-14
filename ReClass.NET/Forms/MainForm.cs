@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using ReClassNET.CodeGenerator;
 using ReClassNET.Core;
 using ReClassNET.DataExchange.ReClass;
+using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;

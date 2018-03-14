@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Extensions
 {
 	public static class GraphicsExtension
 	{

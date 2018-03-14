@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.Util;
 

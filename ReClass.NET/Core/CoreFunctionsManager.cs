@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Windows.Forms;
 using ReClassNET.Debugger;
+using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.Util;
 

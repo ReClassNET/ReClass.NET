@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ReClassNET.DataExchange.ReClass;
+using ReClassNET.Extensions;
 using ReClassNET.Forms;
 using ReClassNET.Memory;
 using ReClassNET.MemoryScanner;
@@ -250,8 +251,6 @@ namespace ReClassNET.UI
 
 			bool invalidate = false;
 
-			editBox.Visible = false;
-
 			foreach (var hotSpot in hotSpots)
 			{
 				if (hotSpot.Rect.Contains(e.Location))
@@ -433,6 +432,8 @@ namespace ReClassNET.UI
 					}
 				}
 			}
+
+			editBox.Visible = false;
 
 			if (invalidate)
 			{

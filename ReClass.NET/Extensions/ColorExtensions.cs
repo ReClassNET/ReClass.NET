@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Extensions
 {
 	public static class ExtensionColor
 	{

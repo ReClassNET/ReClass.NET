@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ReClassNET.AddressParser;
 using ReClassNET.Core;
 using ReClassNET.Debugger;
+using ReClassNET.Extensions;
 using ReClassNET.Native;
 using ReClassNET.Symbols;
 using ReClassNET.Util;

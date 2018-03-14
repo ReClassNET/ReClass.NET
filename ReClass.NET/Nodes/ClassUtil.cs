@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using ReClassNET.Extensions;
 using ReClassNET.Util;
 
 namespace ReClassNET.Nodes

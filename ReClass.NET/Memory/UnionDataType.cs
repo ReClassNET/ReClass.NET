@@ -69,4 +69,12 @@ namespace ReClassNET.Memory
 		[FieldOffset(0)]
 		public double DoubleValue;
 	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct ThreePointersData
+	{
+		public IntPtr Pointer1;
+		public IntPtr Pointer2;
+		public IntPtr Pointer3;
+	}
 }

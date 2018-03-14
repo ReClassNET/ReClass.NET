@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Dia2Lib;
 using Microsoft.Win32;
+using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.Native;
 using ReClassNET.Util;

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Extensions
 {
 	public static class StringReaderExtension
 	{

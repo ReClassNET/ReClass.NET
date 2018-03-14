@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using ReClassNET.Core;
+using ReClassNET.Extensions;
 using ReClassNET.Util;
 
 namespace ReClassNET.Memory

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.DataExchange.Scanner;
+using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
 using ReClassNET.MemoryScanner;

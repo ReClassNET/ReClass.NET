@@ -67,8 +67,8 @@
     <Compile Include="..\ReClass.NET\Native\NativeMethods.Windows.cs">
       <Link>Native\NativeMethods.Windows.cs</Link>
     </Compile>
-    <Compile Include="..\ReClass.NET\Util\Extension.IntPtr.cs">
-      <Link>Util\Extension.IntPtr.cs</Link>
+    <Compile Include="..\ReClass.NET\Extensions\IntPtrExtensions.cs">
+      <Link>Extensions\IntPtrExtensions.cs</Link>
     </Compile>
     <Compile Include="..\ReClass.NET\Util\PathUtil.cs">
       <Link>Util\PathUtil.cs</Link>

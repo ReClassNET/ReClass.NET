@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using ReClassNET.Extensions;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -19,7 +20,15 @@ namespace ReClassNET.Nodes
 			}
 			if (view.Settings.ShowCommentInteger)
 			{
-				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, ivalue == IntPtr.Zero ? "0" : $"{ivalue.ToInt64()} (0x{uvalue.ToUInt64():X})") + view.Font.Width;
+				if (ivalue == IntPtr.Zero)
+				{
+					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, "0") + view.Font.Width;
+				}
+				else
+				{
+					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, ivalue.ToInt64().ToString()) + view.Font.Width;
+					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, $"0x{uvalue.ToUInt64():X}") + view.Font.Width;
+				}
 			}
 
 			var namedAddress = view.Memory.Process.GetNamedAddress(ivalue);

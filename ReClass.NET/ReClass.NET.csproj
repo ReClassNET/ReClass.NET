@@ -345,18 +345,18 @@
     <Compile Include="Util\CircularBuffer.cs" />
     <Compile Include="Util\CommandLineArgs.cs" />
     <Compile Include="Util\CustomConfig.cs" />
-    <Compile Include="Util\Extension.BinaryReaderWriter.cs" />
-    <Compile Include="Util\Extension.Color.cs" />
-    <Compile Include="Util\Extension.DataGridView.cs" />
-    <Compile Include="Util\Extension.Dictionary.cs" />
-    <Compile Include="Util\Extension.Encoding.cs" />
-    <Compile Include="Util\Extension.FloatingPoint.cs" />
-    <Compile Include="Util\Extension.Graphics.cs" />
-    <Compile Include="Util\Extension.IntPtr.cs" />
-    <Compile Include="Util\Extension.RichTextBox.cs" />
-    <Compile Include="Util\Extension.Size.cs" />
-    <Compile Include="Util\Extension.String.cs" />
-    <Compile Include="Util\Extension.StringReader.cs" />
+    <Compile Include="Extensions\BinaryReaderWriterExtensions.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\DataGridViewExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\EncodingExtensions.cs" />
+    <Compile Include="Extensions\FloatingPointExtensions.cs" />
+    <Compile Include="Extensions\GraphicsExtensions.cs" />
+    <Compile Include="Extensions\IntPtrExtensions.cs" />
+    <Compile Include="Extensions\RichTextBoxExtensions.cs" />
+    <Compile Include="Extensions\SizeExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\StringReaderExtensions.cs" />
     <Compile Include="Util\GrowingList.cs" />
     <Compile Include="Forms\PluginForm.cs">
       <SubType>Form</SubType>
@@ -371,7 +371,7 @@
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\HotSpot.cs" />
-    <Compile Include="Util\Extensions.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="UI\FontEx.cs" />
     <Compile Include="UI\HotSpotTextBox.cs">
       <SubType>Component</SubType>
@@ -478,7 +478,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\ViewInfo.cs" />
-    <Compile Include="Util\Extension.Linq.cs" />
+    <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Util\IntPtrComparer.cs" />
     <Compile Include="Util\PathUtil.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.cs" />

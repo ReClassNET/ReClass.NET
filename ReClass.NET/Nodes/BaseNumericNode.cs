@@ -13,8 +13,9 @@ namespace ReClassNET.Nodes
 		/// <param name="icon">The icon of the node.</param>
 		/// <param name="type">The type of the node.</param>
 		/// <param name="value">The value of the node.</param>
+		/// <param name="alternativeValue">An alternative value of the node.</param>
 		/// <returns>The pixel size the node occupies.</returns>
-		protected Size DrawNumeric(ViewInfo view, int x, int y, Image icon, string type, string value)
+		protected Size DrawNumeric(ViewInfo view, int x, int y, Image icon, string type, string value, string alternativeValue)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(icon != null);
@@ -41,6 +42,10 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "=") + view.Font.Width;
 			x = AddText(view, x, y, view.Settings.ValueColor, 0, value) + view.Font.Width;
+			if (alternativeValue != null)
+			{
+				x = AddText(view, x, y, view.Settings.ValueColor, 1, alternativeValue) + view.Font.Width;
+			}
 
 			x = AddComment(view, x, y);
 

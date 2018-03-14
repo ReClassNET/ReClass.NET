@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace ReClassNET.Util
+namespace ReClassNET.Extensions
 {
 	public static class EncodingExtension
 	{

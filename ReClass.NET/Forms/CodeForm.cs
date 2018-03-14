@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using ColorCode;
 using ColorCode.Parsing;
 using ReClassNET.CodeGenerator;
+using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
 using ReClassNET.UI;

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
+using ReClassNET.Extensions;
 using ReClassNET.Util;
 
 namespace ReClassNET.UI
