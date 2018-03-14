@@ -135,7 +135,7 @@ namespace ReClassNET.Plugins
 			var handle = NativeMethods.LoadLibrary(filePath);
 			if (handle.IsNull())
 			{
-				throw new FileLoadException();
+				throw new FileLoadException($"Failed to load native plugin: {Path.GetFileName(filePath)}");
 			}
 			return handle;
 		}
