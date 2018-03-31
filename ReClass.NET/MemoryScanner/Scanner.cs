@@ -14,6 +14,15 @@ namespace ReClassNET.MemoryScanner
 {
 	public class Scanner : IDisposable
 	{
+		/// <summary>
+		/// Helper class for consolidated memory regions.
+		/// </summary>
+		private class ConsolidatedMemoryRegion
+		{
+			public IntPtr Address { get; set; }
+			public int Size { get; set; }
+		}
+
 		private readonly RemoteProcess process;
 		private readonly CircularBuffer<ScanResultStore> stores;
 
@@ -192,12 +201,14 @@ namespace ReClassNET.MemoryScanner
 				return Task.FromResult(true);
 			}
 
-			var initialBufferSize = (int)sections.Average(s => s.Size.ToInt32());
+			var regions = ConsolidateSections(sections);
+
+			var initialBufferSize = (int)(regions.Average(s => s.Size) + 1);
 
 			progress?.Report(0);
 
 			var counter = 0;
-			var totalSectionCount = (float)sections.Count;
+			var totalSectionCount = (float)regions.Count;
 
 			return Task.Run(() =>
 			{
@@ -207,23 +218,24 @@ namespace ReClassNET.MemoryScanner
 				// 3. n Worker -> m Sections: Read data, search results, store results
 
 				var result = Parallel.ForEach(
-					sections, // Sections get grouped by the framework to balance the workers.
+					regions, // Sections get grouped by the framework to balance the workers.
 					() => new ScannerContext(Settings, comparer, initialBufferSize), // Create a new context for every worker (thread).
 					(s, state, _, context) =>
 					{
 						if (!ct.IsCancellationRequested)
 						{
-							var start = s.Start;
-							var size = s.Size.ToInt32();
+							var start = s.Address;
+							var end = s.Address + s.Size;
+							var size = s.Size;
 
-							if (Settings.StartAddress.InRange(s.Start, s.End))
+							if (Settings.StartAddress.InRange(start, end))
 							{
+								size = size - Settings.StartAddress.Sub(start).ToInt32();
 								start = Settings.StartAddress;
-								size = size - Settings.StartAddress.Sub(s.Start).ToInt32();
 							}
-							if (Settings.StopAddress.InRange(s.Start, s.End))
+							if (Settings.StopAddress.InRange(start, end))
 							{
-								size = size - s.End.Sub(Settings.StopAddress).ToInt32();
+								size = size - end.Sub(Settings.StopAddress).ToInt32();
 							}
 
 							context.EnsureBufferSize(size);
@@ -323,6 +335,42 @@ namespace ReClassNET.MemoryScanner
 
 				return result.IsCompleted;
 			}, ct);
+		}
+
+		/// <summary>
+		/// Consolidate memory sections which are direct neighbours to reduce the number of work items.
+		/// </summary>
+		/// <param name="sections">A list of sections.</param>
+		/// <returns>A list of consolidated memory regions.</returns>
+		private static List<ConsolidatedMemoryRegion> ConsolidateSections(IList<Section> sections)
+		{
+			var regions = new List<ConsolidatedMemoryRegion>();
+
+			if (sections.Count > 0)
+			{
+				var address = sections[0].Start;
+				var size = sections[0].Size.ToInt32();
+
+				for (var i = 1; i < sections.Count; ++i)
+				{
+					var section = sections[i];
+					if (address + size != section.Start)
+					{
+						regions.Add(new ConsolidatedMemoryRegion { Address = address, Size = size });
+
+						address = section.Start;
+						size = section.Size.ToInt32();
+					}
+					else
+					{
+						size += section.Size.ToInt32();
+					}
+				}
+
+				regions.Add(new ConsolidatedMemoryRegion { Address = address, Size = size });
+			}
+
+			return regions;
 		}
 
 		/// <summary>
