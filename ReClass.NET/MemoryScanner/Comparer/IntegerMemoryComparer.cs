@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner.Comparer
@@ -27,11 +26,11 @@ namespace ReClassNET.MemoryScanner.Comparer
 			Value2 = value2;
 		}
 
-		public bool Compare(byte[] data, int index, out ScanResult result)
+		public unsafe bool Compare(byte* data, out ScanResult result)
 		{
 			result = null;
 
-			var value = BitConverter.ToInt32(data, index);
+			var value = *(int*)data;
 
 			bool IsMatch()
 			{
@@ -70,20 +69,20 @@ namespace ReClassNET.MemoryScanner.Comparer
 			return true;
 		}
 
-		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
+		public unsafe bool Compare(byte* data, ScanResult previous, out ScanResult result)
 		{
 #if DEBUG
 			Debug.Assert(previous is IntegerScanResult);
 #endif
 
-			return Compare(data, index, (IntegerScanResult)previous, out result);
+			return Compare(data, (IntegerScanResult)previous, out result);
 		}
 
-		public bool Compare(byte[] data, int index, IntegerScanResult previous, out ScanResult result)
+		public unsafe bool Compare(byte* data, IntegerScanResult previous, out ScanResult result)
 		{
 			result = null;
 
-			var value = BitConverter.ToInt32(data, index);
+			var value = *(int*)data;
 
 			bool IsMatch()
 			{

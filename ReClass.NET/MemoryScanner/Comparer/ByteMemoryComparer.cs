@@ -26,11 +26,11 @@ namespace ReClassNET.MemoryScanner.Comparer
 			Value2 = value2;
 		}
 
-		public bool Compare(byte[] data, int index, out ScanResult result)
+		public unsafe bool Compare(byte* data, out ScanResult result)
 		{
 			result = null;
 
-			var value = data[index];
+			var value = *data;
 
 			bool IsMatch()
 			{
@@ -69,20 +69,20 @@ namespace ReClassNET.MemoryScanner.Comparer
 			return true;
 		}
 
-		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
+		public unsafe bool Compare(byte* data, ScanResult previous, out ScanResult result)
 		{
 #if DEBUG
 			Debug.Assert(previous is ByteScanResult);
 #endif
 
-			return Compare(data, index, (ByteScanResult)previous, out result);
+			return Compare(data, (ByteScanResult)previous, out result);
 		}
 
-		public bool Compare(byte[] data, int index, ByteScanResult previous, out ScanResult result)
+		public unsafe bool Compare(byte* data, ByteScanResult previous, out ScanResult result)
 		{
 			result = null;
 
-			var value = data[index];
+			var value = *data;
 
 			bool IsMatch()
 			{

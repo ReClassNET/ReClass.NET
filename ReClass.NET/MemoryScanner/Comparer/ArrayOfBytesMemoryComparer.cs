@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.Contracts;
 
 namespace ReClassNET.MemoryScanner.Comparer
@@ -31,7 +30,7 @@ namespace ReClassNET.MemoryScanner.Comparer
 			byteArray = pattern;
 		}
 
-		public bool Compare(byte[] data, int index, out ScanResult result)
+		public unsafe bool Compare(byte* data, out ScanResult result)
 		{
 			result = null;
 
@@ -39,31 +38,37 @@ namespace ReClassNET.MemoryScanner.Comparer
 			{
 				for (var i = 0; i < byteArray.Length; ++i)
 				{
-					if (data[index + i] != byteArray[i])
+					if (*(data + i) != byteArray[i])
 					{
 						return false;
 					}
 				}
 			}
-			else if (!bytePattern.Equals(data, index))
+			else if (!bytePattern.Equals(data))
 			{
 				return false;
 			}
 
 			var temp = new byte[ValueSize];
-			Array.Copy(data, index, temp, 0, temp.Length);
+			fixed (byte* cpy = &temp[0])
+			{
+				for (var i = 0; i < ValueSize; ++i)
+				{
+					*(cpy + i) = *(data + i);
+				}
+			}
 			result = new ArrayOfBytesScanResult(temp);
 
 			return true;
 		}
 
-		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
+		public unsafe bool Compare(byte* data, ScanResult previous, out ScanResult result)
 		{
 #if DEBUG
 			Debug.Assert(previous is ArrayOfBytesScanResult);
 #endif
 
-			return Compare(data, index, out result);
+			return Compare(data, out result);
 		}
 	}
 }

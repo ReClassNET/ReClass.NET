@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ReClassNET.Extensions;
-using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner
 {
@@ -215,6 +214,21 @@ namespace ReClassNET.MemoryScanner
 			for (var j = 0; j < pattern.Count; ++j)
 			{
 				if (!pattern[j].Equals(data[index + j]))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		public unsafe bool Equals(byte* data)
+		{
+			Contract.Requires(data != null);
+
+			for (var j = 0; j < pattern.Count; ++j)
+			{
+				if (!pattern[j].Equals(*(data + j)))
 				{
 					return false;
 				}

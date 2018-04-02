@@ -13,21 +13,19 @@ namespace ReClassNET.MemoryScanner.Comparer
 		/// Compares the data at the provided index to the current <see cref="CompareType"/>.
 		/// </summary>
 		/// <param name="data">The byte array to be compared.</param>
-		/// <param name="index">The index into the byte array.</param>
 		/// <param name="result">[out] The scan result if the <see cref="CompareType"/> matched.</param>
 		/// <returns>True if matched.</returns>
-		bool Compare(byte[] data, int index, out ScanResult result);
+		unsafe bool Compare(byte* data, out ScanResult result);
 
 		/// <summary>
 		/// Compares the data at the provided index to the current <see cref="CompareType"/>.
 		/// The previous results may be used.
 		/// </summary>
 		/// <param name="data">The byte array to be compared.</param>
-		/// <param name="index">The index into the byte array.</param>
 		/// <param name="previous">Scan result to be compared.</param>
 		/// <param name="result">[out] The scan result if the <see cref="CompareType"/> matched.</param>
 		/// <returns>True if matched.</returns>
-		bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result);
+		unsafe bool Compare(byte* data, ScanResult previous, out ScanResult result);
 	}
 
 	[ContractClassFor(typeof(IScanComparer))]
@@ -44,18 +42,13 @@ namespace ReClassNET.MemoryScanner.Comparer
 				throw new NotImplementedException();
 			}
 		}
-		public bool Compare(byte[] data, int index, out ScanResult result)
+		public unsafe bool Compare(byte* data, out ScanResult result)
 		{
-			Contract.Requires(data != null);
-			Contract.Requires(index >= 0);
-
 			throw new NotImplementedException();
 		}
 
-		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
+		public unsafe bool Compare(byte* data, ScanResult previous, out ScanResult result)
 		{
-			Contract.Requires(data != null);
-			Contract.Requires(index >= 0);
 			Contract.Requires(previous != null);
 
 			throw new NotImplementedException();

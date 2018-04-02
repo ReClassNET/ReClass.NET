@@ -35,18 +35,24 @@ namespace ReClassNET.MemoryScanner
 
 			var endIndex = count - comparer.ValueSize;
 
-			for (var i = 0; i < endIndex; i += settings.FastScanAlignment)
+			unsafe
 			{
-				if (ct.IsCancellationRequested)
+				fixed (byte* ptr = &data[0])
 				{
-					break;
-				}
+					for (var i = 0; i < endIndex; i += settings.FastScanAlignment)
+					{
+						if (ct.IsCancellationRequested)
+						{
+							break;
+						}
 
-				if (comparer.Compare(data, i, out var result))
-				{
-					result.Address = (IntPtr)i;
+						if (comparer.Compare(ptr + i, out var result))
+						{
+							result.Address = (IntPtr)i;
 
-					results.Add(result);
+							results.Add(result);
+						}
+					}
 				}
 			}
 
@@ -71,21 +77,27 @@ namespace ReClassNET.MemoryScanner
 
 			var endIndex = count - comparer.ValueSize;
 
-			foreach (var previousResult in previousResults)
+			unsafe
 			{
-				if (ct.IsCancellationRequested)
+				fixed (byte* ptr = &data[0])
 				{
-					break;
-				}
-
-				var offset = previousResult.Address.ToInt32();
-				if (offset <= endIndex)
-				{
-					if (comparer.Compare(data, offset, previousResult, out var result))
+					foreach (var previousResult in previousResults)
 					{
-						result.Address = previousResult.Address;
+						if (ct.IsCancellationRequested)
+						{
+							break;
+						}
 
-						results.Add(result);
+						var offset = previousResult.Address.ToInt32();
+						if (offset <= endIndex)
+						{
+							if (comparer.Compare(ptr + offset, previousResult, out var result))
+							{
+								result.Address = previousResult.Address;
+
+								results.Add(result);
+							}
+						}
 					}
 				}
 			}
