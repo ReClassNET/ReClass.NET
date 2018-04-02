@@ -546,7 +546,7 @@ namespace ReClassNET.Forms
 			nextScanButton.Enabled = false;
 
 			isHexCheckBox.Enabled = true;
-			isHexCheckBox.Checked = false;
+			//isHexCheckBox.Checked = false;
 
 			valueTypeComboBox.Enabled = true;
 			//valueTypeComboBox.SelectedItem = valueTypeComboBox.Items.Cast<EnumDescriptionDisplay<ScanValueType>>().PredicateOrFirst(e => e.Value == ScanValueType.Integer);
