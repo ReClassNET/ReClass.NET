@@ -27,9 +27,11 @@ namespace ReClassNET.MemoryScanner
 		/// <param name="count">The length of the <paramref name="data"/> parameter.</param>
 		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
 		/// <returns>An enumeration of all <see cref="ScanResult"/>s.</returns>
-		public IEnumerable<ScanResult> Search(byte[] data, int count, CancellationToken ct)
+		public IList<ScanResult> Search(byte[] data, int count, CancellationToken ct)
 		{
 			Contract.Requires(data != null);
+
+			var results = new List<ScanResult>();
 
 			var endIndex = count - comparer.ValueSize;
 
@@ -44,9 +46,11 @@ namespace ReClassNET.MemoryScanner
 				{
 					result.Address = (IntPtr)i;
 
-					yield return result;
+					results.Add(result);
 				}
 			}
+
+			return results;
 		}
 
 		/// <summary>
@@ -55,34 +59,38 @@ namespace ReClassNET.MemoryScanner
 		/// </summary>
 		/// <param name="data">The data to scan.</param>
 		/// <param name="count">The length of the <paramref name="data"/> parameter.</param>
-		/// <param name="results">The previous results to use.</param>
+		/// <param name="previousResults">The previous results to use.</param>
 		/// <param name="ct">The <see cref="CancellationToken"/> to stop the scan.</param>
 		/// <returns>An enumeration of all <see cref="ScanResult"/>s.</returns>
-		public IEnumerable<ScanResult> Search(byte[] data, int count, IEnumerable<ScanResult> results, CancellationToken ct)
+		public IList<ScanResult> Search(byte[] data, int count, IEnumerable<ScanResult> previousResults, CancellationToken ct)
 		{
 			Contract.Requires(data != null);
-			Contract.Requires(results != null);
+			Contract.Requires(previousResults != null);
+
+			var results = new List<ScanResult>();
 
 			var endIndex = count - comparer.ValueSize;
 
-			foreach (var previous in results)
+			foreach (var previousResult in previousResults)
 			{
 				if (ct.IsCancellationRequested)
 				{
 					break;
 				}
 
-				var offset = previous.Address.ToInt32();
+				var offset = previousResult.Address.ToInt32();
 				if (offset <= endIndex)
 				{
-					if (comparer.Compare(data, offset, previous, out var result))
+					if (comparer.Compare(data, offset, previousResult, out var result))
 					{
-						result.Address = previous.Address;
+						result.Address = previousResult.Address;
 
-						yield return result;
+						results.Add(result);
 					}
 				}
 			}
+
+			return results;
 		}
 	}
 }
