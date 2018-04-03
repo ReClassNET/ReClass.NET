@@ -79,6 +79,8 @@ namespace ReClassNET.MemoryScanner
 			var limit = data.Length - pattern.Length;
 			for (var i = 0; i < limit; ++i)
 			{
+				// TODO: Use System.Span after it is available
+				// if (pattern.Equals(new Span<byte>(data, i, pattern.Length)))
 				if (pattern.Equals(data, i))
 				{
 					return i;

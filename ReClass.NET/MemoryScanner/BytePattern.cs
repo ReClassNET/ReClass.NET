@@ -201,6 +201,27 @@ namespace ReClassNET.MemoryScanner
 			return pattern;
 		}
 
+		// TODO: Use System.Span after it is available
+		/*/// <summary>
+		/// Tests if the provided byte array matches the byte pattern at the provided index.
+		/// </summary>
+		/// <param name="data">The byte array to be compared.</param>
+		/// <returns>True if the pattern matches, false if they are not.</returns>
+		public bool Equals(Span<byte> data)
+		{
+			Contract.Requires(data != null);
+
+			for (var j = 0; j < pattern.Count; ++j)
+			{
+				if (!pattern[j].Equals(data[j]))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}*/
+
 		/// <summary>
 		/// Tests if the provided byte array matches the byte pattern at the provided index.
 		/// </summary>

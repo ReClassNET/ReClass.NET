@@ -44,6 +44,8 @@ namespace ReClassNET.MemoryScanner.Comparer
 					}
 				}
 			}
+			// TODO: Use System.Span after it is available
+			//else if (!bytePattern.Equals(new Span<byte>(data, ValueSize)))
 			else if (!bytePattern.Equals(data))
 			{
 				return false;
