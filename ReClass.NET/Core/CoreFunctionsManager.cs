@@ -15,7 +15,7 @@ namespace ReClassNET.Core
 		public readonly Dictionary<string, ICoreProcessFunctions> functionsRegistry = new Dictionary<string, ICoreProcessFunctions>();
 
 		public IEnumerable<string> FunctionProviders => functionsRegistry.Keys;
-        public ICoreProcessFunctions CurrentFunctions => currentFunctions;
+		public ICoreProcessFunctions CurrentFunctions => currentFunctions;
 
 		private readonly InternalCoreFunctions internalCoreFunctions;
 

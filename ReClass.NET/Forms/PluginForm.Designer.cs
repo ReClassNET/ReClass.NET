@@ -115,7 +115,7 @@
 			this.pluginsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.pluginsDataGridView.Size = new System.Drawing.Size(702, 197);
 			this.pluginsDataGridView.TabIndex = 0;
-			this.pluginsDataGridView.SelectionChanged += new System.EventHandler(this.PluginsDataGridView_SelectionChanged);
+			this.pluginsDataGridView.SelectionChanged += new System.EventHandler(this.pluginsDataGridView_SelectionChanged);
 			// 
 			// iconColumn
 			// 
