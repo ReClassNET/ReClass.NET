@@ -106,6 +106,7 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\Icon\ReClassNet.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="ColorCode, Version=1.0.1.62759, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

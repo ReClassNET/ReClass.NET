@@ -12,9 +12,10 @@ namespace ReClassNET.Core
 {
 	public class CoreFunctionsManager : IDisposable
 	{
-		private readonly Dictionary<string, ICoreProcessFunctions> functionsRegistry = new Dictionary<string, ICoreProcessFunctions>();
+		public readonly Dictionary<string, ICoreProcessFunctions> functionsRegistry = new Dictionary<string, ICoreProcessFunctions>();
 
 		public IEnumerable<string> FunctionProviders => functionsRegistry.Keys;
+		public ICoreProcessFunctions CurrentFunctions => currentFunctions;
 
 		private readonly InternalCoreFunctions internalCoreFunctions;
 
