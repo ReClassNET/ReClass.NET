@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Debugger;
 using ReClassNET.Extensions;
@@ -12,14 +13,20 @@ namespace ReClassNET.Core
 {
 	public class CoreFunctionsManager : IDisposable
 	{
-		public readonly Dictionary<string, ICoreProcessFunctions> functionsRegistry = new Dictionary<string, ICoreProcessFunctions>();
-
-		public IEnumerable<string> FunctionProviders => functionsRegistry.Keys;
-		public ICoreProcessFunctions CurrentFunctions => currentFunctions;
+		private readonly Dictionary<string, ICoreProcessFunctions> functionsRegistry = new Dictionary<string, ICoreProcessFunctions>();
 
 		private readonly InternalCoreFunctions internalCoreFunctions;
 
 		private ICoreProcessFunctions currentFunctions;
+
+		public IEnumerable<string> FunctionProviders => functionsRegistry.Keys;
+
+		public ICoreProcessFunctions CurrentFunctions => currentFunctions;
+
+		public string CurrentFunctionsProvider => functionsRegistry
+			.Where(kv => kv.Value == currentFunctions)
+			.Select(kv => kv.Key)
+			.FirstOrDefault();
 
 		public CoreFunctionsManager()
 		{

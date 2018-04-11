@@ -43,13 +43,11 @@ namespace ReClassNET.Forms
 
 			UpdatePluginDescription();
 
-            // Native Methods Tab
+			// Native Methods Tab
 
-			string[] arrayOfFunctions = Program.CoreFunctions.FunctionProviders.ToArray();
-			var funcIndexStr = Program.CoreFunctions.functionsRegistry.FirstOrDefault(p => p.Value == Program.CoreFunctions.CurrentFunctions);
-
-			functionsProvidersComboBox.Items.AddRange(arrayOfFunctions);
-			functionsProvidersComboBox.SelectedIndex = funcIndexStr.Value == null ? 0 : Array.IndexOf(arrayOfFunctions, funcIndexStr.Key);
+			var providers = Program.CoreFunctions.FunctionProviders.ToArray();
+			functionsProvidersComboBox.Items.AddRange(providers);
+			functionsProvidersComboBox.SelectedIndex = Array.IndexOf(providers, Program.CoreFunctions.CurrentFunctionsProvider);
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -69,7 +67,7 @@ namespace ReClassNET.Forms
 		#region Event Handler
 
 		private void pluginsDataGridView_SelectionChanged(object sender, EventArgs e)
-        {
+		{
 			UpdatePluginDescription();
 		}
 
