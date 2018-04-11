@@ -66,10 +66,10 @@ namespace ReClassNET.Forms
 			GlobalWindowManager.RemoveWindow(this);
 		}
 
-		#region Event Handler
+        #region Event Handler
 
-		private void pluginsDataGridView_SelectionChanged(object sender, EventArgs e)
-		{
+        private void pluginsDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
 			UpdatePluginDescription();
 		}
 
