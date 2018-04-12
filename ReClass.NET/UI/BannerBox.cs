@@ -32,7 +32,7 @@ namespace ReClassNET.UI
 		{
 			int oldWidth = Width;
 
-			base.SetBoundsCore(x, y, width, DefaultBannerHeight, specified);
+			base.SetBoundsCore(x, y, width, DpiUtil.ScaleIntY(DefaultBannerHeight), specified);
 
 			if (oldWidth != width && width > 0)
 			{
@@ -71,7 +71,7 @@ namespace ReClassNET.UI
 			{
 				var oldImage = image;
 
-				image = BannerFactory.CreateBanner(Width, DefaultBannerHeight, icon, title, text, true);
+				image = BannerFactory.CreateBanner(Width, Height, icon, title, text, true);
 
 				oldImage?.Dispose();
 
