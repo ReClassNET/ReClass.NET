@@ -152,7 +152,7 @@ namespace ReClassNET.UI
 
 					classesTreeView.BeginUpdate();
 
-					project.Classes.ForEach(AddClass);
+					project.Classes.ForEach(AddClassInternal);
 
 					classesTreeView.EndUpdate();
 				}
@@ -347,11 +347,9 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(node != null);
 
-			root.Nodes.Add(new ClassTreeNode(node, enableHierarchyView, autoExpand));
+			AddClassInternal(node);
 
 			classesTreeView.Sort();
-
-			root.Expand();
 		}
 
 		/// <summary>Removes the class from the view.</summary>
@@ -377,6 +375,19 @@ namespace ReClassNET.UI
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		/// Adds a new <see cref="ClassTreeNode"/> to the tree.
+		/// </summary>
+		/// <param name="node">The class to add.</param>
+		private void AddClassInternal(ClassNode node)
+		{
+			Contract.Requires(node != null);
+
+			root.Nodes.Add(new ClassTreeNode(node, enableHierarchyView, autoExpand));
+
+			root.Expand();
 		}
 
 		/// <summary>Searches for the ClassTreeNode which represents the class.</summary>
