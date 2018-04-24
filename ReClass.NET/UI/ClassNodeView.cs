@@ -154,6 +154,8 @@ namespace ReClassNET.UI
 
 					project.Classes.ForEach(AddClassInternal);
 
+					classesTreeView.Sort();
+
 					classesTreeView.EndUpdate();
 				}
 			}
