@@ -409,7 +409,7 @@ namespace ReClassNET.Nodes
 		{
 			if (!view.Memory.ContainsValidData)
 			{
-				view.Context.DrawImage(Properties.Resources.B16x16_Error, 2, y);
+				AddIcon(view, 2, y, Properties.Resources.B16x16_Error, -1, HotSpotType.None);
 			}
 		}
 	}
