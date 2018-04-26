@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -359,8 +359,11 @@ namespace ReClassNET.UI
 		public void RemoveClass(ClassNode node)
 		{
 			var tn = FindClassTreeNode(node);
-			if (tn != null)
+			if (tn == null)
 			{
+				return;
+			}
+
 				root.Nodes.Remove(tn);
 
 				tn.Dispose();
@@ -377,7 +380,6 @@ namespace ReClassNET.UI
 					}
 				}
 			}
-		}
 
 		/// <summary>
 		/// Adds a new <see cref="ClassTreeNode"/> to the tree.
