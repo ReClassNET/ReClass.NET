@@ -189,7 +189,7 @@ namespace ReClassNET.UI
 
 			DoubleBuffered = true;
 
-			enableHierarchyView = new ValueTypeWrapper<bool>(true);
+			enableHierarchyView = new ValueTypeWrapper<bool>(false);
 			autoExpand = new ValueTypeWrapper<bool>(false);
 
 			classesTreeView.ImageList = new ImageList();
@@ -295,6 +295,9 @@ namespace ReClassNET.UI
 		private void enableHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			enableHierarchyViewToolStripMenuItem.Checked = !enableHierarchyViewToolStripMenuItem.Checked;
+
+			expandAllClassesToolStripMenuItem.Enabled =
+				collapseAllClassesToolStripMenuItem.Enabled = enableHierarchyViewToolStripMenuItem.Checked;
 
 			enableHierarchyView.Value = enableHierarchyViewToolStripMenuItem.Checked;
 

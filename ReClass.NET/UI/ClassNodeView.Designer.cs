@@ -129,12 +129,10 @@
             this.toolStripSeparator3,
             this.addNewClassToolStripMenuItem});
 			this.rootContextMenuStrip.Name = "rootContextMenuStrip";
-			this.rootContextMenuStrip.Size = new System.Drawing.Size(221, 126);
+			this.rootContextMenuStrip.Size = new System.Drawing.Size(221, 148);
 			// 
 			// enableHierarchyViewToolStripMenuItem
 			// 
-			this.enableHierarchyViewToolStripMenuItem.Checked = true;
-			this.enableHierarchyViewToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.enableHierarchyViewToolStripMenuItem.Name = "enableHierarchyViewToolStripMenuItem";
 			this.enableHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
 			this.enableHierarchyViewToolStripMenuItem.Text = "Enable hierarchy view";
@@ -154,6 +152,7 @@
 			// 
 			// expandAllClassesToolStripMenuItem
 			// 
+			this.expandAllClassesToolStripMenuItem.Enabled = false;
 			this.expandAllClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Tree_Expand;
 			this.expandAllClassesToolStripMenuItem.Name = "expandAllClassesToolStripMenuItem";
 			this.expandAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
@@ -162,6 +161,7 @@
 			// 
 			// collapseAllClassesToolStripMenuItem
 			// 
+			this.collapseAllClassesToolStripMenuItem.Enabled = false;
 			this.collapseAllClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Tree_Collapse;
 			this.collapseAllClassesToolStripMenuItem.Name = "collapseAllClassesToolStripMenuItem";
 			this.collapseAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
