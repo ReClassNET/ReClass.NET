@@ -59,7 +59,7 @@ namespace ReClassNET.UI
 				ClassNode.NameChanged -= NameChanged_Handler;
 				ClassNode.NodesChanged -= NodesChanged_Handler;
 
-				Nodes.OfType<ClassTreeNode>().ForEach(t => t.Dispose());
+				Nodes.Cast<ClassTreeNode>().ForEach(t => t.Dispose());
 				Nodes.Clear();
 			}
 
@@ -90,12 +90,12 @@ namespace ReClassNET.UI
 					.Distinct()
 					.ToList();
 
-				if (distinctClasses.SequenceEqualsEx(Nodes.OfType<ClassTreeNode>().Select(t => t.ClassNode)))
+				if (distinctClasses.SequenceEqualsEx(Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode)))
 				{
 					return;
 				}
 
-				Nodes.OfType<ClassTreeNode>().ForEach(t => t.Dispose());
+				Nodes.Cast<ClassTreeNode>().ForEach(t => t.Dispose());
 				Nodes.Clear();
 
 				foreach (var child in distinctClasses)
@@ -136,7 +136,7 @@ namespace ReClassNET.UI
 
 				if (project != value)
 				{
-					root.Nodes.OfType<ClassTreeNode>().ForEach(t => t.Dispose());
+					root.Nodes.Cast<ClassTreeNode>().ForEach(t => t.Dispose());
 					root.Nodes.Clear();
 
 					if (project != null)
@@ -298,9 +298,9 @@ namespace ReClassNET.UI
 
 			enableHierarchyView.Value = enableHierarchyViewToolStripMenuItem.Checked;
 
-			var classes = root.Nodes.OfType<ClassTreeNode>().Select(t => t.ClassNode).ToList();
+			var classes = root.Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode).ToList();
 
-			root.Nodes.OfType<ClassTreeNode>().ForEach(t => t.Dispose());
+			root.Nodes.Cast<ClassTreeNode>().ForEach(t => t.Dispose());
 			root.Nodes.Clear();
 
 			classes.ForEach(AddClass);
@@ -399,7 +399,7 @@ namespace ReClassNET.UI
 		/// <returns>The found class tree node.</returns>
 		private ClassTreeNode FindClassTreeNode(ClassNode node)
 		{
-			return root.Nodes.OfType<ClassTreeNode>().FirstOrDefault(t => t.ClassNode == node);
+			return root.Nodes.Cast<ClassTreeNode>().FirstOrDefault(t => t.ClassNode == node);
 		}
 	}
 }
