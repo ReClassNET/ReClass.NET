@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -136,6 +136,8 @@ namespace ReClassNET.UI
 
 				if (project != value)
 				{
+					classesTreeView.BeginUpdate();
+
 					root.Nodes.Cast<ClassTreeNode>().ForEach(t => t.Dispose());
 					root.Nodes.Clear();
 
@@ -149,8 +151,6 @@ namespace ReClassNET.UI
 
 					project.ClassAdded += AddClass;
 					project.ClassRemoved += RemoveClass;
-
-					classesTreeView.BeginUpdate();
 
 					project.Classes.ForEach(AddClassInternal);
 
@@ -303,10 +303,16 @@ namespace ReClassNET.UI
 
 			var classes = root.Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode).ToList();
 
+			classesTreeView.BeginUpdate();
+
 			root.Nodes.Cast<ClassTreeNode>().ForEach(t => t.Dispose());
 			root.Nodes.Clear();
 
-			classes.ForEach(AddClass);
+			classes.ForEach(AddClassInternal);
+
+			classesTreeView.Sort();
+
+			classesTreeView.EndUpdate();
 		}
 
 		private void autoExpandHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
@@ -367,22 +373,22 @@ namespace ReClassNET.UI
 				return;
 			}
 
-				root.Nodes.Remove(tn);
+			root.Nodes.Remove(tn);
 
-				tn.Dispose();
+			tn.Dispose();
 
-				if (selectedClass == node)
+			if (selectedClass == node)
+			{
+				if (root.Nodes.Count > 0)
 				{
-					if (root.Nodes.Count > 0)
-					{
-						classesTreeView.SelectedNode = root.Nodes[0];
-					}
-					else
-					{
-						SelectedClass = null;
-					}
+					classesTreeView.SelectedNode = root.Nodes[0];
+				}
+				else
+				{
+					SelectedClass = null;
 				}
 			}
+		}
 
 		/// <summary>
 		/// Adds a new <see cref="ClassTreeNode"/> to the tree.
