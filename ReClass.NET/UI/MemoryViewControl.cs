@@ -451,17 +451,29 @@ namespace ReClassNET.UI
 
 			editBox.Visible = false;
 
-			foreach (var hotSpot in hotSpots.Where(h => h.Type == HotSpotType.Edit))
+			foreach (var hotSpot in hotSpots.Where(h => h.Type == HotSpotType.Edit || h.Type ==  HotSpotType.Select))
 			{
 				if (hotSpot.Rect.Contains(e.Location))
 				{
-					editBox.BackColor = Program.Settings.SelectedColor;
-					editBox.HotSpot = hotSpot;
-					editBox.Visible = true;
+					if (hotSpot.Type == HotSpotType.Edit)
+					{
+						editBox.BackColor = Program.Settings.SelectedColor;
+						editBox.HotSpot = hotSpot;
+						editBox.Visible = true;
 
-					editBox.ReadOnly = hotSpot.Id == HotSpot.ReadOnlyId;
+						editBox.ReadOnly = hotSpot.Id == HotSpot.ReadOnlyId;
 
-					break;
+						break;
+					}
+
+					if (hotSpot.Type == HotSpotType.Select)
+					{
+						hotSpot.Node.ToggleLevelOpen(hotSpot.Level);
+
+						Invalidate();
+
+						break;
+					}
 				}
 			}
 		}
