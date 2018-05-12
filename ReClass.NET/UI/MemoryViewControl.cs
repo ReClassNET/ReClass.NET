@@ -451,6 +451,9 @@ namespace ReClassNET.UI
 
 			editBox.Visible = false;
 
+			BaseNode toggleNode = null;
+			var level = 0;
+
 			foreach (var hotSpot in hotSpots.Where(h => h.Type == HotSpotType.Edit || h.Type ==  HotSpotType.Select))
 			{
 				if (hotSpot.Rect.Contains(e.Location))
@@ -463,18 +466,22 @@ namespace ReClassNET.UI
 
 						editBox.ReadOnly = hotSpot.Id == HotSpot.ReadOnlyId;
 
-						break;
+						return;
 					}
 
 					if (hotSpot.Type == HotSpotType.Select)
 					{
-						hotSpot.Node.ToggleLevelOpen(hotSpot.Level);
-
-						Invalidate();
-
-						break;
+						toggleNode = hotSpot.Node;
+						level = hotSpot.Level;
 					}
 				}
+			}
+
+			if (toggleNode != null)
+			{
+				toggleNode.ToggleLevelOpen(level);
+
+				Invalidate();
 			}
 		}
 
