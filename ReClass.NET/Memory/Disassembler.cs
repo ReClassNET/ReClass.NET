@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Runtime.InteropServices;
 using ReClassNET.Core;
 using ReClassNET.Extensions;
-using ReClassNET.Util;
 
 namespace ReClassNET.Memory
 {
@@ -143,12 +143,16 @@ namespace ReClassNET.Memory
 		/// <returns>The prior instruction.</returns>
 		public DisassembledInstruction RemoteGetPreviousInstruction(RemoteProcess process, IntPtr address)
 		{
-			var buffer = process.ReadRemoteMemory(address - 6 * MaximumInstructionLength, 7 * MaximumInstructionLength);
+			const int TotalBufferSize = 7 * MaximumInstructionLength;
+			const int BufferShiftSize = 6 * MaximumInstructionLength;
+
+			var buffer = process.ReadRemoteMemory(address - BufferShiftSize, TotalBufferSize);
 
 			var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 			try
 			{
 				var bufferAddress = handle.AddrOfPinnedObject();
+				var targetBufferAddress = bufferAddress + BufferShiftSize;
 
 				var instruction = default(InstructionData);
 
@@ -157,16 +161,16 @@ namespace ReClassNET.Memory
 					6 * MaximumInstructionLength,
 					4 * MaximumInstructionLength,
 					2 * MaximumInstructionLength,
-					MaximumInstructionLength,
+					1 * MaximumInstructionLength,
 					14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 				})
 				{
-					var currentAddress = bufferAddress - offset;
+					var currentAddress = targetBufferAddress - offset;
 
 					coreFunctions.DisassembleCode(currentAddress, offset + 1, address - offset, false, (ref InstructionData data) =>
 					{
 						var nextAddress = currentAddress + data.Length;
-						if (nextAddress.CompareTo(address) > -1)
+						if (nextAddress.CompareTo(targetBufferAddress) > 0)
 						{
 							return false;
 						}
@@ -178,7 +182,7 @@ namespace ReClassNET.Memory
 						return true;
 					});
 
-					if (currentAddress == address)
+					if (currentAddress == targetBufferAddress)
 					{
 						return new DisassembledInstruction(ref instruction);
 					}
@@ -227,19 +231,9 @@ namespace ReClassNET.Memory
 							if (prevInstruction.Length == 1 && prevInstruction.Data[0] == 0xCC)
 							{
 								// Disassemble the code from the start and check if the instructions sum up to address.
-								var length = 0;
-								var res = coreFunctions.DisassembleCode(start, address.Sub(start).ToInt32(), IntPtr.Zero, false, (ref InstructionData data) =>
-								{
-									length += data.Length;
-
-									return true;
-								});
-								if (!res)
-								{
-									continue;
-								}
-
-								if (start + length == address)
+								var totalInstructionLength = RemoteDisassembleCode(process, start, address.Sub(start).ToInt32())
+									.Sum(ins => ins.Length);
+								if (start + totalInstructionLength == address)
 								{
 									return start;
 								}
