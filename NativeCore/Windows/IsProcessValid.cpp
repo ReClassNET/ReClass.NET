@@ -4,7 +4,7 @@
 
 bool RC_CallConv IsProcessValid(RC_Pointer handle)
 {
-	if (!handle || handle == INVALID_HANDLE_VALUE)
+	if (handle == nullptr)
 	{
 		return false;
 	}
