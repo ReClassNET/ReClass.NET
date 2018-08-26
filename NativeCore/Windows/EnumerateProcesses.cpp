@@ -79,8 +79,13 @@ void RC_CallConv EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 						callbackProcess(&data);
 					}
 
+				}
+				
+				if (process && process != INVALID_HANDLE_VALUE)
+				{
 					CloseRemoteProcess(process);
 				}
+				
 			} while (Process32NextW(handle, &pe32));
 		}
 
