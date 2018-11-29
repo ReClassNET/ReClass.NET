@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using ReClassNET.Extensions;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -16,7 +15,7 @@ namespace ReClassNET.Nodes
 
 			if (view.Settings.ShowCommentFloat)
 			{
-				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, $"{(fvalue > -99999.0f && fvalue < 99999.0f ? fvalue : 0.0f):0.000}") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, fvalue > -999999.0f && fvalue < 999999.0f ? fvalue.ToString("0.000") : "#####") + view.Font.Width;
 			}
 			if (view.Settings.ShowCommentInteger)
 			{

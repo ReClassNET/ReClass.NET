@@ -4,7 +4,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using ReClassNET.Extensions;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
 
 namespace ReClassNET.Memory
 {
@@ -78,12 +77,12 @@ namespace ReClassNET.Memory
 				if (data32.IntValue != 0)
 				{
 					// If the data represents a reasonable range, it could be a float.
-					if (-99999.0f <= data32.FloatValue && data32.FloatValue <= 99999.0f && !data32.FloatValue.IsNearlyEqual(0.0f, 0.001f))
+					if (-999999.0f <= data32.FloatValue && data32.FloatValue <= 999999.0f && !data32.FloatValue.IsNearlyEqual(0.0f, 0.001f))
 					{
 						return typeof(FloatNode);
 					}
 
-					if (-99999 <= data32.IntValue && data32.IntValue <= 99999)
+					if (-999999 <= data32.IntValue && data32.IntValue <= 999999)
 					{
 						return typeof(Int32Node);
 					}
@@ -95,7 +94,7 @@ namespace ReClassNET.Memory
 				if (data64.LongValue != 0)
 				{
 					// If the data represents a reasonable range, it could be a double.
-					if (-99999.0 <= data64.DoubleValue && data64.DoubleValue <= 99999.0 && !data64.DoubleValue.IsNearlyEqual(0.0, 0.001))
+					if (-999999.0 <= data64.DoubleValue && data64.DoubleValue <= 999999.0 && !data64.DoubleValue.IsNearlyEqual(0.0, 0.001))
 					{
 						return typeof(DoubleNode);
 					}
