@@ -115,5 +115,34 @@ namespace ReClassNET.Extensions
 			}
 			return CompareTo(address, start);
 		}
+
+		/// <summary>
+		/// Changes the behaviour of ToInt64 in x86 mode.
+		/// IntPtr(int.MaxValue + 1) = (int)0x80000000 (-2147483648) = (long)0xFFFFFFFF80000000
+		/// This method converts the value to (long)0x0000000080000000 (2147483648).
+		/// </summary>
+		/// <param name="ptr"></param>
+		/// <returns></returns>
+		[Pure]
+		[DebuggerStepThrough]
+		public static long ToInt64Bits(this IntPtr ptr)
+		{
+#if RECLASSNET64
+			return ptr.ToInt64();
+#else
+			var value = ptr.ToInt64();
+
+			if (value < 0)
+			{
+				var intValue = ptr.ToInt32();
+				if (value == intValue)
+				{
+					value = intValue & 0xFFFFFFFFL;
+				}
+			}
+
+			return value;
+#endif
+		}
 	}
 }
