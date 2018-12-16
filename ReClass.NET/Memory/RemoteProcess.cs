@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -10,6 +10,7 @@ using ReClassNET.AddressParser;
 using ReClassNET.Core;
 using ReClassNET.Debugger;
 using ReClassNET.Extensions;
+using ReClassNET.MemoryScanner;
 using ReClassNET.Native;
 using ReClassNET.Symbols;
 using ReClassNET.Util;
@@ -366,24 +367,24 @@ namespace ReClassNET.Memory
 			}
 		}
 
-		/// <summary>Reads a string from the address in the remote process with the given length using UTF8 encoding. The string gets truncated at the first zero character.</summary>
+		/// <summary>Reads a string from the address in the remote process with the given length and encoding. The string gets truncated at the first zero character.</summary>
+		/// <param name="encoding">The encoding used by the string.</param>
 		/// <param name="address">The address of the string.</param>
 		/// <param name="length">The length of the string.</param>
 		/// <returns>The string.</returns>
-		public string ReadRemoteUTF8StringUntilFirstNullCharacter(IntPtr address, int length)
+		public string ReadRemoteStringUntilFirstNullCharacter(Encoding encoding, IntPtr address, int length)
 		{
+			Contract.Requires(encoding != null);
 			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 
-			var data = ReadRemoteMemory(address, length);
+			var data = ReadRemoteMemory(address, length * encoding.GetSimpleByteCountPerChar());
 
-			int index = 0;
-			for (; index < data.Length; ++index)
+			// TODO We should cache the pattern per encoding.
+			var index = PatternScanner.FindPattern(BytePattern.From(new byte[encoding.GetSimpleByteCountPerChar()]), data);
+			if (index == -1)
 			{
-				if (data[index] == 0)
-				{
-					break;
-				}
+				index = data.Length;
 			}
 
 			try
@@ -444,7 +445,7 @@ namespace ReClassNET.Memory
 								var typeDescriptorPtr = ReadRemoteIntPtr(baseClassDescriptorPtr);
 								if (typeDescriptorPtr.MayBeValid())
 								{
-									var name = ReadRemoteUTF8StringUntilFirstNullCharacter(typeDescriptorPtr + 0x0C, 60);
+									var name = ReadRemoteStringUntilFirstNullCharacter(Encoding.UTF8, typeDescriptorPtr + 0x0C, 60);
 									if (name.EndsWith("@@"))
 									{
 										name = NativeMethods.UndecorateSymbolName("?" + name);
@@ -506,7 +507,7 @@ namespace ReClassNET.Memory
 									{
 										var typeDescriptorPtr = baseAddress + typeDescriptorOffset;
 
-										var name = ReadRemoteUTF8StringUntilFirstNullCharacter(typeDescriptorPtr + 0x14, 60);
+										var name = ReadRemoteStringUntilFirstNullCharacter(Encoding.UTF8, typeDescriptorPtr + 0x14, 60);
 										if (string.IsNullOrEmpty(name))
 										{
 											break;
