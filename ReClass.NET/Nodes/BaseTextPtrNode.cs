@@ -1,10 +1,8 @@
-using System;
+﻿using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Text;
-using ReClassNET.Extensions;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
