@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Text;
@@ -32,7 +32,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var ptr = view.Memory.ReadIntPtr(Offset);
-			var text = view.Memory.Process.ReadRemoteString(Encoding, ptr, 64 * Encoding.GetSimpleByteCountPerChar());
+			var text = view.Memory.Process.ReadRemoteString(Encoding, ptr, 64);
 
 			DrawInvalidMemoryIndicator(view, y);
 

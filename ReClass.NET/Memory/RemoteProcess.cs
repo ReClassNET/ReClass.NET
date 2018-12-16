@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -341,7 +341,7 @@ namespace ReClassNET.Memory
 			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 
-			var data = ReadRemoteMemory(address, length);
+			var data = ReadRemoteMemory(address, length * encoding.GetSimpleByteCountPerChar());
 
 			try
 			{
