@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ReClassNET.Extensions;
-using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner
 {
@@ -23,7 +22,30 @@ namespace ReClassNET.MemoryScanner
 
 	public class BytePattern
 	{
-		private struct PatternByte
+		private interface IPatternByte
+		{
+			/// <summary>
+			/// Gets the byte value of the pattern byte if possible.
+			/// </summary>
+			/// <returns></returns>
+			byte ToByte();
+
+			/// <summary>
+			/// Compares the pattern byte with the given byte.
+			/// </summary>
+			/// <param name="b"></param>
+			/// <returns></returns>
+			bool Equals(byte b);
+
+			/// <summary>
+			/// Formats the pattern byte as string.
+			/// </summary>
+			/// <param name="format"></param>
+			/// <returns></returns>
+			Tuple<string, string> ToString(PatternFormat format);
+		}
+
+		private class PatternByte : IPatternByte
 		{
 			private struct Nibble
 			{
@@ -36,19 +58,9 @@ namespace ReClassNET.MemoryScanner
 
 			public bool HasWildcard => nibble1.IsWildcard || nibble2.IsWildcard;
 
-			public byte ByteValue => !HasWildcard ? (byte)((nibble1.Value << 4) + nibble2.Value) : throw new InvalidOperationException();
+			public byte ToByte() => !HasWildcard ? (byte)((nibble1.Value << 4) + nibble2.Value) : throw new InvalidOperationException();
 
-			public static PatternByte AsByte(byte b)
-			{
-				var pb = new PatternByte
-				{
-					nibble1 = { Value = (b >> 4) & 0xF },
-					nibble2 = { Value = b & 0xF }
-				};
-				return pb;
-			}
-
-			public static PatternByte AsWildcard()
+			public static PatternByte NewWildcardByte()
 			{
 				var pb = new PatternByte
 				{
@@ -105,16 +117,15 @@ namespace ReClassNET.MemoryScanner
 
 			public bool Equals(byte b)
 			{
-				var matched = 0;
 				if (nibble1.IsWildcard || ((b >> 4) & 0xF) == nibble1.Value)
 				{
-					++matched;
+					if (nibble2.IsWildcard || (b & 0xF) == nibble2.Value)
+					{
+						return true;
+					}
 				}
-				if (nibble2.IsWildcard || (b & 0xF) == nibble2.Value)
-				{
-					++matched;
-				}
-				return matched == 2;
+
+				return false;
 			}
 
 			public Tuple<string, string> ToString(PatternFormat format)
@@ -122,14 +133,14 @@ namespace ReClassNET.MemoryScanner
 				switch (format)
 				{
 					case PatternFormat.PatternAndMask:
-						return HasWildcard ? Tuple.Create("\\x00", "?") : Tuple.Create($"\\x{ByteValue:X02}", "x");
+						return HasWildcard ? Tuple.Create("\\x00", "?") : Tuple.Create($"\\x{ToByte():X02}", "x");
 					case PatternFormat.Combined:
 						var sb = new StringBuilder();
 						if (nibble1.IsWildcard) sb.Append('?');
 						else sb.AppendFormat("{0:X}", nibble1.Value);
 						if (nibble2.IsWildcard) sb.Append('?');
 						else sb.AppendFormat("{0:X}", nibble2.Value);
-						return Tuple.Create<string, string>(sb.ToString(), null);
+						return Tuple.Create(sb.ToString(), (string)null);
 					default:
 						throw new ArgumentOutOfRangeException(nameof(format), format, null);
 				}
@@ -138,7 +149,34 @@ namespace ReClassNET.MemoryScanner
 			public override string ToString() => ToString(PatternFormat.Combined).Item1;
 		}
 
-		private readonly List<PatternByte> pattern = new List<PatternByte>();
+		private class SimplePatternByte : IPatternByte
+		{
+			private readonly byte value;
+
+			public SimplePatternByte(byte value)
+			{
+				this.value = value;
+			}
+
+			public byte ToByte() => value;
+
+			public bool Equals(byte b) => value == b;
+
+			public Tuple<string, string> ToString(PatternFormat format)
+			{
+				switch (format)
+				{
+					case PatternFormat.PatternAndMask:
+						return Tuple.Create($"\\x{ToByte():X02}", "x");
+					case PatternFormat.Combined:
+						return Tuple.Create($"{ToByte():X02}", (string)null);
+					default:
+						throw new ArgumentOutOfRangeException(nameof(format), format, null);
+				}
+			}
+		}
+
+		private readonly List<IPatternByte> pattern = new List<IPatternByte>();
 
 		/// <summary>
 		/// Gets the length of the pattern in byte.
@@ -148,7 +186,12 @@ namespace ReClassNET.MemoryScanner
 		/// <summary>
 		/// Gets if the pattern contains wildcards.
 		/// </summary>
-		public bool HasWildcards => pattern.Any(pb => pb.HasWildcard);
+		public bool HasWildcards => pattern.Any(pb => pb is PatternByte pb2 && pb2.HasWildcard);
+
+		private BytePattern()
+		{
+
+		}
 
 		/// <summary>
 		/// Parses the provided string for a byte pattern. Wildcards are supported by nibble.
@@ -175,7 +218,14 @@ namespace ReClassNET.MemoryScanner
 				var pb = new PatternByte();
 				while (pb.TryRead(sr))
 				{
-					pattern.pattern.Add(pb);
+					if (!pb.HasWildcard)
+					{
+						pattern.pattern.Add(new SimplePatternByte(pb.ToByte()));
+					}
+					else
+					{
+						pattern.pattern.Add(pb);
+					}
 				}
 
 				// Check if we are not at the end of the stream
@@ -188,13 +238,30 @@ namespace ReClassNET.MemoryScanner
 			return pattern;
 		}
 
+		/// <summary>
+		/// Creates a byte pattern from the provided bytes.
+		/// </summary>
+		/// <param name="data">The bytes to match.</param>
+		/// <returns></returns>
+		public static BytePattern From(IEnumerable<byte> data)
+		{
+			var pattern = new BytePattern();
+			pattern.pattern.AddRange(data.Select(b => new SimplePatternByte(b)));
+			return pattern;
+		}
+
+		/// <summary>
+		/// Creates a byte pattern with wildcard support from the provided bytes. The boolean tuple item signals a wildcard.
+		/// </summary>
+		/// <param name="data">The byte data or the wildcard flag.</param>
+		/// <returns></returns>
 		public static BytePattern From(IEnumerable<Tuple<byte, bool>> data)
 		{
 			var pattern = new BytePattern();
 
 			foreach (var i in data)
 			{
-				var pb = i.Item2 ? PatternByte.AsWildcard() : PatternByte.AsByte(i.Item1);
+				var pb = i.Item2 ? (IPatternByte)PatternByte.NewWildcardByte() : new SimplePatternByte(i.Item1);
 
 				pattern.pattern.Add(pb);
 			}
@@ -238,7 +305,7 @@ namespace ReClassNET.MemoryScanner
 				throw new InvalidOperationException();
 			}
 
-			return pattern.Select(pb => pb.ByteValue).ToArray();
+			return pattern.Select(pb => pb.ToByte()).ToArray();
 		}
 
 		/// <summary>
