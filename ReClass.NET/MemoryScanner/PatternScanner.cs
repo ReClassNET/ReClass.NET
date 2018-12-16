@@ -71,7 +71,7 @@ namespace ReClassNET.MemoryScanner
 		/// <param name="pattern">The pattern to search.</param>
 		/// <param name="data">The data to scan.</param>
 		/// <returns>The index in data where the pattern was found or -1 otherwise.</returns>
-		private static int FindPattern(BytePattern pattern, byte[] data)
+		public static int FindPattern(BytePattern pattern, byte[] data)
 		{
 			Contract.Requires(pattern != null);
 			Contract.Requires(data != null);
