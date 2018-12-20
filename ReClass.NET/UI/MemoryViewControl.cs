@@ -807,8 +807,14 @@ namespace ReClassNET.UI
             hideNodesToolStripMenuItem.Enabled = areNodesHideable;
 
             var parentNodeTypeSelected = false;
-            if ((count == 1) && (SelectedNodes.ElementAt(0) is BaseContainerNode)) parentNodeTypeSelected = true;
-            unhideChildNodesToolStripMenuItem.Enabled = parentNodeTypeSelected;
+            var areChildNodesHidden = false;
+            if ((count == 1) && (SelectedNodes.ElementAt(0) is BaseContainerNode))
+            {
+                var selbcn = (BaseContainerNode)SelectedNodes.ElementAt(0);
+                parentNodeTypeSelected = true;
+                foreach (BaseNode bn in selbcn.Nodes) areChildNodesHidden = areChildNodesHidden | bn.IsHidden;
+            }
+            unhideChildNodesToolStripMenuItem.Enabled = parentNodeTypeSelected & areChildNodesHidden;
 
 
 			addBytesToolStripMenuItem.Enabled = node?.ParentNode != null || nodeIsClass;
