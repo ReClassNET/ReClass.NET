@@ -101,6 +101,10 @@
 			this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
 			this.copyNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pasteNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unhideChildNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unhideNodesBelowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unhideNodesAboveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
 			this.copyAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -131,6 +135,10 @@
             this.toolStripSeparator14,
             this.copyNodeToolStripMenuItem,
             this.pasteNodesToolStripMenuItem,
+            this.hideNodesToolStripMenuItem,
+            this.unhideChildNodesToolStripMenuItem,
+            this.unhideNodesBelowToolStripMenuItem,
+            this.unhideNodesAboveToolStripMenuItem,
             this.removeToolStripMenuItem,
             this.toolStripSeparator12,
             this.copyAddressToolStripMenuItem,
@@ -769,7 +777,39 @@
 			this.pasteNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
 			this.pasteNodesToolStripMenuItem.Text = "Paste Node(s)";
 			this.pasteNodesToolStripMenuItem.Click += new System.EventHandler(this.pasteNodesToolStripMenuItem_Click);
-			// 
+            // 
+            // hideNodesToolStripMenuItem
+            // 
+            this.hideNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+            this.hideNodesToolStripMenuItem.Name = "hideNodesToolStripMenuItem";
+            this.hideNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+            this.hideNodesToolStripMenuItem.Text = "Hide selected Node(s)";
+            this.hideNodesToolStripMenuItem.Click += new System.EventHandler(this.hideNodesToolStripMenuItem_Click);
+            // 
+            // unhideChildNodesToolStripMenuItem
+            // 
+            this.unhideChildNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+            this.unhideChildNodesToolStripMenuItem.Name = "unhideChildNodesToolStripMenuItem";
+            this.unhideChildNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+            this.unhideChildNodesToolStripMenuItem.Text = "Unhide child Node(s)";
+            this.unhideChildNodesToolStripMenuItem.Click += new System.EventHandler(this.unhideChildNodesToolStripMenuItem_Click);
+            // 
+            // unhideNodesBelowToolStripMenuItem
+            // 
+            this.unhideNodesBelowToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+            this.unhideNodesBelowToolStripMenuItem.Name = "unhideNodesBelowToolStripMenuItem";
+            this.unhideNodesBelowToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+            this.unhideNodesBelowToolStripMenuItem.Text = "Unhide Node(s) below";
+            this.unhideNodesBelowToolStripMenuItem.Click += new System.EventHandler(this.unhideNodesBelowToolStripMenuItem_Click);
+            // 
+            // unhideNodesAboveToolStripMenuItem
+            // 
+            this.unhideNodesAboveToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+            this.unhideNodesAboveToolStripMenuItem.Name = "unhideNodesAboveToolStripMenuItem";
+            this.unhideNodesAboveToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+            this.unhideNodesAboveToolStripMenuItem.Text = "Unhide Node(s) above";
+            this.unhideNodesAboveToolStripMenuItem.Click += new System.EventHandler(this.unhideNodesAboveToolStripMenuItem_Click);
+            // 
 			// removeToolStripMenuItem
 			// 
 			this.removeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Delete;
@@ -914,6 +954,10 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
 		private System.Windows.Forms.ToolStripMenuItem copyNodeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem pasteNodesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hideNodesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unhideChildNodesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unhideNodesBelowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unhideNodesAboveToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
 		private System.Windows.Forms.ToolStripMenuItem dissectNodesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
