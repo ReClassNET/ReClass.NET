@@ -316,7 +316,11 @@ namespace ReClassNET.UI
 											continue;
 										}
 
-                                        if (hotSpot.Node is BaseContainerNode) continue;
+										if (hotSpot.Node is BaseContainerNode)
+										{
+											continue;
+										}
+
 										var first = Utils.Min(selectedNodes[0], hotSpot, h => h.Node.Offset.ToInt32());
 										var last = first == hotSpot ? selectedNodes[0] : hotSpot;
 
@@ -778,44 +782,48 @@ namespace ReClassNET.UI
 					break;
 			}
 
-            var hiddenNodesExistBelow = false;
-            var hiddenNodesExistAbove = false;
-            if (count == 1)
-            {
-                var selNode = SelectedNodes.ElementAt(0);
-                var parNode = SelectedNodes.ElementAt(0).ParentNode;
-                if (parNode != null)
-                {
-                    var selNodeIndex = parNode.FindNodeIndex(selNode);
-                    if ((selNodeIndex+1 < parNode.Nodes.Count()) && (parNode.Nodes.ElementAt(selNodeIndex + 1).IsHidden == true))
-                    {
-                        hiddenNodesExistBelow = true;
-                    }
-                    if ((selNodeIndex - 1 > -1) && (parNode.Nodes.ElementAt(selNodeIndex - 1).IsHidden == true))
-                    {
-                        hiddenNodesExistAbove = true;
-                    }
-                }
-            }
+			var hiddenNodesExistBelow = false;
+			var hiddenNodesExistAbove = false;
+			if (count == 1)
+			{
+				var selNode = SelectedNodes.ElementAt(0);
+				var parNode = SelectedNodes.ElementAt(0).ParentNode;
+				if (parNode != null)
+				{
+					var selNodeIndex = parNode.FindNodeIndex(selNode);
+					if (selNodeIndex+1 < parNode.Nodes.Count() && parNode.Nodes.ElementAt(selNodeIndex + 1).IsHidden)
+					{
+						hiddenNodesExistBelow = true;
+					}
+					if (selNodeIndex - 1 > -1 && parNode.Nodes.ElementAt(selNodeIndex - 1).IsHidden)
+					{
+						hiddenNodesExistAbove = true;
+					}
+				}
+			}
 
-            unhideNodesBelowToolStripMenuItem.Enabled = hiddenNodesExistBelow;
-            unhideNodesAboveToolStripMenuItem.Enabled = hiddenNodesExistAbove;
+			unhideNodesBelowToolStripMenuItem.Enabled = hiddenNodesExistBelow;
+			unhideNodesAboveToolStripMenuItem.Enabled = hiddenNodesExistAbove;
 
+			var areNodesHideable = true;
+			foreach (var bs in SelectedNodes)
+			{
+				areNodesHideable = areNodesHideable & !(bs is ClassNode);
+			}
+			hideNodesToolStripMenuItem.Enabled = areNodesHideable;
 
-            var areNodesHideable = true;
-            foreach (BaseNode bs in SelectedNodes) areNodesHideable = areNodesHideable & !(bs is ClassNode);
-            hideNodesToolStripMenuItem.Enabled = areNodesHideable;
-
-            var parentNodeTypeSelected = false;
-            var areChildNodesHidden = false;
-            if ((count == 1) && (SelectedNodes.ElementAt(0) is BaseContainerNode))
-            {
-                var selbcn = (BaseContainerNode)SelectedNodes.ElementAt(0);
-                parentNodeTypeSelected = true;
-                foreach (BaseNode bn in selbcn.Nodes) areChildNodesHidden = areChildNodesHidden | bn.IsHidden;
-            }
-            unhideChildNodesToolStripMenuItem.Enabled = parentNodeTypeSelected & areChildNodesHidden;
-
+			var parentNodeTypeSelected = false;
+			var areChildNodesHidden = false;
+			if (count == 1 && SelectedNodes.ElementAt(0) is BaseContainerNode)
+			{
+				var selbcn = (BaseContainerNode)SelectedNodes.ElementAt(0);
+				parentNodeTypeSelected = true;
+				foreach (var bn in selbcn.Nodes)
+				{
+					areChildNodesHidden = areChildNodesHidden | bn.IsHidden;
+				}
+			}
+			unhideChildNodesToolStripMenuItem.Enabled = parentNodeTypeSelected & areChildNodesHidden;
 
 			addBytesToolStripMenuItem.Enabled = node?.ParentNode != null || nodeIsClass;
 			insertBytesToolStripMenuItem.Enabled = count == 1 && node?.ParentNode != null;
@@ -980,25 +988,25 @@ namespace ReClassNET.UI
 			PasteNodeFromClipboardToSelection();
 		}
 
-        private void hideNodesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            HideSelectedNodes();
-        }
+		private void hideNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			HideSelectedNodes();
+		}
 
-        private void unhideNodesBelowToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            UnhideNodesBelow();
-        }
-		
-        private void unhideNodesAboveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            UnhideNodesAbove();
-        }
+		private void unhideNodesBelowToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			UnhideNodesBelow();
+		}
 
-        private void unhideChildNodesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            UnhideChildNodes();
-        }
+		private void unhideNodesAboveToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			UnhideNodesAbove();
+		}
+
+		private void unhideChildNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			UnhideChildNodes();
+		}
 
 		private void removeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -1222,96 +1230,96 @@ namespace ReClassNET.UI
 			Invalidate();
 		}
 
-        private void HideSelectedNodes()
-        {
-            foreach (HotSpot hs in selectedNodes) hs.Node.IsHidden = true;
+		private void HideSelectedNodes()
+		{
+			foreach (HotSpot hs in selectedNodes) hs.Node.IsHidden = true;
 
-            selectedNodes.Clear();
+			selectedNodes.Clear();
 
-            OnSelectionChanged();
+			OnSelectionChanged();
 
-            Invalidate();
-        }
+			Invalidate();
+		}
 
-        private void UnhideChildNodes()
-        {
-            BaseContainerNode bcn = (BaseContainerNode) selectedNodes[0].Node;
-            foreach (BaseNode bn in bcn.Nodes)
-            {
-                bn.IsHidden = false;
-                bn.IsSelected = false;
-            }
+		private void UnhideChildNodes()
+		{
+			BaseContainerNode bcn = (BaseContainerNode)selectedNodes[0].Node;
+			foreach (BaseNode bn in bcn.Nodes)
+			{
+				bn.IsHidden = false;
+				bn.IsSelected = false;
+			}
 
-            selectedNodes[0].Node.IsSelected = false;
+			selectedNodes[0].Node.IsSelected = false;
 
-            selectedNodes.Clear();
+			selectedNodes.Clear();
 
-            OnSelectionChanged();
+			OnSelectionChanged();
 
-            Invalidate();
-        }
+			Invalidate();
+		}
 
-        private void UnhideNodesBelow()
-        {
-            var selNode = selectedNodes[0].Node;
-            var parNode = selNode.ParentNode;
+		private void UnhideNodesBelow()
+		{
+			var selNode = selectedNodes[0].Node;
+			var parNode = selNode.ParentNode;
 
-            if (parNode == null) return;
+			if (parNode == null) return;
 
-            var hiddenNodeStartIndex = parNode.FindNodeIndex(selNode) + 1;
+			var hiddenNodeStartIndex = parNode.FindNodeIndex(selNode) + 1;
 
-            if (hiddenNodeStartIndex >= parNode.Nodes.Count()) return;
+			if (hiddenNodeStartIndex >= parNode.Nodes.Count()) return;
 
-            for (int i = hiddenNodeStartIndex; i < parNode.Nodes.Count(); i++)
-            {
-                var indexNode = parNode.Nodes.ElementAt(i);
-                if (indexNode.IsHidden)
-                {
-                    indexNode.IsHidden = false;
-                    indexNode.IsSelected = false;
-                }
-                else break;
-            }
+			for (int i = hiddenNodeStartIndex; i < parNode.Nodes.Count(); i++)
+			{
+				var indexNode = parNode.Nodes.ElementAt(i);
+				if (indexNode.IsHidden)
+				{
+					indexNode.IsHidden = false;
+					indexNode.IsSelected = false;
+				}
+				else break;
+			}
 
-            selNode.IsSelected = false;
+			selNode.IsSelected = false;
 
-            selectedNodes.Clear();
+			selectedNodes.Clear();
 
-            OnSelectionChanged();
+			OnSelectionChanged();
 
-            Invalidate();
-        }
+			Invalidate();
+		}
 
-        private void UnhideNodesAbove()
-        {
-            var selNode = selectedNodes[0].Node;
-            var parNode = selNode.ParentNode;
+		private void UnhideNodesAbove()
+		{
+			var selNode = selectedNodes[0].Node;
+			var parNode = selNode.ParentNode;
 
-            if (parNode == null) return;
+			if (parNode == null) return;
 
-            var hiddenNodeStartIndex = parNode.FindNodeIndex(selNode) - 1;
+			var hiddenNodeStartIndex = parNode.FindNodeIndex(selNode) - 1;
 
-            if (hiddenNodeStartIndex < 0) return;
+			if (hiddenNodeStartIndex < 0) return;
 
-            for (int i = hiddenNodeStartIndex; i > -1; i--)
-            {
-                var indexNode = parNode.Nodes.ElementAt(i);
-                if (indexNode.IsHidden)
-                {
-                    indexNode.IsHidden = false;
-                    indexNode.IsSelected = false;
-                }
-                else break;
-            }
+			for (int i = hiddenNodeStartIndex; i > -1; i--)
+			{
+				var indexNode = parNode.Nodes.ElementAt(i);
+				if (indexNode.IsHidden)
+				{
+					indexNode.IsHidden = false;
+					indexNode.IsSelected = false;
+				}
+				else break;
+			}
 
-            selNode.IsSelected = false;
+			selNode.IsSelected = false;
 
-            selectedNodes.Clear();
+			selectedNodes.Clear();
 
-            OnSelectionChanged();
+			OnSelectionChanged();
 
-            Invalidate();
-        }
+			Invalidate();
+		}
 
 		private void CopySelectedNodesToClipboard()
 		{

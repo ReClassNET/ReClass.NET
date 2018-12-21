@@ -89,7 +89,7 @@ namespace ReClassNET.DataExchange.ReClass
 					XmlNodeElement,
 					new XAttribute(XmlNameAttribute, node.Name ?? string.Empty),
 					new XAttribute(XmlCommentAttribute, node.Comment ?? string.Empty),
-                    new XAttribute(XmlHiddenAttribute, node.IsHidden.ToString()),
+					new XAttribute(XmlHiddenAttribute, node.IsHidden.ToString()),
 					new XAttribute(XmlTypeAttribute, typeString)
 				);
 
@@ -106,7 +106,7 @@ namespace ReClassNET.DataExchange.ReClass
 							XmlMethodElement,
 							new XAttribute(XmlNameAttribute, n.Name ?? string.Empty),
 							new XAttribute(XmlCommentAttribute, n.Comment ?? string.Empty),
-                            new XAttribute(XmlHiddenAttribute, n.IsHidden.ToString())
+							new XAttribute(XmlHiddenAttribute, n.IsHidden.ToString())
 						)));
 						break;
 					}

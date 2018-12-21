@@ -132,7 +132,7 @@ namespace ReClassNET.DataExchange.ReClass
 
 				node.Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
 				node.Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty;
-                node.IsHidden = element.Attribute(XmlHiddenAttribute)?.Value.Equals("True") ?? false;
+				node.IsHidden = bool.TryParse(element.Attribute(XmlHiddenAttribute)?.Value, out var val) && val;
 
 				if (node is BaseReferenceNode referenceNode)
 				{
