@@ -132,6 +132,7 @@ namespace ReClassNET.DataExchange.ReClass
 
 				node.Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
 				node.Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty;
+                node.IsHidden = element.Attribute(XmlHiddenAttribute)?.Value.Equals("True") ?? false;
 
 				if (node is BaseReferenceNode referenceNode)
 				{
@@ -164,7 +165,8 @@ namespace ReClassNET.DataExchange.ReClass
 							.Select(e => new VMethodNode
 							{
 								Name = e.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
-								Comment = e.Attribute(XmlCommentAttribute)?.Value ?? string.Empty
+								Comment = e.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
+                                IsHidden = e.Attribute(XmlHiddenAttribute)?.Value.Equals("True") ?? false
 							})
 							.ForEach(vtableNode.AddNode);
 						break;

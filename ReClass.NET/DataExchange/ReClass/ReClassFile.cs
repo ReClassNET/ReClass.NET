@@ -165,9 +165,10 @@ namespace ReClassNET.DataExchange.ReClass
 
 				node.Name = element.Attribute("Name")?.Value ?? string.Empty;
 				node.Comment = element.Attribute("Comment")?.Value ?? string.Empty;
+                node.IsHidden = element.Attribute("bHidden")?.Value.Equals("1") ?? false;         
 
-				// Convert the Custom node into normal hex nodes.
-				if (node is CustomNode)
+                // Convert the Custom node into normal hex nodes.
+                if (node is CustomNode)
 				{
 					int.TryParse(element.Attribute("Size")?.Value, out var size);
 
@@ -243,7 +244,8 @@ namespace ReClassNET.DataExchange.ReClass
 							.Select(e => new VMethodNode
 							{
 								Name = e.Attribute("Name")?.Value ?? string.Empty,
-								Comment = e.Attribute("Comment")?.Value ?? string.Empty
+								Comment = e.Attribute("Comment")?.Value ?? string.Empty,
+                                IsHidden = e.Attribute("bHidden")?.Value.Equals("1") ?? false
 							})
 							.ForEach(vtableNode.AddNode);
 						break;

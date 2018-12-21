@@ -21,7 +21,7 @@ namespace ReClassNET.Nodes
 		internal static readonly List<INodeInfoReader> NodeInfoReader = new List<INodeInfoReader>();
 
 		protected static readonly int TextPadding = Icons.Dimensions;
-		protected static readonly int HiddenHeight = 1;
+		protected static readonly int HiddenHeight = 0;
 
 		private static int nodeIndex = 0;
 
@@ -41,7 +41,7 @@ namespace ReClassNET.Nodes
 		public BaseContainerNode ParentNode { get; internal set; }
 
 		/// <summary>Gets or sets a value indicating whether this object is hidden.</summary>
-		public bool IsHidden { get; protected set; }
+		public bool IsHidden { get; set; }
 
 		/// <summary>Gets or sets a value indicating whether this object is selected.</summary>
 		public bool IsSelected { get; set; }
