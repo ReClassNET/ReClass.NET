@@ -759,6 +759,7 @@ namespace ReClassNET.UI
 		{
 			var count = selectedNodes.Count;
 			var node = selectedNodes.Select(s => s.Node).FirstOrDefault();
+			var parentNode = node?.ParentNode;
 
 			var nodeIsClass = node is ClassNode;
 			var nodeIsValueNode = false;
@@ -786,16 +787,14 @@ namespace ReClassNET.UI
 			var hiddenNodesExistAbove = false;
 			if (count == 1)
 			{
-				var selNode = SelectedNodes.ElementAt(0);
-				var parNode = SelectedNodes.ElementAt(0).ParentNode;
-				if (parNode != null)
+				if (parentNode != null)
 				{
-					var selNodeIndex = parNode.FindNodeIndex(selNode);
-					if (selNodeIndex+1 < parNode.Nodes.Count() && parNode.Nodes.ElementAt(selNodeIndex + 1).IsHidden)
+					var selNodeIndex = parentNode.FindNodeIndex(node);
+					if (selNodeIndex + 1 < parentNode.Nodes.Count() && parentNode.Nodes.ElementAt(selNodeIndex + 1).IsHidden)
 					{
 						hiddenNodesExistBelow = true;
 					}
-					if (selNodeIndex - 1 > -1 && parNode.Nodes.ElementAt(selNodeIndex - 1).IsHidden)
+					if (selNodeIndex - 1 > -1 && parentNode.Nodes.ElementAt(selNodeIndex - 1).IsHidden)
 					{
 						hiddenNodesExistAbove = true;
 					}
@@ -805,25 +804,9 @@ namespace ReClassNET.UI
 			unhideNodesBelowToolStripMenuItem.Enabled = hiddenNodesExistBelow;
 			unhideNodesAboveToolStripMenuItem.Enabled = hiddenNodesExistAbove;
 
-			var areNodesHideable = true;
-			foreach (var bs in SelectedNodes)
-			{
-				areNodesHideable = areNodesHideable & !(bs is ClassNode);
-			}
-			hideNodesToolStripMenuItem.Enabled = areNodesHideable;
+			hideNodesToolStripMenuItem.Enabled = SelectedNodes.All(n => !(n is ClassNode));
 
-			var parentNodeTypeSelected = false;
-			var areChildNodesHidden = false;
-			if (count == 1 && SelectedNodes.ElementAt(0) is BaseContainerNode)
-			{
-				var selbcn = (BaseContainerNode)SelectedNodes.ElementAt(0);
-				parentNodeTypeSelected = true;
-				foreach (var bn in selbcn.Nodes)
-				{
-					areChildNodesHidden = areChildNodesHidden | bn.IsHidden;
-				}
-			}
-			unhideChildNodesToolStripMenuItem.Enabled = parentNodeTypeSelected & areChildNodesHidden;
+			unhideChildNodesToolStripMenuItem.Enabled = count == 1 && node is BaseContainerNode bcn && bcn.Nodes.Any(n => n.IsHidden);
 
 			addBytesToolStripMenuItem.Enabled = node?.ParentNode != null || nodeIsClass;
 			insertBytesToolStripMenuItem.Enabled = count == 1 && node?.ParentNode != null;
