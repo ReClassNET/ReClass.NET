@@ -783,33 +783,8 @@ namespace ReClassNET.UI
 					break;
 			}
 
-			var hiddenNodesExistBelow = false;
-			var hiddenNodesExistAbove = false;
-			if (count == 1)
-			{
-				if (parentNode != null)
-				{
-					var selNodeIndex = parentNode.FindNodeIndex(node);
-					if (selNodeIndex + 1 < parentNode.Nodes.Count() && parentNode.Nodes.ElementAt(selNodeIndex + 1).IsHidden)
-					{
-						hiddenNodesExistBelow = true;
-					}
-					if (selNodeIndex - 1 > -1 && parentNode.Nodes.ElementAt(selNodeIndex - 1).IsHidden)
-					{
-						hiddenNodesExistAbove = true;
-					}
-				}
-			}
-
-			unhideNodesBelowToolStripMenuItem.Enabled = hiddenNodesExistBelow;
-			unhideNodesAboveToolStripMenuItem.Enabled = hiddenNodesExistAbove;
-
-			hideNodesToolStripMenuItem.Enabled = SelectedNodes.All(n => !(n is ClassNode));
-
-			unhideChildNodesToolStripMenuItem.Enabled = count == 1 && node is BaseContainerNode bcn && bcn.Nodes.Any(n => n.IsHidden);
-
-			addBytesToolStripMenuItem.Enabled = node?.ParentNode != null || nodeIsClass;
-			insertBytesToolStripMenuItem.Enabled = count == 1 && node?.ParentNode != null;
+			addBytesToolStripMenuItem.Enabled = parentNode != null || nodeIsClass;
+			insertBytesToolStripMenuItem.Enabled = count == 1 && parentNode != null;
 
 			changeTypeToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
 
@@ -824,6 +799,13 @@ namespace ReClassNET.UI
 
 			showCodeOfClassToolStripMenuItem.Enabled = nodeIsClass;
 			shrinkClassToolStripMenuItem.Enabled = nodeIsClass;
+
+			unhideNodesAboveToolStripMenuItem.Enabled = count == 1 && parentNode != null && parentNode.TryGetPredecessor(node, out var predecessor) && predecessor.IsHidden;
+			unhideNodesBelowToolStripMenuItem.Enabled = count == 1 && parentNode != null && parentNode.TryGetSuccessor(node, out var successor) && successor.IsHidden;
+
+			hideNodesToolStripMenuItem.Enabled = SelectedNodes.All(n => !(n is ClassNode));
+
+			unhideChildNodesToolStripMenuItem.Enabled = count == 1 && node is BaseContainerNode bcn && bcn.Nodes.Any(n => n.IsHidden);
 		}
 
 		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)

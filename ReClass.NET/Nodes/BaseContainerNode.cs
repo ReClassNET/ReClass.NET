@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using ReClassNET.Extensions;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -39,6 +38,55 @@ namespace ReClassNET.Nodes
 			Contract.Ensures(Contract.Result<int>() >= -1);
 
 			return Nodes.FindIndex(n => n == node);
+		}
+
+		/// <summary>
+		/// Tries to get the predecessor of the given node in the container.
+		/// </summary>
+		/// <param name="node">The root node.</param>
+		/// <param name="predecessor">The predecessor of the given node.</param>
+		/// <returns>True if a predecessor exists, otherwise false.</returns>
+		public bool TryGetPredecessor(BaseNode node, out BaseNode predecessor)
+		{
+			Contract.Requires(node != null);
+
+			return TryGetNeighbour(node, -1, out predecessor);
+		}
+
+		/// <summary>
+		/// Tries to get the successor of the given node in the container.
+		/// </summary>
+		/// <param name="node">The root node.</param>
+		/// <param name="successor">The successor of the given node.</param>
+		/// <returns>True if a successor exists, otherwise false.</returns>
+		public bool TryGetSuccessor(BaseNode node, out BaseNode successor)
+		{
+			Contract.Requires(node != null);
+
+			return TryGetNeighbour(node, 1, out successor);
+		}
+
+		private bool TryGetNeighbour(BaseNode node, int offset, out BaseNode neighbour)
+		{
+			Contract.Requires(node != null);
+
+			neighbour = null;
+
+			var index = FindNodeIndex(node);
+			if (index == -1)
+			{
+				return false;
+			}
+
+			var neighbourIndex = index + offset;
+			if (neighbourIndex < 0 || neighbourIndex >= nodes.Count)
+			{
+				return false;
+			}
+
+			neighbour = nodes[neighbourIndex];
+
+			return true;
 		}
 
 		public bool ReplaceChildNode(BaseNode child, Type nodeType)
