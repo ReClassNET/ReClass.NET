@@ -800,12 +800,11 @@ namespace ReClassNET.UI
 			showCodeOfClassToolStripMenuItem.Enabled = nodeIsClass;
 			shrinkClassToolStripMenuItem.Enabled = nodeIsClass;
 
-			unhideNodesAboveToolStripMenuItem.Enabled = count == 1 && parentNode != null && parentNode.TryGetPredecessor(node, out var predecessor) && predecessor.IsHidden;
-			unhideNodesBelowToolStripMenuItem.Enabled = count == 1 && parentNode != null && parentNode.TryGetSuccessor(node, out var successor) && successor.IsHidden;
-
 			hideNodesToolStripMenuItem.Enabled = SelectedNodes.All(n => !(n is ClassNode));
 
 			unhideChildNodesToolStripMenuItem.Enabled = count == 1 && node is BaseContainerNode bcn && bcn.Nodes.Any(n => n.IsHidden);
+			unhideNodesAboveToolStripMenuItem.Enabled = count == 1 && parentNode != null && parentNode.TryGetPredecessor(node, out var predecessor) && predecessor.IsHidden;
+			unhideNodesBelowToolStripMenuItem.Enabled = count == 1 && parentNode != null && parentNode.TryGetSuccessor(node, out var successor) && successor.IsHidden;
 		}
 
 		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -958,9 +957,9 @@ namespace ReClassNET.UI
 			HideSelectedNodes();
 		}
 
-		private void unhideNodesBelowToolStripMenuItem_Click(object sender, EventArgs e)
+		private void unhideChildNodesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			UnhideNodesBelow();
+			UnhideChildNodes();
 		}
 
 		private void unhideNodesAboveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -968,9 +967,9 @@ namespace ReClassNET.UI
 			UnhideNodesAbove();
 		}
 
-		private void unhideChildNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		private void unhideNodesBelowToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			UnhideChildNodes();
+			UnhideNodesBelow();
 		}
 
 		private void removeToolStripMenuItem_Click(object sender, EventArgs e)
