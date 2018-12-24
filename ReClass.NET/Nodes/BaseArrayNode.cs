@@ -64,8 +64,8 @@ namespace ReClassNET.Nodes
 				size.Height += childSize.Height;
 			}
 
-			AddTypeDrop(view, y);
-			AddDelete(view, y);
+			AddTypeDrop(view, origY);
+			AddDelete(view, origY);
 
 			return size;
 		}
