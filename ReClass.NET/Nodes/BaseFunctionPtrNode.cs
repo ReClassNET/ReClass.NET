@@ -70,6 +70,9 @@ namespace ReClassNET.Nodes
 				}
 			}
 
+			AddTypeDrop(view, y);
+			AddDelete(view, y);
+
 			var size = new Size(x - origX, view.Font.Height);
 
 			if (levelsOpen[view.Level])
@@ -83,9 +86,6 @@ namespace ReClassNET.Nodes
 				size.Width = Math.Max(size.Width, instructionSize.Width + tx - origX);
 				size.Height += instructionSize.Height;
 			}
-
-			AddTypeDrop(view, y);
-			AddDelete(view, y);
 
 			return size;
 		}

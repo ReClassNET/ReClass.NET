@@ -50,13 +50,13 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
+			AddTypeDrop(view, y);
+			AddDelete(view, y);
+
 			if (levelsOpen[view.Level])
 			{
 				drawValues(tx, ref x, ref y);
 			}
-
-			AddTypeDrop(view, y);
-			AddDelete(view, y);
 
 			return new Size(x - origX, y - origY + view.Font.Height);
 		}

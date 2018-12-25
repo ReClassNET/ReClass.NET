@@ -52,6 +52,9 @@ namespace ReClassNET.Nodes
 			x += view.Font.Width;
 			x = AddComment(view, x, y);
 
+			AddTypeDrop(view, y);
+			AddDelete(view, y);
+
 			y += view.Font.Height;
 
 			var size = new Size(x - origX, y - origY);
@@ -63,9 +66,6 @@ namespace ReClassNET.Nodes
 				size.Width = Math.Max(size.Width, childSize.Width + tx - origX);
 				size.Height += childSize.Height;
 			}
-
-			AddTypeDrop(view, origY);
-			AddDelete(view, origY);
 
 			return size;
 		}
