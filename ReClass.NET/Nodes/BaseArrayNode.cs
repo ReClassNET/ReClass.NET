@@ -24,7 +24,6 @@ namespace ReClassNET.Nodes
 			DrawInvalidMemoryIndicator(view, y);
 
 			var origX = x;
-			var origY = y;
 
 			AddSelection(view, x, y, view.Font.Height);
 
@@ -57,7 +56,7 @@ namespace ReClassNET.Nodes
 
 			y += view.Font.Height;
 
-			var size = new Size(x - origX, y - origY);
+			var size = new Size(x - origX, view.Font.Height);
 
 			if (levelsOpen[view.Level])
 			{
