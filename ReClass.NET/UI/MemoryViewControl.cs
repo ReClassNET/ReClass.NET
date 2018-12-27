@@ -384,7 +384,7 @@ namespace ReClassNET.UI
 
 							break;
 						}
-						else if (hotSpot.Type == HotSpotType.ChangeType)
+						else if (hotSpot.Type == HotSpotType.ChangeClassType)
 						{
 							if (hitObject is FunctionNode functionNode)
 							{

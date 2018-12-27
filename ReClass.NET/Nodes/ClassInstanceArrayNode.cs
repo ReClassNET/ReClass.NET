@@ -25,7 +25,7 @@ namespace ReClassNET.Nodes
 		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			return Draw(view, x, y, "Array", HotSpotType.ChangeType);
+			return Draw(view, x, y, "Array", HotSpotType.ChangeClassType);
 		}
 
 		protected override Size DrawChild(ViewInfo view, int x, int y)

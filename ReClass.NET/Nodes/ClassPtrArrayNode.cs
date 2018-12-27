@@ -23,7 +23,7 @@ namespace ReClassNET.Nodes
 
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			return Draw(view, x, y, "PtrArray", HotSpotType.ChangeType);
+			return Draw(view, x, y, "PtrArray", HotSpotType.ChangeClassType);
 		}
 
 		protected override Size DrawChild(ViewInfo view, int x, int y)

@@ -50,7 +50,7 @@ namespace ReClassNET.Nodes
 			{
 				
 			}
-			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeType) + view.Font.Width;
+			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeWrappedType) + view.Font.Width;
 
 			var ptr = view.Memory.ReadIntPtr(Offset);
 
