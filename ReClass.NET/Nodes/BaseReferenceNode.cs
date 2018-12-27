@@ -2,6 +2,7 @@
 
 namespace ReClassNET.Nodes
 {
+	// TODO Replace with BaseWrapperNode.
 	public abstract class BaseReferenceNode : BaseNode
 	{
 		/// <summary>Gets or sets the inner node.</summary>

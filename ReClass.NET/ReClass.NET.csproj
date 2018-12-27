@@ -242,10 +242,12 @@
     <Compile Include="Native\NativeMethods.Unix.cs" />
     <Compile Include="Native\NativeMethods.Windows.cs" />
     <Compile Include="Nodes\BaseFunctionNode.cs" />
+    <Compile Include="Nodes\BaseWrapperNode.cs" />
     <Compile Include="Nodes\BoolNode.cs" />
     <Compile Include="Nodes\ClassUtil.cs" />
     <Compile Include="Nodes\FunctionNode.cs" />
     <Compile Include="Nodes\NodeUuid.cs" />
+    <Compile Include="Nodes\PointerNode.cs" />
     <Compile Include="ReClassNetProject.cs" />
     <Compile Include="UI\BannerBox.cs">
       <SubType>Component</SubType>
