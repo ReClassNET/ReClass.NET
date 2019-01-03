@@ -125,6 +125,7 @@
 			this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.processInformationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.memorySearcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.namedAddressesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
 			this.loadSymbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.loadSymbolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -132,7 +133,6 @@
 			this.resumeProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.suspendProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.terminateProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.namedAddressesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cleanUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
@@ -244,8 +244,8 @@
             this.arrayToolStripButton,
             this.ptrArrayToolStripButton,
             this.vtableToolStripButton,
-            this.fnPtrToolStripButton,
             this.fnTypeToolStripButton,
+            this.fnPtrToolStripButton,
             this.toolStripSeparator19});
 			this.toolStrip.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip.Name = "toolStrip";
@@ -959,7 +959,7 @@
 			// 
 			this.attachToProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
 			this.attachToProcessToolStripMenuItem.Name = "attachToProcessToolStripMenuItem";
-			this.attachToProcessToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.attachToProcessToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.attachToProcessToolStripMenuItem.Text = "Attach to Process...";
 			this.attachToProcessToolStripMenuItem.Click += new System.EventHandler(this.attachToProcessToolStripSplitButton_ButtonClick);
 			// 
@@ -967,7 +967,7 @@
 			// 
 			this.reattachToProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier_Arrow;
 			this.reattachToProcessToolStripMenuItem.Name = "reattachToProcessToolStripMenuItem";
-			this.reattachToProcessToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.reattachToProcessToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.reattachToProcessToolStripMenuItem.Text = "<>";
 			this.reattachToProcessToolStripMenuItem.Click += new System.EventHandler(this.reattachToProcessToolStripMenuItem_Click);
 			// 
@@ -975,21 +975,21 @@
 			// 
 			this.detachToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier_Remove;
 			this.detachToolStripMenuItem.Name = "detachToolStripMenuItem";
-			this.detachToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.detachToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.detachToolStripMenuItem.Text = "Detach";
 			this.detachToolStripMenuItem.Click += new System.EventHandler(this.detachToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(243, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(192, 6);
 			// 
 			// openProjectToolStripMenuItem
 			// 
 			this.openProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Folder;
 			this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
 			this.openProjectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.openProjectToolStripMenuItem.Text = "Open Project...";
 			this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
 			// 
@@ -997,7 +997,7 @@
 			// 
 			this.mergeWithProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Folder_Add;
 			this.mergeWithProjectToolStripMenuItem.Name = "mergeWithProjectToolStripMenuItem";
-			this.mergeWithProjectToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.mergeWithProjectToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.mergeWithProjectToolStripMenuItem.Text = "Merge with Project...";
 			this.mergeWithProjectToolStripMenuItem.Click += new System.EventHandler(this.mergeWithProjectToolStripMenuItem_Click);
 			// 
@@ -1005,21 +1005,21 @@
 			// 
 			this.clearProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Arrow_Refresh;
 			this.clearProjectToolStripMenuItem.Name = "clearProjectToolStripMenuItem";
-			this.clearProjectToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.clearProjectToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.clearProjectToolStripMenuItem.Text = "Clear Project";
 			this.clearProjectToolStripMenuItem.Click += new System.EventHandler(this.clearProjectToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(243, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(192, 6);
 			// 
 			// saveToolStripMenuItem
 			// 
 			this.saveToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Save;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
 			this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.saveToolStripMenuItem.Text = "Save";
 			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
@@ -1029,20 +1029,20 @@
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
 			this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.saveAsToolStripMenuItem.Text = "Save as...";
 			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(243, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(192, 6);
 			// 
 			// settingsToolStripMenuItem
 			// 
 			this.settingsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Cogs;
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.settingsToolStripMenuItem.Text = "Settings...";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 			// 
@@ -1050,20 +1050,20 @@
 			// 
 			this.pluginsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Plugin;
 			this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
-			this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.pluginsToolStripMenuItem.Text = "Plugins...";
 			this.pluginsToolStripMenuItem.Click += new System.EventHandler(this.pluginsToolStripButton_Click);
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(243, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(192, 6);
 			// 
 			// quitToolStripMenuItem
 			// 
 			this.quitToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Quit;
 			this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-			this.quitToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.quitToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.quitToolStripMenuItem.Text = "Quit";
 			this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
 			// 
@@ -1099,6 +1099,14 @@
 			this.memorySearcherToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.memorySearcherToolStripMenuItem.Text = "Memory Searcher...";
 			this.memorySearcherToolStripMenuItem.Click += new System.EventHandler(this.memorySearcherToolStripMenuItem_Click);
+			// 
+			// namedAddressesToolStripMenuItem
+			// 
+			this.namedAddressesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Custom_Type;
+			this.namedAddressesToolStripMenuItem.Name = "namedAddressesToolStripMenuItem";
+			this.namedAddressesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+			this.namedAddressesToolStripMenuItem.Text = "Named Addresses...";
+			this.namedAddressesToolStripMenuItem.Click += new System.EventHandler(this.namedAddressesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator17
 			// 
@@ -1149,14 +1157,6 @@
 			this.terminateProcessToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.terminateProcessToolStripMenuItem.Text = "Kill";
 			this.terminateProcessToolStripMenuItem.Click += new System.EventHandler(this.ControlRemoteProcessToolStripMenuItem_Click);
-			// 
-			// namedAddressesToolStripMenuItem
-			// 
-			this.namedAddressesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Custom_Type;
-			this.namedAddressesToolStripMenuItem.Name = "namedAddressesToolStripMenuItem";
-			this.namedAddressesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-			this.namedAddressesToolStripMenuItem.Text = "Named Addresses...";
-			this.namedAddressesToolStripMenuItem.Click += new System.EventHandler(this.namedAddressesToolStripMenuItem_Click);
 			// 
 			// projectToolStripMenuItem
 			// 
@@ -1210,7 +1210,7 @@
 			// 
 			this.aboutToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Information;
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
