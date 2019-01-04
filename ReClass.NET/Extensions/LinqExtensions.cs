@@ -132,6 +132,15 @@ namespace ReClassNET.Extensions
 		}
 
 		[DebuggerStepThrough]
+		public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource item)
+		{
+			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
+			Contract.Requires(source != null);
+
+			return source.Concat(Yield(item));
+		}
+
+		[DebuggerStepThrough]
 		public static IEnumerable<TSource> Traverse<TSource>(this IEnumerable<TSource> source, Func<TSource, IEnumerable<TSource>> childSelector)
 		{
 			Contract.Requires(source != null);
