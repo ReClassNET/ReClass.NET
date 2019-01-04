@@ -76,6 +76,8 @@ namespace ReClassNET.Forms
 
 			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, Constants.PluginsFolder), Program.Logger);
 
+			toolStrip.Items.AddRange(NodeTypesBuilder.CreateToolStripButtons(t => memoryViewControl.ReplaceSelectedNodesWithType(t)).ToArray());
+
 			var createDefaultProject = true;
 
 			if (Program.CommandLineArgs.FileName != null)
@@ -415,6 +417,7 @@ namespace ReClassNET.Forms
 				Program.CoreFunctions.EnumerateProcesses()
 					.OrderBy(p => p.Name).ThenBy(p => p.Id, IntPtrComparer.Instance)
 					.Select(p => new ToolStripMenuItem($"[{p.Id}] {p.Name}", p.Icon, (sender2, e2) => AttachToProcess(p)))
+					.Cast<ToolStripItem>()
 					.ToArray()
 			);
 		}
@@ -447,16 +450,6 @@ namespace ReClassNET.Forms
 		private void insertXBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			AskAddOrInsertBytes("Insert Bytes", memoryViewControl.InsertBytes);
-		}
-
-		private void memoryTypeToolStripButton_Click(object sender, EventArgs e)
-		{
-			if (!(sender is TypeToolStripButton item))
-			{
-				return;
-			}
-
-			memoryViewControl.ReplaceSelectedNodesWithType(item.Value);
 		}
 
 		#endregion
@@ -598,15 +591,7 @@ namespace ReClassNET.Forms
 			Contract.Requires(name != null);
 			Contract.Requires(icon != null);
 
-			var item = new TypeToolStripButton
-			{
-				Image = icon,
-				ToolTipText = name,
-				Value = type
-			};
-			item.Click += memoryTypeToolStripButton_Click;
-
-			toolStrip.Items.Add(item);
+			//TODO
 		}
 
 		/// <summary>Deregisters the node type.</summary>
@@ -615,12 +600,7 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(type != null);
 
-			var item = toolStrip.Items.OfType<TypeToolStripButton>().FirstOrDefault(i => i.Value == type);
-			if (item != null)
-			{
-				item.Click -= memoryTypeToolStripButton_Click;
-				toolStrip.Items.Remove(item);
-			}
+			//TODO
 		}
 
 		/// <summary>Shows the code form with the given <paramref name="generator"/>.</summary>
