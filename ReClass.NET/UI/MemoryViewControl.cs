@@ -110,35 +110,6 @@ namespace ReClassNET.UI
 			HorizontalScroll.SmallChange = 100;
 		}
 
-		internal void RegisterNodeType(Type type, string name, Image icon)
-		{
-			Contract.Requires(type != null);
-			Contract.Requires(name != null);
-			Contract.Requires(icon != null);
-
-			var item = new TypeToolStripMenuItem
-			{
-				Image = icon,
-				Text = name,
-				Value = type
-			};
-			item.Click += memoryTypeToolStripMenuItem_Click;
-
-			changeTypeToolStripMenuItem.DropDownItems.Add(item);
-		}
-
-		internal void DeregisterNodeType(Type type)
-		{
-			Contract.Requires(type != null);
-
-			var item = changeTypeToolStripMenuItem.DropDownItems.OfType<TypeToolStripMenuItem>().FirstOrDefault(i => i.Value == type);
-			if (item != null)
-			{
-				item.Click -= memoryTypeToolStripMenuItem_Click;
-				changeTypeToolStripMenuItem.DropDownItems.Remove(item);
-			}
-		}
-
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
@@ -757,6 +728,9 @@ namespace ReClassNET.UI
 
 		private void selectedNodeContextMenuStrip_Opening(object sender, CancelEventArgs e)
 		{
+			changeTypeToolStripMenuItem.DropDownItems.Clear();
+			changeTypeToolStripMenuItem.DropDownItems.AddRange(NodeTypesBuilder.CreateToolStripMenuItems(ReplaceSelectedNodesWithType, false).ToArray());
+
 			var count = selectedNodes.Count;
 			var node = selectedNodes.Select(s => s.Node).FirstOrDefault();
 			var parentNode = node?.ParentNode;
@@ -825,16 +799,6 @@ namespace ReClassNET.UI
 			}
 
 			InsertBytes(item.Value);
-		}
-
-		private void memoryTypeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (!(sender is TypeToolStripMenuItem item))
-			{
-				return;
-			}
-
-			ReplaceSelectedNodesWithType(item.Value);
 		}
 
 		private void createClassFromNodesToolStripMenuItem_Click(object sender, EventArgs e)

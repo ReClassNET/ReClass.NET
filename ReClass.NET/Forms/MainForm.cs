@@ -607,8 +607,6 @@ namespace ReClassNET.Forms
 			item.Click += memoryTypeToolStripButton_Click;
 
 			toolStrip.Items.Add(item);
-
-			memoryViewControl.RegisterNodeType(type, name, icon);
 		}
 
 		/// <summary>Deregisters the node type.</summary>
@@ -623,8 +621,6 @@ namespace ReClassNET.Forms
 				item.Click -= memoryTypeToolStripButton_Click;
 				toolStrip.Items.Remove(item);
 			}
-
-			memoryViewControl.DeregisterNodeType(type);
 		}
 
 		/// <summary>Shows the code form with the given <paramref name="generator"/>.</summary>
