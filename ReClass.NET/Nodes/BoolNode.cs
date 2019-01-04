@@ -5,14 +5,14 @@ namespace ReClassNET.Nodes
 {
 	public class BoolNode : BaseNumericNode
 	{
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 1;
 
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Bool";
+			icon = Properties.Resources.B16x16_Button_Bool;
+		}
+
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			if (IsHidden)

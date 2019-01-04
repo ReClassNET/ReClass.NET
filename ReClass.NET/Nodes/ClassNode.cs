@@ -23,7 +23,6 @@ namespace ReClassNET.Nodes
 		public static IntPtr DefaultAddress { get; } = (IntPtr)0x400000;
 #endif
 
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
 
 		private NodeUuid uuid;
@@ -73,6 +72,11 @@ namespace ReClassNET.Nodes
 			return new ClassNode(true);
 		}
 
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			throw new InvalidOperationException($"The '{nameof(ClassNode)}' node should not be accessible from the ui.");
+		}
+
 		public override void Intialize()
 		{
 			AddBytes(IntPtr.Size);
@@ -88,11 +92,6 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			AddSelection(view, 0, y, view.Font.Height);

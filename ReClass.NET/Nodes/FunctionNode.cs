@@ -15,8 +15,13 @@ namespace ReClassNET.Nodes
 		public ClassNode BelongsToClass { get; set; }
 
 		private int memorySize = IntPtr.Size;
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => memorySize;
+
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Function";
+			icon = Properties.Resources.B16x16_Button_Function;
+		}
 
 		public override string GetToolTipText(HotSpot spot, MemoryBuffer memory)
 		{

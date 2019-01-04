@@ -75,6 +75,8 @@ namespace ReClassNET.Nodes
 			levelsOpen[0] = true;
 		}
 
+		public abstract void GetUserInterfaceInfo(out string name, out Image icon);
+
 		/// <summary>Clears the selection of the node.</summary>
 		public virtual void ClearSelection()
 		{

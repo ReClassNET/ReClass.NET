@@ -4,7 +4,6 @@ using System.Globalization;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -15,6 +14,12 @@ namespace ReClassNET.Nodes
 		public override int MemorySize => IntPtr.Size;
 
 		public override bool PerformCycleCheck => false;
+
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Class Pointer";
+			icon = Properties.Resources.B16x16_Button_Class_Pointer;
+		}
 
 		public override void Intialize()
 		{

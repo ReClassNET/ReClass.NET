@@ -51,6 +51,12 @@ namespace ReClassNET.Nodes
 			levelsOpen.DefaultValue = true;
 		}
 
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Bitfield";
+			icon = Properties.Resources.B16x16_Button_Bits;
+		}
+
 		public override void CopyFromNode(BaseNode node)
 		{
 			base.CopyFromNode(node);

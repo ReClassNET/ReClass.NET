@@ -13,6 +13,12 @@ namespace ReClassNET.Nodes
 
 		public override int MemorySize => IntPtr.Size;
 
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "VTable Pointer";
+			icon = Properties.Resources.B16x16_Button_VTable;
+		}
+
 		public override void Intialize()
 		{
 			AddBytes(10 * IntPtr.Size);

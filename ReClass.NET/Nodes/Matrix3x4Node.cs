@@ -40,11 +40,12 @@ namespace ReClassNET.Nodes
 
 		public override int MemorySize => 12 * ValueTypeSize;
 
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x2">The x coordinate.</param>
-		/// <param name="y2">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Matrix 3x4";
+			icon = Properties.Resources.B16x16_Button_Matrix_3x4;
+		}
+
 		public override Size Draw(ViewInfo view, int x2, int y2)
 		{
 			return DrawMatrixType(view, x2, y2, "Matrix (3x4)", (int defaultX, ref int maxX, ref int y) =>

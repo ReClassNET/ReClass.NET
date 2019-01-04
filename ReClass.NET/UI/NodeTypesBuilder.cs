@@ -143,16 +143,17 @@ namespace ReClassNET.UI
 			return items;
 		}
 
-		private static bool GetNodeInfoFromType(Type nodeType, out string label, out Image icon)
+		private static void GetNodeInfoFromType(Type nodeType, out string label, out Image icon)
 		{
 			Contract.Requires(nodeType != null);
 
-			//TODO Read info from node (virtual method?).
+			var node = Activator.CreateInstance(nodeType) as BaseNode;
+			if (node == null)
+			{
+				throw new InvalidOperationException($"'{nodeType}' is not a valid node type.");
+			}
 
-			label = nodeType.ToString();
-			icon = null;
-
-			return true;
+			node.GetUserInterfaceInfo(out label, out icon);
 		}
 	}
 }

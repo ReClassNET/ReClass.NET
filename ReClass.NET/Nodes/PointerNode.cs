@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using ReClassNET.Memory;
 using ReClassNET.UI;
@@ -14,6 +13,12 @@ namespace ReClassNET.Nodes
 
 		public override bool PerformCycleCheck => false;
 
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Pointer";
+			icon = Properties.Resources.B16x16_Pointer_Type;
+		}
+
 		public override bool CanChangeInnerNodeTo(BaseNode node)
 		{
 			return true;
@@ -21,7 +26,6 @@ namespace ReClassNET.Nodes
 
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			//return DrawHidden(view, x, y);
 			if (IsHidden)
 			{
 				return DrawHidden(view, x, y);
@@ -45,10 +49,6 @@ namespace ReClassNET.Nodes
 			if (InnerNode == null)
 			{
 				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, "<void>") + view.Font.Width;
-			}
-			else
-			{
-				
 			}
 			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeWrappedType) + view.Font.Width;
 

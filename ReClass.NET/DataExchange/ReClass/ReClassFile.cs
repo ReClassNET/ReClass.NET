@@ -295,6 +295,11 @@ namespace ReClassNET.DataExchange.ReClass
 		{
 			public override int MemorySize => throw new NotImplementedException();
 
+			public override void GetUserInterfaceInfo(out string name, out Image icon)
+			{
+				throw new NotImplementedException();
+			}
+
 			public override int CalculateDrawnHeight(ViewInfo view)
 			{
 				throw new NotImplementedException();

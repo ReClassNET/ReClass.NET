@@ -1,16 +1,20 @@
 ﻿using System.Drawing;
 using ReClassNET.Extensions;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
 	public class ClassInstanceArrayNode : BaseArrayNode
 	{
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => InnerNode.MemorySize * Count;
 
 		public override bool PerformCycleCheck => true;
+
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Class Instance Array";
+			icon = Properties.Resources.B16x16_Button_Array;
+		}
 
 		public override void Intialize()
 		{

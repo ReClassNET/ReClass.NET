@@ -8,6 +8,12 @@ namespace ReClassNET.Nodes
 	{
 		public override Encoding Encoding => Encoding.UTF8;
 
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "UTF8 / ASCII Text";
+			icon = Properties.Resources.B16x16_Button_Text;
+		}
+
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			return DrawText(view, x, y, "Text8");

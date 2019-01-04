@@ -13,6 +13,12 @@ namespace ReClassNET.Nodes
 
 		public override bool PerformCycleCheck => false;
 
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Class Pointer Array";
+			icon = Properties.Resources.B16x16_Button_Pointer_Array;
+		}
+
 		public override void Intialize()
 		{
 			var node = ClassNode.Create();

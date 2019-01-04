@@ -8,6 +8,12 @@ namespace ReClassNET.Nodes
 	{
 		public override int MemorySize => 1;
 
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Hex8";
+			icon = Properties.Resources.B16x16_Button_Hex_8;
+		}
+
 		public override string GetToolTipText(HotSpot spot, MemoryBuffer memory)
 		{
 			var b = memory.ReadUInt8(Offset);
