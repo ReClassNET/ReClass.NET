@@ -63,6 +63,11 @@ namespace ReClassNET.Nodes
 			Contract.Invariant(levelsOpen != null);
 		}
 
+		public static BaseNode CreateInstanceFromType(Type nodeType)
+		{
+			return Activator.CreateInstance(nodeType) as BaseNode;
+		}
+
 		/// <summary>Constructor which sets a unique <see cref="Name"/>.</summary>
 		protected BaseNode()
 		{

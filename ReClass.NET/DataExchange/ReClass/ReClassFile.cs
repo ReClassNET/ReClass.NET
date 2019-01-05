@@ -155,7 +155,7 @@ namespace ReClassNET.DataExchange.ReClass
 					continue;
 				}
 
-				var node = Activator.CreateInstance(nodeType) as BaseNode;
+				var node = BaseNode.CreateInstanceFromType(nodeType);
 				if (node == null)
 				{
 					logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");

@@ -147,7 +147,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(nodeType != null);
 
-			var node = Activator.CreateInstance(nodeType) as BaseNode;
+			var node = BaseNode.CreateInstanceFromType(nodeType);
 			if (node == null)
 			{
 				throw new InvalidOperationException($"'{nodeType}' is not a valid node type.");

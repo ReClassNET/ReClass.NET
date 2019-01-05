@@ -124,7 +124,8 @@ namespace ReClassNET.Nodes
 
 			var oldNode = nodes[index];
 
-			if (!(Activator.CreateInstance(nodeType) is BaseNode node))
+			var node = CreateInstanceFromType(nodeType);
+			if (node == null)
 			{
 				return false;
 			}
