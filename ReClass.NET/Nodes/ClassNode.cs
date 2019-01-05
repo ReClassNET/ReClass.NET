@@ -55,6 +55,8 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Ensures(AddressFormula != null);
 
+			levelsOpen.DefaultValue = true;
+
 			Uuid = new NodeUuid(true);
 
 			Address = DefaultAddress;

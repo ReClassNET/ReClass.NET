@@ -13,6 +13,11 @@ namespace ReClassNET.Nodes
 
 		public override bool PerformCycleCheck => false;
 
+		public PointerNode()
+		{
+			levelsOpen.DefaultValue = true;
+		}
+
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
 			name = "Pointer";
