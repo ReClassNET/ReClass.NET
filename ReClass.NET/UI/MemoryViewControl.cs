@@ -401,6 +401,25 @@ namespace ReClassNET.UI
 
 							break;
 						}
+						else if (hotSpot.Type == HotSpotType.ChangeWrappedType)
+						{
+							if (hitObject is BaseWrapperNode wrapperNode)
+							{
+								var items = NodeTypesBuilder.CreateToolStripMenuItems(t =>
+								{
+									var node = BaseNode.CreateInstanceFromType(t);
+									node.Intialize();
+									if (wrapperNode.CanChangeInnerNodeTo(node))
+									{
+										wrapperNode.ChangeInnerNode(node);
+									}
+								}, true);
+
+								var menu = new ContextMenuStrip();
+								menu.Items.AddRange(items.ToArray());
+								menu.Show(this, e.Location);
+							}
+						}
 					}
 					catch (Exception ex)
 					{
