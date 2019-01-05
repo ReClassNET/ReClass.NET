@@ -43,7 +43,14 @@ namespace ReClassNET.Nodes
 
 			AddSelection(view, x, y, view.Font.Height);
 
-			x = AddOpenClose(view, x, y);
+			if (InnerNode != null)
+			{
+				x = AddOpenClose(view, x, y);
+			}
+			else
+			{
+				x += TextPadding;
+			}
 			x = AddIcon(view, x, y, Icons.Pointer, -1, HotSpotType.None);
 
 			var tx = x;
