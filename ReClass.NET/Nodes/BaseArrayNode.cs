@@ -16,7 +16,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
 
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
@@ -34,7 +34,10 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			}
 			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "[");
 			x = AddText(view, x, y, view.Settings.IndexColor, 0, Count.ToString());
 			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "]");
@@ -73,7 +76,7 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}

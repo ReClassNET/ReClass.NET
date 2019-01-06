@@ -112,7 +112,7 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}

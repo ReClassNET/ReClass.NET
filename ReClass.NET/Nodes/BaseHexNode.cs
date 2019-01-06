@@ -30,7 +30,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
@@ -93,7 +93,7 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			return IsHidden ? HiddenHeight : view.Font.Height;
+			return IsHidden && !IsWrapped ? HiddenHeight : view.Font.Height;
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected byte.</summary>
@@ -103,7 +103,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(spot != null);
 
-			base.Update(spot);
+			Update(spot);
 
 			if (spot.Id >= 0 && spot.Id < maxId)
 			{

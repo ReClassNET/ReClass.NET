@@ -31,7 +31,7 @@ namespace ReClassNET.Nodes
 
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
@@ -50,7 +50,10 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Ptr") + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			}
 			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name}>") + view.Font.Width;
 			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeClassType) + view.Font.Width;
 
@@ -89,7 +92,7 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}

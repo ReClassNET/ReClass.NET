@@ -50,7 +50,7 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			return IsHidden ? HiddenHeight : view.Font.Height;
+			return IsHidden && !IsWrapped ? HiddenHeight : view.Font.Height;
 		}
 
 		/// <summary>Updates the node from the given spot and sets the value.</summary>
