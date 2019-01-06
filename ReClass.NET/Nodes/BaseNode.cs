@@ -40,10 +40,13 @@ namespace ReClassNET.Nodes
 		/// <summary>Gets or sets the parent node.</summary>
 		public BaseContainerNode ParentNode { get; internal set; }
 
-		/// <summary>Gets or sets a value indicating whether this object is hidden.</summary>
+		/// <summary>Gets or sets a value indicating whether this node is wrapped into an other node.</summary>
+		public bool IsWrapped { get; internal set; }
+
+		/// <summary>Gets or sets a value indicating whether this node is hidden.</summary>
 		public bool IsHidden { get; set; }
 
-		/// <summary>Gets or sets a value indicating whether this object is selected.</summary>
+		/// <summary>Gets or sets a value indicating whether this node is selected.</summary>
 		public bool IsSelected { get; set; }
 
 		/// <summary>Size of the node in bytes.</summary>
@@ -273,7 +276,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
 
-			if (y > view.ClientArea.Bottom || y + height < 0)
+			if (y > view.ClientArea.Bottom || y + height < 0 || IsWrapped)
 			{
 				return;
 			}
@@ -286,7 +289,7 @@ namespace ReClassNET.Nodes
 				}
 			}
 
-			AddHotSpot(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), string.Empty, -1, HotSpotType.Select);
+			AddHotSpot(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), string.Empty, HotSpot.NoneId, HotSpotType.Select);
 		}
 
 		/// <summary>Draws an icon and adds a <see cref="HotSpot"/> if <paramref name="id"/> is not <see cref="HotSpot.NoneId"/>.</summary>
@@ -310,7 +313,7 @@ namespace ReClassNET.Nodes
 
 			view.Context.DrawImage(icon, x + 2, y, Icons.Dimensions, Icons.Dimensions);
 
-			if (id != -1)
+			if (id != HotSpot.NoneId)
 			{
 				AddHotSpot(view, new Rectangle(x, y, Icons.Dimensions, Icons.Dimensions), string.Empty, id, type);
 			}
@@ -344,7 +347,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
 
-			if (view.MultipleNodesSelected || (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0))
+			if (view.MultipleNodesSelected || y > view.ClientArea.Bottom || y + Icons.Dimensions < 0 || IsWrapped)
 			{
 				return;
 			}
@@ -363,7 +366,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
 
-			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0)
+			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0 || IsWrapped)
 			{
 				return;
 			}

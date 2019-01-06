@@ -26,6 +26,8 @@
 			{
 				InnerNode = node;
 
+				node.IsWrapped = true;
+
 				InnerNodeChanged?.Invoke(this);
 
 				ParentNode?.ChildHasChanged(this);
