@@ -2,3 +2,4 @@ BaseWrapperNode Import/Export
 BaseWrapperNode CodeGenerator
 Remove BaseReferenceNode
 NodeTypesBuilder Plugin support
+Rebuild class cycle check with BaseWrapperNode
