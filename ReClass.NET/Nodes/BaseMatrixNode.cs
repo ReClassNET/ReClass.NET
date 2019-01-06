@@ -22,7 +22,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(type != null);
 			Contract.Requires(drawValues != null);
 
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
@@ -43,7 +43,10 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			}
 			x = AddOpenClose(view, x, y);
 
 			x += view.Font.Width;
@@ -68,7 +71,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(type != null);
 			Contract.Requires(drawValues != null);
 
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
@@ -86,7 +89,10 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			}
 			x = AddOpenClose(view, x, y);
 
 			if (levelsOpen[view.Level])

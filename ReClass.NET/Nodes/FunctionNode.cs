@@ -34,7 +34,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
@@ -54,7 +54,10 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Function") + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			}
 
 			x = AddOpenClose(view, x, y) + view.Font.Width;
 
