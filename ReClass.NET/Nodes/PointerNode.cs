@@ -11,6 +11,8 @@ namespace ReClassNET.Nodes
 
 		public override int MemorySize => IntPtr.Size;
 
+		public override bool IsEmptyNodeAllowed => true;
+
 		public override bool PerformCycleCheck => false;
 
 		public PointerNode()

@@ -413,7 +413,7 @@ namespace ReClassNET.UI
 									{
 										wrapperNode.ChangeInnerNode(node);
 									}
-								}, true);
+								}, wrapperNode.IsEmptyNodeAllowed);
 
 								var menu = new ContextMenuStrip();
 								menu.Items.AddRange(items.ToArray());

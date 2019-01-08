@@ -11,6 +11,9 @@
 		/// <summary>True to perform class cycle checks when changing the inner node.</summary>
 		public abstract bool PerformCycleCheck { get; }
 
+		/// <summary>True if this wrapper supports an inexistent inner node.</summary>
+		public abstract bool IsEmptyNodeAllowed { get; }
+
 		/// <summary>
 		/// Should be called before <see cref="ChangeInnerNode"/> to test if the node can handle the inner node type.
 		/// </summary>
