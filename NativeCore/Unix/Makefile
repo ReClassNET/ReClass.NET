@@ -11,7 +11,7 @@ CFLAGS = -Wall -fPIC -DRECLASSNET64=1
 RESINC =
 LIBDIR =
 LIB = -lstdc++fs
-LDFLAGS = -shared
+LDFLAGS = -shared -Wl,--no-undefined
 
 INC_DEBUG = $(INC)
 CFLAGS_DEBUG = $(CFLAGS) -g
