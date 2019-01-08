@@ -59,12 +59,13 @@ namespace ReClassNET.UI
 				OnSelectionChanged();
 
 				classNode = value;
-
-				VerticalScroll.Value = 0;
+				
+				VerticalScroll.Value = VerticalScroll.Minimum;
 				if (classNode != null && Memory?.Process != null)
 				{
 					classNode.UpdateAddress(Memory.Process);
 				}
+				
 				Invalidate();
 			}
 		}
@@ -215,7 +216,7 @@ namespace ReClassNET.UI
 				{
 					VerticalScroll.Enabled = false;
 
-					VerticalScroll.Value = 0;
+					VerticalScroll.Value = VerticalScroll.Minimum;
 				}
 
 				if (drawnSize.Width > ClientSize.Width)
@@ -229,7 +230,7 @@ namespace ReClassNET.UI
 				{
 					HorizontalScroll.Enabled = false;
 
-					HorizontalScroll.Value = 0;
+					HorizontalScroll.Value = HorizontalScroll.Minimum;
 				}
 			}
 			catch (Exception)
