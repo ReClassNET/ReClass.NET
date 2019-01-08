@@ -10,7 +10,7 @@ INC = -I../Dependencies/distorm/include
 CFLAGS = -Wall -fPIC -DRECLASSNET64=1
 RESINC =
 LIBDIR =
-LIB = -lstdc++fs
+LIB = -lstdc++fs -lstdc++
 LDFLAGS = -shared -Wl,--no-undefined
 
 INC_DEBUG = $(INC)
