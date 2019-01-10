@@ -64,7 +64,9 @@ namespace ReClassNET.DataExchange.ReClass
 			typeof(Vector2Node),
 			typeof(Vector3Node),
 			typeof(Vector4Node),
-			typeof(VTableNode)
+			typeof(VTableNode),
+			typeof(ArrayNode),
+			typeof(PointerNode)
 		}.ToDictionary(t => t.Name, t => t);
 
 		private static readonly Dictionary<Type, string> buildInTypeToStringMap = buildInStringToTypeMap.ToDictionary(kv => kv.Value, kv => kv.Key);

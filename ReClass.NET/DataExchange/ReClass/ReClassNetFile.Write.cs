@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Xml.Linq;
+using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
@@ -98,6 +99,14 @@ namespace ReClassNET.DataExchange.ReClass
 					element.SetAttributeValue(XmlReferenceAttribute, referenceNode.InnerNode.Uuid.ToBase64String());
 				}
 
+				if (node is BaseWrapperNode wrapperNode)
+				{
+					if (wrapperNode.InnerNode != null)
+					{
+						element.Add(CreateNodeElements(wrapperNode.InnerNode.Yield(), logger));
+					}
+				}
+
 				switch (node)
 				{
 					case VTableNode vtableNode:
@@ -111,6 +120,11 @@ namespace ReClassNET.DataExchange.ReClass
 						break;
 					}
 					case BaseArrayNode arrayNode:
+					{
+						element.SetAttributeValue(XmlCountAttribute, arrayNode.Count);
+						break;
+					}
+					case BaseWrapperArrayNode arrayNode:
 					{
 						element.SetAttributeValue(XmlCountAttribute, arrayNode.Count);
 						break;

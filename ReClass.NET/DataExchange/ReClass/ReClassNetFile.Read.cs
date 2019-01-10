@@ -98,7 +98,6 @@ namespace ReClassNET.DataExchange.ReClass
 		{
 			Contract.Requires(elements != null);
 			Contract.Requires(Contract.ForAll(elements, e => e != null));
-			Contract.Requires(parent != null);
 			Contract.Requires(logger != null);
 
 			foreach (var element in elements)
@@ -156,6 +155,20 @@ namespace ReClassNET.DataExchange.ReClass
 					referenceNode.ChangeInnerNode(innerClassNode);
 				}
 
+				if (node is BaseWrapperNode wrapperNode)
+				{
+					var innerNode = ReadNodeElements(element.Elements(), null, logger).FirstOrDefault();
+
+					if (wrapperNode.CanChangeInnerNodeTo(innerNode))
+					{
+						wrapperNode.ChangeInnerNode(innerNode);
+					}
+					else
+					{
+						logger.Log(LogLevel.Error, $"The node {innerNode} is not a valid child for {node}.");
+					}
+				}
+
 				switch (node)
 				{
 					case VTableNode vtableNode:
@@ -166,12 +179,18 @@ namespace ReClassNET.DataExchange.ReClass
 							{
 								Name = e.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
 								Comment = e.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
-                                IsHidden = e.Attribute(XmlHiddenAttribute)?.Value.Equals("True") ?? false
+								IsHidden = e.Attribute(XmlHiddenAttribute)?.Value.Equals("True") ?? false
 							})
 							.ForEach(vtableNode.AddNode);
 						break;
 					}
 					case BaseArrayNode arrayNode:
+					{
+						TryGetAttributeValue(element, XmlCountAttribute, out var count, logger);
+						arrayNode.Count = count;
+						break;
+					}
+					case BaseWrapperArrayNode arrayNode:
 					{
 						TryGetAttributeValue(element, XmlCountAttribute, out var count, logger);
 						arrayNode.Count = count;
@@ -243,7 +262,11 @@ namespace ReClassNET.DataExchange.ReClass
 				{
 					if (templateProject != null)
 					{
-						classes.AddRange(project.Classes.Where(c => c != serialisationClassNode).Where(classNode => !templateProject.ContainsClass(classNode.Uuid)));
+						var collection = project.Classes
+							.Where(c => c != serialisationClassNode)
+							.Where(classNode => !templateProject.ContainsClass(classNode.Uuid));
+
+						classes.AddRange(collection);
 					}
 
 					nodes.AddRange(serialisationClassNode.Nodes);
