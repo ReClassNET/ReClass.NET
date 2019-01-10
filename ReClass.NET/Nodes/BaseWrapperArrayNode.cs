@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Drawing;
-using ReClassNET.Extensions;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	public class BaseWrapperArrayNode : BaseWrapperNode
+	public abstract class BaseWrapperArrayNode : BaseWrapperNode
 	{
 		public override int MemorySize => InnerNode.MemorySize * Count;
 
@@ -17,23 +16,12 @@ namespace ReClassNET.Nodes
 
 		public override bool PerformCycleCheck => true;
 
-		public override void GetUserInterfaceInfo(out string name, out Image icon)
-		{
-			name = "Array";
-			icon = Properties.Resources.B16x16_Button_Array;
-		}
-
-		public override void Intialize()
-		{
-			InnerNode = IntPtr.Size == 4 ? (BaseNode)new Hex32Node() : new Hex64Node();
-		}
-
 		public override bool CanChangeInnerNodeTo(BaseNode node)
 		{
 			return node != null;
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		protected Size Draw(ViewInfo view, int x, int y, string type)
 		{
 			if (IsHidden && !IsWrapped)
 			{
@@ -52,7 +40,7 @@ namespace ReClassNET.Nodes
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Array") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
 			if (!IsWrapped)
 			{
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
@@ -82,12 +70,7 @@ namespace ReClassNET.Nodes
 
 			if (levelsOpen[view.Level])
 			{
-				var v = view.Clone();
-				v.Address = view.Address.Add(Offset) + InnerNode.MemorySize * CurrentIndex;
-				v.Memory = view.Memory.Clone();
-				v.Memory.Offset += Offset.ToInt32() + InnerNode.MemorySize * CurrentIndex;
-
-				var childSize = InnerNode.Draw(v, tx, y);
+				var childSize = DrawChild(view, tx, y);
 
 				size.Width = Math.Max(size.Width, childSize.Width + tx - origX);
 				size.Height += childSize.Height;
@@ -95,6 +78,8 @@ namespace ReClassNET.Nodes
 
 			return size;
 		}
+
+		protected abstract Size DrawChild(ViewInfo view, int x, int y);
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
@@ -125,7 +110,7 @@ namespace ReClassNET.Nodes
 						{
 							Count = value;
 
-							ParentNode.ChildHasChanged(this);
+							ParentNode?.ChildHasChanged(this);
 						}
 					}
 					else
