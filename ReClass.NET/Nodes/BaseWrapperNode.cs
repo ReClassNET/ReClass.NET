@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Nodes
+﻿using System;
+
+namespace ReClassNET.Nodes
 {
 	public abstract class BaseWrapperNode : BaseNode
 	{
@@ -25,11 +27,19 @@
 		/// <param name="node">The new node.</param>
 		public void ChangeInnerNode(BaseNode node)
 		{
+			if (node == null && !IsEmptyNodeAllowed)
+			{
+				throw new InvalidOperationException("An empty node is not allowed.");
+			}
+
 			if (InnerNode != node)
 			{
 				InnerNode = node;
 
-				node.IsWrapped = true;
+				if (node != null)
+				{
+					node.IsWrapped = true;
+				}
 
 				InnerNodeChanged?.Invoke(this);
 
