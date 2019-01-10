@@ -6,7 +6,6 @@ using System.Text;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
 
 namespace ReClassNET.CodeGenerator
 {
@@ -117,7 +116,7 @@ namespace ReClassNET.CodeGenerator
 			return sb.ToString();
 		}
 
-		private IEnumerable<ClassNode> OrderByInheritance(IEnumerable<ClassNode> classes)
+		private static IEnumerable<ClassNode> OrderByInheritance(IEnumerable<ClassNode> classes)
 		{
 			Contract.Requires(classes != null);
 			Contract.Requires(Contract.ForAll(classes, c => c != null));
@@ -128,7 +127,7 @@ namespace ReClassNET.CodeGenerator
 			return classes.SelectMany(c => YieldReversedHierarchy(c, alreadySeen)).Distinct();
 		}
 
-		private IEnumerable<ClassNode> YieldReversedHierarchy(ClassNode node, HashSet<ClassNode> alreadySeen)
+		private static IEnumerable<ClassNode> YieldReversedHierarchy(ClassNode node, ISet<ClassNode> alreadySeen)
 		{
 			Contract.Requires(node != null);
 			Contract.Requires(alreadySeen != null);
@@ -187,9 +186,9 @@ namespace ReClassNET.CodeGenerator
 
 					yield return new MemberDefinition(member, type, count);
 				}
-				else if (member is BitFieldNode)
+				else if (member is BitFieldNode bitFieldNode)
 				{
-					switch (((BitFieldNode)member).Bits)
+					switch (bitFieldNode.Bits)
 					{
 						case 8:
 							type = Program.Settings.TypeUInt8;
@@ -205,27 +204,23 @@ namespace ReClassNET.CodeGenerator
 							break;
 					}
 
-					yield return new MemberDefinition(member, type);
+					yield return new MemberDefinition(bitFieldNode, type);
 				}
-				else if (member is ClassInstanceArrayNode)
+				else if (member is ClassInstanceArrayNode classInstanceArrayNode)
 				{
-					var instanceArray = (ClassInstanceArrayNode)member;
-
-					yield return new MemberDefinition(member, instanceArray.InnerNode.Name, instanceArray.Count);
+					yield return new MemberDefinition(classInstanceArrayNode, classInstanceArrayNode.InnerNode.Name, classInstanceArrayNode.Count);
 				}
-				else if (member is ClassInstanceNode)
+				else if (member is ClassInstanceNode classInstanceNode)
 				{
-					yield return new MemberDefinition(member, ((ClassInstanceNode)member).InnerNode.Name);
+					yield return new MemberDefinition(classInstanceNode, classInstanceNode.InnerNode.Name);
 				}
-				else if (member is ClassPtrArrayNode)
+				else if (member is ClassPtrArrayNode ptrArrayNode)
 				{
-					var ptrArray = (ClassPtrArrayNode)member;
-
-					yield return new MemberDefinition(member, $"class {ptrArray.InnerNode.Name}*", ptrArray.Count);
+					yield return new MemberDefinition(ptrArrayNode, $"class {ptrArrayNode.InnerNode.Name}*", ptrArrayNode.Count);
 				}
-				else if (member is ClassPtrNode)
+				else if (member is ClassPtrNode classPtrNode)
 				{
-					yield return new MemberDefinition(member, $"class {((ClassPtrNode)member).InnerNode.Name}*");
+					yield return new MemberDefinition(classPtrNode, $"class {classPtrNode.InnerNode.Name}*");
 				}
 				else
 				{
@@ -247,7 +242,7 @@ namespace ReClassNET.CodeGenerator
 			}
 		}
 
-		private string MemberDefinitionToString(MemberDefinition member)
+		private static string MemberDefinitionToString(MemberDefinition member)
 		{
 			Contract.Requires(member != null);
 
