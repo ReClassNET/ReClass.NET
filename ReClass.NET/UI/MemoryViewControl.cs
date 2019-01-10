@@ -220,7 +220,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(e != null);
 
-			bool invalidate = false;
+			var invalidate = false;
 
 			foreach (var hotSpot in hotSpots)
 			{
@@ -442,17 +442,28 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(e != null);
 
-			base.OnMouseDoubleClick(e);
-
 			editBox.Visible = false;
 
-			BaseNode toggleNode = null;
-			var level = 0;
+			var invalidate = false;
 
-			foreach (var hotSpot in hotSpots.Where(h => h.Type == HotSpotType.Edit || h.Type ==  HotSpotType.Select))
+			// Order the hotspots: 1. DoubleClick 2. Click 3. Edit 4. Select
+			var spots = hotSpots.Where(h => h.Type == HotSpotType.DoubleClick)
+				.Concat(hotSpots.Where(h => h.Type == HotSpotType.Click))
+				.Concat(hotSpots.Where(h => h.Type == HotSpotType.Edit))
+				.Concat(hotSpots.Where(h => h.Type == HotSpotType.Select));
+
+			foreach (var hotSpot in spots)
 			{
 				if (hotSpot.Rect.Contains(e.Location))
 				{
+					if (hotSpot.Type == HotSpotType.DoubleClick || hotSpot.Type == HotSpotType.Click)
+					{
+						hotSpot.Node.Update(hotSpot);
+
+						invalidate = true;
+
+						break;
+					}
 					if (hotSpot.Type == HotSpotType.Edit)
 					{
 						editBox.BackColor = Program.Settings.SelectedColor;
@@ -461,23 +472,25 @@ namespace ReClassNET.UI
 
 						editBox.ReadOnly = hotSpot.Id == HotSpot.ReadOnlyId;
 
-						return;
+						break;
 					}
-
 					if (hotSpot.Type == HotSpotType.Select)
 					{
-						toggleNode = hotSpot.Node;
-						level = hotSpot.Level;
+						hotSpot.Node.ToggleLevelOpen(hotSpot.Level);
+
+						invalidate = true;
+
+						break;
 					}
 				}
 			}
 
-			if (toggleNode != null)
+			if (invalidate)
 			{
-				toggleNode.ToggleLevelOpen(level);
-
 				Invalidate();
 			}
+
+			base.OnMouseDoubleClick(e);
 		}
 
 		private Point toolTipPosition;

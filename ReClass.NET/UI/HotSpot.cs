@@ -13,10 +13,10 @@ namespace ReClassNET.UI
 		Select,
 		Drop,
 		Click,
+		DoubleClick,
 		ChangeClassType,
 		ChangeWrappedType,
 		Delete,
-		RTTI,
 		Address,
 		Name,
 		Comment

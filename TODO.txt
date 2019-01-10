@@ -3,4 +3,3 @@ BaseWrapperNode CodeGenerator
 Remove BaseReferenceNode
 NodeTypesBuilder Plugin support
 Rebuild class cycle check with BaseWrapperNode
-Prevent double click on click hotspots
