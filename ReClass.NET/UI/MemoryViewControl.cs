@@ -381,14 +381,14 @@ namespace ReClassNET.UI
 									}
 								}
 							}
-							else if (hitObject is BaseReferenceNode refNode)
+							else if (hitObject is BaseWrapperNode refNode)
 							{
 								using (var csf = new ClassSelectionForm(project.Classes.OrderBy(c => c.Name)))
 								{
 									if (csf.ShowDialog() == DialogResult.OK)
 									{
 										var selectedClassNode = csf.SelectedClass;
-										if (selectedClassNode != null)
+										if (refNode.CanChangeInnerNodeTo(selectedClassNode))
 										{
 											if (!refNode.PerformCycleCheck || IsCycleFree(refNode.ParentNode as ClassNode, selectedClassNode))
 											{
@@ -413,7 +413,7 @@ namespace ReClassNET.UI
 									{
 										wrapperNode.ChangeInnerNode(node);
 									}
-								}, wrapperNode.IsEmptyNodeAllowed);
+								}, wrapperNode.CanChangeInnerNodeTo(null));
 
 								var menu = new ContextMenuStrip();
 								menu.Items.AddRange(items.ToArray());

@@ -12,12 +12,12 @@ namespace ReClassNET.Nodes
 		public int Count { get; set; } = 1;
 		public bool IsReadOnly { get; protected set; }
 
-		public override bool IsEmptyNodeAllowed => false;
-
 		public override bool PerformCycleCheck => true;
 
 		public override bool CanChangeInnerNodeTo(BaseNode node)
 		{
+			// A null node (aka void) is not allowed for instances.
+
 			return node != null;
 		}
 
