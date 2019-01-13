@@ -571,8 +571,6 @@ namespace ReClassNET.Forms
 
 			currentProject = newProject;
 
-			ClassUtil.Classes = currentProject.Classes;
-
 			ClassNode.ClassCreated += currentProject.AddClass;
 
 			classesView.Project = currentProject;
