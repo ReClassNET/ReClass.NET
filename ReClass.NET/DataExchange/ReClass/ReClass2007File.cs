@@ -112,7 +112,7 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 		}
 
-		private IEnumerable<BaseNode> ReadNodeRows(IEnumerable<DataRow> rows, ClassNode parent, IReadOnlyDictionary<int, ClassNode> classes, IReadOnlyDictionary<int, VTableNode> vtables, ILogger logger)
+		private static IEnumerable<BaseNode> ReadNodeRows(IEnumerable<DataRow> rows, ClassNode parent, IReadOnlyDictionary<int, ClassNode> classes, IReadOnlyDictionary<int, VTableNode> vtables, ILogger logger)
 		{
 			Contract.Requires(rows != null);
 			Contract.Requires(parent != null);
@@ -166,7 +166,7 @@ namespace ReClassNET.DataExchange.ReClass
 					}
 
 					var innerClassNode = classes[reference];
-					if (referenceNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, project.Classes))
+					if (referenceNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, classes.Values))
 					{
 						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {parent.Name}->{node.Name}");
 
@@ -184,7 +184,7 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 		}
 
-		private IEnumerable<DataRow> Query(SQLiteConnection connection, string query)
+		private static IEnumerable<DataRow> Query(SQLiteConnection connection, string query)
 		{
 			Contract.Requires(connection != null);
 			Contract.Requires(query != null);
