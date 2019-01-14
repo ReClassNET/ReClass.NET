@@ -44,7 +44,11 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		public BaseNode ResolveInnerNode()
+		/// <summary>
+		/// Resolve the most inner node of a <see cref="BaseWrapperNode"/> chain.
+		/// </summary>
+		/// <returns>The most inner node or null.</returns>
+		public BaseNode ResolveMostInnerNode()
 		{
 			if (InnerNode == null)
 			{
@@ -52,7 +56,7 @@ namespace ReClassNET.Nodes
 			}
 			if (InnerNode is BaseWrapperNode baseWrapperNode)
 			{
-				return baseWrapperNode.ResolveInnerNode();
+				return baseWrapperNode.ResolveMostInnerNode();
 			}
 			return InnerNode;
 		}

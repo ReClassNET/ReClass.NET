@@ -84,7 +84,7 @@ namespace ReClassNET
 
 			return classes
 				.Where(c => c != node)
-				.Where(c => c.Nodes.OfType<BaseWrapperNode>().Any(w => w.ResolveInnerNode() == node));
+				.Where(c => c.Nodes.OfType<BaseWrapperNode>().Any(w => w.ResolveMostInnerNode() == node));
 		}
 
 		public void Remove(ClassNode node)

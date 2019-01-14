@@ -86,7 +86,7 @@ namespace ReClassNET.UI
 
 				var distinctClasses = ClassNode.Nodes
 					.OfType<BaseWrapperNode>()
-					.Select(w => w.ResolveInnerNode())
+					.Select(w => w.ResolveMostInnerNode())
 					.OfType<ClassNode>()
 					.Distinct()
 					.ToArray();
