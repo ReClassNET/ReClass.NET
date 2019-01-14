@@ -4,7 +4,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Xml.Linq;
-using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
 
@@ -32,7 +31,7 @@ namespace ReClassNET.DataExchange.ReClass
 						new XComment($"Website: {Constants.HomepageUrl}"),
 						new XElement(
 							XmlRootElement,
-							new XAttribute(XmlVersionAttribute, Version1),
+							new XAttribute(XmlVersionAttribute, Version2),
 							new XAttribute(XmlPlatformAttribute, Constants.Platform),
 							new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger)),
 							new XElement(XmlCustomDataElement, project.CustomData.Select(kv => new XElement(kv.Key, kv.Value)))
@@ -70,86 +69,86 @@ namespace ReClassNET.DataExchange.ReClass
 
 			foreach (var node in nodes)
 			{
-				var converter = CustomNodeConvert.GetWriteConverter(node);
-				if (converter != null)
-				{
-					yield return converter.CreateElementFromNode(node, logger);
-
-					continue;
-				}
-
-				if (!buildInTypeToStringMap.TryGetValue(node.GetType(), out var typeString))
-				{
-					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Name}");
-					logger.Log(LogLevel.Warning, node.GetType().ToString());
-
-					continue;
-				}
-
-				var element = new XElement(
-					XmlNodeElement,
-					new XAttribute(XmlNameAttribute, node.Name ?? string.Empty),
-					new XAttribute(XmlCommentAttribute, node.Comment ?? string.Empty),
-					new XAttribute(XmlHiddenAttribute, node.IsHidden.ToString()),
-					new XAttribute(XmlTypeAttribute, typeString)
-				);
-
-				if (node is BaseReferenceNode referenceNode)
-				{
-					element.SetAttributeValue(XmlReferenceAttribute, referenceNode.InnerNode.Uuid.ToBase64String());
-				}
-
-				if (node is BaseWrapperNode wrapperNode)
-				{
-					if (wrapperNode.InnerNode != null)
-					{
-						element.Add(CreateNodeElements(wrapperNode.InnerNode.Yield(), logger));
-					}
-				}
-
-				switch (node)
-				{
-					case VTableNode vtableNode:
-					{
-						element.Add(vtableNode.Nodes.Select(n => new XElement(
-							XmlMethodElement,
-							new XAttribute(XmlNameAttribute, n.Name ?? string.Empty),
-							new XAttribute(XmlCommentAttribute, n.Comment ?? string.Empty),
-							new XAttribute(XmlHiddenAttribute, n.IsHidden.ToString())
-						)));
-						break;
-					}
-					case BaseArrayNode arrayNode:
-					{
-						element.SetAttributeValue(XmlCountAttribute, arrayNode.Count);
-						break;
-					}
-					case BaseWrapperArrayNode arrayNode:
-					{
-						element.SetAttributeValue(XmlCountAttribute, arrayNode.Count);
-						break;
-					}
-					case BaseTextNode textNode:
-					{
-						element.SetAttributeValue(XmlLengthAttribute, textNode.Length);
-						break;
-					}
-					case BitFieldNode bitFieldNode:
-					{
-						element.SetAttributeValue(XmlBitsAttribute, bitFieldNode.Bits);
-						break;
-					}
-					case FunctionNode functionNode:
-					{
-						var uuid = functionNode.BelongsToClass == null ? NodeUuid.Zero : functionNode.BelongsToClass.Uuid;
-						element.SetAttributeValue(XmlReferenceAttribute, uuid.ToBase64String());
-						element.SetAttributeValue(XmlSignatureAttribute, functionNode.Signature);
-						break;
-					}
-				}
-
-				yield return element;
+				yield return CreateNodeElement(node, logger);
 			}
+		}
+
+		private static XElement CreateNodeElement(BaseNode node, ILogger logger)
+		{
+			Contract.Requires(node != null);
+			Contract.Requires(logger != null);
+
+			var converter = CustomNodeConvert.GetWriteConverter(node);
+			if (converter != null)
+			{
+				return converter.CreateElementFromNode(node, logger);
+			}
+
+			if (!buildInTypeToStringMap.TryGetValue(node.GetType(), out var typeString))
+			{
+				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Name}");
+				logger.Log(LogLevel.Warning, node.GetType().ToString());
+
+				return null;
+			}
+
+			var element = new XElement(
+				XmlNodeElement,
+				new XAttribute(XmlNameAttribute, node.Name ?? string.Empty),
+				new XAttribute(XmlCommentAttribute, node.Comment ?? string.Empty),
+				new XAttribute(XmlHiddenAttribute, node.IsHidden.ToString()),
+				new XAttribute(XmlTypeAttribute, typeString)
+			);
+
+			if (node is BaseWrapperNode wrapperNode)
+			{
+				if (node is ClassInstanceNode classInstanceNode)
+				{
+					element.SetAttributeValue(XmlReferenceAttribute, ((ClassNode)classInstanceNode.InnerNode).Uuid.ToBase64String());
+				}
+				else if (wrapperNode.InnerNode != null)
+				{
+					element.Add(CreateNodeElement(wrapperNode.InnerNode, logger));
+				}
+			}
+
+			switch (node)
+			{
+				case VTableNode vtableNode:
+				{
+					element.Add(vtableNode.Nodes.Select(n => new XElement(
+						XmlMethodElement,
+						new XAttribute(XmlNameAttribute, n.Name ?? string.Empty),
+						new XAttribute(XmlCommentAttribute, n.Comment ?? string.Empty),
+						new XAttribute(XmlHiddenAttribute, n.IsHidden.ToString())
+					)));
+					break;
+				}
+				case BaseWrapperArrayNode arrayNode:
+				{
+					element.SetAttributeValue(XmlCountAttribute, arrayNode.Count);
+					break;
+				}
+				case BaseTextNode textNode:
+				{
+					element.SetAttributeValue(XmlLengthAttribute, textNode.Length);
+					break;
+				}
+				case BitFieldNode bitFieldNode:
+				{
+					element.SetAttributeValue(XmlBitsAttribute, bitFieldNode.Bits);
+					break;
+				}
+				case FunctionNode functionNode:
+				{
+					var uuid = functionNode.BelongsToClass == null ? NodeUuid.Zero : functionNode.BelongsToClass.Uuid;
+					element.SetAttributeValue(XmlReferenceAttribute, uuid.ToBase64String());
+					element.SetAttributeValue(XmlSignatureAttribute, functionNode.Signature);
+					break;
+				}
+			}
+
+			return element;
 		}
 
 		public static void WriteNodes(Stream output, IEnumerable<BaseNode> nodes, ILogger logger)

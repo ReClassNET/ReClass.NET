@@ -6,7 +6,9 @@
 		public const string FileExtension = ".rcnet";
 		public const string FileExtensionId = "rcnetfile";
 
+		private const string CurrentVersion = "2";
 		private const string Version1 = "1";
+		private const string Version2 = "2";
 
 		private const string DataFileName = "Data.xml";
 

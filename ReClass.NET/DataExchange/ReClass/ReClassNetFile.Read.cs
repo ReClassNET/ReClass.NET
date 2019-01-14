@@ -8,7 +8,6 @@ using System.Xml.Linq;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange.ReClass
 {
@@ -43,7 +42,11 @@ namespace ReClassNET.DataExchange.ReClass
 						return;
 					}
 
-					//var version = document.Root.Attribute(XmlVersionAttribute)?.Value;
+					var version = document.Root.Attribute(XmlVersionAttribute)?.Value;
+					if (version != CurrentVersion)
+					{
+						logger.Log(LogLevel.Warning, $"Version mismatch ({version} vs {CurrentVersion}).");
+					}
 					var platform = document.Root.Attribute(XmlPlatformAttribute)?.Value;
 					if (platform != Constants.Platform)
 					{
@@ -102,38 +105,49 @@ namespace ReClassNET.DataExchange.ReClass
 
 			foreach (var element in elements)
 			{
-				var converter = CustomNodeConvert.GetReadConverter(element);
-				if (converter != null)
+				yield return ReadNodeElement(element, parent, logger);
+			}
+		}
+
+		private BaseNode ReadNodeElement(XElement element, ClassNode parent, ILogger logger)
+		{
+			Contract.Requires(element != null);
+			Contract.Requires(logger != null);
+
+			var converter = CustomNodeConvert.GetReadConverter(element);
+			if (converter != null)
+			{
+				if (converter.TryCreateNodeFromElement(element, parent, project.Classes, logger, out var customNode))
 				{
-					if (converter.TryCreateNodeFromElement(element, parent, project.Classes, logger, out var customNode))
-					{
-						yield return customNode;
-					}
-
-					continue;
+					return customNode;
 				}
+			}
 
-				if (!buildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value ?? string.Empty, out var nodeType))
-				{
-					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {element.Attribute(XmlTypeAttribute)?.Value}");
-					logger.Log(LogLevel.Warning, element.ToString());
+			if (!buildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value ?? string.Empty, out var nodeType))
+			{
+				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {element.Attribute(XmlTypeAttribute)?.Value}");
+				logger.Log(LogLevel.Warning, element.ToString());
 
-					continue;
-				}
+				return null;
+			}
 
-				var node = BaseNode.CreateInstanceFromType(nodeType);
-				if (node == null)
-				{
-					logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");
+			var node = BaseNode.CreateInstanceFromType(nodeType);
+			if (node == null)
+			{
+				logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");
 
-					continue;
-				}
+				return null;
+			}
 
-				node.Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
-				node.Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty;
-				node.IsHidden = bool.TryParse(element.Attribute(XmlHiddenAttribute)?.Value, out var val) && val;
+			node.Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
+			node.Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty;
+			node.IsHidden = bool.TryParse(element.Attribute(XmlHiddenAttribute)?.Value, out var val) && val;
 
-				if (node is BaseReferenceNode referenceNode)
+			if (node is BaseWrapperNode wrapperNode)
+			{
+				BaseNode innerNode = null;
+
+				if (node is ClassInstanceNode classInstanceNode)
 				{
 					var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
 					if (!project.ContainsClass(reference))
@@ -141,88 +155,82 @@ namespace ReClassNET.DataExchange.ReClass
 						logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {reference}");
 						logger.Log(LogLevel.Warning, element.ToString());
 
-						continue;
+						return null;
 					}
 
-					var innerClassNode = project.GetClassByUuid(reference);
-					if (referenceNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, project.Classes))
-					{
-						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {parent.Name}->{node.Name}");
-
-						continue;
-					}
-
-					referenceNode.ChangeInnerNode(innerClassNode);
+					// TODO Cycle check
+					innerNode = project.GetClassByUuid(reference);
 				}
-
-				if (node is BaseWrapperNode wrapperNode)
+				else
 				{
-					var innerNode = ReadNodeElements(element.Elements(), null, logger).FirstOrDefault();
-
-					if (wrapperNode.CanChangeInnerNodeTo(innerNode))
+					var innerElement = element.Elements().FirstOrDefault();
+					if (innerElement != null)
 					{
-						wrapperNode.ChangeInnerNode(innerNode);
-					}
-					else
-					{
-						logger.Log(LogLevel.Error, $"The node {innerNode} is not a valid child for {node}.");
+						innerNode = ReadNodeElement(innerElement, null, logger);
 					}
 				}
 
-				switch (node)
+				if (wrapperNode.CanChangeInnerNodeTo(innerNode))
 				{
-					case VTableNode vtableNode:
-					{
-						element
-							.Elements(XmlMethodElement)
-							.Select(e => new VMethodNode
-							{
-								Name = e.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
-								Comment = e.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
-								IsHidden = e.Attribute(XmlHiddenAttribute)?.Value.Equals("True") ?? false
-							})
-							.ForEach(vtableNode.AddNode);
-						break;
-					}
-					case BaseArrayNode arrayNode:
-					{
-						TryGetAttributeValue(element, XmlCountAttribute, out var count, logger);
-						arrayNode.Count = count;
-						break;
-					}
-					case BaseWrapperArrayNode arrayNode:
-					{
-						TryGetAttributeValue(element, XmlCountAttribute, out var count, logger);
-						arrayNode.Count = count;
-						break;
-					}
-					case BaseTextNode textNode:
-					{
-						TryGetAttributeValue(element, XmlLengthAttribute, out var length, logger);
-						textNode.Length = length;
-						break;
-					}
-					case BitFieldNode bitFieldNode:
-					{
-						TryGetAttributeValue(element, XmlBitsAttribute, out var bits, logger);
-						bitFieldNode.Bits = bits;
-						break;
-					}
-					case FunctionNode functionNode:
-					{
-						functionNode.Signature = element.Attribute(XmlSignatureAttribute)?.Value ?? string.Empty;
-
-						var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
-						if (project.ContainsClass(reference))
-						{
-							functionNode.BelongsToClass = project.GetClassByUuid(reference);
-						}
-						break;
-					}
+					wrapperNode.ChangeInnerNode(innerNode);
 				}
-
-				yield return node;
+				else
+				{
+					logger.Log(LogLevel.Error, $"The node {innerNode} is not a valid child for {node}.");
+				}
 			}
+
+			switch (node)
+			{
+				case VTableNode vtableNode:
+				{
+					var nodes = element
+						.Elements(XmlMethodElement)
+						.Select(e => new VMethodNode
+						{
+							Name = e.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
+							Comment = e.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
+							IsHidden = e.Attribute(XmlHiddenAttribute)?.Value.Equals("True") ?? false
+						});
+
+					foreach (var vmethodNode in nodes)
+					{
+						vtableNode.AddNode(vmethodNode);
+					}
+					break;
+				}
+				case BaseWrapperArrayNode arrayNode:
+				{
+					TryGetAttributeValue(element, XmlCountAttribute, out var count, logger);
+					arrayNode.Count = count;
+					break;
+				}
+				case BaseTextNode textNode:
+				{
+					TryGetAttributeValue(element, XmlLengthAttribute, out var length, logger);
+					textNode.Length = length;
+					break;
+				}
+				case BitFieldNode bitFieldNode:
+				{
+					TryGetAttributeValue(element, XmlBitsAttribute, out var bits, logger);
+					bitFieldNode.Bits = bits;
+					break;
+				}
+				case FunctionNode functionNode:
+				{
+					functionNode.Signature = element.Attribute(XmlSignatureAttribute)?.Value ?? string.Empty;
+
+					var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
+					if (project.ContainsClass(reference))
+					{
+						functionNode.BelongsToClass = project.GetClassByUuid(reference);
+					}
+					break;
+				}
+			}
+
+			return node;
 		}
 
 		private static void TryGetAttributeValue(XElement element, string attribute, out int val, ILogger logger)

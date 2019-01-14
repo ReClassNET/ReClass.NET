@@ -4,10 +4,10 @@ using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using ReClassNET.DataExchange.ReClass.Legacy;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange.ReClass
 {
@@ -25,7 +25,7 @@ namespace ReClassNET.DataExchange.ReClass
 			typeof(Hex32Node),
 			typeof(Hex16Node),
 			typeof(Hex8Node),
-			typeof(ClassPtrNode),
+			typeof(ClassPointerNode),
 			typeof(Int32Node),
 			typeof(Int16Node),
 			typeof(Int8Node),
@@ -147,7 +147,8 @@ namespace ReClassNET.DataExchange.ReClass
 				node.Name = Convert.ToString(row["variable"]);
 				node.Comment = Convert.ToString(row["comment"]);
 
-				if (node is BaseReferenceNode referenceNode)
+				// ClassInstanceNode, ClassPointerNode
+				if (node is BaseWrapperNode wrapperNode)
 				{
 					var reference = Convert.ToInt32(row["ref"]);
 					if (!classes.ContainsKey(reference))
@@ -166,14 +167,21 @@ namespace ReClassNET.DataExchange.ReClass
 					}
 
 					var innerClassNode = classes[reference];
-					if (referenceNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, classes.Values))
+					if (wrapperNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, classes.Values))
 					{
 						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {parent.Name}->{node.Name}");
 
 						continue;
 					}
 
-					referenceNode.ChangeInnerNode(innerClassNode);
+					if (node is ClassPointerNode classPointerNode)
+					{
+						node = classPointerNode.GetEquivalentNode(innerClassNode);
+					}
+					else
+					{
+						wrapperNode.ChangeInnerNode(innerClassNode);
+					}
 				}
 				if (node is BaseTextNode textNode)
 				{
