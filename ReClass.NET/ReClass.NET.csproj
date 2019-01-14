@@ -156,6 +156,11 @@
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Constants.cs" />
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Read.cs" />
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Write.cs" />
+    <Compile Include="DataExchange\ReClass\Legacy\ClassArrayNode.cs" />
+    <Compile Include="DataExchange\ReClass\Legacy\ClassInstanceArrayNode.cs" />
+    <Compile Include="DataExchange\ReClass\Legacy\ClassPointerArrayNode.cs" />
+    <Compile Include="DataExchange\ReClass\Legacy\ClassPointerNode.cs" />
+    <Compile Include="DataExchange\ReClass\Legacy\CustomNode.cs" />
     <Compile Include="DataExchange\Scanner\CheatEngineFile.cs" />
     <Compile Include="DataExchange\Scanner\CrySearchFile.cs" />
     <Compile Include="DataExchange\Scanner\IScannerExport.cs" />
@@ -400,8 +405,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Native\NativeMethods.cs" />
-    <Compile Include="Nodes\ClassInstanceArrayNode.cs" />
-    <Compile Include="Nodes\BaseArrayNode.cs" />
     <Compile Include="Nodes\BaseContainerNode.cs" />
     <Compile Include="Nodes\BaseFunctionPtrNode.cs" />
     <Compile Include="Nodes\BaseHexCommentNode.cs" />
@@ -413,7 +416,6 @@
     <Compile Include="Nodes\BaseMatrixNode.cs" />
     <Compile Include="Nodes\BitFieldNode.cs" />
     <Compile Include="Nodes\ClassInstanceNode.cs" />
-    <Compile Include="Nodes\ClassPtrArrayNode.cs" />
     <Compile Include="Nodes\DoubleNode.cs" />
     <Compile Include="Nodes\FloatNode.cs" />
     <Compile Include="Nodes\FunctionPtrNode.cs" />
@@ -425,7 +427,6 @@
     <Compile Include="Nodes\Matrix3x4Node.cs" />
     <Compile Include="Nodes\Matrix4x4Node.cs" />
     <Compile Include="Nodes\BaseNumericNode.cs" />
-    <Compile Include="Nodes\ClassPtrNode.cs" />
     <Compile Include="Nodes\UTF16TextNode.cs" />
     <Compile Include="Nodes\UTF16TextPtrNode.cs" />
     <Compile Include="Nodes\UTF32TextNode.cs" />
