@@ -117,6 +117,7 @@ namespace ReClassNET.DataExchange.ReClass
 			var converter = CustomNodeConvert.GetReadConverter(element);
 			if (converter != null)
 			{
+				// TODO 5
 				if (converter.TryCreateNodeFromElement(element, parent, project.Classes, logger, out var customNode))
 				{
 					return customNode;

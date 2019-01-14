@@ -81,6 +81,7 @@ namespace ReClassNET.DataExchange.ReClass
 			var converter = CustomNodeConvert.GetWriteConverter(node);
 			if (converter != null)
 			{
+				// TODO 5
 				return converter.CreateElementFromNode(node, logger);
 			}
 

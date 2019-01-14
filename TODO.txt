@@ -1,4 +1,5 @@
-BaseWrapperNode CodeGenerator
-Remove BaseReferenceNode
-NodeTypesBuilder Plugin support
-Rebuild class cycle check with BaseWrapperNode
+1 BaseWrapperNode CodeGenerator
+2 Remove BaseReferenceNode
+3 NodeTypesBuilder Plugin support
+4 Rebuild class cycle check with BaseWrapperNode
+5 Custom data exchange needs access to the build in node handling for wrapped nodes
