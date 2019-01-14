@@ -85,10 +85,11 @@ namespace ReClassNET.UI
 				}
 
 				var distinctClasses = ClassNode.Nodes
-					.OfType<BaseReferenceNode>()
-					.Select(r => r.InnerNode)
+					.OfType<BaseWrapperNode>()
+					.Select(w => w.ResolveInnerNode())
+					.OfType<ClassNode>()
 					.Distinct()
-					.ToList();
+					.ToArray();
 
 				if (distinctClasses.SequenceEqualsEx(Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode)))
 				{

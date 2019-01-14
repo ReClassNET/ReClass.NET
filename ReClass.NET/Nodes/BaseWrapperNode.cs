@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace ReClassNET.Nodes
 {
@@ -42,6 +42,19 @@ namespace ReClassNET.Nodes
 
 				ParentNode?.ChildHasChanged(this);
 			}
+		}
+
+		public BaseNode ResolveInnerNode()
+		{
+			if (InnerNode == null)
+			{
+				return null;
+			}
+			if (InnerNode is BaseWrapperNode baseWrapperNode)
+			{
+				return baseWrapperNode.ResolveInnerNode();
+			}
+			return InnerNode;
 		}
 	}
 }
