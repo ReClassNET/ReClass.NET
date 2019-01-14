@@ -48,7 +48,7 @@ namespace ReClassNET.Nodes
 		{
 			Bits = IntPtr.Size * 8;
 
-			levelsOpen.DefaultValue = true;
+			LevelsOpen.DefaultValue = true;
 		}
 
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
@@ -133,7 +133,7 @@ namespace ReClassNET.Nodes
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				y += view.Font.Height;
 
@@ -163,7 +163,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				height += view.Font.Height + 2;
 			}

@@ -11,7 +11,7 @@ namespace ReClassNET.Nodes
 
 		protected BaseMatrixNode()
 		{
-			levelsOpen.DefaultValue = true;
+			LevelsOpen.DefaultValue = true;
 		}
 
 		protected delegate void DrawMatrixValues(int x, ref int maxX, ref int y);
@@ -56,7 +56,7 @@ namespace ReClassNET.Nodes
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				drawValues(tx, ref x, ref y);
 			}
@@ -95,7 +95,7 @@ namespace ReClassNET.Nodes
 			}
 			x = AddOpenClose(view, x, y);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				drawValues(ref x, ref y);
 			}
@@ -118,7 +118,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				height += CalculateValuesHeight(view);
 			}

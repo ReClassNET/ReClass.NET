@@ -65,7 +65,7 @@ namespace ReClassNET.Nodes
 
 			var size = new Size(x - origX, y - origY);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				var v = view.Clone();
 				v.Address = view.Address.Add(Offset);
@@ -88,7 +88,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				height += InnerNode.CalculateDrawnHeight(view);
 			}

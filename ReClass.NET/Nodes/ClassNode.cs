@@ -55,7 +55,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Ensures(AddressFormula != null);
 
-			levelsOpen.DefaultValue = true;
+			LevelsOpen.DefaultValue = true;
 
 			Uuid = new NodeUuid(true);
 
@@ -117,7 +117,7 @@ namespace ReClassNET.Nodes
 
 			var size = new Size(x - origX, y - origY);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				var childOffset = tx - origX;
 
@@ -171,7 +171,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				var nv = view.Clone();
 				nv.Level++;

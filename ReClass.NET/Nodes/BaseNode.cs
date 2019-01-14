@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -55,7 +55,7 @@ namespace ReClassNET.Nodes
 		public event NodeEventHandler NameChanged;
 		public event NodeEventHandler CommentChanged;
 
-		protected readonly GrowingList<bool> levelsOpen = new GrowingList<bool>(false);
+		protected GrowingList<bool> LevelsOpen { get; } = new GrowingList<bool>(false);
 
 		[ContractInvariantMethod]
 		private void ObjectInvariants()
@@ -63,7 +63,7 @@ namespace ReClassNET.Nodes
 			Contract.Invariant(name != null);
 			Contract.Invariant(comment != null);
 			Contract.Invariant(Offset.ToInt32() >= 0);
-			Contract.Invariant(levelsOpen != null);
+			Contract.Invariant(LevelsOpen != null);
 		}
 
 		public static BaseNode CreateInstanceFromType(Type nodeType)
@@ -80,7 +80,7 @@ namespace ReClassNET.Nodes
 			Name = $"N{nodeIndex++:X08}";
 			Comment = string.Empty;
 
-			levelsOpen[0] = true;
+			LevelsOpen[0] = true;
 		}
 
 		public abstract void GetUserInterfaceInfo(out string name, out Image icon);
@@ -166,7 +166,7 @@ namespace ReClassNET.Nodes
 		/// <param name="level">The level to toggle.</param>
 		internal void ToggleLevelOpen(int level)
 		{
-			levelsOpen[level] = !levelsOpen[level];
+			LevelsOpen[level] = !LevelsOpen[level];
 		}
 
 		/// <summary>Sets the specific level.</summary>
@@ -174,7 +174,7 @@ namespace ReClassNET.Nodes
 		/// <param name="open">True to open.</param>
 		internal void SetLevelOpen(int level, bool open)
 		{
-			levelsOpen[level] = open;
+			LevelsOpen[level] = open;
 		}
 
 		/// <summary>Adds a <see cref="HotSpot"/> the user can interact with.</summary>
@@ -336,7 +336,7 @@ namespace ReClassNET.Nodes
 				return x + Icons.Dimensions;
 			}
 
-			return AddIcon(view, x, y, levelsOpen[view.Level] ? Icons.OpenCloseOpen : Icons.OpenCloseClosed, 0, HotSpotType.OpenClose);
+			return AddIcon(view, x, y, LevelsOpen[view.Level] ? Icons.OpenCloseOpen : Icons.OpenCloseClosed, 0, HotSpotType.OpenClose);
 		}
 
 		/// <summary>Draws a type drop icon if the node is selected.</summary>

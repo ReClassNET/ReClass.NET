@@ -15,7 +15,7 @@ namespace ReClassNET.Nodes
 
 		public PointerNode()
 		{
-			levelsOpen.DefaultValue = true;
+			LevelsOpen.DefaultValue = true;
 		}
 
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
@@ -81,7 +81,7 @@ namespace ReClassNET.Nodes
 
 			var size = new Size(x - origX, y - origY);
 
-			if (levelsOpen[view.Level] && InnerNode != null)
+			if (LevelsOpen[view.Level] && InnerNode != null)
 			{
 				memory.Size = InnerNode.MemorySize;
 				memory.Process = view.Memory.Process;
@@ -108,7 +108,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level] && InnerNode != null)
+			if (LevelsOpen[view.Level] && InnerNode != null)
 			{
 				height += InnerNode.CalculateDrawnHeight(view);
 			}

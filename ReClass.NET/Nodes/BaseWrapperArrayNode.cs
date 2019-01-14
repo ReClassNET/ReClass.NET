@@ -68,7 +68,7 @@ namespace ReClassNET.Nodes
 
 			var size = new Size(x - origX, view.Font.Height);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				var childSize = DrawChild(view, tx, y);
 
@@ -89,7 +89,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				height += InnerNode.CalculateDrawnHeight(view);
 			}

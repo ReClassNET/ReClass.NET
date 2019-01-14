@@ -71,7 +71,7 @@ namespace ReClassNET.Nodes
 			var ptr = view.Address.Add(Offset);
 			DisassembleRemoteCode(view.Memory, ptr);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				y += view.Font.Height;
 				x = AddText(view, tx, y, view.Settings.TypeColor, HotSpot.NoneId, "Signature:") + view.Font.Width;
@@ -102,7 +102,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				height += instructions.Count * view.Font.Height;
 			}

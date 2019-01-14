@@ -69,7 +69,7 @@ namespace ReClassNET.Nodes
 
 			var size = new Size(x - origX, y - origY);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				var ptr = view.Memory.ReadIntPtr(Offset);
 
@@ -103,7 +103,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				height += nodes.Sum(n => n.CalculateDrawnHeight(view));
 			}
