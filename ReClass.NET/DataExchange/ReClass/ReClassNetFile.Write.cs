@@ -69,7 +69,11 @@ namespace ReClassNET.DataExchange.ReClass
 
 			foreach (var node in nodes)
 			{
-				yield return CreateNodeElement(node, logger);
+				var element = CreateNodeElement(node, logger);
+				if (element != null)
+				{
+					yield return element;
+				}
 			}
 		}
 
