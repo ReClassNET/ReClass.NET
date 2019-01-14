@@ -5,7 +5,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	public class ClassInstanceNode : BaseReferenceNode
+	public class ClassInstanceNode : BaseWrapperNode
 	{
 		public override int MemorySize => InnerNode.MemorySize;
 
@@ -21,6 +21,11 @@ namespace ReClassNET.Nodes
 		{
 			InnerNode = ClassNode.Create();
 			InnerNode.Intialize();
+		}
+
+		public override bool CanChangeInnerNodeTo(BaseNode node)
+		{
+			return node is ClassNode;
 		}
 
 		public override Size Draw(ViewInfo view, int x, int y)
