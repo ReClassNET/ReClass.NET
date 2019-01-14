@@ -122,9 +122,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.106.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.106.0\lib\net46\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="System.Design" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
@@ -564,7 +561,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Compile Include="Debugger\RemoteDebugger.Handler.cs" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -970,12 +966,6 @@
     <PreBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">powershell -Command "((Get-Date).ToUniversalTime()).ToString(\"yyyy\/MM\/dd HH:mm:ss\") | Out-File '$(ProjectDir)Resources\BuildDate.txt'"</PreBuildEvent>
     <PreBuildEvent Condition=" '$(OS)' == 'Unix' ">date +"%Y/%m/%d %H:%M:%S" &gt; $(ProjectDir)/Resources/BuildDate.txt</PreBuildEvent>
   </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Missing file: "{0}".</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.106.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.106.0\build\net46\System.Data.SQLite.Core.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
