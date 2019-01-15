@@ -88,6 +88,54 @@ namespace ReClassNET.Nodes
 
 		public abstract void GetUserInterfaceInfo(out string name, out Image icon);
 
+		/// <summary>
+		/// Gets the parent class of the node.
+		/// </summary>
+		/// <returns></returns>
+		public ClassNode GetParentClass()
+		{
+			var parentNode = ParentNode2;
+			while (parentNode != null)
+			{
+				if (parentNode is ClassNode classNode)
+				{
+					return classNode;
+				}
+
+				parentNode = parentNode.ParentNode2;
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// Gets the root wrapper node if this node is the inner node of a wrapper chain.
+		/// </summary>
+		/// <returns>The root <see cref="BaseWrapperNode"/> or null if this node is not wrapped or isn't itself a wrapper node.</returns>
+		public BaseWrapperNode GetRootWrapperNode()
+		{
+			BaseWrapperNode rootWrapperNode = null;
+
+			var parentNode = ParentNode2;
+			while (parentNode is BaseWrapperNode wrapperNode)
+			{
+				rootWrapperNode = wrapperNode;
+
+				parentNode = parentNode.ParentNode2;
+			}
+
+			// Test if this node is the root wrapper node.
+			if (rootWrapperNode == null)
+			{
+				if (this is BaseWrapperNode wrapperNode)
+				{
+					return wrapperNode;
+				}
+			}
+
+			return null;
+		}
+
 		/// <summary>Clears the selection of the node.</summary>
 		public virtual void ClearSelection()
 		{
