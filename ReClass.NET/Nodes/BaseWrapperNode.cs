@@ -35,7 +35,7 @@ namespace ReClassNET.Nodes
 
 				if (node != null)
 				{
-					node.IsWrapped = true;
+					node.ParentNode2 = this;
 				}
 
 				InnerNodeChanged?.Invoke(this);

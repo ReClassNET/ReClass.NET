@@ -40,8 +40,11 @@ namespace ReClassNET.Nodes
 		/// <summary>Gets or sets the parent node.</summary>
 		public BaseContainerNode ParentNode { get; internal set; }
 
-		/// <summary>Gets or sets a value indicating whether this node is wrapped into an other node.</summary>
-		public bool IsWrapped { get; internal set; }
+		/// <summary>Gets or sets the parent node.</summary>
+		public BaseNode ParentNode2 { get; internal set; }
+
+		/// <summary>Gets a value indicating whether this node is wrapped into an other node.</summary>
+		public bool IsWrapped => ParentNode2 is BaseWrapperNode;
 
 		/// <summary>Gets or sets a value indicating whether this node is hidden.</summary>
 		public bool IsHidden { get; set; }

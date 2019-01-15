@@ -136,6 +136,7 @@ namespace ReClassNET.Nodes
 			createdNodes?.Add(node);
 
 			node.ParentNode = this;
+			node.ParentNode2 = this;
 
 			nodes[index] = node;
 
@@ -216,7 +217,7 @@ namespace ReClassNET.Nodes
 					node = new Hex8Node();
 				}
 
-				node.ParentNode = this;
+				node.ParentNode2 = this;
 				node.Offset = offset;
 
 				nodes.Insert(index, node);
@@ -253,7 +254,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(index >= 0);
 			Contract.Requires(node != null);
 
-			node.ParentNode = this;
+			node.ParentNode2 = this;
 
 			nodes.Insert(index, node);
 		}
