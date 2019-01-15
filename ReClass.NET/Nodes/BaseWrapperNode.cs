@@ -11,7 +11,7 @@ namespace ReClassNET.Nodes
 		public event NodeEventHandler InnerNodeChanged;
 
 		/// <summary>True to perform class cycle checks when changing the inner node.</summary>
-		public abstract bool PerformCycleCheck { get; }
+		protected abstract bool PerformCycleCheck { get; }
 
 		/// <summary>
 		/// Should be called before <see cref="ChangeInnerNode"/> to test if the node can handle the inner node type.
@@ -59,6 +59,33 @@ namespace ReClassNET.Nodes
 				return baseWrapperNode.ResolveMostInnerNode();
 			}
 			return InnerNode;
+		}
+
+		/// <summary>
+		/// Tests if the cycle check is really needed in a <see cref="BaseWrapperNode"/> chain.
+		/// </summary>
+		/// <returns></returns>
+		public bool ShouldPerformCycleCheckForInnerNode()
+		{
+			// TODO Should there be a "is ClassNode" for the last inner node?
+
+			if (!PerformCycleCheck)
+			{
+				return false;
+			}
+
+			var wrapperNode = this;
+			while (wrapperNode.InnerNode is BaseWrapperNode wrappedNode)
+			{
+				if (!wrappedNode.PerformCycleCheck)
+				{
+					return false;
+				}
+
+				wrapperNode = wrappedNode;
+			}
+
+			return true;
 		}
 	}
 }

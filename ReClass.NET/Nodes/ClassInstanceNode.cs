@@ -9,7 +9,7 @@ namespace ReClassNET.Nodes
 	{
 		public override int MemorySize => InnerNode.MemorySize;
 
-		public override bool PerformCycleCheck => true;
+		protected override bool PerformCycleCheck => true;
 
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{

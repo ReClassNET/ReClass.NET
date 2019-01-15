@@ -30,7 +30,7 @@ namespace ReClassNET.Nodes
 			{
 				foreach (var wrapperNode in c.Nodes.OfType<BaseWrapperNode>())
 				{
-					if (TryResolveWrappedClassNode(wrapperNode, out var classNode))
+					if (wrapperNode.ShouldPerformCycleCheckForInnerNode() && wrapperNode.ResolveMostInnerNode() is ClassNode classNode)
 					{
 						graph.AddEdge(c, classNode);
 					}
@@ -38,43 +38,6 @@ namespace ReClassNET.Nodes
 			}
 
 			return graph.ContainsCycle();
-		}
-
-		/// <summary>
-		/// Walks the inner nodes of chained <see cref="BaseWrapperNode"/>s until a <see cref="ClassNode"/> is found or
-		/// the <see cref="BaseWrapperNode.PerformCycleCheck"/> property of an inner node is false.
-		/// </summary>
-		/// <param name="node"></param>
-		/// <param name="classNode"></param>
-		/// <returns>True if the wrapper chain ends in a <see cref="ClassNode"/>, false otherwise.</returns>
-		private static bool TryResolveWrappedClassNode(BaseWrapperNode node, out ClassNode classNode)
-		{
-			Contract.Requires(node != null);
-
-			classNode = null;
-
-			while (true)
-			{
-				if (!node.PerformCycleCheck)
-				{
-					return false;
-				}
-
-				if (node.InnerNode is BaseWrapperNode innerWrapperNode)
-				{
-					node = innerWrapperNode;
-				}
-				else if (node.InnerNode is ClassNode wrappedClassNode)
-				{
-					classNode = wrappedClassNode;
-
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
 		}
 	}
 }

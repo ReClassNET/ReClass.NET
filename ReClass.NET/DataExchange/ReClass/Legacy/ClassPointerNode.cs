@@ -24,7 +24,7 @@ namespace ReClassNET.DataExchange.ReClass.Legacy
 			throw new NotImplementedException();
 		}
 
-		public override bool PerformCycleCheck => false;
+		protected override bool PerformCycleCheck => false;
 
 		public override bool CanChangeInnerNodeTo(BaseNode node)
 		{

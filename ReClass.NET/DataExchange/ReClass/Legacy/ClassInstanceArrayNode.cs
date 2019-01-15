@@ -4,7 +4,7 @@ namespace ReClassNET.DataExchange.ReClass.Legacy
 {
 	public class ClassInstanceArrayNode : ClassArrayNode
 	{
-		public override bool PerformCycleCheck => true;
+		protected override bool PerformCycleCheck => true;
 
 		public override BaseNode GetEquivalentNode(int count, ClassNode classNode)
 		{

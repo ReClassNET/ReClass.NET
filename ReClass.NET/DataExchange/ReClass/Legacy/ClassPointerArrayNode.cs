@@ -4,7 +4,7 @@ namespace ReClassNET.DataExchange.ReClass.Legacy
 {
 	public class ClassPointerArrayNode : ClassArrayNode
 	{
-		public override bool PerformCycleCheck => false;
+		protected override bool PerformCycleCheck => false;
 
 		public override BaseNode GetEquivalentNode(int count, ClassNode classNode)
 		{

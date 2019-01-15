@@ -210,7 +210,7 @@ namespace ReClassNET.DataExchange.ReClass
 					}
 
 					var innerClassNode = classes[reference];
-					if (baseWrapperNode.PerformCycleCheck && !ClassUtil.IsCyclicIfClassIsAccessibleFromParent(parent, innerClassNode, project.Classes))
+					if (baseWrapperNode.ShouldPerformCycleCheckForInnerNode() && !ClassUtil.IsCyclicIfClassIsAccessibleFromParent(parent, innerClassNode, project.Classes))
 					{
 						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {parent.Name}->{node.Name}");
 

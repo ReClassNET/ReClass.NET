@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using ReClassNET.UI;
 
@@ -12,7 +12,7 @@ namespace ReClassNET.Nodes
 		public int Count { get; set; } = 1;
 		public bool IsReadOnly { get; protected set; }
 
-		public override bool PerformCycleCheck => true;
+		protected override bool PerformCycleCheck => true;
 
 		public override bool CanChangeInnerNodeTo(BaseNode node)
 		{
