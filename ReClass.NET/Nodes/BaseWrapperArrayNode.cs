@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using ReClassNET.UI;
 
@@ -110,7 +110,7 @@ namespace ReClassNET.Nodes
 						{
 							Count = value;
 
-							ParentNode?.ChildHasChanged(this);
+							GetParentClass()?.ChildHasChanged(this);
 						}
 					}
 					else

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace ReClassNET.Nodes
 {
@@ -35,12 +35,12 @@ namespace ReClassNET.Nodes
 
 				if (node != null)
 				{
-					node.ParentNode2 = this;
+					node.ParentNode = this;
 				}
 
 				InnerNodeChanged?.Invoke(this);
 
-				ParentNode?.ChildHasChanged(this);
+				GetParentClass()?.ChildHasChanged(this);
 			}
 		}
 

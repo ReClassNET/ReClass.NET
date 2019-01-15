@@ -38,13 +38,10 @@ namespace ReClassNET.Nodes
 		public string Comment { get => comment; set { if (value != null && comment != value) { comment = value; CommentChanged?.Invoke(this); } } }
 
 		/// <summary>Gets or sets the parent node.</summary>
-		public BaseContainerNode ParentNode { get; internal set; }
-
-		/// <summary>Gets or sets the parent node.</summary>
-		public BaseNode ParentNode2 { get; internal set; }
+		public BaseNode ParentNode { get; internal set; }
 
 		/// <summary>Gets a value indicating whether this node is wrapped into an other node.</summary>
-		public bool IsWrapped => ParentNode2 is BaseWrapperNode;
+		public bool IsWrapped => ParentNode is BaseWrapperNode;
 
 		/// <summary>Gets or sets a value indicating whether this node is hidden.</summary>
 		public bool IsHidden { get; set; }
@@ -94,7 +91,7 @@ namespace ReClassNET.Nodes
 		/// <returns></returns>
 		public ClassNode GetParentClass()
 		{
-			var parentNode = ParentNode2;
+			var parentNode = ParentNode;
 			while (parentNode != null)
 			{
 				if (parentNode is ClassNode classNode)
@@ -102,7 +99,7 @@ namespace ReClassNET.Nodes
 					return classNode;
 				}
 
-				parentNode = parentNode.ParentNode2;
+				parentNode = parentNode.ParentNode;
 			}
 
 			return null;
@@ -116,12 +113,12 @@ namespace ReClassNET.Nodes
 		{
 			BaseWrapperNode rootWrapperNode = null;
 
-			var parentNode = ParentNode2;
+			var parentNode = ParentNode;
 			while (parentNode is BaseWrapperNode wrapperNode)
 			{
 				rootWrapperNode = wrapperNode;
 
-				parentNode = parentNode.ParentNode2;
+				parentNode = parentNode.ParentNode;
 			}
 
 			// Test if this node is the root wrapper node.

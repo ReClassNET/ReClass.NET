@@ -20,7 +20,7 @@ namespace ReClassNET.Memory
 				var type = GuessType(node, memory);
 				if (type != null)
 				{
-					node.ParentNode.ReplaceChildNode(node, type);
+					node.GetParentClass()?.ReplaceChildNode(node, type);
 				}
 			}
 		}

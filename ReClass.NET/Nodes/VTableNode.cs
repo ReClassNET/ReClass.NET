@@ -131,8 +131,7 @@ namespace ReClassNET.Nodes
 				var node = new VMethodNode
 				{
 					Offset = offset,
-					ParentNode = this,
-					ParentNode2 = this
+					ParentNode = this
 				};
 
 				nodes.Insert(index, node);

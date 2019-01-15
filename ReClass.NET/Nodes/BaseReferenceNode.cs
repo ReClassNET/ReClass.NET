@@ -26,7 +26,7 @@ namespace ReClassNET.Nodes
 
 				InnerNodeChanged?.Invoke(this);
 
-				ParentNode?.ChildHasChanged(this);
+				GetParentClass()?.ChildHasChanged(this);
 			}
 		}
 	}

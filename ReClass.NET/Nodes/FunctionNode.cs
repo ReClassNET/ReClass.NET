@@ -134,7 +134,7 @@ namespace ReClassNET.Nodes
 					DisassembleRemoteCode(memory, address, out memorySize);
 				}
 
-				ParentNode?.ChildHasChanged(this);
+				GetParentClass()?.ChildHasChanged(this);
 			}
 		}
 	}

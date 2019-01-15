@@ -516,9 +516,10 @@ namespace ReClassNET.Forms
 
 			var count = memoryView.SelectedNodes.Count();
 			var node = memoryView.SelectedNodes.FirstOrDefault();
+			var parent = node?.GetParentClass();
 
-			addBytesToolStripDropDownButton.Enabled = node?.ParentNode != null || node is ClassNode;
-			insertBytesToolStripDropDownButton.Enabled = count == 1 && node?.ParentNode != null;
+			addBytesToolStripDropDownButton.Enabled = parent != null || node is ClassNode;
+			insertBytesToolStripDropDownButton.Enabled = count == 1 && parent != null;
 
 			var enabled = count > 0 && !(node is ClassNode);
 			toolStrip.Items.OfType<TypeToolStripButton>().ForEach(b => b.Enabled = enabled);
