@@ -130,7 +130,7 @@ namespace ReClassNET.Nodes
 				}
 			}
 
-			return null;
+			return rootWrapperNode;
 		}
 
 		/// <summary>Clears the selection of the node.</summary>
