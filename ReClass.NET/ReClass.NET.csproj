@@ -407,7 +407,6 @@
     <Compile Include="Nodes\BaseHexCommentNode.cs" />
     <Compile Include="Nodes\BaseHexNode.cs" />
     <Compile Include="Nodes\BaseNode.cs" />
-    <Compile Include="Nodes\BaseReferenceNode.cs" />
     <Compile Include="Nodes\BaseTextNode.cs" />
     <Compile Include="Nodes\BaseTextPtrNode.cs" />
     <Compile Include="Nodes\BaseMatrixNode.cs" />

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -124,7 +124,9 @@ namespace ReClassNET.CodeGenerator
 
 			var alreadySeen = new HashSet<ClassNode>();
 
-			return classes.SelectMany(c => YieldReversedHierarchy(c, alreadySeen)).Distinct();
+			return classes
+				.SelectMany(c => YieldReversedHierarchy(c, alreadySeen))
+				.Distinct();
 		}
 
 		private static IEnumerable<ClassNode> YieldReversedHierarchy(ClassNode node, ISet<ClassNode> alreadySeen)
@@ -136,18 +138,17 @@ namespace ReClassNET.CodeGenerator
 
 			if (!alreadySeen.Add(node))
 			{
-				yield break;
+				return Enumerable.Empty<ClassNode>();
 			}
 
-			foreach (var referenceNode in node.Nodes.OfType<BaseReferenceNode>())
-			{
-				foreach (var referencedNode in YieldReversedHierarchy(referenceNode.InnerNode, alreadySeen))
-				{
-					yield return referencedNode;
-				}
-			}
+			var classNodes = node.Nodes
+				.OfType<BaseWrapperNode>()
+				.Select(w => w.ResolveMostInnerNode() as ClassNode)
+				.Where(n => n != null);
 
-			yield return node;
+			return classNodes
+				.SelectMany(c => YieldReversedHierarchy(c, alreadySeen))
+				.Append(node);
 		}
 
 		private IEnumerable<MemberDefinition> YieldMemberDefinitions(IEnumerable<BaseNode> members, ILogger logger)

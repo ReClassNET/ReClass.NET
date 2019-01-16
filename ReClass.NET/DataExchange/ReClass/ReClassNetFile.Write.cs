@@ -165,18 +165,18 @@ namespace ReClassNET.DataExchange.ReClass
 
 			using (var project = new ReClassNetProject())
 			{
-				void RecursiveAddReferences(BaseReferenceNode referenceNode)
+				void RecursiveAddClasses(BaseWrapperNode wrapperNode)
 				{
-					if (project.ContainsClass(referenceNode.InnerNode.Uuid))
+					if (!(wrapperNode.ResolveMostInnerNode() is ClassNode classNode) || project.ContainsClass(classNode.Uuid))
 					{
 						return;
 					}
 
-					project.AddClass(referenceNode.InnerNode);
+					project.AddClass(classNode);
 
-					foreach (var reference in referenceNode.InnerNode.Nodes.OfType<BaseReferenceNode>())
+					foreach (var wrapperNodeChild in classNode.Nodes.OfType<BaseWrapperNode>())
 					{
-						RecursiveAddReferences(reference);
+						RecursiveAddClasses(wrapperNodeChild);
 					}
 				}
 
@@ -196,9 +196,9 @@ namespace ReClassNET.DataExchange.ReClass
 						continue;
 					}
 
-					if (node is BaseReferenceNode referenceNode)
+					if (node is BaseWrapperNode wrapperNode)
 					{
-						RecursiveAddReferences(referenceNode);
+						RecursiveAddClasses(wrapperNode);
 					}
 
 					serialisationClass.AddNode(node);
