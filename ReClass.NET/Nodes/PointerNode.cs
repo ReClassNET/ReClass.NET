@@ -21,7 +21,7 @@ namespace ReClassNET.Nodes
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
 			name = "Pointer";
-			icon = Properties.Resources.B16x16_Pointer_Type;
+			icon = Properties.Resources.B16x16_Button_Pointer;
 		}
 
 		public override bool CanChangeInnerNodeTo(BaseNode node)
