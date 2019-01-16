@@ -6,7 +6,6 @@ using System.Text;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
 
 namespace ReClassNET.CodeGenerator
 {
@@ -30,7 +29,7 @@ namespace ReClassNET.CodeGenerator
 			[typeof(Utf8TextPtrNode)] = "IntPtr",
 			[typeof(Utf16TextPtrNode)] = "IntPtr",
 			[typeof(Utf32TextPtrNode)] = "IntPtr",
-			[typeof(ClassPtrNode)] = "IntPtr",
+			[typeof(PointerNode)] = "IntPtr",
 			[typeof(VTableNode)] = "IntPtr"
 		};
 
