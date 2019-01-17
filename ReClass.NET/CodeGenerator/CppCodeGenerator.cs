@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -9,7 +9,7 @@ using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
 {
-	class CppCodeGenerator : ICodeGenerator
+	public class CppCodeGenerator : ICodeGenerator
 	{
 		private readonly Dictionary<Type, string> typeToTypedefMap = new Dictionary<Type, string>
 		{
@@ -77,7 +77,7 @@ namespace ReClassNET.CodeGenerator
 						csb.AppendLine(
 							string.Join(
 								Environment.NewLine,
-								YieldMemberDefinitions(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
+								GetMemberDefinitionsForNodes(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
 									.Select(MemberDefinitionToString)
 									.Select(s => "\t" + s)
 							)
@@ -151,7 +151,7 @@ namespace ReClassNET.CodeGenerator
 				.Append(node);
 		}
 
-		private IEnumerable<MemberDefinition> YieldMemberDefinitions(IEnumerable<BaseNode> members, ILogger logger)
+		private IEnumerable<MemberDefinition> GetMemberDefinitionsForNodes(IEnumerable<BaseNode> members, ILogger logger)
 		{
 			Contract.Requires(members != null);
 			Contract.Requires(Contract.ForAll(members, m => m != null));
@@ -181,59 +181,14 @@ namespace ReClassNET.CodeGenerator
 					fill = 0;
 				}
 
-				if (typeToTypedefMap.TryGetValue(member.GetType(), out var type))
+				var definition = GetMemberDefinitionForNode(member, logger);
+				if (definition != null)
 				{
-					var count = (member as BaseTextNode)?.Length ?? 0;
-
-					yield return new MemberDefinition(member, type, count);
-				}
-				else if (member is BitFieldNode bitFieldNode)
-				{
-					switch (bitFieldNode.Bits)
-					{
-						case 8:
-							type = Program.Settings.TypeUInt8;
-							break;
-						case 16:
-							type = Program.Settings.TypeUInt16;
-							break;
-						case 32:
-							type = Program.Settings.TypeUInt32;
-							break;
-						case 64:
-							type = Program.Settings.TypeUInt64;
-							break;
-					}
-
-					yield return new MemberDefinition(bitFieldNode, type);
-				}
-				else if (member is ClassInstanceArrayNode classInstanceArrayNode)
-				{
-					yield return new MemberDefinition(classInstanceArrayNode, classInstanceArrayNode.InnerNode.Name, classInstanceArrayNode.Count);
-				}
-				else if (member is ClassInstanceNode classInstanceNode)
-				{
-					yield return new MemberDefinition(classInstanceNode, classInstanceNode.InnerNode.Name);
-				}
-				else if (member is ClassPtrArrayNode ptrArrayNode)
-				{
-					yield return new MemberDefinition(ptrArrayNode, $"class {ptrArrayNode.InnerNode.Name}*", ptrArrayNode.Count);
-				}
-				else if (member is ClassPtrNode classPtrNode)
-				{
-					yield return new MemberDefinition(classPtrNode, $"class {classPtrNode.InnerNode.Name}*");
+					yield return definition;
 				}
 				else
 				{
-					var generator = CustomCodeGenerator.GetGenerator(member, Language);
-					if (generator != null)
-					{
-						yield return generator.GetMemberDefinition(member, Language, logger);
-					}
-					else
-					{
-						logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {member.GetType()}");
-					}
+					logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {member.GetType()}");
 				}
 			}
 
@@ -241,6 +196,66 @@ namespace ReClassNET.CodeGenerator
 			{
 				yield return new MemberDefinition(Program.Settings.TypePadding, fill, $"pad_{fillStart:X04}", fillStart, string.Empty);
 			}
+		}
+
+		private MemberDefinition GetMemberDefinitionForNode(BaseNode member, ILogger logger)
+		{
+			var generator = CustomCodeGenerator.GetGenerator(member, Language);
+			if (generator != null)
+			{
+				return generator.GetMemberDefinition(member, Language, logger);
+			}
+
+			if (typeToTypedefMap.TryGetValue(member.GetType(), out var type))
+			{
+				var count = (member as BaseTextNode)?.Length ?? 0;
+
+				return new MemberDefinition(member, type, count);
+			}
+			if (member is BitFieldNode bitFieldNode)
+			{
+				switch (bitFieldNode.Bits)
+				{
+					case 8:
+						type = Program.Settings.TypeUInt8;
+						break;
+					case 16:
+						type = Program.Settings.TypeUInt16;
+						break;
+					case 32:
+						type = Program.Settings.TypeUInt32;
+						break;
+					case 64:
+						type = Program.Settings.TypeUInt64;
+						break;
+				}
+
+				return new MemberDefinition(bitFieldNode, type);
+			}
+
+			if (member is ClassInstanceNode classInstanceNode)
+			{
+				return new MemberDefinition(classInstanceNode, classInstanceNode.InnerNode.Name);
+			}
+
+			if (member is BaseWrapperNode wrapperNode)
+			{
+				// TODO Support WrapperNode chains
+				if (member is PointerNode)
+				{
+					var innerNode = wrapperNode.ResolveMostInnerNode();
+
+					return new MemberDefinition(member, innerNode == null ? "void*" : GetMemberDefinitionForNode(innerNode, logger).Type + "*");
+				}
+				if (member is ArrayNode arrayNode)
+				{
+					var innerNode = wrapperNode.ResolveMostInnerNode();
+
+					return new MemberDefinition(member, GetMemberDefinitionForNode(innerNode, logger).Type, arrayNode.Count);
+				}
+			}
+
+			return null;
 		}
 
 		private static string MemberDefinitionToString(MemberDefinition member)
