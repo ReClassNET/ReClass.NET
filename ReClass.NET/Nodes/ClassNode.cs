@@ -206,7 +206,7 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		public override void InsertBytes(int index, int size, ref List<BaseNode> createdNodes)
+		protected override void InsertBytes(int index, int size, ref List<BaseNode> createdNodes)
 		{
 			base.InsertBytes(index, size, ref createdNodes);
 

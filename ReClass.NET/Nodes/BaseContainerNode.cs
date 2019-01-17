@@ -169,7 +169,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Inserts <paramref name="size"/> bytes at the specified position.</summary>
 		/// <param name="index">Zero-based position.</param>
 		/// <param name="size">The number of bytes to insert.</param>
-		public void InsertBytes(int index, int size)
+		protected void InsertBytes(int index, int size)
 		{
 			List<BaseNode> dummy = null;
 			InsertBytes(index, size, ref dummy);
@@ -179,7 +179,7 @@ namespace ReClassNET.Nodes
 		/// <param name="index">Zero-based position.</param>
 		/// <param name="size">The number of bytes to insert.</param>
 		/// <param name="createdNodes">[in,out] A list with the created nodes.</param>
-		public virtual void InsertBytes(int index, int size, ref List<BaseNode> createdNodes)
+		protected virtual void InsertBytes(int index, int size, ref List<BaseNode> createdNodes)
 		{
 			if (index < 0 || index > nodes.Count || size == 0)
 			{

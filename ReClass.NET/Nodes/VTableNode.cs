@@ -112,7 +112,7 @@ namespace ReClassNET.Nodes
 
 		public override bool ReplaceChildNode(int index, Type nodeType, ref List<BaseNode> createdNodes) => false;
 
-		public override void InsertBytes(int index, int size, ref List<BaseNode> createdNodes)
+		protected override void InsertBytes(int index, int size, ref List<BaseNode> createdNodes)
 		{
 			if (index < 0 || index > nodes.Count || size == 0)
 			{
