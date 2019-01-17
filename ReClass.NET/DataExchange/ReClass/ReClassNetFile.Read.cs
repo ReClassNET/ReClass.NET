@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -97,7 +97,7 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 		}
 
-		private IEnumerable<BaseNode> ReadNodeElements(IEnumerable<XElement> elements, ClassNode parent, ILogger logger)
+		private IEnumerable<BaseNode> ReadNodeElements(IEnumerable<XElement> elements, BaseNode parent, ILogger logger)
 		{
 			Contract.Requires(elements != null);
 			Contract.Requires(Contract.ForAll(elements, e => e != null));
@@ -105,11 +105,11 @@ namespace ReClassNET.DataExchange.ReClass
 
 			foreach (var element in elements)
 			{
-				yield return ReadNodeElement(element, parent, logger);
+				yield return CreateNodeFromElement(element, parent, logger);
 			}
 		}
 
-		private BaseNode ReadNodeElement(XElement element, ClassNode parent, ILogger logger)
+		private BaseNode CreateNodeFromElement(XElement element, BaseNode parent, ILogger logger)
 		{
 			Contract.Requires(element != null);
 			Contract.Requires(logger != null);
@@ -117,8 +117,7 @@ namespace ReClassNET.DataExchange.ReClass
 			var converter = CustomNodeConvert.GetReadConverter(element);
 			if (converter != null)
 			{
-				// TODO 5
-				if (converter.TryCreateNodeFromElement(element, parent, project.Classes, logger, out var customNode))
+				if (converter.TryCreateNodeFromElement(element, parent, project.Classes, logger, CreateNodeFromElement, out var customNode))
 				{
 					return customNode;
 				}
@@ -139,6 +138,8 @@ namespace ReClassNET.DataExchange.ReClass
 
 				return null;
 			}
+
+			node.ParentNode = parent;
 
 			node.Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
 			node.Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty;
@@ -167,7 +168,7 @@ namespace ReClassNET.DataExchange.ReClass
 					var innerElement = element.Elements().FirstOrDefault();
 					if (innerElement != null)
 					{
-						innerNode = ReadNodeElement(innerElement, null, logger);
+						innerNode = CreateNodeFromElement(innerElement, node, logger);
 					}
 				}
 

@@ -69,7 +69,7 @@ namespace ReClassNET.DataExchange.ReClass
 
 			foreach (var node in nodes)
 			{
-				var element = CreateNodeElement(node, logger);
+				var element = CreateElementFromNode(node, logger);
 				if (element != null)
 				{
 					yield return element;
@@ -77,7 +77,7 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 		}
 
-		private static XElement CreateNodeElement(BaseNode node, ILogger logger)
+		private static XElement CreateElementFromNode(BaseNode node, ILogger logger)
 		{
 			Contract.Requires(node != null);
 			Contract.Requires(logger != null);
@@ -85,8 +85,7 @@ namespace ReClassNET.DataExchange.ReClass
 			var converter = CustomNodeConvert.GetWriteConverter(node);
 			if (converter != null)
 			{
-				// TODO 5
-				return converter.CreateElementFromNode(node, logger);
+				return converter.CreateElementFromNode(node, logger, CreateElementFromNode);
 			}
 
 			if (!buildInTypeToStringMap.TryGetValue(node.GetType(), out var typeString))
@@ -113,7 +112,7 @@ namespace ReClassNET.DataExchange.ReClass
 				}
 				else if (wrapperNode.InnerNode != null)
 				{
-					element.Add(CreateNodeElement(wrapperNode.InnerNode, logger));
+					element.Add(CreateElementFromNode(wrapperNode.InnerNode, logger));
 				}
 			}
 

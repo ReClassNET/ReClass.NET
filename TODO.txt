@@ -1,4 +1,3 @@
 1 BaseWrapperNode CodeGenerator
 3 NodeTypesBuilder Plugin support
-5 Custom data exchange needs access to the build in node handling for wrapped nodes
 6 Should BaseContainerNode be rebuild?
