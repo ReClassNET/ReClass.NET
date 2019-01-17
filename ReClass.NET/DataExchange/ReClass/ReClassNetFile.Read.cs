@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -87,25 +87,16 @@ namespace ReClassNET.DataExchange.ReClass
 
 					foreach (var t in classes)
 					{
-						ReadNodeElements(
-							t.Item1.Elements(XmlNodeElement),
-							t.Item2,
-							logger
-						).ForEach(t.Item2.AddNode);
+						var nodes = t.Item1.Elements(XmlNodeElement)
+							.Select(e => CreateNodeFromElement(e, t.Item2, logger))
+							.Where(n => n != null);
+
+						foreach (var node in nodes)
+						{
+							t.Item2.AddNode(node);
+						}
 					}
 				}
-			}
-		}
-
-		private IEnumerable<BaseNode> ReadNodeElements(IEnumerable<XElement> elements, BaseNode parent, ILogger logger)
-		{
-			Contract.Requires(elements != null);
-			Contract.Requires(Contract.ForAll(elements, e => e != null));
-			Contract.Requires(logger != null);
-
-			foreach (var element in elements)
-			{
-				yield return CreateNodeFromElement(element, parent, logger);
 			}
 		}
 
@@ -160,7 +151,6 @@ namespace ReClassNET.DataExchange.ReClass
 						return null;
 					}
 
-					// TODO Cycle check
 					innerNode = project.GetClassByUuid(reference);
 				}
 				else
@@ -174,6 +164,16 @@ namespace ReClassNET.DataExchange.ReClass
 
 				if (wrapperNode.CanChangeInnerNodeTo(innerNode))
 				{
+					var rootWrapperNode = node.GetRootWrapperNode();
+					if (rootWrapperNode.ShouldPerformCycleCheckForInnerNode()
+						&& innerNode is ClassNode classNode
+						&& ClassUtil.IsCyclicIfClassIsAccessibleFromParent(node.GetParentClass(), classNode, project.Classes))
+					{
+						logger.Log(LogLevel.Error, $"Skipping node with cyclic class reference: {node.GetParentClass().Name}->{rootWrapperNode.Name}");
+
+						return null;
+					}
+
 					wrapperNode.ChangeInnerNode(innerNode);
 				}
 				else
