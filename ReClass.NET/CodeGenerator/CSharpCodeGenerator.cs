@@ -9,7 +9,7 @@ using ReClassNET.Nodes;
 
 namespace ReClassNET.CodeGenerator
 {
-	class CSharpCodeGenerator : ICodeGenerator
+	public class CSharpCodeGenerator : ICodeGenerator
 	{
 		private readonly Dictionary<Type, string> typeToTypedefMap = new Dictionary<Type, string>
 		{
