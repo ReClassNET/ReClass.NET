@@ -53,7 +53,7 @@ namespace ReClassNET.DataExchange.ReClass
 				connection.Open();
 
 				var classes = new Dictionary<int, ClassNode>();
-				var vtables = new Dictionary<int, VTableNode>();
+				var vtables = new Dictionary<int, VirtualMethodTableNode>();
 
 				foreach (var row in Query(connection, "SELECT tbl_name FROM sqlite_master WHERE tbl_name LIKE 'class%'"))
 				{
@@ -68,10 +68,10 @@ namespace ReClassNET.DataExchange.ReClass
 					// Skip the vtable classes.
 					if (classRow["variable"].ToString() == "VTABLE")
 					{
-						var vtableNode = new VTableNode();
+						var vtableNode = new VirtualMethodTableNode();
 
 						Query(connection, $"SELECT variable, comment FROM class{id} WHERE type = 16")
-							.Select(e => new VMethodNode
+							.Select(e => new VirtualMethodNode
 							{
 								Name = Convert.ToString(e["variable"]),
 								Comment = Convert.ToString(e["comment"])
@@ -112,7 +112,7 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 		}
 
-		private static IEnumerable<BaseNode> ReadNodeRows(IEnumerable<DataRow> rows, ClassNode parent, IReadOnlyDictionary<int, ClassNode> classes, IReadOnlyDictionary<int, VTableNode> vtables, ILogger logger)
+		private static IEnumerable<BaseNode> ReadNodeRows(IEnumerable<DataRow> rows, ClassNode parent, IReadOnlyDictionary<int, ClassNode> classes, IReadOnlyDictionary<int, VirtualMethodTableNode> vtables, ILogger logger)
 		{
 			Contract.Requires(rows != null);
 			Contract.Requires(parent != null);

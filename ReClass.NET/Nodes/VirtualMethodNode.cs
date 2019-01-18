@@ -5,16 +5,16 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	public class VMethodNode : BaseFunctionPtrNode
+	public class VirtualMethodNode : BaseFunctionPtrNode
 	{
 		public string MethodName => string.IsNullOrEmpty(Name) ? $"Function{Offset.ToInt32() / IntPtr.Size}" : Name;
 
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
-			throw new InvalidOperationException($"The '{nameof(VMethodNode)}' node should not be accessible from the ui.");
+			throw new InvalidOperationException($"The '{nameof(VirtualMethodNode)}' node should not be accessible from the ui.");
 		}
 
-		public VMethodNode()
+		public VirtualMethodNode()
 		{
 			Contract.Ensures(Name != null);
 

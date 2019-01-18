@@ -453,8 +453,8 @@
     <Compile Include="Forms\ProcessInfoForm.Designer.cs">
       <DependentUpon>ProcessInfoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Nodes\VMethodNode.cs" />
-    <Compile Include="Nodes\VTableNode.cs" />
+    <Compile Include="Nodes\VirtualMethodNode.cs" />
+    <Compile Include="Nodes\VirtualMethodTableNode.cs" />
     <Compile Include="Plugins\DefaultPluginHost.cs" />
     <Compile Include="Plugins\IPluginHost.cs" />
     <Compile Include="Plugins\Plugin.cs" />

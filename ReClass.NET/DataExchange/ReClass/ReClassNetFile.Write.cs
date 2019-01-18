@@ -118,7 +118,7 @@ namespace ReClassNET.DataExchange.ReClass
 
 			switch (node)
 			{
-				case VTableNode vtableNode:
+				case VirtualMethodTableNode vtableNode:
 				{
 					element.Add(vtableNode.Nodes.Select(n => new XElement(
 						XmlMethodElement,

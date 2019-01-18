@@ -128,7 +128,7 @@ namespace ReClassNET.Memory
 						&& memory.Process.GetSectionToPointer(possibleVmt.Pointer2)?.Category == SectionCategory.CODE
 						&& memory.Process.GetSectionToPointer(possibleVmt.Pointer3)?.Category == SectionCategory.CODE)
 					{
-						return typeof(VTableNode);
+						return typeof(VirtualMethodTableNode);
 					}
 
 					// Check if it is a string.

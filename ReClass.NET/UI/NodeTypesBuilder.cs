@@ -26,7 +26,7 @@ namespace ReClassNET.UI
 			defaultNodeTypeGroupList.Add(new[] { typeof(Utf8TextNode), typeof(Utf8TextPtrNode), typeof(Utf16TextNode), typeof(Utf16TextPtrNode) });
 			defaultNodeTypeGroupList.Add(new[] { typeof(PointerNode), typeof(ArrayNode) });
 			defaultNodeTypeGroupList.Add(new[] { typeof(ClassInstanceNode) });
-			defaultNodeTypeGroupList.Add(new[] { typeof(VTableNode), typeof(FunctionNode), typeof(FunctionPtrNode) });
+			defaultNodeTypeGroupList.Add(new[] { typeof(VirtualMethodTableNode), typeof(FunctionNode), typeof(FunctionPtrNode) });
 		}
 
 		public static List<Type> RegisterPluginNodeGroup(Plugin plugin)

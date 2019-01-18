@@ -7,7 +7,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	public class VTableNode : BaseContainerNode
+	public class VirtualMethodTableNode : BaseContainerNode
 	{
 		private readonly MemoryBuffer memory = new MemoryBuffer();
 
@@ -21,7 +21,7 @@ namespace ReClassNET.Nodes
 
 		public override bool CanHandleChildNode(BaseNode node)
 		{
-			return node is VMethodNode;
+			return node is VirtualMethodNode;
 		}
 
 		public override void Intialize()
@@ -133,7 +133,7 @@ namespace ReClassNET.Nodes
 
 			while (size > 0)
 			{
-				var node = new VMethodNode
+				var node = new VirtualMethodNode
 				{
 					Offset = offset,
 					ParentNode = this
@@ -154,7 +154,7 @@ namespace ReClassNET.Nodes
 
 		public override void InsertNode(int index, BaseNode node)
 		{
-			if (!(node is VMethodNode))
+			if (!(node is VirtualMethodNode))
 			{
 				return;
 			}

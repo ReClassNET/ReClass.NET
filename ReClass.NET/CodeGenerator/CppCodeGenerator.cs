@@ -83,14 +83,14 @@ namespace ReClassNET.CodeGenerator
 							)
 						);
 
-						var vTableNodes = c.Nodes.OfType<VTableNode>().ToList();
+						var vTableNodes = c.Nodes.OfType<VirtualMethodTableNode>().ToList();
 						if (vTableNodes.Any())
 						{
 							csb.AppendLine();
 							csb.AppendLine(
 								string.Join(
 									Environment.NewLine,
-									vTableNodes.SelectMany(vt => vt.Nodes).OfType<VMethodNode>().Select(m => $"\tvirtual void {m.MethodName}();")
+									vTableNodes.SelectMany(vt => vt.Nodes).OfType<VirtualMethodNode>().Select(m => $"\tvirtual void {m.MethodName}();")
 								)
 							);
 						}
@@ -161,7 +161,7 @@ namespace ReClassNET.CodeGenerator
 			int fill = 0;
 			int fillStart = 0;
 
-			foreach (var member in members.WhereNot(m => m is VTableNode))
+			foreach (var member in members.WhereNot(m => m is VirtualMethodTableNode))
 			{
 				if (member is BaseHexNode)
 				{

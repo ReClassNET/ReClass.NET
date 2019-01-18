@@ -184,11 +184,11 @@ namespace ReClassNET.DataExchange.ReClass
 
 			switch (node)
 			{
-				case VTableNode vtableNode:
+				case VirtualMethodTableNode vtableNode:
 				{
 					var nodes = element
 						.Elements(XmlMethodElement)
-						.Select(e => new VMethodNode
+						.Select(e => new VirtualMethodNode
 						{
 							Name = e.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
 							Comment = e.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,

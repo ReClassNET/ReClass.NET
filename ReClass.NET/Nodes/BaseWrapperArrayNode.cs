@@ -20,7 +20,7 @@ namespace ReClassNET.Nodes
 			{
 				case null:
 				case ClassNode _:
-				case VMethodNode _:
+				case VirtualMethodNode _:
 					return false;
 			}
 

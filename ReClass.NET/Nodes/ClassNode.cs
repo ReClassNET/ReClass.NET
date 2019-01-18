@@ -85,7 +85,7 @@ namespace ReClassNET.Nodes
 			{
 				case null:
 				case ClassNode _:
-				case VMethodNode _:
+				case VirtualMethodNode _:
 					return false;
 			}
 
@@ -228,7 +228,7 @@ namespace ReClassNET.Nodes
 
 		public override void InsertNode(int index, BaseNode node)
 		{
-			if (node is ClassNode || node is VMethodNode)
+			if (node is ClassNode || node is VirtualMethodNode)
 			{
 				return;
 			}

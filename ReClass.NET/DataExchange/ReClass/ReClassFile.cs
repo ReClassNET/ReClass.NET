@@ -234,10 +234,10 @@ namespace ReClassNET.DataExchange.ReClass
 
 				switch (node)
 				{
-					case VTableNode vtableNode:
+					case VirtualMethodTableNode vtableNode:
 						element
 							.Elements("Function")
-							.Select(e => new VMethodNode
+							.Select(e => new VirtualMethodNode
 							{
 								Name = e.Attribute("Name")?.Value ?? string.Empty,
 								Comment = e.Attribute("Comment")?.Value ?? string.Empty,
@@ -300,7 +300,7 @@ namespace ReClassNET.DataExchange.ReClass
 			typeof(Vector3Node),
 			typeof(Vector4Node),
 			typeof(Matrix4x4Node),
-			typeof(VTableNode),
+			typeof(VirtualMethodTableNode),
 			typeof(ClassInstanceArrayNode),
 			null,
 			null,
@@ -343,7 +343,7 @@ namespace ReClassNET.DataExchange.ReClass
 			typeof(Vector3Node),
 			typeof(Vector4Node),
 			typeof(Matrix4x4Node),
-			typeof(VTableNode),
+			typeof(VirtualMethodTableNode),
 			typeof(ClassInstanceArrayNode),
 			null,
 			typeof(Utf8TextPtrNode),

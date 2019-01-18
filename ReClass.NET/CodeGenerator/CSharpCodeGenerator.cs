@@ -30,7 +30,7 @@ namespace ReClassNET.CodeGenerator
 			[typeof(Utf16TextPtrNode)] = "IntPtr",
 			[typeof(Utf32TextPtrNode)] = "IntPtr",
 			[typeof(PointerNode)] = "IntPtr",
-			[typeof(VTableNode)] = "IntPtr"
+			[typeof(VirtualMethodTableNode)] = "IntPtr"
 		};
 
 		public Language Language => Language.CSharp;

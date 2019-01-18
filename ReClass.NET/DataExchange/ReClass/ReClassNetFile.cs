@@ -27,6 +27,7 @@ namespace ReClassNET.DataExchange.ReClass
 			buildInStringToTypeMap["UTF16TextPtrNode"] = typeof(Utf16TextPtrNode);
 			buildInStringToTypeMap["UTF32TextNode"] = typeof(Utf32TextNode);
 			buildInStringToTypeMap["UTF32TextPtrNode"] = typeof(Utf32TextPtrNode);
+			buildInStringToTypeMap["VTableNode"] = typeof(VirtualMethodTableNode);
 
 			// Legacy
 			buildInStringToTypeMap["ClassInstanceArrayNode"] = typeof(ClassInstanceArrayNode);
@@ -67,7 +68,7 @@ namespace ReClassNET.DataExchange.ReClass
 			typeof(Vector2Node),
 			typeof(Vector3Node),
 			typeof(Vector4Node),
-			typeof(VTableNode),
+			typeof(VirtualMethodTableNode),
 			typeof(ArrayNode),
 			typeof(PointerNode)
 		}.ToDictionary(t => t.Name, t => t);

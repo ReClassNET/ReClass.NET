@@ -29,7 +29,7 @@ namespace ReClassNET.Nodes
 			switch (node)
 			{
 				case ClassNode _:
-				case VMethodNode _:
+				case VirtualMethodNode _:
 					return false;
 			}
 
