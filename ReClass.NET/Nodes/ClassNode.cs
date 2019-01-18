@@ -79,6 +79,19 @@ namespace ReClassNET.Nodes
 			throw new InvalidOperationException($"The '{nameof(ClassNode)}' node should not be accessible from the ui.");
 		}
 
+		public override bool CanHandleChildNode(BaseNode node)
+		{
+			switch (node)
+			{
+				case null:
+				case ClassNode _:
+				case VMethodNode _:
+					return false;
+			}
+
+			return true;
+		}
+
 		public override void Intialize()
 		{
 			AddBytes(IntPtr.Size);

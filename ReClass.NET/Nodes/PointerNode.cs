@@ -26,6 +26,13 @@ namespace ReClassNET.Nodes
 
 		public override bool CanChangeInnerNodeTo(BaseNode node)
 		{
+			switch (node)
+			{
+				case ClassNode _:
+				case VMethodNode _:
+					return false;
+			}
+
 			return true;
 		}
 

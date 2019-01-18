@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using ReClassNET.Extensions;
@@ -17,6 +17,13 @@ namespace ReClassNET.Nodes
 
 		/// <summary>The child nodes of the node.</summary>
 		public IEnumerable<BaseNode> Nodes => nodes;
+
+		/// <summary>
+		/// Should be called before adding a child to test if the container can handle the node type.
+		/// </summary>
+		/// <param name="node">The new child node.</param>
+		/// <returns>True if the container can handle the child node or false otherwise.</returns>
+		public abstract bool CanHandleChildNode(BaseNode node);
 
 		/// <summary>Calculates the offset of every child node.</summary>
 		public void UpdateOffsets()

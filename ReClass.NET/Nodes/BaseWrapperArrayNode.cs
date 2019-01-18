@@ -16,9 +16,15 @@ namespace ReClassNET.Nodes
 
 		public override bool CanChangeInnerNodeTo(BaseNode node)
 		{
-			// A null node (aka void) is not allowed for instances.
+			switch (node)
+			{
+				case null:
+				case ClassNode _:
+				case VMethodNode _:
+					return false;
+			}
 
-			return node != null;
+			return true;
 		}
 
 		protected Size Draw(ViewInfo view, int x, int y, string type)

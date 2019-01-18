@@ -19,6 +19,11 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_VTable;
 		}
 
+		public override bool CanHandleChildNode(BaseNode node)
+		{
+			return node is VMethodNode;
+		}
+
 		public override void Intialize()
 		{
 			AddBytes(10 * IntPtr.Size);
