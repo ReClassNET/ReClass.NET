@@ -235,7 +235,7 @@ namespace ReClassNET.CodeGenerator
 
 			if (member is ClassInstanceNode classInstanceNode)
 			{
-				return new MemberDefinition(classInstanceNode, classInstanceNode.InnerNode.Name);
+				return new MemberDefinition(classInstanceNode, $"class {classInstanceNode.InnerNode.Name}");
 			}
 
 			if (member is BaseWrapperNode wrapperNode)
@@ -243,15 +243,11 @@ namespace ReClassNET.CodeGenerator
 				// TODO Support WrapperNode chains
 				if (member is PointerNode)
 				{
-					var innerNode = wrapperNode.ResolveMostInnerNode();
-
-					return new MemberDefinition(member, innerNode == null ? "void*" : GetMemberDefinitionForNode(innerNode, logger).Type + "*");
+					return new MemberDefinition(member, wrapperNode.InnerNode == null ? "void*" : GetMemberDefinitionForNode(wrapperNode.InnerNode, logger).Type + "*");
 				}
 				if (member is ArrayNode arrayNode)
 				{
-					var innerNode = wrapperNode.ResolveMostInnerNode();
-
-					return new MemberDefinition(member, GetMemberDefinitionForNode(innerNode, logger).Type, arrayNode.Count);
+					return new MemberDefinition(member, GetMemberDefinitionForNode(wrapperNode.InnerNode, logger).Type, arrayNode.Count);
 				}
 			}
 
