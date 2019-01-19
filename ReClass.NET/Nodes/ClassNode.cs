@@ -25,6 +25,8 @@ namespace ReClassNET.Nodes
 
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
 
+		protected override bool ShouldCompensateSizeChanges => true;
+
 		private NodeUuid uuid;
 		public NodeUuid Uuid
 		{
@@ -95,16 +97,6 @@ namespace ReClassNET.Nodes
 		public override void Intialize()
 		{
 			AddBytes(IntPtr.Size);
-		}
-
-		public override void ClearSelection()
-		{
-			base.ClearSelection();
-
-			foreach (var node in Nodes)
-			{
-				node.ClearSelection();
-			}
 		}
 
 		public override Size Draw(ViewInfo view, int x, int y)
@@ -217,47 +209,6 @@ namespace ReClassNET.Nodes
 			{
 				Offset = IntPtr.Zero;
 			}
-		}
-
-		protected override void InsertBytes(int index, int size, ref List<BaseNode> createdNodes)
-		{
-			base.InsertBytes(index, size, ref createdNodes);
-
-			ChildHasChanged(null);
-		}
-
-		public override void InsertNode(int index, BaseNode node)
-		{
-			if (node is ClassNode || node is VirtualMethodNode)
-			{
-				return;
-			}
-
-			base.InsertNode(index, node);
-
-			ChildHasChanged(node);
-		}
-
-		public override bool RemoveNode(BaseNode node)
-		{
-			var removed = base.RemoveNode(node);
-			if (removed)
-			{
-				UpdateOffsets();
-
-				ChildHasChanged(node);
-			}
-			return removed;
-		}
-
-		public override bool ReplaceChildNode(int index, Type nodeType, ref List<BaseNode> createdNodes)
-		{
-			var replaced = base.ReplaceChildNode(index, nodeType, ref createdNodes);
-			if (replaced)
-			{
-				ChildHasChanged(null); //TODO
-			}
-			return replaced;
 		}
 
 		protected internal override void ChildHasChanged(BaseNode child)

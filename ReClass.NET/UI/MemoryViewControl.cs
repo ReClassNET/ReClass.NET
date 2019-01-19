@@ -1088,20 +1088,19 @@ namespace ReClassNET.UI
 			foreach (var nodeToReplace in nodesToReplace)
 			{
 				var temp = new List<BaseNode>();
-				if (parentNode.ReplaceChildNode(nodeToReplace, type, ref temp))
+				parentNode.ReplaceChildNode(nodeToReplace, BaseNode.CreateInstanceFromType(type), ref temp);
+
+				var node = temp.First();
+
+				node.IsSelected = true;
+
+				yield return node;
+
+				if (temp.Count > 1)
 				{
-					var node = temp.First();
-
-					node.IsSelected = true;
-
-					yield return node;
-
-					if (temp.Count > 1)
+					foreach (var n in RecursiveReplaceNodes(parentNode, type, temp.Skip(1)))
 					{
-						foreach (var n in RecursiveReplaceNodes(parentNode, type, temp.Skip(1)))
-						{
-							yield return n;
-						}
+						yield return n;
 					}
 				}
 			}
@@ -1114,50 +1113,49 @@ namespace ReClassNET.UI
 
 			var newSelected = new List<HotSpot>(selectedNodes.Count);
 
-			// Group the selected nodes in continues selected blocks.
+			// Group the selected nodes in continued selected blocks.
 			foreach (var selectedPartition in PartitionSelectedNodes(selectedNodes.WhereNot(s => s.Node is ClassNode)))
 			{
 				foreach (var selected in selectedPartition)
 				{
 					var createdNodes = new List<BaseNode>();
-					if (selected.Node.GetParentClass().ReplaceChildNode(selected.Node, type, ref createdNodes))
+					selected.Node.GetParentClass().ReplaceChildNode(selected.Node, BaseNode.CreateInstanceFromType(type), ref createdNodes);
+
+					var node = createdNodes.First();
+
+					node.IsSelected = true;
+
+					var hotspot = new HotSpot
 					{
-						var node = createdNodes.First();
+						Memory = selected.Memory,
+						Address = node.GetParentClass().Offset.Add(node.Offset),
+						Node = node
+					};
 
-						node.IsSelected = true;
+					newSelected.Add(hotspot);
 
-						var hotspot = new HotSpot
-						{
-							Memory = selected.Memory,
-							Address = node.GetParentClass().Offset.Add(node.Offset),
-							Node = node
-						};
+					if (selectionAnchor.Node == selected.Node)
+					{
+						selectionAnchor = hotspot;
+					}
+					if (selectionCaret.Node == selected.Node)
+					{
+						selectionCaret = hotspot;
+					}
 
-						newSelected.Add(hotspot);
-
-						if (selectionAnchor.Node == selected.Node)
-						{
-							selectionAnchor = hotspot;
-						}
-						if (selectionCaret.Node == selected.Node)
-						{
-							selectionCaret = hotspot;
-						}
-
-						// If the block contains more than one node and the replaced node decomposed to more than one node replace the new nodes too.
-						if (selectedPartition.Count > 1 && createdNodes.Count > 1)
-						{
-							newSelected.AddRange(
-								RecursiveReplaceNodes(selected.Node.GetParentClass(), type, createdNodes.Skip(1))
-									.Select(n => new HotSpot
-									{
-										Memory = selected.Memory,
-										Address = n.GetParentClass().Offset.Add(n.Offset),
-										Node = n,
-										Level = selected.Level
-									})
-							);
-						}
+					// If the block contains more than one node and the replaced node decomposed to more than one node replace the new nodes too.
+					if (selectedPartition.Count > 1 && createdNodes.Count > 1)
+					{
+						newSelected.AddRange(
+							RecursiveReplaceNodes(selected.Node.GetParentClass(), type, createdNodes.Skip(1))
+								.Select(n => new HotSpot
+								{
+									Memory = selected.Memory,
+									Address = n.GetParentClass().Offset.Add(n.Offset),
+									Node = n,
+									Level = selected.Level
+								})
+						);
 					}
 				}
 			}

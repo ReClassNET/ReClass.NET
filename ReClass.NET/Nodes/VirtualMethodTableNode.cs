@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using ReClassNET.Memory;
@@ -12,6 +11,8 @@ namespace ReClassNET.Nodes
 		private readonly MemoryBuffer memory = new MemoryBuffer();
 
 		public override int MemorySize => IntPtr.Size;
+
+		protected override bool ShouldCompensateSizeChanges => false;
 
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
@@ -26,16 +27,9 @@ namespace ReClassNET.Nodes
 
 		public override void Intialize()
 		{
-			AddBytes(10 * IntPtr.Size);
-		}
-
-		public override void ClearSelection()
-		{
-			base.ClearSelection();
-
-			foreach (var node in nodes)
+			for (var i = 0; i < 10; ++i)
 			{
-				node.ClearSelection();
+				AddNode(CreateDefaultNodeForSize(IntPtr.Size));
 			}
 		}
 
@@ -59,7 +53,7 @@ namespace ReClassNET.Nodes
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
 
-			x = AddText(view, x, y, view.Settings.VTableColor, HotSpot.NoneId, $"VTable[{nodes.Count}]") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.VTableColor, HotSpot.NoneId, $"VTable[{Nodes.Count}]") + view.Font.Width;
 			if (!IsWrapped)
 			{
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
@@ -78,7 +72,7 @@ namespace ReClassNET.Nodes
 			{
 				var ptr = view.Memory.ReadIntPtr(Offset);
 
-				memory.Size = nodes.Count * IntPtr.Size;
+				memory.Size = Nodes.Count * IntPtr.Size;
 				memory.Process = view.Memory.Process;
 				memory.Update(ptr);
 
@@ -86,7 +80,7 @@ namespace ReClassNET.Nodes
 				v.Address = ptr;
 				v.Memory = memory;
 
-				foreach (var node in nodes)
+				foreach (var node in Nodes)
 				{
 					var innerSize = node.Draw(v, tx, y);
 
@@ -110,68 +104,15 @@ namespace ReClassNET.Nodes
 			var height = view.Font.Height;
 			if (LevelsOpen[view.Level])
 			{
-				height += nodes.Sum(n => n.CalculateDrawnHeight(view));
+				height += Nodes.Sum(n => n.CalculateDrawnHeight(view));
 			}
 			return height;
 		}
 
-		public override bool ReplaceChildNode(int index, Type nodeType, ref List<BaseNode> createdNodes) => false;
-
-		protected override void InsertBytes(int index, int size, ref List<BaseNode> createdNodes)
+		protected override BaseNode CreateDefaultNodeForSize(int size)
 		{
-			if (index < 0 || index > nodes.Count || size == 0)
-			{
-				return;
-			}
-
-			var offset = IntPtr.Zero;
-			if (index > 0)
-			{
-				var node = nodes[index - 1];
-				offset = node.Offset + node.MemorySize;
-			}
-
-			while (size > 0)
-			{
-				var node = new VirtualMethodNode
-				{
-					Offset = offset,
-					ParentNode = this
-				};
-
-				nodes.Insert(index, node);
-
-				createdNodes?.Add(node);
-
-				offset += node.MemorySize;
-				size -= node.MemorySize;
-
-				index++;
-			}
-
-			UpdateOffsets();
-		}
-
-		public override void InsertNode(int index, BaseNode node)
-		{
-			if (!(node is VirtualMethodNode))
-			{
-				return;
-			}
-
-			base.InsertNode(index, node);
-
-			UpdateOffsets();
-		}
-
-		public override bool RemoveNode(BaseNode node)
-		{
-			var removed = base.RemoveNode(node);
-			if (removed)
-			{
-				UpdateOffsets();
-			}
-			return removed;
+			// ignore the size parameter
+			return new VirtualMethodNode();
 		}
 	}
 }
