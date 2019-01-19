@@ -66,9 +66,30 @@ namespace ReClassNET.Nodes
 			Contract.Invariant(LevelsOpen != null);
 		}
 
+		/// <summary>
+		/// Creates an instance of the specific node type.
+		/// </summary>
+		/// <param name="nodeType">The <see cref="Type"/> of the node.</param>
+		/// <returns>An instance of the node type or null if the type is not a valid node type.</returns>
 		public static BaseNode CreateInstanceFromType(Type nodeType)
 		{
-			return Activator.CreateInstance(nodeType) as BaseNode;
+			return CreateInstanceFromType(nodeType, true);
+		}
+
+		/// <summary>
+		/// Creates an instance of the specific node type.
+		/// </summary>
+		/// <param name="nodeType">The <see cref="Type"/> of the node.</param>
+		/// <param name="callInitialize">If true <see cref="Intialize"/> gets called for the new node.</param>
+		/// <returns>An instance of the node type or null if the type is not a valid node type.</returns>
+		public static BaseNode CreateInstanceFromType(Type nodeType, bool callInitialize)
+		{
+			var node = Activator.CreateInstance(nodeType) as BaseNode;
+			if (callInitialize)
+			{
+				node?.Intialize();
+			}
+			return node;
 		}
 
 		/// <summary>Constructor which sets a unique <see cref="Name"/>.</summary>
@@ -84,6 +105,44 @@ namespace ReClassNET.Nodes
 		}
 
 		public abstract void GetUserInterfaceInfo(out string name, out Image icon);
+
+		public virtual bool UseMemoryPreviewToolTip(HotSpot spot, MemoryBuffer memory, out IntPtr address)
+		{
+			Contract.Requires(spot != null);
+			Contract.Requires(memory != null);
+
+			address = IntPtr.Zero;
+
+			return false;
+		}
+
+		/// <summary>Gets informations about this node to show in a tool tip.</summary>
+		/// <param name="spot">The spot.</param>
+		/// <param name="memory">The process memory.</param>
+		/// <returns>The information to show in a tool tip or null if no information should be shown.</returns>
+		public virtual string GetToolTipText(HotSpot spot, MemoryBuffer memory)
+		{
+			Contract.Requires(spot != null);
+			Contract.Requires(memory != null);
+
+			return null;
+		}
+
+		/// <summary>Called when the node was created. Does not get called after loading a project.</summary>
+		public virtual void Intialize()
+		{
+
+		}
+
+		/// <summary>Initializes this object from the given node. It copies the name and the comment.</summary>
+		/// <param name="node">The node to copy from.</param>
+		public virtual void CopyFromNode(BaseNode node)
+		{
+			Contract.Requires(node != null);
+
+			Name = node.Name;
+			Comment = node.Comment;
+		}
 
 		/// <summary>
 		/// Gets the parent class of the node.
@@ -137,45 +196,6 @@ namespace ReClassNET.Nodes
 		public virtual void ClearSelection()
 		{
 			IsSelected = false;
-		}
-
-		/// <summary>Initializes this object from the given node. It copies the name and the comment.</summary>
-		/// <param name="node">The node to copy from.</param>
-		public virtual void CopyFromNode(BaseNode node)
-		{
-			Contract.Requires(node != null);
-
-			Name = node.Name;
-			Comment = node.Comment;
-		}
-
-
-		/// <summary>Called when the node was created. Does not get called after loading a project.</summary>
-		public virtual void Intialize()
-		{
-
-		}
-
-		public virtual bool UseMemoryPreviewToolTip(HotSpot spot, MemoryBuffer memory, out IntPtr address)
-		{
-			Contract.Requires(spot != null);
-			Contract.Requires(memory != null);
-
-			address = IntPtr.Zero;
-
-			return false;
-		}
-
-		/// <summary>Gets informations about this node to show in a tool tip.</summary>
-		/// <param name="spot">The spot.</param>
-		/// <param name="memory">The process memory.</param>
-		/// <returns>The information to show in a tool tip or null if no information should be shown.</returns>
-		public virtual string GetToolTipText(HotSpot spot, MemoryBuffer memory)
-		{
-			Contract.Requires(spot != null);
-			Contract.Requires(memory != null);
-
-			return null;
 		}
 
 		/// <summary>Draws the node.</summary>
