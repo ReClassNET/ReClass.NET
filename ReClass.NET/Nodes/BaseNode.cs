@@ -80,14 +80,14 @@ namespace ReClassNET.Nodes
 		/// Creates an instance of the specific node type.
 		/// </summary>
 		/// <param name="nodeType">The <see cref="Type"/> of the node.</param>
-		/// <param name="callInitialize">If true <see cref="Intialize"/> gets called for the new node.</param>
+		/// <param name="callInitialize">If true <see cref="Initialize"/> gets called for the new node.</param>
 		/// <returns>An instance of the node type or null if the type is not a valid node type.</returns>
 		public static BaseNode CreateInstanceFromType(Type nodeType, bool callInitialize)
 		{
 			var node = Activator.CreateInstance(nodeType) as BaseNode;
 			if (callInitialize)
 			{
-				node?.Intialize();
+				node?.Initialize();
 			}
 			return node;
 		}
@@ -129,7 +129,7 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Called when the node was created. Does not get called after loading a project.</summary>
-		public virtual void Intialize()
+		public virtual void Initialize()
 		{
 
 		}

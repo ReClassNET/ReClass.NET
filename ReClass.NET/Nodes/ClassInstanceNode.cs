@@ -17,10 +17,10 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_Class_Instance;
 		}
 
-		public override void Intialize()
+		public override void Initialize()
 		{
 			InnerNode = ClassNode.Create();
-			InnerNode.Intialize();
+			InnerNode.Initialize();
 		}
 
 		public override bool CanChangeInnerNodeTo(BaseNode node)

@@ -18,7 +18,7 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_Array;
 		}
 
-		public override void Intialize()
+		public override void Initialize()
 		{
 			InnerNode = IntPtr.Size == 4 ? (BaseNode)new Hex32Node() : new Hex64Node();
 		}

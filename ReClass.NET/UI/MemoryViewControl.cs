@@ -408,7 +408,6 @@ namespace ReClassNET.UI
 								var items = NodeTypesBuilder.CreateToolStripMenuItems(t =>
 								{
 									var node = BaseNode.CreateInstanceFromType(t);
-									node.Intialize();
 									if (wrapperNode.CanChangeInnerNodeTo(node))
 									{
 										wrapperNode.ChangeInnerNode(node);

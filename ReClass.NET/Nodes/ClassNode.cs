@@ -94,7 +94,7 @@ namespace ReClassNET.Nodes
 			return true;
 		}
 
-		public override void Intialize()
+		public override void Initialize()
 		{
 			AddBytes(IntPtr.Size);
 		}

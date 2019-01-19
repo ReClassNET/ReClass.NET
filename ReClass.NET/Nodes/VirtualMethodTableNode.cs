@@ -25,7 +25,7 @@ namespace ReClassNET.Nodes
 			return node is VirtualMethodNode;
 		}
 
-		public override void Intialize()
+		public override void Initialize()
 		{
 			for (var i = 0; i < 10; ++i)
 			{
