@@ -116,7 +116,7 @@ namespace ReClassNET.Nodes
 						{
 							Count = value;
 
-							GetParentClass()?.ChildHasChanged(this);
+							GetParentContainer()?.ChildHasChanged(this);
 						}
 					}
 					else

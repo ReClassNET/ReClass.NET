@@ -20,7 +20,7 @@ namespace ReClassNET.Memory
 				var type = GuessExplicitNode(node, memory);
 				if (type != null)
 				{
-					node.GetParentClass()?.ReplaceChildNode(node, type);
+					node.GetParentContainer()?.ReplaceChildNode(node, type);
 				}
 			}
 		}

@@ -145,6 +145,31 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>
+		/// Gets the parent container of the node.
+		/// </summary>
+		/// <returns></returns>
+		public BaseContainerNode GetParentContainer()
+		{
+			var parentNode = ParentNode;
+			while (parentNode != null)
+			{
+				if (parentNode is BaseContainerNode containerNode)
+				{
+					return containerNode;
+				}
+
+				parentNode = parentNode.ParentNode;
+			}
+
+			if (this is BaseContainerNode containerNode2)
+			{
+				return containerNode2;
+			}
+
+			return null;
+		}
+
+		/// <summary>
 		/// Gets the parent class of the node.
 		/// </summary>
 		/// <returns></returns>

@@ -40,7 +40,7 @@ namespace ReClassNET.Nodes
 
 				InnerNodeChanged?.Invoke(this);
 
-				GetParentClass()?.ChildHasChanged(this);
+				GetParentContainer()?.ChildHasChanged(this);
 			}
 		}
 

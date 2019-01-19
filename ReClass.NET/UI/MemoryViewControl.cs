@@ -282,7 +282,7 @@ namespace ReClassNET.UI
 									if (selectedNodes.Count > 0)
 									{
 										var selectedNode = selectedNodes[0].Node;
-										if (hitObject.GetParentClass() != null && selectedNode.GetParentClass() != hitObject.GetParentClass())
+										if (hitObject.GetParentContainer() != null && selectedNode.GetParentContainer() != hitObject.GetParentContainer())
 										{
 											continue;
 										}
@@ -297,7 +297,7 @@ namespace ReClassNET.UI
 
 										ClearSelection();
 
-										var containerNode = selectedNode.GetParentClass(); // TODO Container
+										var containerNode = selectedNode.GetParentContainer();
 										foreach (var spot in containerNode.Nodes
 											.SkipWhile(n => n != first.Node)
 											.TakeUntil(n => n == last.Node)
@@ -616,7 +616,7 @@ namespace ReClassNET.UI
 
 						var query = hotSpots
 							.Where(h => h.Type == HotSpotType.Select)
-							.Where(h => h.Node.GetParentClass() == selectionCaret.Node.GetParentClass()); // TODO Container
+							.Where(h => h.Node.GetParentContainer() == selectionCaret.Node.GetParentContainer());
 
 						if (key == Keys.Down)
 						{
@@ -653,7 +653,7 @@ namespace ReClassNET.UI
 
 							ClearSelection();
 
-							var containerNode = toSelect.Node.GetParentClass(); // TODO Container
+							var containerNode = toSelect.Node.GetParentContainer();
 							foreach (var spot in containerNode.Nodes
 								.SkipWhile(n => n != first.Node)
 								.TakeUntil(n => n == last.Node)
@@ -764,7 +764,7 @@ namespace ReClassNET.UI
 
 			var count = selectedNodes.Count;
 			var node = selectedNodes.Select(s => s.Node).FirstOrDefault();
-			var parentNode = node?.GetParentClass();
+			var parentNode = node?.GetParentContainer();
 
 			var nodeIsClass = node is ClassNode;
 			var nodeIsValueNode = false;
@@ -836,7 +836,7 @@ namespace ReClassNET.UI
 		{
 			if (selectedNodes.Count > 0 && !(selectedNodes[0].Node is ClassNode))
 			{
-				if (selectedNodes[0].Node.GetParentClass() is ClassNode parentNode) // TODO Container
+				if (selectedNodes[0].Node.GetParentContainer() is ClassNode parentNode)
 				{
 					var newClassNode = ClassNode.Create();
 					selectedNodes.Select(h => h.Node).ForEach(newClassNode.AddNode);
@@ -861,7 +861,7 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			foreach (var g in hexNodes.GroupBy(n => n.Node.GetParentClass()))
+			foreach (var g in hexNodes.GroupBy(n => n.Node.GetParentContainer()))
 			{
 				NodeDissector.DissectNodes(g.Select(h => (BaseHexNode)h.Node), g.First().Memory);
 			}
@@ -1013,7 +1013,7 @@ namespace ReClassNET.UI
 			var hotspot = selectedNodes.FirstOrDefault();
 			if (hotspot != null)
 			{
-				(hotspot.Node as ClassNode ?? hotspot.Node.GetParentClass())?.AddBytes(length);
+				(hotspot.Node as BaseContainerNode ?? hotspot.Node.GetParentContainer())?.AddBytes(length);
 			}
 
 			Invalidate();
@@ -1026,7 +1026,7 @@ namespace ReClassNET.UI
 			var hotspot = selectedNodes.FirstOrDefault();
 			if (hotspot != null)
 			{
-				(hotspot.Node as ClassNode ?? hotspot.Node.GetParentClass())?.InsertBytes(hotspot.Node, length);
+				(hotspot.Node as BaseContainerNode ?? hotspot.Node.GetParentContainer())?.InsertBytes(hotspot.Node, length);
 
 				Invalidate();
 			}
@@ -1118,7 +1118,7 @@ namespace ReClassNET.UI
 				foreach (var selected in selectedPartition)
 				{
 					var createdNodes = new List<BaseNode>();
-					selected.Node.GetParentClass().ReplaceChildNode(selected.Node, BaseNode.CreateInstanceFromType(type), ref createdNodes);
+					selected.Node.GetParentContainer().ReplaceChildNode(selected.Node, BaseNode.CreateInstanceFromType(type), ref createdNodes);
 
 					var node = createdNodes.First();
 
@@ -1127,7 +1127,7 @@ namespace ReClassNET.UI
 					var hotspot = new HotSpot
 					{
 						Memory = selected.Memory,
-						Address = node.GetParentClass().Offset.Add(node.Offset),
+						Address = node.GetParentContainer().Offset.Add(node.Offset),
 						Node = node
 					};
 
@@ -1146,11 +1146,11 @@ namespace ReClassNET.UI
 					if (selectedPartition.Count > 1 && createdNodes.Count > 1)
 					{
 						newSelected.AddRange(
-							RecursiveReplaceNodes(selected.Node.GetParentClass(), type, createdNodes.Skip(1))
+							RecursiveReplaceNodes(selected.Node.GetParentContainer(), type, createdNodes.Skip(1))
 								.Select(n => new HotSpot
 								{
 									Memory = selected.Memory,
-									Address = n.GetParentClass().Offset.Add(n.Offset),
+									Address = n.GetParentContainer().Offset.Add(n.Offset),
 									Node = n,
 									Level = selected.Level
 								})
@@ -1182,7 +1182,7 @@ namespace ReClassNET.UI
 		{
 			selectedNodes
 				.WhereNot(h => h.Node is ClassNode)
-				.ForEach(h => h.Node.GetParentClass().RemoveNode(h.Node)); // TODO Container
+				.ForEach(h => h.Node.GetParentContainer().RemoveNode(h.Node));
 
 			selectedNodes.Clear();
 
@@ -1231,21 +1231,21 @@ namespace ReClassNET.UI
 		{
 			var selectedNode = selectedNodes[0].Node;
 
-			var parentNode = selectedNode.GetParentClass();
+			var parentNode = selectedNode.GetParentContainer();
 			if (parentNode == null)
 			{
 				return;
 			}
 
 			var hiddenNodeStartIndex = parentNode.FindNodeIndex(selectedNode) + 1;
-			if (hiddenNodeStartIndex >= parentNode.Nodes.Count())
+			if (hiddenNodeStartIndex >= parentNode.Nodes.Count)
 			{
 				return;
 			}
 
-			for (var i = hiddenNodeStartIndex; i < parentNode.Nodes.Count(); i++)
+			for (var i = hiddenNodeStartIndex; i < parentNode.Nodes.Count; i++)
 			{
-				var indexNode = parentNode.Nodes.ElementAt(i);
+				var indexNode = parentNode.Nodes.ElementAt(i);  // TODO Remove ElementAt
 				if (indexNode.IsHidden)
 				{
 					indexNode.IsHidden = false;
@@ -1270,7 +1270,7 @@ namespace ReClassNET.UI
 		{
 			var selectedNode = selectedNodes[0].Node;
 
-			var parentNode = selectedNode.GetParentClass();
+			var parentNode = selectedNode.GetParentContainer();
 			if (parentNode == null)
 			{
 				return;
@@ -1284,7 +1284,7 @@ namespace ReClassNET.UI
 
 			for (var i = hiddenNodeStartIndex; i > -1; i--)
 			{
-				var indexNode = parentNode.Nodes.ElementAt(i);
+				var indexNode = parentNode.Nodes.ElementAt(i); // TODO Remove ElementAt
 				if (indexNode.IsHidden)
 				{
 					indexNode.IsHidden = false;
@@ -1327,9 +1327,11 @@ namespace ReClassNET.UI
 			if (selectedNodes.Count == 1)
 			{
 				var selectedNode = selectedNodes[0].Node;
-				var parent = selectedNode.GetParentClass();
-				if (parent != null)
+				var containerNode = selectedNode.GetParentContainer();
+				var classNode = selectedNode.GetParentClass();
+				if (containerNode != null && classNode != null)
 				{
+
 					foreach (var node in result.Item2)
 					{
 						if (node is BaseWrapperNode)
@@ -1341,7 +1343,7 @@ namespace ReClassNET.UI
 							{
 								if (rootWrapper.ResolveMostInnerNode() is ClassNode innerNode)
 								{
-									if (!IsCycleFree(parent, innerNode))
+									if (!IsCycleFree(classNode, innerNode))
 									{
 										continue;
 									}
@@ -1349,7 +1351,7 @@ namespace ReClassNET.UI
 							}
 						}
 
-						parent.InsertNode(selectedNode, node);
+						containerNode.InsertNode(selectedNode, node);
 					}
 				}
 			}

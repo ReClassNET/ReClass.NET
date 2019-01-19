@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
@@ -262,7 +262,7 @@ namespace ReClassNET.Nodes
 
 			UpdateOffsets();
 
-			GetParentClass()?.ChildHasChanged(this);
+			GetParentContainer()?.ChildHasChanged(this);
 		}
 
 		/// <summary>
@@ -295,7 +295,7 @@ namespace ReClassNET.Nodes
 
 			UpdateOffsets();
 
-			GetParentClass()?.ChildHasChanged(this);
+			GetParentContainer()?.ChildHasChanged(this);
 		}
 
 		/// <summary>
@@ -321,7 +321,7 @@ namespace ReClassNET.Nodes
 
 			UpdateOffsets();
 
-			GetParentClass()?.ChildHasChanged(this);
+			GetParentContainer()?.ChildHasChanged(this);
 		}
 
 		/// <summary>Removes the specified node.</summary>
@@ -336,7 +336,7 @@ namespace ReClassNET.Nodes
 			{
 				UpdateOffsets();
 
-				GetParentClass()?.ChildHasChanged(this);
+				GetParentContainer()?.ChildHasChanged(this);
 			}
 			return result;
 		}

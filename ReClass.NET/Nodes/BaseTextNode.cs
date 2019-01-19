@@ -83,7 +83,7 @@ namespace ReClassNET.Nodes
 				{
 					Length = val;
 
-					GetParentClass()?.ChildHasChanged(this);
+					GetParentContainer()?.ChildHasChanged(this);
 				}
 			}
 		}
