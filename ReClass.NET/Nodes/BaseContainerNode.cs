@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
@@ -232,13 +232,6 @@ namespace ReClassNET.Nodes
 				return;
 			}
 
-			var offset = IntPtr.Zero;
-			if (index > 0)
-			{
-				var node = nodes[index - 1];
-				offset = node.Offset + node.MemorySize;
-			}
-
 			while (size > 0)
 			{
 				var node = CreateDefaultNodeForSize(size);
@@ -248,13 +241,11 @@ namespace ReClassNET.Nodes
 				}
 
 				node.ParentNode = this;
-				node.Offset = offset;
 
 				nodes.Insert(index, node);
 
 				createdNodes?.Add(node);
 
-				offset += node.MemorySize;
 				size -= node.MemorySize;
 
 				index++;
