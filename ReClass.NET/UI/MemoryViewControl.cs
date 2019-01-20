@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -1032,79 +1032,6 @@ namespace ReClassNET.UI
 			}
 		}
 
-		/// <summary>Groups the selected nodes in blocks if the nodes are continues.</summary>
-		/// <param name="selection">The selection to partition.</param>
-		/// <returns>An enumeration with blocks of continues nodes.</returns>
-		private static IEnumerable<List<HotSpot>> PartitionSelectedNodes(IEnumerable<HotSpot> selection)
-		{
-			Contract.Requires(selection != null);
-
-			List<HotSpot> partition;
-			using (var it = selection.GetEnumerator())
-			{
-				if (!it.MoveNext())
-				{
-					yield break;
-				}
-
-				partition = new List<HotSpot> { it.Current };
-
-				var last = it.Current;
-
-				while (it.MoveNext())
-				{
-					if (it.Current.Address != last.Address + last.Node.MemorySize)
-					{
-						yield return partition;
-
-						partition = new List<HotSpot>();
-					}
-
-					partition.Add(it.Current);
-
-					last = it.Current;
-				}
-			}
-
-			if (partition.Count != 0)
-			{
-				yield return partition;
-			}
-		}
-
-		/// <summary>Recursive replace all splitted nodes.</summary>
-		/// <param name="parentNode">The parent node.</param>
-		/// <param name="type">The node type.</param>
-		/// <param name="nodesToReplace">The nodes to replace.</param>
-		/// <returns>The new nodes.</returns>
-		private static IEnumerable<BaseNode> RecursiveReplaceNodes(BaseContainerNode parentNode, Type type, IEnumerable<BaseNode> nodesToReplace)
-		{
-			Contract.Requires(parentNode != null);
-			Contract.Requires(type != null);
-			Contract.Requires(nodesToReplace != null);
-			Contract.Ensures(Contract.Result<IEnumerable<BaseNode>>() != null);
-
-			foreach (var nodeToReplace in nodesToReplace)
-			{
-				var temp = new List<BaseNode>();
-				parentNode.ReplaceChildNode(nodeToReplace, BaseNode.CreateInstanceFromType(type), ref temp);
-
-				var node = temp.First();
-
-				node.IsSelected = true;
-
-				yield return node;
-
-				if (temp.Count > 1)
-				{
-					foreach (var n in RecursiveReplaceNodes(parentNode, type, temp.Skip(1)))
-					{
-						yield return n;
-					}
-				}
-			}
-		}
-
 		public void ReplaceSelectedNodesWithType(Type type)
 		{
 			Contract.Requires(type != null);
@@ -1112,23 +1039,34 @@ namespace ReClassNET.UI
 
 			var newSelected = new List<HotSpot>(selectedNodes.Count);
 
-			// Group the selected nodes in continued selected blocks.
-			foreach (var selectedPartition in PartitionSelectedNodes(selectedNodes.WhereNot(s => s.Node is ClassNode)))
-			{
-				foreach (var selected in selectedPartition)
-				{
-					var createdNodes = new List<BaseNode>();
-					selected.Node.GetParentContainer().ReplaceChildNode(selected.Node, BaseNode.CreateInstanceFromType(type), ref createdNodes);
+			var hotSpotPartitions = selectedNodes
+				.WhereNot(s => s.Node is ClassNode)
+				.GroupBy(s => s.Node.GetParentContainer())
+				.SelectMany(g => g
+					.OrderBy(s => s.Node.Offset, IntPtrComparer.Instance)
+					.GroupWhile((h1, h2) => h1.Node.Offset + h1.Node.MemorySize == h2.Node.Offset)
+				);
 
-					var node = createdNodes.First();
+			foreach (var selectedPartition in hotSpotPartitions)
+			{
+				var hotSpotsToReplace = new Queue<HotSpot>(selectedPartition);
+				while (hotSpotsToReplace.Count > 0)
+				{
+					var selected = hotSpotsToReplace.Dequeue();
+
+					var node = BaseNode.CreateInstanceFromType(type);
+
+					var createdNodes = new List<BaseNode>();
+					selected.Node.GetParentContainer().ReplaceChildNode(selected.Node, node, ref createdNodes);
 
 					node.IsSelected = true;
 
 					var hotspot = new HotSpot
 					{
 						Memory = selected.Memory,
-						Address = node.GetParentContainer().Offset.Add(node.Offset),
-						Node = node
+						Address = selected.Address,
+						Node = node,
+						Level = selected.Level
 					};
 
 					newSelected.Add(hotspot);
@@ -1142,19 +1080,15 @@ namespace ReClassNET.UI
 						selectionCaret = hotspot;
 					}
 
-					// If the block contains more than one node and the replaced node decomposed to more than one node replace the new nodes too.
-					if (selectedPartition.Count > 1 && createdNodes.Count > 1)
+					foreach (var createdNode in createdNodes)
 					{
-						newSelected.AddRange(
-							RecursiveReplaceNodes(selected.Node.GetParentContainer(), type, createdNodes.Skip(1))
-								.Select(n => new HotSpot
-								{
-									Memory = selected.Memory,
-									Address = n.GetParentContainer().Offset.Add(n.Offset),
-									Node = n,
-									Level = selected.Level
-								})
-						);
+						hotSpotsToReplace.Enqueue(new HotSpot
+						{
+							Memory = selected.Memory,
+							Address = selected.Address.Add(createdNode.Offset.Sub(node.Offset)),
+							Node = createdNode,
+							Level = selected.Level
+						});
 					}
 				}
 			}
