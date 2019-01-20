@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
@@ -137,8 +137,8 @@ namespace ReClassNET.Nodes
 		/// <summary>Replaces the old node with the new node.</summary>
 		/// <param name="oldNode">The old node to replacce.</param>
 		/// <param name="newNode">The new node.</param>
-		/// <param name="insertedNodes">[out] A list with additional created nodes (see <see cref="ShouldCompensateSizeChanges"/>).</param>
-		public void ReplaceChildNode(BaseNode oldNode, BaseNode newNode, ref List<BaseNode> insertedNodes)
+		/// <param name="additionalCreatedNodes">[out] A list for additional created nodes (see <see cref="ShouldCompensateSizeChanges"/>) or null if not needed.</param>
+		public void ReplaceChildNode(BaseNode oldNode, BaseNode newNode, ref List<BaseNode> additionalCreatedNodes)
 		{
 			Contract.Requires(oldNode != null);
 			Contract.Requires(newNode != null);
@@ -159,14 +159,12 @@ namespace ReClassNET.Nodes
 
 			if (ShouldCompensateSizeChanges)
 			{
-				insertedNodes?.Add(newNode);
-
 				var oldSize = oldNode.MemorySize;
 				var newSize = newNode.MemorySize;
 
 				if (newSize < oldSize)
 				{
-					InsertBytes(index + 1, oldSize - newSize, ref insertedNodes);
+					InsertBytes(index + 1, oldSize - newSize, ref additionalCreatedNodes);
 				}
 				/*else if (newSize > oldSize)
 				{
