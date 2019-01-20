@@ -1207,6 +1207,11 @@ namespace ReClassNET.UI
 
 		private void UnhideChildNodes()
 		{
+			if (selectedNodes.Count != 1)
+			{
+				return;
+			}
+
 			if (!(selectedNodes[0].Node is BaseContainerNode containerNode))
 			{
 				return;
@@ -1229,6 +1234,11 @@ namespace ReClassNET.UI
 
 		private void UnhideNodesBelow()
 		{
+			if (selectedNodes.Count != 1)
+			{
+				return;
+			}
+
 			var selectedNode = selectedNodes[0].Node;
 
 			var parentNode = selectedNode.GetParentContainer();
@@ -1268,6 +1278,11 @@ namespace ReClassNET.UI
 
 		private void UnhideNodesAbove()
 		{
+			if (selectedNodes.Count != 1)
+			{
+				return;
+			}
+
 			var selectedNode = selectedNodes[0].Node;
 
 			var parentNode = selectedNode.GetParentContainer();
