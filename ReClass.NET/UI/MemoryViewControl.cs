@@ -767,7 +767,7 @@ namespace ReClassNET.UI
 			var parentNode = node?.GetParentContainer();
 
 			var nodeIsClass = node is ClassNode;
-			var nodeIsValueNode = false;
+			var nodeIsSearchableValueNode = false;
 			switch (node)
 			{
 				case BaseHexNode _:
@@ -784,7 +784,7 @@ namespace ReClassNET.UI
 				case Utf8TextNode _:
 				case Utf16TextNode _:
 				case Utf32TextNode _:
-					nodeIsValueNode = true;
+					nodeIsSearchableValueNode = true;
 					break;
 			}
 
@@ -795,7 +795,7 @@ namespace ReClassNET.UI
 
 			createClassFromNodesToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
 			dissectNodesToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
-			searchForEqualValuesToolStripMenuItem.Enabled = count == 1 && nodeIsValueNode;
+			searchForEqualValuesToolStripMenuItem.Enabled = count == 1 && nodeIsSearchableValueNode;
 
 			pasteNodesToolStripMenuItem.Enabled = count == 1 && ReClassClipboard.ContainsNodes;
 			removeToolStripMenuItem.Enabled = !nodeIsClass;
