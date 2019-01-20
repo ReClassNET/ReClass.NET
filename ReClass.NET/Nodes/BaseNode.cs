@@ -142,6 +142,7 @@ namespace ReClassNET.Nodes
 
 			Name = node.Name;
 			Comment = node.Comment;
+			Offset = node.Offset;
 		}
 
 		/// <summary>
