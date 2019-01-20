@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -1245,7 +1245,7 @@ namespace ReClassNET.UI
 
 			for (var i = hiddenNodeStartIndex; i < parentNode.Nodes.Count; i++)
 			{
-				var indexNode = parentNode.Nodes.ElementAt(i);  // TODO Remove ElementAt
+				var indexNode = parentNode.Nodes[i];
 				if (indexNode.IsHidden)
 				{
 					indexNode.IsHidden = false;
@@ -1284,7 +1284,7 @@ namespace ReClassNET.UI
 
 			for (var i = hiddenNodeStartIndex; i > -1; i--)
 			{
-				var indexNode = parentNode.Nodes.ElementAt(i); // TODO Remove ElementAt
+				var indexNode = parentNode.Nodes[i];
 				if (indexNode.IsHidden)
 				{
 					indexNode.IsHidden = false;

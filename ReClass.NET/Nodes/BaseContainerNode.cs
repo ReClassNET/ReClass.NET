@@ -9,7 +9,7 @@ namespace ReClassNET.Nodes
 		private readonly List<BaseNode> nodes = new List<BaseNode>();
 
 		/// <summary>The child nodes of the container.</summary>
-		public IReadOnlyCollection<BaseNode> Nodes => nodes;
+		public IReadOnlyList<BaseNode> Nodes => nodes;
 
 		/// <summary>
 		/// If true and the size of replaced nodes differs, the gap will be padded with default nodes (see <see cref="CreateDefaultNodeForSize"/>).
