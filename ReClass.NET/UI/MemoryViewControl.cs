@@ -1080,15 +1080,19 @@ namespace ReClassNET.UI
 						selectionCaret = hotspot;
 					}
 
-					foreach (var createdNode in createdNodes)
+					// If more than one node is selected I assume the user wants to replace the complete range with the desired node type.
+					if (selectedNodes.Count > 1)
 					{
-						hotSpotsToReplace.Enqueue(new HotSpot
+						foreach (var createdNode in createdNodes)
 						{
-							Memory = selected.Memory,
-							Address = selected.Address.Add(createdNode.Offset.Sub(node.Offset)),
-							Node = createdNode,
-							Level = selected.Level
-						});
+							hotSpotsToReplace.Enqueue(new HotSpot
+							{
+								Memory = selected.Memory,
+								Address = selected.Address.Add(createdNode.Offset.Sub(node.Offset)),
+								Node = createdNode,
+								Level = selected.Level
+							});
+						}
 					}
 				}
 			}
