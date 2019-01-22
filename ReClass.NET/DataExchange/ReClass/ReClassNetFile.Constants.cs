@@ -12,7 +12,7 @@
 
 		private const string DataFileName = "Data.xml";
 
-		private const string SerialisationClassName = "__Serialization_Class__";
+		private const string SerializationClassName = "__Serialization_Class__";
 
 		public const string XmlRootElement = "reclass";
 		public const string XmlCustomDataElement = "custom_data";

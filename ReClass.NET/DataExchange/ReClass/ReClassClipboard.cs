@@ -26,7 +26,7 @@ namespace ReClassNET.DataExchange.ReClass
 
 			using (var ms = new MemoryStream())
 			{
-				ReClassNetFile.WriteNodes(ms, nodes, logger);
+				ReClassNetFile.SerializeNodesToStream(ms, nodes, logger);
 
 				Clipboard.SetData(ClipboardFormat, ms.ToArray());
 			}
@@ -51,7 +51,7 @@ namespace ReClassNET.DataExchange.ReClass
 				{
 					using (var ms = new MemoryStream(data))
 					{
-						var result = ReClassNetFile.ReadNodes(ms, templateProject, logger);
+						var result = ReClassNetFile.DeserializeNodesFromStream(ms, templateProject, logger);
 						classes.AddRange(result.Item1);
 						nodes.AddRange(result.Item2);
 					}

@@ -250,7 +250,7 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 		}
 
-		public static Tuple<List<ClassNode>, List<BaseNode>> ReadNodes(Stream input, ReClassNetProject templateProject, ILogger logger)
+		public static Tuple<List<ClassNode>, List<BaseNode>> DeserializeNodesFromStream(Stream input, ReClassNetProject templateProject, ILogger logger)
 		{
 			Contract.Requires(input != null);
 			Contract.Requires(logger != null);
@@ -267,7 +267,7 @@ namespace ReClassNET.DataExchange.ReClass
 
 				var nodes = new List<BaseNode>();
 
-				var serialisationClassNode = project.Classes.FirstOrDefault(c => c.Name == SerialisationClassName);
+				var serialisationClassNode = project.Classes.FirstOrDefault(c => c.Name == SerializationClassName);
 				if (serialisationClassNode != null)
 				{
 					if (templateProject != null)

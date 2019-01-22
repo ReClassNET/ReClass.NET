@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.Compression;
@@ -138,7 +138,7 @@ namespace ReClassNET.DataExchange.ReClass
 			return element;
 		}
 
-		public static void WriteNodes(Stream output, IEnumerable<BaseNode> nodes, ILogger logger)
+		public static void SerializeNodesToStream(Stream output, IEnumerable<BaseNode> nodes, ILogger logger)
 		{
 			Contract.Requires(output != null);
 			Contract.Requires(nodes != null);
@@ -164,7 +164,7 @@ namespace ReClassNET.DataExchange.ReClass
 
 				var serialisationClass = new ClassNode(false)
 				{
-					Name = SerialisationClassName
+					Name = SerializationClassName
 				};
 
 				project.AddClass(serialisationClass);
