@@ -6,9 +6,8 @@
 		public const string FileExtension = ".rcnet";
 		public const string FileExtensionId = "rcnetfile";
 
-		private const string CurrentVersion = "2";
-		private const string Version1 = "1";
-		private const string Version2 = "2";
+		private const uint FileVersion = 0x00010001;
+		private const uint FileVersionCriticalMask = 0xFFFF0000;
 
 		private const string DataFileName = "Data.xml";
 

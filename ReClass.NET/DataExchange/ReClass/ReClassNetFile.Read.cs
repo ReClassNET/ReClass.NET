@@ -38,15 +38,15 @@ namespace ReClassNET.DataExchange.ReClass
 					var document = XDocument.Load(entryStream);
 					if (document.Root?.Element(XmlClassesElement) == null)
 					{
-						logger.Log(LogLevel.Error, "File has not the correct format.");
-						return;
+						throw new FormatException("The data has not the correct format.");
 					}
 
-					var version = document.Root.Attribute(XmlVersionAttribute)?.Value;
-					if (version != CurrentVersion)
+					uint.TryParse(document.Root.Attribute(XmlVersionAttribute)?.Value, out var fileVersion);
+					if ((fileVersion & FileVersionCriticalMask) > (FileVersion & FileVersionCriticalMask))
 					{
-						logger.Log(LogLevel.Warning, $"Version mismatch ({version} vs {CurrentVersion}).");
+						throw new FormatException($"The file version is unsupported. A newer {Constants.ApplicationName} version is required to read it.");
 					}
+
 					var platform = document.Root.Attribute(XmlPlatformAttribute)?.Value;
 					if (platform != Constants.Platform)
 					{

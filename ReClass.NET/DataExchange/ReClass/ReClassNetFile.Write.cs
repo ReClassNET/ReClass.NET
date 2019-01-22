@@ -31,7 +31,7 @@ namespace ReClassNET.DataExchange.ReClass
 						new XComment($"Website: {Constants.HomepageUrl}"),
 						new XElement(
 							XmlRootElement,
-							new XAttribute(XmlVersionAttribute, Version2),
+							new XAttribute(XmlVersionAttribute, FileVersion),
 							new XAttribute(XmlPlatformAttribute, Constants.Platform),
 							new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger)),
 							new XElement(XmlCustomDataElement, project.CustomData.Select(kv => new XElement(kv.Key, kv.Value)))
