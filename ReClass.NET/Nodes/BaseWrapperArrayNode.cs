@@ -34,8 +34,6 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
-			DrawInvalidMemoryIndicator(view, y);
-
 			var origX = x;
 
 			AddSelection(view, x, y, view.Font.Height);
@@ -67,6 +65,7 @@ namespace ReClassNET.Nodes
 			x += view.Font.Width;
 			x = AddComment(view, x, y);
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 

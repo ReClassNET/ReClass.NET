@@ -32,8 +32,6 @@ namespace ReClassNET.Nodes
 			var ptr = view.Memory.ReadIntPtr(Offset);
 			var text = view.Memory.Process.ReadRemoteString(Encoding, ptr, 64);
 
-			DrawInvalidMemoryIndicator(view, y);
-
 			var origX = x;
 
 			AddSelection(view, x, y, view.Font.Height);
@@ -54,6 +52,7 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 

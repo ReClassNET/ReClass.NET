@@ -37,8 +37,6 @@ namespace ReClassNET.Nodes
 			var length = MemorySize / CharacterSize;
 			var text = ReadValueFromMemory(view.Memory);
 
-			DrawInvalidMemoryIndicator(view, y);
-
 			var origX = x;
 
 			AddSelection(view, x, y, view.Font.Height);
@@ -62,6 +60,7 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 

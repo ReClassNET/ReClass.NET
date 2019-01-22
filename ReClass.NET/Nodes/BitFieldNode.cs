@@ -98,8 +98,6 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
-			DrawInvalidMemoryIndicator(view, y);
-
 			var origX = x;
 			var origY = y;
 
@@ -130,6 +128,7 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
