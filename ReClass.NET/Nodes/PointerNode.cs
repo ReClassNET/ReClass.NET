@@ -24,6 +24,15 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_Pointer;
 		}
 
+		public override bool UseMemoryPreviewToolTip(HotSpot spot, MemoryBuffer memory, out IntPtr address)
+		{
+			// TODO Should the preview be disabled if an inner node is set?
+
+			address = memory.ReadIntPtr(Offset);
+
+			return memory.Process?.GetNamedAddress(address) != null;
+		}
+
 		public override bool CanChangeInnerNodeTo(BaseNode node)
 		{
 			switch (node)
