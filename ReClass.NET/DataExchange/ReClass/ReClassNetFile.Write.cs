@@ -56,25 +56,8 @@ namespace ReClassNET.DataExchange.ReClass
 				new XAttribute(XmlNameAttribute, c.Name ?? string.Empty),
 				new XAttribute(XmlCommentAttribute, c.Comment ?? string.Empty),
 				new XAttribute(XmlAddressAttribute, c.AddressFormula ?? string.Empty),
-				CreateNodeElements(c.Nodes, logger)
+				c.Nodes.Select(n => CreateElementFromNode(n, logger)).Where(e => e != null)
 			));
-		}
-
-		private static IEnumerable<XElement> CreateNodeElements(IEnumerable<BaseNode> nodes, ILogger logger)
-		{
-			Contract.Requires(nodes != null);
-			Contract.Requires(Contract.ForAll(nodes, n => n != null));
-			Contract.Requires(logger != null);
-			Contract.Ensures(Contract.Result<IEnumerable<XElement>>() != null);
-
-			foreach (var node in nodes)
-			{
-				var element = CreateElementFromNode(node, logger);
-				if (element != null)
-				{
-					yield return element;
-				}
-			}
 		}
 
 		private static XElement CreateElementFromNode(BaseNode node, ILogger logger)
