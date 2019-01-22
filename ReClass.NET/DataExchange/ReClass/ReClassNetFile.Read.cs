@@ -263,28 +263,18 @@ namespace ReClassNET.DataExchange.ReClass
 				var file = new ReClassNetFile(project);
 				file.Load(input, logger);
 
-				var classes = new List<ClassNode>();
-
-				var nodes = new List<BaseNode>();
-
-				var serialisationClassNode = project.Classes.FirstOrDefault(c => c.Name == SerializationClassName);
-				if (serialisationClassNode != null)
+				var classes = project.Classes
+					.Where(c => c.Name != SerializationClassName);
+				if (templateProject != null)
 				{
-					if (templateProject != null)
-					{
-						var collection = project.Classes
-							.Where(c => c != serialisationClassNode)
-							.Where(classNode => !templateProject.ContainsClass(classNode.Uuid));
-
-						classes.AddRange(collection);
-					}
-
-					nodes.AddRange(serialisationClassNode.Nodes);
-
-					project.Remove(serialisationClassNode);
+					classes = classes.Where(c => !templateProject.ContainsClass(c.Uuid));
 				}
 
-				return Tuple.Create(classes, nodes);
+				var nodes = project.Classes
+					.Where(c => c.Name == SerializationClassName)
+					.SelectMany(c => c.Nodes);
+
+				return Tuple.Create(classes.ToList(), nodes.ToList());
 			}
 		}
 	}

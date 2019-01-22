@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.Compression;
@@ -147,9 +147,20 @@ namespace ReClassNET.DataExchange.ReClass
 
 			using (var project = new ReClassNetProject())
 			{
-				void RecursiveAddClasses(BaseWrapperNode wrapperNode)
+				void RecursiveAddClasses(BaseNode node)
 				{
-					if (!(wrapperNode.ResolveMostInnerNode() is ClassNode classNode) || project.ContainsClass(classNode.Uuid))
+					ClassNode classNode = null;
+					switch (node)
+					{
+						case ClassNode c1:
+							classNode = c1;
+							break;
+						case BaseWrapperNode wrapperNode when wrapperNode.ResolveMostInnerNode() is ClassNode c2:
+							classNode = c2;
+							break;
+					}
+
+					if (classNode == null || project.ContainsClass(classNode.Uuid))
 					{
 						return;
 					}
@@ -167,23 +178,23 @@ namespace ReClassNET.DataExchange.ReClass
 					Name = SerializationClassName
 				};
 
-				project.AddClass(serialisationClass);
+				var needsSerialisationClass = true;
 
 				foreach (var node in nodes)
 				{
-					if (node is ClassNode classNode)
+					RecursiveAddClasses(node);
+
+					if (!(node is ClassNode))
 					{
-						project.AddClass(classNode);
+						if (needsSerialisationClass)
+						{
+							needsSerialisationClass = false;
 
-						continue;
+							project.AddClass(serialisationClass);
+						}
+
+						serialisationClass.AddNode(node);
 					}
-
-					if (node is BaseWrapperNode wrapperNode)
-					{
-						RecursiveAddClasses(wrapperNode);
-					}
-
-					serialisationClass.AddNode(node);
 				}
 
 				var file = new ReClassNetFile(project);
