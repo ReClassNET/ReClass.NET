@@ -20,6 +20,37 @@ namespace ReClassNET.UI
 {
 	public partial class MemoryViewControl : ScrollableCustomControl
 	{
+		/// <summary>
+		/// Contains informations about a selected node.
+		/// </summary>
+		public class SelectedNodeInfo
+		{
+			/// <summary>
+			/// The selected node.
+			/// </summary>
+			public BaseNode Node { get; }
+			
+			/// <summary>
+			/// The memory this node uses.
+			/// </summary>
+			public MemoryBuffer Memory { get; }
+
+			/// <summary>
+			/// The address of the node in the remote process.
+			/// </summary>
+			public IntPtr Address { get; }
+
+			public SelectedNodeInfo(BaseNode node, MemoryBuffer memory, IntPtr address)
+			{
+				Contract.Requires(node != null);
+				Contract.Requires(memory != null);
+
+				Node = node;
+				Memory = memory;
+				Address = address;
+			}
+		}
+
 		private ReClassNetProject project;
 
 		private ClassNode classNode;
@@ -72,8 +103,6 @@ namespace ReClassNET.UI
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public MemoryBuffer Memory { get; set; }
-
-		public IEnumerable<BaseNode> SelectedNodes => selectedNodes.Select(s => s.Node);
 
 		public event EventHandler SelectionChanged;
 
@@ -804,7 +833,7 @@ namespace ReClassNET.UI
 			showCodeOfClassToolStripMenuItem.Enabled = nodeIsClass;
 			shrinkClassToolStripMenuItem.Enabled = nodeIsClass;
 
-			hideNodesToolStripMenuItem.Enabled = SelectedNodes.All(n => !(n is ClassNode));
+			hideNodesToolStripMenuItem.Enabled = selectedNodes.All(h => !(h.Node is ClassNode));
 
 			unhideChildNodesToolStripMenuItem.Enabled = count == 1 && node is BaseContainerNode bcn && bcn.Nodes.Any(n => n.IsHidden);
 			unhideNodesAboveToolStripMenuItem.Enabled = count == 1 && parentNode != null && parentNode.TryGetPredecessor(node, out var predecessor) && predecessor.IsHidden;
@@ -1004,6 +1033,17 @@ namespace ReClassNET.UI
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Gets informations about all selected nodes.
+		/// </summary>
+		/// <returns>A list with informations about all selected nodes.</returns>
+		public IReadOnlyList<SelectedNodeInfo> GetSelectedNodes()
+		{
+			return selectedNodes
+				.Select(h => new SelectedNodeInfo(h.Node, h.Memory, h.Address))
+				.ToList();
+		}
 
 		private void ShowNodeContextMenu(Point location)
 		{

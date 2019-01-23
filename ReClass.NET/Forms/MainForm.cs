@@ -511,14 +511,15 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			var count = memoryView.SelectedNodes.Count();
-			var node = memoryView.SelectedNodes.FirstOrDefault();
+			var selectedNodes = memoryView.GetSelectedNodes();
+
+			var node = selectedNodes.FirstOrDefault()?.Node;
 			var parentContainer = node?.GetParentContainer();
 
 			addBytesToolStripDropDownButton.Enabled = parentContainer != null || node is ClassNode;
-			insertBytesToolStripDropDownButton.Enabled = count == 1 && parentContainer != null;
+			insertBytesToolStripDropDownButton.Enabled = selectedNodes.Count == 1 && parentContainer != null;
 
-			var enabled = count > 0 && !(node is ClassNode);
+			var enabled = selectedNodes.Count > 0 && !(node is ClassNode);
 			toolStrip.Items.OfType<TypeToolStripButton>().ForEach(b => b.Enabled = enabled);
 		}
 
