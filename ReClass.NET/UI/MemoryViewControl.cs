@@ -78,7 +78,7 @@ namespace ReClassNET.UI
 		public event EventHandler SelectionChanged;
 
 		/// <summary>The context menu of a node.</summary>
-		public ContextMenuStrip NodeContextMenu => selectedNodeContextMenuStrip;
+		public ContextMenuStrip NodeContextMenu { get; set; }
 
 		private readonly MemoryPreviewPopUp memoryPreviewPopUp;
 
@@ -335,14 +335,14 @@ namespace ReClassNET.UI
 									selectionAnchor = selectionCaret = hotSpot;
 								}
 
-								selectedNodeContextMenuStrip.Show(this, e.Location);
+								ShowNodeContextMenu(e.Location);
 							}
 
 							invalidate = true;
 						}
 						else if (hotSpot.Type == HotSpotType.Drop)
 						{
-							selectedNodeContextMenuStrip.Show(this, e.Location);
+							ShowNodeContextMenu(e.Location);
 
 							break;
 						}
@@ -591,7 +591,7 @@ namespace ReClassNET.UI
 					}
 					if (key == Keys.Menu)
 					{
-						selectedNodeContextMenuStrip.Show(this, 10, 10);
+						ShowNodeContextMenu(new Point(10, 10));
 
 						return true;
 					}
@@ -1004,6 +1004,11 @@ namespace ReClassNET.UI
 		}
 
 		#endregion
+
+		private void ShowNodeContextMenu(Point location)
+		{
+			NodeContextMenu?.Show(this, location);
+		}
 
 		public void AddBytes(int length)
 		{
