@@ -18,7 +18,6 @@ namespace ReClassNET.UI
 
 		public Rectangle ClientArea { get; set; }
 		public List<HotSpot> HotSpots { get; set; }
-		public List<Nodes.ClassNode> Classes { get; set; }
 		public IntPtr Address { get; set; }
 		public int Level { get; set; }
 		public bool MultipleNodesSelected { get; set; }
@@ -34,7 +33,6 @@ namespace ReClassNET.UI
 				CurrentTime = CurrentTime,
 				ClientArea = ClientArea,
 				HotSpots = HotSpots,
-				Classes = Classes,
 				Address = Address,
 				Level = Level,
 				MultipleNodesSelected = MultipleNodesSelected
