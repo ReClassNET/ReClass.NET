@@ -170,6 +170,9 @@
     <Compile Include="Debugger\RemoteDebugger.Extensions.cs" />
     <Compile Include="Debugger\RemoteDebugger.Thread.cs" />
     <Compile Include="Debugger\SoftwareBreakpoint.cs" />
+    <Compile Include="Forms\MainForm.Functions.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\NamedAddressesForm.cs">
       <SubType>Form</SubType>
     </Compile>
