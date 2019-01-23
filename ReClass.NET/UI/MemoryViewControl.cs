@@ -146,19 +146,18 @@ namespace ReClassNET.UI
 			Memory.Size = ClassNode.MemorySize;
 			Memory.Update(ClassNode.Offset);
 
-			BaseHexNode.CurrentHighlightTime = DateTime.Now;
-
 			var view = new ViewInfo
 			{
 				Settings = Program.Settings,
 				Context = e.Graphics,
 				Font = font,
-				Address = ClassNode.Offset,
-				ClientArea = ClientRectangle,
-				Level = 0,
 				Memory = Memory,
+				CurrentTime = DateTime.UtcNow,
+				ClientArea = ClientRectangle,
+				HotSpots = hotSpots,
+				Address = ClassNode.Offset,
+				Level = 0,
 				MultipleNodesSelected = selectedNodes.Count > 1,
-				HotSpots = hotSpots
 			};
 
 			try

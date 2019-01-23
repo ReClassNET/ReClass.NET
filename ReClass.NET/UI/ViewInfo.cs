@@ -14,6 +14,8 @@ namespace ReClassNET.UI
 
 		public MemoryBuffer Memory { get; set; }
 
+		public DateTime CurrentTime { get; set; }
+
 		public Rectangle ClientArea { get; set; }
 		public List<HotSpot> HotSpots { get; set; }
 		public List<Nodes.ClassNode> Classes { get; set; }
@@ -29,6 +31,7 @@ namespace ReClassNET.UI
 				Context = Context,
 				Font = Font,
 				Memory = Memory,
+				CurrentTime = CurrentTime,
 				ClientArea = ClientArea,
 				HotSpots = HotSpots,
 				Classes = Classes,
