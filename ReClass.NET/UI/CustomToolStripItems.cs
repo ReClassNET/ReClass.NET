@@ -5,19 +5,19 @@ using System.Windows.Forms.Design;
 namespace ReClassNET.UI
 {
 	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
-	class IntegerToolStripMenuItem : ToolStripMenuItem
+	public class IntegerToolStripMenuItem : ToolStripMenuItem
 	{
 		public int Value { get; set; }
 	}
 
 	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
-	class TypeToolStripMenuItem : ToolStripMenuItem
+	public class TypeToolStripMenuItem : ToolStripMenuItem
 	{
 		public Type Value { get; set; }
 	}
 
 	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
-	class TypeToolStripButton : ToolStripButton
+	public class TypeToolStripButton : ToolStripButton
 	{
 		public Type Value { get; set; }
 	}
