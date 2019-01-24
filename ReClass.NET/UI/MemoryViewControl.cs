@@ -106,9 +106,6 @@ namespace ReClassNET.UI
 
 		public event EventHandler SelectionChanged;
 
-		/// <summary>The context menu of a node.</summary>
-		public ContextMenuStrip NodeContextMenu { get; set; }
-
 		private readonly MemoryPreviewPopUp memoryPreviewPopUp;
 
 		public MemoryViewControl()
@@ -1047,7 +1044,7 @@ namespace ReClassNET.UI
 
 		private void ShowNodeContextMenu(Point location)
 		{
-			NodeContextMenu?.Show(this, location);
+			ContextMenuStrip?.Show(this, location);
 		}
 
 		public void AddBytes(int length)
