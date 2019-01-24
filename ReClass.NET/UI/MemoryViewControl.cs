@@ -783,6 +783,7 @@ namespace ReClassNET.UI
 			selectedNodes.Clear();
 
 			selectedNodes.AddRange(nodes.Select(i => new HotSpot { Type = HotSpotType.Select, Node = i.Node, Memory = i.Memory, Address = i.Address, Level = i.Level }));
+			selectedNodes.ForEach(h => h.Node.IsSelected = true);
 
 			OnSelectionChanged();
 		}
