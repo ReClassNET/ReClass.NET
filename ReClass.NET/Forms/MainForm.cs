@@ -779,5 +779,71 @@ namespace ReClassNET.Forms
 		}
 
 		#endregion
+
+		private void memoryViewControl_ChangeClassTypeClick(object sender, NodeClickEventArgs e)
+		{
+			var classes = CurrentProject.Classes.OrderBy(c => c.Name);
+
+			if (e.Node is FunctionNode functionNode)
+			{
+				var noneClass = new ClassNode(false)
+				{
+					Name = "None"
+				};
+
+				using (var csf = new ClassSelectionForm(noneClass.Yield().Concat(classes)))
+				{
+					if (csf.ShowDialog() == DialogResult.OK)
+					{
+						var selectedClassNode = csf.SelectedClass;
+						if (selectedClassNode != null)
+						{
+							if (selectedClassNode == noneClass)
+							{
+								selectedClassNode = null;
+							}
+
+							functionNode.BelongsToClass = selectedClassNode;
+						}
+					}
+				}
+			}
+			else if (e.Node is BaseWrapperNode refNode)
+			{
+				using (var csf = new ClassSelectionForm(classes))
+				{
+					if (csf.ShowDialog() == DialogResult.OK)
+					{
+						var selectedClassNode = csf.SelectedClass;
+						if (refNode.CanChangeInnerNodeTo(selectedClassNode))
+						{
+							if (!refNode.GetRootWrapperNode().ShouldPerformCycleCheckForInnerNode() || IsCycleFree(e.Node.GetParentClass(), selectedClassNode))
+							{
+								refNode.ChangeInnerNode(selectedClassNode);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		private void memoryViewControl_ChangeWrappedTypeClick(object sender, NodeClickEventArgs e)
+		{
+			if (e.Node is BaseWrapperNode wrapperNode)
+			{
+				var items = NodeTypesBuilder.CreateToolStripMenuItems(t =>
+				{
+					var node = BaseNode.CreateInstanceFromType(t);
+					if (wrapperNode.CanChangeInnerNodeTo(node))
+					{
+						wrapperNode.ChangeInnerNode(node);
+					}
+				}, wrapperNode.CanChangeInnerNodeTo(null));
+
+				var menu = new ContextMenuStrip();
+				menu.Items.AddRange(items.ToArray());
+				menu.Show(this, e.Location);
+			}
+		}
 	}
 }

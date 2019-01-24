@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
-using ReClassNET.Forms;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
@@ -104,6 +103,8 @@ namespace ReClassNET.UI
 		public MemoryBuffer Memory { get; set; }
 
 		public event EventHandler SelectionChanged;
+		public event NodeClickEventHandler ChangeClassTypeClick;
+		public event NodeClickEventHandler ChangeWrappedTypeClick;
 
 		private readonly MemoryPreviewPopUp memoryPreviewPopUp;
 
@@ -381,67 +382,17 @@ namespace ReClassNET.UI
 						}
 						else if (hotSpot.Type == HotSpotType.ChangeClassType)
 						{
-							if (hitObject is FunctionNode functionNode)
-							{
-								var noneClass = new ClassNode(false)
-								{
-									Name = "None"
-								};
-
-								using (var csf = new ClassSelectionForm(noneClass.Yield().Concat(project.Classes.OrderBy(c => c.Name))))
-								{
-									if (csf.ShowDialog() == DialogResult.OK)
-									{
-										var selectedClassNode = csf.SelectedClass;
-										if (selectedClassNode != null)
-										{
-											if (selectedClassNode == noneClass)
-											{
-												selectedClassNode = null;
-											}
-
-											functionNode.BelongsToClass = selectedClassNode;
-										}
-									}
-								}
-							}
-							else if (hitObject is BaseWrapperNode refNode)
-							{
-								using (var csf = new ClassSelectionForm(project.Classes.OrderBy(c => c.Name)))
-								{
-									if (csf.ShowDialog() == DialogResult.OK)
-									{
-										var selectedClassNode = csf.SelectedClass;
-										if (refNode.CanChangeInnerNodeTo(selectedClassNode))
-										{
-											if (!refNode.GetRootWrapperNode().ShouldPerformCycleCheckForInnerNode() || IsCycleFree(ClassNode, selectedClassNode))
-											{
-												refNode.ChangeInnerNode(selectedClassNode);
-											}
-										}
-									}
-								}
-							}
+							var handler = ChangeClassTypeClick;
+							handler?.Invoke(this, new NodeClickEventArgs(hitObject, e.Button, e.Location));
 
 							break;
 						}
 						else if (hotSpot.Type == HotSpotType.ChangeWrappedType)
 						{
-							if (hitObject is BaseWrapperNode wrapperNode)
-							{
-								var items = NodeTypesBuilder.CreateToolStripMenuItems(t =>
-								{
-									var node = BaseNode.CreateInstanceFromType(t);
-									if (wrapperNode.CanChangeInnerNodeTo(node))
-									{
-										wrapperNode.ChangeInnerNode(node);
-									}
-								}, wrapperNode.CanChangeInnerNodeTo(null));
+							var handler = ChangeWrappedTypeClick;
+							handler?.Invoke(this, new NodeClickEventArgs(hitObject, e.Button, e.Location));
 
-								var menu = new ContextMenuStrip();
-								menu.Items.AddRange(items.ToArray());
-								menu.Show(this, e.Location);
-							}
+							break;
 						}
 					}
 					catch (Exception ex)
@@ -776,6 +727,10 @@ namespace ReClassNET.UI
 				.ToList();
 		}
 
+		/// <summary>
+		/// Selects the given nodes.
+		/// </summary>
+		/// <param name="nodes"></param>
 		public void SetSelectedNodes(IEnumerable<SelectedNodeInfo> nodes)
 		{
 			selectedNodes.ForEach(h => h.Node.ClearSelection());
@@ -788,11 +743,18 @@ namespace ReClassNET.UI
 			OnSelectionChanged();
 		}
 
+		/// <summary>
+		/// Shows the context menu at the given point.
+		/// </summary>
+		/// <param name="location">The location where the context menu should be shown.</param>
 		private void ShowNodeContextMenu(Point location)
 		{
 			ContextMenuStrip?.Show(this, location);
 		}
 
+		/// <summary>
+		/// Resets the selection state of all selected nodes.
+		/// </summary>
 		public void ClearSelection()
 		{
 			selectionAnchor = selectionCaret = null;
@@ -804,11 +766,6 @@ namespace ReClassNET.UI
 			OnSelectionChanged();
 
 			//Invalidate();
-		}
-
-		private bool IsCycleFree(ClassNode parent, ClassNode node)
-		{
-			return true;
 		}
 	}
 }

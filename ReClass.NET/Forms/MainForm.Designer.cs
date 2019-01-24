@@ -197,6 +197,8 @@
 			this.memoryViewControl.Size = new System.Drawing.Size(936, 524);
 			this.memoryViewControl.TabIndex = 0;
 			this.memoryViewControl.SelectionChanged += new System.EventHandler(this.memoryViewControl_SelectionChanged);
+			this.memoryViewControl.ChangeClassTypeClick += new ReClassNET.UI.NodeClickEventHandler(this.memoryViewControl_ChangeClassTypeClick);
+			this.memoryViewControl.ChangeWrappedTypeClick += new ReClassNET.UI.NodeClickEventHandler(this.memoryViewControl_ChangeWrappedTypeClick);
 			this.memoryViewControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.memoryViewControl_KeyDown);
 			// 
 			// selectedNodeContextMenuStrip
@@ -228,7 +230,7 @@
             this.showCodeOfClassToolStripMenuItem,
             this.shrinkClassToolStripMenuItem});
 			this.selectedNodeContextMenuStrip.Name = "selectedNodeContextMenuStrip";
-			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(270, 432);
+			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(270, 410);
 			this.selectedNodeContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.selectedNodeContextMenuStrip_Opening);
 			// 
 			// changeTypeToolStripMenuItem
