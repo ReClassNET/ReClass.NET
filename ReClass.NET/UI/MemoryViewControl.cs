@@ -5,14 +5,10 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Extensions;
 using ReClassNET.Forms;
 using ReClassNET.Memory;
-using ReClassNET.MemoryScanner;
-using ReClassNET.MemoryScanner.Comparer;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
 
@@ -40,7 +36,9 @@ namespace ReClassNET.UI
 			/// </summary>
 			public IntPtr Address { get; }
 
-			public SelectedNodeInfo(BaseNode node, MemoryBuffer memory, IntPtr address)
+			public int Level { get; }
+
+			public SelectedNodeInfo(BaseNode node, MemoryBuffer memory, IntPtr address, int level)
 			{
 				Contract.Requires(node != null);
 				Contract.Requires(memory != null);
@@ -48,6 +46,7 @@ namespace ReClassNET.UI
 				Node = node;
 				Memory = memory;
 				Address = address;
+				Level = level;
 			}
 		}
 
@@ -183,7 +182,7 @@ namespace ReClassNET.UI
 				HotSpots = hotSpots,
 				Address = ClassNode.Offset,
 				Level = 0,
-				MultipleNodesSelected = selectedNodes.Count > 1,
+				MultipleNodesSelected = selectedNodes.Count > 1
 			};
 
 			try
@@ -374,7 +373,7 @@ namespace ReClassNET.UI
 						}
 						else if (hotSpot.Type == HotSpotType.Delete)
 						{
-							RemoveSelectedNodes();
+							hotSpot.Node.GetParentContainer().RemoveNode(hotSpot.Node);
 
 							invalidate = true;
 
@@ -609,32 +608,13 @@ namespace ReClassNET.UI
 
 				if (selectedNodes.Count > 0)
 				{
-					if (key == Keys.Delete)
-					{
-						RemoveSelectedNodes();
-
-						return true;
-					}
 					if (key == Keys.Menu)
 					{
 						ShowNodeContextMenu(new Point(10, 10));
 
 						return true;
 					}
-					if (modifier == Keys.Control && (key == Keys.C || key == Keys.V))
-					{
-						if (key == Keys.C)
-						{
-							CopySelectedNodesToClipboard();
-						}
-						else if (key == Keys.V)
-						{
-							PasteNodeFromClipboardToSelection();
-						}
-
-						return true;
-					}
-					if (key == Keys.Down || key == Keys.Up)
+					if ((key == Keys.Down || key == Keys.Up) && selectionCaret != null && selectionAnchor != null)
 					{
 						HotSpot toSelect;
 						bool isAtEnd;
@@ -676,7 +656,8 @@ namespace ReClassNET.UI
 							var first = Utils.Min(selectionAnchor, selectionCaret, h => h.Node.Offset.ToInt32());
 							var last = first == selectionAnchor ? selectionCaret : selectionAnchor;
 
-							ClearSelection();
+							selectedNodes.ForEach(h => h.Node.ClearSelection());
+							selectedNodes.Clear();
 
 							var containerNode = toSelect.Node.GetParentContainer();
 							foreach (var spot in containerNode.Nodes
@@ -782,253 +763,6 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private void selectedNodeContextMenuStrip_Opening(object sender, CancelEventArgs e)
-		{
-			changeTypeToolStripMenuItem.DropDownItems.Clear();
-			changeTypeToolStripMenuItem.DropDownItems.AddRange(NodeTypesBuilder.CreateToolStripMenuItems(ReplaceSelectedNodesWithType, false).ToArray());
-
-			var count = selectedNodes.Count;
-			var node = selectedNodes.Select(s => s.Node).FirstOrDefault();
-			var parentNode = node?.GetParentContainer();
-
-			var nodeIsClass = node is ClassNode;
-			var nodeIsSearchableValueNode = false;
-			switch (node)
-			{
-				case BaseHexNode _:
-				case FloatNode _:
-				case DoubleNode _:
-				case Int8Node _:
-				case UInt8Node _:
-				case Int16Node _:
-				case UInt16Node _:
-				case Int32Node _:
-				case UInt32Node _:
-				case Int64Node _:
-				case UInt64Node _:
-				case Utf8TextNode _:
-				case Utf16TextNode _:
-				case Utf32TextNode _:
-					nodeIsSearchableValueNode = true;
-					break;
-			}
-
-			addBytesToolStripMenuItem.Enabled = parentNode != null || nodeIsClass;
-			insertBytesToolStripMenuItem.Enabled = count == 1 && parentNode != null;
-
-			changeTypeToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
-
-			createClassFromNodesToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
-			dissectNodesToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
-			searchForEqualValuesToolStripMenuItem.Enabled = count == 1 && nodeIsSearchableValueNode;
-
-			pasteNodesToolStripMenuItem.Enabled = count == 1 && ReClassClipboard.ContainsNodes;
-			removeToolStripMenuItem.Enabled = !nodeIsClass;
-
-			copyAddressToolStripMenuItem.Enabled = !nodeIsClass;
-
-			showCodeOfClassToolStripMenuItem.Enabled = nodeIsClass;
-			shrinkClassToolStripMenuItem.Enabled = nodeIsClass;
-
-			hideNodesToolStripMenuItem.Enabled = selectedNodes.All(h => !(h.Node is ClassNode));
-
-			unhideChildNodesToolStripMenuItem.Enabled = count == 1 && node is BaseContainerNode bcn && bcn.Nodes.Any(n => n.IsHidden);
-			unhideNodesAboveToolStripMenuItem.Enabled = count == 1 && parentNode != null && parentNode.TryGetPredecessor(node, out var predecessor) && predecessor.IsHidden;
-			unhideNodesBelowToolStripMenuItem.Enabled = count == 1 && parentNode != null && parentNode.TryGetSuccessor(node, out var successor) && successor.IsHidden;
-		}
-
-		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (!(sender is IntegerToolStripMenuItem item))
-			{
-				return;
-			}
-
-			AddBytes(item.Value);
-		}
-
-		private void insertBytesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (!(sender is IntegerToolStripMenuItem item))
-			{
-				return;
-			}
-
-			InsertBytes(item.Value);
-		}
-
-		private void createClassFromNodesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (selectedNodes.Count > 0 && !(selectedNodes[0].Node is ClassNode))
-			{
-				if (selectedNodes[0].Node.GetParentContainer() is ClassNode parentNode)
-				{
-					var newClassNode = ClassNode.Create();
-					selectedNodes.Select(h => h.Node).ForEach(newClassNode.AddNode);
-
-					var classInstanceNode = new ClassInstanceNode();
-					classInstanceNode.ChangeInnerNode(newClassNode);
-
-					parentNode.InsertNode(selectedNodes[0].Node, classInstanceNode);
-
-					selectedNodes.Select(h => h.Node).ForEach(c => parentNode.RemoveNode(c));
-
-					ClearSelection();
-				}
-			}
-		}
-
-		private void dissectNodesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			var hexNodes = selectedNodes.Where(h => h.Node is BaseHexNode).ToList();
-			if (!hexNodes.Any())
-			{
-				return;
-			}
-
-			foreach (var g in hexNodes.GroupBy(n => n.Node.GetParentContainer()))
-			{
-				NodeDissector.DissectNodes(g.Select(h => (BaseHexNode)h.Node), g.First().Memory);
-			}
-
-			ClearSelection();
-		}
-
-		private void searchForEqualValuesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			var selectedNode = selectedNodes.FirstOrDefault();
-			if (selectedNode == null)
-			{
-				return;
-			}
-
-			IScanComparer comparer;
-			switch (selectedNode.Node)
-			{
-				case BaseHexNode node:
-					comparer = new ArrayOfBytesMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory));
-					break;
-				case FloatNode node:
-					comparer = new FloatMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0);
-					break;
-				case DoubleNode node:
-					comparer = new DoubleMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0);
-					break;
-				case Int8Node node:
-					comparer = new ByteMemoryComparer(ScanCompareType.Equal, (byte)node.ReadValueFromMemory(selectedNode.Memory), 0);
-					break;
-				case UInt8Node node:
-					comparer = new ByteMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
-					break;
-				case Int16Node node:
-					comparer = new ShortMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
-					break;
-				case UInt16Node node:
-					comparer = new ShortMemoryComparer(ScanCompareType.Equal, (short)node.ReadValueFromMemory(selectedNode.Memory), 0);
-					break;
-				case Int32Node node:
-					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
-					break;
-				case UInt32Node node:
-					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, (int)node.ReadValueFromMemory(selectedNode.Memory), 0);
-					break;
-				case Int64Node node:
-					comparer = new LongMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
-					break;
-				case UInt64Node node:
-					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)node.ReadValueFromMemory(selectedNode.Memory), 0);
-					break;
-				case Utf8TextNode node:
-					comparer = new StringMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory), Encoding.UTF8, true);
-					break;
-				case Utf16TextNode node:
-					comparer = new StringMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory), Encoding.Unicode, true);
-					break;
-				case Utf32TextNode node:
-					comparer = new StringMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory), Encoding.UTF32, true);
-					break;
-				default:
-					return;
-			}
-
-			LinkedWindowFeatures.StartMemoryScan(comparer);
-		}
-
-		private void findOutWhatAccessesThisAddressToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			FindWhatInteractsWithSelectedNode(false);
-		}
-
-		private void findOutWhatWritesToThisAddressToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			FindWhatInteractsWithSelectedNode(true);
-		}
-
-		private void copyNodeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			CopySelectedNodesToClipboard();
-		}
-
-		private void pasteNodesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			PasteNodeFromClipboardToSelection();
-		}
-
-		private void hideNodesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			HideSelectedNodes();
-		}
-
-		private void unhideChildNodesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			UnhideChildNodes();
-		}
-
-		private void unhideNodesAboveToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			UnhideNodesAbove();
-		}
-
-		private void unhideNodesBelowToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			UnhideNodesBelow();
-		}
-
-		private void removeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			RemoveSelectedNodes();
-		}
-
-		private void copyAddressToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (selectedNodes.Count > 0)
-			{
-				Clipboard.SetText(selectedNodes.First().Address.ToString("X"));
-			}
-		}
-
-		private void showCodeOfClassToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (selectedNodes.FirstOrDefault()?.Node is ClassNode node)
-			{
-				LinkedWindowFeatures.ShowCodeGeneratorForm(node.Yield());
-			}
-		}
-
-		private void shrinkClassToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			var node = selectedNodes.Select(s => s.Node).FirstOrDefault();
-			if (!(node is ClassNode classNode))
-			{
-				return;
-			}
-
-			foreach (var nodeToDelete in classNode.Nodes.Reverse().TakeWhile(n => n is BaseHexNode))
-			{
-				classNode.RemoveNode(nodeToDelete);
-			}
-		}
-
 		#endregion
 
 		/// <summary>
@@ -1038,8 +772,19 @@ namespace ReClassNET.UI
 		public IReadOnlyList<SelectedNodeInfo> GetSelectedNodes()
 		{
 			return selectedNodes
-				.Select(h => new SelectedNodeInfo(h.Node, h.Memory, h.Address))
+				.Select(h => new SelectedNodeInfo(h.Node, h.Memory, h.Address, h.Level))
 				.ToList();
+		}
+
+		public void SetSelectedNodes(IEnumerable<SelectedNodeInfo> nodes)
+		{
+			selectedNodes.ForEach(h => h.Node.ClearSelection());
+
+			selectedNodes.Clear();
+
+			selectedNodes.AddRange(nodes.Select(i => new HotSpot { Type = HotSpotType.Select, Node = i.Node, Memory = i.Memory, Address = i.Address, Level = i.Level }));
+
+			OnSelectionChanged();
 		}
 
 		private void ShowNodeContextMenu(Point location)
@@ -1047,331 +792,22 @@ namespace ReClassNET.UI
 			ContextMenuStrip?.Show(this, location);
 		}
 
-		public void AddBytes(int length)
+		public void ClearSelection()
 		{
-			Contract.Requires(length >= 0);
+			selectionAnchor = selectionCaret = null;
 
-			var hotspot = selectedNodes.FirstOrDefault();
-			if (hotspot != null)
-			{
-				(hotspot.Node as BaseContainerNode ?? hotspot.Node.GetParentContainer())?.AddBytes(length);
-			}
-
-			Invalidate();
-		}
-
-		public void InsertBytes(int length)
-		{
-			Contract.Requires(length >= 0);
-
-			var hotspot = selectedNodes.FirstOrDefault();
-			if (hotspot != null)
-			{
-				(hotspot.Node as BaseContainerNode ?? hotspot.Node.GetParentContainer())?.InsertBytes(hotspot.Node, length);
-
-				Invalidate();
-			}
-		}
-
-		public void ReplaceSelectedNodesWithType(Type type)
-		{
-			Contract.Requires(type != null);
-			Contract.Requires(type.IsSubclassOf(typeof(BaseNode)));
-
-			var newSelected = new List<HotSpot>(selectedNodes.Count);
-
-			var hotSpotPartitions = selectedNodes
-				.WhereNot(s => s.Node is ClassNode)
-				.GroupBy(s => s.Node.GetParentContainer())
-				.SelectMany(g => g
-					.OrderBy(s => s.Node.Offset, IntPtrComparer.Instance)
-					.GroupWhile((h1, h2) => h1.Node.Offset + h1.Node.MemorySize == h2.Node.Offset)
-				);
-
-			foreach (var selectedPartition in hotSpotPartitions)
-			{
-				var hotSpotsToReplace = new Queue<HotSpot>(selectedPartition);
-				while (hotSpotsToReplace.Count > 0)
-				{
-					var selected = hotSpotsToReplace.Dequeue();
-
-					var node = BaseNode.CreateInstanceFromType(type);
-
-					var createdNodes = new List<BaseNode>();
-					selected.Node.GetParentContainer().ReplaceChildNode(selected.Node, node, ref createdNodes);
-
-					node.IsSelected = true;
-
-					var hotspot = new HotSpot
-					{
-						Memory = selected.Memory,
-						Address = selected.Address,
-						Node = node,
-						Level = selected.Level
-					};
-
-					newSelected.Add(hotspot);
-
-					if (selectionAnchor.Node == selected.Node)
-					{
-						selectionAnchor = hotspot;
-					}
-					if (selectionCaret.Node == selected.Node)
-					{
-						selectionCaret = hotspot;
-					}
-
-					// If more than one node is selected I assume the user wants to replace the complete range with the desired node type.
-					if (selectedNodes.Count > 1)
-					{
-						foreach (var createdNode in createdNodes)
-						{
-							hotSpotsToReplace.Enqueue(new HotSpot
-							{
-								Memory = selected.Memory,
-								Address = selected.Address.Add(createdNode.Offset.Sub(node.Offset)),
-								Node = createdNode,
-								Level = selected.Level
-							});
-						}
-					}
-				}
-			}
-
-			if (newSelected.Count > 0)
-			{
-				selectedNodes.Clear();
-
-				selectedNodes.AddRange(newSelected);
-
-				OnSelectionChanged();
-			}
-
-			Invalidate();
-		}
-
-		private void ClearSelection()
-		{
 			selectedNodes.ForEach(h => h.Node.ClearSelection());
 
 			selectedNodes.Clear();
-		}
-
-		private void RemoveSelectedNodes()
-		{
-			selectedNodes
-				.WhereNot(h => h.Node is ClassNode)
-				.ForEach(h => h.Node.GetParentContainer().RemoveNode(h.Node));
-
-			selectedNodes.Clear();
 
 			OnSelectionChanged();
 
-			Invalidate();
-		}
-
-		private void HideSelectedNodes()
-		{
-			foreach (var hotSpot in selectedNodes)
-			{
-				hotSpot.Node.IsHidden = true;
-			}
-
-			selectedNodes.Clear();
-
-			OnSelectionChanged();
-
-			Invalidate();
-		}
-
-		private void UnhideChildNodes()
-		{
-			if (selectedNodes.Count != 1)
-			{
-				return;
-			}
-
-			if (!(selectedNodes[0].Node is BaseContainerNode containerNode))
-			{
-				return;
-			}
-
-			foreach (var bn in containerNode.Nodes)
-			{
-				bn.IsHidden = false;
-				bn.IsSelected = false;
-			}
-
-			containerNode.IsSelected = false;
-
-			selectedNodes.Clear();
-
-			OnSelectionChanged();
-
-			Invalidate();
-		}
-
-		private void UnhideNodesBelow()
-		{
-			if (selectedNodes.Count != 1)
-			{
-				return;
-			}
-
-			var selectedNode = selectedNodes[0].Node;
-
-			var parentNode = selectedNode.GetParentContainer();
-			if (parentNode == null)
-			{
-				return;
-			}
-
-			var hiddenNodeStartIndex = parentNode.FindNodeIndex(selectedNode) + 1;
-			if (hiddenNodeStartIndex >= parentNode.Nodes.Count)
-			{
-				return;
-			}
-
-			for (var i = hiddenNodeStartIndex; i < parentNode.Nodes.Count; i++)
-			{
-				var indexNode = parentNode.Nodes[i];
-				if (indexNode.IsHidden)
-				{
-					indexNode.IsHidden = false;
-					indexNode.IsSelected = false;
-				}
-				else
-				{
-					break;
-				}
-			}
-
-			selectedNode.IsSelected = false;
-
-			selectedNodes.Clear();
-
-			OnSelectionChanged();
-
-			Invalidate();
-		}
-
-		private void UnhideNodesAbove()
-		{
-			if (selectedNodes.Count != 1)
-			{
-				return;
-			}
-
-			var selectedNode = selectedNodes[0].Node;
-
-			var parentNode = selectedNode.GetParentContainer();
-			if (parentNode == null)
-			{
-				return;
-			}
-
-			var hiddenNodeStartIndex = parentNode.FindNodeIndex(selectedNode) - 1;
-			if (hiddenNodeStartIndex < 0)
-			{
-				return;
-			}
-
-			for (var i = hiddenNodeStartIndex; i > -1; i--)
-			{
-				var indexNode = parentNode.Nodes[i];
-				if (indexNode.IsHidden)
-				{
-					indexNode.IsHidden = false;
-					indexNode.IsSelected = false;
-				}
-				else
-				{
-					break;
-				}
-			}
-
-			selectedNode.IsSelected = false;
-
-			selectedNodes.Clear();
-
-			OnSelectionChanged();
-
-			Invalidate();
-		}
-
-		private void CopySelectedNodesToClipboard()
-		{
-			if (selectedNodes.Count > 0)
-			{
-				ReClassClipboard.Copy(selectedNodes.Select(h => h.Node), Program.Logger);
-			}
-		}
-
-		private void PasteNodeFromClipboardToSelection()
-		{
-			var result = ReClassClipboard.Paste(project, Program.Logger);
-			foreach (var pastedClassNode in result.Item1)
-			{
-				if (!project.ContainsClass(pastedClassNode.Uuid))
-				{
-					project.AddClass(pastedClassNode);
-				}
-			}
-
-			if (selectedNodes.Count == 1)
-			{
-				var selectedNode = selectedNodes[0].Node;
-				var containerNode = selectedNode.GetParentContainer();
-				var classNode = selectedNode.GetParentClass();
-				if (containerNode != null && classNode != null)
-				{
-
-					foreach (var node in result.Item2)
-					{
-						if (node is BaseWrapperNode)
-						{
-							var rootWrapper = node.GetRootWrapperNode();
-							Debug.Assert(rootWrapper == node);
-
-							if (rootWrapper.ShouldPerformCycleCheckForInnerNode())
-							{
-								if (rootWrapper.ResolveMostInnerNode() is ClassNode innerNode)
-								{
-									if (!IsCycleFree(classNode, innerNode))
-									{
-										continue;
-									}
-								}
-							}
-						}
-
-						containerNode.InsertNode(selectedNode, node);
-					}
-				}
-			}
+			//Invalidate();
 		}
 
 		private bool IsCycleFree(ClassNode parent, ClassNode node)
 		{
-			if (ClassUtil.IsCyclicIfClassIsAccessibleFromParent(parent, node, project.Classes))
-			{
-				MessageBox.Show("Invalid operation because this would create a class cycle.", "Cycle Detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-				return false;
-			}
-
 			return true;
-		}
-
-		private void FindWhatInteractsWithSelectedNode(bool writeOnly)
-		{
-			var selectedNode = selectedNodes.FirstOrDefault();
-			if (selectedNode == null)
-			{
-				return;
-			}
-
-			LinkedWindowFeatures.FindWhatInteractsWithAddress(selectedNode.Address, selectedNode.Node.MemorySize, writeOnly);
 		}
 	}
 }

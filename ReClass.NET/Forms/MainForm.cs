@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -10,6 +12,8 @@ using ReClassNET.Core;
 using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
+using ReClassNET.MemoryScanner;
+using ReClassNET.MemoryScanner.Comparer;
 using ReClassNET.Nodes;
 using ReClassNET.Plugins;
 using ReClassNET.UI;
@@ -73,7 +77,7 @@ namespace ReClassNET.Forms
 
 			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, Constants.PluginsFolder), Program.Logger);
 
-			toolStrip.Items.AddRange(NodeTypesBuilder.CreateToolStripButtons(t => memoryViewControl.ReplaceSelectedNodesWithType(t)).ToArray());
+			toolStrip.Items.AddRange(NodeTypesBuilder.CreateToolStripButtons(ReplaceSelectedNodesWithType).ToArray());
 
 			var createDefaultProject = true;
 
@@ -419,6 +423,63 @@ namespace ReClassNET.Forms
 			);
 		}
 
+		private void selectedNodeContextMenuStrip_Opening(object sender, CancelEventArgs e)
+		{
+			changeTypeToolStripMenuItem.DropDownItems.Clear();
+			changeTypeToolStripMenuItem.DropDownItems.AddRange(NodeTypesBuilder.CreateToolStripMenuItems(ReplaceSelectedNodesWithType, false).ToArray());
+
+			var selectedNodes = memoryViewControl.GetSelectedNodes();
+
+			var count = selectedNodes.Count;
+			var node = selectedNodes.Select(s => s.Node).FirstOrDefault();
+			var parentNode = node?.GetParentContainer();
+
+			var nodeIsClass = node is ClassNode;
+			var nodeIsSearchableValueNode = false;
+			switch (node)
+			{
+				case BaseHexNode _:
+				case FloatNode _:
+				case DoubleNode _:
+				case Int8Node _:
+				case UInt8Node _:
+				case Int16Node _:
+				case UInt16Node _:
+				case Int32Node _:
+				case UInt32Node _:
+				case Int64Node _:
+				case UInt64Node _:
+				case Utf8TextNode _:
+				case Utf16TextNode _:
+				case Utf32TextNode _:
+					nodeIsSearchableValueNode = true;
+					break;
+			}
+
+			addBytesToolStripMenuItem.Enabled = parentNode != null || nodeIsClass;
+			insertBytesToolStripMenuItem.Enabled = count == 1 && parentNode != null;
+
+			changeTypeToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
+
+			createClassFromNodesToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
+			dissectNodesToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
+			searchForEqualValuesToolStripMenuItem.Enabled = count == 1 && nodeIsSearchableValueNode;
+
+			pasteNodesToolStripMenuItem.Enabled = count == 1 && ReClassClipboard.ContainsNodes;
+			removeToolStripMenuItem.Enabled = !nodeIsClass;
+
+			copyAddressToolStripMenuItem.Enabled = !nodeIsClass;
+
+			showCodeOfClassToolStripMenuItem.Enabled = nodeIsClass;
+			shrinkClassToolStripMenuItem.Enabled = nodeIsClass;
+
+			hideNodesToolStripMenuItem.Enabled = selectedNodes.All(h => !(h.Node is ClassNode));
+
+			unhideChildNodesToolStripMenuItem.Enabled = count == 1 && node is BaseContainerNode bcn && bcn.Nodes.Any(n => n.IsHidden);
+			unhideNodesAboveToolStripMenuItem.Enabled = count == 1 && parentNode != null && parentNode.TryGetPredecessor(node, out var predecessor) && predecessor.IsHidden;
+			unhideNodesBelowToolStripMenuItem.Enabled = count == 1 && parentNode != null && parentNode.TryGetSuccessor(node, out var successor) && successor.IsHidden;
+		}
+
 		private void addBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (!(sender is IntegerToolStripMenuItem item))
@@ -426,12 +487,12 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			memoryViewControl.AddBytes(item.Value);
+			AddBytesToClass(item.Value);
 		}
 
 		private void addXBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			AskAddOrInsertBytes("Add Bytes", memoryViewControl.AddBytes);
+			AskAddOrInsertBytes("Add Bytes", AddBytesToClass);
 		}
 
 		private void insertBytesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -441,12 +502,187 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			memoryViewControl.InsertBytes(item.Value);
+			InsertBytesInClass(item.Value);
 		}
 
 		private void insertXBytesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			AskAddOrInsertBytes("Insert Bytes", memoryViewControl.InsertBytes);
+			AskAddOrInsertBytes("Insert Bytes", InsertBytesInClass);
+		}
+
+		private void createClassFromNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var selectedNodes = memoryViewControl.GetSelectedNodes();
+
+			if (selectedNodes.Count > 0 && !(selectedNodes[0].Node is ClassNode))
+			{
+				if (selectedNodes[0].Node.GetParentContainer() is ClassNode parentNode)
+				{
+					var newClassNode = ClassNode.Create();
+					selectedNodes.Select(h => h.Node).ForEach(newClassNode.AddNode);
+
+					var classInstanceNode = new ClassInstanceNode();
+					classInstanceNode.ChangeInnerNode(newClassNode);
+
+					parentNode.InsertNode(selectedNodes[0].Node, classInstanceNode);
+
+					selectedNodes.Select(h => h.Node).ForEach(c => parentNode.RemoveNode(c));
+
+					ClearSelection();
+				}
+			}
+		}
+
+		private void dissectNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var hexNodes = memoryViewControl.GetSelectedNodes().Where(h => h.Node is BaseHexNode).ToList();
+			if (!hexNodes.Any())
+			{
+				return;
+			}
+
+			foreach (var g in hexNodes.GroupBy(n => n.Node.GetParentContainer()))
+			{
+				NodeDissector.DissectNodes(g.Select(h => (BaseHexNode)h.Node), g.First().Memory);
+			}
+
+			ClearSelection();
+		}
+
+		private void searchForEqualValuesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var selectedNode = memoryViewControl.GetSelectedNodes().FirstOrDefault();
+			if (selectedNode == null)
+			{
+				return;
+			}
+
+			IScanComparer comparer;
+			switch (selectedNode.Node)
+			{
+				case BaseHexNode node:
+					comparer = new ArrayOfBytesMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory));
+					break;
+				case FloatNode node:
+					comparer = new FloatMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case DoubleNode node:
+					comparer = new DoubleMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case Int8Node node:
+					comparer = new ByteMemoryComparer(ScanCompareType.Equal, (byte)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case UInt8Node node:
+					comparer = new ByteMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case Int16Node node:
+					comparer = new ShortMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case UInt16Node node:
+					comparer = new ShortMemoryComparer(ScanCompareType.Equal, (short)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case Int32Node node:
+					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case UInt32Node node:
+					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, (int)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case Int64Node node:
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case UInt64Node node:
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case Utf8TextNode node:
+					comparer = new StringMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory), Encoding.UTF8, true);
+					break;
+				case Utf16TextNode node:
+					comparer = new StringMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory), Encoding.Unicode, true);
+					break;
+				case Utf32TextNode node:
+					comparer = new StringMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory), Encoding.UTF32, true);
+					break;
+				default:
+					return;
+			}
+
+			LinkedWindowFeatures.StartMemoryScan(comparer);
+		}
+
+		private void findOutWhatAccessesThisAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			FindWhatInteractsWithSelectedNode(false);
+		}
+
+		private void findOutWhatWritesToThisAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			FindWhatInteractsWithSelectedNode(true);
+		}
+
+		private void copyNodeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CopySelectedNodesToClipboard();
+		}
+
+		private void pasteNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			PasteNodeFromClipboardToSelection();
+		}
+
+		private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			RemoveSelectedNodes();
+		}
+
+		private void hideNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			HideSelectedNodes();
+		}
+
+		private void unhideChildNodesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			UnhideChildNodes();
+		}
+
+		private void unhideNodesAboveToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			UnhideNodesAbove();
+		}
+
+		private void unhideNodesBelowToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			UnhideNodesBelow();
+		}
+
+		private void copyAddressToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var selectedNodes = memoryViewControl.GetSelectedNodes();
+			if (selectedNodes.Count > 0)
+			{
+				Clipboard.SetText(selectedNodes.First().Address.ToString("X"));
+			}
+		}
+
+		private void showCodeOfClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (memoryViewControl.GetSelectedNodes().FirstOrDefault()?.Node is ClassNode node)
+			{
+				LinkedWindowFeatures.ShowCodeGeneratorForm(node.Yield());
+			}
+		}
+
+		private void shrinkClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var node = memoryViewControl.GetSelectedNodes().Select(s => s.Node).FirstOrDefault();
+			if (!(node is ClassNode classNode))
+			{
+				return;
+			}
+
+			foreach (var nodeToDelete in classNode.Nodes.Reverse().TakeWhile(n => n is BaseHexNode))
+			{
+				classNode.RemoveNode(nodeToDelete);
+			}
 		}
 
 		#endregion
@@ -502,6 +738,25 @@ namespace ReClassNET.Forms
 			memoryViewControl.ClassNode = node;
 
 			memoryViewControl.Invalidate();
+		}
+
+		private void memoryViewControl_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Control)
+			{
+				if (e.KeyCode == Keys.C)
+				{
+					CopySelectedNodesToClipboard();
+				}
+				else if (e.KeyCode == Keys.V)
+				{
+					PasteNodeFromClipboardToSelection();
+				}
+			}
+			else if (e.KeyCode == Keys.Delete)
+			{
+				RemoveSelectedNodes();
+			}
 		}
 
 		private void memoryViewControl_SelectionChanged(object sender, EventArgs e)
