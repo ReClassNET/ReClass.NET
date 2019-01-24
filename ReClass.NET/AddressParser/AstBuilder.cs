@@ -1,13 +1,11 @@
-﻿// Design taken from https://github.com/pieterderycke/Jace
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace ReClassNET.AddressParser
 {
-	class AstBuilder
+	public class AstBuilder
 	{
 		private readonly Dictionary<char, int> operationPrecedence;
 

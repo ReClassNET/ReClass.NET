@@ -1,16 +1,14 @@
-﻿// Design taken from https://github.com/pieterderycke/Jace
-
-using System;
+﻿using System;
 using System.Diagnostics.Contracts;
 
 namespace ReClassNET.AddressParser
 {
-	internal interface IOperation
+	public interface IOperation
 	{
 
 	}
 
-	internal class OffsetOperation : IOperation
+	public class OffsetOperation : IOperation
 	{
 		public OffsetOperation(IntPtr value)
 		{
@@ -37,7 +35,7 @@ namespace ReClassNET.AddressParser
 		}
 	}
 
-	internal class ReadPointerOperation : IOperation
+	public class ReadPointerOperation : IOperation
 	{
 		public ReadPointerOperation(IOperation argument)
 		{
@@ -49,7 +47,7 @@ namespace ReClassNET.AddressParser
 		public IOperation Argument { get; }
 	}
 
-	internal class AdditionOperation : IOperation
+	public class AdditionOperation : IOperation
 	{
 		public AdditionOperation(IOperation argument1, IOperation argument2)
 		{
@@ -64,7 +62,7 @@ namespace ReClassNET.AddressParser
 		public IOperation Argument2 { get; }
 	}
 
-	internal class SubtractionOperation : IOperation
+	public class SubtractionOperation : IOperation
 	{
 		public SubtractionOperation(IOperation argument1, IOperation argument2)
 		{
@@ -79,7 +77,7 @@ namespace ReClassNET.AddressParser
 		public IOperation Argument2 { get; }
 	}
 
-	internal class DivisionOperation : IOperation
+	public class DivisionOperation : IOperation
 	{
 		public DivisionOperation(IOperation dividend, IOperation divisor)
 		{
@@ -94,7 +92,7 @@ namespace ReClassNET.AddressParser
 		public IOperation Divisor { get; }
 	}
 
-	internal class MultiplicationOperation : IOperation
+	public class MultiplicationOperation : IOperation
 	{
 		public MultiplicationOperation(IOperation argument1, IOperation argument2)
 		{
@@ -109,7 +107,7 @@ namespace ReClassNET.AddressParser
 		public IOperation Argument2 { get; }
 	}
 
-	internal class ModuleOffsetOperation : IOperation
+	public class ModuleOffsetOperation : IOperation
 	{
 		public ModuleOffsetOperation(string name)
 		{

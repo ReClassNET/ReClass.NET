@@ -1,10 +1,8 @@
-﻿// Design taken from https://github.com/pieterderycke/Jace
-
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 
 namespace ReClassNET.AddressParser
 {
-	internal enum TokenType
+	public enum TokenType
 	{
 		Offset,
 		ModuleOffset,
@@ -14,7 +12,7 @@ namespace ReClassNET.AddressParser
 		ReadPointer
 	}
 
-	internal class Token
+	public class Token
 	{
 		/// <summary>The type of the token.</summary>
 		public TokenType TokenType { get; }

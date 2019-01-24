@@ -1,6 +1,4 @@
-﻿// Design taken from https://github.com/pieterderycke/Jace
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -9,7 +7,7 @@ using System.Linq;
 
 namespace ReClassNET.AddressParser
 {
-	class TokenReader
+	public class TokenReader
 	{
 		/// <summary>
 		/// Read in the provided formula and convert it into a list of takens that can be processed by the

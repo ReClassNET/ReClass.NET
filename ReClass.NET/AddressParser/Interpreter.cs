@@ -1,14 +1,11 @@
-﻿// Design taken from https://github.com/pieterderycke/Jace
-
-using System;
+﻿using System;
 using System.Diagnostics.Contracts;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
-using ReClassNET.Util;
 
 namespace ReClassNET.AddressParser
 {
-	class Interpreter
+	public class Interpreter
 	{
 		public IntPtr Execute(IOperation operation, RemoteProcess process)
 		{
