@@ -171,6 +171,10 @@ namespace ReClassNET.Nodes
 					RemoveNodes(index + 1, newSize - oldSize);
 				}*/
 			}
+
+			UpdateOffsets();
+
+			GetParentContainer()?.ChildHasChanged(this);
 		}
 
 		/// <summary>

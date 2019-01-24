@@ -170,6 +170,9 @@
     <Compile Include="Debugger\RemoteDebugger.Extensions.cs" />
     <Compile Include="Debugger\RemoteDebugger.Thread.cs" />
     <Compile Include="Debugger\SoftwareBreakpoint.cs" />
+    <Compile Include="Forms\MainForm.Functions.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\NamedAddressesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -277,6 +280,7 @@
     </Compile>
     <Compile Include="UI\BannerFactory.cs" />
     <Compile Include="UI\BindingDisplayWrapper.cs" />
+    <Compile Include="UI\NodeClickEventArgs.cs" />
     <Compile Include="UI\DpiUtil.cs" />
     <Compile Include="Nodes\INodeInfoReader.cs" />
     <Compile Include="UI\ClassNodeView.cs">
