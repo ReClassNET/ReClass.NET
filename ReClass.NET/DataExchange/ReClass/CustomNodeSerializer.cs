@@ -11,8 +11,8 @@ namespace ReClassNET.DataExchange.ReClass
 	public delegate BaseNode CreateNodeFromElementHandler(XElement element, ClassNode parent, ILogger logger);
 	public delegate XElement CreateElementFromNodeHandler(BaseNode node, ILogger logger);
 
-	[ContractClass(typeof(CustomNodeConverterContract))]
-	public interface ICustomNodeConverter
+	[ContractClass(typeof(CustomNodeSerializerContract))]
+	public interface ICustomNodeSerializer
 	{
 		/// <summary>Determine if the instance can handle the xml element.</summary>
 		/// <param name="element">The xml element to check.</param>
@@ -42,8 +42,8 @@ namespace ReClassNET.DataExchange.ReClass
 		XElement CreateElementFromNode(BaseNode node, ILogger logger, CreateElementFromNodeHandler defaultHandler);
 	}
 
-	[ContractClassFor(typeof(ICustomNodeConverter))]
-	internal abstract class CustomNodeConverterContract : ICustomNodeConverter
+	[ContractClassFor(typeof(ICustomNodeSerializer))]
+	internal abstract class CustomNodeSerializerContract : ICustomNodeSerializer
 	{
 		public bool CanHandleElement(XElement element)
 		{
@@ -84,32 +84,32 @@ namespace ReClassNET.DataExchange.ReClass
 		}
 	}
 
-	public class CustomNodeConvert
+	internal class CustomNodeSerializer
 	{
-		private static readonly List<ICustomNodeConverter> converters = new List<ICustomNodeConverter>();
+		private static readonly List<ICustomNodeSerializer> converters = new List<ICustomNodeSerializer>();
 
-		public static void RegisterCustomType(ICustomNodeConverter converter)
+		public static void RegisterCustomType(ICustomNodeSerializer serializer)
 		{
-			Contract.Requires(converter != null);
+			Contract.Requires(serializer != null);
 
-			converters.Add(converter);
+			converters.Add(serializer);
 		}
 
-		public static void DeregisterCustomType(ICustomNodeConverter converter)
+		public static void DeregisterCustomType(ICustomNodeSerializer serializer)
 		{
-			Contract.Requires(converter != null);
+			Contract.Requires(serializer != null);
 
-			converters.Remove(converter);
+			converters.Remove(serializer);
 		}
 
-		public static ICustomNodeConverter GetReadConverter(XElement element)
+		public static ICustomNodeSerializer GetReadConverter(XElement element)
 		{
 			Contract.Requires(element != null);
 
 			return converters.FirstOrDefault(c => c.CanHandleElement(element));
 		}
 
-		public static ICustomNodeConverter GetWriteConverter(BaseNode node)
+		public static ICustomNodeSerializer GetWriteConverter(BaseNode node)
 		{
 			Contract.Requires(node != null);
 

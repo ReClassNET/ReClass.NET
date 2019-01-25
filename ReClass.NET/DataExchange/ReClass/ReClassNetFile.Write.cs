@@ -65,7 +65,7 @@ namespace ReClassNET.DataExchange.ReClass
 			Contract.Requires(node != null);
 			Contract.Requires(logger != null);
 
-			var converter = CustomNodeConvert.GetWriteConverter(node);
+			var converter = CustomNodeSerializer.GetWriteConverter(node);
 			if (converter != null)
 			{
 				return converter.CreateElementFromNode(node, logger, CreateElementFromNode);

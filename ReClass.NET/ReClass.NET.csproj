@@ -268,7 +268,7 @@
     <Compile Include="CodeGenerator\CSharpCodeGenerator.cs" />
     <Compile Include="CodeGenerator\ICodeGenerator.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="DataExchange\ReClass\CustomNodeConverter.cs" />
+    <Compile Include="DataExchange\ReClass\CustomNodeSerializer.cs" />
     <Compile Include="DataExchange\ReClass\IReClassExport.cs" />
     <Compile Include="DataExchange\ReClass\ReClassFile.cs" />
     <Compile Include="DataExchange\ReClass\ReClass2007File.cs" />

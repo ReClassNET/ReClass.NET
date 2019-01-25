@@ -41,15 +41,15 @@ namespace ReClassNET.Plugins
 		/// <param name="type">The type of the node.</param>
 		/// <param name="name">The name of the type.</param>
 		/// <param name="icon">The icon of the type (may be null).</param>
-		/// <param name="converter">The converter used to serialize the node.</param>
+		/// <param name="serializer">The converter used to serialize the node.</param>
 		/// <param name="generator">The generator used to generate code from the node.</param>
-		void RegisterNodeType(Type type, string name, Image icon, ICustomNodeConverter converter, ICustomCodeGenerator generator);
+		void RegisterNodeType(Type type, string name, Image icon, ICustomNodeSerializer serializer, ICustomCodeGenerator generator);
 
 		/// <summary>Unregisters a node type.</summary>
 		/// <param name="type">The type of the node.</param>
-		/// <param name="converter">The converter used to serialize the node.</param>
+		/// <param name="serializer">The converter used to serialize the node.</param>
 		/// <param name="generator">The generator used to generate code from the node.</param>
-		void DeregisterNodeType(Type type, ICustomNodeConverter converter, ICustomCodeGenerator generator);
+		void DeregisterNodeType(Type type, ICustomNodeSerializer serializer, ICustomCodeGenerator generator);
 	}
 
 	[ContractClassFor(typeof(IPluginHost))]
@@ -112,11 +112,11 @@ namespace ReClassNET.Plugins
 			throw new NotImplementedException();
 		}
 
-		public void RegisterNodeType(Type type, string name, Image icon, ICustomNodeConverter converter, ICustomCodeGenerator generator)
+		public void RegisterNodeType(Type type, string name, Image icon, ICustomNodeSerializer serializer, ICustomCodeGenerator generator)
 		{
 			Contract.Requires(type != null);
 			Contract.Requires(name != null);
-			Contract.Requires(converter != null);
+			Contract.Requires(serializer != null);
 			Contract.Requires(generator != null);
 
 			throw new NotImplementedException();
@@ -129,10 +129,10 @@ namespace ReClassNET.Plugins
 			throw new NotImplementedException();
 		}
 
-		public void DeregisterNodeType(Type type, ICustomNodeConverter converter, ICustomCodeGenerator generator)
+		public void DeregisterNodeType(Type type, ICustomNodeSerializer serializer, ICustomCodeGenerator generator)
 		{
 			Contract.Requires(type != null);
-			Contract.Requires(converter != null);
+			Contract.Requires(serializer != null);
 			Contract.Requires(generator != null);
 
 			throw new NotImplementedException();
