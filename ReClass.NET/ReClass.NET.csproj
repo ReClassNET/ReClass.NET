@@ -139,6 +139,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressParser\AstBuilder.cs" />
+    <Compile Include="AddressParser\DynamicCompiler.cs" />
+    <Compile Include="AddressParser\IExecuter.cs" />
     <Compile Include="AddressParser\Interpreter.cs" />
     <Compile Include="AddressParser\Operations.cs" />
     <Compile Include="AddressParser\ParseException.cs" />

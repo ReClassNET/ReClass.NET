@@ -27,6 +27,8 @@ namespace ReClassNET.Memory
 
 		private readonly RemoteDebugger debugger;
 
+		private readonly Dictionary<string, Func<RemoteProcess, IntPtr>> formulaCache = new Dictionary<string, Func<RemoteProcess, IntPtr>>();
+
 		private readonly Dictionary<IntPtr, string> rttiCache = new Dictionary<IntPtr, string>();
 
 		private readonly List<Module> modules = new List<Module>();
@@ -716,19 +718,26 @@ namespace ReClassNET.Memory
 		{
 			Contract.Requires(addressFormula != null);
 
-			var reader = new TokenReader();
-			var tokens = reader.Read(addressFormula);
-
-			var astBuilder = new AstBuilder();
-			var operation = astBuilder.Build(tokens);
-
-			if (operation == null)
+			if (!formulaCache.TryGetValue(addressFormula, out var func))
 			{
-				return IntPtr.Zero;
+				var reader = new TokenReader();
+				var tokens = reader.Read(addressFormula);
+
+				var astBuilder = new AstBuilder();
+				var operation = astBuilder.Build(tokens);
+
+				if (operation == null)
+				{
+					return IntPtr.Zero;
+				}
+
+				var compiler = new DynamicCompiler();
+				func = compiler.CompileAddressFormula(operation);
+
+				formulaCache.Add(addressFormula, func);
 			}
 
-			var interpreter = new Interpreter();
-			return interpreter.Execute(operation, this);
+			return func(this);
 		}
 
 		/// <summary>Loads all symbols asynchronous.</summary>
