@@ -69,13 +69,6 @@ namespace ReClassNET.UI
 			});
 		}
 
-		public static IEnumerable<ToolStripItem> CreateToolStripMenuItems(Action<Type> handler)
-		{
-			Contract.Requires(handler != null);
-
-			return CreateToolStripMenuItems(handler, true);
-		}
-
 		public static IEnumerable<ToolStripItem> CreateToolStripMenuItems(Action<Type> handler, bool addNoneType)
 		{
 			Contract.Requires(handler != null);
@@ -120,7 +113,7 @@ namespace ReClassNET.UI
 
 			if (!defaultNodeTypeGroupList.Any())
 			{
-				return new ToolStripItem[0];
+				return Enumerable.Empty<ToolStripItem>();
 			}
 
 			var items = defaultNodeTypeGroupList
@@ -132,6 +125,7 @@ namespace ReClassNET.UI
 				foreach (var kv in pluginNodeTypes)
 				{
 					var pluginContainerItem = createPluginContainerItem(kv.Key);
+					pluginContainerItem.Tag = kv.Key;
 					pluginContainerItem.DropDownItems.AddRange(
 						kv.Value
 							.Select(createItem)

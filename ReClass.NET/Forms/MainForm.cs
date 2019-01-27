@@ -78,6 +78,7 @@ namespace ReClassNET.Forms
 			pluginManager.LoadAllPlugins(Path.Combine(Application.StartupPath, Constants.PluginsFolder), Program.Logger);
 
 			toolStrip.Items.AddRange(NodeTypesBuilder.CreateToolStripButtons(ReplaceSelectedNodesWithType).ToArray());
+			changeTypeToolStripMenuItem.DropDownItems.AddRange(NodeTypesBuilder.CreateToolStripMenuItems(ReplaceSelectedNodesWithType, false).ToArray());
 
 			var createDefaultProject = true;
 
@@ -116,8 +117,6 @@ namespace ReClassNET.Forms
 
 			base.OnFormClosed(e);
 		}
-
-		#region Event Handler
 
 		private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
@@ -425,9 +424,6 @@ namespace ReClassNET.Forms
 
 		private void selectedNodeContextMenuStrip_Opening(object sender, CancelEventArgs e)
 		{
-			changeTypeToolStripMenuItem.DropDownItems.Clear();
-			changeTypeToolStripMenuItem.DropDownItems.AddRange(NodeTypesBuilder.CreateToolStripMenuItems(ReplaceSelectedNodesWithType, false).ToArray());
-
 			var selectedNodes = memoryViewControl.GetSelectedNodes();
 
 			var count = selectedNodes.Count;
@@ -777,8 +773,6 @@ namespace ReClassNET.Forms
 			var enabled = selectedNodes.Count > 0 && !(node is ClassNode);
 			toolStrip.Items.OfType<TypeToolStripButton>().ForEach(b => b.Enabled = enabled);
 		}
-
-		#endregion
 
 		private void memoryViewControl_ChangeClassTypeClick(object sender, NodeClickEventArgs e)
 		{
