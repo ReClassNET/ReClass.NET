@@ -74,28 +74,6 @@ namespace ReClassNET.Forms
 			memoryViewControl.ClassNode = currentProject.Classes.FirstOrDefault();
 		}
 
-		/// <summary>Registers the node type which will create the ToolStrip and MenuStrip entries.</summary>
-		/// <param name="type">The node type.</param>
-		/// <param name="name">The name of the node type.</param>
-		/// <param name="icon">The icon of the node type.</param>
-		internal void RegisterNodeType(Type type, string name, Image icon)
-		{
-			Contract.Requires(type != null);
-			Contract.Requires(name != null);
-			Contract.Requires(icon != null);
-
-			//TODO
-		}
-
-		/// <summary>Deregisters the node type.</summary>
-		/// <param name="type">The node type.</param>
-		internal void DeregisterNodeType(Type type)
-		{
-			Contract.Requires(type != null);
-
-			//TODO
-		}
-
 		/// <summary>Shows the code form with the given <paramref name="generator"/>.</summary>
 		/// <param name="generator">The generator.</param>
 		private void ShowCodeForm(ICodeGenerator generator)
