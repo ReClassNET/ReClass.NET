@@ -88,14 +88,14 @@ namespace ReClassNET.DataExchange.ReClass
 	{
 		private static readonly List<ICustomNodeSerializer> converters = new List<ICustomNodeSerializer>();
 
-		public static void RegisterCustomType(ICustomNodeSerializer serializer)
+		public static void Add(ICustomNodeSerializer serializer)
 		{
 			Contract.Requires(serializer != null);
 
 			converters.Add(serializer);
 		}
 
-		public static void DeregisterCustomType(ICustomNodeSerializer serializer)
+		public static void Remove(ICustomNodeSerializer serializer)
 		{
 			Contract.Requires(serializer != null);
 

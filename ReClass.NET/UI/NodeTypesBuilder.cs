@@ -10,10 +10,10 @@ using ReClassNET.Plugins;
 
 namespace ReClassNET.UI
 {
-	public static class NodeTypesBuilder
+	internal static class NodeTypesBuilder
 	{
 		private static readonly List<Type[]> defaultNodeTypeGroupList = new List<Type[]>();
-		private static readonly Dictionary<Plugin, List<Type>> pluginNodeTypes = new Dictionary<Plugin, List<Type>>();
+		private static readonly Dictionary<Plugin, IReadOnlyList<Type>> pluginNodeTypes = new Dictionary<Plugin, IReadOnlyList<Type>>();
 
 		static NodeTypesBuilder()
 		{
@@ -29,18 +29,24 @@ namespace ReClassNET.UI
 			defaultNodeTypeGroupList.Add(new[] { typeof(VirtualMethodTableNode), typeof(FunctionNode), typeof(FunctionPtrNode) });
 		}
 
-		public static List<Type> RegisterPluginNodeGroup(Plugin plugin)
+		public static void AddPluginNodeGroup(Plugin plugin, IReadOnlyList<Type> nodeTypes)
+		{
+			Contract.Requires(plugin != null);
+			Contract.Requires(nodeTypes != null);
+
+			if (pluginNodeTypes.ContainsKey(plugin))
+			{
+				throw new InvalidOperationException(); // TODO
+			}
+
+			pluginNodeTypes.Add(plugin, nodeTypes);
+		}
+
+		public static void RemovePluginNodeGroup(Plugin plugin)
 		{
 			Contract.Requires(plugin != null);
 
-			if (!pluginNodeTypes.TryGetValue(plugin, out var types))
-			{
-				types = new List<Type>();
-
-				pluginNodeTypes.Add(plugin, types);
-			}
-
-			return types;
+			pluginNodeTypes.Remove(plugin);
 		}
 
 		public static IEnumerable<ToolStripItem> CreateToolStripButtons(Action<Type> handler)
