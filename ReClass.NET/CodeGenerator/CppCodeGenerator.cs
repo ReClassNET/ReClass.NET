@@ -46,7 +46,7 @@ namespace ReClassNET.CodeGenerator
 			var classNodes = classes as IList<ClassNode> ?? classes.ToList();
 
 			var sb = new StringBuilder();
-			sb.AppendLine($"// Created with {Constants.ApplicationName} by {Constants.Author}");
+			sb.AppendLine($"// Created with {Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}");
 			sb.AppendLine();
 			sb.AppendLine(
 				string.Join(
@@ -74,11 +74,18 @@ namespace ReClassNET.CodeGenerator
 
 						csb.AppendLine("{");
 						csb.AppendLine("public:");
-						csb.AppendLine(
+						/*csb.AppendLine(
 							string.Join(
 								Environment.NewLine,
 								GetMemberDefinitionsForNodes(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
 									.Select(MemberDefinitionToString)
+									.Select(s => "\t" + s)
+							)
+						);*/
+						csb.AppendLine(
+							string.Join(
+								Environment.NewLine,
+								GetMemberDeclsForNodes(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
 									.Select(s => "\t" + s)
 							)
 						);
@@ -198,6 +205,58 @@ namespace ReClassNET.CodeGenerator
 			}
 		}
 
+		private IEnumerable<string> GetMemberDeclsForNodes(IEnumerable<BaseNode> members, ILogger logger)
+		{
+			Contract.Requires(members != null);
+			Contract.Requires(Contract.ForAll(members, m => m != null));
+			Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
+			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<string>>(), d => d != null));
+
+			int fill = 0;
+			int fillStart = 0;
+
+			string CreatePaddingDecl(int offset, int count)
+			{
+				return $"{Program.Settings.TypePadding} pad_{offset:X04}[{count}]; //0x{offset:X04}";
+			}
+
+			foreach (var member in members.WhereNot(m => m is VirtualMethodTableNode))
+			{
+				if (member is BaseHexNode)
+				{
+					if (fill == 0)
+					{
+						fillStart = member.Offset.ToInt32();
+					}
+					fill += member.MemorySize;
+
+					continue;
+				}
+
+				if (fill != 0)
+				{
+					yield return CreatePaddingDecl(fillStart, fill);
+
+					fill = 0;
+				}
+
+				var definition = GetMemberDeclForNode(member, logger);
+				if (definition != null)
+				{
+					yield return definition;
+				}
+				else
+				{
+					logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {member.GetType()}");
+				}
+			}
+
+			if (fill != 0)
+			{
+				yield return CreatePaddingDecl(fillStart, fill);
+			}
+		}
+
 		private MemberDefinition GetMemberDefinitionForNode(BaseNode member, ILogger logger)
 		{
 			var generator = CustomCodeGenerator.GetGenerator(member, Language);
@@ -252,6 +311,115 @@ namespace ReClassNET.CodeGenerator
 			}
 
 			return null;
+		}
+
+		private string GetSimpleType(BaseNode member, ILogger logger)
+		{
+			if (typeToTypedefMap.TryGetValue(member.GetType(), out var type))
+			{
+				return type;
+			}
+			if (member is BitFieldNode bitFieldNode)
+			{
+				return GetSimpleType(bitFieldNode.GetUnderlayingNode(), logger);
+			}
+
+			if (member is ClassInstanceNode classInstanceNode)
+			{
+				return $"class {classInstanceNode.InnerNode.Name}";
+			}
+
+			return null;
+		}
+
+		private string GetMemberDeclForNode(BaseNode member, ILogger logger)
+		{
+			var generator = CustomCodeGenerator.GetGenerator(member, Language);
+			if (generator != null)
+			{
+				throw new NotImplementedException();
+				//return generator.GetMemberDefinition(member, Language, logger);
+			}
+
+			var simpleType = GetSimpleType(member, logger);
+			if (simpleType != null)
+			{
+				return NodeToString(member, simpleType);
+			}
+
+			if (member is BaseWrapperNode wrapperNode)
+			{
+				var sb = new StringBuilder();
+
+				sb.Append(GetDeclForWrappedNode(wrapperNode, false, logger));
+
+				sb.Append($"; //0x{member.Offset.ToInt32():X04} {member.Comment}".Trim());
+
+				return sb.ToString();
+			}
+
+			return null;
+		}
+
+		private string GetDeclForWrappedNode(BaseNode node, bool isAnonymousExpression, ILogger logger)
+		{
+			Contract.Requires(node != null);
+
+			var sb = new StringBuilder();
+			if (!isAnonymousExpression)
+			{
+				sb.Append(node.Name);
+			}
+
+			var lastWrapperNode = node;
+			var currentNode = node;
+
+			while (true)
+			{
+				if (currentNode is PointerNode pointerNode)
+				{
+					sb.Insert(0, '*');
+
+					if (pointerNode.InnerNode == null) // void*
+					{
+						sb.Insert(0, "void ");
+						break;
+					}
+
+					lastWrapperNode = pointerNode;
+					currentNode = pointerNode.InnerNode;
+				}
+				else if (currentNode is ArrayNode arrayNode)
+				{
+					if (lastWrapperNode is PointerNode)
+					{
+						sb.Insert(0, '(');
+						sb.Append(')');
+					}
+
+					sb.Append($"[{arrayNode.Count}]");
+
+					lastWrapperNode = arrayNode;
+					currentNode = arrayNode.InnerNode;
+				}
+				else
+				{
+					var simpleType = GetSimpleType(currentNode, logger);
+
+					sb.Insert(0, $"{simpleType} ");
+					break;
+				}
+			}
+
+			return sb.ToString();
+		}
+
+		private static string NodeToString(BaseNode node, string type)
+		{
+			Contract.Requires(node != null);
+			Contract.Requires(type != null);
+
+			return $"{type} {node.Name}; //0x{node.Offset.ToInt32():X04} {node.Comment}".Trim();
 		}
 
 		private static string MemberDefinitionToString(MemberDefinition member)
