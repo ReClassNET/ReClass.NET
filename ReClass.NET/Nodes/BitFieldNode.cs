@@ -64,6 +64,27 @@ namespace ReClassNET.Nodes
 			Bits = node.MemorySize * 8;
 		}
 
+		/// <summary>
+		/// Gets the underlaying node for the bit field.
+		/// </summary>
+		/// <returns></returns>
+		public BaseNumericNode GetUnderlayingNode()
+		{
+			switch (Bits)
+			{
+				case 8:
+					return new UInt8Node();
+				case 16:
+					return new UInt16Node();
+				case 32:
+					return new UInt32Node();
+				case 64:
+					return new UInt64Node();
+			}
+
+			throw new Exception(); // TODO
+		}
+
 		/// <summary>Converts the memory value to a bit string.</summary>
 		/// <param name="memory">The process memory.</param>
 		/// <returns>The value converted to a bit string.</returns>
