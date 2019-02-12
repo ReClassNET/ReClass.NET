@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Xml.Linq;
+using ReClassNET.DataExchange.ReClass.Legacy;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
@@ -138,9 +139,7 @@ namespace ReClassNET.DataExchange.ReClass
 
 			if (node is BaseWrapperNode wrapperNode)
 			{
-				BaseNode innerNode = null;
-
-				if (node is ClassInstanceNode classInstanceNode)
+				ClassNode GetClassNodeFromElementReference()
 				{
 					var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
 					if (!project.ContainsClass(reference))
@@ -151,34 +150,67 @@ namespace ReClassNET.DataExchange.ReClass
 						return null;
 					}
 
-					innerNode = project.GetClassByUuid(reference);
-				}
-				else
-				{
-					var innerElement = element.Elements().FirstOrDefault();
-					if (innerElement != null)
-					{
-						innerNode = CreateNodeFromElement(innerElement, node, logger);
-					}
+					return project.GetClassByUuid(reference);
 				}
 
-				if (wrapperNode.CanChangeInnerNodeTo(innerNode))
+				// Legacy Support
+				if (node is ClassPointerNode || node is ClassInstanceArrayNode || node is ClassPointerArrayNode)
 				{
-					var rootWrapperNode = node.GetRootWrapperNode();
-					if (rootWrapperNode.ShouldPerformCycleCheckForInnerNode()
-						&& innerNode is ClassNode classNode
-						&& ClassUtil.IsCyclicIfClassIsAccessibleFromParent(node.GetParentClass(), classNode, project.Classes))
+					var innerClass = GetClassNodeFromElementReference();
+					if (innerClass == null)
 					{
-						logger.Log(LogLevel.Error, $"Skipping node with cyclic class reference: {node.GetParentClass().Name}->{rootWrapperNode.Name}");
-
 						return null;
 					}
 
-					wrapperNode.ChangeInnerNode(innerNode);
+					switch (node)
+					{
+						case BaseClassArrayNode classArrayNode:
+							node = classArrayNode.GetEquivalentNode(0, innerClass);
+							break;
+						case ClassPointerNode classPointerNode:
+							node = classPointerNode.GetEquivalentNode(innerClass);
+							break;
+					}
 				}
 				else
 				{
-					logger.Log(LogLevel.Error, $"The node {innerNode} is not a valid child for {node}.");
+					BaseNode innerNode = null;
+
+					if (node is ClassInstanceNode)
+					{
+						innerNode = GetClassNodeFromElementReference();
+						if (innerNode == null)
+						{
+							return null;
+						}
+					}
+					else
+					{
+						var innerElement = element.Elements().FirstOrDefault();
+						if (innerElement != null)
+						{
+							innerNode = CreateNodeFromElement(innerElement, node, logger);
+						}
+					}
+
+					if (wrapperNode.CanChangeInnerNodeTo(innerNode))
+					{
+						var rootWrapperNode = node.GetRootWrapperNode();
+						if (rootWrapperNode.ShouldPerformCycleCheckForInnerNode()
+							&& innerNode is ClassNode classNode
+							&& ClassUtil.IsCyclicIfClassIsAccessibleFromParent(node.GetParentClass(), classNode, project.Classes))
+						{
+							logger.Log(LogLevel.Error, $"Skipping node with cyclic class reference: {node.GetParentClass().Name}->{rootWrapperNode.Name}");
+
+							return null;
+						}
+
+						wrapperNode.ChangeInnerNode(innerNode);
+					}
+					else
+					{
+						logger.Log(LogLevel.Error, $"The node {innerNode} is not a valid child for {node}.");
+					}
 				}
 			}
 
