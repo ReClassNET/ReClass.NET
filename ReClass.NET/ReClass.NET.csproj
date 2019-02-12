@@ -153,7 +153,7 @@
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Constants.cs" />
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Read.cs" />
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Write.cs" />
-    <Compile Include="DataExchange\ReClass\Legacy\ClassArrayNode.cs" />
+    <Compile Include="DataExchange\ReClass\Legacy\BaseClassArrayNode.cs" />
     <Compile Include="DataExchange\ReClass\Legacy\ClassInstanceArrayNode.cs" />
     <Compile Include="DataExchange\ReClass\Legacy\ClassPointerArrayNode.cs" />
     <Compile Include="DataExchange\ReClass\Legacy\ClassPointerNode.cs" />

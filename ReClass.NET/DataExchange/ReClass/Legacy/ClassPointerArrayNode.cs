@@ -2,7 +2,7 @@
 
 namespace ReClassNET.DataExchange.ReClass.Legacy
 {
-	public class ClassPointerArrayNode : ClassArrayNode
+	public class ClassPointerArrayNode : BaseClassArrayNode
 	{
 		protected override bool PerformCycleCheck => false;
 

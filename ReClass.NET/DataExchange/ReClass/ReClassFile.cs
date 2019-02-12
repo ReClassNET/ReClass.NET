@@ -183,7 +183,7 @@ namespace ReClassNET.DataExchange.ReClass
 				{
 					string reference;
 					int arrayCount = 0;
-					if (node is ClassArrayNode) // ClassInstanceArrayNode, ClassPointerArrayNode
+					if (node is BaseClassArrayNode) // ClassInstanceArrayNode, ClassPointerArrayNode
 					{
 						reference = element.Element("Array")?.Attribute("Name")?.Value;
 
@@ -218,7 +218,7 @@ namespace ReClassNET.DataExchange.ReClass
 					}
 
 					// ClassPointerNode, ClassInstanceArrayNode and ClassPointerArrayNode need to be converted to supported nodes.
-					if (node is ClassArrayNode classArrayNode) // ClassInstanceArrayNode, ClassPointerArrayNode
+					if (node is BaseClassArrayNode classArrayNode) // ClassInstanceArrayNode, ClassPointerArrayNode
 					{
 						node = classArrayNode.GetEquivalentNode(arrayCount, innerClassNode);
 					}

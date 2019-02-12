@@ -5,7 +5,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.DataExchange.ReClass.Legacy
 {
-	public abstract class ClassArrayNode : BaseWrapperNode
+	public abstract class BaseClassArrayNode : BaseWrapperNode
 	{
 		public override int MemorySize => throw new NotImplementedException();
 
