@@ -9,7 +9,7 @@ namespace ReClassNET.DataExchange.ReClass.Legacy
 		public override BaseNode GetEquivalentNode(int count, ClassNode classNode)
 		{
 			var classInstanceNode = new ClassInstanceNode();
-			classInstanceNode.CanChangeInnerNodeTo(classNode);
+			classInstanceNode.ChangeInnerNode(classNode);
 
 			var pointerNode = new PointerNode();
 			pointerNode.ChangeInnerNode(classInstanceNode);

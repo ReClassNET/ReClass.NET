@@ -8,11 +8,10 @@ namespace ReClassNET.DataExchange.ReClass.Legacy
 
 		public override BaseNode GetEquivalentNode(int count, ClassNode classNode)
 		{
-			var arrayNode = new ArrayNode { Count = count };
-
 			var classInstanceNode = new ClassInstanceNode();
-			classInstanceNode.CanChangeInnerNodeTo(classNode);
+			classInstanceNode.ChangeInnerNode(classNode);
 
+			var arrayNode = new ArrayNode { Count = count };
 			arrayNode.ChangeInnerNode(classInstanceNode);
 
 			return arrayNode;
