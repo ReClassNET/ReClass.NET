@@ -134,7 +134,7 @@ namespace ReClassNET.CodeGenerator
 						csb.AppendLine(
 							string.Join(
 								Environment.NewLine,
-								GetMemberDeclsForNodes(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
+								GetTypeDeclerationsForNodes(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
 									.Select(s => "\t" + s)
 							)
 						);
@@ -207,7 +207,7 @@ namespace ReClassNET.CodeGenerator
 				.Append(node);
 		}
 
-		private IEnumerable<string> GetMemberDeclsForNodes(IEnumerable<BaseNode> members, ILogger logger)
+		private IEnumerable<string> GetTypeDeclerationsForNodes(IEnumerable<BaseNode> members, ILogger logger)
 		{
 			Contract.Requires(members != null);
 			Contract.Requires(Contract.ForAll(members, m => m != null));
