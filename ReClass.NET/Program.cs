@@ -65,7 +65,11 @@ namespace ReClassNET
 
 			Settings = SettingsSerializer.Load();
 			Logger = new GuiLogger();
-#if DEBUG
+
+#if !DEBUG
+			try
+			{
+#endif
 			using (var coreFunctions = new CoreFunctionsManager())
 			{
 				RemoteProcess = new RemoteProcess(coreFunctions);
@@ -76,19 +80,7 @@ namespace ReClassNET
 
 				RemoteProcess.Dispose();
 			}
-#else
-			try
-			{
-				using (var coreFunctions = new CoreFunctionsManager())
-				{
-					RemoteProcess = new RemoteProcess(coreFunctions);
-
-					MainForm = new MainForm();
-
-					Application.Run(MainForm);
-
-					RemoteProcess.Dispose();
-				}
+#if !DEBUG
 			}
 			catch (Exception ex)
 			{
