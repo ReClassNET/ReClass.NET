@@ -208,7 +208,7 @@ namespace ReClassNET.CodeGenerator
 				.Append(node);
 		}
 
-		private IEnumerable<string> GetTypeDeclerationsForNodes(IEnumerable<BaseNode> members, ILogger logger)
+		private static IEnumerable<string> GetTypeDeclerationsForNodes(IEnumerable<BaseNode> members, ILogger logger)
 		{
 			Contract.Requires(members != null);
 			Contract.Requires(Contract.ForAll(members, m => m != null));
