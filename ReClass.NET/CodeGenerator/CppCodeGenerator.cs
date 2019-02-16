@@ -199,6 +199,7 @@ namespace ReClassNET.CodeGenerator
 
 			var classNodes = node.Nodes
 				.OfType<BaseWrapperNode>()
+				.Where(w => !w.IsNodePresentInChain<PointerNode>()) // Pointers are forward declared
 				.Select(w => w.ResolveMostInnerNode() as ClassNode)
 				.Where(n => n != null);
 

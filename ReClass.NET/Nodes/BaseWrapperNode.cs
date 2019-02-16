@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Permissions;
 
 namespace ReClassNET.Nodes
 {
@@ -86,6 +87,27 @@ namespace ReClassNET.Nodes
 			}
 
 			return true;
+		}
+
+		/// <summary>
+		/// Tests if the given node type is present in the chain of wrapped nodes.
+		/// </summary>
+		/// <typeparam name="TNode">The node type to check.</typeparam>
+		/// <returns>True if the given node type is present in the chain of wrapped nodes, false otherwise.</returns>
+		public bool IsNodePresentInChain<TNode>() where TNode : BaseNode
+		{
+			BaseNode node = this;
+			while (node is BaseWrapperNode wrapperNode)
+			{
+				if (node is TNode)
+				{
+					return true;
+				}
+
+				node = wrapperNode.InnerNode;
+			}
+
+			return false;
 		}
 	}
 }
