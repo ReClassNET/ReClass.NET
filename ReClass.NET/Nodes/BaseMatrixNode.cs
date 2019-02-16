@@ -11,7 +11,7 @@ namespace ReClassNET.Nodes
 
 		protected BaseMatrixNode()
 		{
-			levelsOpen.DefaultValue = true;
+			LevelsOpen.DefaultValue = true;
 		}
 
 		protected delegate void DrawMatrixValues(int x, ref int maxX, ref int y);
@@ -22,12 +22,10 @@ namespace ReClassNET.Nodes
 			Contract.Requires(type != null);
 			Contract.Requires(drawValues != null);
 
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
-
-			DrawInvalidMemoryIndicator(view, y);
 
 			var origX = x;
 			var origY = y;
@@ -43,17 +41,21 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			}
 			x = AddOpenClose(view, x, y);
 
 			x += view.Font.Width;
 
 			x = AddComment(view, x, y);
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				drawValues(tx, ref x, ref y);
 			}
@@ -68,7 +70,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(type != null);
 			Contract.Requires(drawValues != null);
 
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
@@ -86,10 +88,13 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			}
 			x = AddOpenClose(view, x, y);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				drawValues(ref x, ref y);
 			}
@@ -106,13 +111,13 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				height += CalculateValuesHeight(view);
 			}

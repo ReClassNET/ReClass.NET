@@ -5,22 +5,22 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	public class VMethodNode : BaseFunctionPtrNode
+	public class VirtualMethodNode : BaseFunctionPtrNode
 	{
 		public string MethodName => string.IsNullOrEmpty(Name) ? $"Function{Offset.ToInt32() / IntPtr.Size}" : Name;
 
-		public VMethodNode()
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			throw new InvalidOperationException($"The '{nameof(VirtualMethodNode)}' node should not be accessible from the ui.");
+		}
+
+		public VirtualMethodNode()
 		{
 			Contract.Ensures(Name != null);
 
 			Name = string.Empty;
 		}
 
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			return Draw(view, x, y, $"({Offset.ToInt32() / IntPtr.Size})", MethodName);

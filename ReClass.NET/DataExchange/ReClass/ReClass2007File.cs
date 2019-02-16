@@ -4,10 +4,10 @@ using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using ReClassNET.DataExchange.ReClass.Legacy;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange.ReClass
 {
@@ -25,7 +25,7 @@ namespace ReClassNET.DataExchange.ReClass
 			typeof(Hex32Node),
 			typeof(Hex16Node),
 			typeof(Hex8Node),
-			typeof(ClassPtrNode),
+			typeof(ClassPointerNode),
 			typeof(Int32Node),
 			typeof(Int16Node),
 			typeof(Int8Node),
@@ -53,7 +53,7 @@ namespace ReClassNET.DataExchange.ReClass
 				connection.Open();
 
 				var classes = new Dictionary<int, ClassNode>();
-				var vtables = new Dictionary<int, VTableNode>();
+				var vtables = new Dictionary<int, VirtualMethodTableNode>();
 
 				foreach (var row in Query(connection, "SELECT tbl_name FROM sqlite_master WHERE tbl_name LIKE 'class%'"))
 				{
@@ -68,10 +68,10 @@ namespace ReClassNET.DataExchange.ReClass
 					// Skip the vtable classes.
 					if (classRow["variable"].ToString() == "VTABLE")
 					{
-						var vtableNode = new VTableNode();
+						var vtableNode = new VirtualMethodTableNode();
 
 						Query(connection, $"SELECT variable, comment FROM class{id} WHERE type = 16")
-							.Select(e => new VMethodNode
+							.Select(e => new VirtualMethodNode
 							{
 								Name = Convert.ToString(e["variable"]),
 								Comment = Convert.ToString(e["comment"])
@@ -112,7 +112,7 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 		}
 
-		private IEnumerable<BaseNode> ReadNodeRows(IEnumerable<DataRow> rows, ClassNode parent, IReadOnlyDictionary<int, ClassNode> classes, IReadOnlyDictionary<int, VTableNode> vtables, ILogger logger)
+		private static IEnumerable<BaseNode> ReadNodeRows(IEnumerable<DataRow> rows, ClassNode parent, IReadOnlyDictionary<int, ClassNode> classes, IReadOnlyDictionary<int, VirtualMethodTableNode> vtables, ILogger logger)
 		{
 			Contract.Requires(rows != null);
 			Contract.Requires(parent != null);
@@ -136,7 +136,7 @@ namespace ReClassNET.DataExchange.ReClass
 					continue;
 				}
 
-				var node = Activator.CreateInstance(nodeType) as BaseNode;
+				var node = BaseNode.CreateInstanceFromType(nodeType, false);
 				if (node == null)
 				{
 					logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");
@@ -147,7 +147,8 @@ namespace ReClassNET.DataExchange.ReClass
 				node.Name = Convert.ToString(row["variable"]);
 				node.Comment = Convert.ToString(row["comment"]);
 
-				if (node is BaseReferenceNode referenceNode)
+				// ClassInstanceNode, ClassPointerNode
+				if (node is BaseWrapperNode wrapperNode)
 				{
 					var reference = Convert.ToInt32(row["ref"]);
 					if (!classes.ContainsKey(reference))
@@ -166,14 +167,21 @@ namespace ReClassNET.DataExchange.ReClass
 					}
 
 					var innerClassNode = classes[reference];
-					if (referenceNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, project.Classes))
+					if (wrapperNode.ShouldPerformCycleCheckForInnerNode() && !ClassUtil.IsCyclicIfClassIsAccessibleFromParent(parent, innerClassNode, classes.Values))
 					{
 						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {parent.Name}->{node.Name}");
 
 						continue;
 					}
 
-					referenceNode.ChangeInnerNode(innerClassNode);
+					if (node is ClassPointerNode classPointerNode)
+					{
+						node = classPointerNode.GetEquivalentNode(innerClassNode);
+					}
+					else
+					{
+						wrapperNode.ChangeInnerNode(innerClassNode);
+					}
 				}
 				if (node is BaseTextNode textNode)
 				{
@@ -184,7 +192,7 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 		}
 
-		private IEnumerable<DataRow> Query(SQLiteConnection connection, string query)
+		private static IEnumerable<DataRow> Query(SQLiteConnection connection, string query)
 		{
 			Contract.Requires(connection != null);
 			Contract.Requires(query != null);

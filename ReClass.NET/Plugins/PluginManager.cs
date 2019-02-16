@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
+using ReClassNET.CodeGenerator;
 using ReClassNET.Core;
+using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Native;
-using ReClassNET.Util;
+using ReClassNET.Nodes;
+using ReClassNET.UI;
 
 namespace ReClassNET.Plugins
 {
@@ -87,6 +90,9 @@ namespace ReClassNET.Plugins
 						{
 							continue;
 						}
+
+						RegisterNodeInfoReaders(pi);
+						RegisterCustomNodeTypes(pi);
 					}
 					else
 					{
@@ -109,7 +115,17 @@ namespace ReClassNET.Plugins
 
 		public void UnloadAllPlugins()
 		{
-			plugins.ForEach(p => p.Dispose());
+			foreach (var pi in plugins)
+			{
+				if (pi.Interface != null) // Exclude native plugins
+				{
+					DeregisterNodeInfoReaders(pi);
+					DeregisterCustomNodeTypes(pi);
+				}
+
+				pi.Dispose();
+			}
+
 			plugins.Clear();
 		}
 
@@ -139,6 +155,84 @@ namespace ReClassNET.Plugins
 				throw new FileLoadException($"Failed to load native plugin: {Path.GetFileName(filePath)}");
 			}
 			return handle;
+		}
+
+		private static void RegisterNodeInfoReaders(PluginInfo pluginInfo)
+		{
+			Contract.Requires(pluginInfo != null);
+
+			var nodeInfoReaders = pluginInfo.Interface.GetNodeInfoReaders();
+
+			if (nodeInfoReaders == null || nodeInfoReaders.Count == 0)
+			{
+				return;
+			}
+
+			pluginInfo.NodeInfoReaders = nodeInfoReaders;
+
+			BaseNode.NodeInfoReader.AddRange(nodeInfoReaders);
+		}
+
+		private static void DeregisterNodeInfoReaders(PluginInfo pluginInfo)
+		{
+			Contract.Requires(pluginInfo != null);
+
+			if (pluginInfo.NodeInfoReaders == null)
+			{
+				return;
+			}
+
+			foreach (var reader in pluginInfo.NodeInfoReaders)
+			{
+				BaseNode.NodeInfoReader.Remove(reader);
+			}
+		}
+
+		private static void RegisterCustomNodeTypes(PluginInfo pluginInfo)
+		{
+			Contract.Requires(pluginInfo != null);
+
+			var customNodeTypes = pluginInfo.Interface.GetCustomNodeTypes();
+
+			if (customNodeTypes == null)
+			{
+				return;
+			}
+
+			if (customNodeTypes.NodeTypes == null || customNodeTypes.Serializer == null || customNodeTypes.CodeGenerator == null)
+			{
+				throw new ArgumentException(); // TODO
+			}
+
+			foreach (var nodeType in customNodeTypes.NodeTypes)
+			{
+				if (!nodeType.IsSubclassOf(typeof(BaseNode)))
+				{
+					throw new ArgumentException($"Type '{nodeType}' is not a valid node.");
+				}
+			}
+
+			pluginInfo.CustomNodeTypes = customNodeTypes;
+
+			NodeTypesBuilder.AddPluginNodeGroup(pluginInfo.Interface, customNodeTypes.NodeTypes);
+
+			CustomNodeSerializer.Add(customNodeTypes.Serializer);
+			CustomCodeGenerator.Add(customNodeTypes.CodeGenerator);
+		}
+
+		private static void DeregisterCustomNodeTypes(PluginInfo pluginInfo)
+		{
+			Contract.Requires(pluginInfo != null);
+
+			if (pluginInfo.CustomNodeTypes == null)
+			{
+				return;
+			}
+
+			NodeTypesBuilder.RemovePluginNodeGroup(pluginInfo.Interface);
+
+			CustomNodeSerializer.Remove(pluginInfo.CustomNodeTypes.Serializer);
+			CustomCodeGenerator.Remove(pluginInfo.CustomNodeTypes.CodeGenerator);
 		}
 	}
 }

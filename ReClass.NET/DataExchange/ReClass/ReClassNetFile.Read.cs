@@ -5,10 +5,10 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Xml.Linq;
+using ReClassNET.DataExchange.ReClass.Legacy;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange.ReClass
 {
@@ -39,11 +39,15 @@ namespace ReClassNET.DataExchange.ReClass
 					var document = XDocument.Load(entryStream);
 					if (document.Root?.Element(XmlClassesElement) == null)
 					{
-						logger.Log(LogLevel.Error, "File has not the correct format.");
-						return;
+						throw new FormatException("The data has not the correct format.");
 					}
 
-					//var version = document.Root.Attribute(XmlVersionAttribute)?.Value;
+					uint.TryParse(document.Root.Attribute(XmlVersionAttribute)?.Value, out var fileVersion);
+					if ((fileVersion & FileVersionCriticalMask) > (FileVersion & FileVersionCriticalMask))
+					{
+						throw new FormatException($"The file version is unsupported. A newer {Constants.ApplicationName} version is required to read it.");
+					}
+
 					var platform = document.Root.Attribute(XmlPlatformAttribute)?.Value;
 					if (platform != Constants.Platform)
 					{
@@ -84,57 +88,58 @@ namespace ReClassNET.DataExchange.ReClass
 
 					foreach (var t in classes)
 					{
-						ReadNodeElements(
-							t.Item1.Elements(XmlNodeElement),
-							t.Item2,
-							logger
-						).ForEach(t.Item2.AddNode);
+						var nodes = t.Item1.Elements(XmlNodeElement)
+							.Select(e => CreateNodeFromElement(e, t.Item2, logger))
+							.Where(n => n != null);
+
+						foreach (var node in nodes)
+						{
+							t.Item2.AddNode(node);
+						}
 					}
 				}
 			}
 		}
 
-		private IEnumerable<BaseNode> ReadNodeElements(IEnumerable<XElement> elements, ClassNode parent, ILogger logger)
+		private BaseNode CreateNodeFromElement(XElement element, BaseNode parent, ILogger logger)
 		{
-			Contract.Requires(elements != null);
-			Contract.Requires(Contract.ForAll(elements, e => e != null));
-			Contract.Requires(parent != null);
+			Contract.Requires(element != null);
 			Contract.Requires(logger != null);
 
-			foreach (var element in elements)
+			var converter = CustomNodeSerializer.GetReadConverter(element);
+			if (converter != null)
 			{
-				var converter = CustomNodeConvert.GetReadConverter(element);
-				if (converter != null)
+				if (converter.TryCreateNodeFromElement(element, parent, project.Classes, logger, CreateNodeFromElement, out var customNode))
 				{
-					if (converter.TryCreateNodeFromElement(element, parent, project.Classes, logger, out var customNode))
-					{
-						yield return customNode;
-					}
-
-					continue;
+					return customNode;
 				}
+			}
 
-				if (!buildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value ?? string.Empty, out var nodeType))
-				{
-					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {element.Attribute(XmlTypeAttribute)?.Value}");
-					logger.Log(LogLevel.Warning, element.ToString());
+			if (!buildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value ?? string.Empty, out var nodeType))
+			{
+				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {element.Attribute(XmlTypeAttribute)?.Value}");
+				logger.Log(LogLevel.Warning, element.ToString());
 
-					continue;
-				}
+				return null;
+			}
 
-				var node = Activator.CreateInstance(nodeType) as BaseNode;
-				if (node == null)
-				{
-					logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");
+			var node = BaseNode.CreateInstanceFromType(nodeType, false);
+			if (node == null)
+			{
+				logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");
 
-					continue;
-				}
+				return null;
+			}
 
-				node.Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
-				node.Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty;
-				node.IsHidden = bool.TryParse(element.Attribute(XmlHiddenAttribute)?.Value, out var val) && val;
+			node.ParentNode = parent;
 
-				if (node is BaseReferenceNode referenceNode)
+			node.Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
+			node.Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty;
+			node.IsHidden = bool.TryParse(element.Attribute(XmlHiddenAttribute)?.Value, out var val) && val;
+
+			if (node is BaseWrapperNode wrapperNode)
+			{
+				ClassNode GetClassNodeFromElementReference()
 				{
 					var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
 					if (!project.ContainsClass(reference))
@@ -142,68 +147,124 @@ namespace ReClassNET.DataExchange.ReClass
 						logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {reference}");
 						logger.Log(LogLevel.Warning, element.ToString());
 
-						continue;
+						return null;
 					}
 
-					var innerClassNode = project.GetClassByUuid(reference);
-					if (referenceNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, project.Classes))
-					{
-						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {parent.Name}->{node.Name}");
-
-						continue;
-					}
-
-					referenceNode.ChangeInnerNode(innerClassNode);
+					return project.GetClassByUuid(reference);
 				}
 
-				switch (node)
+				// Legacy Support
+				if (node is ClassPointerNode || node is ClassInstanceArrayNode || node is ClassPointerArrayNode)
 				{
-					case VTableNode vtableNode:
+					var innerClass = GetClassNodeFromElementReference();
+					if (innerClass == null)
 					{
-						element
-							.Elements(XmlMethodElement)
-							.Select(e => new VMethodNode
-							{
-								Name = e.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
-								Comment = e.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
-                                IsHidden = e.Attribute(XmlHiddenAttribute)?.Value.Equals("True") ?? false
-							})
-							.ForEach(vtableNode.AddNode);
-						break;
+						return null;
 					}
-					case BaseArrayNode arrayNode:
-					{
-						TryGetAttributeValue(element, XmlCountAttribute, out var count, logger);
-						arrayNode.Count = count;
-						break;
-					}
-					case BaseTextNode textNode:
-					{
-						TryGetAttributeValue(element, XmlLengthAttribute, out var length, logger);
-						textNode.Length = length;
-						break;
-					}
-					case BitFieldNode bitFieldNode:
-					{
-						TryGetAttributeValue(element, XmlBitsAttribute, out var bits, logger);
-						bitFieldNode.Bits = bits;
-						break;
-					}
-					case FunctionNode functionNode:
-					{
-						functionNode.Signature = element.Attribute(XmlSignatureAttribute)?.Value ?? string.Empty;
 
-						var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
-						if (project.ContainsClass(reference))
-						{
-							functionNode.BelongsToClass = project.GetClassByUuid(reference);
-						}
-						break;
+					switch (node)
+					{
+						case BaseClassArrayNode classArrayNode:
+							node = classArrayNode.GetEquivalentNode(0, innerClass);
+							break;
+						case ClassPointerNode classPointerNode:
+							node = classPointerNode.GetEquivalentNode(innerClass);
+							break;
 					}
 				}
+				else
+				{
+					BaseNode innerNode = null;
 
-				yield return node;
+					if (node is ClassInstanceNode)
+					{
+						innerNode = GetClassNodeFromElementReference();
+						if (innerNode == null)
+						{
+							return null;
+						}
+					}
+					else
+					{
+						var innerElement = element.Elements().FirstOrDefault();
+						if (innerElement != null)
+						{
+							innerNode = CreateNodeFromElement(innerElement, node, logger);
+						}
+					}
+
+					if (wrapperNode.CanChangeInnerNodeTo(innerNode))
+					{
+						var rootWrapperNode = node.GetRootWrapperNode();
+						if (rootWrapperNode.ShouldPerformCycleCheckForInnerNode()
+							&& innerNode is ClassNode classNode
+							&& ClassUtil.IsCyclicIfClassIsAccessibleFromParent(node.GetParentClass(), classNode, project.Classes))
+						{
+							logger.Log(LogLevel.Error, $"Skipping node with cyclic class reference: {node.GetParentClass().Name}->{rootWrapperNode.Name}");
+
+							return null;
+						}
+
+						wrapperNode.ChangeInnerNode(innerNode);
+					}
+					else
+					{
+						logger.Log(LogLevel.Error, $"The node {innerNode} is not a valid child for {node}.");
+					}
+				}
 			}
+
+			switch (node)
+			{
+				case VirtualMethodTableNode vtableNode:
+				{
+					var nodes = element
+						.Elements(XmlMethodElement)
+						.Select(e => new VirtualMethodNode
+						{
+							Name = e.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
+							Comment = e.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
+							IsHidden = e.Attribute(XmlHiddenAttribute)?.Value.Equals("True") ?? false
+						});
+
+					foreach (var vmethodNode in nodes)
+					{
+						vtableNode.AddNode(vmethodNode);
+					}
+					break;
+				}
+				case BaseWrapperArrayNode arrayNode:
+				{
+					TryGetAttributeValue(element, XmlCountAttribute, out var count, logger);
+					arrayNode.Count = count;
+					break;
+				}
+				case BaseTextNode textNode:
+				{
+					TryGetAttributeValue(element, XmlLengthAttribute, out var length, logger);
+					textNode.Length = length;
+					break;
+				}
+				case BitFieldNode bitFieldNode:
+				{
+					TryGetAttributeValue(element, XmlBitsAttribute, out var bits, logger);
+					bitFieldNode.Bits = bits;
+					break;
+				}
+				case FunctionNode functionNode:
+				{
+					functionNode.Signature = element.Attribute(XmlSignatureAttribute)?.Value ?? string.Empty;
+
+					var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
+					if (project.ContainsClass(reference))
+					{
+						functionNode.BelongsToClass = project.GetClassByUuid(reference);
+					}
+					break;
+				}
+			}
+
+			return node;
 		}
 
 		private static void TryGetAttributeValue(XElement element, string attribute, out int val, ILogger logger)
@@ -221,7 +282,7 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 		}
 
-		public static Tuple<List<ClassNode>, List<BaseNode>> ReadNodes(Stream input, ReClassNetProject templateProject, ILogger logger)
+		public static Tuple<List<ClassNode>, List<BaseNode>> DeserializeNodesFromStream(Stream input, ReClassNetProject templateProject, ILogger logger)
 		{
 			Contract.Requires(input != null);
 			Contract.Requires(logger != null);
@@ -234,24 +295,18 @@ namespace ReClassNET.DataExchange.ReClass
 				var file = new ReClassNetFile(project);
 				file.Load(input, logger);
 
-				var classes = new List<ClassNode>();
-
-				var nodes = new List<BaseNode>();
-
-				var serialisationClassNode = project.Classes.FirstOrDefault(c => c.Name == SerialisationClassName);
-				if (serialisationClassNode != null)
+				var classes = project.Classes
+					.Where(c => c.Name != SerializationClassName);
+				if (templateProject != null)
 				{
-					if (templateProject != null)
-					{
-						classes.AddRange(project.Classes.Where(c => c != serialisationClassNode).Where(classNode => !templateProject.ContainsClass(classNode.Uuid)));
-					}
-
-					nodes.AddRange(serialisationClassNode.Nodes);
-
-					project.Remove(serialisationClassNode);
+					classes = classes.Where(c => !templateProject.ContainsClass(c.Uuid));
 				}
 
-				return Tuple.Create(classes, nodes);
+				var nodes = project.Classes
+					.Where(c => c.Name == SerializationClassName)
+					.SelectMany(c => c.Nodes);
+
+				return Tuple.Create(classes.ToList(), nodes.ToList());
 			}
 		}
 	}

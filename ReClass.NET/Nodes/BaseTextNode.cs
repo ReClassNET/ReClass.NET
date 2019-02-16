@@ -4,7 +4,6 @@ using System.Text;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -12,7 +11,6 @@ namespace ReClassNET.Nodes
 	{
 		public int Length { get; set; }
 
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => Length * CharacterSize;
 
 		/// <summary>The encoding of the string.</summary>
@@ -31,15 +29,13 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
 
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
 
 			var length = MemorySize / CharacterSize;
 			var text = ReadValueFromMemory(view.Memory);
-
-			DrawInvalidMemoryIndicator(view, y);
 
 			var origX = x;
 
@@ -50,7 +46,10 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+			}
 			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "[");
 			x = AddText(view, x, y, view.Settings.IndexColor, 0, length.ToString());
 			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "]") + view.Font.Width;
@@ -61,6 +60,7 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
@@ -69,7 +69,7 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			return IsHidden ? HiddenHeight : view.Font.Height;
+			return IsHidden && !IsWrapped ? HiddenHeight : view.Font.Height;
 		}
 
 		public override void Update(HotSpot spot)
@@ -82,7 +82,7 @@ namespace ReClassNET.Nodes
 				{
 					Length = val;
 
-					ParentNode.ChildHasChanged(this);
+					GetParentContainer()?.ChildHasChanged(this);
 				}
 			}
 		}

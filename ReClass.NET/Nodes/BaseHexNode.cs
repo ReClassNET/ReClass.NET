@@ -12,7 +12,6 @@ namespace ReClassNET.Nodes
 {
 	public abstract class BaseHexNode : BaseNode
 	{
-		public static DateTime CurrentHighlightTime;
 		public static readonly TimeSpan HightlightDuration = TimeSpan.FromSeconds(1);
 
 		private static readonly Dictionary<IntPtr, ValueTypeWrapper<DateTime>> highlightTimer = new Dictionary<IntPtr, ValueTypeWrapper<DateTime>>();
@@ -30,12 +29,10 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
-
-			DrawInvalidMemoryIndicator(view, y);
 
 			var origX = x;
 
@@ -56,23 +53,23 @@ namespace ReClassNET.Nodes
 			{
 				var address = view.Address.Add(Offset);
 
-				highlightTimer.RemoveWhere(kv => kv.Value.Value < CurrentHighlightTime);
+				highlightTimer.RemoveWhere(kv => kv.Value.Value < view.CurrentTime);
 
 				if (highlightTimer.TryGetValue(address, out var until))
 				{
-					if (until.Value >= CurrentHighlightTime)
+					if (until.Value >= view.CurrentTime)
 					{
 						color = view.Settings.HighlightColor;
 
 						if (view.Memory.HasChanged(Offset, MemorySize))
 						{
-							until.Value = CurrentHighlightTime.Add(HightlightDuration);
+							until.Value = view.CurrentTime.Add(HightlightDuration);
 						}
 					}
 				}
 				else if (view.Memory.HasChanged(Offset, MemorySize))
 				{
-					highlightTimer.Add(address, CurrentHighlightTime.Add(HightlightDuration));
+					highlightTimer.Add(address, view.CurrentTime.Add(HightlightDuration));
 
 					color = view.Settings.HighlightColor;
 				}
@@ -85,6 +82,7 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
@@ -93,7 +91,7 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			return IsHidden ? HiddenHeight : view.Font.Height;
+			return IsHidden && !IsWrapped ? HiddenHeight : view.Font.Height;
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected byte.</summary>
@@ -103,7 +101,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(spot != null);
 
-			base.Update(spot);
+			Update(spot);
 
 			if (spot.Id >= 0 && spot.Id < maxId)
 			{

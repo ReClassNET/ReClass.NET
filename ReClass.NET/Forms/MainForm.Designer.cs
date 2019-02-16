@@ -34,6 +34,51 @@
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
 			this.classesView = new ReClassNET.UI.ClassNodeView();
 			this.memoryViewControl = new ReClassNET.UI.MemoryViewControl();
+			this.selectedNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.changeTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.addBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.integerToolStripMenuItem1 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem2 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem3 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem4 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem5 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem6 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem7 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.insertBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.integerToolStripMenuItem8 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem9 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem10 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem11 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem12 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem13 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem14 = new ReClassNET.UI.IntegerToolStripMenuItem();
+			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+			this.createClassFromNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+			this.dissectNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+			this.searchForEqualValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+			this.findOutWhatAccessesThisAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.findOutWhatWritesToThisAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+			this.copyNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.pasteNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+			this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+			this.hideNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.unhideNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.unhideChildNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.unhideNodesAboveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.unhideNodesBelowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
+			this.copyAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+			this.showCodeOfClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.shrinkClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
 			this.attachToProcessToolStripSplitButton = new System.Windows.Forms.ToolStripSplitButton();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
@@ -59,49 +104,7 @@
 			this.insert2048BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.insert4096BytesToolStripMenuItem = new ReClassNET.UI.IntegerToolStripMenuItem();
 			this.insertXBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-			this.hex64ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.hex32ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.hex16ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.hex8ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-			this.int64ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.int32ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.int16ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.int8ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-			this.uint64ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.uint32ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.uint16ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.uint8ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-			this.boolToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.bitFieldToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
-			this.floatToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.doubleToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-			this.vec4ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.vec3ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.vec2ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.mat44ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.mat34ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.mat33ToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
-			this.utf8TextToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.utf8TextPtrToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.utf16TextToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.utf16TextPtrToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
-			this.classInstanceToolStripButton6 = new ReClassNET.UI.TypeToolStripButton();
-			this.classPtrToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
-			this.arrayToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.ptrArrayToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.vtableToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.fnPtrToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.fnTypeToolStripButton = new ReClassNET.UI.TypeToolStripButton();
-			this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
+			this.nodeTypesToolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.processInfoToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.infoToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -125,6 +128,7 @@
 			this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.processInformationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.memorySearcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.namedAddressesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
 			this.loadSymbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.loadSymbolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -132,7 +136,6 @@
 			this.resumeProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.suspendProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.terminateProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.namedAddressesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cleanUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
@@ -144,6 +147,7 @@
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
+			this.selectedNodeContextMenuStrip.SuspendLayout();
 			this.toolStrip.SuspendLayout();
 			this.statusStrip.SuspendLayout();
 			this.mainMenuStrip.SuspendLayout();
@@ -186,12 +190,405 @@
 			// memoryViewControl
 			// 
 			this.memoryViewControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.memoryViewControl.ContextMenuStrip = this.selectedNodeContextMenuStrip;
 			this.memoryViewControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.memoryViewControl.Location = new System.Drawing.Point(0, 0);
 			this.memoryViewControl.Name = "memoryViewControl";
 			this.memoryViewControl.Size = new System.Drawing.Size(936, 524);
 			this.memoryViewControl.TabIndex = 0;
 			this.memoryViewControl.SelectionChanged += new System.EventHandler(this.memoryViewControl_SelectionChanged);
+			this.memoryViewControl.ChangeClassTypeClick += new ReClassNET.UI.NodeClickEventHandler(this.memoryViewControl_ChangeClassTypeClick);
+			this.memoryViewControl.ChangeWrappedTypeClick += new ReClassNET.UI.NodeClickEventHandler(this.memoryViewControl_ChangeWrappedTypeClick);
+			this.memoryViewControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.memoryViewControl_KeyDown);
+			// 
+			// selectedNodeContextMenuStrip
+			// 
+			this.selectedNodeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.changeTypeToolStripMenuItem,
+            this.addBytesToolStripMenuItem,
+            this.insertBytesToolStripMenuItem,
+            this.toolStripSeparator8,
+            this.createClassFromNodesToolStripMenuItem,
+            this.toolStripSeparator13,
+            this.dissectNodesToolStripMenuItem,
+            this.toolStripSeparator9,
+            this.searchForEqualValuesToolStripMenuItem,
+            this.toolStripSeparator15,
+            this.findOutWhatAccessesThisAddressToolStripMenuItem,
+            this.findOutWhatWritesToThisAddressToolStripMenuItem,
+            this.toolStripSeparator14,
+            this.copyNodeToolStripMenuItem,
+            this.pasteNodesToolStripMenuItem,
+            this.toolStripSeparator10,
+            this.removeToolStripMenuItem,
+            this.toolStripSeparator12,
+            this.hideNodesToolStripMenuItem,
+            this.unhideNodesToolStripMenuItem,
+            this.toolStripSeparator18,
+            this.copyAddressToolStripMenuItem,
+            this.toolStripSeparator11,
+            this.showCodeOfClassToolStripMenuItem,
+            this.shrinkClassToolStripMenuItem});
+			this.selectedNodeContextMenuStrip.Name = "selectedNodeContextMenuStrip";
+			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(270, 410);
+			this.selectedNodeContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.selectedNodeContextMenuStrip_Opening);
+			// 
+			// changeTypeToolStripMenuItem
+			// 
+			this.changeTypeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Exchange_Button;
+			this.changeTypeToolStripMenuItem.Name = "changeTypeToolStripMenuItem";
+			this.changeTypeToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.changeTypeToolStripMenuItem.Text = "Change Type";
+			// 
+			// addBytesToolStripMenuItem
+			// 
+			this.addBytesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.integerToolStripMenuItem1,
+            this.integerToolStripMenuItem2,
+            this.integerToolStripMenuItem3,
+            this.integerToolStripMenuItem4,
+            this.integerToolStripMenuItem5,
+            this.integerToolStripMenuItem6,
+            this.integerToolStripMenuItem7,
+            this.toolStripMenuItem1});
+			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_X;
+			this.addBytesToolStripMenuItem.Name = "addBytesToolStripMenuItem";
+			this.addBytesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.addBytesToolStripMenuItem.Text = "Add Bytes";
+			// 
+			// integerToolStripMenuItem1
+			// 
+			this.integerToolStripMenuItem1.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_4;
+			this.integerToolStripMenuItem1.Name = "integerToolStripMenuItem1";
+			this.integerToolStripMenuItem1.Size = new System.Drawing.Size(154, 22);
+			this.integerToolStripMenuItem1.Text = "Add 4 Bytes";
+			this.integerToolStripMenuItem1.Value = 4;
+			this.integerToolStripMenuItem1.Click += new System.EventHandler(this.addBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem2
+			// 
+			this.integerToolStripMenuItem2.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_8;
+			this.integerToolStripMenuItem2.Name = "integerToolStripMenuItem2";
+			this.integerToolStripMenuItem2.Size = new System.Drawing.Size(154, 22);
+			this.integerToolStripMenuItem2.Text = "Add 8 Bytes";
+			this.integerToolStripMenuItem2.Value = 8;
+			this.integerToolStripMenuItem2.Click += new System.EventHandler(this.addBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem3
+			// 
+			this.integerToolStripMenuItem3.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_64;
+			this.integerToolStripMenuItem3.Name = "integerToolStripMenuItem3";
+			this.integerToolStripMenuItem3.Size = new System.Drawing.Size(154, 22);
+			this.integerToolStripMenuItem3.Text = "Add 64 Bytes";
+			this.integerToolStripMenuItem3.Value = 64;
+			this.integerToolStripMenuItem3.Click += new System.EventHandler(this.addBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem4
+			// 
+			this.integerToolStripMenuItem4.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_256;
+			this.integerToolStripMenuItem4.Name = "integerToolStripMenuItem4";
+			this.integerToolStripMenuItem4.Size = new System.Drawing.Size(154, 22);
+			this.integerToolStripMenuItem4.Text = "Add 256 Bytes";
+			this.integerToolStripMenuItem4.Value = 256;
+			this.integerToolStripMenuItem4.Click += new System.EventHandler(this.addBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem5
+			// 
+			this.integerToolStripMenuItem5.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_1024;
+			this.integerToolStripMenuItem5.Name = "integerToolStripMenuItem5";
+			this.integerToolStripMenuItem5.Size = new System.Drawing.Size(154, 22);
+			this.integerToolStripMenuItem5.Text = "Add 1024 Bytes";
+			this.integerToolStripMenuItem5.Value = 1024;
+			this.integerToolStripMenuItem5.Click += new System.EventHandler(this.addBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem6
+			// 
+			this.integerToolStripMenuItem6.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_2048;
+			this.integerToolStripMenuItem6.Name = "integerToolStripMenuItem6";
+			this.integerToolStripMenuItem6.Size = new System.Drawing.Size(154, 22);
+			this.integerToolStripMenuItem6.Text = "Add 2048 Bytes";
+			this.integerToolStripMenuItem6.Value = 2048;
+			this.integerToolStripMenuItem6.Click += new System.EventHandler(this.addBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem7
+			// 
+			this.integerToolStripMenuItem7.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_4096;
+			this.integerToolStripMenuItem7.Name = "integerToolStripMenuItem7";
+			this.integerToolStripMenuItem7.Size = new System.Drawing.Size(154, 22);
+			this.integerToolStripMenuItem7.Text = "Add 4096 Bytes";
+			this.integerToolStripMenuItem7.Value = 4096;
+			this.integerToolStripMenuItem7.Click += new System.EventHandler(this.addBytesToolStripMenuItem_Click);
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_X;
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(154, 22);
+			this.toolStripMenuItem1.Text = "Add ... Bytes";
+			this.toolStripMenuItem1.Click += new System.EventHandler(this.addXBytesToolStripMenuItem_Click);
+			// 
+			// insertBytesToolStripMenuItem
+			// 
+			this.insertBytesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.integerToolStripMenuItem8,
+            this.integerToolStripMenuItem9,
+            this.integerToolStripMenuItem10,
+            this.integerToolStripMenuItem11,
+            this.integerToolStripMenuItem12,
+            this.integerToolStripMenuItem13,
+            this.integerToolStripMenuItem14,
+            this.toolStripMenuItem2});
+			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_X;
+			this.insertBytesToolStripMenuItem.Name = "insertBytesToolStripMenuItem";
+			this.insertBytesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.insertBytesToolStripMenuItem.Text = "Insert Bytes";
+			// 
+			// integerToolStripMenuItem8
+			// 
+			this.integerToolStripMenuItem8.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_4;
+			this.integerToolStripMenuItem8.Name = "integerToolStripMenuItem8";
+			this.integerToolStripMenuItem8.Size = new System.Drawing.Size(161, 22);
+			this.integerToolStripMenuItem8.Text = "Insert 4 Bytes";
+			this.integerToolStripMenuItem8.Value = 4;
+			this.integerToolStripMenuItem8.Click += new System.EventHandler(this.insertBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem9
+			// 
+			this.integerToolStripMenuItem9.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_8;
+			this.integerToolStripMenuItem9.Name = "integerToolStripMenuItem9";
+			this.integerToolStripMenuItem9.Size = new System.Drawing.Size(161, 22);
+			this.integerToolStripMenuItem9.Text = "Insert 8 Bytes";
+			this.integerToolStripMenuItem9.Value = 8;
+			this.integerToolStripMenuItem9.Click += new System.EventHandler(this.insertBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem10
+			// 
+			this.integerToolStripMenuItem10.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_64;
+			this.integerToolStripMenuItem10.Name = "integerToolStripMenuItem10";
+			this.integerToolStripMenuItem10.Size = new System.Drawing.Size(161, 22);
+			this.integerToolStripMenuItem10.Text = "Insert 64 Bytes";
+			this.integerToolStripMenuItem10.Value = 64;
+			this.integerToolStripMenuItem10.Click += new System.EventHandler(this.insertBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem11
+			// 
+			this.integerToolStripMenuItem11.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_256;
+			this.integerToolStripMenuItem11.Name = "integerToolStripMenuItem11";
+			this.integerToolStripMenuItem11.Size = new System.Drawing.Size(161, 22);
+			this.integerToolStripMenuItem11.Text = "Insert 256 Bytes";
+			this.integerToolStripMenuItem11.Value = 256;
+			this.integerToolStripMenuItem11.Click += new System.EventHandler(this.insertBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem12
+			// 
+			this.integerToolStripMenuItem12.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_1024;
+			this.integerToolStripMenuItem12.Name = "integerToolStripMenuItem12";
+			this.integerToolStripMenuItem12.Size = new System.Drawing.Size(161, 22);
+			this.integerToolStripMenuItem12.Text = "Insert 1024 Bytes";
+			this.integerToolStripMenuItem12.Value = 1024;
+			this.integerToolStripMenuItem12.Click += new System.EventHandler(this.insertBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem13
+			// 
+			this.integerToolStripMenuItem13.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_2048;
+			this.integerToolStripMenuItem13.Name = "integerToolStripMenuItem13";
+			this.integerToolStripMenuItem13.Size = new System.Drawing.Size(161, 22);
+			this.integerToolStripMenuItem13.Text = "Insert 2048 Bytes";
+			this.integerToolStripMenuItem13.Value = 2048;
+			this.integerToolStripMenuItem13.Click += new System.EventHandler(this.insertBytesToolStripMenuItem_Click);
+			// 
+			// integerToolStripMenuItem14
+			// 
+			this.integerToolStripMenuItem14.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_4096;
+			this.integerToolStripMenuItem14.Name = "integerToolStripMenuItem14";
+			this.integerToolStripMenuItem14.Size = new System.Drawing.Size(161, 22);
+			this.integerToolStripMenuItem14.Text = "Insert 4096 Bytes";
+			this.integerToolStripMenuItem14.Value = 4096;
+			this.integerToolStripMenuItem14.Click += new System.EventHandler(this.insertBytesToolStripMenuItem_Click);
+			// 
+			// toolStripMenuItem2
+			// 
+			this.toolStripMenuItem2.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_X;
+			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(161, 22);
+			this.toolStripMenuItem2.Text = "Insert ... Bytes";
+			this.toolStripMenuItem2.Click += new System.EventHandler(this.insertXBytesToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator8
+			// 
+			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			this.toolStripSeparator8.Size = new System.Drawing.Size(266, 6);
+			// 
+			// createClassFromNodesToolStripMenuItem
+			// 
+			this.createClassFromNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
+			this.createClassFromNodesToolStripMenuItem.Name = "createClassFromNodesToolStripMenuItem";
+			this.createClassFromNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.createClassFromNodesToolStripMenuItem.Text = "Create Class from Nodes";
+			this.createClassFromNodesToolStripMenuItem.Click += new System.EventHandler(this.createClassFromNodesToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator13
+			// 
+			this.toolStripSeparator13.Name = "toolStripSeparator13";
+			this.toolStripSeparator13.Size = new System.Drawing.Size(266, 6);
+			// 
+			// dissectNodesToolStripMenuItem
+			// 
+			this.dissectNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Camera;
+			this.dissectNodesToolStripMenuItem.Name = "dissectNodesToolStripMenuItem";
+			this.dissectNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.dissectNodesToolStripMenuItem.Text = "Dissect Node(s)";
+			this.dissectNodesToolStripMenuItem.Click += new System.EventHandler(this.dissectNodesToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			this.toolStripSeparator9.Size = new System.Drawing.Size(266, 6);
+			// 
+			// searchForEqualValuesToolStripMenuItem
+			// 
+			this.searchForEqualValuesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+			this.searchForEqualValuesToolStripMenuItem.Name = "searchForEqualValuesToolStripMenuItem";
+			this.searchForEqualValuesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.searchForEqualValuesToolStripMenuItem.Text = "Search for equal values...";
+			this.searchForEqualValuesToolStripMenuItem.Click += new System.EventHandler(this.searchForEqualValuesToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator15
+			// 
+			this.toolStripSeparator15.Name = "toolStripSeparator15";
+			this.toolStripSeparator15.Size = new System.Drawing.Size(266, 6);
+			// 
+			// findOutWhatAccessesThisAddressToolStripMenuItem
+			// 
+			this.findOutWhatAccessesThisAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Find_Access;
+			this.findOutWhatAccessesThisAddressToolStripMenuItem.Name = "findOutWhatAccessesThisAddressToolStripMenuItem";
+			this.findOutWhatAccessesThisAddressToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.findOutWhatAccessesThisAddressToolStripMenuItem.Text = "Find out what accesses this address...";
+			this.findOutWhatAccessesThisAddressToolStripMenuItem.Click += new System.EventHandler(this.findOutWhatAccessesThisAddressToolStripMenuItem_Click);
+			// 
+			// findOutWhatWritesToThisAddressToolStripMenuItem
+			// 
+			this.findOutWhatWritesToThisAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Find_Write;
+			this.findOutWhatWritesToThisAddressToolStripMenuItem.Name = "findOutWhatWritesToThisAddressToolStripMenuItem";
+			this.findOutWhatWritesToThisAddressToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.findOutWhatWritesToThisAddressToolStripMenuItem.Text = "Find out what writes to this address...";
+			this.findOutWhatWritesToThisAddressToolStripMenuItem.Click += new System.EventHandler(this.findOutWhatWritesToThisAddressToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator14
+			// 
+			this.toolStripSeparator14.Name = "toolStripSeparator14";
+			this.toolStripSeparator14.Size = new System.Drawing.Size(266, 6);
+			// 
+			// copyNodeToolStripMenuItem
+			// 
+			this.copyNodeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Copy;
+			this.copyNodeToolStripMenuItem.Name = "copyNodeToolStripMenuItem";
+			this.copyNodeToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.copyNodeToolStripMenuItem.Text = "Copy Node(s)";
+			this.copyNodeToolStripMenuItem.Click += new System.EventHandler(this.copyNodeToolStripMenuItem_Click);
+			// 
+			// pasteNodesToolStripMenuItem
+			// 
+			this.pasteNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Paste;
+			this.pasteNodesToolStripMenuItem.Name = "pasteNodesToolStripMenuItem";
+			this.pasteNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.pasteNodesToolStripMenuItem.Text = "Paste Node(s)";
+			this.pasteNodesToolStripMenuItem.Click += new System.EventHandler(this.pasteNodesToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator10
+			// 
+			this.toolStripSeparator10.Name = "toolStripSeparator10";
+			this.toolStripSeparator10.Size = new System.Drawing.Size(266, 6);
+			// 
+			// removeToolStripMenuItem
+			// 
+			this.removeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Delete;
+			this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+			this.removeToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.removeToolStripMenuItem.Text = "Remove Node(s)";
+			this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator12
+			// 
+			this.toolStripSeparator12.Name = "toolStripSeparator12";
+			this.toolStripSeparator12.Size = new System.Drawing.Size(266, 6);
+			// 
+			// hideNodesToolStripMenuItem
+			// 
+			this.hideNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+			this.hideNodesToolStripMenuItem.Name = "hideNodesToolStripMenuItem";
+			this.hideNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.hideNodesToolStripMenuItem.Text = "Hide selected Node(s)";
+			this.hideNodesToolStripMenuItem.Click += new System.EventHandler(this.hideNodesToolStripMenuItem_Click);
+			// 
+			// unhideNodesToolStripMenuItem
+			// 
+			this.unhideNodesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.unhideChildNodesToolStripMenuItem,
+            this.unhideNodesAboveToolStripMenuItem,
+            this.unhideNodesBelowToolStripMenuItem});
+			this.unhideNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+			this.unhideNodesToolStripMenuItem.Name = "unhideNodesToolStripMenuItem";
+			this.unhideNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.unhideNodesToolStripMenuItem.Text = "Unhide...";
+			// 
+			// unhideChildNodesToolStripMenuItem
+			// 
+			this.unhideChildNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+			this.unhideChildNodesToolStripMenuItem.Name = "unhideChildNodesToolStripMenuItem";
+			this.unhideChildNodesToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.unhideChildNodesToolStripMenuItem.Text = "... Child Node(s)";
+			this.unhideChildNodesToolStripMenuItem.Click += new System.EventHandler(this.unhideChildNodesToolStripMenuItem_Click);
+			// 
+			// unhideNodesAboveToolStripMenuItem
+			// 
+			this.unhideNodesAboveToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+			this.unhideNodesAboveToolStripMenuItem.Name = "unhideNodesAboveToolStripMenuItem";
+			this.unhideNodesAboveToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.unhideNodesAboveToolStripMenuItem.Text = "... Node(s) above";
+			this.unhideNodesAboveToolStripMenuItem.Click += new System.EventHandler(this.unhideNodesAboveToolStripMenuItem_Click);
+			// 
+			// unhideNodesBelowToolStripMenuItem
+			// 
+			this.unhideNodesBelowToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
+			this.unhideNodesBelowToolStripMenuItem.Name = "unhideNodesBelowToolStripMenuItem";
+			this.unhideNodesBelowToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.unhideNodesBelowToolStripMenuItem.Text = "... Node(s) below";
+			this.unhideNodesBelowToolStripMenuItem.Click += new System.EventHandler(this.unhideNodesBelowToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator18
+			// 
+			this.toolStripSeparator18.Name = "toolStripSeparator18";
+			this.toolStripSeparator18.Size = new System.Drawing.Size(266, 6);
+			// 
+			// copyAddressToolStripMenuItem
+			// 
+			this.copyAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Copy;
+			this.copyAddressToolStripMenuItem.Name = "copyAddressToolStripMenuItem";
+			this.copyAddressToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.copyAddressToolStripMenuItem.Text = "Copy Address";
+			this.copyAddressToolStripMenuItem.Click += new System.EventHandler(this.copyAddressToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator11
+			// 
+			this.toolStripSeparator11.Name = "toolStripSeparator11";
+			this.toolStripSeparator11.Size = new System.Drawing.Size(266, 6);
+			// 
+			// showCodeOfClassToolStripMenuItem
+			// 
+			this.showCodeOfClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Code_Cpp;
+			this.showCodeOfClassToolStripMenuItem.Name = "showCodeOfClassToolStripMenuItem";
+			this.showCodeOfClassToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.showCodeOfClassToolStripMenuItem.Text = "Show C++ Code of Class";
+			this.showCodeOfClassToolStripMenuItem.Click += new System.EventHandler(this.showCodeOfClassToolStripMenuItem_Click);
+			// 
+			// shrinkClassToolStripMenuItem
+			// 
+			this.shrinkClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Chart_Delete;
+			this.shrinkClassToolStripMenuItem.Name = "shrinkClassToolStripMenuItem";
+			this.shrinkClassToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
+			this.shrinkClassToolStripMenuItem.Text = "Shrink Class";
+			this.shrinkClassToolStripMenuItem.Click += new System.EventHandler(this.shrinkClassToolStripMenuItem_Click);
 			// 
 			// toolStrip
 			// 
@@ -204,49 +601,7 @@
             this.newClassToolStripButton,
             this.addBytesToolStripDropDownButton,
             this.insertBytesToolStripDropDownButton,
-            this.toolStripSeparator8,
-            this.hex64ToolStripButton,
-            this.hex32ToolStripButton,
-            this.hex16ToolStripButton,
-            this.hex8ToolStripButton,
-            this.toolStripSeparator9,
-            this.int64ToolStripButton,
-            this.int32ToolStripButton,
-            this.int16ToolStripButton,
-            this.int8ToolStripButton,
-            this.toolStripSeparator10,
-            this.uint64ToolStripButton,
-            this.uint32ToolStripButton,
-            this.uint16ToolStripButton,
-            this.uint8ToolStripButton,
-            this.toolStripSeparator11,
-            this.boolToolStripButton,
-            this.bitFieldToolStripButton,
-            this.toolStripSeparator18,
-            this.floatToolStripButton,
-            this.doubleToolStripButton,
-            this.toolStripSeparator12,
-            this.vec4ToolStripButton,
-            this.vec3ToolStripButton,
-            this.vec2ToolStripButton,
-            this.mat44ToolStripButton,
-            this.mat34ToolStripButton,
-            this.mat33ToolStripButton,
-            this.toolStripSeparator13,
-            this.utf8TextToolStripButton,
-            this.utf8TextPtrToolStripButton,
-            this.utf16TextToolStripButton,
-            this.utf16TextPtrToolStripButton,
-            this.toolStripSeparator14,
-            this.classInstanceToolStripButton6,
-            this.classPtrToolStripButton,
-            this.toolStripSeparator15,
-            this.arrayToolStripButton,
-            this.ptrArrayToolStripButton,
-            this.vtableToolStripButton,
-            this.fnPtrToolStripButton,
-            this.fnTypeToolStripButton,
-            this.toolStripSeparator19});
+            this.nodeTypesToolStripSeparator});
 			this.toolStrip.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip.Name = "toolStrip";
 			this.toolStrip.Size = new System.Drawing.Size(1141, 25);
@@ -484,418 +839,10 @@
 			this.insertXBytesToolStripMenuItem.Text = "Insert ... Bytes";
 			this.insertXBytesToolStripMenuItem.Click += new System.EventHandler(this.insertXBytesToolStripMenuItem_Click);
 			// 
-			// toolStripSeparator8
+			// nodeTypesToolStripSeparator
 			// 
-			this.toolStripSeparator8.Name = "toolStripSeparator8";
-			this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
-			// 
-			// hex64ToolStripButton
-			// 
-			this.hex64ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.hex64ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_64;
-			this.hex64ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.hex64ToolStripButton.Name = "hex64ToolStripButton";
-			this.hex64ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.hex64ToolStripButton.ToolTipText = "Hex64";
-			this.hex64ToolStripButton.Value = typeof(ReClassNET.Nodes.Hex64Node);
-			this.hex64ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// hex32ToolStripButton
-			// 
-			this.hex32ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.hex32ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_32;
-			this.hex32ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.hex32ToolStripButton.Name = "hex32ToolStripButton";
-			this.hex32ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.hex32ToolStripButton.ToolTipText = "Hex32";
-			this.hex32ToolStripButton.Value = typeof(ReClassNET.Nodes.Hex32Node);
-			this.hex32ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// hex16ToolStripButton
-			// 
-			this.hex16ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.hex16ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_16;
-			this.hex16ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.hex16ToolStripButton.Name = "hex16ToolStripButton";
-			this.hex16ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.hex16ToolStripButton.ToolTipText = "Hex16";
-			this.hex16ToolStripButton.Value = typeof(ReClassNET.Nodes.Hex16Node);
-			this.hex16ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// hex8ToolStripButton
-			// 
-			this.hex8ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.hex8ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Hex_8;
-			this.hex8ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.hex8ToolStripButton.Name = "hex8ToolStripButton";
-			this.hex8ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.hex8ToolStripButton.ToolTipText = "Hex8";
-			this.hex8ToolStripButton.Value = typeof(ReClassNET.Nodes.Hex8Node);
-			this.hex8ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// toolStripSeparator9
-			// 
-			this.toolStripSeparator9.Name = "toolStripSeparator9";
-			this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
-			// 
-			// int64ToolStripButton
-			// 
-			this.int64ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.int64ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_64;
-			this.int64ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.int64ToolStripButton.Name = "int64ToolStripButton";
-			this.int64ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.int64ToolStripButton.ToolTipText = "Int64";
-			this.int64ToolStripButton.Value = typeof(ReClassNET.Nodes.Int64Node);
-			this.int64ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// int32ToolStripButton
-			// 
-			this.int32ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.int32ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_32;
-			this.int32ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.int32ToolStripButton.Name = "int32ToolStripButton";
-			this.int32ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.int32ToolStripButton.ToolTipText = "Int32";
-			this.int32ToolStripButton.Value = typeof(ReClassNET.Nodes.Int32Node);
-			this.int32ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// int16ToolStripButton
-			// 
-			this.int16ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.int16ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_16;
-			this.int16ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.int16ToolStripButton.Name = "int16ToolStripButton";
-			this.int16ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.int16ToolStripButton.ToolTipText = "Int16";
-			this.int16ToolStripButton.Value = typeof(ReClassNET.Nodes.Int16Node);
-			this.int16ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// int8ToolStripButton
-			// 
-			this.int8ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.int8ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Int_8;
-			this.int8ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.int8ToolStripButton.Name = "int8ToolStripButton";
-			this.int8ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.int8ToolStripButton.ToolTipText = "Int8";
-			this.int8ToolStripButton.Value = typeof(ReClassNET.Nodes.Int8Node);
-			this.int8ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// toolStripSeparator10
-			// 
-			this.toolStripSeparator10.Name = "toolStripSeparator10";
-			this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
-			// 
-			// uint64ToolStripButton
-			// 
-			this.uint64ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.uint64ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_64;
-			this.uint64ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.uint64ToolStripButton.Name = "uint64ToolStripButton";
-			this.uint64ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.uint64ToolStripButton.ToolTipText = "UInt64 / QWORD";
-			this.uint64ToolStripButton.Value = typeof(ReClassNET.Nodes.UInt64Node);
-			this.uint64ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// uint32ToolStripButton
-			// 
-			this.uint32ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.uint32ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_32;
-			this.uint32ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.uint32ToolStripButton.Name = "uint32ToolStripButton";
-			this.uint32ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.uint32ToolStripButton.ToolTipText = "UInt32 / DWORD";
-			this.uint32ToolStripButton.Value = typeof(ReClassNET.Nodes.UInt32Node);
-			this.uint32ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// uint16ToolStripButton
-			// 
-			this.uint16ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.uint16ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_16;
-			this.uint16ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.uint16ToolStripButton.Name = "uint16ToolStripButton";
-			this.uint16ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.uint16ToolStripButton.ToolTipText = "UInt16 / WORD";
-			this.uint16ToolStripButton.Value = typeof(ReClassNET.Nodes.UInt16Node);
-			this.uint16ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// uint8ToolStripButton
-			// 
-			this.uint8ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.uint8ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UInt_8;
-			this.uint8ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.uint8ToolStripButton.Name = "uint8ToolStripButton";
-			this.uint8ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.uint8ToolStripButton.ToolTipText = "UInt8 / BYTE";
-			this.uint8ToolStripButton.Value = typeof(ReClassNET.Nodes.UInt8Node);
-			this.uint8ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// toolStripSeparator11
-			// 
-			this.toolStripSeparator11.Name = "toolStripSeparator11";
-			this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
-			// 
-			// boolToolStripButton
-			// 
-			this.boolToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.boolToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Bool;
-			this.boolToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.boolToolStripButton.Name = "boolToolStripButton";
-			this.boolToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.boolToolStripButton.ToolTipText = "Bool";
-			this.boolToolStripButton.Value = typeof(ReClassNET.Nodes.BoolNode);
-			this.boolToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// bitFieldToolStripButton
-			// 
-			this.bitFieldToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.bitFieldToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Bits;
-			this.bitFieldToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.bitFieldToolStripButton.Name = "bitFieldToolStripButton";
-			this.bitFieldToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.bitFieldToolStripButton.ToolTipText = "Bit Field";
-			this.bitFieldToolStripButton.Value = typeof(ReClassNET.Nodes.BitFieldNode);
-			this.bitFieldToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// toolStripSeparator18
-			// 
-			this.toolStripSeparator18.Name = "toolStripSeparator18";
-			this.toolStripSeparator18.Size = new System.Drawing.Size(6, 25);
-			// 
-			// floatToolStripButton
-			// 
-			this.floatToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.floatToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Float;
-			this.floatToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.floatToolStripButton.Name = "floatToolStripButton";
-			this.floatToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.floatToolStripButton.ToolTipText = "Float";
-			this.floatToolStripButton.Value = typeof(ReClassNET.Nodes.FloatNode);
-			this.floatToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// doubleToolStripButton
-			// 
-			this.doubleToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.doubleToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Double;
-			this.doubleToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.doubleToolStripButton.Name = "doubleToolStripButton";
-			this.doubleToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.doubleToolStripButton.ToolTipText = "Double";
-			this.doubleToolStripButton.Value = typeof(ReClassNET.Nodes.DoubleNode);
-			this.doubleToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// toolStripSeparator12
-			// 
-			this.toolStripSeparator12.Name = "toolStripSeparator12";
-			this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
-			// 
-			// vec4ToolStripButton
-			// 
-			this.vec4ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.vec4ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Vector_4;
-			this.vec4ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.vec4ToolStripButton.Name = "vec4ToolStripButton";
-			this.vec4ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.vec4ToolStripButton.ToolTipText = "Vector4";
-			this.vec4ToolStripButton.Value = typeof(ReClassNET.Nodes.Vector4Node);
-			this.vec4ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// vec3ToolStripButton
-			// 
-			this.vec3ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.vec3ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Vector_3;
-			this.vec3ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.vec3ToolStripButton.Name = "vec3ToolStripButton";
-			this.vec3ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.vec3ToolStripButton.ToolTipText = "Vector3";
-			this.vec3ToolStripButton.Value = typeof(ReClassNET.Nodes.Vector3Node);
-			this.vec3ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// vec2ToolStripButton
-			// 
-			this.vec2ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.vec2ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Vector_2;
-			this.vec2ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.vec2ToolStripButton.Name = "vec2ToolStripButton";
-			this.vec2ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.vec2ToolStripButton.ToolTipText = "Vector2";
-			this.vec2ToolStripButton.Value = typeof(ReClassNET.Nodes.Vector2Node);
-			this.vec2ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// mat44ToolStripButton
-			// 
-			this.mat44ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.mat44ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Matrix_4x4;
-			this.mat44ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.mat44ToolStripButton.Name = "mat44ToolStripButton";
-			this.mat44ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.mat44ToolStripButton.ToolTipText = "4x4 Matrix";
-			this.mat44ToolStripButton.Value = typeof(ReClassNET.Nodes.Matrix4x4Node);
-			this.mat44ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// mat34ToolStripButton
-			// 
-			this.mat34ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.mat34ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Matrix_3x4;
-			this.mat34ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.mat34ToolStripButton.Name = "mat34ToolStripButton";
-			this.mat34ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.mat34ToolStripButton.ToolTipText = "3x4 Matrix";
-			this.mat34ToolStripButton.Value = typeof(ReClassNET.Nodes.Matrix3x4Node);
-			this.mat34ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// mat33ToolStripButton
-			// 
-			this.mat33ToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.mat33ToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Matrix_3x3;
-			this.mat33ToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.mat33ToolStripButton.Name = "mat33ToolStripButton";
-			this.mat33ToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.mat33ToolStripButton.ToolTipText = "3x3 Matrix";
-			this.mat33ToolStripButton.Value = typeof(ReClassNET.Nodes.Matrix3x3Node);
-			this.mat33ToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// toolStripSeparator13
-			// 
-			this.toolStripSeparator13.Name = "toolStripSeparator13";
-			this.toolStripSeparator13.Size = new System.Drawing.Size(6, 25);
-			// 
-			// utf8TextToolStripButton
-			// 
-			this.utf8TextToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.utf8TextToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Text;
-			this.utf8TextToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.utf8TextToolStripButton.Name = "utf8TextToolStripButton";
-			this.utf8TextToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.utf8TextToolStripButton.ToolTipText = "UTF8 Text";
-			this.utf8TextToolStripButton.Value = typeof(ReClassNET.Nodes.Utf8TextNode);
-			this.utf8TextToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// utf8TextPtrToolStripButton
-			// 
-			this.utf8TextPtrToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.utf8TextPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Text_Pointer;
-			this.utf8TextPtrToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.utf8TextPtrToolStripButton.Name = "utf8TextPtrToolStripButton";
-			this.utf8TextPtrToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.utf8TextPtrToolStripButton.ToolTipText = "Pointer to UTF8 text";
-			this.utf8TextPtrToolStripButton.Value = typeof(ReClassNET.Nodes.Utf8TextPtrNode);
-			this.utf8TextPtrToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// utf16TextToolStripButton
-			// 
-			this.utf16TextToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.utf16TextToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UText;
-			this.utf16TextToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.utf16TextToolStripButton.Name = "utf16TextToolStripButton";
-			this.utf16TextToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.utf16TextToolStripButton.ToolTipText = "UTF16 / Unicode Text";
-			this.utf16TextToolStripButton.Value = typeof(ReClassNET.Nodes.Utf16TextNode);
-			this.utf16TextToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// utf16TextPtrToolStripButton
-			// 
-			this.utf16TextPtrToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.utf16TextPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_UText_Pointer;
-			this.utf16TextPtrToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.utf16TextPtrToolStripButton.Name = "utf16TextPtrToolStripButton";
-			this.utf16TextPtrToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.utf16TextPtrToolStripButton.ToolTipText = "Pointer to UTF16 / Unicode text";
-			this.utf16TextPtrToolStripButton.Value = typeof(ReClassNET.Nodes.Utf16TextPtrNode);
-			this.utf16TextPtrToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// toolStripSeparator14
-			// 
-			this.toolStripSeparator14.Name = "toolStripSeparator14";
-			this.toolStripSeparator14.Size = new System.Drawing.Size(6, 25);
-			// 
-			// classInstanceToolStripButton6
-			// 
-			this.classInstanceToolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.classInstanceToolStripButton6.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Instance;
-			this.classInstanceToolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.classInstanceToolStripButton6.Name = "classInstanceToolStripButton6";
-			this.classInstanceToolStripButton6.Size = new System.Drawing.Size(23, 22);
-			this.classInstanceToolStripButton6.ToolTipText = "Class instance";
-			this.classInstanceToolStripButton6.Value = typeof(ReClassNET.Nodes.ClassInstanceNode);
-			this.classInstanceToolStripButton6.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// classPtrToolStripButton
-			// 
-			this.classPtrToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.classPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Pointer;
-			this.classPtrToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.classPtrToolStripButton.Name = "classPtrToolStripButton";
-			this.classPtrToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.classPtrToolStripButton.ToolTipText = "Pointer to class instance";
-			this.classPtrToolStripButton.Value = typeof(ReClassNET.Nodes.ClassPtrNode);
-			this.classPtrToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// toolStripSeparator15
-			// 
-			this.toolStripSeparator15.Name = "toolStripSeparator15";
-			this.toolStripSeparator15.Size = new System.Drawing.Size(6, 25);
-			// 
-			// arrayToolStripButton
-			// 
-			this.arrayToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.arrayToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Array;
-			this.arrayToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.arrayToolStripButton.Name = "arrayToolStripButton";
-			this.arrayToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.arrayToolStripButton.ToolTipText = "Array of Classes";
-			this.arrayToolStripButton.Value = typeof(ReClassNET.Nodes.ClassInstanceArrayNode);
-			this.arrayToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// ptrArrayToolStripButton
-			// 
-			this.ptrArrayToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.ptrArrayToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Pointer_Array;
-			this.ptrArrayToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.ptrArrayToolStripButton.Name = "ptrArrayToolStripButton";
-			this.ptrArrayToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.ptrArrayToolStripButton.ToolTipText = "Array of Pointers";
-			this.ptrArrayToolStripButton.Value = typeof(ReClassNET.Nodes.ClassPtrArrayNode);
-			this.ptrArrayToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// vtableToolStripButton
-			// 
-			this.vtableToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.vtableToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_VTable;
-			this.vtableToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.vtableToolStripButton.Name = "vtableToolStripButton";
-			this.vtableToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.vtableToolStripButton.ToolTipText = "Pointer to VTable";
-			this.vtableToolStripButton.Value = typeof(ReClassNET.Nodes.VTableNode);
-			this.vtableToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// fnPtrToolStripButton
-			// 
-			this.fnPtrToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.fnPtrToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Function_Pointer;
-			this.fnPtrToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.fnPtrToolStripButton.Name = "fnPtrToolStripButton";
-			this.fnPtrToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.fnPtrToolStripButton.ToolTipText = "Pointer to a function";
-			this.fnPtrToolStripButton.Value = typeof(ReClassNET.Nodes.FunctionPtrNode);
-			this.fnPtrToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// fnTypeToolStripButton
-			// 
-			this.fnTypeToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.fnTypeToolStripButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Function;
-			this.fnTypeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.fnTypeToolStripButton.Name = "fnTypeToolStripButton";
-			this.fnTypeToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.fnTypeToolStripButton.ToolTipText = "Function";
-			this.fnTypeToolStripButton.Value = typeof(ReClassNET.Nodes.FunctionNode);
-			this.fnTypeToolStripButton.Click += new System.EventHandler(this.memoryTypeToolStripButton_Click);
-			// 
-			// toolStripSeparator19
-			// 
-			this.toolStripSeparator19.Name = "toolStripSeparator19";
-			this.toolStripSeparator19.Size = new System.Drawing.Size(6, 25);
+			this.nodeTypesToolStripSeparator.Name = "nodeTypesToolStripSeparator";
+			this.nodeTypesToolStripSeparator.Size = new System.Drawing.Size(6, 25);
 			// 
 			// statusStrip
 			// 
@@ -959,7 +906,7 @@
 			// 
 			this.attachToProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier;
 			this.attachToProcessToolStripMenuItem.Name = "attachToProcessToolStripMenuItem";
-			this.attachToProcessToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.attachToProcessToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.attachToProcessToolStripMenuItem.Text = "Attach to Process...";
 			this.attachToProcessToolStripMenuItem.Click += new System.EventHandler(this.attachToProcessToolStripSplitButton_ButtonClick);
 			// 
@@ -967,7 +914,7 @@
 			// 
 			this.reattachToProcessToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier_Arrow;
 			this.reattachToProcessToolStripMenuItem.Name = "reattachToProcessToolStripMenuItem";
-			this.reattachToProcessToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.reattachToProcessToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.reattachToProcessToolStripMenuItem.Text = "<>";
 			this.reattachToProcessToolStripMenuItem.Click += new System.EventHandler(this.reattachToProcessToolStripMenuItem_Click);
 			// 
@@ -975,21 +922,21 @@
 			// 
 			this.detachToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Magnifier_Remove;
 			this.detachToolStripMenuItem.Name = "detachToolStripMenuItem";
-			this.detachToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.detachToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.detachToolStripMenuItem.Text = "Detach";
 			this.detachToolStripMenuItem.Click += new System.EventHandler(this.detachToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(243, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(192, 6);
 			// 
 			// openProjectToolStripMenuItem
 			// 
 			this.openProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Folder;
 			this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
 			this.openProjectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.openProjectToolStripMenuItem.Text = "Open Project...";
 			this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
 			// 
@@ -997,7 +944,7 @@
 			// 
 			this.mergeWithProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Folder_Add;
 			this.mergeWithProjectToolStripMenuItem.Name = "mergeWithProjectToolStripMenuItem";
-			this.mergeWithProjectToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.mergeWithProjectToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.mergeWithProjectToolStripMenuItem.Text = "Merge with Project...";
 			this.mergeWithProjectToolStripMenuItem.Click += new System.EventHandler(this.mergeWithProjectToolStripMenuItem_Click);
 			// 
@@ -1005,21 +952,21 @@
 			// 
 			this.clearProjectToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Arrow_Refresh;
 			this.clearProjectToolStripMenuItem.Name = "clearProjectToolStripMenuItem";
-			this.clearProjectToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.clearProjectToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.clearProjectToolStripMenuItem.Text = "Clear Project";
 			this.clearProjectToolStripMenuItem.Click += new System.EventHandler(this.clearProjectToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(243, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(192, 6);
 			// 
 			// saveToolStripMenuItem
 			// 
 			this.saveToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Save;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
 			this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.saveToolStripMenuItem.Text = "Save";
 			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
@@ -1029,20 +976,20 @@
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
 			this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.saveAsToolStripMenuItem.Text = "Save as...";
 			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(243, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(192, 6);
 			// 
 			// settingsToolStripMenuItem
 			// 
 			this.settingsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Cogs;
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.settingsToolStripMenuItem.Text = "Settings...";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 			// 
@@ -1050,20 +997,20 @@
 			// 
 			this.pluginsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Plugin;
 			this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
-			this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.pluginsToolStripMenuItem.Text = "Plugins...";
 			this.pluginsToolStripMenuItem.Click += new System.EventHandler(this.pluginsToolStripButton_Click);
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(243, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(192, 6);
 			// 
 			// quitToolStripMenuItem
 			// 
 			this.quitToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Quit;
 			this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-			this.quitToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+			this.quitToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.quitToolStripMenuItem.Text = "Quit";
 			this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
 			// 
@@ -1099,6 +1046,14 @@
 			this.memorySearcherToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.memorySearcherToolStripMenuItem.Text = "Memory Searcher...";
 			this.memorySearcherToolStripMenuItem.Click += new System.EventHandler(this.memorySearcherToolStripMenuItem_Click);
+			// 
+			// namedAddressesToolStripMenuItem
+			// 
+			this.namedAddressesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Custom_Type;
+			this.namedAddressesToolStripMenuItem.Name = "namedAddressesToolStripMenuItem";
+			this.namedAddressesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+			this.namedAddressesToolStripMenuItem.Text = "Named Addresses...";
+			this.namedAddressesToolStripMenuItem.Click += new System.EventHandler(this.namedAddressesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator17
 			// 
@@ -1149,14 +1104,6 @@
 			this.terminateProcessToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.terminateProcessToolStripMenuItem.Text = "Kill";
 			this.terminateProcessToolStripMenuItem.Click += new System.EventHandler(this.ControlRemoteProcessToolStripMenuItem_Click);
-			// 
-			// namedAddressesToolStripMenuItem
-			// 
-			this.namedAddressesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Custom_Type;
-			this.namedAddressesToolStripMenuItem.Name = "namedAddressesToolStripMenuItem";
-			this.namedAddressesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-			this.namedAddressesToolStripMenuItem.Text = "Named Addresses...";
-			this.namedAddressesToolStripMenuItem.Click += new System.EventHandler(this.namedAddressesToolStripMenuItem_Click);
 			// 
 			// projectToolStripMenuItem
 			// 
@@ -1210,7 +1157,7 @@
 			// 
 			this.aboutToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Information;
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
@@ -1235,6 +1182,7 @@
 			this.splitContainer.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
 			this.splitContainer.ResumeLayout(false);
+			this.selectedNodeContextMenuStrip.ResumeLayout(false);
 			this.toolStrip.ResumeLayout(false);
 			this.toolStrip.PerformLayout();
 			this.statusStrip.ResumeLayout(false);
@@ -1299,47 +1247,10 @@
 		private UI.IntegerToolStripMenuItem insert4096BytesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem addXBytesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem insertXBytesToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
-		private UI.TypeToolStripButton hex64ToolStripButton;
-		private UI.TypeToolStripButton hex32ToolStripButton;
-		private UI.TypeToolStripButton hex16ToolStripButton;
-		private UI.TypeToolStripButton hex8ToolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
-		private UI.TypeToolStripButton int64ToolStripButton;
-		private UI.TypeToolStripButton int32ToolStripButton;
-		private UI.TypeToolStripButton int16ToolStripButton;
-		private UI.TypeToolStripButton int8ToolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
-		private UI.TypeToolStripButton uint64ToolStripButton;
-		private UI.TypeToolStripButton uint32ToolStripButton;
-		private UI.TypeToolStripButton uint16ToolStripButton;
-		private UI.TypeToolStripButton uint8ToolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
-		private UI.TypeToolStripButton floatToolStripButton;
-		private UI.TypeToolStripButton doubleToolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
-		private UI.TypeToolStripButton vec4ToolStripButton;
-		private UI.TypeToolStripButton vec3ToolStripButton;
-		private UI.TypeToolStripButton vec2ToolStripButton;
-		private UI.TypeToolStripButton mat44ToolStripButton;
-		private UI.TypeToolStripButton mat34ToolStripButton;
-		private UI.TypeToolStripButton mat33ToolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
-		private UI.TypeToolStripButton utf8TextToolStripButton;
-		private UI.TypeToolStripButton utf8TextPtrToolStripButton;
-		private UI.TypeToolStripButton utf16TextToolStripButton;
-		private UI.TypeToolStripButton utf16TextPtrToolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
-		private UI.TypeToolStripButton classInstanceToolStripButton6;
-		private UI.TypeToolStripButton classPtrToolStripButton;
-		private UI.TypeToolStripButton arrayToolStripButton;
-		private UI.TypeToolStripButton vtableToolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
-		private UI.TypeToolStripButton fnPtrToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator nodeTypesToolStripSeparator;
 		private UI.ClassNodeView classesView;
 		private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem cleanUnusedClassesToolStripMenuItem;
-		private UI.TypeToolStripButton ptrArrayToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
 		private System.Windows.Forms.ToolStripMenuItem generateCppCodeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem generateCSharpCodeToolStripMenuItem;
@@ -1347,18 +1258,58 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
 		private System.Windows.Forms.ToolStripMenuItem loadSymbolToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton openProjectToolStripButton;
-		private UI.TypeToolStripButton bitFieldToolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
 		private System.Windows.Forms.ToolStripStatusLabel infoToolStripStatusLabel;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator19;
 		private System.Windows.Forms.ToolStripMenuItem mergeWithProjectToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem detachToolStripMenuItem;
-		private UI.TypeToolStripButton boolToolStripButton;
-		private UI.TypeToolStripButton fnTypeToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem memorySearcherToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem reattachToProcessToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSplitButton attachToProcessToolStripSplitButton;
 		private System.Windows.Forms.ToolStripMenuItem namedAddressesToolStripMenuItem;
+		private System.Windows.Forms.ContextMenuStrip selectedNodeContextMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem changeTypeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem addBytesToolStripMenuItem;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem1;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem2;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem3;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem4;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem5;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem6;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem7;
+		private System.Windows.Forms.ToolStripMenuItem insertBytesToolStripMenuItem;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem8;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem9;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem10;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem11;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem12;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem13;
+		private UI.IntegerToolStripMenuItem integerToolStripMenuItem14;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+		private System.Windows.Forms.ToolStripMenuItem createClassFromNodesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+		private System.Windows.Forms.ToolStripMenuItem dissectNodesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+		private System.Windows.Forms.ToolStripMenuItem searchForEqualValuesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
+		private System.Windows.Forms.ToolStripMenuItem findOutWhatAccessesThisAddressToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem findOutWhatWritesToThisAddressToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
+		private System.Windows.Forms.ToolStripMenuItem copyNodeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem pasteNodesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+		private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+		private System.Windows.Forms.ToolStripMenuItem hideNodesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem unhideNodesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem unhideChildNodesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem unhideNodesAboveToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem unhideNodesBelowToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
+		private System.Windows.Forms.ToolStripMenuItem copyAddressToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+		private System.Windows.Forms.ToolStripMenuItem showCodeOfClassToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem shrinkClassToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
 	}
 }
 

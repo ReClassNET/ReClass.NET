@@ -82,7 +82,9 @@ namespace ReClassNET
 		{
 			Contract.Requires(node != null);
 
-			return classes.Where(c => c != node).Where(c => c.Descendants().Any(n => (n as BaseReferenceNode)?.InnerNode == node));
+			return classes
+				.Where(c => c != node)
+				.Where(c => c.Nodes.OfType<BaseWrapperNode>().Any(w => w.ResolveMostInnerNode() == node));
 		}
 
 		public void Remove(ClassNode node)

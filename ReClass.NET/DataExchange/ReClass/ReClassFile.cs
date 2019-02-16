@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.Linq;
 using System.Xml.Linq;
+using ReClassNET.DataExchange.ReClass.Legacy;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange.ReClass
 {
@@ -155,7 +153,7 @@ namespace ReClassNET.DataExchange.ReClass
 					continue;
 				}
 
-				var node = Activator.CreateInstance(nodeType) as BaseNode;
+				var node = BaseNode.CreateInstanceFromType(nodeType, false);
 				if (node == null)
 				{
 					logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");
@@ -168,51 +166,37 @@ namespace ReClassNET.DataExchange.ReClass
 				node.IsHidden = element.Attribute("bHidden")?.Value.Equals("1") ?? false;
 
 				// Convert the Custom node into normal hex nodes.
-				if (node is CustomNode)
+				if (node is CustomNode customNode)
 				{
 					int.TryParse(element.Attribute("Size")?.Value, out var size);
 
-					while (size != 0)
+					foreach (var paddingNode in customNode.GetEquivalentNodes(size))
 					{
-						BaseNode paddingNode;
-#if RECLASSNET64
-						if (size >= 8)
-						{
-							paddingNode = new Hex64Node();
-						}
-						else 
-#endif
-						if (size >= 4)
-						{
-							paddingNode = new Hex32Node();
-						}
-						else if (size >= 2)
-						{
-							paddingNode = new Hex16Node();
-						}
-						else
-						{
-							paddingNode = new Hex8Node();
-						}
-
-						paddingNode.Comment = node.Comment;
-
-						size -= paddingNode.MemorySize;
-
 						yield return paddingNode;
 					}
 
 					continue;
 				}
 
-				if (node is BaseReferenceNode referenceNode)
+				// ClassInstanceNode, ClassPointerNode, ClassInstanceArrayNode, ClassPointerArrayNode
+				if (node is BaseWrapperNode baseWrapperNode)
 				{
 					string reference;
-					if (referenceNode is ClassInstanceArrayNode)
+					int arrayCount = 0;
+					if (node is BaseClassArrayNode) // ClassInstanceArrayNode, ClassPointerArrayNode
 					{
 						reference = element.Element("Array")?.Attribute("Name")?.Value;
+
+						if (node is ClassInstanceArrayNode)
+						{
+							TryGetAttributeValue(element, "Total", out arrayCount, logger);
+						}
+						else
+						{
+							TryGetAttributeValue(element, "Count", out arrayCount, logger);
+						}
 					}
-					else
+					else // ClassInstanceNode, ClassPointerNode
 					{
 						reference = element.Attribute("Pointer")?.Value ?? element.Attribute("Instance")?.Value;
 					}
@@ -226,22 +210,34 @@ namespace ReClassNET.DataExchange.ReClass
 					}
 
 					var innerClassNode = classes[reference];
-					if (referenceNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, project.Classes))
+					if (baseWrapperNode.ShouldPerformCycleCheckForInnerNode() && !ClassUtil.IsCyclicIfClassIsAccessibleFromParent(parent, innerClassNode, project.Classes))
 					{
 						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {parent.Name}->{node.Name}");
 
 						continue;
 					}
 
-					referenceNode.ChangeInnerNode(innerClassNode);
+					// ClassPointerNode, ClassInstanceArrayNode and ClassPointerArrayNode need to be converted to supported nodes.
+					if (node is BaseClassArrayNode classArrayNode) // ClassInstanceArrayNode, ClassPointerArrayNode
+					{
+						node = classArrayNode.GetEquivalentNode(arrayCount, innerClassNode);
+					}
+					else if (node is ClassPointerNode classPointerNode) // ClassPointerNode
+					{
+						node = classPointerNode.GetEquivalentNode(innerClassNode);
+					}
+					else // ClassInstanceNode, ClassPointerNode
+					{
+						baseWrapperNode.ChangeInnerNode(innerClassNode);
+					}
 				}
 
 				switch (node)
 				{
-					case VTableNode vtableNode:
+					case VirtualMethodTableNode vtableNode:
 						element
 							.Elements("Function")
-							.Select(e => new VMethodNode
+							.Select(e => new VirtualMethodNode
 							{
 								Name = e.Attribute("Name")?.Value ?? string.Empty,
 								Comment = e.Attribute("Comment")?.Value ?? string.Empty,
@@ -249,18 +245,6 @@ namespace ReClassNET.DataExchange.ReClass
 							})
 							.ForEach(vtableNode.AddNode);
 						break;
-					case ClassInstanceArrayNode classInstanceArrayNode:
-					{
-						TryGetAttributeValue(element, "Total", out var count, logger);
-						classInstanceArrayNode.Count = count;
-						break;
-					}
-					case ClassPtrArrayNode classPtrArrayNode:
-					{
-						TryGetAttributeValue(element, "Size", out var count, logger);
-						classPtrArrayNode.Count = count / IntPtr.Size;
-						break;
-					}
 					case BaseTextNode textNode:
 					{
 						TryGetAttributeValue(element, "Size", out var length, logger);
@@ -290,25 +274,9 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 		}
 
-		/// <summary>Dummy node to represent the ReClass Custom node.</summary>
-		private class CustomNode : BaseNode
-		{
-			public override int MemorySize => throw new NotImplementedException();
-
-			public override int CalculateDrawnHeight(ViewInfo view)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override Size Draw(ViewInfo view, int x, int y)
-			{
-				throw new NotImplementedException();
-			}
-		}
-
 		#region ReClass 2011 / ReClass 2013
 
-		private static readonly Type[] typeMap2013 = new Type[]
+		private static readonly Type[] typeMap2013 =
 		{
 			null,
 			typeof(ClassInstanceNode),
@@ -317,7 +285,7 @@ namespace ReClassNET.DataExchange.ReClass
 			typeof(Hex32Node),
 			typeof(Hex16Node),
 			typeof(Hex8Node),
-			typeof(ClassPtrNode),
+			typeof(ClassPointerNode),
 			typeof(Int32Node),
 			typeof(Int16Node),
 			typeof(Int8Node),
@@ -332,7 +300,7 @@ namespace ReClassNET.DataExchange.ReClass
 			typeof(Vector3Node),
 			typeof(Vector4Node),
 			typeof(Matrix4x4Node),
-			typeof(VTableNode),
+			typeof(VirtualMethodTableNode),
 			typeof(ClassInstanceArrayNode),
 			null,
 			null,
@@ -340,14 +308,14 @@ namespace ReClassNET.DataExchange.ReClass
 			typeof(Int64Node),
 			typeof(DoubleNode),
 			typeof(Utf16TextNode),
-			typeof(ClassPtrArrayNode)
+			typeof(ClassPointerArrayNode)
 		};
 
 		#endregion
 
 		#region ReClass 2015 / ReClass 2016
 
-		private static readonly Type[] typeMap2016 = new Type[]
+		private static readonly Type[] typeMap2016 =
 		{
 			null,
 			typeof(ClassInstanceNode),
@@ -357,7 +325,7 @@ namespace ReClassNET.DataExchange.ReClass
 			typeof(Hex64Node),
 			typeof(Hex16Node),
 			typeof(Hex8Node),
-			typeof(ClassPtrNode),
+			typeof(ClassPointerNode),
 			typeof(Int64Node),
 			typeof(Int32Node),
 			typeof(Int16Node),
@@ -375,7 +343,7 @@ namespace ReClassNET.DataExchange.ReClass
 			typeof(Vector3Node),
 			typeof(Vector4Node),
 			typeof(Matrix4x4Node),
-			typeof(VTableNode),
+			typeof(VirtualMethodTableNode),
 			typeof(ClassInstanceArrayNode),
 			null,
 			typeof(Utf8TextPtrNode),

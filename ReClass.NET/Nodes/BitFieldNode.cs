@@ -48,7 +48,13 @@ namespace ReClassNET.Nodes
 		{
 			Bits = IntPtr.Size * 8;
 
-			levelsOpen.DefaultValue = true;
+			LevelsOpen.DefaultValue = true;
+		}
+
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Bitfield";
+			icon = Properties.Resources.B16x16_Button_Bits;
 		}
 
 		public override void CopyFromNode(BaseNode node)
@@ -56,6 +62,27 @@ namespace ReClassNET.Nodes
 			base.CopyFromNode(node);
 
 			Bits = node.MemorySize * 8;
+		}
+
+		/// <summary>
+		/// Gets the underlaying node for the bit field.
+		/// </summary>
+		/// <returns></returns>
+		public BaseNumericNode GetUnderlayingNode()
+		{
+			switch (Bits)
+			{
+				case 8:
+					return new UInt8Node();
+				case 16:
+					return new UInt16Node();
+				case 32:
+					return new UInt32Node();
+				case 64:
+					return new UInt64Node();
+			}
+
+			throw new Exception(); // TODO
 		}
 
 		/// <summary>Converts the memory value to a bit string.</summary>
@@ -87,12 +114,10 @@ namespace ReClassNET.Nodes
 
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
-
-			DrawInvalidMemoryIndicator(view, y);
 
 			var origX = x;
 			var origY = y;
@@ -104,7 +129,10 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Bits") + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			}
 
 			x = AddOpenClose(view, x, y) + view.Font.Width;
 
@@ -121,10 +149,11 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				y += view.Font.Height;
 
@@ -148,13 +177,13 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				height += view.Font.Height + 2;
 			}

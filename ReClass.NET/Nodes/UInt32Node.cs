@@ -3,13 +3,18 @@ using System.Globalization;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
 	public class UInt32Node : BaseNumericNode
 	{
 		public override int MemorySize => 4;
+
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "UInt32 / DWORD";
+			icon = Properties.Resources.B16x16_Button_UInt_32;
+		}
 
 		public override Size Draw(ViewInfo view, int x, int y)
 		{

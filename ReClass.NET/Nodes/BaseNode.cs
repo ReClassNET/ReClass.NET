@@ -38,12 +38,15 @@ namespace ReClassNET.Nodes
 		public string Comment { get => comment; set { if (value != null && comment != value) { comment = value; CommentChanged?.Invoke(this); } } }
 
 		/// <summary>Gets or sets the parent node.</summary>
-		public BaseContainerNode ParentNode { get; internal set; }
+		public BaseNode ParentNode { get; internal set; }
 
-		/// <summary>Gets or sets a value indicating whether this object is hidden.</summary>
+		/// <summary>Gets a value indicating whether this node is wrapped into an other node.</summary>
+		public bool IsWrapped => ParentNode is BaseWrapperNode;
+
+		/// <summary>Gets or sets a value indicating whether this node is hidden.</summary>
 		public bool IsHidden { get; set; }
 
-		/// <summary>Gets or sets a value indicating whether this object is selected.</summary>
+		/// <summary>Gets or sets a value indicating whether this node is selected.</summary>
 		public bool IsSelected { get; set; }
 
 		/// <summary>Size of the node in bytes.</summary>
@@ -52,7 +55,7 @@ namespace ReClassNET.Nodes
 		public event NodeEventHandler NameChanged;
 		public event NodeEventHandler CommentChanged;
 
-		protected readonly GrowingList<bool> levelsOpen = new GrowingList<bool>(false);
+		protected GrowingList<bool> LevelsOpen { get; } = new GrowingList<bool>(false);
 
 		[ContractInvariantMethod]
 		private void ObjectInvariants()
@@ -60,7 +63,33 @@ namespace ReClassNET.Nodes
 			Contract.Invariant(name != null);
 			Contract.Invariant(comment != null);
 			Contract.Invariant(Offset.ToInt32() >= 0);
-			Contract.Invariant(levelsOpen != null);
+			Contract.Invariant(LevelsOpen != null);
+		}
+
+		/// <summary>
+		/// Creates an instance of the specific node type.
+		/// </summary>
+		/// <param name="nodeType">The <see cref="Type"/> of the node.</param>
+		/// <returns>An instance of the node type or null if the type is not a valid node type.</returns>
+		public static BaseNode CreateInstanceFromType(Type nodeType)
+		{
+			return CreateInstanceFromType(nodeType, true);
+		}
+
+		/// <summary>
+		/// Creates an instance of the specific node type.
+		/// </summary>
+		/// <param name="nodeType">The <see cref="Type"/> of the node.</param>
+		/// <param name="callInitialize">If true <see cref="Initialize"/> gets called for the new node.</param>
+		/// <returns>An instance of the node type or null if the type is not a valid node type.</returns>
+		public static BaseNode CreateInstanceFromType(Type nodeType, bool callInitialize)
+		{
+			var node = Activator.CreateInstance(nodeType) as BaseNode;
+			if (callInitialize)
+			{
+				node?.Initialize();
+			}
+			return node;
 		}
 
 		/// <summary>Constructor which sets a unique <see cref="Name"/>.</summary>
@@ -72,31 +101,10 @@ namespace ReClassNET.Nodes
 			Name = $"N{nodeIndex++:X08}";
 			Comment = string.Empty;
 
-			levelsOpen[0] = true;
+			LevelsOpen[0] = true;
 		}
 
-		/// <summary>Clears the selection of the node.</summary>
-		public virtual void ClearSelection()
-		{
-			IsSelected = false;
-		}
-
-		/// <summary>Initializes this object from the given node. It copies the name and the comment.</summary>
-		/// <param name="node">The node to copy from.</param>
-		public virtual void CopyFromNode(BaseNode node)
-		{
-			Contract.Requires(node != null);
-
-			Name = node.Name;
-			Comment = node.Comment;
-		}
-
-
-		/// <summary>Called when the node was created. Does not get called after loading a project.</summary>
-		public virtual void Intialize()
-		{
-
-		}
+		public abstract void GetUserInterfaceInfo(out string name, out Image icon);
 
 		public virtual bool UseMemoryPreviewToolTip(HotSpot spot, MemoryBuffer memory, out IntPtr address)
 		{
@@ -118,6 +126,102 @@ namespace ReClassNET.Nodes
 			Contract.Requires(memory != null);
 
 			return null;
+		}
+
+		/// <summary>Called when the node was created. Does not get called after loading a project.</summary>
+		public virtual void Initialize()
+		{
+
+		}
+
+		/// <summary>Initializes this object from the given node. It copies the name and the comment.</summary>
+		/// <param name="node">The node to copy from.</param>
+		public virtual void CopyFromNode(BaseNode node)
+		{
+			Contract.Requires(node != null);
+
+			Name = node.Name;
+			Comment = node.Comment;
+			Offset = node.Offset;
+		}
+
+		/// <summary>
+		/// Gets the parent container of the node.
+		/// </summary>
+		/// <returns></returns>
+		public BaseContainerNode GetParentContainer()
+		{
+			var parentNode = ParentNode;
+			while (parentNode != null)
+			{
+				if (parentNode is BaseContainerNode containerNode)
+				{
+					return containerNode;
+				}
+
+				parentNode = parentNode.ParentNode;
+			}
+
+			if (this is BaseContainerNode containerNode2)
+			{
+				return containerNode2;
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// Gets the parent class of the node.
+		/// </summary>
+		/// <returns></returns>
+		public ClassNode GetParentClass()
+		{
+			var parentNode = ParentNode;
+			while (parentNode != null)
+			{
+				if (parentNode is ClassNode classNode)
+				{
+					return classNode;
+				}
+
+				parentNode = parentNode.ParentNode;
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// Gets the root wrapper node if this node is the inner node of a wrapper chain.
+		/// </summary>
+		/// <returns>The root <see cref="BaseWrapperNode"/> or null if this node is not wrapped or isn't itself a wrapper node.</returns>
+		public BaseWrapperNode GetRootWrapperNode()
+		{
+			BaseWrapperNode rootWrapperNode = null;
+
+			var parentNode = ParentNode;
+			while (parentNode is BaseWrapperNode wrapperNode)
+			{
+				rootWrapperNode = wrapperNode;
+
+				parentNode = parentNode.ParentNode;
+			}
+
+			// Test if this node is the root wrapper node.
+			if (rootWrapperNode == null)
+			{
+				if (this is BaseWrapperNode wrapperNode)
+				{
+					return wrapperNode;
+				}
+			}
+
+			return rootWrapperNode;
+		}
+
+		/// <summary>Clears the selection of the node.</summary>
+		public virtual void ClearSelection()
+		{
+			IsSelected = false;
 		}
 
 		/// <summary>Draws the node.</summary>
@@ -156,7 +260,7 @@ namespace ReClassNET.Nodes
 		/// <param name="level">The level to toggle.</param>
 		internal void ToggleLevelOpen(int level)
 		{
-			levelsOpen[level] = !levelsOpen[level];
+			LevelsOpen[level] = !LevelsOpen[level];
 		}
 
 		/// <summary>Sets the specific level.</summary>
@@ -164,7 +268,7 @@ namespace ReClassNET.Nodes
 		/// <param name="open">True to open.</param>
 		internal void SetLevelOpen(int level, bool open)
 		{
-			levelsOpen[level] = open;
+			LevelsOpen[level] = open;
 		}
 
 		/// <summary>Adds a <see cref="HotSpot"/> the user can interact with.</summary>
@@ -266,7 +370,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
 
-			if (y > view.ClientArea.Bottom || y + height < 0)
+			if (y > view.ClientArea.Bottom || y + height < 0 || IsWrapped)
 			{
 				return;
 			}
@@ -279,7 +383,7 @@ namespace ReClassNET.Nodes
 				}
 			}
 
-			AddHotSpot(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), string.Empty, -1, HotSpotType.Select);
+			AddHotSpot(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), string.Empty, HotSpot.NoneId, HotSpotType.Select);
 		}
 
 		/// <summary>Draws an icon and adds a <see cref="HotSpot"/> if <paramref name="id"/> is not <see cref="HotSpot.NoneId"/>.</summary>
@@ -303,7 +407,7 @@ namespace ReClassNET.Nodes
 
 			view.Context.DrawImage(icon, x + 2, y, Icons.Dimensions, Icons.Dimensions);
 
-			if (id != -1)
+			if (id != HotSpot.NoneId)
 			{
 				AddHotSpot(view, new Rectangle(x, y, Icons.Dimensions, Icons.Dimensions), string.Empty, id, type);
 			}
@@ -326,7 +430,7 @@ namespace ReClassNET.Nodes
 				return x + Icons.Dimensions;
 			}
 
-			return AddIcon(view, x, y, levelsOpen[view.Level] ? Icons.OpenCloseOpen : Icons.OpenCloseClosed, 0, HotSpotType.OpenClose);
+			return AddIcon(view, x, y, LevelsOpen[view.Level] ? Icons.OpenCloseOpen : Icons.OpenCloseClosed, 0, HotSpotType.OpenClose);
 		}
 
 		/// <summary>Draws a type drop icon if the node is selected.</summary>
@@ -337,7 +441,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
 
-			if (view.MultipleNodesSelected || (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0))
+			if (view.MultipleNodesSelected || y > view.ClientArea.Bottom || y + Icons.Dimensions < 0 || IsWrapped)
 			{
 				return;
 			}
@@ -356,7 +460,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
 
-			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0)
+			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0 || IsWrapped)
 			{
 				return;
 			}
@@ -409,7 +513,7 @@ namespace ReClassNET.Nodes
 		{
 			if (!view.Memory.ContainsValidData)
 			{
-				AddIcon(view, 2, y, Properties.Resources.B16x16_Error, -1, HotSpotType.None);
+				AddIcon(view, 0, y, Properties.Resources.B16x16_Error, -1, HotSpotType.None);
 			}
 		}
 	}

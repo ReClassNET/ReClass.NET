@@ -21,11 +21,12 @@ namespace ReClassNET.Nodes
 
 		public override int MemorySize => 3 * ValueTypeSize;
 
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x2">The x coordinate.</param>
-		/// <param name="y2">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Vector3";
+			icon = Properties.Resources.B16x16_Button_Vector_3;
+		}
+
 		public override Size Draw(ViewInfo view, int x2, int y2)
 		{
 			return DrawVectorType(view, x2, y2, "Vector3", (ref int x, ref int y) =>

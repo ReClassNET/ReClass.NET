@@ -122,9 +122,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.106.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.106.0\lib\net46\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="System.Design" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
@@ -158,6 +155,11 @@
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Constants.cs" />
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Read.cs" />
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Write.cs" />
+    <Compile Include="DataExchange\ReClass\Legacy\BaseClassArrayNode.cs" />
+    <Compile Include="DataExchange\ReClass\Legacy\ClassInstanceArrayNode.cs" />
+    <Compile Include="DataExchange\ReClass\Legacy\ClassPointerArrayNode.cs" />
+    <Compile Include="DataExchange\ReClass\Legacy\ClassPointerNode.cs" />
+    <Compile Include="DataExchange\ReClass\Legacy\CustomNode.cs" />
     <Compile Include="DataExchange\Scanner\CheatEngineFile.cs" />
     <Compile Include="DataExchange\Scanner\CrySearchFile.cs" />
     <Compile Include="DataExchange\Scanner\IScannerExport.cs" />
@@ -170,6 +172,10 @@
     <Compile Include="Debugger\RemoteDebugger.Extensions.cs" />
     <Compile Include="Debugger\RemoteDebugger.Thread.cs" />
     <Compile Include="Debugger\SoftwareBreakpoint.cs" />
+    <Compile Include="Extensions\StringBuilderExtensions.cs" />
+    <Compile Include="Forms\MainForm.Functions.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\NamedAddressesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,11 +249,15 @@
     <Compile Include="Native\INativeMethods.cs" />
     <Compile Include="Native\NativeMethods.Unix.cs" />
     <Compile Include="Native\NativeMethods.Windows.cs" />
+    <Compile Include="Nodes\ArrayNode.cs" />
     <Compile Include="Nodes\BaseFunctionNode.cs" />
+    <Compile Include="Nodes\BaseWrapperArrayNode.cs" />
+    <Compile Include="Nodes\BaseWrapperNode.cs" />
     <Compile Include="Nodes\BoolNode.cs" />
     <Compile Include="Nodes\ClassUtil.cs" />
     <Compile Include="Nodes\FunctionNode.cs" />
     <Compile Include="Nodes\NodeUuid.cs" />
+    <Compile Include="Nodes\PointerNode.cs" />
     <Compile Include="ReClassNetProject.cs" />
     <Compile Include="UI\BannerBox.cs">
       <SubType>Component</SubType>
@@ -261,7 +271,7 @@
     <Compile Include="CodeGenerator\CSharpCodeGenerator.cs" />
     <Compile Include="CodeGenerator\ICodeGenerator.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="DataExchange\ReClass\CustomNodeConverter.cs" />
+    <Compile Include="DataExchange\ReClass\CustomNodeSerializer.cs" />
     <Compile Include="DataExchange\ReClass\IReClassExport.cs" />
     <Compile Include="DataExchange\ReClass\ReClassFile.cs" />
     <Compile Include="DataExchange\ReClass\ReClass2007File.cs" />
@@ -273,6 +283,7 @@
     </Compile>
     <Compile Include="UI\BannerFactory.cs" />
     <Compile Include="UI\BindingDisplayWrapper.cs" />
+    <Compile Include="UI\NodeClickEventArgs.cs" />
     <Compile Include="UI\DpiUtil.cs" />
     <Compile Include="Nodes\INodeInfoReader.cs" />
     <Compile Include="UI\ClassNodeView.cs">
@@ -339,6 +350,7 @@
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
+    <Compile Include="UI\NodeTypesBuilder.cs" />
     <Compile Include="UI\PlaceholderTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -357,6 +369,7 @@
     <Compile Include="Extensions\SizeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\StringReaderExtensions.cs" />
+    <Compile Include="Util\DirectedGraph.cs" />
     <Compile Include="Util\GrowingList.cs" />
     <Compile Include="Forms\PluginForm.cs">
       <SubType>Form</SubType>
@@ -396,20 +409,16 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Native\NativeMethods.cs" />
-    <Compile Include="Nodes\ClassInstanceArrayNode.cs" />
-    <Compile Include="Nodes\BaseArrayNode.cs" />
     <Compile Include="Nodes\BaseContainerNode.cs" />
     <Compile Include="Nodes\BaseFunctionPtrNode.cs" />
     <Compile Include="Nodes\BaseHexCommentNode.cs" />
     <Compile Include="Nodes\BaseHexNode.cs" />
     <Compile Include="Nodes\BaseNode.cs" />
-    <Compile Include="Nodes\BaseReferenceNode.cs" />
     <Compile Include="Nodes\BaseTextNode.cs" />
     <Compile Include="Nodes\BaseTextPtrNode.cs" />
     <Compile Include="Nodes\BaseMatrixNode.cs" />
     <Compile Include="Nodes\BitFieldNode.cs" />
     <Compile Include="Nodes\ClassInstanceNode.cs" />
-    <Compile Include="Nodes\ClassPtrArrayNode.cs" />
     <Compile Include="Nodes\DoubleNode.cs" />
     <Compile Include="Nodes\FloatNode.cs" />
     <Compile Include="Nodes\FunctionPtrNode.cs" />
@@ -421,7 +430,6 @@
     <Compile Include="Nodes\Matrix3x4Node.cs" />
     <Compile Include="Nodes\Matrix4x4Node.cs" />
     <Compile Include="Nodes\BaseNumericNode.cs" />
-    <Compile Include="Nodes\ClassPtrNode.cs" />
     <Compile Include="Nodes\UTF16TextNode.cs" />
     <Compile Include="Nodes\UTF16TextPtrNode.cs" />
     <Compile Include="Nodes\UTF32TextNode.cs" />
@@ -452,8 +460,8 @@
     <Compile Include="Forms\ProcessInfoForm.Designer.cs">
       <DependentUpon>ProcessInfoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Nodes\VMethodNode.cs" />
-    <Compile Include="Nodes\VTableNode.cs" />
+    <Compile Include="Nodes\VirtualMethodNode.cs" />
+    <Compile Include="Nodes\VirtualMethodTableNode.cs" />
     <Compile Include="Plugins\DefaultPluginHost.cs" />
     <Compile Include="Plugins\IPluginHost.cs" />
     <Compile Include="Plugins\Plugin.cs" />
@@ -559,7 +567,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Compile Include="Debugger\RemoteDebugger.Handler.cs" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -960,17 +967,19 @@
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Button_Remove.png" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SQLite.Core">
+      <Version>1.0.109.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Pointer.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">powershell -Command "((Get-Date).ToUniversalTime()).ToString(\"yyyy\/MM\/dd HH:mm:ss\") | Out-File '$(ProjectDir)Resources\BuildDate.txt'"</PreBuildEvent>
     <PreBuildEvent Condition=" '$(OS)' == 'Unix' ">date +"%Y/%m/%d %H:%M:%S" &gt; $(ProjectDir)/Resources/BuildDate.txt</PreBuildEvent>
   </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Missing file: "{0}".</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.106.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.106.0\build\net46\System.Data.SQLite.Core.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

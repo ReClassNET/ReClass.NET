@@ -1,18 +1,49 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
+using ReClassNET.UI;
 
 namespace ReClassNET.CodeGenerator
 {
-	class CppCodeGenerator : ICodeGenerator
+	public delegate string GetTypeDefinitionFunc(BaseNode node, ILogger logger);
+
+	public delegate string ResolveWrappedTypeFunc(BaseNode node, bool isAnonymousExpression, ILogger logger);
+
+	public interface ICustomCppCodeGenerator
 	{
-		private readonly Dictionary<Type, string> typeToTypedefMap = new Dictionary<Type, string>
+		bool CanHandle(BaseNode node);
+
+		BaseNode TransformNode(BaseNode node);
+
+		string GetTypeDefinition(BaseNode node, GetTypeDefinitionFunc defaultGetTypeDefinitionFunc, ResolveWrappedTypeFunc defaultResolveWrappedTypeFunc, ILogger logger);
+	}
+
+	public class CppCodeGenerator : ICodeGenerator
+	{
+		private static readonly ISet<ICustomCppCodeGenerator> customGenerators = new HashSet<ICustomCppCodeGenerator>();
+
+		public static void Add(ICustomCppCodeGenerator generator)
+		{
+			customGenerators.Add(generator);
+		}
+
+		public static void Remove(ICustomCppCodeGenerator generator)
+		{
+			customGenerators.Remove(generator);
+		}
+
+		private static ICustomCppCodeGenerator GetCustomCodeGeneratorForNode(BaseNode node)
+		{
+			return customGenerators.FirstOrDefault(g => g.CanHandle(node));
+		}
+
+		private static readonly Dictionary<Type, string> nodeTypeToTypeDefinationMap = new Dictionary<Type, string>
 		{
 			[typeof(BoolNode)] = Program.Settings.TypeBool,
 			[typeof(DoubleNode)] = Program.Settings.TypeDouble,
@@ -29,16 +60,41 @@ namespace ReClassNET.CodeGenerator
 			[typeof(UInt16Node)] = Program.Settings.TypeUInt16,
 			[typeof(UInt32Node)] = Program.Settings.TypeUInt32,
 			[typeof(UInt64Node)] = Program.Settings.TypeUInt64,
-			[typeof(Utf8TextNode)] = Program.Settings.TypeUTF8Text,
-			[typeof(Utf8TextPtrNode)] = Program.Settings.TypeUTF8TextPtr,
-			[typeof(Utf16TextNode)] = Program.Settings.TypeUTF16Text,
-			[typeof(Utf16TextPtrNode)] = Program.Settings.TypeUTF16TextPtr,
-			[typeof(Utf32TextNode)] = Program.Settings.TypeUTF32Text,
-			[typeof(Utf32TextPtrNode)] = Program.Settings.TypeUTF32TextPtr,
+			[typeof(Utf8CharacterNode)] = Program.Settings.TypeUTF8Text,
+			[typeof(Utf16CharacterNode)] = Program.Settings.TypeUTF16Text,
+			[typeof(Utf32CharacterNode)] = Program.Settings.TypeUTF32Text,
 			[typeof(Vector2Node)] = Program.Settings.TypeVector2,
 			[typeof(Vector3Node)] = Program.Settings.TypeVector3,
 			[typeof(Vector4Node)] = Program.Settings.TypeVector4
 		};
+
+		#region HelperNodes
+
+		private class Utf8CharacterNode : BaseNode
+		{
+			public override int MemorySize => throw new NotImplementedException();
+			public override void GetUserInterfaceInfo(out string name, out Image icon) => throw new NotImplementedException();
+			public override Size Draw(ViewInfo view, int x, int y) => throw new NotImplementedException();
+			public override int CalculateDrawnHeight(ViewInfo view) => throw new NotImplementedException();
+		}
+
+		private class Utf16CharacterNode : BaseNode
+		{
+			public override int MemorySize => throw new NotImplementedException();
+			public override void GetUserInterfaceInfo(out string name, out Image icon) => throw new NotImplementedException();
+			public override Size Draw(ViewInfo view, int x, int y) => throw new NotImplementedException();
+			public override int CalculateDrawnHeight(ViewInfo view) => throw new NotImplementedException();
+		}
+
+		private class Utf32CharacterNode : BaseNode
+		{
+			public override int MemorySize => throw new NotImplementedException();
+			public override void GetUserInterfaceInfo(out string name, out Image icon) => throw new NotImplementedException();
+			public override Size Draw(ViewInfo view, int x, int y) => throw new NotImplementedException();
+			public override int CalculateDrawnHeight(ViewInfo view) => throw new NotImplementedException();
+		}
+
+		#endregion
 
 		public Language Language => Language.Cpp;
 
@@ -47,7 +103,7 @@ namespace ReClassNET.CodeGenerator
 			var classNodes = classes as IList<ClassNode> ?? classes.ToList();
 
 			var sb = new StringBuilder();
-			sb.AppendLine($"// Created with {Constants.ApplicationName} by {Constants.Author}");
+			sb.AppendLine($"// Created with {Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}");
 			sb.AppendLine();
 			sb.AppendLine(
 				string.Join(
@@ -78,20 +134,19 @@ namespace ReClassNET.CodeGenerator
 						csb.AppendLine(
 							string.Join(
 								Environment.NewLine,
-								YieldMemberDefinitions(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
-									.Select(MemberDefinitionToString)
+								GetTypeDeclerationsForNodes(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
 									.Select(s => "\t" + s)
 							)
 						);
 
-						var vTableNodes = c.Nodes.OfType<VTableNode>().ToList();
+						var vTableNodes = c.Nodes.OfType<VirtualMethodTableNode>().ToList();
 						if (vTableNodes.Any())
 						{
 							csb.AppendLine();
 							csb.AppendLine(
 								string.Join(
 									Environment.NewLine,
-									vTableNodes.SelectMany(vt => vt.Nodes).OfType<VMethodNode>().Select(m => $"\tvirtual void {m.MethodName}();")
+									vTableNodes.SelectMany(vt => vt.Nodes).OfType<VirtualMethodNode>().Select(m => $"\tvirtual void {m.MethodName}();")
 								)
 							);
 						}
@@ -117,7 +172,7 @@ namespace ReClassNET.CodeGenerator
 			return sb.ToString();
 		}
 
-		private IEnumerable<ClassNode> OrderByInheritance(IEnumerable<ClassNode> classes)
+		private static IEnumerable<ClassNode> OrderByInheritance(IEnumerable<ClassNode> classes)
 		{
 			Contract.Requires(classes != null);
 			Contract.Requires(Contract.ForAll(classes, c => c != null));
@@ -125,10 +180,12 @@ namespace ReClassNET.CodeGenerator
 
 			var alreadySeen = new HashSet<ClassNode>();
 
-			return classes.SelectMany(c => YieldReversedHierarchy(c, alreadySeen)).Distinct();
+			return classes
+				.SelectMany(c => YieldReversedHierarchy(c, alreadySeen))
+				.Distinct();
 		}
 
-		private IEnumerable<ClassNode> YieldReversedHierarchy(ClassNode node, HashSet<ClassNode> alreadySeen)
+		private static IEnumerable<ClassNode> YieldReversedHierarchy(ClassNode node, ISet<ClassNode> alreadySeen)
 		{
 			Contract.Requires(node != null);
 			Contract.Requires(alreadySeen != null);
@@ -137,37 +194,45 @@ namespace ReClassNET.CodeGenerator
 
 			if (!alreadySeen.Add(node))
 			{
-				yield break;
+				return Enumerable.Empty<ClassNode>();
 			}
 
-			foreach (var referenceNode in node.Nodes.OfType<BaseReferenceNode>())
-			{
-                // Unnecessary. Class pointers are forward declared.
-                if (referenceNode is ClassPtrNode)
-                {
-                    continue;
-                }
+			var classNodes = node.Nodes
+				.OfType<BaseWrapperNode>()
+				.Where(w => !w.IsNodePresentInChain<PointerNode>()) // Pointers are forward declared
+				.Select(w => w.ResolveMostInnerNode() as ClassNode)
+				.Where(n => n != null);
 
-                foreach (var referencedNode in YieldReversedHierarchy(referenceNode.InnerNode, alreadySeen))
-				{
-					yield return referencedNode;
-				}
-			}
-
-			yield return node;
+			return classNodes
+				.SelectMany(c => YieldReversedHierarchy(c, alreadySeen))
+				.Append(node);
 		}
 
-		private IEnumerable<MemberDefinition> YieldMemberDefinitions(IEnumerable<BaseNode> members, ILogger logger)
+		private static IEnumerable<string> GetTypeDeclerationsForNodes(IEnumerable<BaseNode> members, ILogger logger)
 		{
 			Contract.Requires(members != null);
 			Contract.Requires(Contract.ForAll(members, m => m != null));
-			Contract.Ensures(Contract.Result<IEnumerable<MemberDefinition>>() != null);
-			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<MemberDefinition>>(), d => d != null));
+			Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
+			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<string>>(), d => d != null));
 
 			int fill = 0;
 			int fillStart = 0;
 
-			foreach (var member in members.WhereNot(m => m is VTableNode))
+			BaseNode CreatePaddingMember(int offset, int count)
+			{
+				var node = new ArrayNode
+				{
+					Offset = (IntPtr)offset,
+					Count = count,
+					Name = $"pad_{offset:X04}"
+				};
+
+				node.ChangeInnerNode(new Utf8CharacterNode());
+
+				return node;
+			}
+
+			foreach (var member in members.WhereNot(m => m is VirtualMethodTableNode))
 			{
 				if (member is BaseHexNode)
 				{
@@ -179,89 +244,196 @@ namespace ReClassNET.CodeGenerator
 
 					continue;
 				}
-				
+
 				if (fill != 0)
 				{
-					yield return new MemberDefinition(Program.Settings.TypePadding, fill, $"pad_{fillStart:X04}", fillStart, string.Empty);
+					yield return GetTypeDeclerationForNode(CreatePaddingMember(fillStart, fill), logger);
 
 					fill = 0;
 				}
 
-				if (typeToTypedefMap.TryGetValue(member.GetType(), out var type))
+				var definition = GetTypeDeclerationForNode(member, logger);
+				if (definition != null)
 				{
-					var count = (member as BaseTextNode)?.Length ?? 0;
-
-					yield return new MemberDefinition(member, type, count);
-				}
-				else if (member is BitFieldNode)
-				{
-					switch (((BitFieldNode)member).Bits)
-					{
-						case 8:
-							type = Program.Settings.TypeUInt8;
-							break;
-						case 16:
-							type = Program.Settings.TypeUInt16;
-							break;
-						case 32:
-							type = Program.Settings.TypeUInt32;
-							break;
-						case 64:
-							type = Program.Settings.TypeUInt64;
-							break;
-					}
-
-					yield return new MemberDefinition(member, type);
-				}
-				else if (member is ClassInstanceArrayNode)
-				{
-					var instanceArray = (ClassInstanceArrayNode)member;
-
-					yield return new MemberDefinition(member, instanceArray.InnerNode.Name, instanceArray.Count);
-				}
-				else if (member is ClassInstanceNode)
-				{
-					yield return new MemberDefinition(member, ((ClassInstanceNode)member).InnerNode.Name);
-				}
-				else if (member is ClassPtrArrayNode)
-				{
-					var ptrArray = (ClassPtrArrayNode)member;
-
-					yield return new MemberDefinition(member, $"class {ptrArray.InnerNode.Name}*", ptrArray.Count);
-				}
-				else if (member is ClassPtrNode)
-				{
-					yield return new MemberDefinition(member, $"class {((ClassPtrNode)member).InnerNode.Name}*");
+					yield return definition;
 				}
 				else
 				{
-					var generator = CustomCodeGenerator.GetGenerator(member, Language);
-					if (generator != null)
-					{
-						yield return generator.GetMemberDefinition(member, Language, logger);
-					}
-					else
-					{
-						logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {member.GetType()}");
-					}
+					logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {member.GetType()}");
 				}
 			}
 
 			if (fill != 0)
 			{
-				yield return new MemberDefinition(Program.Settings.TypePadding, fill, $"pad_{fillStart:X04}", fillStart, string.Empty);
+				yield return GetTypeDeclerationForNode(CreatePaddingMember(fillStart, fill), logger);
 			}
 		}
 
-		private string MemberDefinitionToString(MemberDefinition member)
+		private static string GetTypeDefinition(BaseNode node, ILogger logger)
 		{
-			Contract.Requires(member != null);
-
-			if (member.IsArray)
+			var custom = GetCustomCodeGeneratorForNode(node);
+			if (custom != null)
 			{
-				return $"{member.Type} {member.Name}[{member.ArrayCount}]; //0x{member.Offset:X04} {member.Comment}".Trim();
+				return custom.GetTypeDefinition(node, GetTypeDefinition, ResolveWrappedType, logger);
 			}
-			return $"{member.Type} {member.Name}; //0x{member.Offset:X04} {member.Comment}".Trim();
+
+			if (nodeTypeToTypeDefinationMap.TryGetValue(node.GetType(), out var type))
+			{
+				return type;
+			}
+
+			if (node is ClassInstanceNode classInstanceNode)
+			{
+				return $"class {classInstanceNode.InnerNode.Name}";
+			}
+
+			return null;
+		}
+
+		public static string GetTypeDeclerationForNode(BaseNode node, ILogger logger)
+		{
+			var transformedNode = TransformNode(node);
+
+			var simpleType = GetTypeDefinition(transformedNode, logger);
+			if (simpleType != null)
+			{
+				return NodeToString(node, simpleType);
+			}
+
+			if (transformedNode is BaseWrapperNode wrapperNode)
+			{
+				var sb = new StringBuilder();
+
+				sb.Append(ResolveWrappedType(node, false, logger));
+
+				sb.Append($"; //0x{node.Offset.ToInt32():X04} {node.Comment}".Trim());
+
+				return sb.ToString();
+			}
+
+			return null;
+		}
+
+		private static string ResolveWrappedType(BaseNode node, bool isAnonymousExpression, ILogger logger)
+		{
+			Contract.Requires(node != null);
+
+			var sb = new StringBuilder();
+			if (!isAnonymousExpression)
+			{
+				sb.Append(node.Name);
+			}
+
+			var lastWrapperNode = node;
+			var currentNode = node;
+
+			while (true)
+			{
+				currentNode = TransformNode(currentNode);
+
+				if (currentNode is PointerNode pointerNode)
+				{
+					sb.Prepend('*');
+
+					if (pointerNode.InnerNode == null) // void*
+					{
+						if (!isAnonymousExpression)
+						{
+							sb.Prepend(' ');
+						}
+						sb.Prepend("void");
+						break;
+					}
+
+					lastWrapperNode = pointerNode;
+					currentNode = pointerNode.InnerNode;
+				}
+				else if (currentNode is ArrayNode arrayNode)
+				{
+					if (lastWrapperNode is PointerNode)
+					{
+						sb.Prepend('(');
+						sb.Append(')');
+					}
+
+					sb.Append($"[{arrayNode.Count}]");
+
+					lastWrapperNode = arrayNode;
+					currentNode = arrayNode.InnerNode;
+				}
+				else
+				{
+					var simpleType = GetTypeDefinition(currentNode, logger);
+
+					if (!isAnonymousExpression)
+					{
+						sb.Prepend(' ');
+					}
+
+					sb.Prepend(simpleType);
+					break;
+				}
+			}
+
+			return sb.ToString().Trim();
+		}
+
+		private static BaseNode TransformNode(BaseNode node)
+		{
+			var custom = GetCustomCodeGeneratorForNode(node);
+			if (custom != null)
+			{
+				return custom.TransformNode(node);
+			}
+
+			BaseNode GetCharacterNodeForEncoding(Encoding encoding)
+			{
+				if (encoding.Equals(Encoding.Unicode))
+				{
+					return new Utf16CharacterNode();
+				}
+				if (encoding.Equals(Encoding.UTF32))
+				{
+					return new Utf32CharacterNode();
+				}
+				return new Utf8CharacterNode();
+			}
+
+			if (node is BaseTextNode textNode)
+			{
+				var arrayNode = new ArrayNode { Count = textNode.Length };
+				arrayNode.ChangeInnerNode(GetCharacterNodeForEncoding(textNode.Encoding));
+				return arrayNode;
+			}
+
+			if (node is BaseTextPtrNode textPtrNode)
+			{
+				var pointerNode = new PointerNode();
+				pointerNode.ChangeInnerNode(GetCharacterNodeForEncoding(textPtrNode.Encoding));
+				return pointerNode;
+			}
+
+			if (node is BitFieldNode bitFieldNode)
+			{
+				return bitFieldNode.GetUnderlayingNode();
+			}
+
+			if (node is BaseHexNode hexNode)
+			{
+				var arrayNode = new ArrayNode { Count = hexNode.MemorySize };
+				arrayNode.ChangeInnerNode(new Utf8CharacterNode());
+				return arrayNode;
+			}
+
+			return node;
+		}
+
+		private static string NodeToString(BaseNode node, string type)
+		{
+			Contract.Requires(node != null);
+			Contract.Requires(type != null);
+
+			return $"{type} {node.Name}; //0x{node.Offset.ToInt32():X04} {node.Comment}".Trim();
 		}
 	}
 }

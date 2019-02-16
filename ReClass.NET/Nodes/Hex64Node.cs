@@ -7,8 +7,13 @@ namespace ReClassNET.Nodes
 {
 	public class Hex64Node : BaseHexCommentNode
 	{
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => 8;
+
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Hex64";
+			icon = Properties.Resources.B16x16_Button_Hex_64;
+		}
 
 		public override bool UseMemoryPreviewToolTip(HotSpot spot, MemoryBuffer memory, out IntPtr address)
 		{
@@ -19,10 +24,6 @@ namespace ReClassNET.Nodes
 			return memory.Process.GetSectionToPointer(value.IntPtr) != null;
 		}
 
-		/// <summary>Gets informations about this node to show in a tool tip.</summary>
-		/// <param name="spot">The spot.</param>
-		/// <param name="memory">The process memory.</param>
-		/// <returns>The information to show in a tool tip.</returns>
 		public override string GetToolTipText(HotSpot spot, MemoryBuffer memory)
 		{
 			var value = memory.ReadObject<UInt64FloatDoubleData>(Offset);
@@ -30,11 +31,6 @@ namespace ReClassNET.Nodes
 			return $"Int64: {value.LongValue}\nUInt64: 0x{value.ULongValue:X016}\nFloat: {value.FloatValue:0.000}\nDouble: {value.DoubleValue:0.000}";
 		}
 
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			return Draw(view, x, y, view.Settings.ShowNodeText ? view.Memory.ReadPrintableAsciiString(Offset, 8) + " " : null, 8);

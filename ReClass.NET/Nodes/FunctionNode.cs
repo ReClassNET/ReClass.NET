@@ -15,8 +15,13 @@ namespace ReClassNET.Nodes
 		public ClassNode BelongsToClass { get; set; }
 
 		private int memorySize = IntPtr.Size;
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => memorySize;
+
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Function";
+			icon = Properties.Resources.B16x16_Button_Function;
+		}
 
 		public override string GetToolTipText(HotSpot spot, MemoryBuffer memory)
 		{
@@ -29,12 +34,10 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(view != null);
 
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
-
-			DrawInvalidMemoryIndicator(view, y);
 
 			var origX = x;
 
@@ -49,12 +52,16 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Function") + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			}
 
 			x = AddOpenClose(view, x, y) + view.Font.Width;
 
 			x = AddComment(view, x, y);
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
@@ -63,7 +70,7 @@ namespace ReClassNET.Nodes
 			var ptr = view.Address.Add(Offset);
 			DisassembleRemoteCode(view.Memory, ptr);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				y += view.Font.Height;
 				x = AddText(view, tx, y, view.Settings.TypeColor, HotSpot.NoneId, "Signature:") + view.Font.Width;
@@ -74,7 +81,7 @@ namespace ReClassNET.Nodes
 				y += view.Font.Height;
 				x = AddText(view, tx, y, view.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
 				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>") + view.Font.Width;
-				x = AddIcon(view, x, y, Icons.Change, 1, HotSpotType.ChangeType);
+				x = AddIcon(view, x, y, Icons.Change, 1, HotSpotType.ChangeClassType);
 				size.Width = Math.Max(size.Width, x - origX);
 				size.Height += view.Font.Height;
 
@@ -88,13 +95,13 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				height += instructions.Count * view.Font.Height;
 			}
@@ -126,7 +133,7 @@ namespace ReClassNET.Nodes
 					DisassembleRemoteCode(memory, address, out memorySize);
 				}
 
-				ParentNode?.ChildHasChanged(this);
+				GetParentContainer()?.ChildHasChanged(this);
 			}
 		}
 	}

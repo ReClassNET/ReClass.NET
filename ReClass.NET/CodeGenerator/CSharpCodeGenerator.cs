@@ -6,11 +6,10 @@ using System.Text;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
 
 namespace ReClassNET.CodeGenerator
 {
-	class CSharpCodeGenerator : ICodeGenerator
+	public class CSharpCodeGenerator : ICodeGenerator
 	{
 		private readonly Dictionary<Type, string> typeToTypedefMap = new Dictionary<Type, string>
 		{
@@ -30,8 +29,8 @@ namespace ReClassNET.CodeGenerator
 			[typeof(Utf8TextPtrNode)] = "IntPtr",
 			[typeof(Utf16TextPtrNode)] = "IntPtr",
 			[typeof(Utf32TextPtrNode)] = "IntPtr",
-			[typeof(ClassPtrNode)] = "IntPtr",
-			[typeof(VTableNode)] = "IntPtr"
+			[typeof(PointerNode)] = "IntPtr",
+			[typeof(VirtualMethodTableNode)] = "IntPtr"
 		};
 
 		public Language Language => Language.CSharp;

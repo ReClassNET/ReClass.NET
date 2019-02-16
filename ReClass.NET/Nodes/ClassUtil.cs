@@ -1,75 +1,43 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using ReClassNET.Extensions;
 using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
 	public class ClassUtil
 	{
-		internal static IEnumerable<ClassNode> Classes;
-
-		public static bool IsCycleFree(ClassNode parent, ClassNode check)
+		/// <summary>
+		/// Tests if the class to check can be inserted into the parent class without creating a cycle.
+		/// </summary>
+		/// <param name="parent">The class into which </param>
+		/// <param name="classToCheck">The class which should get inserted.</param>
+		/// <param name="classes">An enumeration of all available classes.</param>
+		/// <returns>True if a cycle is detected, false otherwise.</returns>
+		public static bool IsCyclicIfClassIsAccessibleFromParent(ClassNode parent, ClassNode classToCheck, IEnumerable<ClassNode> classes)
 		{
 			Contract.Requires(parent != null);
-			Contract.Requires(check != null);
-
-			if (Classes == null)
-			{
-				return true;
-			}
-
-			return IsCycleFree(parent, check, Classes);
-		}
-
-		public static bool IsCycleFree(ClassNode parent, ClassNode check, IEnumerable<ClassNode> classes)
-		{
-			Contract.Requires(parent != null);
-			Contract.Requires(check != null);
+			Contract.Requires(classToCheck != null);
 			Contract.Requires(classes != null);
 			Contract.Requires(Contract.ForAll(classes, c => c != null));
 
-			var toCheck = new HashSet<ClassNode>(
-				check.Yield()
-				.Traverse(
-					c => c.Nodes
-					.Where(n => n is ClassInstanceNode || n is ClassInstanceArrayNode)
-					.Select(n => ((BaseReferenceNode)n).InnerNode)
-				)
-			);
+			var graph = new DirectedGraph<ClassNode>();
+			graph.AddVertices(classes);
 
-			return IsCycleFree(parent, toCheck, classes);
-		}
+			graph.AddEdge(parent, classToCheck);
 
-		private static bool IsCycleFree(ClassNode root, HashSet<ClassNode> seen, IEnumerable<ClassNode> classes)
-		{
-			Contract.Requires(root != null);
-			Contract.Requires(seen != null);
-			Contract.Requires(Contract.ForAll(seen, c => c != null));
-			Contract.Requires(Contract.ForAll(classes, c => c != null));
-
-			if (!seen.Add(root))
+			foreach (var c in graph.Vertices)
 			{
-				return false;
-			}
-
-			var classNodes = classes as IList<ClassNode> ?? classes.ToList();
-			foreach (var cls in classNodes/*.Except(seen)*/)
-			{
-				if (cls.Nodes
-					.OfType<BaseReferenceNode>()
-					.Where(n => n is ClassInstanceNode || n is ClassInstanceArrayNode)
-					.Any(n => n.InnerNode == root))
+				foreach (var wrapperNode in c.Nodes.OfType<BaseWrapperNode>())
 				{
-					if (!IsCycleFree(cls, seen, classNodes))
+					if (wrapperNode.ShouldPerformCycleCheckForInnerNode() && wrapperNode.ResolveMostInnerNode() is ClassNode classNode)
 					{
-						return false;
+						graph.AddEdge(c, classNode);
 					}
 				}
 			}
 
-			return true;
+			return graph.ContainsCycle();
 		}
 	}
 }

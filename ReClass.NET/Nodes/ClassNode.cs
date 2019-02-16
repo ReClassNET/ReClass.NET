@@ -23,8 +23,9 @@ namespace ReClassNET.Nodes
 		public static IntPtr DefaultAddress { get; } = (IntPtr)0x400000;
 #endif
 
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
+
+		protected override bool ShouldCompensateSizeChanges => true;
 
 		private NodeUuid uuid;
 		public NodeUuid Uuid
@@ -56,6 +57,8 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Ensures(AddressFormula != null);
 
+			LevelsOpen.DefaultValue = true;
+
 			Uuid = new NodeUuid(true);
 
 			Address = DefaultAddress;
@@ -73,26 +76,29 @@ namespace ReClassNET.Nodes
 			return new ClassNode(true);
 		}
 
-		public override void Intialize()
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			throw new InvalidOperationException($"The '{nameof(ClassNode)}' node should not be accessible from the ui.");
+		}
+
+		public override bool CanHandleChildNode(BaseNode node)
+		{
+			switch (node)
+			{
+				case null:
+				case ClassNode _:
+				case VirtualMethodNode _:
+					return false;
+			}
+
+			return true;
+		}
+
+		public override void Initialize()
 		{
 			AddBytes(IntPtr.Size);
 		}
 
-		public override void ClearSelection()
-		{
-			base.ClearSelection();
-
-			foreach (var node in Nodes)
-			{
-				node.ClearSelection();
-			}
-		}
-
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			AddSelection(view, 0, y, view.Font.Height);
@@ -116,7 +122,7 @@ namespace ReClassNET.Nodes
 
 			var size = new Size(x - origX, y - origY);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				var childOffset = tx - origX;
 
@@ -170,7 +176,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				var nv = view.Clone();
 				nv.Level++;
@@ -203,47 +209,6 @@ namespace ReClassNET.Nodes
 			{
 				Offset = IntPtr.Zero;
 			}
-		}
-
-		public override void InsertBytes(int index, int size, ref List<BaseNode> createdNodes)
-		{
-			base.InsertBytes(index, size, ref createdNodes);
-
-			ChildHasChanged(null);
-		}
-
-		public override void InsertNode(int index, BaseNode node)
-		{
-			if (node is ClassNode || node is VMethodNode)
-			{
-				return;
-			}
-
-			base.InsertNode(index, node);
-
-			ChildHasChanged(node);
-		}
-
-		public override bool RemoveNode(BaseNode node)
-		{
-			var removed = base.RemoveNode(node);
-			if (removed)
-			{
-				UpdateOffsets();
-
-				ChildHasChanged(node);
-			}
-			return removed;
-		}
-
-		public override bool ReplaceChildNode(int index, Type nodeType, ref List<BaseNode> createdNodes)
-		{
-			var replaced = base.ReplaceChildNode(index, nodeType, ref createdNodes);
-			if (replaced)
-			{
-				ChildHasChanged(null); //TODO
-			}
-			return replaced;
 		}
 
 		protected internal override void ChildHasChanged(BaseNode child)

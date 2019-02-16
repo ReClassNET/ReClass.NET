@@ -28,12 +28,10 @@ namespace ReClassNET.Nodes
 			Contract.Requires(type != null);
 			Contract.Requires(name != null);
 
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
-
-			DrawInvalidMemoryIndicator(view, y);
 
 			var origX = x;
 
@@ -48,7 +46,10 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, name) + view.Font.Width;
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, name) + view.Font.Width;
+			}
 
 			x = AddOpenClose(view, x, y) + view.Font.Width;
 
@@ -70,12 +71,13 @@ namespace ReClassNET.Nodes
 				}
 			}
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
 			var size = new Size(x - origX, view.Font.Height);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				var ptr = view.Memory.ReadIntPtr(Offset);
 
@@ -98,7 +100,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				height += instructions.Count * view.Font.Height;
 			}

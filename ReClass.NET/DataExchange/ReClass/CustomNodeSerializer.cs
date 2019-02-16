@@ -8,8 +8,11 @@ using ReClassNET.Nodes;
 
 namespace ReClassNET.DataExchange.ReClass
 {
-	[ContractClass(typeof(CustomNodeConverterContract))]
-	public interface ICustomNodeConverter
+	public delegate BaseNode CreateNodeFromElementHandler(XElement element, ClassNode parent, ILogger logger);
+	public delegate XElement CreateElementFromNodeHandler(BaseNode node, ILogger logger);
+
+	[ContractClass(typeof(CustomNodeSerializerContract))]
+	public interface ICustomNodeSerializer
 	{
 		/// <summary>Determine if the instance can handle the xml element.</summary>
 		/// <param name="element">The xml element to check.</param>
@@ -26,19 +29,21 @@ namespace ReClassNET.DataExchange.ReClass
 		/// <param name="parent">The parent of the node.</param>
 		/// <param name="classes">The list of classes which correspond to the node.</param>
 		/// <param name="logger">The logger used to output messages.</param>
+		/// <param name="defaultHandler">The default method which creates a node from an element. Should be called to resolve nodes for wrapped inner nodes.</param>
 		/// <param name="node">[out] The node for the xml element.</param>
 		/// <returns>True if a node was created, otherwise false.</returns>
-		bool TryCreateNodeFromElement(XElement element, ClassNode parent, IEnumerable<ClassNode> classes, ILogger logger, out BaseNode node);
+		bool TryCreateNodeFromElement(XElement element, BaseNode parent, IEnumerable<ClassNode> classes, ILogger logger, CreateNodeFromElementHandler defaultHandler, out BaseNode node);
 
 		/// <summary>Creates a xml element from the node. This method gets only called if <see cref="CanHandleNode(BaseNode)"/> returned true.</summary>
 		/// <param name="node">The node to create the xml element from.</param>
 		/// <param name="logger">The logger used to output messages.</param>
+		/// <param name="defaultHandler">The default method which creates an element for a node. Should be called to resolve elements for wrapped inner nodes.</param>
 		/// <returns>The xml element for the node.</returns>
-		XElement CreateElementFromNode(BaseNode node, ILogger logger);
+		XElement CreateElementFromNode(BaseNode node, ILogger logger, CreateElementFromNodeHandler defaultHandler);
 	}
 
-	[ContractClassFor(typeof(ICustomNodeConverter))]
-	internal abstract class CustomNodeConverterContract : ICustomNodeConverter
+	[ContractClassFor(typeof(ICustomNodeSerializer))]
+	internal abstract class CustomNodeSerializerContract : ICustomNodeSerializer
 	{
 		public bool CanHandleElement(XElement element)
 		{
@@ -54,7 +59,7 @@ namespace ReClassNET.DataExchange.ReClass
 			throw new NotImplementedException();
 		}
 
-		public bool TryCreateNodeFromElement(XElement element, ClassNode parent, IEnumerable<ClassNode> classes, ILogger logger, out BaseNode node)
+		public bool TryCreateNodeFromElement(XElement element, BaseNode parent, IEnumerable<ClassNode> classes, ILogger logger, CreateNodeFromElementHandler defaultHandler, out BaseNode node)
 		{
 			Contract.Requires(element != null);
 			Contract.Requires(CanHandleElement(element));
@@ -62,47 +67,49 @@ namespace ReClassNET.DataExchange.ReClass
 			Contract.Requires(classes != null);
 			Contract.Requires(Contract.ForAll(classes, c => c != null));
 			Contract.Requires(logger != null);
+			Contract.Requires(defaultHandler != null);
 
 			throw new NotImplementedException();
 		}
 
-		public XElement CreateElementFromNode(BaseNode node, ILogger logger)
+		public XElement CreateElementFromNode(BaseNode node, ILogger logger, CreateElementFromNodeHandler defaultHandler)
 		{
 			Contract.Requires(node != null);
 			Contract.Requires(CanHandleNode(node));
 			Contract.Requires(logger != null);
+			Contract.Requires(defaultHandler != null);
 			Contract.Ensures(Contract.Result<XElement>() != null);
 
 			throw new NotImplementedException();
 		}
 	}
 
-	public class CustomNodeConvert
+	internal class CustomNodeSerializer
 	{
-		private static readonly List<ICustomNodeConverter> converters = new List<ICustomNodeConverter>();
+		private static readonly List<ICustomNodeSerializer> converters = new List<ICustomNodeSerializer>();
 
-		public static void RegisterCustomType(ICustomNodeConverter converter)
+		public static void Add(ICustomNodeSerializer serializer)
 		{
-			Contract.Requires(converter != null);
+			Contract.Requires(serializer != null);
 
-			converters.Add(converter);
+			converters.Add(serializer);
 		}
 
-		public static void DeregisterCustomType(ICustomNodeConverter converter)
+		public static void Remove(ICustomNodeSerializer serializer)
 		{
-			Contract.Requires(converter != null);
+			Contract.Requires(serializer != null);
 
-			converters.Remove(converter);
+			converters.Remove(serializer);
 		}
 
-		public static ICustomNodeConverter GetReadConverter(XElement element)
+		public static ICustomNodeSerializer GetReadConverter(XElement element)
 		{
 			Contract.Requires(element != null);
 
 			return converters.FirstOrDefault(c => c.CanHandleElement(element));
 		}
 
-		public static ICustomNodeConverter GetWriteConverter(BaseNode node)
+		public static ICustomNodeSerializer GetWriteConverter(BaseNode node)
 		{
 			Contract.Requires(node != null);
 

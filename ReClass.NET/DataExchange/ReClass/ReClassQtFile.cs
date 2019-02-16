@@ -3,17 +3,42 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Xml.Linq;
+using ReClassNET.DataExchange.ReClass.Legacy;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
-using ReClassNET.Util;
 
 namespace ReClassNET.DataExchange.ReClass
 {
-	class ReClassQtFile : IReClassImport
+	public class ReClassQtFile : IReClassImport
 	{
 		public const string FormatName = "ReClassQt File";
 		public const string FileExtension = ".reclassqt";
+
+		private readonly Type[] typeMap = {
+			null,
+			null,
+			typeof(ClassPointerNode),
+			typeof(ClassInstanceNode),
+			typeof(Hex64Node),
+			typeof(Hex32Node),
+			typeof(Hex16Node),
+			typeof(Hex8Node),
+			typeof(Int64Node),
+			typeof(Int32Node),
+			typeof(Int16Node),
+			typeof(Int8Node),
+			typeof(UInt32Node),
+			null,
+			null,
+			typeof(UInt32Node), //bool
+			null,
+			typeof(FloatNode),
+			typeof(DoubleNode),
+			typeof(Vector4Node),
+			typeof(Vector3Node),
+			typeof(Vector2Node)
+		};
 
 		private readonly ReClassNetProject project;
 
@@ -83,31 +108,6 @@ namespace ReClassNET.DataExchange.ReClass
 			return address;
 		}
 
-		private readonly Type[] typeMap = {
-			null,
-			null,
-			typeof(ClassPtrNode),
-			typeof(ClassInstanceNode),
-			typeof(Hex64Node),
-			typeof(Hex32Node),
-			typeof(Hex16Node),
-			typeof(Hex8Node),
-			typeof(Int64Node),
-			typeof(Int32Node),
-			typeof(Int16Node),
-			typeof(Int8Node),
-			typeof(UInt32Node),
-			null,
-			null,
-			typeof(UInt32Node), //bool
-			null,
-			typeof(FloatNode),
-			typeof(DoubleNode),
-			typeof(Vector4Node),
-			typeof(Vector3Node),
-			typeof(Vector2Node)
-		};
-
 		private IEnumerable<BaseNode> ReadNodeElements(IEnumerable<XElement> elements, ClassNode parent, IReadOnlyDictionary<string, ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(elements != null);
@@ -135,7 +135,7 @@ namespace ReClassNET.DataExchange.ReClass
 					continue;
 				}
 
-				var node = Activator.CreateInstance(nodeType) as BaseNode;
+				var node = BaseNode.CreateInstanceFromType(nodeType, false);
 				if (node == null)
 				{
 					logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");
@@ -146,7 +146,8 @@ namespace ReClassNET.DataExchange.ReClass
 				node.Name = element.Attribute("Name")?.Value ?? string.Empty;
 				node.Comment = element.Attribute("Comments")?.Value ?? string.Empty;
 
-				if (node is BaseReferenceNode referenceNode)
+				// ClassInstanceNode, ClassPointerNode
+				if (node is BaseWrapperNode wrapperNode)
 				{
 					var pointToClassId = element.Attribute("PointToClass")?.Value;
 					if (pointToClassId == null || !classes.ContainsKey(pointToClassId))
@@ -158,14 +159,21 @@ namespace ReClassNET.DataExchange.ReClass
 					}
 
 					var innerClassNode = classes[pointToClassId];
-					if (referenceNode.PerformCycleCheck && !ClassUtil.IsCycleFree(parent, innerClassNode, project.Classes))
+					if (wrapperNode.ShouldPerformCycleCheckForInnerNode() && !ClassUtil.IsCyclicIfClassIsAccessibleFromParent(parent, innerClassNode, project.Classes))
 					{
 						logger.Log(LogLevel.Error, $"Skipping node with cycle reference: {parent.Name}->{node.Name}");
 
 						continue;
 					}
 
-					referenceNode.ChangeInnerNode(innerClassNode);
+					if (node is ClassPointerNode classPointerNode)
+					{
+						node = classPointerNode.GetEquivalentNode(innerClassNode);
+					}
+					else // ClassInstanceNode
+					{
+						wrapperNode.ChangeInnerNode(innerClassNode);
+					}
 				}
 
 				yield return node;

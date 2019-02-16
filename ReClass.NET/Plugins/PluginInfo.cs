@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using ReClassNET.Extensions;
 using ReClassNET.Native;
-using ReClassNET.Util;
+using ReClassNET.Nodes;
 
 namespace ReClassNET.Plugins
 {
@@ -29,6 +30,10 @@ namespace ReClassNET.Plugins
 
 		public IntPtr NativeHandle { get; set; }
 
+		public IReadOnlyList<INodeInfoReader> NodeInfoReaders { get; set; }
+
+		public Plugin.CustomNodeTypes CustomNodeTypes { get; set; }
+
 		public PluginInfo(string filePath, FileVersionInfo versionInfo)
 		{
 			Contract.Requires(filePath != null);
@@ -48,8 +53,6 @@ namespace ReClassNET.Plugins
 				Name = Path.GetFileNameWithoutExtension(FilePath);
 			}
 		}
-
-		#region IDisposable Support
 
 		~PluginInfo()
 		{
@@ -84,7 +87,5 @@ namespace ReClassNET.Plugins
 
 			GC.SuppressFinalize(this);
 		}
-
-		#endregion
 	}
 }

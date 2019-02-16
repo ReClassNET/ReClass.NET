@@ -2,36 +2,38 @@
 using System.Drawing;
 using ReClassNET.Extensions;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	public class ClassInstanceNode : BaseReferenceNode
+	public class ClassInstanceNode : BaseWrapperNode
 	{
-		/// <summary>Size of the node in bytes.</summary>
 		public override int MemorySize => InnerNode.MemorySize;
 
-		public override bool PerformCycleCheck => true;
+		protected override bool PerformCycleCheck => true;
 
-		public override void Intialize()
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
-			InnerNode = ClassNode.Create();
-			InnerNode.Intialize();
+			name = "Class Instance";
+			icon = Properties.Resources.B16x16_Button_Class_Instance;
 		}
 
-		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <returns>The pixel size the node occupies.</returns>
+		public override void Initialize()
+		{
+			InnerNode = ClassNode.Create();
+			InnerNode.Initialize();
+		}
+
+		public override bool CanChangeInnerNodeTo(BaseNode node)
+		{
+			return node is ClassNode;
+		}
+
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
-
-			DrawInvalidMemoryIndicator(view, y);
 
 			var origX = x;
 			var origY = y;
@@ -45,12 +47,16 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Instance") + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			}
 			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name}>") + view.Font.Width;
-			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeType) + view.Font.Width;
+			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeClassType) + view.Font.Width;
 
 			x = AddComment(view, x, y);
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
@@ -58,7 +64,7 @@ namespace ReClassNET.Nodes
 
 			var size = new Size(x - origX, y - origY);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				var v = view.Clone();
 				v.Address = view.Address.Add(Offset);
@@ -75,13 +81,13 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level])
 			{
 				height += InnerNode.CalculateDrawnHeight(view);
 			}

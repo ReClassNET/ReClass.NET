@@ -1,53 +1,85 @@
 ﻿using System;
 using System.Drawing;
-using System.Globalization;
-using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
-	public class ClassPtrNode : BaseReferenceNode
+	public class PointerNode : BaseWrapperNode
 	{
 		private readonly MemoryBuffer memory = new MemoryBuffer();
 
 		public override int MemorySize => IntPtr.Size;
 
-		public override bool PerformCycleCheck => false;
+		protected override bool PerformCycleCheck => false;
 
-		public override void Intialize()
+		public PointerNode()
 		{
-			var node = ClassNode.Create();
-			node.Intialize();
-			node.AddBytes(64);
-			InnerNode = node;
+			LevelsOpen.DefaultValue = true;
+		}
+
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "Pointer";
+			icon = Properties.Resources.B16x16_Button_Pointer;
+		}
+
+		public override bool UseMemoryPreviewToolTip(HotSpot spot, MemoryBuffer memory, out IntPtr address)
+		{
+			// TODO Should the preview be disabled if an inner node is set?
+
+			address = memory.ReadIntPtr(Offset);
+
+			return memory.Process?.GetNamedAddress(address) != null;
+		}
+
+		public override bool CanChangeInnerNodeTo(BaseNode node)
+		{
+			switch (node)
+			{
+				case ClassNode _:
+				case VirtualMethodNode _:
+					return false;
+			}
+
+			return true;
 		}
 
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
 			}
-
-			DrawInvalidMemoryIndicator(view, y);
 
 			var origX = x;
 			var origY = y;
 
 			AddSelection(view, x, y, view.Font.Height);
 
-			x = AddOpenClose(view, x, y);
+			if (InnerNode != null)
+			{
+				x = AddOpenClose(view, x, y);
+			}
+			else
+			{
+				x += TextPadding;
+			}
 			x = AddIcon(view, x, y, Icons.Pointer, -1, HotSpotType.None);
 
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Ptr") + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
-			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name}>") + view.Font.Width;
-			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeType) + view.Font.Width;
+			if (!IsWrapped)
+			{
+				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+			}
+			if (InnerNode == null)
+			{
+				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, "<void>") + view.Font.Width;
+			}
+			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeWrappedType) + view.Font.Width;
 
 			var ptr = view.Memory.ReadIntPtr(Offset);
 
@@ -56,6 +88,7 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
+			DrawInvalidMemoryIndicator(view, y);
 			AddTypeDrop(view, y);
 			AddDelete(view, y);
 
@@ -63,7 +96,7 @@ namespace ReClassNET.Nodes
 
 			var size = new Size(x - origX, y - origY);
 
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level] && InnerNode != null)
 			{
 				memory.Size = InnerNode.MemorySize;
 				memory.Process = view.Memory.Process;
@@ -84,36 +117,17 @@ namespace ReClassNET.Nodes
 
 		public override int CalculateDrawnHeight(ViewInfo view)
 		{
-			if (IsHidden)
+			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}
 
 			var height = view.Font.Height;
-			if (levelsOpen[view.Level])
+			if (LevelsOpen[view.Level] && InnerNode != null)
 			{
 				height += InnerNode.CalculateDrawnHeight(view);
 			}
 			return height;
-		}
-
-		public override void Update(HotSpot spot)
-		{
-			base.Update(spot);
-
-			if (spot.Id == 0)
-			{
-				if (spot.Text.TryGetHexString(out var hexValue) && long.TryParse(hexValue, NumberStyles.HexNumber, null, out var val))
-				{
-#if RECLASSNET64
-					var address = (IntPtr)val;
-#else
-					var address = (IntPtr)unchecked((int)val);
-#endif
-
-					spot.Memory.Process.WriteRemoteMemory(spot.Address, address);
-				}
-			}
 		}
 	}
 }

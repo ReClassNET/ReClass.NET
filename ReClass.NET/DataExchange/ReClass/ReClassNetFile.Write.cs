@@ -31,7 +31,7 @@ namespace ReClassNET.DataExchange.ReClass
 						new XComment($"Website: {Constants.HomepageUrl}"),
 						new XElement(
 							XmlRootElement,
-							new XAttribute(XmlVersionAttribute, Version1),
+							new XAttribute(XmlVersionAttribute, FileVersion),
 							new XAttribute(XmlPlatformAttribute, Constants.Platform),
 							new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger)),
 							new XElement(XmlCustomDataElement, project.CustomData.Select(kv => new XElement(kv.Key, kv.Value)))
@@ -56,89 +56,89 @@ namespace ReClassNET.DataExchange.ReClass
 				new XAttribute(XmlNameAttribute, c.Name ?? string.Empty),
 				new XAttribute(XmlCommentAttribute, c.Comment ?? string.Empty),
 				new XAttribute(XmlAddressAttribute, c.AddressFormula ?? string.Empty),
-				CreateNodeElements(c.Nodes, logger)
+				c.Nodes.Select(n => CreateElementFromNode(n, logger)).Where(e => e != null)
 			));
 		}
 
-		private static IEnumerable<XElement> CreateNodeElements(IEnumerable<BaseNode> nodes, ILogger logger)
+		private static XElement CreateElementFromNode(BaseNode node, ILogger logger)
 		{
-			Contract.Requires(nodes != null);
-			Contract.Requires(Contract.ForAll(nodes, n => n != null));
+			Contract.Requires(node != null);
 			Contract.Requires(logger != null);
-			Contract.Ensures(Contract.Result<IEnumerable<XElement>>() != null);
 
-			foreach (var node in nodes)
+			var converter = CustomNodeSerializer.GetWriteConverter(node);
+			if (converter != null)
 			{
-				var converter = CustomNodeConvert.GetWriteConverter(node);
-				if (converter != null)
-				{
-					yield return converter.CreateElementFromNode(node, logger);
-
-					continue;
-				}
-
-				if (!buildInTypeToStringMap.TryGetValue(node.GetType(), out var typeString))
-				{
-					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Name}");
-					logger.Log(LogLevel.Warning, node.GetType().ToString());
-
-					continue;
-				}
-
-				var element = new XElement(
-					XmlNodeElement,
-					new XAttribute(XmlNameAttribute, node.Name ?? string.Empty),
-					new XAttribute(XmlCommentAttribute, node.Comment ?? string.Empty),
-					new XAttribute(XmlHiddenAttribute, node.IsHidden.ToString()),
-					new XAttribute(XmlTypeAttribute, typeString)
-				);
-
-				if (node is BaseReferenceNode referenceNode)
-				{
-					element.SetAttributeValue(XmlReferenceAttribute, referenceNode.InnerNode.Uuid.ToBase64String());
-				}
-
-				switch (node)
-				{
-					case VTableNode vtableNode:
-					{
-						element.Add(vtableNode.Nodes.Select(n => new XElement(
-							XmlMethodElement,
-							new XAttribute(XmlNameAttribute, n.Name ?? string.Empty),
-							new XAttribute(XmlCommentAttribute, n.Comment ?? string.Empty),
-							new XAttribute(XmlHiddenAttribute, n.IsHidden.ToString())
-						)));
-						break;
-					}
-					case BaseArrayNode arrayNode:
-					{
-						element.SetAttributeValue(XmlCountAttribute, arrayNode.Count);
-						break;
-					}
-					case BaseTextNode textNode:
-					{
-						element.SetAttributeValue(XmlLengthAttribute, textNode.Length);
-						break;
-					}
-					case BitFieldNode bitFieldNode:
-					{
-						element.SetAttributeValue(XmlBitsAttribute, bitFieldNode.Bits);
-						break;
-					}
-					case FunctionNode functionNode:
-					{
-						var uuid = functionNode.BelongsToClass == null ? NodeUuid.Zero : functionNode.BelongsToClass.Uuid;
-						element.SetAttributeValue(XmlReferenceAttribute, uuid.ToBase64String());
-						element.SetAttributeValue(XmlSignatureAttribute, functionNode.Signature);
-						break;
-					}
-				}
-
-				yield return element;
+				return converter.CreateElementFromNode(node, logger, CreateElementFromNode);
 			}
+
+			if (!buildInTypeToStringMap.TryGetValue(node.GetType(), out var typeString))
+			{
+				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Name}");
+				logger.Log(LogLevel.Warning, node.GetType().ToString());
+
+				return null;
+			}
+
+			var element = new XElement(
+				XmlNodeElement,
+				new XAttribute(XmlNameAttribute, node.Name ?? string.Empty),
+				new XAttribute(XmlCommentAttribute, node.Comment ?? string.Empty),
+				new XAttribute(XmlHiddenAttribute, node.IsHidden.ToString()),
+				new XAttribute(XmlTypeAttribute, typeString)
+			);
+
+			if (node is BaseWrapperNode wrapperNode)
+			{
+				if (node is ClassInstanceNode classInstanceNode)
+				{
+					element.SetAttributeValue(XmlReferenceAttribute, ((ClassNode)classInstanceNode.InnerNode).Uuid.ToBase64String());
+				}
+				else if (wrapperNode.InnerNode != null)
+				{
+					element.Add(CreateElementFromNode(wrapperNode.InnerNode, logger));
+				}
+			}
+
+			switch (node)
+			{
+				case VirtualMethodTableNode vtableNode:
+				{
+					element.Add(vtableNode.Nodes.Select(n => new XElement(
+						XmlMethodElement,
+						new XAttribute(XmlNameAttribute, n.Name ?? string.Empty),
+						new XAttribute(XmlCommentAttribute, n.Comment ?? string.Empty),
+						new XAttribute(XmlHiddenAttribute, n.IsHidden.ToString())
+					)));
+					break;
+				}
+				case BaseWrapperArrayNode arrayNode:
+				{
+					element.SetAttributeValue(XmlCountAttribute, arrayNode.Count);
+					break;
+				}
+				case BaseTextNode textNode:
+				{
+					element.SetAttributeValue(XmlLengthAttribute, textNode.Length);
+					break;
+				}
+				case BitFieldNode bitFieldNode:
+				{
+					element.SetAttributeValue(XmlBitsAttribute, bitFieldNode.Bits);
+					break;
+				}
+				case FunctionNode functionNode:
+				{
+					var uuid = functionNode.BelongsToClass == null ? NodeUuid.Zero : functionNode.BelongsToClass.Uuid;
+					element.SetAttributeValue(XmlReferenceAttribute, uuid.ToBase64String());
+					element.SetAttributeValue(XmlSignatureAttribute, functionNode.Signature);
+					break;
+				}
+			}
+
+			return element;
 		}
 
-		public static void WriteNodes(Stream output, IEnumerable<BaseNode> nodes, ILogger logger)
+		public static void SerializeNodesToStream(Stream output, IEnumerable<BaseNode> nodes, ILogger logger)
 		{
 			Contract.Requires(output != null);
 			Contract.Requires(nodes != null);
@@ -147,43 +147,54 @@ namespace ReClassNET.DataExchange.ReClass
 
 			using (var project = new ReClassNetProject())
 			{
-				void RecursiveAddReferences(BaseReferenceNode referenceNode)
+				void RecursiveAddClasses(BaseNode node)
 				{
-					if (project.ContainsClass(referenceNode.InnerNode.Uuid))
+					ClassNode classNode = null;
+					switch (node)
+					{
+						case ClassNode c1:
+							classNode = c1;
+							break;
+						case BaseWrapperNode wrapperNode when wrapperNode.ResolveMostInnerNode() is ClassNode c2:
+							classNode = c2;
+							break;
+					}
+
+					if (classNode == null || project.ContainsClass(classNode.Uuid))
 					{
 						return;
 					}
 
-					project.AddClass(referenceNode.InnerNode);
+					project.AddClass(classNode);
 
-					foreach (var reference in referenceNode.InnerNode.Nodes.OfType<BaseReferenceNode>())
+					foreach (var wrapperNodeChild in classNode.Nodes.OfType<BaseWrapperNode>())
 					{
-						RecursiveAddReferences(reference);
+						RecursiveAddClasses(wrapperNodeChild);
 					}
 				}
 
 				var serialisationClass = new ClassNode(false)
 				{
-					Name = SerialisationClassName
+					Name = SerializationClassName
 				};
 
-				project.AddClass(serialisationClass);
+				var needsSerialisationClass = true;
 
 				foreach (var node in nodes)
 				{
-					if (node is ClassNode classNode)
+					RecursiveAddClasses(node);
+
+					if (!(node is ClassNode))
 					{
-						project.AddClass(classNode);
+						if (needsSerialisationClass)
+						{
+							needsSerialisationClass = false;
 
-						continue;
+							project.AddClass(serialisationClass);
+						}
+
+						serialisationClass.AddNode(node);
 					}
-
-					if (node is BaseReferenceNode referenceNode)
-					{
-						RecursiveAddReferences(referenceNode);
-					}
-
-					serialisationClass.AddNode(node);
 				}
 
 				var file = new ReClassNetFile(project);

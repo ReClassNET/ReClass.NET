@@ -34,18 +34,18 @@ namespace ReClassNET.CodeGenerator
 		}
 	}
 
-	public class CustomCodeGenerator
+	internal class CustomCodeGenerator
 	{
-		private static readonly List<ICustomCodeGenerator> generators = new List<ICustomCodeGenerator>();
+		private static readonly ISet<ICustomCodeGenerator> generators = new HashSet<ICustomCodeGenerator>();
 
-		public static void RegisterCustomType(ICustomCodeGenerator generator)
+		public static void Add(ICustomCodeGenerator generator)
 		{
 			Contract.Requires(generator != null);
 
 			generators.Add(generator);
 		}
 
-		public static void DeregisterCustomType(ICustomCodeGenerator generator)
+		public static void Remove(ICustomCodeGenerator generator)
 		{
 			Contract.Requires(generator != null);
 
