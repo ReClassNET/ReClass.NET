@@ -143,6 +143,7 @@
 			this.generateCSharpCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.goToClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
@@ -1108,6 +1109,7 @@
 			// projectToolStripMenuItem
 			// 
 			this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.goToClassToolStripMenuItem,
             this.cleanUnusedClassesToolStripMenuItem,
             this.toolStripSeparator16,
             this.generateCppCodeToolStripMenuItem,
@@ -1160,6 +1162,14 @@
 			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+			// 
+			// goToClassToolStripMenuItem
+			// 
+			this.goToClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Class_Type;
+			this.goToClassToolStripMenuItem.Name = "goToClassToolStripMenuItem";
+			this.goToClassToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+			this.goToClassToolStripMenuItem.Text = "Go to class...";
+			this.goToClassToolStripMenuItem.Click += new System.EventHandler(this.goToClassToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -1310,6 +1320,7 @@
 		private System.Windows.Forms.ToolStripMenuItem shrinkClassToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem goToClassToolStripMenuItem;
 	}
 }
 

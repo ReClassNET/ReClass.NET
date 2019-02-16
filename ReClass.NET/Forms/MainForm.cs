@@ -233,6 +233,21 @@ namespace ReClassNET.Forms
 			}
 		}
 
+		private void goToClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (var csf = new ClassSelectionForm(currentProject.Classes.OrderBy(c => c.Name)))
+			{
+				if (csf.ShowDialog() == DialogResult.OK)
+				{
+					var selectedClassNode = csf.SelectedClass;
+					if (selectedClassNode != null)
+					{
+						classesView.SelectedClass = selectedClassNode;
+					}
+				}
+			}
+		}
+
 		private void clearProjectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SetProject(new ReClassNetProject());
