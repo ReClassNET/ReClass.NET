@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -142,7 +142,13 @@ namespace ReClassNET.CodeGenerator
 
 			foreach (var referenceNode in node.Nodes.OfType<BaseReferenceNode>())
 			{
-				foreach (var referencedNode in YieldReversedHierarchy(referenceNode.InnerNode, alreadySeen))
+                // Unnecessary. Class pointers are forward declared.
+                if (referenceNode is ClassPtrNode)
+                {
+                    continue;
+                }
+
+                foreach (var referencedNode in YieldReversedHierarchy(referenceNode.InnerNode, alreadySeen))
 				{
 					yield return referencedNode;
 				}
