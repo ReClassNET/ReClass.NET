@@ -11,7 +11,7 @@ namespace ReClassNET.CodeGenerator
 {
 	public class CSharpCodeGenerator : ICodeGenerator
 	{
-		private readonly Dictionary<Type, string> typeToTypedefMap = new Dictionary<Type, string>
+		private static readonly Dictionary<Type, string> typeToTypedefMap = new Dictionary<Type, string>
 		{
 			[typeof(DoubleNode)] = "double",
 			[typeof(FloatNode)] = "float",
@@ -40,7 +40,7 @@ namespace ReClassNET.CodeGenerator
 			var sb = new StringBuilder();
 			sb.AppendLine($"// Created with {Constants.ApplicationName} by {Constants.Author}");
 			sb.AppendLine();
-			sb.AppendLine("// Warning: The code doesn't contain arrays and instances!");
+			sb.AppendLine("// Warning: The code generator doesn't support all node types!");
 			sb.AppendLine();
 			sb.AppendLine("using System.Runtime.InteropServices;");
 			sb.AppendLine();
@@ -65,8 +65,8 @@ namespace ReClassNET.CodeGenerator
 						csb.AppendLine(
 							string.Join(
 								Environment.NewLine + Environment.NewLine,
-								YieldMemberDefinitions(c.Nodes, logger)
-									.Select(m => $"\t{GetFieldDecorator(m)}{Environment.NewLine}\t{GetFieldDefinition(m)}")
+								GetTypeDeclerationsForNodes(c.Nodes, logger)
+									.Select(t => $"\t{t.Item1}{Environment.NewLine}\t{t.Item2}")
 							)
 						);
 						csb.Append("}");
@@ -78,70 +78,49 @@ namespace ReClassNET.CodeGenerator
 			return sb.ToString();
 		}
 
-		private IEnumerable<MemberDefinition> YieldMemberDefinitions(IEnumerable<BaseNode> members, ILogger logger)
+		private static IEnumerable<Tuple<string, string>> GetTypeDeclerationsForNodes(IEnumerable<BaseNode> members, ILogger logger)
 		{
 			Contract.Requires(members != null);
 			Contract.Requires(Contract.ForAll(members, m => m != null));
-			Contract.Ensures(Contract.Result<IEnumerable<MemberDefinition>>() != null);
-			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<MemberDefinition>>(), d => d != null));
+			Contract.Requires(logger != null);
+			Contract.Ensures(Contract.Result<IEnumerable<Tuple<string, string>>>() != null);
+			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<Tuple<string, string>>>(), t => t != null));
 
 			foreach (var member in members.WhereNot(n => n is BaseHexNode))
 			{
-				if (member is BitFieldNode bitFieldNode)
+				var type = GetTypeForNode(member, logger);
+				if (type != null)
 				{
-					string type;
-					switch (bitFieldNode.Bits)
-					{
-						default:
-							type = typeToTypedefMap[typeof(UInt8Node)];
-							break;
-						case 16:
-							type = typeToTypedefMap[typeof(UInt16Node)];
-							break;
-						case 32:
-							type = typeToTypedefMap[typeof(UInt32Node)];
-							break;
-						case 64:
-							type = typeToTypedefMap[typeof(UInt64Node)];
-							break;
-					}
-
-					yield return new MemberDefinition(member, type);
+					yield return Tuple.Create(
+						$"[FieldOffset({member.Offset.ToInt32()})]",
+						$"public {type} {member.Name}; //0x{member.Offset.ToInt32():X04} {member.Comment}".Trim()
+					);
 				}
 				else
 				{
-					if (typeToTypedefMap.TryGetValue(member.GetType(), out var type))
-					{
-						yield return new MemberDefinition(member, type);
-					}
-					else
-					{
-						var generator = CustomCodeGenerator.GetGenerator(member, Language);
-						if (generator != null)
-						{
-							yield return generator.GetMemberDefinition(member, Language, logger);
-
-							continue;
-						}
-
-						logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {member.GetType()}");
-					}
+					logger.Log(LogLevel.Warning, $"Skipping node with unhandled type: {member.GetType()}");
 				}
 			}
 		}
 
-		private string GetFieldDecorator(MemberDefinition member)
+		private static string GetTypeForNode(BaseNode node, ILogger logger)
 		{
-			Contract.Requires(member != null);
+			Contract.Requires(node != null);
+			Contract.Requires(logger != null);
 
-			return $"[FieldOffset({member.Offset})]";
-		}
+			if (node is BitFieldNode bitFieldNode)
+			{
+				var underlayingNode = bitFieldNode.GetUnderlayingNode();
+				underlayingNode.CopyFromNode(node);
+				node = underlayingNode;
+			}
 
-		private string GetFieldDefinition(MemberDefinition member)
-		{
-			Contract.Requires(member != null);
+			if (typeToTypedefMap.TryGetValue(node.GetType(), out var type))
+			{
+				return type;
+			}
 
-			return $"public {member.Type} {member.Name}; //0x{member.Offset:X04} {member.Comment}".Trim();
+			return null;
 		}
 	}
 }
