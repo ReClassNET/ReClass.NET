@@ -16,7 +16,7 @@ namespace ReClassNET.DataExchange.ReClass.Legacy
 
 			var arrayNode = new ArrayNode { Count = count };
 			arrayNode.ChangeInnerNode(pointerNode);
-			arrayNode.Name = this.Name;
+			arrayNode.CopyFromNode(this);
 
 			return arrayNode;
 		}

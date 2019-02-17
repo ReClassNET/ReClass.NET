@@ -38,7 +38,7 @@ namespace ReClassNET.DataExchange.ReClass.Legacy
 
 			var pointerNode = new PointerNode();
 			pointerNode.ChangeInnerNode(classInstanceNode);
-			pointerNode.Name = this.Name;
+			pointerNode.CopyFromNode(this);
 
 			return pointerNode;
 		}
