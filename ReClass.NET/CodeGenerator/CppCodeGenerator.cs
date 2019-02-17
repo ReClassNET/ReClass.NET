@@ -402,6 +402,7 @@ namespace ReClassNET.CodeGenerator
 			if (node is BaseTextNode textNode)
 			{
 				var arrayNode = new ArrayNode { Count = textNode.Length };
+				arrayNode.CopyFromNode(node);
 				arrayNode.ChangeInnerNode(GetCharacterNodeForEncoding(textNode.Encoding));
 				return arrayNode;
 			}
@@ -409,18 +410,22 @@ namespace ReClassNET.CodeGenerator
 			if (node is BaseTextPtrNode textPtrNode)
 			{
 				var pointerNode = new PointerNode();
+				pointerNode.CopyFromNode(node);
 				pointerNode.ChangeInnerNode(GetCharacterNodeForEncoding(textPtrNode.Encoding));
 				return pointerNode;
 			}
 
 			if (node is BitFieldNode bitFieldNode)
 			{
-				return bitFieldNode.GetUnderlayingNode();
+				var underlayingNode = bitFieldNode.GetUnderlayingNode();
+				underlayingNode.CopyFromNode(node);
+				return underlayingNode;
 			}
 
 			if (node is BaseHexNode hexNode)
 			{
 				var arrayNode = new ArrayNode { Count = hexNode.MemorySize };
+				arrayNode.CopyFromNode(node);
 				arrayNode.ChangeInnerNode(new Utf8CharacterNode());
 				return arrayNode;
 			}
