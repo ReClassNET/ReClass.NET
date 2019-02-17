@@ -217,7 +217,7 @@ namespace ReClassNET.Plugins
 			NodeTypesBuilder.AddPluginNodeGroup(pluginInfo.Interface, customNodeTypes.NodeTypes);
 
 			CustomNodeSerializer.Add(customNodeTypes.Serializer);
-			CustomCodeGenerator.Add(customNodeTypes.CodeGenerator);
+			CppCodeGenerator.Add(customNodeTypes.CodeGenerator);
 		}
 
 		private static void DeregisterCustomNodeTypes(PluginInfo pluginInfo)
@@ -232,7 +232,7 @@ namespace ReClassNET.Plugins
 			NodeTypesBuilder.RemovePluginNodeGroup(pluginInfo.Interface);
 
 			CustomNodeSerializer.Remove(pluginInfo.CustomNodeTypes.Serializer);
-			CustomCodeGenerator.Remove(pluginInfo.CustomNodeTypes.CodeGenerator);
+			CppCodeGenerator.Remove(pluginInfo.CustomNodeTypes.CodeGenerator);
 		}
 	}
 }

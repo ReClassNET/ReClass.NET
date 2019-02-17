@@ -26,6 +26,8 @@ namespace ReClassNET.CodeGenerator
 
 	public class CppCodeGenerator : ICodeGenerator
 	{
+		#region Custom Code Generators
+
 		private static readonly ISet<ICustomCppCodeGenerator> customGenerators = new HashSet<ICustomCppCodeGenerator>();
 
 		public static void Add(ICustomCppCodeGenerator generator)
@@ -42,6 +44,8 @@ namespace ReClassNET.CodeGenerator
 		{
 			return customGenerators.FirstOrDefault(g => g.CanHandle(node));
 		}
+
+		#endregion
 
 		private static readonly Dictionary<Type, string> nodeTypeToTypeDefinationMap = new Dictionary<Type, string>
 		{
