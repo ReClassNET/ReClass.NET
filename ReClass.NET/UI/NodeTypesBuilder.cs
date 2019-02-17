@@ -53,7 +53,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(handler != null);
 
-			var clickHandler = new EventHandler((sender, e) => handler(((TypeToolStripButton)sender).Value));
+			var clickHandler = new EventHandler((sender, e) => handler((sender as TypeToolStripButton)?.Value ?? ((TypeToolStripMenuItem)sender).Value));
 
 			return CreateToolStripItems(t =>
 			{
@@ -72,6 +72,18 @@ namespace ReClassNET.UI
 			{
 				ToolTipText = "",
 				Image = p.Icon
+			}, t =>
+			{
+				GetNodeInfoFromType(t, out var label, out var icon);
+
+				var item = new TypeToolStripMenuItem
+				{
+					Value = t,
+					Text = label,
+					Image = icon
+				};
+				item.Click += clickHandler;
+				return item;
 			});
 		}
 
@@ -116,6 +128,16 @@ namespace ReClassNET.UI
 		private static IEnumerable<ToolStripItem> CreateToolStripItems(Func<Type, ToolStripItem> createItem, Func<Plugin, ToolStripDropDownItem> createPluginContainerItem)
 		{
 			Contract.Requires(createItem != null);
+			Contract.Requires(createPluginContainerItem != null);
+
+			return CreateToolStripItems(createItem, createPluginContainerItem, createItem);
+		}
+
+		private static IEnumerable<ToolStripItem> CreateToolStripItems(Func<Type, ToolStripItem> createItem, Func<Plugin, ToolStripDropDownItem> createPluginContainerItem, Func<Type, ToolStripItem> createPluginItem)
+		{
+			Contract.Requires(createItem != null);
+			Contract.Requires(createPluginContainerItem != null);
+			Contract.Requires(createPluginItem != null);
 
 			if (!defaultNodeTypeGroupList.Any())
 			{
@@ -134,7 +156,7 @@ namespace ReClassNET.UI
 					pluginContainerItem.Tag = kv.Key;
 					pluginContainerItem.DropDownItems.AddRange(
 						kv.Value
-							.Select(createItem)
+							.Select(createPluginItem)
 							.ToArray()
 					);
 					items = items.Append(new ToolStripSeparator()).Append(pluginContainerItem);
