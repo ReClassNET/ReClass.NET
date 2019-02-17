@@ -13,6 +13,7 @@ namespace ReClassNET.DataExchange.ReClass.Legacy
 
 			var arrayNode = new ArrayNode { Count = count };
 			arrayNode.ChangeInnerNode(classInstanceNode);
+			arrayNode.CopyFromNode(this);
 
 			return arrayNode;
 		}

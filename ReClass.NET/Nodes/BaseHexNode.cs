@@ -101,7 +101,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(spot != null);
 
-			Update(spot);
+			base.Update(spot);
 
 			if (spot.Id >= 0 && spot.Id < maxId)
 			{
