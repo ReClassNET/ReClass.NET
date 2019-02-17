@@ -212,6 +212,7 @@ namespace ReClassNET.CodeGenerator
 		{
 			Contract.Requires(members != null);
 			Contract.Requires(Contract.ForAll(members, m => m != null));
+			Contract.Requires(logger != null);
 			Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
 			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<string>>(), d => d != null));
 
@@ -290,7 +291,7 @@ namespace ReClassNET.CodeGenerator
 			return null;
 		}
 
-		public static string GetTypeDeclerationForNode(BaseNode node, ILogger logger)
+		private static string GetTypeDeclerationForNode(BaseNode node, ILogger logger)
 		{
 			var transformedNode = TransformNode(node);
 
