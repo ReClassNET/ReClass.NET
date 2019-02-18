@@ -8,7 +8,7 @@ using ReClassNET.Nodes;
 
 namespace ReClassNET.DataExchange.ReClass
 {
-	public delegate BaseNode CreateNodeFromElementHandler(XElement element, ClassNode parent, ILogger logger);
+	public delegate BaseNode CreateNodeFromElementHandler(XElement element, BaseNode parent, ILogger logger);
 	public delegate XElement CreateElementFromNodeHandler(BaseNode node, ILogger logger);
 
 	[ContractClass(typeof(CustomNodeSerializerContract))]
@@ -30,9 +30,8 @@ namespace ReClassNET.DataExchange.ReClass
 		/// <param name="classes">The list of classes which correspond to the node.</param>
 		/// <param name="logger">The logger used to output messages.</param>
 		/// <param name="defaultHandler">The default method which creates a node from an element. Should be called to resolve nodes for wrapped inner nodes.</param>
-		/// <param name="node">[out] The node for the xml element.</param>
-		/// <returns>True if a node was created, otherwise false.</returns>
-		bool TryCreateNodeFromElement(XElement element, BaseNode parent, IEnumerable<ClassNode> classes, ILogger logger, CreateNodeFromElementHandler defaultHandler, out BaseNode node);
+		/// <returns>The node for the xml element.</returns>
+		BaseNode CreateNodeFromElement(XElement element, BaseNode parent, IEnumerable<ClassNode> classes, ILogger logger, CreateNodeFromElementHandler defaultHandler);
 
 		/// <summary>Creates a xml element from the node. This method gets only called if <see cref="CanHandleNode(BaseNode)"/> returned true.</summary>
 		/// <param name="node">The node to create the xml element from.</param>
@@ -59,7 +58,7 @@ namespace ReClassNET.DataExchange.ReClass
 			throw new NotImplementedException();
 		}
 
-		public bool TryCreateNodeFromElement(XElement element, BaseNode parent, IEnumerable<ClassNode> classes, ILogger logger, CreateNodeFromElementHandler defaultHandler, out BaseNode node)
+		public BaseNode CreateNodeFromElement(XElement element, BaseNode parent, IEnumerable<ClassNode> classes, ILogger logger, CreateNodeFromElementHandler defaultHandler)
 		{
 			Contract.Requires(element != null);
 			Contract.Requires(CanHandleElement(element));

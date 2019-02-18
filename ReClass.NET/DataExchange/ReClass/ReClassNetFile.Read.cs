@@ -106,27 +106,29 @@ namespace ReClassNET.DataExchange.ReClass
 			Contract.Requires(element != null);
 			Contract.Requires(logger != null);
 
-			var converter = CustomNodeSerializer.GetReadConverter(element);
-			if (converter != null)
+			BaseNode CreateNode()
 			{
-				if (converter.TryCreateNodeFromElement(element, parent, project.Classes, logger, CreateNodeFromElement, out var customNode))
+				var converter = CustomNodeSerializer.GetReadConverter(element);
+				if (converter != null)
 				{
-					return customNode;
+					return converter.CreateNodeFromElement(element, parent, project.Classes, logger, CreateNodeFromElement);
 				}
+
+				if (!buildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value ?? string.Empty, out var nodeType))
+				{
+					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {element.Attribute(XmlTypeAttribute)?.Value}");
+					logger.Log(LogLevel.Warning, element.ToString());
+
+					return null;
+				}
+
+				return BaseNode.CreateInstanceFromType(nodeType, false);
 			}
 
-			if (!buildInStringToTypeMap.TryGetValue(element.Attribute(XmlTypeAttribute)?.Value ?? string.Empty, out var nodeType))
-			{
-				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {element.Attribute(XmlTypeAttribute)?.Value}");
-				logger.Log(LogLevel.Warning, element.ToString());
-
-				return null;
-			}
-
-			var node = BaseNode.CreateInstanceFromType(nodeType, false);
+			var node = CreateNode();
 			if (node == null)
 			{
-				logger.Log(LogLevel.Error, $"Could not create node of type: {nodeType}");
+				logger.Log(LogLevel.Error, "Could not create node.");
 
 				return null;
 			}
