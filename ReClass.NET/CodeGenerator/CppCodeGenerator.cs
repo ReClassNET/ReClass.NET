@@ -329,7 +329,7 @@ namespace ReClassNET.CodeGenerator
 				sb.Append(node.Name);
 			}
 
-			var lastWrapperNode = node;
+			BaseNode lastWrapperNode = null;
 			var currentNode = node;
 
 			while (true)
