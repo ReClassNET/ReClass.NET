@@ -65,33 +65,45 @@ namespace ReClassNET.DataExchange.ReClass
 			Contract.Requires(node != null);
 			Contract.Requires(logger != null);
 
-			var converter = CustomNodeSerializer.GetWriteConverter(node);
-			if (converter != null)
+			XElement CreateElement()
 			{
-				return converter.CreateElementFromNode(node, logger, CreateElementFromNode);
+				var converter = CustomNodeSerializer.GetWriteConverter(node);
+				if (converter != null)
+				{
+					return converter.CreateElementFromNode(node, logger, CreateElementFromNode);
+				}
+
+				if (!buildInTypeToStringMap.TryGetValue(node.GetType(), out var typeString))
+				{
+					logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Name}");
+					logger.Log(LogLevel.Warning, node.GetType().ToString());
+
+					return null;
+				}
+
+				return new XElement(
+					XmlNodeElement,
+					new XAttribute(XmlTypeAttribute, typeString)
+				);
 			}
 
-			if (!buildInTypeToStringMap.TryGetValue(node.GetType(), out var typeString))
+			var element = CreateElement();
+			if (element == null)
 			{
-				logger.Log(LogLevel.Error, $"Skipping node with unknown type: {node.Name}");
-				logger.Log(LogLevel.Warning, node.GetType().ToString());
+				logger.Log(LogLevel.Error, "Could not create element.");
 
 				return null;
 			}
 
-			var element = new XElement(
-				XmlNodeElement,
-				new XAttribute(XmlNameAttribute, node.Name ?? string.Empty),
-				new XAttribute(XmlCommentAttribute, node.Comment ?? string.Empty),
-				new XAttribute(XmlHiddenAttribute, node.IsHidden.ToString()),
-				new XAttribute(XmlTypeAttribute, typeString)
-			);
+			element.SetAttributeValue(XmlNameAttribute, node.Name ?? string.Empty);
+			element.SetAttributeValue(XmlCommentAttribute, node.Comment ?? string.Empty);
+			element.SetAttributeValue(XmlHiddenAttribute, node.IsHidden.ToString());
 
 			if (node is BaseWrapperNode wrapperNode)
 			{
-				if (node is ClassInstanceNode classInstanceNode)
+				if (node is BaseClassWrapperNode classWrapperNode)
 				{
-					element.SetAttributeValue(XmlReferenceAttribute, ((ClassNode)classInstanceNode.InnerNode).Uuid.ToBase64String());
+					element.SetAttributeValue(XmlReferenceAttribute, ((ClassNode)classWrapperNode.InnerNode).Uuid.ToBase64String());
 				}
 				else if (wrapperNode.InnerNode != null)
 				{

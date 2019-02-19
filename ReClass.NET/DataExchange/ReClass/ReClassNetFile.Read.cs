@@ -178,7 +178,7 @@ namespace ReClassNET.DataExchange.ReClass
 				{
 					BaseNode innerNode = null;
 
-					if (node is ClassInstanceNode)
+					if (node is BaseClassWrapperNode)
 					{
 						innerNode = GetClassNodeFromElementReference();
 						if (innerNode == null)

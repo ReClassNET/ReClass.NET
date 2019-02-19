@@ -248,6 +248,7 @@
     <Compile Include="Native\NativeMethods.Unix.cs" />
     <Compile Include="Native\NativeMethods.Windows.cs" />
     <Compile Include="Nodes\ArrayNode.cs" />
+    <Compile Include="Nodes\BaseClassWrapperNode.cs" />
     <Compile Include="Nodes\BaseFunctionNode.cs" />
     <Compile Include="Nodes\BaseWrapperArrayNode.cs" />
     <Compile Include="Nodes\BaseWrapperNode.cs" />
