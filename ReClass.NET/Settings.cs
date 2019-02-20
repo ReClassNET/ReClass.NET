@@ -108,7 +108,7 @@ namespace ReClassNET
 
 		public string TypeFunctionPtr { get; set; } = "void*";
 
-		public CustomConfig CustomData { get; } = new CustomConfig();
+		public CustomDataMap CustomData { get; } = new CustomDataMap();
 
 		public Settings Clone() => MemberwiseClone() as Settings;
 	}

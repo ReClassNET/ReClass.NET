@@ -355,7 +355,7 @@
     </Compile>
     <Compile Include="Util\CircularBuffer.cs" />
     <Compile Include="Util\CommandLineArgs.cs" />
-    <Compile Include="Util\CustomConfig.cs" />
+    <Compile Include="Util\CustomDataMap.cs" />
     <Compile Include="Extensions\BinaryReaderWriterExtensions.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\DataGridViewExtensions.cs" />
