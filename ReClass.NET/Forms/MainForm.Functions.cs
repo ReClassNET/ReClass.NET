@@ -70,7 +70,6 @@ namespace ReClassNET.Forms
 			ClassNode.ClassCreated += currentProject.AddClass;
 
 			classesView.Project = currentProject;
-			memoryViewControl.Project = currentProject;
 
 			memoryViewControl.ClassNode = currentProject.Classes.FirstOrDefault();
 		}

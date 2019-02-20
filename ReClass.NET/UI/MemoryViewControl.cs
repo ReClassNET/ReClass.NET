@@ -50,8 +50,6 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private ReClassNetProject project;
-
 		private ClassNode classNode;
 
 		private readonly List<HotSpot> hotSpots = new List<HotSpot>();
@@ -61,19 +59,6 @@ namespace ReClassNET.UI
 		private HotSpot selectionAnchor;
 
 		private readonly FontEx font;
-
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public ReClassNetProject Project
-		{
-			get => project;
-			set
-			{
-				Contract.Requires(value != null);
-
-				project = value;
-			}
-		}
 
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
