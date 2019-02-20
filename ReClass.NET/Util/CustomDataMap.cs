@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
@@ -10,7 +11,7 @@ namespace ReClassNET.Util
 	/// The key to an item should consist of "a-zA-z0-9.,;_-+".
 	/// The naming convention for keys is "PluginName.[Group.]Item".
 	/// </summary>
-	public class CustomDataMap
+	public class CustomDataMap : IEnumerable<KeyValuePair<string, string>>
 	{
 		private readonly Dictionary<string, string> data = new Dictionary<string, string>();
 
@@ -25,6 +26,16 @@ namespace ReClassNET.Util
 			{
 				data[kv.Key] = kv.Value;
 			}
+		}
+
+		public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+		{
+			return data.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 
 		/// <summary>
