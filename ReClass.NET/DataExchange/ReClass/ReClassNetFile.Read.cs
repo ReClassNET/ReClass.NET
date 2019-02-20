@@ -61,6 +61,12 @@ namespace ReClassNET.DataExchange.ReClass
 						project.CustomData.Deserialize(customDataElement);
 					}
 
+					var typeMappingElement = document.Root.Element(XmlTypeMappingElement);
+					if (typeMappingElement != null)
+					{
+						project.TypeMapping.Deserialize(typeMappingElement);
+					}
+
 					var classes = new List<Tuple<XElement, ClassNode>>();
 
 					foreach (var element in document.Root

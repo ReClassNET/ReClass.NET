@@ -35,7 +35,8 @@ namespace ReClassNET.DataExchange.ReClass
 							new XAttribute(XmlVersionAttribute, FileVersion),
 							new XAttribute(XmlPlatformAttribute, Constants.Platform),
 							new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger)),
-							project.CustomData.Serialize(XmlCustomDataElement)
+							project.CustomData.Serialize(XmlCustomDataElement),
+							project.TypeMapping.Serialize(XmlTypeMappingElement)
 						)
 					);
 

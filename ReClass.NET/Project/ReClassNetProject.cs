@@ -25,6 +25,11 @@ namespace ReClassNET.Project
 		/// </summary>
 		public CustomDataMap CustomData { get; } = new CustomDataMap();
 
+		/// <summary>
+		/// List of data types to use while generating C++ code for nodes.
+		/// </summary>
+		public CppTypeMapping TypeMapping { get; } = new CppTypeMapping();
+
 		public void Dispose()
 		{
 			Clear();
