@@ -58,10 +58,7 @@ namespace ReClassNET.DataExchange.ReClass
 					var customDataElement = document.Root.Element(XmlCustomDataElement);
 					if (customDataElement != null)
 					{
-						foreach (var kv in customDataElement.Elements())
-						{
-							project.CustomData[kv.Name.ToString()] = kv.Value;
-						}
+						project.CustomData.Deserialize(customDataElement);
 					}
 
 					var classes = new List<Tuple<XElement, ClassNode>>();

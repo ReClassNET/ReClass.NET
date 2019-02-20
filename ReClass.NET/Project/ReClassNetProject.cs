@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using ReClassNET.Nodes;
+using ReClassNET.Util;
 
 namespace ReClassNET.Project
 {
@@ -22,7 +23,7 @@ namespace ReClassNET.Project
 		/// Key-Value map with custom data for plugins to store project related data.
 		/// The preferred key format is {Plugin Name}_{Key Name}.
 		/// </summary>
-		public Dictionary<string, string> CustomData { get; } = new Dictionary<string, string>();
+		public CustomDataMap CustomData { get; } = new CustomDataMap();
 
 		public void Dispose()
 		{

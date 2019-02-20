@@ -38,6 +38,12 @@ namespace ReClassNET.Util
 			return GetEnumerator();
 		}
 
+		public string this[string key]
+		{
+			get => GetString(key);
+			set => SetString(key, value);
+		}
+
 		/// <summary>
 		/// Sets a configuration item.
 		/// </summary>
