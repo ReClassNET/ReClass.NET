@@ -16,6 +16,7 @@ using ReClassNET.MemoryScanner;
 using ReClassNET.MemoryScanner.Comparer;
 using ReClassNET.Nodes;
 using ReClassNET.Plugins;
+using ReClassNET.Project;
 using ReClassNET.UI;
 using ReClassNET.Util;
 

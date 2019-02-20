@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using ReClassNET.DataExchange.ReClass.Legacy;
 using ReClassNET.Nodes;
+using ReClassNET.Project;
 
 namespace ReClassNET.DataExchange.ReClass
 {

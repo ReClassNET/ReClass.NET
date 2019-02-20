@@ -257,7 +257,7 @@
     <Compile Include="Nodes\FunctionNode.cs" />
     <Compile Include="Nodes\NodeUuid.cs" />
     <Compile Include="Nodes\PointerNode.cs" />
-    <Compile Include="ReClassNetProject.cs" />
+    <Compile Include="Project\ReClassNetProject.cs" />
     <Compile Include="UI\BannerBox.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
+using ReClassNET.Project;
 
 namespace ReClassNET.DataExchange.ReClass
 {

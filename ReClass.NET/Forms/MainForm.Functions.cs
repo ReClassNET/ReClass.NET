@@ -14,6 +14,7 @@ using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
+using ReClassNET.Project;
 using ReClassNET.UI;
 using ReClassNET.Util;
 

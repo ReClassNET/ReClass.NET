@@ -7,6 +7,7 @@ using ReClassNET.DataExchange.ReClass.Legacy;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
+using ReClassNET.Project;
 
 namespace ReClassNET.DataExchange.ReClass
 {
