@@ -1,8 +1,8 @@
 ﻿namespace ReClassNET.UI
 {
-	interface ISettingsBindable
+	interface IPropertyBindable
 	{
-		string SettingName { get; set; }
+		string PropertyName { get; set; }
 
 		object Source { get; set; }
 	}

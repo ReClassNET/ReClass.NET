@@ -298,11 +298,11 @@
     <Compile Include="Forms\CodeForm.Designer.cs">
       <DependentUpon>CodeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\ColorBox.cs">
+    <Compile Include="UI\PropertyBindableColorBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\ColorBox.Designer.cs">
-      <DependentUpon>ColorBox.cs</DependentUpon>
+    <Compile Include="UI\PropertyBindableColorBox.Designer.cs">
+      <DependentUpon>PropertyBindableColorBox.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomToolStripItems.cs">
       <SubType>Component</SubType>
@@ -335,7 +335,7 @@
     <Compile Include="UI\IconButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\ISettingsBindable.cs" />
+    <Compile Include="UI\IPropertyBindable.cs" />
     <Compile Include="UI\LinkedWindowFeatures.cs" />
     <Compile Include="UI\MemoryPreviewPopUp.cs">
       <SubType>Component</SubType>
@@ -479,10 +479,10 @@
     <Compile Include="Symbols\SymbolReader.cs" />
     <Compile Include="Symbols\SymbolStore.cs" />
     <Compile Include="UI\GlobalWindowManager.cs" />
-    <Compile Include="UI\SettingsCheckBox.cs">
+    <Compile Include="UI\PropertyBindableCheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\SettingsTextBox.cs">
+    <Compile Include="UI\PropertyBindableTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\ViewInfo.cs" />
@@ -534,8 +534,8 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ColorBox.resx">
-      <DependentUpon>ColorBox.cs</DependentUpon>
+    <EmbeddedResource Include="UI\PropertyBindableColorBox.resx">
+      <DependentUpon>PropertyBindableColorBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DualValueBox.resx">
       <DependentUpon>DualValueBox.cs</DependentUpon>

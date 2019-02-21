@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ReClassNET.UI
 {
-	public partial class ColorBox : UserControl, ISettingsBindable
+	public partial class PropertyBindableColorBox : UserControl, IPropertyBindable
 	{
 		private const int DefaultWidth = 123;
 		private const int DefaultHeight = 20;
@@ -42,7 +42,7 @@ namespace ReClassNET.UI
 		}
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public string SettingName
+		public string PropertyName
 		{
 			get => property?.Name;
 			set { property = source?.GetType().GetProperty(value); ReadSetting(); }
@@ -55,7 +55,7 @@ namespace ReClassNET.UI
 			set { source = value; ReadSetting(); }
 		}
 
-		public ColorBox()
+		public PropertyBindableColorBox()
 		{
 			InitializeComponent();
 		}

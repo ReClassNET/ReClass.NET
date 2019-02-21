@@ -5,13 +5,13 @@ using System.Windows.Forms;
 
 namespace ReClassNET.UI
 {
-	public class SettingsCheckBox : CheckBox, ISettingsBindable
+	public class PropertyBindableTextBox : TextBox, IPropertyBindable
 	{
 		private PropertyInfo property;
 		private object source;
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public string SettingName
+		public string PropertyName
 		{
 			get => property?.Name;
 			set { property = source?.GetType().GetProperty(value); ReadSetting(); }
@@ -29,9 +29,9 @@ namespace ReClassNET.UI
 			if (property != null && source != null)
 			{
 				var value = property.GetValue(source);
-				if (value is bool b)
+				if (value is string s)
 				{
-					Checked = b;
+					Text = s;
 				}
 			}
 		}
@@ -40,13 +40,13 @@ namespace ReClassNET.UI
 		{
 			if (property != null && source != null)
 			{
-				property.SetValue(source, Checked);
+				property.SetValue(source, Text);
 			}
 		}
 
-		protected override void OnCheckedChanged(EventArgs e)
+		protected override void OnTextChanged(EventArgs e)
 		{
-			base.OnCheckedChanged(e);
+			base.OnTextChanged(e);
 
 			WriteSetting();
 		}

@@ -85,112 +85,112 @@ namespace ReClassNET.Forms
 		private void SetGeneralBindings()
 		{
 			stayOnTopCheckBox.Source = settings;
-			stayOnTopCheckBox.SettingName = nameof(Settings.StayOnTop);
+			stayOnTopCheckBox.PropertyName = nameof(Settings.StayOnTop);
 			stayOnTopCheckBox.CheckedChanged += (sender, e) =>
 			{
 				GlobalWindowManager.Windows.ForEach(w => w.TopMost = stayOnTopCheckBox.Checked);
 			};
 
 			showNodeAddressCheckBox.Source = settings;
-			showNodeAddressCheckBox.SettingName = nameof(Settings.ShowNodeAddress);
+			showNodeAddressCheckBox.PropertyName = nameof(Settings.ShowNodeAddress);
 			showNodeOffsetCheckBox.Source = settings;
-			showNodeOffsetCheckBox.SettingName = nameof(Settings.ShowNodeOffset);
+			showNodeOffsetCheckBox.PropertyName = nameof(Settings.ShowNodeOffset);
 			showTextCheckBox.Source = settings;
-			showTextCheckBox.SettingName = nameof(Settings.ShowNodeText);
+			showTextCheckBox.PropertyName = nameof(Settings.ShowNodeText);
 			highlightChangedValuesCheckBox.Source = settings;
-			highlightChangedValuesCheckBox.SettingName = nameof(Settings.HighlightChangedValues);
+			highlightChangedValuesCheckBox.PropertyName = nameof(Settings.HighlightChangedValues);
 
 			showFloatCheckBox.Source = settings;
-			showFloatCheckBox.SettingName = nameof(Settings.ShowCommentFloat);
+			showFloatCheckBox.PropertyName = nameof(Settings.ShowCommentFloat);
 			showIntegerCheckBox.Source = settings;
-			showIntegerCheckBox.SettingName = nameof(Settings.ShowCommentInteger);
+			showIntegerCheckBox.PropertyName = nameof(Settings.ShowCommentInteger);
 			showPointerCheckBox.Source = settings;
-			showPointerCheckBox.SettingName = nameof(Settings.ShowCommentPointer);
+			showPointerCheckBox.PropertyName = nameof(Settings.ShowCommentPointer);
 			showRttiCheckBox.Source = settings;
-			showRttiCheckBox.SettingName = nameof(Settings.ShowCommentRtti);
+			showRttiCheckBox.PropertyName = nameof(Settings.ShowCommentRtti);
 			showSymbolsCheckBox.Source = settings;
-			showSymbolsCheckBox.SettingName = nameof(Settings.ShowCommentSymbol);
+			showSymbolsCheckBox.PropertyName = nameof(Settings.ShowCommentSymbol);
 			showStringCheckBox.Source = settings;
-			showStringCheckBox.SettingName = nameof(Settings.ShowCommentString);
+			showStringCheckBox.PropertyName = nameof(Settings.ShowCommentString);
 			showPluginInfoCheckBox.Source = settings;
-			showPluginInfoCheckBox.SettingName = nameof(Settings.ShowCommentPluginInfo);
+			showPluginInfoCheckBox.PropertyName = nameof(Settings.ShowCommentPluginInfo);
 		}
 
 		private void SetColorBindings()
 		{
 			backgroundColorBox.Source = settings;
-			backgroundColorBox.SettingName = nameof(Settings.BackgroundColor);
+			backgroundColorBox.PropertyName = nameof(Settings.BackgroundColor);
 
 			nodeSelectedColorBox.Source = settings;
-			nodeSelectedColorBox.SettingName = nameof(Settings.SelectedColor);
+			nodeSelectedColorBox.PropertyName = nameof(Settings.SelectedColor);
 			nodeHiddenColorBox.Source = settings;
-			nodeHiddenColorBox.SettingName = nameof(Settings.HiddenColor);
+			nodeHiddenColorBox.PropertyName = nameof(Settings.HiddenColor);
 			nodeAddressColorBox.Source = settings;
-			nodeAddressColorBox.SettingName = nameof(Settings.AddressColor);
+			nodeAddressColorBox.PropertyName = nameof(Settings.AddressColor);
 			nodeOffsetColorBox.Source = settings;
-			nodeOffsetColorBox.SettingName = nameof(Settings.OffsetColor);
+			nodeOffsetColorBox.PropertyName = nameof(Settings.OffsetColor);
 			nodeHexValueColorBox.Source = settings;
-			nodeHexValueColorBox.SettingName = nameof(Settings.HexColor);
+			nodeHexValueColorBox.PropertyName = nameof(Settings.HexColor);
 			nodeTypeColorBox.Source = settings;
-			nodeTypeColorBox.SettingName = nameof(Settings.TypeColor);
+			nodeTypeColorBox.PropertyName = nameof(Settings.TypeColor);
 			nodeNameColorBox.Source = settings;
-			nodeNameColorBox.SettingName = nameof(Settings.NameColor);
+			nodeNameColorBox.PropertyName = nameof(Settings.NameColor);
 			nodeValueColorBox.Source = settings;
-			nodeValueColorBox.SettingName = nameof(Settings.ValueColor);
+			nodeValueColorBox.PropertyName = nameof(Settings.ValueColor);
 			nodeIndexColorBox.Source = settings;
-			nodeIndexColorBox.SettingName = nameof(Settings.IndexColor);
+			nodeIndexColorBox.PropertyName = nameof(Settings.IndexColor);
 			nodeVTableColorBox.Source = settings;
-			nodeVTableColorBox.SettingName = nameof(Settings.VTableColor);
+			nodeVTableColorBox.PropertyName = nameof(Settings.VTableColor);
 			nodeCommentColorBox.Source = settings;
-			nodeCommentColorBox.SettingName = nameof(Settings.CommentColor);
+			nodeCommentColorBox.PropertyName = nameof(Settings.CommentColor);
 			nodeTextColorBox.Source = settings;
-			nodeTextColorBox.SettingName = nameof(Settings.TextColor);
+			nodeTextColorBox.PropertyName = nameof(Settings.TextColor);
 			nodePluginColorBox.Source = settings;
-			nodePluginColorBox.SettingName = nameof(Settings.PluginColor);
+			nodePluginColorBox.PropertyName = nameof(Settings.PluginColor);
 		}
 
 		private void SetTypedefinitionBindings()
 		{
 			boolSettingsTextBox.Source = typeMapping;
-			boolSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeBool);
+			boolSettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeBool);
 			int8SettingsTextBox.Source = typeMapping;
-			int8SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeInt8);
+			int8SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeInt8);
 			int16SettingsTextBox.Source = typeMapping;
-			int16SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeInt16);
+			int16SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeInt16);
 			int32SettingsTextBox.Source = typeMapping;
-			int32SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeInt32);
+			int32SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeInt32);
 			int64SettingsTextBox.Source = typeMapping;
-			int64SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeInt64);
+			int64SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeInt64);
 			uint8SettingsTextBox.Source = typeMapping;
-			uint8SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUInt8);
+			uint8SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeUInt8);
 			uint16SettingsTextBox.Source = typeMapping;
-			uint16SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUInt16);
+			uint16SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeUInt16);
 			uint32SettingsTextBox.Source = typeMapping;
-			uint32SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUInt32);
+			uint32SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeUInt32);
 			uint64SettingsTextBox.Source = typeMapping;
-			uint64SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUInt64);
+			uint64SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeUInt64);
 			floatSettingsTextBox.Source = typeMapping;
-			floatSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeFloat);
+			floatSettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeFloat);
 			doubleSettingsTextBox.Source = typeMapping;
-			doubleSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeDouble);
+			doubleSettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeDouble);
 			vector2SettingsTextBox.Source = typeMapping;
-			vector2SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeVector2);
+			vector2SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeVector2);
 			vector3SettingsTextBox.Source = typeMapping;
-			vector3SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeVector3);
+			vector3SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeVector3);
 			vector4SettingsTextBox.Source = typeMapping;
-			vector4SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeVector4);
+			vector4SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeVector4);
 			matrix3x3SettingsTextBox.Source = typeMapping;
-			matrix3x3SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeMatrix3x3);
+			matrix3x3SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeMatrix3x3);
 			matrix3x4SettingsTextBox.Source = typeMapping;
-			matrix3x4SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeMatrix3x4);
+			matrix3x4SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeMatrix3x4);
 			matrix4x4SettingsTextBox.Source = typeMapping;
-			matrix4x4SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeMatrix4x4);
+			matrix4x4SettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeMatrix4x4);
 			utf8TextSettingsTextBox.Source = typeMapping;
-			utf8TextSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUtf8Text);
+			utf8TextSettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeUtf8Text);
 			utf16TextSettingsTextBox.Source = typeMapping;
-			utf16TextSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUtf16Text);
+			utf16TextSettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeUtf16Text);
 			functionPtrSettingsTextBox.Source = typeMapping;
-			functionPtrSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeFunctionPtr);
+			functionPtrSettingsTextBox.PropertyName = nameof(CppTypeMapping.TypeFunctionPtr);
 		}
 	}
 }

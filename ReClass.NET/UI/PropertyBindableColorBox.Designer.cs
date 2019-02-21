@@ -1,6 +1,6 @@
 ﻿namespace ReClassNET.UI
 {
-	partial class ColorBox
+	partial class PropertyBindableColorBox
 	{
 		/// <summary> 
 		/// Erforderliche Designervariable.
