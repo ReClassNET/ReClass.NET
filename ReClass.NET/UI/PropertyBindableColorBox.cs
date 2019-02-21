@@ -11,8 +11,9 @@ namespace ReClassNET.UI
 		private const int DefaultWidth = 123;
 		private const int DefaultHeight = 20;
 
-		private PropertyInfo property;
+		private string propertyName;
 		private object source;
+		private PropertyInfo property;
 
 		private bool updateTextBox = true;
 
@@ -44,15 +45,35 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string PropertyName
 		{
-			get => property?.Name;
-			set { property = source?.GetType().GetProperty(value); ReadSetting(); }
+			get => propertyName;
+			set
+			{
+				propertyName = value;
+				property = null;
+
+				ReadSetting();
+			}
 		}
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public object Source
 		{
 			get => source;
-			set { source = value; ReadSetting(); }
+			set
+			{
+				source = value;
+				property = null;
+
+				ReadSetting();
+			}
+		}
+
+		private void TryGetPropertyInfo()
+		{
+			if (property == null && source != null && !string.IsNullOrEmpty(propertyName))
+			{
+				property = source?.GetType().GetProperty(propertyName);
+			}
 		}
 
 		public PropertyBindableColorBox()
@@ -67,6 +88,8 @@ namespace ReClassNET.UI
 
 		private void ReadSetting()
 		{
+			TryGetPropertyInfo();
+
 			if (property != null && source != null)
 			{
 				var value = property.GetValue(source);
@@ -79,6 +102,8 @@ namespace ReClassNET.UI
 
 		private void WriteSetting()
 		{
+			TryGetPropertyInfo();
+
 			if (property != null && source != null)
 			{
 				property.SetValue(source, Color);
