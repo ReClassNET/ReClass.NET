@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -297,7 +297,7 @@ namespace ReClassNET.Forms
 
 		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var sd = new SettingsForm(Program.Settings))
+			using (var sd = new SettingsForm(Program.Settings, CurrentProject.TypeMapping))
 			{
 				sd.ShowDialog();
 			}

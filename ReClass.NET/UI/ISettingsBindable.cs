@@ -4,6 +4,6 @@
 	{
 		string SettingName { get; set; }
 
-		Settings Source { get; set; }
+		object Source { get; set; }
 	}
 }

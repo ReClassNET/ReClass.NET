@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Native;
+using ReClassNET.Project;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -11,14 +12,17 @@ namespace ReClassNET.Forms
 	public partial class SettingsForm : IconForm
 	{
 		private readonly Settings settings;
+		private readonly CppTypeMapping typeMapping;
 
 		public TabControl SettingsTabControl => settingsTabControl;
 
-		public SettingsForm(Settings settings)
+		public SettingsForm(Settings settings, CppTypeMapping typeMapping)
 		{
 			Contract.Requires(settings != null);
+			Contract.Requires(typeMapping != null);
 
 			this.settings = settings;
+			this.typeMapping = typeMapping;
 
 			InitializeComponent();
 
@@ -147,52 +151,46 @@ namespace ReClassNET.Forms
 
 		private void SetTypedefinitionBindings()
 		{
-			paddingSettingsTextBox.Source = settings;
-			paddingSettingsTextBox.SettingName = nameof(Settings.TypePadding);
-			boolSettingsTextBox.Source = settings;
-			boolSettingsTextBox.SettingName = nameof(Settings.TypeBool);
-			int8SettingsTextBox.Source = settings;
-			int8SettingsTextBox.SettingName = nameof(Settings.TypeInt8);
-			int16SettingsTextBox.Source = settings;
-			int16SettingsTextBox.SettingName = nameof(Settings.TypeInt16);
-			int32SettingsTextBox.Source = settings;
-			int32SettingsTextBox.SettingName = nameof(Settings.TypeInt32);
-			int64SettingsTextBox.Source = settings;
-			int64SettingsTextBox.SettingName = nameof(Settings.TypeInt64);
-			uint8SettingsTextBox.Source = settings;
-			uint8SettingsTextBox.SettingName = nameof(Settings.TypeUInt8);
-			uint16SettingsTextBox.Source = settings;
-			uint16SettingsTextBox.SettingName = nameof(Settings.TypeUInt16);
-			uint32SettingsTextBox.Source = settings;
-			uint32SettingsTextBox.SettingName = nameof(Settings.TypeUInt32);
-			uint64SettingsTextBox.Source = settings;
-			uint64SettingsTextBox.SettingName = nameof(Settings.TypeUInt64);
-			floatSettingsTextBox.Source = settings;
-			floatSettingsTextBox.SettingName = nameof(Settings.TypeFloat);
-			doubleSettingsTextBox.Source = settings;
-			doubleSettingsTextBox.SettingName = nameof(Settings.TypeDouble);
-			vector2SettingsTextBox.Source = settings;
-			vector2SettingsTextBox.SettingName = nameof(Settings.TypeVector2);
-			vector3SettingsTextBox.Source = settings;
-			vector3SettingsTextBox.SettingName = nameof(Settings.TypeVector3);
-			vector4SettingsTextBox.Source = settings;
-			vector4SettingsTextBox.SettingName = nameof(Settings.TypeVector4);
-			matrix3x3SettingsTextBox.Source = settings;
-			matrix3x3SettingsTextBox.SettingName = nameof(Settings.TypeMatrix3x3);
-			matrix3x4SettingsTextBox.Source = settings;
-			matrix3x4SettingsTextBox.SettingName = nameof(Settings.TypeMatrix3x4);
-			matrix4x4SettingsTextBox.Source = settings;
-			matrix4x4SettingsTextBox.SettingName = nameof(Settings.TypeMatrix4x4);
-			utf8TextSettingsTextBox.Source = settings;
-			utf8TextSettingsTextBox.SettingName = nameof(Settings.TypeUTF8Text);
-			utf8TextPtrSettingsTextBox.Source = settings;
-			utf8TextPtrSettingsTextBox.SettingName = nameof(Settings.TypeUTF8TextPtr);
-			utf16TextSettingsTextBox.Source = settings;
-			utf16TextSettingsTextBox.SettingName = nameof(Settings.TypeUTF16Text);
-			utf16TextPtrSettingsTextBox.Source = settings;
-			utf16TextPtrSettingsTextBox.SettingName = nameof(Settings.TypeUTF16TextPtr);
-			functionPtrSettingsTextBox.Source = settings;
-			functionPtrSettingsTextBox.SettingName = nameof(Settings.TypeFunctionPtr);
+			boolSettingsTextBox.Source = typeMapping;
+			boolSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeBool);
+			int8SettingsTextBox.Source = typeMapping;
+			int8SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeInt8);
+			int16SettingsTextBox.Source = typeMapping;
+			int16SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeInt16);
+			int32SettingsTextBox.Source = typeMapping;
+			int32SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeInt32);
+			int64SettingsTextBox.Source = typeMapping;
+			int64SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeInt64);
+			uint8SettingsTextBox.Source = typeMapping;
+			uint8SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUInt8);
+			uint16SettingsTextBox.Source = typeMapping;
+			uint16SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUInt16);
+			uint32SettingsTextBox.Source = typeMapping;
+			uint32SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUInt32);
+			uint64SettingsTextBox.Source = typeMapping;
+			uint64SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUInt64);
+			floatSettingsTextBox.Source = typeMapping;
+			floatSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeFloat);
+			doubleSettingsTextBox.Source = typeMapping;
+			doubleSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeDouble);
+			vector2SettingsTextBox.Source = typeMapping;
+			vector2SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeVector2);
+			vector3SettingsTextBox.Source = typeMapping;
+			vector3SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeVector3);
+			vector4SettingsTextBox.Source = typeMapping;
+			vector4SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeVector4);
+			matrix3x3SettingsTextBox.Source = typeMapping;
+			matrix3x3SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeMatrix3x3);
+			matrix3x4SettingsTextBox.Source = typeMapping;
+			matrix3x4SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeMatrix3x4);
+			matrix4x4SettingsTextBox.Source = typeMapping;
+			matrix4x4SettingsTextBox.SettingName = nameof(CppTypeMapping.TypeMatrix4x4);
+			utf8TextSettingsTextBox.Source = typeMapping;
+			utf8TextSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUtf8Text);
+			utf16TextSettingsTextBox.Source = typeMapping;
+			utf16TextSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeUtf16Text);
+			functionPtrSettingsTextBox.Source = typeMapping;
+			functionPtrSettingsTextBox.SettingName = nameof(CppTypeMapping.TypeFunctionPtr);
 		}
 	}
 }

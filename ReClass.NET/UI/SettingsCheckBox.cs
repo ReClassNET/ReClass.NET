@@ -8,17 +8,17 @@ namespace ReClassNET.UI
 	public class SettingsCheckBox : CheckBox, ISettingsBindable
 	{
 		private PropertyInfo property;
-		private Settings source;
+		private object source;
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string SettingName
 		{
 			get => property?.Name;
-			set { property = typeof(Settings).GetProperty(value); ReadSetting(); }
+			set { property = source?.GetType().GetProperty(value); ReadSetting(); }
 		}
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Settings Source
+		public object Source
 		{
 			get => source;
 			set { source = value; ReadSetting(); }
