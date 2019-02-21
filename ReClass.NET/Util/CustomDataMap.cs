@@ -22,6 +22,8 @@ namespace ReClassNET.Util
 
 		internal void Deserialize(XElement element)
 		{
+			data.Clear();
+
 			foreach (var kv in XElementSerializer.ToDictionary(element))
 			{
 				data[kv.Key] = kv.Value;
