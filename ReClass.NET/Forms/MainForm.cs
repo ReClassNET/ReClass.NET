@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -383,7 +383,7 @@ namespace ReClassNET.Forms
 
 		private void generateCppCodeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ShowCodeForm(new CppCodeGenerator());
+			ShowCodeForm(new CppCodeGenerator(CurrentProject.TypeMapping));
 		}
 
 		private void generateCSharpCodeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -679,7 +679,7 @@ namespace ReClassNET.Forms
 		{
 			if (memoryViewControl.GetSelectedNodes().FirstOrDefault()?.Node is ClassNode node)
 			{
-				LinkedWindowFeatures.ShowCodeGeneratorForm(node.Yield());
+				LinkedWindowFeatures.ShowCodeGeneratorForm(node.Yield(), CurrentProject.TypeMapping);
 			}
 		}
 

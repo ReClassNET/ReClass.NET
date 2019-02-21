@@ -7,6 +7,7 @@ using System.Text;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
+using ReClassNET.Project;
 using ReClassNET.UI;
 
 namespace ReClassNET.CodeGenerator
@@ -47,30 +48,7 @@ namespace ReClassNET.CodeGenerator
 
 		#endregion
 
-		private static readonly Dictionary<Type, string> nodeTypeToTypeDefinationMap = new Dictionary<Type, string>
-		{
-			[typeof(BoolNode)] = Program.Settings.TypeBool,
-			[typeof(DoubleNode)] = Program.Settings.TypeDouble,
-			[typeof(FloatNode)] = Program.Settings.TypeFloat,
-			[typeof(FunctionPtrNode)] = Program.Settings.TypeFunctionPtr,
-			[typeof(Int8Node)] = Program.Settings.TypeInt8,
-			[typeof(Int16Node)] = Program.Settings.TypeInt16,
-			[typeof(Int32Node)] = Program.Settings.TypeInt32,
-			[typeof(Int64Node)] = Program.Settings.TypeInt64,
-			[typeof(Matrix3x3Node)] = Program.Settings.TypeMatrix3x3,
-			[typeof(Matrix3x4Node)] = Program.Settings.TypeMatrix3x4,
-			[typeof(Matrix4x4Node)] = Program.Settings.TypeMatrix4x4,
-			[typeof(UInt8Node)] = Program.Settings.TypeUInt8,
-			[typeof(UInt16Node)] = Program.Settings.TypeUInt16,
-			[typeof(UInt32Node)] = Program.Settings.TypeUInt32,
-			[typeof(UInt64Node)] = Program.Settings.TypeUInt64,
-			[typeof(Utf8CharacterNode)] = Program.Settings.TypeUTF8Text,
-			[typeof(Utf16CharacterNode)] = Program.Settings.TypeUTF16Text,
-			[typeof(Utf32CharacterNode)] = Program.Settings.TypeUTF32Text,
-			[typeof(Vector2Node)] = Program.Settings.TypeVector2,
-			[typeof(Vector3Node)] = Program.Settings.TypeVector3,
-			[typeof(Vector4Node)] = Program.Settings.TypeVector4
-		};
+		private readonly Dictionary<Type, string> nodeTypeToTypeDefinationMap;
 
 		#region HelperNodes
 
@@ -101,6 +79,34 @@ namespace ReClassNET.CodeGenerator
 		#endregion
 
 		public Language Language => Language.Cpp;
+
+		public CppCodeGenerator(CppTypeMapping typeMapping)
+		{
+			nodeTypeToTypeDefinationMap = new Dictionary<Type, string>
+			{
+				[typeof(BoolNode)] = typeMapping.TypeBool,
+				[typeof(DoubleNode)] = typeMapping.TypeDouble,
+				[typeof(FloatNode)] = typeMapping.TypeFloat,
+				[typeof(FunctionPtrNode)] = typeMapping.TypeFunctionPtr,
+				[typeof(Int8Node)] = typeMapping.TypeInt8,
+				[typeof(Int16Node)] = typeMapping.TypeInt16,
+				[typeof(Int32Node)] = typeMapping.TypeInt32,
+				[typeof(Int64Node)] = typeMapping.TypeInt64,
+				[typeof(Matrix3x3Node)] = typeMapping.TypeMatrix3x3,
+				[typeof(Matrix3x4Node)] = typeMapping.TypeMatrix3x4,
+				[typeof(Matrix4x4Node)] = typeMapping.TypeMatrix4x4,
+				[typeof(UInt8Node)] = typeMapping.TypeUInt8,
+				[typeof(UInt16Node)] = typeMapping.TypeUInt16,
+				[typeof(UInt32Node)] = typeMapping.TypeUInt32,
+				[typeof(UInt64Node)] = typeMapping.TypeUInt64,
+				[typeof(Utf8CharacterNode)] = typeMapping.TypeUtf8Text,
+				[typeof(Utf16CharacterNode)] = typeMapping.TypeUtf16Text,
+				[typeof(Utf32CharacterNode)] = typeMapping.TypeUtf32Text,
+				[typeof(Vector2Node)] = typeMapping.TypeVector2,
+				[typeof(Vector3Node)] = typeMapping.TypeVector3,
+				[typeof(Vector4Node)] = typeMapping.TypeVector4
+			};
+		}
 
 		public string GenerateCode(IEnumerable<ClassNode> classes, ILogger logger)
 		{
@@ -212,7 +218,7 @@ namespace ReClassNET.CodeGenerator
 				.Append(node);
 		}
 
-		private static IEnumerable<string> GetTypeDeclerationsForNodes(IEnumerable<BaseNode> members, ILogger logger)
+		private IEnumerable<string> GetTypeDeclerationsForNodes(IEnumerable<BaseNode> members, ILogger logger)
 		{
 			Contract.Requires(members != null);
 			Contract.Requires(Contract.ForAll(members, m => m != null));
@@ -274,7 +280,7 @@ namespace ReClassNET.CodeGenerator
 			}
 		}
 
-		private static string GetTypeDefinition(BaseNode node, ILogger logger)
+		private string GetTypeDefinition(BaseNode node, ILogger logger)
 		{
 			var custom = GetCustomCodeGeneratorForNode(node);
 			if (custom != null)
@@ -295,7 +301,7 @@ namespace ReClassNET.CodeGenerator
 			return null;
 		}
 
-		private static string GetTypeDeclerationForNode(BaseNode node, ILogger logger)
+		private string GetTypeDeclerationForNode(BaseNode node, ILogger logger)
 		{
 			var transformedNode = TransformNode(node);
 
@@ -319,7 +325,7 @@ namespace ReClassNET.CodeGenerator
 			return null;
 		}
 
-		private static string ResolveWrappedType(BaseNode node, bool isAnonymousExpression, ILogger logger)
+		private string ResolveWrappedType(BaseNode node, bool isAnonymousExpression, ILogger logger)
 		{
 			Contract.Requires(node != null);
 

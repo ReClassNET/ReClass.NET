@@ -9,6 +9,7 @@ using ReClassNET.Forms;
 using ReClassNET.MemoryScanner;
 using ReClassNET.MemoryScanner.Comparer;
 using ReClassNET.Nodes;
+using ReClassNET.Project;
 
 namespace ReClassNET.UI
 {
@@ -132,11 +133,12 @@ namespace ReClassNET.UI
 			sf.ExcuteScan(settings, comparer);
 		}
 
-		public static void ShowCodeGeneratorForm(IEnumerable<ClassNode> classes)
+		public static void ShowCodeGeneratorForm(IEnumerable<ClassNode> classes, CppTypeMapping typeMapping)
 		{
 			Contract.Requires(classes != null);
+			Contract.Requires(typeMapping != null);
 
-			ShowCodeGeneratorForm(classes, new CppCodeGenerator());
+			ShowCodeGeneratorForm(classes, new CppCodeGenerator(typeMapping));
 		}
 
 		public static void ShowCodeGeneratorForm(IEnumerable<ClassNode> classes, ICodeGenerator generator)

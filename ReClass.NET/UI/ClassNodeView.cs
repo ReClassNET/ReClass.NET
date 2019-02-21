@@ -348,7 +348,7 @@ namespace ReClassNET.UI
 		{
 			if (classesTreeView.SelectedNode is ClassTreeNode node)
 			{
-				LinkedWindowFeatures.ShowCodeGeneratorForm(node.ClassNode.Yield());
+				LinkedWindowFeatures.ShowCodeGeneratorForm(node.ClassNode.Yield(), Project.TypeMapping);
 			}
 		}
 
