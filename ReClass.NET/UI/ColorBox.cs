@@ -8,7 +8,7 @@ namespace ReClassNET.UI
 {
 	[DefaultEvent(nameof(ColorChanged))]
 	[DefaultBindingProperty(nameof(Color))]
-	public partial class PropertyBindableColorBox : UserControl
+	public partial class ColorBox : UserControl
 	{
 		private const int DefaultWidth = 123;
 		private const int DefaultHeight = 20;
@@ -50,7 +50,7 @@ namespace ReClassNET.UI
 			eh?.Invoke(this, e);
 		}
 
-		public PropertyBindableColorBox()
+		public ColorBox()
 		{
 			InitializeComponent();
 		}

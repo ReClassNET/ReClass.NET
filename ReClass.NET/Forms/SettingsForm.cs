@@ -109,21 +109,21 @@ namespace ReClassNET.Forms
 
 		private void SetColorBindings()
 		{
-			SetBinding(backgroundColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.BackgroundColor));
+			SetBinding(backgroundColorBox, nameof(ColorBox.Color), settings, nameof(Settings.BackgroundColor));
 
-			SetBinding(nodeSelectedColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.SelectedColor));
-			SetBinding(nodeHiddenColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.HiddenColor));
-			SetBinding(nodeAddressColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.AddressColor));
-			SetBinding(nodeOffsetColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.OffsetColor));
-			SetBinding(nodeHexValueColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.HexColor));
-			SetBinding(nodeTypeColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.TypeColor));
-			SetBinding(nodeNameColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.NameColor));
-			SetBinding(nodeValueColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.ValueColor));
-			SetBinding(nodeIndexColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.IndexColor));
-			SetBinding(nodeVTableColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.VTableColor));
-			SetBinding(nodeCommentColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.CommentColor));
-			SetBinding(nodeTextColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.TextColor));
-			SetBinding(nodePluginColorBox, nameof(PropertyBindableColorBox.Color), settings, nameof(Settings.PluginColor));
+			SetBinding(nodeSelectedColorBox, nameof(ColorBox.Color), settings, nameof(Settings.SelectedColor));
+			SetBinding(nodeHiddenColorBox, nameof(ColorBox.Color), settings, nameof(Settings.HiddenColor));
+			SetBinding(nodeAddressColorBox, nameof(ColorBox.Color), settings, nameof(Settings.AddressColor));
+			SetBinding(nodeOffsetColorBox, nameof(ColorBox.Color), settings, nameof(Settings.OffsetColor));
+			SetBinding(nodeHexValueColorBox, nameof(ColorBox.Color), settings, nameof(Settings.HexColor));
+			SetBinding(nodeTypeColorBox, nameof(ColorBox.Color), settings, nameof(Settings.TypeColor));
+			SetBinding(nodeNameColorBox, nameof(ColorBox.Color), settings, nameof(Settings.NameColor));
+			SetBinding(nodeValueColorBox, nameof(ColorBox.Color), settings, nameof(Settings.ValueColor));
+			SetBinding(nodeIndexColorBox, nameof(ColorBox.Color), settings, nameof(Settings.IndexColor));
+			SetBinding(nodeVTableColorBox, nameof(ColorBox.Color), settings, nameof(Settings.VTableColor));
+			SetBinding(nodeCommentColorBox, nameof(ColorBox.Color), settings, nameof(Settings.CommentColor));
+			SetBinding(nodeTextColorBox, nameof(ColorBox.Color), settings, nameof(Settings.TextColor));
+			SetBinding(nodePluginColorBox, nameof(ColorBox.Color), settings, nameof(Settings.PluginColor));
 		}
 
 		private void SetTypedefinitionBindings()
