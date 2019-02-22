@@ -335,7 +335,6 @@
     <Compile Include="UI\IconButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\IPropertyBindable.cs" />
     <Compile Include="UI\LinkedWindowFeatures.cs" />
     <Compile Include="UI\MemoryPreviewPopUp.cs">
       <SubType>Component</SubType>
@@ -479,12 +478,6 @@
     <Compile Include="Symbols\SymbolReader.cs" />
     <Compile Include="Symbols\SymbolStore.cs" />
     <Compile Include="UI\GlobalWindowManager.cs" />
-    <Compile Include="UI\PropertyBindableCheckBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\PropertyBindableTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\ViewInfo.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Util\IntPtrComparer.cs" />

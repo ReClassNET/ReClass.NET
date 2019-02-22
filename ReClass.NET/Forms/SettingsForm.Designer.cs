@@ -35,19 +35,19 @@
 			this.createAssociationButton = new System.Windows.Forms.Button();
 			this.associationInfoLabel = new System.Windows.Forms.Label();
 			this.commentsGroupBox = new System.Windows.Forms.GroupBox();
-			this.showPluginInfoCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
-			this.showStringCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
-			this.showSymbolsCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
-			this.showRttiCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
-			this.showPointerCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
-			this.showIntegerCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
-			this.showFloatCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
+			this.showPluginInfoCheckBox = new System.Windows.Forms.CheckBox();
+			this.showStringCheckBox = new System.Windows.Forms.CheckBox();
+			this.showSymbolsCheckBox = new System.Windows.Forms.CheckBox();
+			this.showRttiCheckBox = new System.Windows.Forms.CheckBox();
+			this.showPointerCheckBox = new System.Windows.Forms.CheckBox();
+			this.showIntegerCheckBox = new System.Windows.Forms.CheckBox();
+			this.showFloatCheckBox = new System.Windows.Forms.CheckBox();
 			this.displayGroupBox = new System.Windows.Forms.GroupBox();
-			this.highlightChangedValuesCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
-			this.showTextCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
-			this.showNodeOffsetCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
-			this.showNodeAddressCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
-			this.stayOnTopCheckBox = new ReClassNET.UI.PropertyBindableCheckBox();
+			this.highlightChangedValuesCheckBox = new System.Windows.Forms.CheckBox();
+			this.showTextCheckBox = new System.Windows.Forms.CheckBox();
+			this.showNodeOffsetCheckBox = new System.Windows.Forms.CheckBox();
+			this.showNodeAddressCheckBox = new System.Windows.Forms.CheckBox();
+			this.stayOnTopCheckBox = new System.Windows.Forms.CheckBox();
 			this.colorsSettingTabPage = new System.Windows.Forms.TabPage();
 			this.nodeColorGroupBox = new System.Windows.Forms.GroupBox();
 			this.nodeValueLabel = new System.Windows.Forms.Label();
@@ -80,46 +80,46 @@
 			this.backgroundColorBox = new ReClassNET.UI.PropertyBindableColorBox();
 			this.typeDefinitionsSettingsTabPage = new System.Windows.Forms.TabPage();
 			this.boolSettingsLabel = new System.Windows.Forms.Label();
-			this.boolSettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.boolTypeTextBox = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.functionPtrSettingsLabel = new System.Windows.Forms.Label();
-			this.functionPtrSettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.functionPtrTypeTextBox = new System.Windows.Forms.TextBox();
 			this.utf16TextSettingsLabel = new System.Windows.Forms.Label();
-			this.utf16TextSettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.utf16TextTypeTextBox = new System.Windows.Forms.TextBox();
 			this.utf8TextSettingsLabel = new System.Windows.Forms.Label();
-			this.utf8TextSettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.utf8TextTypeTextBox = new System.Windows.Forms.TextBox();
 			this.matrix3x3SettingsLabel = new System.Windows.Forms.Label();
-			this.matrix3x3SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.matrix3x3TypeTextBox = new System.Windows.Forms.TextBox();
 			this.matrix3x4SettingsLabel = new System.Windows.Forms.Label();
-			this.matrix3x4SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.matrix3x4TypeTextBox = new System.Windows.Forms.TextBox();
 			this.matrix4x4SettingsLabel = new System.Windows.Forms.Label();
-			this.matrix4x4SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.matrix4x4TypeTextBox = new System.Windows.Forms.TextBox();
 			this.vector2SettingsLabel = new System.Windows.Forms.Label();
-			this.vector2SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.vector2TypeTextBox = new System.Windows.Forms.TextBox();
 			this.vector3SettingsLabel = new System.Windows.Forms.Label();
-			this.vector3SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.vector3TypeTextBox = new System.Windows.Forms.TextBox();
 			this.vector4SettingsLabel = new System.Windows.Forms.Label();
-			this.vector4SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.vector4TypeTextBox = new System.Windows.Forms.TextBox();
 			this.doubleSettingsLabel = new System.Windows.Forms.Label();
-			this.doubleSettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.doubleTypeTextBox = new System.Windows.Forms.TextBox();
 			this.floatSettingsLabel = new System.Windows.Forms.Label();
-			this.floatSettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.floatTypeTextBox = new System.Windows.Forms.TextBox();
 			this.uint64SettingsLabel = new System.Windows.Forms.Label();
-			this.uint64SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.uint64TypeTextBox = new System.Windows.Forms.TextBox();
 			this.uint32SettingsLabel = new System.Windows.Forms.Label();
-			this.uint32SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.uint32TypeTextBox = new System.Windows.Forms.TextBox();
 			this.uint16SettingsLabel = new System.Windows.Forms.Label();
-			this.uint16SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.uint16TypeTextBox = new System.Windows.Forms.TextBox();
 			this.uint8SettingsLabel = new System.Windows.Forms.Label();
-			this.uint8SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.uint8TypeTextBox = new System.Windows.Forms.TextBox();
 			this.int64SettingsLabel = new System.Windows.Forms.Label();
-			this.int64SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.int64TypeTextBox = new System.Windows.Forms.TextBox();
 			this.int32SettingsLabel = new System.Windows.Forms.Label();
-			this.int32SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.int32TypeTextBox = new System.Windows.Forms.TextBox();
 			this.int16SettingsLabel = new System.Windows.Forms.Label();
-			this.int16SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.int16TypeTextBox = new System.Windows.Forms.TextBox();
 			this.int8SettingsLabel = new System.Windows.Forms.Label();
-			this.int8SettingsTextBox = new ReClassNET.UI.PropertyBindableTextBox();
+			this.int8TypeTextBox = new System.Windows.Forms.TextBox();
 			this.bannerBox = new ReClassNET.UI.BannerBox();
 			this.settingsTabControl.SuspendLayout();
 			this.generalSettingsTabPage.SuspendLayout();
@@ -638,46 +638,46 @@
 			// typeDefinitionsSettingsTabPage
 			// 
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.boolSettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.boolSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.boolTypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.label1);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.functionPtrSettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.functionPtrSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.functionPtrTypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf16TextSettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf16TextSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf16TextTypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf8TextSettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf8TextSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.utf8TextTypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x3SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x3SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x3TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x4SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x4SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix3x4TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix4x4SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix4x4SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.matrix4x4TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector2SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector2SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector2TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector3SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector3SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector3TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector4SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector4SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.vector4TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.doubleSettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.doubleSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.doubleTypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.floatSettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.floatSettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.floatTypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint64SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint64SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint64TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint32SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint32SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint32TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint16SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint16SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint16TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint8SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint8SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.uint8TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int64SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int64SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int64TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int32SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int32SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int32TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int16SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int16SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int16TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int8SettingsLabel);
-			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int8SettingsTextBox);
+			this.typeDefinitionsSettingsTabPage.Controls.Add(this.int8TypeTextBox);
 			this.typeDefinitionsSettingsTabPage.Location = new System.Drawing.Point(4, 22);
 			this.typeDefinitionsSettingsTabPage.Name = "typeDefinitionsSettingsTabPage";
 			this.typeDefinitionsSettingsTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -697,10 +697,10 @@
 			// 
 			// boolSettingsTextBox
 			// 
-			this.boolSettingsTextBox.Location = new System.Drawing.Point(346, 32);
-			this.boolSettingsTextBox.Name = "boolSettingsTextBox";
-			this.boolSettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.boolSettingsTextBox.TabIndex = 45;
+			this.boolTypeTextBox.Location = new System.Drawing.Point(346, 32);
+			this.boolTypeTextBox.Name = "boolTypeTextBox";
+			this.boolTypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.boolTypeTextBox.TabIndex = 45;
 			// 
 			// label1
 			// 
@@ -722,10 +722,10 @@
 			// 
 			// functionPtrSettingsTextBox
 			// 
-			this.functionPtrSettingsTextBox.Location = new System.Drawing.Point(346, 230);
-			this.functionPtrSettingsTextBox.Name = "functionPtrSettingsTextBox";
-			this.functionPtrSettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.functionPtrSettingsTextBox.TabIndex = 42;
+			this.functionPtrTypeTextBox.Location = new System.Drawing.Point(346, 230);
+			this.functionPtrTypeTextBox.Name = "functionPtrTypeTextBox";
+			this.functionPtrTypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.functionPtrTypeTextBox.TabIndex = 42;
 			// 
 			// utf16TextSettingsLabel
 			// 
@@ -738,10 +738,10 @@
 			// 
 			// utf16TextSettingsTextBox
 			// 
-			this.utf16TextSettingsTextBox.Location = new System.Drawing.Point(346, 208);
-			this.utf16TextSettingsTextBox.Name = "utf16TextSettingsTextBox";
-			this.utf16TextSettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.utf16TextSettingsTextBox.TabIndex = 38;
+			this.utf16TextTypeTextBox.Location = new System.Drawing.Point(346, 208);
+			this.utf16TextTypeTextBox.Name = "utf16TextTypeTextBox";
+			this.utf16TextTypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.utf16TextTypeTextBox.TabIndex = 38;
 			// 
 			// utf8TextSettingsLabel
 			// 
@@ -754,10 +754,10 @@
 			// 
 			// utf8TextSettingsTextBox
 			// 
-			this.utf8TextSettingsTextBox.Location = new System.Drawing.Point(346, 186);
-			this.utf8TextSettingsTextBox.Name = "utf8TextSettingsTextBox";
-			this.utf8TextSettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.utf8TextSettingsTextBox.TabIndex = 34;
+			this.utf8TextTypeTextBox.Location = new System.Drawing.Point(346, 186);
+			this.utf8TextTypeTextBox.Name = "utf8TextTypeTextBox";
+			this.utf8TextTypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.utf8TextTypeTextBox.TabIndex = 34;
 			// 
 			// matrix3x3SettingsLabel
 			// 
@@ -770,10 +770,10 @@
 			// 
 			// matrix3x3SettingsTextBox
 			// 
-			this.matrix3x3SettingsTextBox.Location = new System.Drawing.Point(346, 120);
-			this.matrix3x3SettingsTextBox.Name = "matrix3x3SettingsTextBox";
-			this.matrix3x3SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.matrix3x3SettingsTextBox.TabIndex = 32;
+			this.matrix3x3TypeTextBox.Location = new System.Drawing.Point(346, 120);
+			this.matrix3x3TypeTextBox.Name = "matrix3x3TypeTextBox";
+			this.matrix3x3TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.matrix3x3TypeTextBox.TabIndex = 32;
 			// 
 			// matrix3x4SettingsLabel
 			// 
@@ -786,10 +786,10 @@
 			// 
 			// matrix3x4SettingsTextBox
 			// 
-			this.matrix3x4SettingsTextBox.Location = new System.Drawing.Point(346, 142);
-			this.matrix3x4SettingsTextBox.Name = "matrix3x4SettingsTextBox";
-			this.matrix3x4SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.matrix3x4SettingsTextBox.TabIndex = 30;
+			this.matrix3x4TypeTextBox.Location = new System.Drawing.Point(346, 142);
+			this.matrix3x4TypeTextBox.Name = "matrix3x4TypeTextBox";
+			this.matrix3x4TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.matrix3x4TypeTextBox.TabIndex = 30;
 			// 
 			// matrix4x4SettingsLabel
 			// 
@@ -802,10 +802,10 @@
 			// 
 			// matrix4x4SettingsTextBox
 			// 
-			this.matrix4x4SettingsTextBox.Location = new System.Drawing.Point(346, 164);
-			this.matrix4x4SettingsTextBox.Name = "matrix4x4SettingsTextBox";
-			this.matrix4x4SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.matrix4x4SettingsTextBox.TabIndex = 28;
+			this.matrix4x4TypeTextBox.Location = new System.Drawing.Point(346, 164);
+			this.matrix4x4TypeTextBox.Name = "matrix4x4TypeTextBox";
+			this.matrix4x4TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.matrix4x4TypeTextBox.TabIndex = 28;
 			// 
 			// vector2SettingsLabel
 			// 
@@ -818,10 +818,10 @@
 			// 
 			// vector2SettingsTextBox
 			// 
-			this.vector2SettingsTextBox.Location = new System.Drawing.Point(346, 54);
-			this.vector2SettingsTextBox.Name = "vector2SettingsTextBox";
-			this.vector2SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.vector2SettingsTextBox.TabIndex = 26;
+			this.vector2TypeTextBox.Location = new System.Drawing.Point(346, 54);
+			this.vector2TypeTextBox.Name = "vector2TypeTextBox";
+			this.vector2TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.vector2TypeTextBox.TabIndex = 26;
 			// 
 			// vector3SettingsLabel
 			// 
@@ -834,10 +834,10 @@
 			// 
 			// vector3SettingsTextBox
 			// 
-			this.vector3SettingsTextBox.Location = new System.Drawing.Point(346, 76);
-			this.vector3SettingsTextBox.Name = "vector3SettingsTextBox";
-			this.vector3SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.vector3SettingsTextBox.TabIndex = 24;
+			this.vector3TypeTextBox.Location = new System.Drawing.Point(346, 76);
+			this.vector3TypeTextBox.Name = "vector3TypeTextBox";
+			this.vector3TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.vector3TypeTextBox.TabIndex = 24;
 			// 
 			// vector4SettingsLabel
 			// 
@@ -850,10 +850,10 @@
 			// 
 			// vector4SettingsTextBox
 			// 
-			this.vector4SettingsTextBox.Location = new System.Drawing.Point(346, 98);
-			this.vector4SettingsTextBox.Name = "vector4SettingsTextBox";
-			this.vector4SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.vector4SettingsTextBox.TabIndex = 22;
+			this.vector4TypeTextBox.Location = new System.Drawing.Point(346, 98);
+			this.vector4TypeTextBox.Name = "vector4TypeTextBox";
+			this.vector4TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.vector4TypeTextBox.TabIndex = 22;
 			// 
 			// doubleSettingsLabel
 			// 
@@ -866,10 +866,10 @@
 			// 
 			// doubleSettingsTextBox
 			// 
-			this.doubleSettingsTextBox.Location = new System.Drawing.Point(98, 230);
-			this.doubleSettingsTextBox.Name = "doubleSettingsTextBox";
-			this.doubleSettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.doubleSettingsTextBox.TabIndex = 20;
+			this.doubleTypeTextBox.Location = new System.Drawing.Point(98, 230);
+			this.doubleTypeTextBox.Name = "doubleTypeTextBox";
+			this.doubleTypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.doubleTypeTextBox.TabIndex = 20;
 			// 
 			// floatSettingsLabel
 			// 
@@ -882,10 +882,10 @@
 			// 
 			// floatSettingsTextBox
 			// 
-			this.floatSettingsTextBox.Location = new System.Drawing.Point(98, 208);
-			this.floatSettingsTextBox.Name = "floatSettingsTextBox";
-			this.floatSettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.floatSettingsTextBox.TabIndex = 18;
+			this.floatTypeTextBox.Location = new System.Drawing.Point(98, 208);
+			this.floatTypeTextBox.Name = "floatTypeTextBox";
+			this.floatTypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.floatTypeTextBox.TabIndex = 18;
 			// 
 			// uint64SettingsLabel
 			// 
@@ -898,10 +898,10 @@
 			// 
 			// uint64SettingsTextBox
 			// 
-			this.uint64SettingsTextBox.Location = new System.Drawing.Point(98, 186);
-			this.uint64SettingsTextBox.Name = "uint64SettingsTextBox";
-			this.uint64SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.uint64SettingsTextBox.TabIndex = 16;
+			this.uint64TypeTextBox.Location = new System.Drawing.Point(98, 186);
+			this.uint64TypeTextBox.Name = "uint64TypeTextBox";
+			this.uint64TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.uint64TypeTextBox.TabIndex = 16;
 			// 
 			// uint32SettingsLabel
 			// 
@@ -914,10 +914,10 @@
 			// 
 			// uint32SettingsTextBox
 			// 
-			this.uint32SettingsTextBox.Location = new System.Drawing.Point(98, 164);
-			this.uint32SettingsTextBox.Name = "uint32SettingsTextBox";
-			this.uint32SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.uint32SettingsTextBox.TabIndex = 14;
+			this.uint32TypeTextBox.Location = new System.Drawing.Point(98, 164);
+			this.uint32TypeTextBox.Name = "uint32TypeTextBox";
+			this.uint32TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.uint32TypeTextBox.TabIndex = 14;
 			// 
 			// uint16SettingsLabel
 			// 
@@ -930,10 +930,10 @@
 			// 
 			// uint16SettingsTextBox
 			// 
-			this.uint16SettingsTextBox.Location = new System.Drawing.Point(98, 142);
-			this.uint16SettingsTextBox.Name = "uint16SettingsTextBox";
-			this.uint16SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.uint16SettingsTextBox.TabIndex = 12;
+			this.uint16TypeTextBox.Location = new System.Drawing.Point(98, 142);
+			this.uint16TypeTextBox.Name = "uint16TypeTextBox";
+			this.uint16TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.uint16TypeTextBox.TabIndex = 12;
 			// 
 			// uint8SettingsLabel
 			// 
@@ -946,10 +946,10 @@
 			// 
 			// uint8SettingsTextBox
 			// 
-			this.uint8SettingsTextBox.Location = new System.Drawing.Point(98, 120);
-			this.uint8SettingsTextBox.Name = "uint8SettingsTextBox";
-			this.uint8SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.uint8SettingsTextBox.TabIndex = 10;
+			this.uint8TypeTextBox.Location = new System.Drawing.Point(98, 120);
+			this.uint8TypeTextBox.Name = "uint8TypeTextBox";
+			this.uint8TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.uint8TypeTextBox.TabIndex = 10;
 			// 
 			// int64SettingsLabel
 			// 
@@ -962,10 +962,10 @@
 			// 
 			// int64SettingsTextBox
 			// 
-			this.int64SettingsTextBox.Location = new System.Drawing.Point(98, 98);
-			this.int64SettingsTextBox.Name = "int64SettingsTextBox";
-			this.int64SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.int64SettingsTextBox.TabIndex = 8;
+			this.int64TypeTextBox.Location = new System.Drawing.Point(98, 98);
+			this.int64TypeTextBox.Name = "int64TypeTextBox";
+			this.int64TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.int64TypeTextBox.TabIndex = 8;
 			// 
 			// int32SettingsLabel
 			// 
@@ -978,10 +978,10 @@
 			// 
 			// int32SettingsTextBox
 			// 
-			this.int32SettingsTextBox.Location = new System.Drawing.Point(98, 76);
-			this.int32SettingsTextBox.Name = "int32SettingsTextBox";
-			this.int32SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.int32SettingsTextBox.TabIndex = 6;
+			this.int32TypeTextBox.Location = new System.Drawing.Point(98, 76);
+			this.int32TypeTextBox.Name = "int32TypeTextBox";
+			this.int32TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.int32TypeTextBox.TabIndex = 6;
 			// 
 			// int16SettingsLabel
 			// 
@@ -994,10 +994,10 @@
 			// 
 			// int16SettingsTextBox
 			// 
-			this.int16SettingsTextBox.Location = new System.Drawing.Point(98, 54);
-			this.int16SettingsTextBox.Name = "int16SettingsTextBox";
-			this.int16SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.int16SettingsTextBox.TabIndex = 4;
+			this.int16TypeTextBox.Location = new System.Drawing.Point(98, 54);
+			this.int16TypeTextBox.Name = "int16TypeTextBox";
+			this.int16TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.int16TypeTextBox.TabIndex = 4;
 			// 
 			// int8SettingsLabel
 			// 
@@ -1010,10 +1010,10 @@
 			// 
 			// int8SettingsTextBox
 			// 
-			this.int8SettingsTextBox.Location = new System.Drawing.Point(98, 32);
-			this.int8SettingsTextBox.Name = "int8SettingsTextBox";
-			this.int8SettingsTextBox.Size = new System.Drawing.Size(120, 20);
-			this.int8SettingsTextBox.TabIndex = 2;
+			this.int8TypeTextBox.Location = new System.Drawing.Point(98, 32);
+			this.int8TypeTextBox.Name = "int8TypeTextBox";
+			this.int8TypeTextBox.Size = new System.Drawing.Size(120, 20);
+			this.int8TypeTextBox.TabIndex = 2;
 			// 
 			// bannerBox
 			// 
@@ -1064,20 +1064,20 @@
 		private System.Windows.Forms.TabPage generalSettingsTabPage;
 		private System.Windows.Forms.TabPage colorsSettingTabPage;
 		private System.Windows.Forms.TabPage typeDefinitionsSettingsTabPage;
-		private ReClassNET.UI.PropertyBindableCheckBox stayOnTopCheckBox;
+		private System.Windows.Forms.CheckBox stayOnTopCheckBox;
 		private System.Windows.Forms.GroupBox displayGroupBox;
-		private ReClassNET.UI.PropertyBindableCheckBox showNodeAddressCheckBox;
-		private ReClassNET.UI.PropertyBindableCheckBox showTextCheckBox;
-		private ReClassNET.UI.PropertyBindableCheckBox showNodeOffsetCheckBox;
-		private ReClassNET.UI.PropertyBindableCheckBox highlightChangedValuesCheckBox;
+		private System.Windows.Forms.CheckBox showNodeAddressCheckBox;
+		private System.Windows.Forms.CheckBox showTextCheckBox;
+		private System.Windows.Forms.CheckBox showNodeOffsetCheckBox;
+		private System.Windows.Forms.CheckBox highlightChangedValuesCheckBox;
 		private System.Windows.Forms.GroupBox commentsGroupBox;
-		private ReClassNET.UI.PropertyBindableCheckBox showRttiCheckBox;
-		private ReClassNET.UI.PropertyBindableCheckBox showPointerCheckBox;
-		private ReClassNET.UI.PropertyBindableCheckBox showIntegerCheckBox;
-		private ReClassNET.UI.PropertyBindableCheckBox showFloatCheckBox;
-		private ReClassNET.UI.PropertyBindableCheckBox showPluginInfoCheckBox;
-		private ReClassNET.UI.PropertyBindableCheckBox showStringCheckBox;
-		private ReClassNET.UI.PropertyBindableCheckBox showSymbolsCheckBox;
+		private System.Windows.Forms.CheckBox showRttiCheckBox;
+		private System.Windows.Forms.CheckBox showPointerCheckBox;
+		private System.Windows.Forms.CheckBox showIntegerCheckBox;
+		private System.Windows.Forms.CheckBox showFloatCheckBox;
+		private System.Windows.Forms.CheckBox showPluginInfoCheckBox;
+		private System.Windows.Forms.CheckBox showStringCheckBox;
+		private System.Windows.Forms.CheckBox showSymbolsCheckBox;
 		private UI.PropertyBindableColorBox backgroundColorBox;
 		private System.Windows.Forms.Label nodeSelectedLabel;
 		private UI.PropertyBindableColorBox nodeSelectedColorBox;
@@ -1107,48 +1107,48 @@
 		private System.Windows.Forms.Label nodePluginLabel;
 		private UI.PropertyBindableColorBox nodePluginColorBox;
 		private System.Windows.Forms.Label floatSettingsLabel;
-		private UI.PropertyBindableTextBox floatSettingsTextBox;
+		private System.Windows.Forms.TextBox floatTypeTextBox;
 		private System.Windows.Forms.Label uint64SettingsLabel;
-		private UI.PropertyBindableTextBox uint64SettingsTextBox;
+		private System.Windows.Forms.TextBox uint64TypeTextBox;
 		private System.Windows.Forms.Label uint32SettingsLabel;
-		private UI.PropertyBindableTextBox uint32SettingsTextBox;
+		private System.Windows.Forms.TextBox uint32TypeTextBox;
 		private System.Windows.Forms.Label uint16SettingsLabel;
-		private UI.PropertyBindableTextBox uint16SettingsTextBox;
+		private System.Windows.Forms.TextBox uint16TypeTextBox;
 		private System.Windows.Forms.Label uint8SettingsLabel;
-		private UI.PropertyBindableTextBox uint8SettingsTextBox;
+		private System.Windows.Forms.TextBox uint8TypeTextBox;
 		private System.Windows.Forms.Label int64SettingsLabel;
-		private UI.PropertyBindableTextBox int64SettingsTextBox;
+		private System.Windows.Forms.TextBox int64TypeTextBox;
 		private System.Windows.Forms.Label int32SettingsLabel;
-		private UI.PropertyBindableTextBox int32SettingsTextBox;
+		private System.Windows.Forms.TextBox int32TypeTextBox;
 		private System.Windows.Forms.Label int16SettingsLabel;
-		private UI.PropertyBindableTextBox int16SettingsTextBox;
+		private System.Windows.Forms.TextBox int16TypeTextBox;
 		private System.Windows.Forms.Label int8SettingsLabel;
-		private UI.PropertyBindableTextBox int8SettingsTextBox;
+		private System.Windows.Forms.TextBox int8TypeTextBox;
 		private System.Windows.Forms.Label functionPtrSettingsLabel;
-		private UI.PropertyBindableTextBox functionPtrSettingsTextBox;
+		private System.Windows.Forms.TextBox functionPtrTypeTextBox;
 		private System.Windows.Forms.Label utf16TextSettingsLabel;
-		private UI.PropertyBindableTextBox utf16TextSettingsTextBox;
+		private System.Windows.Forms.TextBox utf16TextTypeTextBox;
 		private System.Windows.Forms.Label utf8TextSettingsLabel;
-		private UI.PropertyBindableTextBox utf8TextSettingsTextBox;
+		private System.Windows.Forms.TextBox utf8TextTypeTextBox;
 		private System.Windows.Forms.Label matrix3x3SettingsLabel;
-		private UI.PropertyBindableTextBox matrix3x3SettingsTextBox;
+		private System.Windows.Forms.TextBox matrix3x3TypeTextBox;
 		private System.Windows.Forms.Label matrix3x4SettingsLabel;
-		private UI.PropertyBindableTextBox matrix3x4SettingsTextBox;
+		private System.Windows.Forms.TextBox matrix3x4TypeTextBox;
 		private System.Windows.Forms.Label matrix4x4SettingsLabel;
-		private UI.PropertyBindableTextBox matrix4x4SettingsTextBox;
+		private System.Windows.Forms.TextBox matrix4x4TypeTextBox;
 		private System.Windows.Forms.Label vector2SettingsLabel;
-		private UI.PropertyBindableTextBox vector2SettingsTextBox;
+		private System.Windows.Forms.TextBox vector2TypeTextBox;
 		private System.Windows.Forms.Label vector3SettingsLabel;
-		private UI.PropertyBindableTextBox vector3SettingsTextBox;
+		private System.Windows.Forms.TextBox vector3TypeTextBox;
 		private System.Windows.Forms.Label vector4SettingsLabel;
-		private UI.PropertyBindableTextBox vector4SettingsTextBox;
+		private System.Windows.Forms.TextBox vector4TypeTextBox;
 		private System.Windows.Forms.Label doubleSettingsLabel;
-		private UI.PropertyBindableTextBox doubleSettingsTextBox;
+		private System.Windows.Forms.TextBox doubleTypeTextBox;
 		private System.Windows.Forms.GroupBox nodeColorGroupBox;
 		private System.Windows.Forms.Label label1;
 		private UI.BannerBox bannerBox;
 		private System.Windows.Forms.Label boolSettingsLabel;
-		private UI.PropertyBindableTextBox boolSettingsTextBox;
+		private System.Windows.Forms.TextBox boolTypeTextBox;
 		private System.Windows.Forms.GroupBox fileAssociationGroupBox;
 		private System.Windows.Forms.Button removeAssociationButton;
 		private System.Windows.Forms.Button createAssociationButton;

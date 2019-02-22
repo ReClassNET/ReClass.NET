@@ -38,7 +38,7 @@
 			this.valueTextBox.Name = "valueTextBox";
 			this.valueTextBox.Size = new System.Drawing.Size(86, 20);
 			this.valueTextBox.TabIndex = 0;
-			this.valueTextBox.TextChanged += new System.EventHandler(this.valueTextBox_TextChanged);
+			this.valueTextBox.TextChanged += new System.EventHandler(this.OnTextChanged);
 			// 
 			// colorPanel
 			// 
@@ -46,8 +46,8 @@
 			this.colorPanel.Name = "colorPanel";
 			this.colorPanel.Size = new System.Drawing.Size(30, 20);
 			this.colorPanel.TabIndex = 1;
-			this.colorPanel.Click += new System.EventHandler(this.colorPanel_Click);
-			this.colorPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.colorPanel_Paint);
+			this.colorPanel.Click += new System.EventHandler(this.OnPanelClick);
+			this.colorPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.OnPanelPaint);
 			// 
 			// ColorBox
 			// 

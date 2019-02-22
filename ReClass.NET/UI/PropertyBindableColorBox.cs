@@ -1,21 +1,21 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Drawing;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace ReClassNET.UI
 {
-	public partial class PropertyBindableColorBox : UserControl, IPropertyBindable
+	[DefaultEvent(nameof(ColorChanged))]
+	[DefaultBindingProperty(nameof(Color))]
+	public partial class PropertyBindableColorBox : UserControl
 	{
 		private const int DefaultWidth = 123;
 		private const int DefaultHeight = 20;
 
-		private string propertyName;
-		private object source;
-		private PropertyInfo property;
-
 		private bool updateTextBox = true;
+
+		public event EventHandler ColorChanged;
 
 		private Color color;
 		public Color Color
@@ -35,45 +35,19 @@ namespace ReClassNET.UI
 						valueTextBox.Text = ColorTranslator.ToHtml(value);
 					}
 
-					WriteSetting();
+					OnColorChanged(EventArgs.Empty);
 				}
 
 				updateTextBox = true;
 			}
 		}
 
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public string PropertyName
+		protected virtual void OnColorChanged(EventArgs e)
 		{
-			get => propertyName;
-			set
-			{
-				propertyName = value;
-				property = null;
+			Contract.Requires(e != null);
 
-				ReadSetting();
-			}
-		}
-
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public object Source
-		{
-			get => source;
-			set
-			{
-				source = value;
-				property = null;
-
-				ReadSetting();
-			}
-		}
-
-		private void TryGetPropertyInfo()
-		{
-			if (property == null && source != null && !string.IsNullOrEmpty(propertyName))
-			{
-				property = source?.GetType().GetProperty(propertyName);
-			}
+			var eh = ColorChanged;
+			eh?.Invoke(this, e);
 		}
 
 		public PropertyBindableColorBox()
@@ -86,31 +60,7 @@ namespace ReClassNET.UI
 			base.SetBoundsCore(x, y, DefaultWidth, DefaultHeight, specified);
 		}
 
-		private void ReadSetting()
-		{
-			TryGetPropertyInfo();
-
-			if (property != null && source != null)
-			{
-				var value = property.GetValue(source);
-				if (value is Color newColor)
-				{
-					Color = newColor;
-				}
-			}
-		}
-
-		private void WriteSetting()
-		{
-			TryGetPropertyInfo();
-
-			if (property != null && source != null)
-			{
-				property.SetValue(source, Color);
-			}
-		}
-
-		private void valueTextBox_TextChanged(object sender, EventArgs e)
+		private void OnTextChanged(object sender, EventArgs e)
 		{
 			try
 			{
@@ -131,12 +81,14 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private void colorPanel_Click(object sender, EventArgs e)
+		private void OnPanelClick(object sender, EventArgs e)
 		{
-			using (var cd = new ColorDialog())
+			using (var cd = new ColorDialog
 			{
-				cd.Color = Color;
-
+				FullOpen = true,
+				Color = Color
+			})
+			{
 				if (cd.ShowDialog() == DialogResult.OK)
 				{
 					Color = cd.Color;
@@ -144,7 +96,7 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private void colorPanel_Paint(object sender, PaintEventArgs e)
+		private void OnPanelPaint(object sender, PaintEventArgs e)
 		{
 			var rect = colorPanel.ClientRectangle;
 			rect.Width--;
