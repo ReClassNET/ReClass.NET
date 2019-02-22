@@ -67,11 +67,6 @@ namespace ReClassNET
 
 		public Color PluginColor { get; set; } = Color.FromArgb(255, 0, 255);
 
-		private static readonly Color[] highlightColors = {
-			Color.Aqua, Color.Aquamarine, Color.Blue, Color.BlueViolet, Color.Chartreuse, Color.Crimson, Color.LawnGreen, Color.Magenta
-		};
-		public Color HighlightColor => highlightColors[Program.GlobalRandom.Next(highlightColors.Length)];
-
 		// Type Definitions
 
 		public string TypePadding { get; set; } = "char";

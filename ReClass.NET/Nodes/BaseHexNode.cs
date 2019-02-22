@@ -12,7 +12,13 @@ namespace ReClassNET.Nodes
 {
 	public abstract class BaseHexNode : BaseNode
 	{
-		public static readonly TimeSpan HightlightDuration = TimeSpan.FromSeconds(1);
+		private static readonly Random highlightRandom = new Random();
+		private static readonly Color[] highlightColors = {
+			Color.Aqua, Color.Aquamarine, Color.Blue, Color.BlueViolet, Color.Chartreuse, Color.Crimson, Color.LawnGreen, Color.Magenta
+		};
+		private static Color GetRandomHighlightColor() => highlightColors[highlightRandom.Next(highlightColors.Length)];
+
+		private static readonly TimeSpan hightlightDuration = TimeSpan.FromSeconds(1);
 
 		private static readonly Dictionary<IntPtr, ValueTypeWrapper<DateTime>> highlightTimer = new Dictionary<IntPtr, ValueTypeWrapper<DateTime>>();
 
@@ -59,19 +65,19 @@ namespace ReClassNET.Nodes
 				{
 					if (until.Value >= view.CurrentTime)
 					{
-						color = view.Settings.HighlightColor;
+						color = GetRandomHighlightColor();
 
 						if (view.Memory.HasChanged(Offset, MemorySize))
 						{
-							until.Value = view.CurrentTime.Add(HightlightDuration);
+							until.Value = view.CurrentTime.Add(hightlightDuration);
 						}
 					}
 				}
 				else if (view.Memory.HasChanged(Offset, MemorySize))
 				{
-					highlightTimer.Add(address, view.CurrentTime.Add(HightlightDuration));
+					highlightTimer.Add(address, view.CurrentTime.Add(hightlightDuration));
 
-					color = view.Settings.HighlightColor;
+					color = GetRandomHighlightColor();
 				}
 			}
 
