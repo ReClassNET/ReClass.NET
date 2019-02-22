@@ -85,6 +85,11 @@ namespace ReClassNET.Nodes
 					GetParentContainer()?.ChildHasChanged(this);
 				}
 			}
+			else if (spot.Id == 1)
+			{
+				var data = Encoding.GetBytes(spot.Text);
+				spot.Memory.Process.WriteRemoteMemory(spot.Address, data);
+			}
 		}
 
 		public string ReadValueFromMemory(MemoryBuffer memory)
