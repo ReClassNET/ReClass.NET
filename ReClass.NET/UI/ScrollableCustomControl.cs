@@ -83,6 +83,11 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(scrollProperties != null);
 
+			if (!scrollProperties.Enabled)
+			{
+				return;
+			}
+
 			if (newValue < scrollProperties.Minimum)
 			{
 				newValue = scrollProperties.Minimum;
