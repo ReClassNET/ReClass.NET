@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Nodes;
@@ -180,6 +181,10 @@ namespace ReClassNET.UI
 		[DefaultValue(false)]
 		public bool EnableClassHierarchyView { get; set; }
 
+		public ContextMenuStrip ProjectTreeNodeContextMenuStrip { get; set; }
+
+		public ContextMenuStrip ClassTreeNodeContextMenuStrip { get; set; }
+
 		public ClassNodeView()
 		{
 			Contract.Ensures(root != null);
@@ -225,34 +230,39 @@ namespace ReClassNET.UI
 
 		private void classesTreeView_MouseUp(object sender, MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Right)
+			if (e.Button != MouseButtons.Right)
 			{
-				var node = classesTreeView.GetNodeAt(e.X, e.Y);
+				return;
+			}
 
-				if (node != null)
-				{
-					if (node != root)
-					{
-						classesTreeView.SelectedNode = node;
+			var node = classesTreeView.GetNodeAt(e.X, e.Y);
+			if (node == null)
+			{
+				return;
+			}
 
-						classContextMenuStrip.Show(classesTreeView, e.Location);
-					}
-					else
-					{
-						rootContextMenuStrip.Show(classesTreeView, e.Location);
-					}
-				}
+			if (node is ClassTreeNode)
+			{
+				classesTreeView.SelectedNode = node;
+
+				var cms = ClassTreeNodeContextMenuStrip;
+				cms?.Show(classesTreeView, e.Location);
+			}
+			else
+			{
+				var cms = ProjectTreeNodeContextMenuStrip;
+				cms?.Show(classesTreeView, e.Location);
 			}
 		}
 
 		private void removeUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			project.RemoveUnusedClasses();
+			//project.RemoveUnusedClasses();
 		}
 
 		private void deleteClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (classesTreeView.SelectedNode is ClassTreeNode treeNode)
+			/*if (classesTreeView.SelectedNode is ClassTreeNode treeNode)
 			{
 				try
 				{
@@ -262,13 +272,13 @@ namespace ReClassNET.UI
 				{
 					Program.Logger.Log(ex);
 				}
-			}
+			}*/
 		}
 
 		private void renameClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var treeNode = classesTreeView.SelectedNode;
-			treeNode?.BeginEdit();
+			/*var treeNode = classesTreeView.SelectedNode;
+			treeNode?.BeginEdit();*/
 		}
 
 		private void classesTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
@@ -291,7 +301,7 @@ namespace ReClassNET.UI
 
 		private void enableHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			enableHierarchyViewToolStripMenuItem.Checked = !enableHierarchyViewToolStripMenuItem.Checked;
+			/*enableHierarchyViewToolStripMenuItem.Checked = !enableHierarchyViewToolStripMenuItem.Checked;
 
 			expandAllClassesToolStripMenuItem.Enabled =
 				collapseAllClassesToolStripMenuItem.Enabled = enableHierarchyViewToolStripMenuItem.Checked;
@@ -308,42 +318,42 @@ namespace ReClassNET.UI
 
 			classesTreeView.Sort();
 
-			classesTreeView.EndUpdate();
+			classesTreeView.EndUpdate();*/
 		}
 
 		private void autoExpandHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			autoExpandHierarchyViewToolStripMenuItem.Checked = !autoExpandHierarchyViewToolStripMenuItem.Checked;
+			/*autoExpandHierarchyViewToolStripMenuItem.Checked = !autoExpandHierarchyViewToolStripMenuItem.Checked;
 
 			AutoExpandClassNodes = autoExpandHierarchyViewToolStripMenuItem.Checked;
 
 			if (AutoExpandClassNodes)
 			{
 				root.ExpandAll();
-			}
+			}*/
 		}
 
 		private void expandAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			root.ExpandAll();
+			//root.ExpandAll();
 		}
 
 		private void collapseAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			root.Nodes.Cast<TreeNode>().ForEach(n => n.Collapse());
+			//root.Nodes.Cast<TreeNode>().ForEach(n => n.Collapse());
 		}
 
 		private void addNewClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			LinkedWindowFeatures.CreateDefaultClass();
+			//LinkedWindowFeatures.CreateDefaultClass();
 		}
 
 		private void showCodeOfClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (classesTreeView.SelectedNode is ClassTreeNode node)
+			/*if (classesTreeView.SelectedNode is ClassTreeNode node)
 			{
 				LinkedWindowFeatures.ShowCodeGeneratorForm(node.ClassNode.Yield(), Project.TypeMapping);
-			}
+			}*/
 		}
 
 		#endregion
