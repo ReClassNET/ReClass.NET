@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -119,41 +119,6 @@ namespace ReClassNET.UI
 
 		public delegate void SelectionChangedEvent(object sender, ClassNode node);
 		public event SelectionChangedEvent SelectionChanged;
-
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public ReClassNetProject Project
-		{
-			get => project;
-			set
-			{
-				Contract.Requires(value != null);
-
-				if (project != value)
-				{
-					classesTreeView.BeginUpdate();
-
-					root.Nodes.Clear();
-
-					if (project != null)
-					{
-						project.ClassAdded -= AddClass;
-						project.ClassRemoved -= RemoveClass;
-					}
-
-					project = value;
-
-					project.ClassAdded += AddClass;
-					project.ClassRemoved += RemoveClass;
-
-					project.Classes.ForEach(AddClassInternal);
-
-					classesTreeView.Sort();
-
-					classesTreeView.EndUpdate();
-				}
-			}
-		}
 
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
