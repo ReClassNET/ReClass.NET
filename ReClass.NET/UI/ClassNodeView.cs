@@ -132,7 +132,7 @@ namespace ReClassNET.UI
 					selectedClass = value;
 					if (selectedClass != null)
 					{
-						classesTreeView.SelectedNode = root.Nodes.Cast<ClassTreeNode>().FirstOrDefault(n => n.ClassNode == selectedClass);
+						classesTreeView.SelectedNode = FindMainClassTreeNode(value);
 					}
 
 					SelectionChanged?.Invoke(this, selectedClass);
