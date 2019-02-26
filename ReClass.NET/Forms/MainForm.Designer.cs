@@ -232,6 +232,7 @@
 			this.deleteClassToolStripMenuItem.Name = "deleteClassToolStripMenuItem";
 			this.deleteClassToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
 			this.deleteClassToolStripMenuItem.Text = "Delete class";
+			this.deleteClassToolStripMenuItem.Click += new System.EventHandler(this.deleteClassToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator19
 			// 
@@ -244,6 +245,7 @@
 			this.removeUnusedClassesToolStripMenuItem.Name = "removeUnusedClassesToolStripMenuItem";
 			this.removeUnusedClassesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
 			this.removeUnusedClassesToolStripMenuItem.Text = "Remove unused classes";
+			this.removeUnusedClassesToolStripMenuItem.Click += new System.EventHandler(this.removeUnusedClassesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator20
 			// 
@@ -269,19 +271,21 @@
             this.toolStripSeparator22,
             this.addNewClassToolStripMenuItem});
 			this.projectTreeNodeContextMenuStrip.Name = "rootContextMenuStrip";
-			this.projectTreeNodeContextMenuStrip.Size = new System.Drawing.Size(221, 148);
+			this.projectTreeNodeContextMenuStrip.Size = new System.Drawing.Size(221, 126);
 			// 
 			// enableHierarchyViewToolStripMenuItem
 			// 
 			this.enableHierarchyViewToolStripMenuItem.Name = "enableHierarchyViewToolStripMenuItem";
 			this.enableHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
 			this.enableHierarchyViewToolStripMenuItem.Text = "Enable hierarchy view";
+			this.enableHierarchyViewToolStripMenuItem.Click += new System.EventHandler(this.enableHierarchyViewToolStripMenuItem_Click);
 			// 
 			// autoExpandHierarchyViewToolStripMenuItem
 			// 
 			this.autoExpandHierarchyViewToolStripMenuItem.Name = "autoExpandHierarchyViewToolStripMenuItem";
 			this.autoExpandHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
 			this.autoExpandHierarchyViewToolStripMenuItem.Text = "Auto expand hierarchy view";
+			this.autoExpandHierarchyViewToolStripMenuItem.Click += new System.EventHandler(this.autoExpandHierarchyViewToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator21
 			// 
@@ -295,6 +299,7 @@
 			this.expandAllClassesToolStripMenuItem.Name = "expandAllClassesToolStripMenuItem";
 			this.expandAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
 			this.expandAllClassesToolStripMenuItem.Text = "Expand all classes";
+			this.expandAllClassesToolStripMenuItem.Click += new System.EventHandler(this.expandAllClassesToolStripMenuItem_Click);
 			// 
 			// collapseAllClassesToolStripMenuItem
 			// 
@@ -303,6 +308,7 @@
 			this.collapseAllClassesToolStripMenuItem.Name = "collapseAllClassesToolStripMenuItem";
 			this.collapseAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
 			this.collapseAllClassesToolStripMenuItem.Text = "Collapse all classes";
+			this.collapseAllClassesToolStripMenuItem.Click += new System.EventHandler(this.collapseAllClassesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator22
 			// 

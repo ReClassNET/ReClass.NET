@@ -113,9 +113,10 @@ namespace ReClassNET.UI
 
 		private readonly TreeNode root;
 
-		private ReClassNetProject project;
-
 		private ClassNode selectedClass;
+
+		private bool autoExpandClassNodes;
+		private bool enableClassHierarchyView;
 
 		public delegate void SelectionChangedEvent(object sender, ClassNode node);
 		public event SelectionChangedEvent SelectionChanged;
@@ -141,10 +142,41 @@ namespace ReClassNET.UI
 		}
 
 		[DefaultValue(false)]
-		public bool AutoExpandClassNodes { get; set; }
+		public bool AutoExpandClassNodes
+		{
+			get => autoExpandClassNodes;
+			set
+			{
+				if (autoExpandClassNodes != value)
+				{
+					autoExpandClassNodes = value;
+
+					if (autoExpandClassNodes)
+					{
+						ExpandAllClassNodes();
+					}
+				}
+			}
+		}
 
 		[DefaultValue(false)]
-		public bool EnableClassHierarchyView { get; set; }
+		public bool EnableClassHierarchyView
+		{
+			get => enableClassHierarchyView;
+			set
+			{
+				if (enableClassHierarchyView != value)
+				{
+					enableClassHierarchyView = value;
+
+					var classes = root.Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode).ToList();
+
+					root.Nodes.Clear();
+
+					AddClasses(classes);
+				}
+			}
+		}
 
 		public ContextMenuStrip ProjectTreeNodeContextMenuStrip { get; set; }
 
@@ -220,26 +252,6 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private void removeUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			//project.RemoveUnusedClasses();
-		}
-
-		private void deleteClassToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			/*if (classesTreeView.SelectedNode is ClassTreeNode treeNode)
-			{
-				try
-				{
-					project.Remove(treeNode.ClassNode);
-				}
-				catch (ClassReferencedException ex)
-				{
-					Program.Logger.Log(ex);
-				}
-			}*/
-		}
-
 		private void renameClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			/*var treeNode = classesTreeView.SelectedNode;
@@ -264,51 +276,20 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private void enableHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			/*enableHierarchyViewToolStripMenuItem.Checked = !enableHierarchyViewToolStripMenuItem.Checked;
-
-			expandAllClassesToolStripMenuItem.Enabled =
-				collapseAllClassesToolStripMenuItem.Enabled = enableHierarchyViewToolStripMenuItem.Checked;
-
-			EnableClassHierarchyView = enableHierarchyViewToolStripMenuItem.Checked;
-
-			var classes = root.Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode).ToList();
-
-			classesTreeView.BeginUpdate();
-
-			root.Nodes.Clear();
-
-			classes.ForEach(AddClassInternal);
-
-			classesTreeView.Sort();
-
-			classesTreeView.EndUpdate();*/
-		}
-
-		private void autoExpandHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			/*autoExpandHierarchyViewToolStripMenuItem.Checked = !autoExpandHierarchyViewToolStripMenuItem.Checked;
-
-			AutoExpandClassNodes = autoExpandHierarchyViewToolStripMenuItem.Checked;
-
-			if (AutoExpandClassNodes)
-			{
-				root.ExpandAll();
-			}*/
-		}
-
-		private void expandAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			//root.ExpandAll();
-		}
-
-		private void collapseAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			//root.Nodes.Cast<TreeNode>().ForEach(n => n.Collapse());
-		}
-
 		#endregion
+
+		public void ExpandAllClassNodes()
+		{
+			root.ExpandAll();
+		}
+
+		public void CollapseAllClassNodes()
+		{
+			foreach (var tn in root.Nodes.Cast<TreeNode>())
+			{
+				tn.Collapse();
+			}
+		}
 
 		public void Clear()
 		{
@@ -340,6 +321,19 @@ namespace ReClassNET.UI
 			classesTreeView.EndUpdate();
 		}
 
+		/// <summary>
+		/// Adds a new <see cref="ClassTreeNode"/> to the tree.
+		/// </summary>
+		/// <param name="node">The class to add.</param>
+		private void AddClassInternal(ClassNode node)
+		{
+			Contract.Requires(node != null);
+
+			root.Nodes.Add(new ClassTreeNode(node, this));
+
+			root.Expand();
+		}
+
 		/// <summary>Removes the class from the view.</summary>
 		/// <param name="node">The class to remove.</param>
 		public void RemoveClass(ClassNode node)
@@ -360,19 +354,6 @@ namespace ReClassNET.UI
 					SelectedClass = null;
 				}
 			}
-		}
-
-		/// <summary>
-		/// Adds a new <see cref="ClassTreeNode"/> to the tree.
-		/// </summary>
-		/// <param name="node">The class to add.</param>
-		private void AddClassInternal(ClassNode node)
-		{
-			Contract.Requires(node != null);
-
-			root.Nodes.Add(new ClassTreeNode(node, this));
-
-			root.Expand();
 		}
 
 		/// <summary>Searches for the <see cref="ClassTreeNode"/> which represents the class.</summary>

@@ -866,5 +866,58 @@ namespace ReClassNET.Forms
 
 			LinkedWindowFeatures.ShowCodeGeneratorForm(classNode.Yield(), CurrentProject.TypeMapping);
 		}
+
+		private void enableHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var isChecked = enableHierarchyViewToolStripMenuItem.Checked;
+
+			enableHierarchyViewToolStripMenuItem.Checked = !isChecked;
+
+			expandAllClassesToolStripMenuItem.Enabled = collapseAllClassesToolStripMenuItem.Enabled = isChecked;
+
+			classesView.EnableClassHierarchyView = isChecked;
+		}
+
+		private void autoExpandHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var isChecked = autoExpandHierarchyViewToolStripMenuItem.Checked;
+
+			autoExpandHierarchyViewToolStripMenuItem.Checked = !isChecked;
+
+			classesView.AutoExpandClassNodes = isChecked;
+		}
+
+		private void expandAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			classesView.ExpandAllClassNodes();
+		}
+
+		private void collapseAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			classesView.CollapseAllClassNodes();
+		}
+
+		private void removeUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CurrentProject.RemoveUnusedClasses();
+		}
+
+		private void deleteClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var classNode = classesView.SelectedClass;
+			if (classNode == null)
+			{
+				return;
+			}
+
+			try
+			{
+				CurrentProject.Remove(classNode);
+			}
+			catch (ClassReferencedException ex)
+			{
+				Program.Logger.Log(ex);
+			}
+		}
 	}
 }
