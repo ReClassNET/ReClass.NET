@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -7,45 +8,36 @@ using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Nodes;
 using ReClassNET.Project;
-using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {
 	public partial class ClassNodeView : UserControl
 	{
 		/// <summary>A custom tree node for class nodes with hierarchical structure.</summary>
-		private class ClassTreeNode : TreeNode, IDisposable
+		private class ClassTreeNode : TreeNode
 		{
-			public ClassNode ClassNode { get; }
+			private readonly ClassNodeView control;
 
-			private readonly ValueTypeWrapper<bool> enableHierarchyView;
-			private readonly ValueTypeWrapper<bool> autoExpand;
+			public ClassNode ClassNode { get; }
 
 			/// <summary>Constructor of the class.</summary>
 			/// <param name="node">The class node.</param>
-			/// <param name="enableHierarchyView">The value if the hierarchy view is enabled.</param>
-			/// <param name="autoExpand">The value if nodes should get expanded.</param>
-			public ClassTreeNode(ClassNode node, ValueTypeWrapper<bool> enableHierarchyView, ValueTypeWrapper<bool> autoExpand)
-				: this(node, enableHierarchyView, autoExpand, null)
+			/// <param name="control">The <see cref="ClassNodeView"/> instance this node should belong to.</param>
+			public ClassTreeNode(ClassNode node, ClassNodeView control)
+				: this(node, control, null)
 			{
 				Contract.Requires(node != null);
-				Contract.Requires(enableHierarchyView != null);
-				Contract.Requires(autoExpand != null);
+				Contract.Requires(control != null);
 			}
 
-			private ClassTreeNode(ClassNode node, ValueTypeWrapper<bool> enableHierarchyView, ValueTypeWrapper<bool> autoExpand, HashSet<ClassNode> seen)
+			private ClassTreeNode(ClassNode node, ClassNodeView control, HashSet<ClassNode> seen)
 			{
 				Contract.Requires(node != null);
-				Contract.Requires(enableHierarchyView != null);
-				Contract.Requires(autoExpand != null);
-
-				this.enableHierarchyView = enableHierarchyView;
-				this.autoExpand = autoExpand;
+				Contract.Requires(control != null);
 
 				ClassNode = node;
 
-				node.NameChanged += NameChanged_Handler;
-				node.NodesChanged += NodesChanged_Handler;
+				this.control = control;
 
 				Text = node.Name;
 
@@ -55,22 +47,10 @@ namespace ReClassNET.UI
 				RebuildClassHierarchy(seen ?? new HashSet<ClassNode> { ClassNode });
 			}
 
-			public void Dispose()
+			public void Update()
 			{
-				ClassNode.NameChanged -= NameChanged_Handler;
-				ClassNode.NodesChanged -= NodesChanged_Handler;
+				Text = ClassNode.Name;
 
-				Nodes.Cast<ClassTreeNode>().ForEach(t => t.Dispose());
-				Nodes.Clear();
-			}
-
-			private void NameChanged_Handler(BaseNode sender)
-			{
-				Text = sender.Name;
-			}
-
-			private void NodesChanged_Handler(BaseNode sender)
-			{
 				RebuildClassHierarchy(new HashSet<ClassNode> { ClassNode });
 			}
 
@@ -80,7 +60,7 @@ namespace ReClassNET.UI
 			{
 				Contract.Requires(seen != null);
 
-				if (!enableHierarchyView.Value)
+				if (!control.EnableClassHierarchyView)
 				{
 					return;
 				}
@@ -90,14 +70,13 @@ namespace ReClassNET.UI
 					.Select(w => w.ResolveMostInnerNode())
 					.OfType<ClassNode>()
 					.Distinct()
-					.ToArray();
+					.ToList();
 
 				if (distinctClasses.SequenceEqualsEx(Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode)))
 				{
 					return;
 				}
 
-				Nodes.Cast<ClassTreeNode>().ForEach(t => t.Dispose());
 				Nodes.Clear();
 
 				foreach (var child in distinctClasses)
@@ -105,20 +84,33 @@ namespace ReClassNET.UI
 					var childSeen = new HashSet<ClassNode>(seen);
 					if (childSeen.Add(child))
 					{
-						Nodes.Add(new ClassTreeNode(child, enableHierarchyView, autoExpand, childSeen));
+						Nodes.Add(new ClassTreeNode(child, control, childSeen));
 					}
 				}
 
-				if (autoExpand.Value)
+				if (control.AutoExpandClassNodes)
 				{
 					Expand();
 				}
 			}
 		}
 
+		private class NodeSorter : IComparer
+		{
+			public int Compare(object x, object y)
+			{
+				var compare = Application.CurrentCulture.CompareInfo;
+
+				if (x is ClassTreeNode n1 && y is ClassTreeNode n2)
+				{
+					return compare.Compare(n1.Text, n2.Text);
+				}
+
+				return 0;
+			}
+		}
+
 		private readonly TreeNode root;
-		private readonly ValueTypeWrapper<bool> enableHierarchyView;
-		private readonly ValueTypeWrapper<bool> autoExpand;
 
 		private ReClassNetProject project;
 
@@ -140,7 +132,6 @@ namespace ReClassNET.UI
 				{
 					classesTreeView.BeginUpdate();
 
-					root.Nodes.Cast<ClassTreeNode>().ForEach(t => t.Dispose());
 					root.Nodes.Clear();
 
 					if (project != null)
@@ -183,6 +174,12 @@ namespace ReClassNET.UI
 			}
 		}
 
+		[DefaultValue(false)]
+		public bool AutoExpandClassNodes { get; set; }
+
+		[DefaultValue(false)]
+		public bool EnableClassHierarchyView { get; set; }
+
 		public ClassNodeView()
 		{
 			Contract.Ensures(root != null);
@@ -191,9 +188,7 @@ namespace ReClassNET.UI
 
 			DoubleBuffered = true;
 
-			enableHierarchyView = new ValueTypeWrapper<bool>(false);
-			autoExpand = new ValueTypeWrapper<bool>(false);
-
+			classesTreeView.TreeViewNodeSorter = new NodeSorter();
 			classesTreeView.ImageList = new ImageList();
 			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);
 			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Class_Type);
@@ -301,13 +296,12 @@ namespace ReClassNET.UI
 			expandAllClassesToolStripMenuItem.Enabled =
 				collapseAllClassesToolStripMenuItem.Enabled = enableHierarchyViewToolStripMenuItem.Checked;
 
-			enableHierarchyView.Value = enableHierarchyViewToolStripMenuItem.Checked;
+			EnableClassHierarchyView = enableHierarchyViewToolStripMenuItem.Checked;
 
 			var classes = root.Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode).ToList();
 
 			classesTreeView.BeginUpdate();
 
-			root.Nodes.Cast<ClassTreeNode>().ForEach(t => t.Dispose());
 			root.Nodes.Clear();
 
 			classes.ForEach(AddClassInternal);
@@ -321,9 +315,9 @@ namespace ReClassNET.UI
 		{
 			autoExpandHierarchyViewToolStripMenuItem.Checked = !autoExpandHierarchyViewToolStripMenuItem.Checked;
 
-			autoExpand.Value = autoExpandHierarchyViewToolStripMenuItem.Checked;
+			AutoExpandClassNodes = autoExpandHierarchyViewToolStripMenuItem.Checked;
 
-			if (autoExpand.Value)
+			if (AutoExpandClassNodes)
 			{
 				root.ExpandAll();
 			}
@@ -354,30 +348,44 @@ namespace ReClassNET.UI
 
 		#endregion
 
+		public void Clear()
+		{
+			root.Nodes.Clear();
+		}
+
 		/// <summary>Adds the class to the view.</summary>
 		/// <param name="node">The class to add.</param>
 		public void AddClass(ClassNode node)
 		{
 			Contract.Requires(node != null);
 
-			AddClassInternal(node);
+			AddClasses(new[] { node });
+		}
+
+		public void AddClasses(IEnumerable<ClassNode> nodes)
+		{
+			Contract.Requires(nodes != null);
+
+			classesTreeView.BeginUpdate();
+
+			foreach (var node in nodes)
+			{
+				AddClassInternal(node);
+			}
 
 			classesTreeView.Sort();
+
+			classesTreeView.EndUpdate();
 		}
 
 		/// <summary>Removes the class from the view.</summary>
 		/// <param name="node">The class to remove.</param>
 		public void RemoveClass(ClassNode node)
 		{
-			var tn = FindClassTreeNode(node);
-			if (tn == null)
+			foreach (var tn in FindClassTreeNodes(node))
 			{
-				return;
+				tn.Remove();
 			}
-
-			root.Nodes.Remove(tn);
-
-			tn.Dispose();
 
 			if (selectedClass == node)
 			{
@@ -400,17 +408,38 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(node != null);
 
-			root.Nodes.Add(new ClassTreeNode(node, enableHierarchyView, autoExpand));
+			root.Nodes.Add(new ClassTreeNode(node, this));
 
 			root.Expand();
+		}
+
+		/// <summary>Searches for the <see cref="ClassTreeNode"/> which represents the class.</summary>
+		/// <param name="node">The class to search.</param>
+		/// <returns>The found class tree node.</returns>
+		private ClassTreeNode FindMainClassTreeNode(ClassNode node)
+		{
+			return root.Nodes
+				.Cast<ClassTreeNode>()
+				.FirstOrDefault(t => t.ClassNode == node);
 		}
 
 		/// <summary>Searches for the ClassTreeNode which represents the class.</summary>
 		/// <param name="node">The class to search.</param>
 		/// <returns>The found class tree node.</returns>
-		private ClassTreeNode FindClassTreeNode(ClassNode node)
+		private IEnumerable<ClassTreeNode> FindClassTreeNodes(ClassNode node)
 		{
-			return root.Nodes.Cast<ClassTreeNode>().FirstOrDefault(t => t.ClassNode == node);
+			return root.Nodes
+				.Cast<ClassTreeNode>()
+				.Traverse(t => t.Nodes.Cast<ClassTreeNode>())
+				.Where(n => n.ClassNode == node);
+		}
+
+		public void UpdateClassNode(ClassNode node)
+		{
+			foreach (var tn in FindClassTreeNodes(node))
+			{
+				tn.Update();
+			}
 		}
 	}
 }
