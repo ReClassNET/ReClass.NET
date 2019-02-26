@@ -33,6 +33,21 @@
 			this.processUpdateTimer = new System.Windows.Forms.Timer(this.components);
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
 			this.classesView = new ReClassNET.UI.ClassNodeView();
+			this.classTreeNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.renameClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.deleteClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
+			this.removeUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator20 = new System.Windows.Forms.ToolStripSeparator();
+			this.showCodeOfClassToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+			this.projectTreeNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.enableHierarchyViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.autoExpandHierarchyViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator21 = new System.Windows.Forms.ToolStripSeparator();
+			this.expandAllClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.collapseAllClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator22 = new System.Windows.Forms.ToolStripSeparator();
+			this.addNewClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.memoryViewControl = new ReClassNET.UI.MemoryViewControl();
 			this.selectedNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.changeTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -144,31 +159,16 @@
 			this.generateCSharpCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.classTreeNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.renameClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.deleteClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
-			this.removeUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator20 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-			this.projectTreeNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.enableHierarchyViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.autoExpandHierarchyViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator21 = new System.Windows.Forms.ToolStripSeparator();
-			this.expandAllClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.collapseAllClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator22 = new System.Windows.Forms.ToolStripSeparator();
-			this.addNewClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
+			this.classTreeNodeContextMenuStrip.SuspendLayout();
+			this.projectTreeNodeContextMenuStrip.SuspendLayout();
 			this.selectedNodeContextMenuStrip.SuspendLayout();
 			this.toolStrip.SuspendLayout();
 			this.statusStrip.SuspendLayout();
 			this.mainMenuStrip.SuspendLayout();
-			this.classTreeNodeContextMenuStrip.SuspendLayout();
-			this.projectTreeNodeContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// processUpdateTimer
@@ -206,6 +206,116 @@
 			this.classesView.Size = new System.Drawing.Size(201, 524);
 			this.classesView.TabIndex = 0;
 			this.classesView.SelectionChanged += new ReClassNET.UI.ClassNodeView.SelectionChangedEvent(this.classesView_ClassSelected);
+			// 
+			// classTreeNodeContextMenuStrip
+			// 
+			this.classTreeNodeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.renameClassToolStripMenuItem,
+            this.deleteClassToolStripMenuItem,
+            this.toolStripSeparator19,
+            this.removeUnusedClassesToolStripMenuItem,
+            this.toolStripSeparator20,
+            this.showCodeOfClassToolStripMenuItem2});
+			this.classTreeNodeContextMenuStrip.Name = "contextMenuStrip";
+			this.classTreeNodeContextMenuStrip.Size = new System.Drawing.Size(206, 104);
+			// 
+			// renameClassToolStripMenuItem
+			// 
+			this.renameClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Textfield_Rename;
+			this.renameClassToolStripMenuItem.Name = "renameClassToolStripMenuItem";
+			this.renameClassToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+			this.renameClassToolStripMenuItem.Text = "Rename class";
+			// 
+			// deleteClassToolStripMenuItem
+			// 
+			this.deleteClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Remove;
+			this.deleteClassToolStripMenuItem.Name = "deleteClassToolStripMenuItem";
+			this.deleteClassToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+			this.deleteClassToolStripMenuItem.Text = "Delete class";
+			// 
+			// toolStripSeparator19
+			// 
+			this.toolStripSeparator19.Name = "toolStripSeparator19";
+			this.toolStripSeparator19.Size = new System.Drawing.Size(202, 6);
+			// 
+			// removeUnusedClassesToolStripMenuItem
+			// 
+			this.removeUnusedClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Chart_Delete;
+			this.removeUnusedClassesToolStripMenuItem.Name = "removeUnusedClassesToolStripMenuItem";
+			this.removeUnusedClassesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+			this.removeUnusedClassesToolStripMenuItem.Text = "Remove unused classes";
+			// 
+			// toolStripSeparator20
+			// 
+			this.toolStripSeparator20.Name = "toolStripSeparator20";
+			this.toolStripSeparator20.Size = new System.Drawing.Size(202, 6);
+			// 
+			// showCodeOfClassToolStripMenuItem2
+			// 
+			this.showCodeOfClassToolStripMenuItem2.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Code_Cpp;
+			this.showCodeOfClassToolStripMenuItem2.Name = "showCodeOfClassToolStripMenuItem2";
+			this.showCodeOfClassToolStripMenuItem2.Size = new System.Drawing.Size(205, 22);
+			this.showCodeOfClassToolStripMenuItem2.Text = "Show C++ Code of Class";
+			this.showCodeOfClassToolStripMenuItem2.Click += new System.EventHandler(this.showCodeOfClassToolStripMenuItem2_Click);
+			// 
+			// projectTreeNodeContextMenuStrip
+			// 
+			this.projectTreeNodeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.enableHierarchyViewToolStripMenuItem,
+            this.autoExpandHierarchyViewToolStripMenuItem,
+            this.toolStripSeparator21,
+            this.expandAllClassesToolStripMenuItem,
+            this.collapseAllClassesToolStripMenuItem,
+            this.toolStripSeparator22,
+            this.addNewClassToolStripMenuItem});
+			this.projectTreeNodeContextMenuStrip.Name = "rootContextMenuStrip";
+			this.projectTreeNodeContextMenuStrip.Size = new System.Drawing.Size(221, 148);
+			// 
+			// enableHierarchyViewToolStripMenuItem
+			// 
+			this.enableHierarchyViewToolStripMenuItem.Name = "enableHierarchyViewToolStripMenuItem";
+			this.enableHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.enableHierarchyViewToolStripMenuItem.Text = "Enable hierarchy view";
+			// 
+			// autoExpandHierarchyViewToolStripMenuItem
+			// 
+			this.autoExpandHierarchyViewToolStripMenuItem.Name = "autoExpandHierarchyViewToolStripMenuItem";
+			this.autoExpandHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.autoExpandHierarchyViewToolStripMenuItem.Text = "Auto expand hierarchy view";
+			// 
+			// toolStripSeparator21
+			// 
+			this.toolStripSeparator21.Name = "toolStripSeparator21";
+			this.toolStripSeparator21.Size = new System.Drawing.Size(217, 6);
+			// 
+			// expandAllClassesToolStripMenuItem
+			// 
+			this.expandAllClassesToolStripMenuItem.Enabled = false;
+			this.expandAllClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Tree_Expand;
+			this.expandAllClassesToolStripMenuItem.Name = "expandAllClassesToolStripMenuItem";
+			this.expandAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.expandAllClassesToolStripMenuItem.Text = "Expand all classes";
+			// 
+			// collapseAllClassesToolStripMenuItem
+			// 
+			this.collapseAllClassesToolStripMenuItem.Enabled = false;
+			this.collapseAllClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Tree_Collapse;
+			this.collapseAllClassesToolStripMenuItem.Name = "collapseAllClassesToolStripMenuItem";
+			this.collapseAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.collapseAllClassesToolStripMenuItem.Text = "Collapse all classes";
+			// 
+			// toolStripSeparator22
+			// 
+			this.toolStripSeparator22.Name = "toolStripSeparator22";
+			this.toolStripSeparator22.Size = new System.Drawing.Size(217, 6);
+			// 
+			// addNewClassToolStripMenuItem
+			// 
+			this.addNewClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
+			this.addNewClassToolStripMenuItem.Name = "addNewClassToolStripMenuItem";
+			this.addNewClassToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.addNewClassToolStripMenuItem.Text = "Add new class";
+			this.addNewClassToolStripMenuItem.Click += new System.EventHandler(this.newClassToolStripButton_Click);
 			// 
 			// memoryViewControl
 			// 
@@ -1190,114 +1300,6 @@
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
-			// classTreeNodeContextMenuStrip
-			// 
-			this.classTreeNodeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.renameClassToolStripMenuItem,
-            this.deleteClassToolStripMenuItem,
-            this.toolStripSeparator19,
-            this.removeUnusedClassesToolStripMenuItem,
-            this.toolStripSeparator20,
-            this.toolStripMenuItem3});
-			this.classTreeNodeContextMenuStrip.Name = "contextMenuStrip";
-			this.classTreeNodeContextMenuStrip.Size = new System.Drawing.Size(206, 104);
-			// 
-			// renameClassToolStripMenuItem
-			// 
-			this.renameClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Textfield_Rename;
-			this.renameClassToolStripMenuItem.Name = "renameClassToolStripMenuItem";
-			this.renameClassToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-			this.renameClassToolStripMenuItem.Text = "Rename class";
-			// 
-			// deleteClassToolStripMenuItem
-			// 
-			this.deleteClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Remove;
-			this.deleteClassToolStripMenuItem.Name = "deleteClassToolStripMenuItem";
-			this.deleteClassToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-			this.deleteClassToolStripMenuItem.Text = "Delete class";
-			// 
-			// toolStripSeparator19
-			// 
-			this.toolStripSeparator19.Name = "toolStripSeparator19";
-			this.toolStripSeparator19.Size = new System.Drawing.Size(202, 6);
-			// 
-			// removeUnusedClassesToolStripMenuItem
-			// 
-			this.removeUnusedClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Chart_Delete;
-			this.removeUnusedClassesToolStripMenuItem.Name = "removeUnusedClassesToolStripMenuItem";
-			this.removeUnusedClassesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-			this.removeUnusedClassesToolStripMenuItem.Text = "Remove unused classes";
-			// 
-			// toolStripSeparator20
-			// 
-			this.toolStripSeparator20.Name = "toolStripSeparator20";
-			this.toolStripSeparator20.Size = new System.Drawing.Size(202, 6);
-			// 
-			// toolStripMenuItem3
-			// 
-			this.toolStripMenuItem3.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Code_Cpp;
-			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(205, 22);
-			this.toolStripMenuItem3.Text = "Show C++ Code of Class";
-			// 
-			// projectTreeNodeContextMenuStrip
-			// 
-			this.projectTreeNodeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.enableHierarchyViewToolStripMenuItem,
-            this.autoExpandHierarchyViewToolStripMenuItem,
-            this.toolStripSeparator21,
-            this.expandAllClassesToolStripMenuItem,
-            this.collapseAllClassesToolStripMenuItem,
-            this.toolStripSeparator22,
-            this.addNewClassToolStripMenuItem});
-			this.projectTreeNodeContextMenuStrip.Name = "rootContextMenuStrip";
-			this.projectTreeNodeContextMenuStrip.Size = new System.Drawing.Size(221, 126);
-			// 
-			// enableHierarchyViewToolStripMenuItem
-			// 
-			this.enableHierarchyViewToolStripMenuItem.Name = "enableHierarchyViewToolStripMenuItem";
-			this.enableHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-			this.enableHierarchyViewToolStripMenuItem.Text = "Enable hierarchy view";
-			// 
-			// autoExpandHierarchyViewToolStripMenuItem
-			// 
-			this.autoExpandHierarchyViewToolStripMenuItem.Name = "autoExpandHierarchyViewToolStripMenuItem";
-			this.autoExpandHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-			this.autoExpandHierarchyViewToolStripMenuItem.Text = "Auto expand hierarchy view";
-			// 
-			// toolStripSeparator21
-			// 
-			this.toolStripSeparator21.Name = "toolStripSeparator21";
-			this.toolStripSeparator21.Size = new System.Drawing.Size(217, 6);
-			// 
-			// expandAllClassesToolStripMenuItem
-			// 
-			this.expandAllClassesToolStripMenuItem.Enabled = false;
-			this.expandAllClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Tree_Expand;
-			this.expandAllClassesToolStripMenuItem.Name = "expandAllClassesToolStripMenuItem";
-			this.expandAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-			this.expandAllClassesToolStripMenuItem.Text = "Expand all classes";
-			// 
-			// collapseAllClassesToolStripMenuItem
-			// 
-			this.collapseAllClassesToolStripMenuItem.Enabled = false;
-			this.collapseAllClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Tree_Collapse;
-			this.collapseAllClassesToolStripMenuItem.Name = "collapseAllClassesToolStripMenuItem";
-			this.collapseAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-			this.collapseAllClassesToolStripMenuItem.Text = "Collapse all classes";
-			// 
-			// toolStripSeparator22
-			// 
-			this.toolStripSeparator22.Name = "toolStripSeparator22";
-			this.toolStripSeparator22.Size = new System.Drawing.Size(217, 6);
-			// 
-			// addNewClassToolStripMenuItem
-			// 
-			this.addNewClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
-			this.addNewClassToolStripMenuItem.Name = "addNewClassToolStripMenuItem";
-			this.addNewClassToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-			this.addNewClassToolStripMenuItem.Text = "Add new class";
-			// 
 			// MainForm
 			// 
 			this.AllowDrop = true;
@@ -1319,6 +1321,8 @@
 			this.splitContainer.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
 			this.splitContainer.ResumeLayout(false);
+			this.classTreeNodeContextMenuStrip.ResumeLayout(false);
+			this.projectTreeNodeContextMenuStrip.ResumeLayout(false);
 			this.selectedNodeContextMenuStrip.ResumeLayout(false);
 			this.toolStrip.ResumeLayout(false);
 			this.toolStrip.PerformLayout();
@@ -1326,8 +1330,6 @@
 			this.statusStrip.PerformLayout();
 			this.mainMenuStrip.ResumeLayout(false);
 			this.mainMenuStrip.PerformLayout();
-			this.classTreeNodeContextMenuStrip.ResumeLayout(false);
-			this.projectTreeNodeContextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -1456,7 +1458,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator19;
 		private System.Windows.Forms.ToolStripMenuItem removeUnusedClassesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator20;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+		private System.Windows.Forms.ToolStripMenuItem showCodeOfClassToolStripMenuItem2;
 		private System.Windows.Forms.ContextMenuStrip projectTreeNodeContextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem enableHierarchyViewToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem autoExpandHierarchyViewToolStripMenuItem;

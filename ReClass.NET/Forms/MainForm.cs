@@ -855,5 +855,16 @@ namespace ReClassNET.Forms
 				menu.Show(this, e.Location);
 			}
 		}
+
+		private void showCodeOfClassToolStripMenuItem2_Click(object sender, EventArgs e)
+		{
+			var classNode = classesView.SelectedClass;
+			if (classNode == null)
+			{
+				return;
+			}
+
+			LinkedWindowFeatures.ShowCodeGeneratorForm(classNode.Yield(), CurrentProject.TypeMapping);
+		}
 	}
 }

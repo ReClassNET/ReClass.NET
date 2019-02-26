@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -306,19 +306,6 @@ namespace ReClassNET.UI
 		private void collapseAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			//root.Nodes.Cast<TreeNode>().ForEach(n => n.Collapse());
-		}
-
-		private void addNewClassToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			//LinkedWindowFeatures.CreateDefaultClass();
-		}
-
-		private void showCodeOfClassToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			/*if (classesTreeView.SelectedNode is ClassTreeNode node)
-			{
-				LinkedWindowFeatures.ShowCodeGeneratorForm(node.ClassNode.Yield(), Project.TypeMapping);
-			}*/
 		}
 
 		#endregion
