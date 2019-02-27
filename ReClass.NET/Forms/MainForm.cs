@@ -869,9 +869,9 @@ namespace ReClassNET.Forms
 
 		private void enableHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var isChecked = enableHierarchyViewToolStripMenuItem.Checked;
+			var isChecked = !enableHierarchyViewToolStripMenuItem.Checked;
 
-			enableHierarchyViewToolStripMenuItem.Checked = !isChecked;
+			enableHierarchyViewToolStripMenuItem.Checked = isChecked;
 
 			expandAllClassesToolStripMenuItem.Enabled = collapseAllClassesToolStripMenuItem.Enabled = isChecked;
 
@@ -880,9 +880,9 @@ namespace ReClassNET.Forms
 
 		private void autoExpandHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var isChecked = autoExpandHierarchyViewToolStripMenuItem.Checked;
+			var isChecked = !autoExpandHierarchyViewToolStripMenuItem.Checked;
 
-			autoExpandHierarchyViewToolStripMenuItem.Checked = !isChecked;
+			autoExpandHierarchyViewToolStripMenuItem.Checked = isChecked;
 
 			classesView.AutoExpandClassNodes = isChecked;
 		}
