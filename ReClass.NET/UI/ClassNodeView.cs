@@ -130,7 +130,7 @@ namespace ReClassNET.UI
 					selectedClass = value;
 					if (selectedClass != null)
 					{
-						classesTreeView.SelectedNode = FindMainClassTreeNode(value);
+						classesTreeView.SelectedNode = FindMainClassTreeNode(selectedClass);
 					}
 
 					SelectionChanged?.Invoke(this, selectedClass);
@@ -335,6 +335,8 @@ namespace ReClassNET.UI
 		/// <param name="node">The class to remove.</param>
 		public void RemoveClass(ClassNode node)
 		{
+			Contract.Requires(node != null);
+
 			foreach (var tn in FindClassTreeNodes(node))
 			{
 				tn.Remove();
@@ -358,6 +360,8 @@ namespace ReClassNET.UI
 		/// <returns>The found class tree node.</returns>
 		private ClassTreeNode FindMainClassTreeNode(ClassNode node)
 		{
+			Contract.Requires(node != null);
+
 			return root.Nodes
 				.Cast<ClassTreeNode>()
 				.FirstOrDefault(t => t.ClassNode == node);
@@ -368,6 +372,8 @@ namespace ReClassNET.UI
 		/// <returns>The found class tree node.</returns>
 		private IEnumerable<ClassTreeNode> FindClassTreeNodes(ClassNode node)
 		{
+			Contract.Requires(node != null);
+
 			return root.Nodes
 				.Cast<ClassTreeNode>()
 				.Traverse(t => t.Nodes.Cast<ClassTreeNode>())
@@ -376,10 +382,18 @@ namespace ReClassNET.UI
 
 		public void UpdateClassNode(ClassNode node)
 		{
+			Contract.Requires(node != null);
+
+			classesTreeView.BeginUpdate();
+
 			foreach (var tn in FindClassTreeNodes(node))
 			{
 				tn.Update();
 			}
+
+			classesTreeView.Sort();
+
+			classesTreeView.EndUpdate();
 		}
 	}
 }
