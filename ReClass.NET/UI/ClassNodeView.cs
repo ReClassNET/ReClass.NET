@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Nodes;
-using ReClassNET.Project;
 
 namespace ReClassNET.UI
 {
@@ -252,10 +249,10 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private void renameClassToolStripMenuItem_Click(object sender, EventArgs e)
+		private void classesTreeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
 		{
-			/*var treeNode = classesTreeView.SelectedNode;
-			treeNode?.BeginEdit();*/
+			var isClassTreeNode = e.Node is ClassTreeNode;
+			e.CancelEdit = !isClassTreeNode;
 		}
 
 		private void classesTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)

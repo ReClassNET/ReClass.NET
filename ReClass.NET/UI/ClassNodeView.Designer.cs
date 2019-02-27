@@ -42,6 +42,7 @@
 			this.classesTreeView.ShowRootLines = false;
 			this.classesTreeView.Size = new System.Drawing.Size(150, 150);
 			this.classesTreeView.TabIndex = 0;
+			this.classesTreeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.classesTreeView_BeforeLabelEdit);
 			this.classesTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.classesTreeView_AfterLabelEdit);
 			this.classesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.classesTreeView_AfterSelect);
 			this.classesTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.classesTreeView_MouseUp);
