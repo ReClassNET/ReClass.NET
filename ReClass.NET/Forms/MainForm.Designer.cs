@@ -34,7 +34,6 @@
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
 			this.classesView = new ReClassNET.UI.ClassNodeView();
 			this.classTreeNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.renameClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.deleteClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
 			this.removeUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -210,7 +209,6 @@
 			// classTreeNodeContextMenuStrip
 			// 
 			this.classTreeNodeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.renameClassToolStripMenuItem,
             this.deleteClassToolStripMenuItem,
             this.toolStripSeparator19,
             this.removeUnusedClassesToolStripMenuItem,
@@ -218,13 +216,6 @@
             this.showCodeOfClassToolStripMenuItem2});
 			this.classTreeNodeContextMenuStrip.Name = "contextMenuStrip";
 			this.classTreeNodeContextMenuStrip.Size = new System.Drawing.Size(206, 104);
-			// 
-			// renameClassToolStripMenuItem
-			// 
-			this.renameClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Textfield_Rename;
-			this.renameClassToolStripMenuItem.Name = "renameClassToolStripMenuItem";
-			this.renameClassToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-			this.renameClassToolStripMenuItem.Text = "Rename class";
 			// 
 			// deleteClassToolStripMenuItem
 			// 
@@ -1459,7 +1450,6 @@
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
 		private System.Windows.Forms.ToolStripMenuItem goToClassToolStripMenuItem;
 		private System.Windows.Forms.ContextMenuStrip classTreeNodeContextMenuStrip;
-		private System.Windows.Forms.ToolStripMenuItem renameClassToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem deleteClassToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator19;
 		private System.Windows.Forms.ToolStripMenuItem removeUnusedClassesToolStripMenuItem;
