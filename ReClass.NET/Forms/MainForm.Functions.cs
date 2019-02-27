@@ -65,7 +65,24 @@ namespace ReClassNET.Forms
 				ClassNode.ClassCreated -= currentProject.AddClass;
 			}
 
+			void UpdateClassNodes(BaseNode node)
+			{
+				classesView.UpdateClassNode((ClassNode)node);
+			}
+
 			currentProject = newProject;
+			currentProject.ClassAdded += c =>
+			{
+				classesView.AddClass(c);
+				c.NodesChanged += UpdateClassNodes;
+				c.NameChanged += UpdateClassNodes;
+			};
+			currentProject.ClassRemoved += c =>
+			{
+				classesView.RemoveClass(c);
+				c.NodesChanged -= UpdateClassNodes;
+				c.NameChanged -= UpdateClassNodes;
+			};
 
 			ClassNode.ClassCreated += currentProject.AddClass;
 
