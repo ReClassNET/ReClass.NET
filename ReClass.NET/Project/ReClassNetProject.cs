@@ -13,7 +13,10 @@ namespace ReClassNET.Project
 		public event ClassesChangedEvent ClassAdded;
 		public event ClassesChangedEvent ClassRemoved;
 
+		private readonly List<EnumMetaData> enums = new List<EnumMetaData>();
 		private readonly List<ClassNode> classes = new List<ClassNode>();
+
+		public IEnumerable<EnumMetaData> Enums => enums;
 
 		public IEnumerable<ClassNode> Classes => classes;
 
