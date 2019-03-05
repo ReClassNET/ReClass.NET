@@ -856,6 +856,11 @@ namespace ReClassNET.Forms
 			}
 		}
 
+		private void memoryViewControl_ChangeEnumTypeClick(object sender, NodeClickEventArgs args)
+		{
+
+		}
+
 		private void showCodeOfClassToolStripMenuItem2_Click(object sender, EventArgs e)
 		{
 			var classNode = classesView.SelectedClass;

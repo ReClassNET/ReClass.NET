@@ -215,7 +215,7 @@
             this.toolStripSeparator20,
             this.showCodeOfClassToolStripMenuItem2});
 			this.classTreeNodeContextMenuStrip.Name = "contextMenuStrip";
-			this.classTreeNodeContextMenuStrip.Size = new System.Drawing.Size(206, 104);
+			this.classTreeNodeContextMenuStrip.Size = new System.Drawing.Size(206, 82);
 			// 
 			// deleteClassToolStripMenuItem
 			// 
@@ -326,6 +326,7 @@
 			this.memoryViewControl.SelectionChanged += new System.EventHandler(this.memoryViewControl_SelectionChanged);
 			this.memoryViewControl.ChangeClassTypeClick += new ReClassNET.UI.NodeClickEventHandler(this.memoryViewControl_ChangeClassTypeClick);
 			this.memoryViewControl.ChangeWrappedTypeClick += new ReClassNET.UI.NodeClickEventHandler(this.memoryViewControl_ChangeWrappedTypeClick);
+			this.memoryViewControl.ChangeEnumTypeClick += new ReClassNET.UI.NodeClickEventHandler(this.memoryViewControl_ChangeEnumTypeClick);
 			this.memoryViewControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.memoryViewControl_KeyDown);
 			// 
 			// selectedNodeContextMenuStrip

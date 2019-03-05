@@ -16,6 +16,7 @@ namespace ReClassNET.UI
 		DoubleClick,
 		ChangeClassType,
 		ChangeWrappedType,
+		ChangeEnumType,
 		Delete,
 		Address,
 		Name,

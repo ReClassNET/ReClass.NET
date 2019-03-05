@@ -92,6 +92,7 @@ namespace ReClassNET.UI
 		public event EventHandler SelectionChanged;
 		public event NodeClickEventHandler ChangeClassTypeClick;
 		public event NodeClickEventHandler ChangeWrappedTypeClick;
+		public event NodeClickEventHandler ChangeEnumTypeClick;
 
 		private readonly MemoryPreviewPopUp memoryPreviewPopUp;
 
@@ -377,6 +378,13 @@ namespace ReClassNET.UI
 						else if (hotSpot.Type == HotSpotType.ChangeWrappedType)
 						{
 							var handler = ChangeWrappedTypeClick;
+							handler?.Invoke(this, new NodeClickEventArgs(hitObject, e.Button, e.Location));
+
+							break;
+						}
+						else if (hotSpot.Type == HotSpotType.ChangeEnumType)
+						{
+							var handler = ChangeEnumTypeClick;
 							handler?.Invoke(this, new NodeClickEventArgs(hitObject, e.Button, e.Location));
 
 							break;
