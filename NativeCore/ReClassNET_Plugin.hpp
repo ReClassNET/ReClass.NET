@@ -11,6 +11,8 @@
 
 #ifdef __linux__
 	#define RC_CallConv
+#elif __APPLE__
+	#define RC_CallConv
 #elif _WIN32
 	#define RC_CallConv __stdcall
 #else

@@ -14,6 +14,13 @@ extern "C" void RC_CallConv ControlRemoteProcess(RC_Pointer handle, ControlRemot
 	{
 		signal = SIGCONT;
 	}
-
-	kill(static_cast<pid_t>(reinterpret_cast<intptr_t>(handle)), signal);
+    #ifdef __linux__
+        kill(static_cast<pid_t>(reinterpret_cast<intptr_t>(handle)), signal);
+    #elif __APPLE__
+        task_t task;
+    
+        task_for_pid(current_task(), (int)id, &task);
+        return (RC_Pointer)task;
+    #endif
+	
 }
