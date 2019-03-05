@@ -39,7 +39,7 @@ namespace ReClassNET.Nodes
 
 			x += TextPadding;
 
-			x = AddIcon(view, x, y, Icons.Function, -1, HotSpotType.None);
+			x = AddIcon(view, x, y, Icons.Function, HotSpot.NoneId, HotSpotType.None);
 
 			var tx = x;
 

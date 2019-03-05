@@ -513,7 +513,7 @@ namespace ReClassNET.Nodes
 		{
 			if (!view.Memory.ContainsValidData)
 			{
-				AddIcon(view, 0, y, Properties.Resources.B16x16_Error, -1, HotSpotType.None);
+				AddIcon(view, 0, y, Properties.Resources.B16x16_Error, HotSpot.NoneId, HotSpotType.None);
 			}
 		}
 	}

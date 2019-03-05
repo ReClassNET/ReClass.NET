@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -166,7 +166,7 @@ namespace ReClassNET.Nodes
 			AddSelection(view, x, y, view.Font.Height);
 
 			x = AddOpenClose(view, x, y);
-			x = AddIcon(view, x, y, Icons.Class, -1, HotSpotType.None);
+			x = AddIcon(view, x, y, Icons.Class, HotSpot.NoneId, HotSpotType.None);
 
 			x = AddAddressOffset(view, x, y);
 

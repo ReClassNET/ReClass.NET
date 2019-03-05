@@ -39,7 +39,7 @@ namespace ReClassNET.Nodes
 			AddSelection(view, x, y, view.Font.Height);
 
 			x = AddOpenClose(view, x, y);
-			x = AddIcon(view, x, y, Icons.Array, -1, HotSpotType.None);
+			x = AddIcon(view, x, y, Icons.Array, HotSpot.NoneId, HotSpotType.None);
 
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
