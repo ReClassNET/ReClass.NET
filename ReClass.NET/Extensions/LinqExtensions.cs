@@ -99,14 +99,14 @@ namespace ReClassNET.Extensions
 			Contract.Requires(predicate != null);
 			Contract.Ensures(Contract.Result<int>() >= -1);
 
-			int retVal = 0;
+			var index = 0;
 			foreach (var item in source)
 			{
 				if (predicate(item))
 				{
-					return retVal;
+					return index;
 				}
-				++retVal;
+				++index;
 			}
 			return -1;
 		}
