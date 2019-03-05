@@ -42,7 +42,7 @@ namespace ReClassNET.Nodes
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
 			name = "Enum";
-			icon = Properties.Resources.B16x16_Button_Bits;
+			icon = Properties.Resources.B16x16_Button_Enum;
 		}
 
 		/// <summary>

@@ -283,6 +283,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Button_Enum {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Button_Enum", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Button_Float {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Button_Float", resourceCulture);
@@ -1331,7 +1341,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2019/01/16 07:43:27
+        ///   Looks up a localized string similar to 2019/02/27 14:40:47
         ///.
         /// </summary>
         internal static string BuildDate {
