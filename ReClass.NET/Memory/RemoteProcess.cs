@@ -206,7 +206,7 @@ namespace ReClassNET.Memory
 		/// <typeparam name="T">Type of the value to read.</typeparam>
 		/// <param name="address">The address to read from.</param>
 		/// <returns>The remote object.</returns>
-		public T ReadRemoteObject<T>(IntPtr address) where T : struct
+		public T ReadRemoteObject<T>(IntPtr address) where T : unmanaged
 		{
 			var data = ReadRemoteMemory(address, Marshal.SizeOf<T>());
 
@@ -569,7 +569,7 @@ namespace ReClassNET.Memory
 		/// <param name="address">The address to write to.</param>
 		/// <param name="value">The value to write.</param>
 		/// <returns>True if it succeeds, false if it fails.</returns>
-		public bool WriteRemoteMemory<T>(IntPtr address, T value) where T : struct
+		public bool WriteRemoteMemory<T>(IntPtr address, T value) where T : unmanaged
 		{
 			var data = new byte[Marshal.SizeOf<T>()];
 

@@ -157,14 +157,14 @@ namespace ReClassNET.Memory
 			Array.Copy(data, offset, buffer, 0, buffer.Length);
 		}
 
-		public T ReadObject<T>(IntPtr offset) where T : struct
+		public T ReadObject<T>(IntPtr offset) where T : unmanaged
 		{
 			Contract.Requires(offset.ToInt32() >= 0);
 
 			return ReadObject<T>(offset.ToInt32());
 		}
 
-		public T ReadObject<T>(int offset) where T : struct
+		public T ReadObject<T>(int offset) where T : unmanaged
 		{
 			Contract.Requires(offset >= 0);
 
