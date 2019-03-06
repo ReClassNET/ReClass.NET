@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -172,6 +172,12 @@
     <Compile Include="Debugger\RemoteDebugger.Thread.cs" />
     <Compile Include="Debugger\SoftwareBreakpoint.cs" />
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
+    <Compile Include="Forms\EnumEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EnumEditorForm.Designer.cs">
+      <DependentUpon>EnumEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\EnumSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -502,6 +508,9 @@
     <Compile Include="Util\XElementSerializer.cs" />
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EnumEditorForm.resx">
+      <DependentUpon>EnumEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EnumSelectionForm.resx">
       <DependentUpon>EnumSelectionForm.cs</DependentUpon>
