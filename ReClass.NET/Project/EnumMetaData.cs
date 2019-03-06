@@ -14,16 +14,16 @@ namespace ReClassNET.Project
 
 		public int UnderlyingTypeSize { get; private set; } = sizeof(int);
 
-		public IReadOnlyList<long> Values { get; private set; }
+		public IReadOnlyList<KeyValuePair<long, string>> Values { get; private set; }
 
-		public IReadOnlyList<string> Names { get; private set; }
-
-		public void SetData(bool useFlagsMode, int underlyingTypeSize, IDictionary<long, string> values)
+		public void SetData(bool useFlagsMode, int underlyingTypeSize, IEnumerable<KeyValuePair<long, string>> values)
 		{
 			if (!(underlyingTypeSize == 1 || underlyingTypeSize == 2 || underlyingTypeSize == 4 || underlyingTypeSize == 8))
 			{
 				throw new ArgumentOutOfRangeException(nameof(underlyingTypeSize));
 			}
+			
+			var temp = values.OrderBy(t => t.Key).ToList();
 
 			if (useFlagsMode)
 			{
@@ -41,7 +41,7 @@ namespace ReClassNET.Project
 						break;
 				}
 
-				if (values.Keys.Select(v => (ulong)v).Max() > maxPossibleValue)
+				if (temp.Select(kv => (ulong)kv.Key).Max() > maxPossibleValue)
 				{
 					throw new ArgumentOutOfRangeException();
 				}
@@ -66,15 +66,14 @@ namespace ReClassNET.Project
 						break;
 				}
 
-				if (values.Keys.Max() > maxPossibleValue || values.Keys.Min() < minPossibleValue)
+				if (temp.Max(kv => kv.Key) > maxPossibleValue || temp.Min(kv => kv.Key) < minPossibleValue)
 				{
 					throw new ArgumentOutOfRangeException();
 				}
 			}
 
 			UseFlagsMode = useFlagsMode;
-			Values = values.Keys.ToList();
-			Names = values.Values.ToList();
+			Values = temp;
 		}
 	}
 }
