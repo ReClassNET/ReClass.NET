@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReClass.NET", "ReClass.NET.csproj", "{BFB8917D-E9B4-463F-A6E8-612C35728C78}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BFB8917D-E9B4-463F-A6E8-612C35728C78}.Debug|x86.ActiveCfg = Debug|x86
+		{BFB8917D-E9B4-463F-A6E8-612C35728C78}.Debug|x86.Build.0 = Debug|x86
+		{BFB8917D-E9B4-463F-A6E8-612C35728C78}.Release|x86.ActiveCfg = Release|x86
+		{BFB8917D-E9B4-463F-A6E8-612C35728C78}.Release|x86.Build.0 = Release|x86
+		{BFB8917D-E9B4-463F-A6E8-612C35728C78}.Debug|x64.ActiveCfg = Debug|x64
+		{BFB8917D-E9B4-463F-A6E8-612C35728C78}.Debug|x64.Build.0 = Debug|x64
+		{BFB8917D-E9B4-463F-A6E8-612C35728C78}.Release|x64.ActiveCfg = Release|x64
+		{BFB8917D-E9B4-463F-A6E8-612C35728C78}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+EndGlobal

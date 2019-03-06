@@ -26,7 +26,6 @@ extern "C" bool RC_CallConv WriteRemoteMemory(RC_Pointer handle, RC_Pointer addr
     
         return true;
     #elif __APPLE__
-    uint32_t sz;
     return vm_write(*(vm_map_t*)&handle , (vm_address_t) address, (vm_offset_t)(static_cast<uint8_t*>(buffer) + offset), size) == KERN_SUCCESS;
     #endif
     

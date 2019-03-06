@@ -10,8 +10,8 @@ INC = -I../Dependencies/distorm/include
 CFLAGS = -Wall -fPIC -DRECLASSNET64=1
 RESINC =
 LIBDIR =
-LIB = -lstdc++fs -lstdc++ -lc++experimental
-LDFLAGS = -shared -Wl,--no-undefined
+LIB = -lstdc++ 
+LDFLAGS = --shared -Wl
 
 INC_DEBUG = $(INC)
 CFLAGS_DEBUG = $(CFLAGS) -g
@@ -91,31 +91,31 @@ $(OBJDIR_DEBUG)/CloseRemoteProcess.o: CloseRemoteProcess.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c CloseRemoteProcess.cpp -o $(OBJDIR_DEBUG)/CloseRemoteProcess.o
 
 $(OBJDIR_DEBUG)/decoder.o: ../Dependencies/distorm/src/decoder.c
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/decoder.c -o $(OBJDIR_DEBUG)/decoder.o
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/decoder.c -o $(OBJDIR_DEBUG)/decoder.o
 
 $(OBJDIR_DEBUG)/distorm.o: ../Dependencies/distorm/src/distorm.c
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/distorm.c -o $(OBJDIR_DEBUG)/distorm.o
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/distorm.c -o $(OBJDIR_DEBUG)/distorm.o
 
 $(OBJDIR_DEBUG)/instructions.o: ../Dependencies/distorm/src/instructions.c
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/instructions.c -o $(OBJDIR_DEBUG)/instructions.o
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/instructions.c -o $(OBJDIR_DEBUG)/instructions.o
 
 $(OBJDIR_DEBUG)/insts.o: ../Dependencies/distorm/src/insts.c
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/insts.c -o $(OBJDIR_DEBUG)/insts.o
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/insts.c -o $(OBJDIR_DEBUG)/insts.o
 
 $(OBJDIR_DEBUG)/mnemonics.o: ../Dependencies/distorm/src/mnemonics.c
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/mnemonics.c -o $(OBJDIR_DEBUG)/mnemonics.o
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/mnemonics.c -o $(OBJDIR_DEBUG)/mnemonics.o
 
 $(OBJDIR_DEBUG)/operands.o: ../Dependencies/distorm/src/operands.c
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/operands.c -o $(OBJDIR_DEBUG)/operands.o
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/operands.c -o $(OBJDIR_DEBUG)/operands.o
 
 $(OBJDIR_DEBUG)/prefix.o: ../Dependencies/distorm/src/prefix.c
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/prefix.c -o $(OBJDIR_DEBUG)/prefix.o
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/prefix.c -o $(OBJDIR_DEBUG)/prefix.o
 
 $(OBJDIR_DEBUG)/textdefs.o: ../Dependencies/distorm/src/textdefs.c
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/textdefs.c -o $(OBJDIR_DEBUG)/textdefs.o
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/textdefs.c -o $(OBJDIR_DEBUG)/textdefs.o
 
 $(OBJDIR_DEBUG)/wstring.o: ../Dependencies/distorm/src/wstring.c
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/wstring.c -o $(OBJDIR_DEBUG)/wstring.o
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/wstring.c -o $(OBJDIR_DEBUG)/wstring.o
 
 clean_debug:
 	rm -f $(OBJ_DEBUG) $(OUT_DEBUG)
@@ -170,31 +170,31 @@ $(OBJDIR_RELEASE)/CloseRemoteProcess.o: CloseRemoteProcess.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c CloseRemoteProcess.cpp -o $(OBJDIR_RELEASE)/CloseRemoteProcess.o
 
 $(OBJDIR_RELEASE)/decoder.o: ../Dependencies/distorm/src/decoder.c
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/decoder.c -o $(OBJDIR_RELEASE)/decoder.o
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/decoder.c -o $(OBJDIR_RELEASE)/decoder.o
 
 $(OBJDIR_RELEASE)/distorm.o: ../Dependencies/distorm/src/distorm.c
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/distorm.c -o $(OBJDIR_RELEASE)/distorm.o
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/distorm.c -o $(OBJDIR_RELEASE)/distorm.o
 
 $(OBJDIR_RELEASE)/instructions.o: ../Dependencies/distorm/src/instructions.c
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/instructions.c -o $(OBJDIR_RELEASE)/instructions.o
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/instructions.c -o $(OBJDIR_RELEASE)/instructions.o
 
 $(OBJDIR_RELEASE)/insts.o: ../Dependencies/distorm/src/insts.c
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/insts.c -o $(OBJDIR_RELEASE)/insts.o
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/insts.c -o $(OBJDIR_RELEASE)/insts.o
 
 $(OBJDIR_RELEASE)/mnemonics.o: ../Dependencies/distorm/src/mnemonics.c
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/mnemonics.c -o $(OBJDIR_RELEASE)/mnemonics.o
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/mnemonics.c -o $(OBJDIR_RELEASE)/mnemonics.o
 
 $(OBJDIR_RELEASE)/operands.o: ../Dependencies/distorm/src/operands.c
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/operands.c -o $(OBJDIR_RELEASE)/operands.o
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/operands.c -o $(OBJDIR_RELEASE)/operands.o
 
 $(OBJDIR_RELEASE)/prefix.o: ../Dependencies/distorm/src/prefix.c
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/prefix.c -o $(OBJDIR_RELEASE)/prefix.o
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/prefix.c -o $(OBJDIR_RELEASE)/prefix.o
 
 $(OBJDIR_RELEASE)/textdefs.o: ../Dependencies/distorm/src/textdefs.c
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/textdefs.c -o $(OBJDIR_RELEASE)/textdefs.o
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/textdefs.c -o $(OBJDIR_RELEASE)/textdefs.o
 
 $(OBJDIR_RELEASE)/wstring.o: ../Dependencies/distorm/src/wstring.c
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/wstring.c -o $(OBJDIR_RELEASE)/wstring.o
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/wstring.c -o $(OBJDIR_RELEASE)/wstring.o
 
 clean_release:
 	rm -f $(OBJ_RELEASE) $(OUT_RELEASE)

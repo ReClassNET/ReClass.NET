@@ -1,14 +1,19 @@
-#include <sys/ptrace.h>
+
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <sys/user.h>
+#ifdef __linux__
+#include <sys/ptrace.h>
 #include <experimental/filesystem>
-#include <cstddef>
+#endif
+
 
 #include "NativeCore.hpp"
 
+#ifdef __linux__
 namespace fs = std::experimental::filesystem;
+#endif
 
 int ualarm(unsigned int milliseconds)
 {
@@ -24,6 +29,7 @@ int ualarm(unsigned int milliseconds)
 
 pid_t waitpid_timeout(pid_t pid, int* status, int options, int timeoutInMilliseconds, bool& timedOut)
 {
+    #ifdef __linux__
 	struct sigaction sig = {};
 	sig.sa_flags = 0;
 	sig.sa_handler = [](int) {};
@@ -44,6 +50,9 @@ pid_t waitpid_timeout(pid_t pid, int* status, int options, int timeoutInMillisec
 		timedOut = false;
 	}
 	return res;
+#else
+    return 0;
+#endif
 }
 
 pid_t waitpid_timeout(int* status, int timeoutInMilliseconds, bool& timedOut)
@@ -54,25 +63,27 @@ pid_t waitpid_timeout(int* status, int timeoutInMilliseconds, bool& timedOut)
 extern "C" bool RC_CallConv AttachDebuggerToProcess(RC_Pointer id)
 {
 	//TODO: Attach to all threads.
-
+#ifdef __linux__
 	ptrace(PTRACE_ATTACH, static_cast<pid_t>(reinterpret_cast<intptr_t>(id)), nullptr, nullptr);
 	
 	waitpid(-1, nullptr, 0);
 
 	ptrace(PTRACE_CONT, static_cast<pid_t>(reinterpret_cast<intptr_t>(id)), nullptr, nullptr);
-
+#endif
 	return false;
 }
 
 extern "C" void RC_CallConv DetachDebuggerFromProcess(RC_Pointer id)
 {
 	//TODO: Detach to all threads.
-
+#ifdef __linux__
 	ptrace(PTRACE_DETACH, static_cast<pid_t>(reinterpret_cast<intptr_t>(id)), nullptr, nullptr);
+#endif
 }
 
 extern "C" bool RC_CallConv AwaitDebugEvent(DebugEvent* evt, int timeoutInMilliseconds)
 {
+#ifdef __linux__
 	int status;
 	bool timedOut;
 
@@ -167,10 +178,14 @@ extern "C" bool RC_CallConv AwaitDebugEvent(DebugEvent* evt, int timeoutInMillis
 	}
 
 	return result;
+#else
+    return false;
+#endif
 }
 
 extern "C" void RC_CallConv HandleDebugEvent(DebugEvent* evt)
 {
+#ifdef __linux__
 	auto tid = static_cast<pid_t>(reinterpret_cast<intptr_t>(evt->ThreadId));
 
 	siginfo_t si;
@@ -194,10 +209,12 @@ extern "C" void RC_CallConv HandleDebugEvent(DebugEvent* evt)
 
 		ptrace(PTRACE_CONT, tid, nullptr, signal);
 	}
+#endif
 }
 
 extern "C" bool RC_CallConv SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, HardwareBreakpointRegister reg, HardwareBreakpointTrigger type, HardwareBreakpointSize size, bool set)
 {
+#ifdef __linux__
 	if (reg == HardwareBreakpointRegister::InvalidRegister)
 	{
 		return false;
@@ -295,6 +312,6 @@ extern "C" bool RC_CallConv SetHardwareBreakpoint(RC_Pointer id, RC_Pointer addr
 			}
 		}
 	}
-
+#endif
 	return true;
 }

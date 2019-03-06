@@ -1,6 +1,12 @@
 //#include <sys/types.h>
 #include <csignal>
 
+#if __APPLE__
+#include <sys/proc_info.h>
+#include <libproc.h>
+#include <mach/mach_init.h>
+#include <mach/mach_vm.h>
+#endif
 #include "NativeCore.hpp"
 
 extern "C" void RC_CallConv ControlRemoteProcess(RC_Pointer handle, ControlRemoteProcessAction action)
@@ -14,13 +20,6 @@ extern "C" void RC_CallConv ControlRemoteProcess(RC_Pointer handle, ControlRemot
 	{
 		signal = SIGCONT;
 	}
-    #ifdef __linux__
         kill(static_cast<pid_t>(reinterpret_cast<intptr_t>(handle)), signal);
-    #elif __APPLE__
-        task_t task;
-    
-        task_for_pid(current_task(), (int)id, &task);
-        return (RC_Pointer)task;
-    #endif
 	
 }

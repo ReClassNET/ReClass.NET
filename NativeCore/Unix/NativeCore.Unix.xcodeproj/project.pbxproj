@@ -52,7 +52,7 @@
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/make;
-			buildWorkingDirectory = /Users/h3xc0r3/Documents/GitHub/ReClass.NET/NativeCore/Unix;
+			buildWorkingDirectory = /Users/tarek/ReClass.NET/NativeCore/Unix;
 			dependencies = (
 			);
 			name = NativeCore.Unix;

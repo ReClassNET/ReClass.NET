@@ -38,6 +38,10 @@ std::istream& operator >> (std::istream& s, SectionProtection& protection)
 
 extern "C" void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer handle, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
 {
+#ifdef __APPLE__
+    return;
+#endif
+    
 	if (callbackSection == nullptr && callbackModule == nullptr)
 	{
 		return;
