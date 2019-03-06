@@ -368,24 +368,13 @@ namespace ReClassNET.UI
 
 							break;
 						}
-						else if (hotSpot.Type == HotSpotType.ChangeClassType)
+						else if (hotSpot.Type == HotSpotType.ChangeClassType || hotSpot.Type == HotSpotType.ChangeWrappedType || hotSpot.Type == HotSpotType.ChangeEnumType)
 						{
-							var handler = ChangeClassTypeClick;
-							handler?.Invoke(this, new NodeClickEventArgs(hitObject, e.Button, e.Location));
+							var handler = hotSpot.Type == HotSpotType.ChangeClassType
+								? ChangeClassTypeClick : hotSpot.Type == HotSpotType.ChangeWrappedType
+									? ChangeWrappedTypeClick : ChangeEnumTypeClick;
 
-							break;
-						}
-						else if (hotSpot.Type == HotSpotType.ChangeWrappedType)
-						{
-							var handler = ChangeWrappedTypeClick;
-							handler?.Invoke(this, new NodeClickEventArgs(hitObject, e.Button, e.Location));
-
-							break;
-						}
-						else if (hotSpot.Type == HotSpotType.ChangeEnumType)
-						{
-							var handler = ChangeEnumTypeClick;
-							handler?.Invoke(this, new NodeClickEventArgs(hitObject, e.Button, e.Location));
+							handler?.Invoke(this, new NodeClickEventArgs(hitObject, hotSpot.Address, hotSpot.Memory, e.Button, e.Location));
 
 							break;
 						}
