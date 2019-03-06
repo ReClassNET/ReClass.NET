@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Windows.Forms;
@@ -10,19 +9,19 @@ namespace ReClassNET.Forms
 {
 	public partial class EnumSelectionForm : IconForm
 	{
-		private readonly IReadOnlyList<EnumMetaData> allEnums;
+		private readonly ReClassNetProject project;
 
 		public EnumMetaData SelectedItem => itemListBox.SelectedItem as EnumMetaData;
 
-		public EnumSelectionForm(IEnumerable<EnumMetaData> classes)
+		public EnumSelectionForm(ReClassNetProject project)
 		{
-			Contract.Requires(classes != null);
+			Contract.Requires(project != null);
 
-			allEnums = classes.ToList();
+			this.project = project;
 
 			InitializeComponent();
 
-			ShowFilteredClasses();
+			ShowFilteredEnums();
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -41,7 +40,7 @@ namespace ReClassNET.Forms
 
 		private void filterNameTextBox_TextChanged(object sender, EventArgs e)
 		{
-			ShowFilteredClasses();
+			ShowFilteredEnums();
 		}
 
 		private void itemListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -49,16 +48,61 @@ namespace ReClassNET.Forms
 			selectButton.Enabled = SelectedItem != null;
 		}
 
-		private void ShowFilteredClasses()
+		private void editEnumIconButton_Click(object sender, EventArgs e)
 		{
-			IEnumerable<EnumMetaData> classes = allEnums;
+			var @enum = SelectedItem;
+			if (@enum == null)
+			{
+				return;
+			}
+
+			using (var eef = new EnumEditorForm(@enum))
+			{
+				eef.ShowDialog();
+			}
+		}
+
+		private void addEnumIconButton_Click(object sender, EventArgs e)
+		{
+			var @enum = new EnumMetaData
+			{
+				Name = "Enum"
+			};
+
+			using (var eef = new EnumEditorForm(@enum))
+			{
+				if (eef.ShowDialog() == DialogResult.OK)
+				{
+					project.AddEnum(@enum);
+
+					ShowFilteredEnums();
+				}
+			}
+		}
+
+		private void removeEnumIconButton_Click(object sender, EventArgs e)
+		{
+			var @enum = SelectedItem;
+			if (@enum == null)
+			{
+				return;
+			}
+
+			project.RemoveEnum(@enum);
+
+			ShowFilteredEnums();
+		}
+
+		private void ShowFilteredEnums()
+		{
+			var enums = project.Enums;
 
 			if (!string.IsNullOrEmpty(filterNameTextBox.Text))
 			{
-				classes = classes.Where(c => c.Name.IndexOf(filterNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
+				enums = enums.Where(c => c.Name.IndexOf(filterNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
 			}
 
-			itemListBox.DataSource = classes.ToList();
+			itemListBox.DataSource = enums.ToList();
 		}
 	}
 }

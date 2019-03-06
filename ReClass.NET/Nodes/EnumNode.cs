@@ -12,7 +12,7 @@ namespace ReClassNET.Nodes
 {
 	public class EnumNode : BaseNode
 	{
-		public override int MemorySize => MetaData.UnderlyingTypeSize;
+		public override int MemorySize => (int)MetaData.Size;
 
 		public EnumMetaData MetaData { get; private set; } = EnumMetaData.Default;
 
@@ -22,7 +22,7 @@ namespace ReClassNET.Nodes
 			{
 				Name = "TestEnum"
 			};
-			MetaData.SetData(true, 4, new SortedDictionary<long, string>
+			MetaData.SetData(true, EnumMetaData.UnderlyingTypeSize.FourBytes, new SortedDictionary<long, string>
 			{
 				{ 0, "Val0" },
 				{ 1, "Val1" },
@@ -51,15 +51,15 @@ namespace ReClassNET.Nodes
 		/// <returns></returns>
 		public BaseNumericNode GetUnderlayingNode()
 		{
-			switch (MetaData.UnderlyingTypeSize)
+			switch (MetaData.Size)
 			{
-				case 1:
+				case EnumMetaData.UnderlyingTypeSize.OneByte:
 					return new UInt8Node();
-				case 2:
+				case EnumMetaData.UnderlyingTypeSize.TwoBytes:
 					return new UInt16Node();
-				case 4:
+				case EnumMetaData.UnderlyingTypeSize.FourBytes:
 					return new UInt32Node();
-				case 8:
+				case EnumMetaData.UnderlyingTypeSize.EightBytes:
 					return new UInt64Node();
 			}
 
@@ -68,15 +68,15 @@ namespace ReClassNET.Nodes
 
 		public long ReadValueFromMemory(MemoryBuffer memory)
 		{
-			switch (MetaData.UnderlyingTypeSize)
+			switch (MetaData.Size)
 			{
-				case 1:
+				case EnumMetaData.UnderlyingTypeSize.OneByte:
 					return memory.ReadInt8(Offset);
-				case 2:
+				case EnumMetaData.UnderlyingTypeSize.TwoBytes:
 					return memory.ReadInt16(Offset);
-				case 4:
+				case EnumMetaData.UnderlyingTypeSize.FourBytes:
 					return memory.ReadInt32(Offset);
-				case 8:
+				case EnumMetaData.UnderlyingTypeSize.EightBytes:
 					return memory.ReadInt64(Offset);
 			}
 

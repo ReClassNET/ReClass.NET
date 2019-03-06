@@ -101,7 +101,7 @@ namespace ReClassNET.Project
 			var references = GetClassReferences(node).ToList();
 			if (references.Any())
 			{
-				throw new ClassReferencedException(references);
+				throw new ClassReferencedException(node, references);
 			}
 
 			if (classes.Remove(node))
@@ -126,18 +126,68 @@ namespace ReClassNET.Project
 				}
 			}
 		}
+
+		public void AddEnum(EnumMetaData @enum)
+		{
+			Contract.Requires(@enum != null);
+
+			enums.Add(@enum);
+		}
+
+		public void RemoveEnum(EnumMetaData @enum)
+		{
+			Contract.Requires(@enum != null);
+
+			var refrences = GetEnumReferences(@enum).ToList();
+			if (refrences.Any())
+			{
+				throw new EnumReferencedException(@enum, refrences.Select(e => e.GetParentClass()).Distinct());
+			}
+
+			enums.Remove(@enum);
+		}
+
+		private IEnumerable<EnumNode> GetEnumReferences(EnumMetaData @enum)
+		{
+			Contract.Requires(@enum != null);
+
+			return classes
+				.SelectMany(c => c.Nodes.Where(n => n is EnumNode || (n as BaseWrapperNode)?.ResolveMostInnerNode() is EnumNode))
+				.Cast<EnumNode>()
+				.Where(e => e.MetaData == @enum);
+		}
 	}
 
 	public class ClassReferencedException : Exception
 	{
+		public ClassNode ClassNode { get; }
 		public IEnumerable<ClassNode> References { get; }
 
-		public ClassReferencedException(IEnumerable<ClassNode> references)
-			: base("This class has references.")
+		public ClassReferencedException(ClassNode node, IEnumerable<ClassNode> references)
+			: base($"The class '{node.Name}' is referenced in other classes.")
 		{
+			Contract.Requires(node != null);
 			Contract.Requires(references != null);
 			Contract.Requires(Contract.ForAll(references, c => c != null));
 
+			ClassNode = node;
+			References = references;
+		}
+	}
+
+	public class EnumReferencedException : Exception
+	{
+		public EnumMetaData Enum { get; }
+		public IEnumerable<ClassNode> References { get; }
+
+		public EnumReferencedException(EnumMetaData @enum, IEnumerable<ClassNode> references)
+			: base($"The enum '{@enum.Name}' is referenced in other classes.")
+		{
+			Contract.Requires(@enum != null);
+			Contract.Requires(references != null);
+			Contract.Requires(Contract.ForAll(references, c => c != null));
+
+			Enum = @enum;
 			References = references;
 		}
 	}

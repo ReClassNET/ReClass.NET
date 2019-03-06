@@ -33,6 +33,9 @@
 			this.filterNameTextBox = new ReClassNET.UI.PlaceholderTextBox();
 			this.itemListBox = new System.Windows.Forms.ListBox();
 			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.addEnumIconButton = new ReClassNET.UI.IconButton();
+			this.removeEnumIconButton = new ReClassNET.UI.IconButton();
+			this.editEnumIconButton = new ReClassNET.UI.IconButton();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -66,7 +69,7 @@
 			this.filterNameTextBox.Location = new System.Drawing.Point(12, 60);
 			this.filterNameTextBox.Name = "filterNameTextBox";
 			this.filterNameTextBox.PlaceholderText = "Filter by Enum Name...";
-			this.filterNameTextBox.Size = new System.Drawing.Size(492, 20);
+			this.filterNameTextBox.Size = new System.Drawing.Size(411, 20);
 			this.filterNameTextBox.TabIndex = 10;
 			this.filterNameTextBox.TextChanged += new System.EventHandler(this.filterNameTextBox_TextChanged);
 			// 
@@ -94,6 +97,45 @@
 			this.bannerBox.Text = "Select an enum of the project.";
 			this.bannerBox.Title = "Enum Selection";
 			// 
+			// addEnumIconButton
+			// 
+			this.addEnumIconButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.addEnumIconButton.Enabled = false;
+			this.addEnumIconButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add;
+			this.addEnumIconButton.Location = new System.Drawing.Point(456, 59);
+			this.addEnumIconButton.Name = "addEnumIconButton";
+			this.addEnumIconButton.Pressed = false;
+			this.addEnumIconButton.Selected = false;
+			this.addEnumIconButton.Size = new System.Drawing.Size(23, 22);
+			this.addEnumIconButton.TabIndex = 15;
+			this.addEnumIconButton.Click += new System.EventHandler(this.addEnumIconButton_Click);
+			// 
+			// removeEnumIconButton
+			// 
+			this.removeEnumIconButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.removeEnumIconButton.Enabled = false;
+			this.removeEnumIconButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Remove;
+			this.removeEnumIconButton.Location = new System.Drawing.Point(481, 59);
+			this.removeEnumIconButton.Name = "removeEnumIconButton";
+			this.removeEnumIconButton.Pressed = false;
+			this.removeEnumIconButton.Selected = false;
+			this.removeEnumIconButton.Size = new System.Drawing.Size(23, 22);
+			this.removeEnumIconButton.TabIndex = 16;
+			this.removeEnumIconButton.Click += new System.EventHandler(this.removeEnumIconButton_Click);
+			// 
+			// editEnumIconButton
+			// 
+			this.editEnumIconButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.editEnumIconButton.Enabled = false;
+			this.editEnumIconButton.Image = global::ReClassNET.Properties.Resources.B16x16_Custom_Type;
+			this.editEnumIconButton.Location = new System.Drawing.Point(431, 59);
+			this.editEnumIconButton.Name = "editEnumIconButton";
+			this.editEnumIconButton.Pressed = false;
+			this.editEnumIconButton.Selected = false;
+			this.editEnumIconButton.Size = new System.Drawing.Size(23, 22);
+			this.editEnumIconButton.TabIndex = 16;
+			this.editEnumIconButton.Click += new System.EventHandler(this.editEnumIconButton_Click);
+			// 
 			// EnumSelectionForm
 			// 
 			this.AcceptButton = this.selectButton;
@@ -101,6 +143,9 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.cancelButton;
 			this.ClientSize = new System.Drawing.Size(516, 306);
+			this.Controls.Add(this.editEnumIconButton);
+			this.Controls.Add(this.addEnumIconButton);
+			this.Controls.Add(this.removeEnumIconButton);
 			this.Controls.Add(this.selectButton);
 			this.Controls.Add(this.cancelButton);
 			this.Controls.Add(this.filterNameTextBox);
@@ -122,5 +167,8 @@
 		private UI.PlaceholderTextBox filterNameTextBox;
 		private System.Windows.Forms.ListBox itemListBox;
 		private UI.BannerBox bannerBox;
+		private UI.IconButton addEnumIconButton;
+		private UI.IconButton removeEnumIconButton;
+		private UI.IconButton editEnumIconButton;
 	}
 }

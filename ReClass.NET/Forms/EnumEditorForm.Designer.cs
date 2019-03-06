@@ -35,10 +35,10 @@
 			this.enumFlagCheckBox = new System.Windows.Forms.CheckBox();
 			this.enumNameTextBox = new System.Windows.Forms.TextBox();
 			this.enumDataGridView = new System.Windows.Forms.DataGridView();
-			this.enumUnderlyingTypeSizeComboBox = new System.Windows.Forms.ComboBox();
-			this.enumUnderlyingTypeSizeLabel = new System.Windows.Forms.Label();
 			this.enumValueKeyColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.enumValueNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.enumUnderlyingTypeSizeLabel = new System.Windows.Forms.Label();
+			this.enumUnderlyingTypeSizeComboBox = new ReClassNET.Forms.UnderlyingSizeComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.enumDataGridView)).BeginInit();
 			this.SuspendLayout();
@@ -124,31 +124,6 @@
 			this.enumDataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.enumDataGridView_CellValidating);
 			this.enumDataGridView.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.enumDataGridView_DefaultValuesNeeded);
 			// 
-			// enumUnderlyingTypeSizeComboBox
-			// 
-			this.enumUnderlyingTypeSizeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.enumUnderlyingTypeSizeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.enumUnderlyingTypeSizeComboBox.FormattingEnabled = true;
-			this.enumUnderlyingTypeSizeComboBox.Items.AddRange(new object[] {
-            "1 Byte",
-            "2 Bytes",
-            "4 Bytes",
-            "8 Bytes"});
-			this.enumUnderlyingTypeSizeComboBox.Location = new System.Drawing.Point(53, 80);
-			this.enumUnderlyingTypeSizeComboBox.Name = "enumUnderlyingTypeSizeComboBox";
-			this.enumUnderlyingTypeSizeComboBox.Size = new System.Drawing.Size(208, 21);
-			this.enumUnderlyingTypeSizeComboBox.TabIndex = 23;
-			// 
-			// enumUnderlyingTypeSizeLabel
-			// 
-			this.enumUnderlyingTypeSizeLabel.AutoSize = true;
-			this.enumUnderlyingTypeSizeLabel.Location = new System.Drawing.Point(9, 83);
-			this.enumUnderlyingTypeSizeLabel.Name = "enumUnderlyingTypeSizeLabel";
-			this.enumUnderlyingTypeSizeLabel.Size = new System.Drawing.Size(30, 13);
-			this.enumUnderlyingTypeSizeLabel.TabIndex = 24;
-			this.enumUnderlyingTypeSizeLabel.Text = "Size:";
-			// 
 			// enumValueKeyColumn
 			// 
 			this.enumValueKeyColumn.HeaderText = "Value";
@@ -160,13 +135,31 @@
 			this.enumValueNameColumn.HeaderText = "Name";
 			this.enumValueNameColumn.Name = "enumValueNameColumn";
 			// 
+			// enumUnderlyingTypeSizeLabel
+			// 
+			this.enumUnderlyingTypeSizeLabel.AutoSize = true;
+			this.enumUnderlyingTypeSizeLabel.Location = new System.Drawing.Point(9, 83);
+			this.enumUnderlyingTypeSizeLabel.Name = "enumUnderlyingTypeSizeLabel";
+			this.enumUnderlyingTypeSizeLabel.Size = new System.Drawing.Size(30, 13);
+			this.enumUnderlyingTypeSizeLabel.TabIndex = 24;
+			this.enumUnderlyingTypeSizeLabel.Text = "Size:";
+			// 
+			// enumUnderlyingTypeSizeComboBox
+			// 
+			this.enumUnderlyingTypeSizeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.enumUnderlyingTypeSizeComboBox.Location = new System.Drawing.Point(53, 80);
+			this.enumUnderlyingTypeSizeComboBox.Name = "enumUnderlyingTypeSizeComboBox";
+			this.enumUnderlyingTypeSizeComboBox.Size = new System.Drawing.Size(208, 21);
+			this.enumUnderlyingTypeSizeComboBox.TabIndex = 25;
+			// 
 			// EnumEditorForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(380, 282);
-			this.Controls.Add(this.enumUnderlyingTypeSizeLabel);
 			this.Controls.Add(this.enumUnderlyingTypeSizeComboBox);
+			this.Controls.Add(this.enumUnderlyingTypeSizeLabel);
 			this.Controls.Add(this.saveButton);
 			this.Controls.Add(this.enumNameLabel);
 			this.Controls.Add(this.cancelButton);
@@ -193,9 +186,9 @@
 		private System.Windows.Forms.CheckBox enumFlagCheckBox;
 		private System.Windows.Forms.TextBox enumNameTextBox;
 		private System.Windows.Forms.DataGridView enumDataGridView;
-		private System.Windows.Forms.ComboBox enumUnderlyingTypeSizeComboBox;
 		private System.Windows.Forms.Label enumUnderlyingTypeSizeLabel;
 		private System.Windows.Forms.DataGridViewTextBoxColumn enumValueKeyColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn enumValueNameColumn;
+		private UnderlyingSizeComboBox enumUnderlyingTypeSizeComboBox;
 	}
 }

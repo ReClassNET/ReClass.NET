@@ -4,25 +4,27 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Project;
+using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
 	public partial class EnumEditorForm : IconForm
 	{
-		private readonly EnumMetaData enumMetaData;
+		private readonly EnumMetaData @enum;
 
-		public EnumEditorForm(EnumMetaData enumMetaData)
+		public EnumEditorForm(EnumMetaData @enum)
 		{
-			Contract.Requires(enumMetaData != null);
+			Contract.Requires(@enum != null);
 
 			InitializeComponent();
 
-			this.enumMetaData = enumMetaData;
+			this.@enum = @enum;
 
-			enumNameTextBox.Text = enumMetaData.Name;
-			enumFlagCheckBox.Checked = enumMetaData.UseFlagsMode;
+			enumNameTextBox.Text = @enum.Name;
+			enumUnderlyingTypeSizeComboBox.SelectedValue = @enum.Size;
+			enumFlagCheckBox.Checked = @enum.UseFlagsMode;
 
-			foreach (var kv in enumMetaData.Values)
+			foreach (var kv in @enum.Values)
 			{
 				enumDataGridView.Rows.Add(kv.Key, kv.Value);
 			}
@@ -41,7 +43,7 @@ namespace ReClassNET.Forms
 
 		private void saveButton_Click(object sender, EventArgs e)
 		{
-			enumMetaData.Name = enumNameTextBox.Text;
+			@enum.Name = enumNameTextBox.Text;
 
 			var values = new Dictionary<long, string>();
 
@@ -57,7 +59,7 @@ namespace ReClassNET.Forms
 				values.Add(valueKey, valueName);
 			}
 
-			enumMetaData.SetData(enumFlagCheckBox.Checked, 4, values);
+			@enum.SetData(enumFlagCheckBox.Checked, enumUnderlyingTypeSizeComboBox.SelectedValue, values);
 		}
 
 		private void enumDataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -81,4 +83,6 @@ namespace ReClassNET.Forms
 			}
 		}
 	}
+
+	internal class UnderlyingSizeComboBox : EnumComboBox<EnumMetaData.UnderlyingTypeSize> { }
 }

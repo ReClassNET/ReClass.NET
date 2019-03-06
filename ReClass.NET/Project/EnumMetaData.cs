@@ -6,37 +6,40 @@ namespace ReClassNET.Project
 {
 	public class EnumMetaData
 	{
+		public enum UnderlyingTypeSize
+		{
+			OneByte = 1,
+			TwoBytes = 2,
+			FourBytes = 4,
+			EightBytes = 8
+		}
+
 		public static EnumMetaData Default => new EnumMetaData { Name = "DummyEnum" };
 
 		public string Name { get; set; }
 
 		public bool UseFlagsMode { get; private set; }
 
-		public int UnderlyingTypeSize { get; private set; } = sizeof(int);
+		public UnderlyingTypeSize Size { get; private set; } = UnderlyingTypeSize.FourBytes;
 
 		public IReadOnlyList<KeyValuePair<long, string>> Values { get; private set; }
 
-		public void SetData(bool useFlagsMode, int underlyingTypeSize, IEnumerable<KeyValuePair<long, string>> values)
+		public void SetData(bool useFlagsMode, UnderlyingTypeSize size, IEnumerable<KeyValuePair<long, string>> values)
 		{
-			if (!(underlyingTypeSize == 1 || underlyingTypeSize == 2 || underlyingTypeSize == 4 || underlyingTypeSize == 8))
-			{
-				throw new ArgumentOutOfRangeException(nameof(underlyingTypeSize));
-			}
-			
 			var temp = values.OrderBy(t => t.Key).ToList();
 
 			if (useFlagsMode)
 			{
 				var maxPossibleValue = ulong.MaxValue;
-				switch (underlyingTypeSize)
+				switch (size)
 				{
-					case 1:
+					case UnderlyingTypeSize.OneByte:
 						maxPossibleValue = byte.MaxValue;
 						break;
-					case 2:
+					case UnderlyingTypeSize.TwoBytes:
 						maxPossibleValue = ushort.MaxValue;
 						break;
-					case 4:
+					case UnderlyingTypeSize.FourBytes:
 						maxPossibleValue = uint.MaxValue;
 						break;
 				}
@@ -50,17 +53,17 @@ namespace ReClassNET.Project
 			{
 				var minPossibleValue = long.MinValue;
 				var maxPossibleValue = long.MaxValue;
-				switch (underlyingTypeSize)
+				switch (size)
 				{
-					case 1:
+					case UnderlyingTypeSize.OneByte:
 						minPossibleValue = sbyte.MinValue;
 						maxPossibleValue = sbyte.MaxValue;
 						break;
-					case 2:
+					case UnderlyingTypeSize.TwoBytes:
 						minPossibleValue = short.MinValue;
 						maxPossibleValue = short.MaxValue;
 						break;
-					case 4:
+					case UnderlyingTypeSize.FourBytes:
 						minPossibleValue = int.MinValue;
 						maxPossibleValue = int.MaxValue;
 						break;
@@ -73,6 +76,7 @@ namespace ReClassNET.Project
 			}
 
 			UseFlagsMode = useFlagsMode;
+			Size = size;
 			Values = temp;
 		}
 	}
