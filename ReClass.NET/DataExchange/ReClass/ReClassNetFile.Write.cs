@@ -163,6 +163,11 @@ namespace ReClassNET.DataExchange.ReClass
 					element.SetAttributeValue(XmlSignatureAttribute, functionNode.Signature);
 					break;
 				}
+				case EnumNode enumNode:
+				{
+					element.SetAttributeValue(XmlReferenceAttribute, enumNode.MetaData.Name);
+					break;
+				}
 			}
 
 			return element;

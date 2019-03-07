@@ -299,6 +299,14 @@ namespace ReClassNET.DataExchange.ReClass
 					}
 					break;
 				}
+				case EnumNode enumNode:
+				{
+					var enumName = element.Attribute(XmlReferenceAttribute)?.Value ?? string.Empty;
+					var @enum = project.Enums.FirstOrDefault(e => e.Name == enumName) ?? EnumMetaData.Default;
+					
+					enumNode.ChangeEnum(@enum);
+					break;
+				}
 			}
 
 			return node;
