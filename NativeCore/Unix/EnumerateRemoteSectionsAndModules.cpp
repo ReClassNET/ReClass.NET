@@ -4,12 +4,52 @@
 
 #include "NativeCore.hpp"
 
+#ifdef __APPLE__
+#include <stdio.h>
+#include <stdlib.h>
+#include <mach-o/dyld_images.h>
+#include <mach/vm_map.h>
+#include <sys/stat.h>
+#define PATH_MAX 2048
+
+unsigned char *
+readProcessMemory (int pid,
+                   mach_vm_address_t addr,
+                   mach_msg_type_number_t* size) {
+    task_t t;
+    task_for_pid(mach_task_self(), pid, &t);
+    mach_msg_type_number_t  dataCnt = (mach_msg_type_number_t) *size;
+    vm_offset_t readMem;
+    
+    // Use vm_read, rather than mach_vm_read, since the latter is different in
+    // iOS.
+    
+    kern_return_t kr = vm_read(t,           // vm_map_t target_task,
+                               addr,                      // mach_vm_address_t address,
+                               *size,                     // mach_vm_size_t size
+                               &readMem,                  //vm_offset_t *data,
+                               &dataCnt);                 // mach_msg_type_number_t *dataCnt
+    
+    if (kr) {
+        fprintf (stderr, "Unable to read target task's memory @%p - kr 0x%x\n" ,
+                 (void *) addr, kr);
+        return NULL;
+    }
+    
+    return ( (unsigned char *) readMem);
+}
+#endif
+
+
 inline bool operator&(SectionProtection& lhs, SectionProtection rhs)
 {
 	using T = std::underlying_type_t<SectionProtection>;
 
 	return (static_cast<T>(lhs) & static_cast<T>(rhs)) == static_cast<T>(rhs);
 }
+
+
+
 
 template<typename T>
 inline std::istream& skip(std::istream& s)
@@ -38,9 +78,7 @@ std::istream& operator >> (std::istream& s, SectionProtection& protection)
 
 extern "C" void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer handle, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
 {
-#ifdef __APPLE__
-    return;
-#endif
+
     
 	if (callbackSection == nullptr && callbackModule == nullptr)
 	{
@@ -54,6 +92,8 @@ extern "C" void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer handle,
 		RC_UnicodeChar Path[PATH_MAXIMUM_LENGTH] = {};
 	};
     
+#ifdef __linux__
+
     auto inputData = (std::stringstream() << "/proc/" << reinterpret_cast<intptr_t>(handle) << "/maps").str();
 
 	std::ifstream input(inputData);
@@ -132,4 +172,76 @@ extern "C" void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer handle,
 			callbackModule(&module);
 		}
 	}
+#elif __APPLE__
+
+    task_t task;
+    task_for_pid(mach_task_self(), (int)handle, &task);
+    
+    struct task_dyld_info dyld_info;
+    vm_address_t address = 0;
+    mach_msg_type_number_t count = TASK_DYLD_INFO_COUNT;
+    
+    if (task_info(task, TASK_DYLD_INFO, (task_info_t)&dyld_info, &count) == KERN_SUCCESS)
+    {
+        address = (vm_address_t)dyld_info.all_image_info_addr;
+    }
+    
+    struct dyld_all_image_infos *dyldaii;
+    mach_msg_type_number_t size = sizeof(dyld_all_image_infos);
+    vm_offset_t readMem;
+    kern_return_t kr = vm_read(task, address, size, &readMem, &size);
+    
+    if (kr != KERN_SUCCESS)
+        return;
+    
+    dyldaii = (dyld_all_image_infos *) readMem;
+    int imageCount = dyldaii->infoArrayCount;
+    mach_msg_type_number_t dataCnt = imageCount * 24;
+    struct dyld_image_info *g_dii = NULL;
+    g_dii = (struct dyld_image_info *) malloc (dataCnt);
+    // 32bit bs 64bit
+    kern_return_t kr2 = vm_read(task, (vm_address_t)dyldaii->infoArray, dataCnt, &readMem, &dataCnt);
+    if (kr2)
+    {
+        free(g_dii);
+        return;
+    }
+    
+    struct dyld_image_info *dii = (struct dyld_image_info *) readMem;
+    
+    for (int i = 0; i < imageCount; i++)
+    {
+        dataCnt = 1024;
+        vm_read(task, (vm_address_t)dii[i].imageFilePath, dataCnt, &readMem, &dataCnt);
+        char *imageName = (char *)readMem;
+        
+        if (imageName)
+        {
+            g_dii[i].imageFilePath = strdup(imageName);
+        }
+        else
+        {
+            g_dii[i].imageFilePath = NULL;
+        }
+        
+        g_dii[i].imageLoadAddress = dii[i].imageLoadAddress;
+        
+        struct stat st;
+        stat(imageName, &st);
+        
+        EnumerateRemoteModuleData module = {};
+        module.BaseAddress = (RC_Pointer)dii[i].imageLoadAddress;
+        module.Size = st.st_size;
+        MultiByteToUnicode((char*)imageName, module.Path, PATH_MAXIMUM_LENGTH);
+        callbackModule(&module);
+    }
+    
+    free(g_dii);
+    
+    
+    
+    
+    
+    
+#endif
 }

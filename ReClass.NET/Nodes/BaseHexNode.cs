@@ -26,7 +26,7 @@ namespace ReClassNET.Nodes
 
 		protected BaseHexNode()
 		{
-			Contract.Ensures(buffer != null);
+            Contract.Ensures(buffer != null);
 
 			buffer = new byte[MemorySize];
 		}

@@ -43,7 +43,8 @@ namespace ReClassNET.UI
 
 			try
 			{
-				using (var g = Graphics.FromHwnd(IntPtr.Zero))
+                dpiX = dpiY = 96;
+                /*using (var g = Graphics.FromHwnd(IntPtr.Zero))
 				{
 					dpiX = (int)g.DpiX;
 					dpiY = (int)g.DpiY;
@@ -53,8 +54,8 @@ namespace ReClassNET.UI
 						dpiX = StdDpi;
 						dpiY = StdDpi;
 					}
-				}
-			}
+				}*/
+            }
 			catch
 			{
 

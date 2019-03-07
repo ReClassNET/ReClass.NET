@@ -25,7 +25,12 @@ extern "C" bool RC_CallConv ReadRemoteMemory(RC_Pointer handle, RC_Pointer addre
         return true;
     #elif __APPLE__
         uint32_t sz;
-        return vm_read(*(vm_map_t*)&handle, (vm_address_t) address, (vm_size_t) size, (vm_offset_t *)(static_cast<uint8_t*>(buffer) + offset), &sz) == KERN_SUCCESS;
+    
+        task_t task;
+    
+        task_for_pid(current_task(), (int)handle, &task);
+
+        return vm_read_overwrite((vm_map_t)task, (vm_address_t) address, (vm_size_t) size, (vm_offset_t)(static_cast<uint8_t*>(buffer) + offset), &sz) == KERN_SUCCESS;
     #endif
 	
 }

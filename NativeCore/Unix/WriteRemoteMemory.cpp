@@ -3,6 +3,7 @@
 #include <mach/mach_init.h>
 #include <mach/mach_vm.h>
 #include <mach/mach.h>
+
 #endif
 
 #include "NativeCore.hpp"
@@ -26,7 +27,24 @@ extern "C" bool RC_CallConv WriteRemoteMemory(RC_Pointer handle, RC_Pointer addr
     
         return true;
     #elif __APPLE__
-    return vm_write(*(vm_map_t*)&handle , (vm_address_t) address, (vm_offset_t)(static_cast<uint8_t*>(buffer) + offset), size) == KERN_SUCCESS;
+    task_t task;
+    
+    task_for_pid(current_task(), (int)handle, &task);
+    
+    mach_port_t task_port;
+    vm_region_basic_info_data_t info;
+    mach_msg_type_number_t info_count = VM_REGION_BASIC_INFO_COUNT;
+    vm_region_flavor_t flavor = VM_REGION_BASIC_INFO;
+    
+    vm_address_t region = (vm_address_t)address;
+    vm_size_t region_size = 0;
+
+    
+    vm_region(task, &region, &region_size, flavor, (vm_region_info_t)&info, (mach_msg_type_number_t*)&info_count, (mach_port_t*)&task_port);
+    
+    vm_protect(task, region, region_size, false, VM_PROT_READ | VM_PROT_WRITE | VM_PROT_COPY);
+    
+    return vm_write((vm_map_t)task , (vm_address_t) address, (vm_offset_t)(static_cast<uint8_t*>(buffer) + offset), size) == KERN_SUCCESS;
     #endif
     
 }
