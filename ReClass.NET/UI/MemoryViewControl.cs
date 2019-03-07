@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
-using ReClassNET.Project;
 using ReClassNET.Util;
 
 namespace ReClassNET.UI
@@ -219,6 +218,8 @@ namespace ReClassNET.UI
 			catch (Exception)
 			{
 				Debug.Assert(false);
+
+				throw;
 			}
 		}
 
@@ -239,149 +240,142 @@ namespace ReClassNET.UI
 			{
 				if (hotSpot.Rect.Contains(e.Location))
 				{
-					try
+					var hitObject = hotSpot.Node;
+
+					if (hotSpot.Type == HotSpotType.OpenClose)
 					{
-						var hitObject = hotSpot.Node;
+						hitObject.ToggleLevelOpen(hotSpot.Level);
 
-						if (hotSpot.Type == HotSpotType.OpenClose)
-						{
-							hitObject.ToggleLevelOpen(hotSpot.Level);
+						invalidate = true;
 
-							invalidate = true;
-
-							break;
-						}
-						if (hotSpot.Type == HotSpotType.Click)
-						{
-							hitObject.Update(hotSpot);
-
-							invalidate = true;
-
-							break;
-						}
-						if (hotSpot.Type == HotSpotType.Select)
-						{
-							if (e.Button == MouseButtons.Left)
-							{
-								if (ModifierKeys == Keys.None)
-								{
-									ClearSelection();
-
-									hitObject.IsSelected = true;
-
-									selectedNodes.Add(hotSpot);
-
-									OnSelectionChanged();
-
-									selectionAnchor = selectionCaret = hotSpot;
-								}
-								else if (ModifierKeys == Keys.Control)
-								{
-									hitObject.IsSelected = !hitObject.IsSelected;
-
-									if (hitObject.IsSelected)
-									{
-										selectedNodes.Add(hotSpot);
-									}
-									else
-									{
-										selectedNodes.Remove(selectedNodes.FirstOrDefault(c => c.Node == hitObject));
-									}
-
-									OnSelectionChanged();
-								}
-								else if (ModifierKeys == Keys.Shift)
-								{
-									if (selectedNodes.Count > 0)
-									{
-										var selectedNode = selectedNodes[0].Node;
-										if (hitObject.GetParentContainer() != null && selectedNode.GetParentContainer() != hitObject.GetParentContainer())
-										{
-											continue;
-										}
-
-										if (hotSpot.Node is BaseContainerNode)
-										{
-											continue;
-										}
-
-										var first = Utils.Min(selectedNodes[0], hotSpot, h => h.Node.Offset.ToInt32());
-										var last = first == hotSpot ? selectedNodes[0] : hotSpot;
-
-										ClearSelection();
-
-										var containerNode = selectedNode.GetParentContainer();
-										foreach (var spot in containerNode.Nodes
-											.SkipWhile(n => n != first.Node)
-											.TakeUntil(n => n == last.Node)
-											.Select(n => new HotSpot
-											{
-												Address = containerNode.Offset.Add(n.Offset),
-												Node = n,
-												Memory = first.Memory,
-												Level = first.Level
-											}))
-										{
-											spot.Node.IsSelected = true;
-											selectedNodes.Add(spot);
-										}
-
-										OnSelectionChanged();
-
-										selectionAnchor = first;
-										selectionCaret = last;
-									}
-								}
-							}
-							else if (e.Button == MouseButtons.Right)
-							{
-								// If there is only one selected node, select the node the user clicked at.
-								if (selectedNodes.Count <= 1)
-								{
-									ClearSelection();
-
-									hitObject.IsSelected = true;
-
-									selectedNodes.Add(hotSpot);
-
-									OnSelectionChanged();
-
-									selectionAnchor = selectionCaret = hotSpot;
-								}
-
-								ShowNodeContextMenu(e.Location);
-							}
-
-							invalidate = true;
-						}
-						else if (hotSpot.Type == HotSpotType.Drop)
-						{
-							ShowNodeContextMenu(e.Location);
-
-							break;
-						}
-						else if (hotSpot.Type == HotSpotType.Delete)
-						{
-							hotSpot.Node.GetParentContainer().RemoveNode(hotSpot.Node);
-
-							invalidate = true;
-
-							break;
-						}
-						else if (hotSpot.Type == HotSpotType.ChangeClassType || hotSpot.Type == HotSpotType.ChangeWrappedType || hotSpot.Type == HotSpotType.ChangeEnumType)
-						{
-							var handler = hotSpot.Type == HotSpotType.ChangeClassType
-								? ChangeClassTypeClick : hotSpot.Type == HotSpotType.ChangeWrappedType
-									? ChangeWrappedTypeClick : ChangeEnumTypeClick;
-
-							handler?.Invoke(this, new NodeClickEventArgs(hitObject, hotSpot.Address, hotSpot.Memory, e.Button, e.Location));
-
-							break;
-						}
+						break;
 					}
-					catch (Exception ex)
+					if (hotSpot.Type == HotSpotType.Click)
 					{
-						Program.Logger.Log(ex);
+						hitObject.Update(hotSpot);
+
+						invalidate = true;
+
+						break;
+					}
+					if (hotSpot.Type == HotSpotType.Select)
+					{
+						if (e.Button == MouseButtons.Left)
+						{
+							if (ModifierKeys == Keys.None)
+							{
+								ClearSelection();
+
+								hitObject.IsSelected = true;
+
+								selectedNodes.Add(hotSpot);
+
+								OnSelectionChanged();
+
+								selectionAnchor = selectionCaret = hotSpot;
+							}
+							else if (ModifierKeys == Keys.Control)
+							{
+								hitObject.IsSelected = !hitObject.IsSelected;
+
+								if (hitObject.IsSelected)
+								{
+									selectedNodes.Add(hotSpot);
+								}
+								else
+								{
+									selectedNodes.Remove(selectedNodes.FirstOrDefault(c => c.Node == hitObject));
+								}
+
+								OnSelectionChanged();
+							}
+							else if (ModifierKeys == Keys.Shift)
+							{
+								if (selectedNodes.Count > 0)
+								{
+									var selectedNode = selectedNodes[0].Node;
+									if (hitObject.GetParentContainer() != null && selectedNode.GetParentContainer() != hitObject.GetParentContainer())
+									{
+										continue;
+									}
+
+									if (hotSpot.Node is BaseContainerNode)
+									{
+										continue;
+									}
+
+									var first = Utils.Min(selectedNodes[0], hotSpot, h => h.Node.Offset.ToInt32());
+									var last = first == hotSpot ? selectedNodes[0] : hotSpot;
+
+									ClearSelection();
+
+									var containerNode = selectedNode.GetParentContainer();
+									foreach (var spot in containerNode.Nodes
+										.SkipWhile(n => n != first.Node)
+										.TakeUntil(n => n == last.Node)
+										.Select(n => new HotSpot
+										{
+											Address = containerNode.Offset.Add(n.Offset),
+											Node = n,
+											Memory = first.Memory,
+											Level = first.Level
+										}))
+									{
+										spot.Node.IsSelected = true;
+										selectedNodes.Add(spot);
+									}
+
+									OnSelectionChanged();
+
+									selectionAnchor = first;
+									selectionCaret = last;
+								}
+							}
+						}
+						else if (e.Button == MouseButtons.Right)
+						{
+							// If there is only one selected node, select the node the user clicked at.
+							if (selectedNodes.Count <= 1)
+							{
+								ClearSelection();
+
+								hitObject.IsSelected = true;
+
+								selectedNodes.Add(hotSpot);
+
+								OnSelectionChanged();
+
+								selectionAnchor = selectionCaret = hotSpot;
+							}
+
+							ShowNodeContextMenu(e.Location);
+						}
+
+						invalidate = true;
+					}
+					else if (hotSpot.Type == HotSpotType.Drop)
+					{
+						ShowNodeContextMenu(e.Location);
+
+						break;
+					}
+					else if (hotSpot.Type == HotSpotType.Delete)
+					{
+						hotSpot.Node.GetParentContainer().RemoveNode(hotSpot.Node);
+
+						invalidate = true;
+
+						break;
+					}
+					else if (hotSpot.Type == HotSpotType.ChangeClassType || hotSpot.Type == HotSpotType.ChangeWrappedType || hotSpot.Type == HotSpotType.ChangeEnumType)
+					{
+						var handler = hotSpot.Type == HotSpotType.ChangeClassType
+							? ChangeClassTypeClick : hotSpot.Type == HotSpotType.ChangeWrappedType
+								? ChangeWrappedTypeClick : ChangeEnumTypeClick;
+
+						handler?.Invoke(this, new NodeClickEventArgs(hitObject, hotSpot.Address, hotSpot.Memory, e.Button, e.Location));
+
+						break;
 					}
 				}
 			}
