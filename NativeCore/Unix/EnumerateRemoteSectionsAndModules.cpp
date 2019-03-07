@@ -10,34 +10,6 @@
 #include <mach-o/dyld_images.h>
 #include <mach/vm_map.h>
 #include <sys/stat.h>
-#define PATH_MAX 2048
-
-unsigned char *
-readProcessMemory (int pid,
-                   mach_vm_address_t addr,
-                   mach_msg_type_number_t* size) {
-    task_t t;
-    task_for_pid(mach_task_self(), pid, &t);
-    mach_msg_type_number_t  dataCnt = (mach_msg_type_number_t) *size;
-    vm_offset_t readMem;
-    
-    // Use vm_read, rather than mach_vm_read, since the latter is different in
-    // iOS.
-    
-    kern_return_t kr = vm_read(t,           // vm_map_t target_task,
-                               addr,                      // mach_vm_address_t address,
-                               *size,                     // mach_vm_size_t size
-                               &readMem,                  //vm_offset_t *data,
-                               &dataCnt);                 // mach_msg_type_number_t *dataCnt
-    
-    if (kr) {
-        fprintf (stderr, "Unable to read target task's memory @%p - kr 0x%x\n" ,
-                 (void *) addr, kr);
-        return NULL;
-    }
-    
-    return ( (unsigned char *) readMem);
-}
 #endif
 
 
