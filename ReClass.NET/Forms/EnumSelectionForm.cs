@@ -45,7 +45,7 @@ namespace ReClassNET.Forms
 
 		private void itemListBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			selectButton.Enabled = SelectedItem != null;
+			selectButton.Enabled = editEnumIconButton.Enabled = removeEnumIconButton.Enabled = SelectedItem != null;
 		}
 
 		private void editEnumIconButton_Click(object sender, EventArgs e)

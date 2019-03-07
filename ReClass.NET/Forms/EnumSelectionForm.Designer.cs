@@ -100,7 +100,6 @@
 			// addEnumIconButton
 			// 
 			this.addEnumIconButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.addEnumIconButton.Enabled = false;
 			this.addEnumIconButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add;
 			this.addEnumIconButton.Location = new System.Drawing.Point(456, 59);
 			this.addEnumIconButton.Name = "addEnumIconButton";
