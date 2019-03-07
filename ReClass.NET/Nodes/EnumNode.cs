@@ -16,33 +16,17 @@ namespace ReClassNET.Nodes
 
 		public EnumMetaData MetaData { get; private set; } = EnumMetaData.Default;
 
-		public EnumNode()
-		{
-			MetaData = new EnumMetaData
-			{
-				Name = "TestEnum"
-			};
-			MetaData.SetData(true, EnumMetaData.UnderlyingTypeSize.FourBytes, new SortedDictionary<long, string>
-			{
-				{ 0, "Val0" },
-				{ 1, "Val1" },
-				{ 2, "Val2" },
-				{ 4, "Val4" },
-				{ 8, "Val8" },
-				{ 16, "Val16" },
-				{ 32, "Val32" },
-				{ 64, "Val64" },
-				{ 128, "Val128" },
-				{ 256, "Val256" },
-				{ 512, "Val512" },
-				{ 1024, "Val1024" }
-			});
-		}
-
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
 			name = "Enum";
 			icon = Properties.Resources.B16x16_Button_Enum;
+		}
+
+		public void ChangeEnum(EnumMetaData @enum)
+		{
+			Contract.Requires(@enum != null);
+
+			MetaData = @enum;
 		}
 
 		/// <summary>

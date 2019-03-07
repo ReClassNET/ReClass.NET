@@ -856,9 +856,22 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private void memoryViewControl_ChangeEnumTypeClick(object sender, NodeClickEventArgs args)
+		private void memoryViewControl_ChangeEnumTypeClick(object sender, NodeClickEventArgs e)
 		{
-
+			if (e.Node is EnumNode enumNode)
+			{
+				using (var csf = new EnumSelectionForm(CurrentProject))
+				{
+					if (csf.ShowDialog() == DialogResult.OK)
+					{
+						var @enum = csf.SelectedItem;
+						if (@enum != null)
+						{
+							enumNode.ChangeEnum(@enum);
+						}
+					}
+				}
+			}
 		}
 
 		private void showCodeOfClassToolStripMenuItem2_Click(object sender, EventArgs e)
