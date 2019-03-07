@@ -16,6 +16,8 @@
 		public const string XmlRootElement = "reclass";
 		public const string XmlCustomDataElement = "custom_data";
 		public const string XmlTypeMappingElement = "type_mapping";
+		public const string XmlEnumsElement = "enums";
+		public const string XmlEnumElement = "enum";
 		public const string XmlClassesElement = "classes";
 		public const string XmlClassElement = "class";
 		public const string XmlNodeElement = "node";
@@ -32,6 +34,10 @@
 		public const string XmlCountAttribute = "count";
 		public const string XmlBitsAttribute = "bits";
 		public const string XmlLengthAttribute = "length";
+		public const string XmlSizeAttribute = "size";
 		public const string XmlSignatureAttribute = "signature";
+		public const string XmlFlagsAttribute = "flags";
+		public const string XmlItemElement = "item";
+		public const string XmlValueAttribute = "value";
 	}
 }

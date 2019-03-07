@@ -34,15 +34,31 @@ namespace ReClassNET.DataExchange.ReClass
 							XmlRootElement,
 							new XAttribute(XmlVersionAttribute, FileVersion),
 							new XAttribute(XmlPlatformAttribute, Constants.Platform),
-							new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger)),
 							project.CustomData.Serialize(XmlCustomDataElement),
-							project.TypeMapping.Serialize(XmlTypeMappingElement)
+							project.TypeMapping.Serialize(XmlTypeMappingElement),
+							new XElement(XmlEnumsElement, CreateEnumElements(project.Enums)),
+							new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger))
 						)
 					);
 
 					document.Save(entryStream);
 				}
 			}
+		}
+
+		private static IEnumerable<XElement> CreateEnumElements(IEnumerable<EnumMetaData> enums)
+		{
+			return enums.Select(e => new XElement(
+				XmlEnumElement,
+				new XAttribute(XmlNameAttribute, e.Name),
+				new XAttribute(XmlSizeAttribute, e.Size),
+				new XAttribute(XmlFlagsAttribute, e.UseFlagsMode),
+				e.Values.Select(kv => new XElement(
+					XmlItemElement,
+					new XAttribute(XmlValueAttribute, kv.Key),
+					new XAttribute(XmlNameAttribute, kv.Value)
+				))
+			));
 		}
 
 		private static IEnumerable<XElement> CreateClassElements(IEnumerable<ClassNode> classes, ILogger logger)

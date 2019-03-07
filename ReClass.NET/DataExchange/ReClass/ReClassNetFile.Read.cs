@@ -67,26 +67,57 @@ namespace ReClassNET.DataExchange.ReClass
 						project.TypeMapping.Deserialize(typeMappingElement);
 					}
 
+					var enumsElement = document.Root.Element(XmlEnumsElement);
+					if (enumsElement != null)
+					{
+						foreach (var enumElement in enumsElement.Elements(XmlEnumElement))
+						{
+							var name = enumElement.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
+							var useFlagsMode = (bool?)enumElement.Attribute(XmlFlagsAttribute) ?? false;
+							var size = enumElement.Attribute(XmlSizeAttribute).GetEnumValue<EnumMetaData.UnderlyingTypeSize>();
+
+							var values = new Dictionary<long, string>();
+							foreach (var itemElement in enumElement.Elements(XmlItemElement))
+							{
+								var itemName = itemElement.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
+								var itemValue = (long?)itemElement.Attribute(XmlValueAttribute) ?? 0;
+
+								values.Add(itemValue, itemName);
+							}
+
+							var @enum = new EnumMetaData
+							{
+								Name = name
+							};
+							@enum.SetData(useFlagsMode, size, values);
+
+							project.AddEnum(@enum);
+						}
+					}
+
 					var classes = new List<Tuple<XElement, ClassNode>>();
 
-					foreach (var element in document.Root
-						.Element(XmlClassesElement)
-						.Elements(XmlClassElement)
-						.DistinctBy(e => e.Attribute(XmlUuidAttribute)?.Value))
+					var classesElement = document.Root.Element(XmlClassesElement);
+					if (classesElement != null)
 					{
-						var node = new ClassNode(false)
+						foreach (var element in classesElement
+							.Elements(XmlClassElement)
+							.DistinctBy(e => e.Attribute(XmlUuidAttribute)?.Value))
 						{
-							Uuid = NodeUuid.FromBase64String(element.Attribute(XmlUuidAttribute)?.Value, true),
-							Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
-							Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
-							AddressFormula = element.Attribute(XmlAddressAttribute)?.Value ?? string.Empty
-						};
+							var node = new ClassNode(false)
+							{
+								Uuid = NodeUuid.FromBase64String(element.Attribute(XmlUuidAttribute)?.Value, true),
+								Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
+								Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
+								AddressFormula = element.Attribute(XmlAddressAttribute)?.Value ?? string.Empty
+							};
 
-						if (!project.ContainsClass(node.Uuid))
-						{
-							project.AddClass(node);
+							if (!project.ContainsClass(node.Uuid))
+							{
+								project.AddClass(node);
 
-							classes.Add(Tuple.Create(element, node));
+								classes.Add(Tuple.Create(element, node));
+							}
 						}
 					}
 
