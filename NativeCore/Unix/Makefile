@@ -12,17 +12,16 @@ RESINC =
 LIBDIR =
 
 LIB = -lstdc++ 
-LDFLAGS = -shared -Wl,--no-undefined
+LDFLAGS = -shared -Wl
 
 UNAME_S := $(shell uname -s)
-find_32 = $(findstring 32,$(firstword -$(MAKEFLAGS)))$(filter -32,$(MAKEFLAGS))
 ifeq ($(UNAME_S),Linux)
+   LDFLAGS += ,--no-undefined
    LIB += -lstdc++fs
 endif
 
 
-
-if $(find_s)
+ifeq ($(ARCH), 32)
 	LDFLAGS += -m32
 	CFLAGS += -m32
 else
