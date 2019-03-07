@@ -7,11 +7,29 @@ LD = g++
 WINDRES = windres
 
 INC = -I../Dependencies/distorm/include
-CFLAGS = -Wall -fPIC -m32
+CFLAGS = -Wall -fPIC
 RESINC =
 LIBDIR =
+
 LIB = -lstdc++ 
-LDFLAGS = -m32 --shared -Wl
+LDFLAGS = -shared -Wl,--no-undefined
+
+UNAME_S := $(shell uname -s)
+find_32 = $(findstring 32,$(firstword -$(MAKEFLAGS)))$(filter -32,$(MAKEFLAGS))
+ifeq ($(UNAME_S),Linux)
+   LIB += -lstdc++fs
+endif
+
+
+
+if $(find_s)
+	LDFLAGS += -m32
+	CFLAGS += -m32
+else
+	CFLAGS += -DRECLASSNET64=1
+endif
+
+
 
 INC_DEBUG = $(INC)
 CFLAGS_DEBUG = $(CFLAGS) -g
