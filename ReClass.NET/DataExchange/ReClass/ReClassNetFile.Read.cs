@@ -76,13 +76,13 @@ namespace ReClassNET.DataExchange.ReClass
 							var useFlagsMode = (bool?)enumElement.Attribute(XmlFlagsAttribute) ?? false;
 							var size = enumElement.Attribute(XmlSizeAttribute).GetEnumValue<EnumMetaData.UnderlyingTypeSize>();
 
-							var values = new Dictionary<long, string>();
+							var values = new Dictionary<string, long>();
 							foreach (var itemElement in enumElement.Elements(XmlItemElement))
 							{
 								var itemName = itemElement.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
-								var itemValue = (long?)itemElement.Attribute(XmlValueAttribute) ?? 0;
+								var itemValue = (long?)itemElement.Attribute(XmlValueAttribute) ?? 0L;
 
-								values.Add(itemValue, itemName);
+								values.Add(itemName, itemValue);
 							}
 
 							var @enum = new EnumMetaData

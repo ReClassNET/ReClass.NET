@@ -22,9 +22,9 @@ namespace ReClassNET.Project
 
 		public UnderlyingTypeSize Size { get; private set; } = UnderlyingTypeSize.FourBytes;
 
-		public IReadOnlyList<KeyValuePair<long, string>> Values { get; private set; } = new Dictionary<long, string>().ToList();
+		public IReadOnlyList<KeyValuePair<string, long>> Values { get; private set; } = new Dictionary<string, long>().ToList();
 
-		public void SetData(bool useFlagsMode, UnderlyingTypeSize size, IEnumerable<KeyValuePair<long, string>> values)
+		public void SetData(bool useFlagsMode, UnderlyingTypeSize size, IEnumerable<KeyValuePair<string, long>> values)
 		{
 			var temp = values.OrderBy(t => t.Key).ToList();
 
@@ -44,7 +44,7 @@ namespace ReClassNET.Project
 						break;
 				}
 
-				if (temp.Select(kv => (ulong)kv.Key).Max() > maxPossibleValue)
+				if (temp.Select(kv => (ulong)kv.Value).Max() > maxPossibleValue)
 				{
 					throw new ArgumentOutOfRangeException();
 				}
@@ -69,7 +69,7 @@ namespace ReClassNET.Project
 						break;
 				}
 
-				if (temp.Max(kv => kv.Key) > maxPossibleValue || temp.Min(kv => kv.Key) < minPossibleValue)
+				if (temp.Max(kv => kv.Value) > maxPossibleValue || temp.Min(kv => kv.Value) < minPossibleValue)
 				{
 					throw new ArgumentOutOfRangeException();
 				}

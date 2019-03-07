@@ -55,8 +55,8 @@ namespace ReClassNET.DataExchange.ReClass
 				new XAttribute(XmlFlagsAttribute, e.UseFlagsMode),
 				e.Values.Select(kv => new XElement(
 					XmlItemElement,
-					new XAttribute(XmlValueAttribute, kv.Key),
-					new XAttribute(XmlNameAttribute, kv.Value)
+					new XAttribute(XmlNameAttribute, kv.Key),
+					new XAttribute(XmlValueAttribute, kv.Value)
 				))
 			));
 		}

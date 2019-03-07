@@ -45,18 +45,18 @@ namespace ReClassNET.Forms
 		{
 			@enum.Name = enumNameTextBox.Text;
 
-			var values = new Dictionary<long, string>();
+			var values = new Dictionary<string, long>();
 
 			foreach (var row in enumDataGridView.Rows.Cast<DataGridViewRow>().Where(r => r.IsNewRow == false))
 			{
-				if (!long.TryParse(Convert.ToString(row.Cells[0].Value), out var valueKey))
+				if (!long.TryParse(Convert.ToString(row.Cells[0].Value), out var itemValue))
 				{
 					continue;
 				}
 
-				var valueName = Convert.ToString(row.Cells[1].Value);
+				var itemName = Convert.ToString(row.Cells[1].Value);
 
-				values.Add(valueKey, valueName);
+				values.Add(itemName, itemValue);
 			}
 
 			@enum.SetData(enumFlagCheckBox.Checked, enumUnderlyingTypeSizeComboBox.SelectedValue, values);

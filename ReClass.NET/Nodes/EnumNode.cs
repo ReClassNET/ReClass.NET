@@ -73,13 +73,13 @@ namespace ReClassNET.Nodes
 		{
 			if (!MetaData.UseFlagsMode)
 			{
-				var index = MetaData.Values.FindIndex(kv => kv.Key == value);
+				var index = MetaData.Values.FindIndex(kv => kv.Value == value);
 				if (index == -1)
 				{
 					return value.ToString();
 				}
 
-				return MetaData.Values[index].Value;
+				return MetaData.Values[index].Key;
 			}
 
 			return GetFlagsStringRepresentation(value);
@@ -98,7 +98,7 @@ namespace ReClassNET.Nodes
 
 			while (index >= 0)
 			{
-				var temp = (ulong)values[index].Key;
+				var temp = (ulong)values[index].Value;
 				if (index == 0 && temp == 0)
 				{
 					break;
@@ -112,7 +112,7 @@ namespace ReClassNET.Nodes
 						retval.Prepend(" | ");
 					}
 
-					retval.Prepend(values[index].Value);
+					retval.Prepend(values[index].Key);
 					firstTime = false;
 				}
 
@@ -126,9 +126,9 @@ namespace ReClassNET.Nodes
 
 			if (saveResult == 0)
 			{
-				if (values.Count > 0 && values[0].Key == 0)
+				if (values.Count > 0 && values[0].Value == 0)
 				{
-					return values[0].Value;
+					return values[0].Key;
 				}
 
 				return "0";
