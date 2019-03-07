@@ -27,6 +27,8 @@ namespace ReClassNET.Nodes
 			Contract.Requires(@enum != null);
 
 			MetaData = @enum;
+
+			GetParentContainer()?.ChildHasChanged(this);
 		}
 
 		/// <summary>

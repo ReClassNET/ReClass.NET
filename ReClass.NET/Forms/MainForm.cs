@@ -862,6 +862,8 @@ namespace ReClassNET.Forms
 			{
 				using (var csf = new EnumSelectionForm(CurrentProject))
 				{
+					var size = enumNode.MetaData.Size;
+
 					if (csf.ShowDialog() == DialogResult.OK)
 					{
 						var @enum = csf.SelectedItem;
@@ -869,6 +871,12 @@ namespace ReClassNET.Forms
 						{
 							enumNode.ChangeEnum(@enum);
 						}
+					}
+
+					if (size != enumNode.MetaData.Size)
+					{
+						// Update the parent container because the enum size has changed.
+						enumNode.GetParentContainer()?.ChildHasChanged(enumNode);
 					}
 				}
 			}
