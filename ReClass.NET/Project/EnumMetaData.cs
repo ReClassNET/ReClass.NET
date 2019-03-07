@@ -16,13 +16,13 @@ namespace ReClassNET.Project
 
 		public static EnumMetaData Default => new EnumMetaData { Name = "DummyEnum" };
 
-		public string Name { get; set; }
+		public string Name { get; set; } = string.Empty;
 
 		public bool UseFlagsMode { get; private set; }
 
 		public UnderlyingTypeSize Size { get; private set; } = UnderlyingTypeSize.FourBytes;
 
-		public IReadOnlyList<KeyValuePair<long, string>> Values { get; private set; }
+		public IReadOnlyList<KeyValuePair<long, string>> Values { get; private set; } = new Dictionary<long, string>().ToList();
 
 		public void SetData(bool useFlagsMode, UnderlyingTypeSize size, IEnumerable<KeyValuePair<long, string>> values)
 		{
