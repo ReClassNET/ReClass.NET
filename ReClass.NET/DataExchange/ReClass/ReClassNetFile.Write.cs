@@ -115,7 +115,7 @@ namespace ReClassNET.DataExchange.ReClass
 
 			element.SetAttributeValue(XmlNameAttribute, node.Name ?? string.Empty);
 			element.SetAttributeValue(XmlCommentAttribute, node.Comment ?? string.Empty);
-			element.SetAttributeValue(XmlHiddenAttribute, node.IsHidden.ToString());
+			element.SetAttributeValue(XmlHiddenAttribute, node.IsHidden);
 
 			if (node is BaseWrapperNode wrapperNode)
 			{
@@ -137,7 +137,7 @@ namespace ReClassNET.DataExchange.ReClass
 						XmlMethodElement,
 						new XAttribute(XmlNameAttribute, n.Name ?? string.Empty),
 						new XAttribute(XmlCommentAttribute, n.Comment ?? string.Empty),
-						new XAttribute(XmlHiddenAttribute, n.IsHidden.ToString())
+						new XAttribute(XmlHiddenAttribute, n.IsHidden)
 					)));
 					break;
 				}

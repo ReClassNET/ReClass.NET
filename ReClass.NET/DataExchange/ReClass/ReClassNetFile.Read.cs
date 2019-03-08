@@ -261,7 +261,7 @@ namespace ReClassNET.DataExchange.ReClass
 						{
 							Name = e.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
 							Comment = e.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
-							IsHidden = e.Attribute(XmlHiddenAttribute)?.Value.Equals("True") ?? false
+							IsHidden = (bool?)e.Attribute(XmlHiddenAttribute) ?? false
 						});
 
 					foreach (var vmethodNode in nodes)
@@ -272,20 +272,17 @@ namespace ReClassNET.DataExchange.ReClass
 				}
 				case BaseWrapperArrayNode arrayNode:
 				{
-					TryGetAttributeValue(element, XmlCountAttribute, out var count, logger);
-					arrayNode.Count = count;
+					arrayNode.Count = (int?)element.Attribute(XmlCountAttribute) ?? 0;
 					break;
 				}
 				case BaseTextNode textNode:
 				{
-					TryGetAttributeValue(element, XmlLengthAttribute, out var length, logger);
-					textNode.Length = length;
+					textNode.Length = (int?)element.Attribute(XmlLengthAttribute) ?? 0;
 					break;
 				}
 				case BitFieldNode bitFieldNode:
 				{
-					TryGetAttributeValue(element, XmlBitsAttribute, out var bits, logger);
-					bitFieldNode.Bits = bits;
+					bitFieldNode.Bits = (int?)element.Attribute(XmlBitsAttribute) ?? 0;
 					break;
 				}
 				case FunctionNode functionNode:
@@ -310,21 +307,6 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 
 			return node;
-		}
-
-		private static void TryGetAttributeValue(XElement element, string attribute, out int val, ILogger logger)
-		{
-			Contract.Requires(element != null);
-			Contract.Requires(attribute != null);
-			Contract.Requires(logger != null);
-
-			if (!int.TryParse(element.Attribute(attribute)?.Value, out val))
-			{
-				val = 0;
-
-				logger.Log(LogLevel.Error, $"Node is missing a valid '{attribute}' attribute, defaulting to 0.");
-				logger.Log(LogLevel.Warning, element.ToString());
-			}
 		}
 
 		public static Tuple<List<ClassNode>, List<BaseNode>> DeserializeNodesFromStream(Stream input, ReClassNetProject templateProject, ILogger logger)
