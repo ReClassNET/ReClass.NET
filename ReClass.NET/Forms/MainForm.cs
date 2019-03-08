@@ -879,6 +879,11 @@ namespace ReClassNET.Forms
 						enumNode.GetParentContainer()?.ChildHasChanged(enumNode);
 					}
 				}
+
+				foreach (var @enum in CurrentProject.Enums)
+				{
+					classesView.UpdateEnumNode(@enum);
+				}
 			}
 		}
 

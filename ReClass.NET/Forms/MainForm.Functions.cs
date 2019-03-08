@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -83,10 +83,12 @@ namespace ReClassNET.Forms
 				c.NodesChanged -= UpdateClassNodes;
 				c.NameChanged -= UpdateClassNodes;
 			};
+			currentProject.EnumAdded += e => { classesView.AddEnum(e); };
 
 			ClassNode.ClassCreated += currentProject.AddClass;
 
 			classesView.Clear();
+			classesView.AddEnums(currentProject.Enums);
 			classesView.AddClasses(currentProject.Classes);
 			memoryViewControl.ClassNode = currentProject.Classes.FirstOrDefault();
 		}

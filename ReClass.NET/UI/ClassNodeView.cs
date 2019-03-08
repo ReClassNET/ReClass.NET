@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Nodes;
+using ReClassNET.Project;
 
 namespace ReClassNET.UI
 {
@@ -93,22 +94,47 @@ namespace ReClassNET.UI
 			}
 		}
 
+		public class EnumTreeNode : TreeNode
+		{
+			public EnumMetaData Enum { get; }
+
+			public EnumTreeNode(EnumMetaData @enum)
+			{
+				Contract.Requires(@enum != null);
+
+				Enum = @enum;
+
+				ImageIndex = 3;
+				SelectedImageIndex = 3;
+			}
+
+			public void Update()
+			{
+				Text = Enum.Name;
+			}
+		}
+
 		private class NodeSorter : IComparer
 		{
 			public int Compare(object x, object y)
 			{
 				var compare = Application.CurrentCulture.CompareInfo;
 
-				if (x is ClassTreeNode n1 && y is ClassTreeNode n2)
+				if (x is ClassTreeNode cn1 && y is ClassTreeNode cn2)
 				{
-					return compare.Compare(n1.Text, n2.Text);
+					return compare.Compare(cn1.Text, cn2.Text);
+				}
+				if (x is EnumTreeNode en1 && y is EnumTreeNode en2)
+				{
+					return compare.Compare(en1.Text, en2.Text);
 				}
 
 				return 0;
 			}
 		}
 
-		private readonly TreeNode root;
+		private readonly TreeNode enumsRootNode;
+		private readonly TreeNode classesRootNode;
 
 		private ClassNode selectedClass;
 
@@ -166,9 +192,9 @@ namespace ReClassNET.UI
 				{
 					enableClassHierarchyView = value;
 
-					var classes = root.Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode).ToList();
+					var classes = classesRootNode.Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode).ToList();
 
-					root.Nodes.Clear();
+					classesRootNode.Nodes.Clear();
 
 					AddClasses(classes);
 				}
@@ -181,7 +207,7 @@ namespace ReClassNET.UI
 
 		public ClassNodeView()
 		{
-			Contract.Ensures(root != null);
+			Contract.Ensures(classesRootNode != null);
 
 			InitializeComponent();
 
@@ -191,15 +217,26 @@ namespace ReClassNET.UI
 			classesTreeView.ImageList = new ImageList();
 			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);
 			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Class_Type);
+			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Category);
+			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Enum_Type);
 
-			root = new TreeNode
+			classesRootNode = new TreeNode
 			{
 				Text = "Classes",
 				ImageIndex = 0,
 				SelectedImageIndex = 0
 			};
 
-			classesTreeView.Nodes.Add(root);
+			classesTreeView.Nodes.Add(classesRootNode);
+
+			enumsRootNode = new TreeNode
+			{
+				Text = "Enums",
+				ImageIndex = 2,
+				SelectedImageIndex = 2
+			};
+
+			classesTreeView.Nodes.Add(enumsRootNode);
 		}
 
 		#region Event Handler
@@ -242,7 +279,7 @@ namespace ReClassNET.UI
 				var cms = ClassTreeNodeContextMenuStrip;
 				cms?.Show(classesTreeView, e.Location);
 			}
-			else
+			else if (node == classesRootNode)
 			{
 				var cms = ProjectTreeNodeContextMenuStrip;
 				cms?.Show(classesTreeView, e.Location);
@@ -277,12 +314,12 @@ namespace ReClassNET.UI
 
 		public void ExpandAllClassNodes()
 		{
-			root.ExpandAll();
+			classesRootNode.ExpandAll();
 		}
 
 		public void CollapseAllClassNodes()
 		{
-			foreach (var tn in root.Nodes.Cast<TreeNode>())
+			foreach (var tn in classesRootNode.Nodes.Cast<TreeNode>())
 			{
 				tn.Collapse();
 			}
@@ -290,7 +327,8 @@ namespace ReClassNET.UI
 
 		public void Clear()
 		{
-			root.Nodes.Clear();
+			classesRootNode.Nodes.Clear();
+			enumsRootNode.Nodes.Clear();
 		}
 
 		/// <summary>Adds the class to the view.</summary>
@@ -310,25 +348,14 @@ namespace ReClassNET.UI
 
 			foreach (var node in nodes)
 			{
-				AddClassInternal(node);
+				classesRootNode.Nodes.Add(new ClassTreeNode(node, this));
 			}
+
+			classesRootNode.Expand();
 
 			classesTreeView.Sort();
 
 			classesTreeView.EndUpdate();
-		}
-
-		/// <summary>
-		/// Adds a new <see cref="ClassTreeNode"/> to the tree.
-		/// </summary>
-		/// <param name="node">The class to add.</param>
-		private void AddClassInternal(ClassNode node)
-		{
-			Contract.Requires(node != null);
-
-			root.Nodes.Add(new ClassTreeNode(node, this));
-
-			root.Expand();
 		}
 
 		/// <summary>Removes the class from the view.</summary>
@@ -344,9 +371,9 @@ namespace ReClassNET.UI
 
 			if (selectedClass == node)
 			{
-				if (root.Nodes.Count > 0)
+				if (classesRootNode.Nodes.Count > 0)
 				{
-					classesTreeView.SelectedNode = root.Nodes[0];
+					classesTreeView.SelectedNode = classesRootNode.Nodes[0];
 				}
 				else
 				{
@@ -362,7 +389,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(node != null);
 
-			return root.Nodes
+			return classesRootNode.Nodes
 				.Cast<ClassTreeNode>()
 				.FirstOrDefault(t => t.ClassNode == node);
 		}
@@ -374,7 +401,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(node != null);
 
-			return root.Nodes
+			return classesRootNode.Nodes
 				.Cast<ClassTreeNode>()
 				.Traverse(t => t.Nodes.Cast<ClassTreeNode>())
 				.Where(n => n.ClassNode == node);
@@ -389,6 +416,55 @@ namespace ReClassNET.UI
 			foreach (var tn in FindClassTreeNodes(node))
 			{
 				tn.Update();
+			}
+
+			classesTreeView.Sort();
+
+			classesTreeView.EndUpdate();
+		}
+
+		public void AddEnum(EnumMetaData @enum)
+		{
+			Contract.Requires(@enum != null);
+
+			AddEnums(new[] { @enum });
+		}
+
+		public void AddEnums(IEnumerable<EnumMetaData> enums)
+		{
+			Contract.Requires(enums != null);
+
+			classesTreeView.BeginUpdate();
+
+			foreach (var @enum in enums)
+			{
+				enumsRootNode.Nodes.Add(new EnumTreeNode(@enum));
+			}
+
+			enumsRootNode.ExpandAll();
+
+			classesTreeView.Sort();
+
+			classesTreeView.EndUpdate();
+		}
+
+		public void UpdateEnumNode(EnumMetaData @enum)
+		{
+			Contract.Requires(@enum != null);
+
+			classesTreeView.BeginUpdate();
+
+			var nodes = enumsRootNode.Nodes
+				.Cast<EnumTreeNode>()
+				.Where(n => n.Enum == @enum);
+			foreach (var tn in nodes)
+			{
+				tn.Update();
+			}
+
+			if (nodes.None())
+			{
+				AddEnum(@enum);
 			}
 
 			classesTreeView.Sort();

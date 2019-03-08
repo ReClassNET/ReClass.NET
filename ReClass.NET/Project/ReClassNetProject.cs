@@ -13,6 +13,10 @@ namespace ReClassNET.Project
 		public event ClassesChangedEvent ClassAdded;
 		public event ClassesChangedEvent ClassRemoved;
 
+		public delegate void EnumsChangedEvent(EnumMetaData sender);
+		public event EnumsChangedEvent EnumAdded;
+		public event EnumsChangedEvent EnumRemoved;
+
 		private readonly List<EnumMetaData> enums = new List<EnumMetaData>();
 		private readonly List<ClassNode> classes = new List<ClassNode>();
 
@@ -39,6 +43,9 @@ namespace ReClassNET.Project
 
 			ClassAdded = null;
 			ClassRemoved = null;
+
+			EnumAdded = null;
+			EnumRemoved = null;
 		}
 
 		public void AddClass(ClassNode node)
@@ -82,6 +89,15 @@ namespace ReClassNET.Project
 				node.NodesChanged -= NodesChanged_Handler;
 
 				ClassRemoved?.Invoke(node);
+			}
+
+			var temp2 = enums.ToList();
+
+			enums.Clear();
+
+			foreach (var @enum in temp2)
+			{
+				EnumRemoved?.Invoke(@enum);
 			}
 		}
 
@@ -132,6 +148,8 @@ namespace ReClassNET.Project
 			Contract.Requires(@enum != null);
 
 			enums.Add(@enum);
+
+			EnumAdded?.Invoke(@enum);
 		}
 
 		public void RemoveEnum(EnumMetaData @enum)
@@ -144,7 +162,10 @@ namespace ReClassNET.Project
 				throw new EnumReferencedException(@enum, refrences.Select(e => e.GetParentClass()).Distinct());
 			}
 
-			enums.Remove(@enum);
+			if (enums.Remove(@enum))
+			{
+				EnumRemoved?.Invoke(@enum);
+			}
 		}
 
 		private IEnumerable<EnumNode> GetEnumReferences(EnumMetaData @enum)
