@@ -744,7 +744,7 @@ namespace ReClassNET.Memory
 		/// <param name="progress">The progress reporter is called for every module. Can be null.</param>
 		/// <param name="token">The token used to cancel the task.</param>
 		/// <returns>The task.</returns>
-		public Task LoadAllSymbolsAsync(IProgress<Tuple<Module, IEnumerable<Module>>> progress, CancellationToken token)
+		public Task LoadAllSymbolsAsync(IProgress<Tuple<Module, IReadOnlyList<Module>>> progress, CancellationToken token)
 		{
 			List<Module> copy;
 			lock (modules)
@@ -762,7 +762,7 @@ namespace ReClassNET.Memory
 					{
 						token.ThrowIfCancellationRequested();
 
-						progress?.Report(Tuple.Create<Module, IEnumerable<Module>>(module, copy));
+						progress?.Report(Tuple.Create<Module, IReadOnlyList<Module>>(module, copy));
 
 						Symbols.TryResolveSymbolsForModule(module);
 					}

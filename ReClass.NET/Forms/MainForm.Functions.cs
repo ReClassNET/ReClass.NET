@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -254,10 +254,10 @@ namespace ReClassNET.Forms
 
 			int index = 0;
 
-			var progress = new Progress<Tuple<Module, IEnumerable<Module>>>(
+			var progress = new Progress<Tuple<Module, IReadOnlyList<Module>>>(
 				report =>
 				{
-					infoToolStripStatusLabel.Text = $"[{++index}/{report.Item2.Count()}] Loading symbols for module: {report.Item1.Name}";
+					infoToolStripStatusLabel.Text = $"[{++index}/{report.Item2.Count}] Loading symbols for module: {report.Item1.Name}";
 				}
 			);
 
