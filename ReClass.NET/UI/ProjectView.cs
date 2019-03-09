@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -10,26 +10,26 @@ using ReClassNET.Project;
 
 namespace ReClassNET.UI
 {
-	public partial class ClassNodeView : UserControl
+	public partial class ProjectView : UserControl
 	{
 		/// <summary>A custom tree node for class nodes with hierarchical structure.</summary>
 		private class ClassTreeNode : TreeNode
 		{
-			private readonly ClassNodeView control;
+			private readonly ProjectView control;
 
 			public ClassNode ClassNode { get; }
 
 			/// <summary>Constructor of the class.</summary>
 			/// <param name="node">The class node.</param>
-			/// <param name="control">The <see cref="ClassNodeView"/> instance this node should belong to.</param>
-			public ClassTreeNode(ClassNode node, ClassNodeView control)
+			/// <param name="control">The <see cref="ProjectView"/> instance this node should belong to.</param>
+			public ClassTreeNode(ClassNode node, ProjectView control)
 				: this(node, control, null)
 			{
 				Contract.Requires(node != null);
 				Contract.Requires(control != null);
 			}
 
-			private ClassTreeNode(ClassNode node, ClassNodeView control, HashSet<ClassNode> seen)
+			private ClassTreeNode(ClassNode node, ProjectView control, HashSet<ClassNode> seen)
 			{
 				Contract.Requires(node != null);
 				Contract.Requires(control != null);
@@ -160,7 +160,7 @@ namespace ReClassNET.UI
 					selectedClass = value;
 					if (selectedClass != null)
 					{
-						classesTreeView.SelectedNode = FindMainClassTreeNode(selectedClass);
+						projectTreeView.SelectedNode = FindMainClassTreeNode(selectedClass);
 					}
 
 					SelectionChanged?.Invoke(this, selectedClass);
@@ -209,7 +209,7 @@ namespace ReClassNET.UI
 
 		public ContextMenuStrip ClassTreeNodeContextMenuStrip { get; set; }
 
-		public ClassNodeView()
+		public ProjectView()
 		{
 			Contract.Ensures(classesRootNode != null);
 
@@ -217,12 +217,12 @@ namespace ReClassNET.UI
 
 			DoubleBuffered = true;
 
-			classesTreeView.TreeViewNodeSorter = new NodeSorter();
-			classesTreeView.ImageList = new ImageList();
-			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);
-			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Class_Type);
-			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Category);
-			classesTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Enum_Type);
+			projectTreeView.TreeViewNodeSorter = new NodeSorter();
+			projectTreeView.ImageList = new ImageList();
+			projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);
+			projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Class_Type);
+			projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Category);
+			projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Enum_Type);
 
 			classesRootNode = new TreeNode
 			{
@@ -232,7 +232,7 @@ namespace ReClassNET.UI
 				Tag = 0
 			};
 
-			classesTreeView.Nodes.Add(classesRootNode);
+			projectTreeView.Nodes.Add(classesRootNode);
 
 			enumsRootNode = new TreeNode
 			{
@@ -242,7 +242,7 @@ namespace ReClassNET.UI
 				Tag = 1
 			};
 
-			classesTreeView.Nodes.Add(enumsRootNode);
+			projectTreeView.Nodes.Add(enumsRootNode);
 		}
 
 		#region Event Handler
@@ -272,7 +272,7 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			var node = classesTreeView.GetNodeAt(e.X, e.Y);
+			var node = projectTreeView.GetNodeAt(e.X, e.Y);
 			if (node == null)
 			{
 				return;
@@ -280,15 +280,15 @@ namespace ReClassNET.UI
 
 			if (node is ClassTreeNode)
 			{
-				classesTreeView.SelectedNode = node;
+				projectTreeView.SelectedNode = node;
 
 				var cms = ClassTreeNodeContextMenuStrip;
-				cms?.Show(classesTreeView, e.Location);
+				cms?.Show(projectTreeView, e.Location);
 			}
 			else if (node == classesRootNode)
 			{
 				var cms = ProjectTreeNodeContextMenuStrip;
-				cms?.Show(classesTreeView, e.Location);
+				cms?.Show(projectTreeView, e.Location);
 			}
 		}
 
@@ -350,7 +350,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(nodes != null);
 
-			classesTreeView.BeginUpdate();
+			projectTreeView.BeginUpdate();
 
 			foreach (var node in nodes)
 			{
@@ -359,9 +359,9 @@ namespace ReClassNET.UI
 
 			classesRootNode.Expand();
 
-			classesTreeView.Sort();
+			projectTreeView.Sort();
 
-			classesTreeView.EndUpdate();
+			projectTreeView.EndUpdate();
 		}
 
 		/// <summary>Removes the class from the view.</summary>
@@ -379,7 +379,7 @@ namespace ReClassNET.UI
 			{
 				if (classesRootNode.Nodes.Count > 0)
 				{
-					classesTreeView.SelectedNode = classesRootNode.Nodes[0];
+					projectTreeView.SelectedNode = classesRootNode.Nodes[0];
 				}
 				else
 				{
@@ -417,16 +417,16 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(node != null);
 
-			classesTreeView.BeginUpdate();
+			projectTreeView.BeginUpdate();
 
 			foreach (var tn in FindClassTreeNodes(node))
 			{
 				tn.Update();
 			}
 
-			classesTreeView.Sort();
+			projectTreeView.Sort();
 
-			classesTreeView.EndUpdate();
+			projectTreeView.EndUpdate();
 		}
 
 		public void AddEnum(EnumMetaData @enum)
@@ -440,7 +440,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(enums != null);
 
-			classesTreeView.BeginUpdate();
+			projectTreeView.BeginUpdate();
 
 			foreach (var @enum in enums)
 			{
@@ -449,16 +449,16 @@ namespace ReClassNET.UI
 
 			enumsRootNode.ExpandAll();
 
-			classesTreeView.Sort();
+			projectTreeView.Sort();
 
-			classesTreeView.EndUpdate();
+			projectTreeView.EndUpdate();
 		}
 
 		public void UpdateEnumNode(EnumMetaData @enum)
 		{
 			Contract.Requires(@enum != null);
 
-			classesTreeView.BeginUpdate();
+			projectTreeView.BeginUpdate();
 
 			var nodes = enumsRootNode.Nodes
 				.Cast<EnumTreeNode>()
@@ -473,9 +473,9 @@ namespace ReClassNET.UI
 				AddEnum(@enum);
 			}
 
-			classesTreeView.Sort();
+			projectTreeView.Sort();
 
-			classesTreeView.EndUpdate();
+			projectTreeView.EndUpdate();
 		}
 	}
 }

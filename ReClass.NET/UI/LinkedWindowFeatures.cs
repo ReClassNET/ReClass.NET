@@ -19,7 +19,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Ensures(Contract.Result<ClassNode>() != null);
 
-			var classView = Program.MainForm.ClassView;
+			var classView = Program.MainForm.ProjectView;
 
 			var node = ClassNode.Create();
 			node.Address = address;
@@ -50,7 +50,7 @@ namespace ReClassNET.UI
 
 		public static void SetCurrentClassAddress(IntPtr address)
 		{
-			var classNode = Program.MainForm.ClassView.SelectedClass;
+			var classNode = Program.MainForm.ProjectView.SelectedClass;
 			if (classNode == null)
 			{
 				return;

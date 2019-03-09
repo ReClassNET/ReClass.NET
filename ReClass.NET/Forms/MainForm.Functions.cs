@@ -67,29 +67,29 @@ namespace ReClassNET.Forms
 
 			void UpdateClassNodes(BaseNode node)
 			{
-				classesView.UpdateClassNode((ClassNode)node);
+				projectView.UpdateClassNode((ClassNode)node);
 			}
 
 			currentProject = newProject;
 			currentProject.ClassAdded += c =>
 			{
-				classesView.AddClass(c);
+				projectView.AddClass(c);
 				c.NodesChanged += UpdateClassNodes;
 				c.NameChanged += UpdateClassNodes;
 			};
 			currentProject.ClassRemoved += c =>
 			{
-				classesView.RemoveClass(c);
+				projectView.RemoveClass(c);
 				c.NodesChanged -= UpdateClassNodes;
 				c.NameChanged -= UpdateClassNodes;
 			};
-			currentProject.EnumAdded += e => { classesView.AddEnum(e); };
+			currentProject.EnumAdded += e => { projectView.AddEnum(e); };
 
 			ClassNode.ClassCreated += currentProject.AddClass;
 
-			classesView.Clear();
-			classesView.AddEnums(currentProject.Enums);
-			classesView.AddClasses(currentProject.Classes);
+			projectView.Clear();
+			projectView.AddEnums(currentProject.Enums);
+			projectView.AddClasses(currentProject.Classes);
 			memoryViewControl.ClassNode = currentProject.Classes.FirstOrDefault();
 		}
 

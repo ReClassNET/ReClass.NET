@@ -33,7 +33,7 @@ namespace ReClassNET.Forms
 		private Task loadSymbolsTask;
 		private CancellationTokenSource loadSymbolsTaskToken;
 
-		public ClassNodeView ClassView => classesView;
+		public ProjectView ProjectView => projectView;
 
 		public MenuStrip MainMenu => mainMenuStrip;
 
@@ -243,7 +243,7 @@ namespace ReClassNET.Forms
 					var selectedClassNode = csf.SelectedClass;
 					if (selectedClassNode != null)
 					{
-						classesView.SelectedClass = selectedClassNode;
+						projectView.SelectedClass = selectedClassNode;
 					}
 				}
 			}
@@ -882,14 +882,14 @@ namespace ReClassNET.Forms
 
 				foreach (var @enum in CurrentProject.Enums)
 				{
-					classesView.UpdateEnumNode(@enum);
+					projectView.UpdateEnumNode(@enum);
 				}
 			}
 		}
 
 		private void showCodeOfClassToolStripMenuItem2_Click(object sender, EventArgs e)
 		{
-			var classNode = classesView.SelectedClass;
+			var classNode = projectView.SelectedClass;
 			if (classNode == null)
 			{
 				return;
@@ -906,7 +906,7 @@ namespace ReClassNET.Forms
 
 			expandAllClassesToolStripMenuItem.Enabled = collapseAllClassesToolStripMenuItem.Enabled = isChecked;
 
-			classesView.EnableClassHierarchyView = isChecked;
+			projectView.EnableClassHierarchyView = isChecked;
 		}
 
 		private void autoExpandHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
@@ -915,17 +915,17 @@ namespace ReClassNET.Forms
 
 			autoExpandHierarchyViewToolStripMenuItem.Checked = isChecked;
 
-			classesView.AutoExpandClassNodes = isChecked;
+			projectView.AutoExpandClassNodes = isChecked;
 		}
 
 		private void expandAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			classesView.ExpandAllClassNodes();
+			projectView.ExpandAllClassNodes();
 		}
 
 		private void collapseAllClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			classesView.CollapseAllClassNodes();
+			projectView.CollapseAllClassNodes();
 		}
 
 		private void removeUnusedClassesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -935,7 +935,7 @@ namespace ReClassNET.Forms
 
 		private void deleteClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var classNode = classesView.SelectedClass;
+			var classNode = projectView.SelectedClass;
 			if (classNode == null)
 			{
 				return;
