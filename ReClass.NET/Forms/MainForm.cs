@@ -862,7 +862,7 @@ namespace ReClassNET.Forms
 			{
 				using (var csf = new EnumSelectionForm(CurrentProject))
 				{
-					var size = enumNode.MetaData.Size;
+					var size = enumNode.Enum.Size;
 
 					if (csf.ShowDialog() == DialogResult.OK)
 					{
@@ -873,7 +873,7 @@ namespace ReClassNET.Forms
 						}
 					}
 
-					if (size != enumNode.MetaData.Size)
+					if (size != enumNode.Enum.Size)
 					{
 						// Update the parent container because the enum size has changed.
 						enumNode.GetParentContainer()?.ChildHasChanged(enumNode);

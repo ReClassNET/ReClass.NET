@@ -10,9 +10,9 @@ namespace ReClassNET.Forms
 {
 	public partial class EnumEditorForm : IconForm
 	{
-		private readonly EnumMetaData @enum;
+		private readonly EnumDescription @enum;
 
-		public EnumEditorForm(EnumMetaData @enum)
+		public EnumEditorForm(EnumDescription @enum)
 		{
 			Contract.Requires(@enum != null);
 
@@ -84,5 +84,5 @@ namespace ReClassNET.Forms
 		}
 	}
 
-	internal class UnderlyingSizeComboBox : EnumComboBox<EnumMetaData.UnderlyingTypeSize> { }
+	internal class UnderlyingSizeComboBox : EnumComboBox<EnumDescription.UnderlyingTypeSize> { }
 }

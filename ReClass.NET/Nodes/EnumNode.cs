@@ -12,9 +12,9 @@ namespace ReClassNET.Nodes
 {
 	public class EnumNode : BaseNode
 	{
-		public override int MemorySize => (int)MetaData.Size;
+		public override int MemorySize => (int)Enum.Size;
 
-		public EnumMetaData MetaData { get; private set; } = EnumMetaData.Default;
+		public EnumDescription Enum { get; private set; } = EnumDescription.Default;
 
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
@@ -22,11 +22,11 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_Enum;
 		}
 
-		public void ChangeEnum(EnumMetaData @enum)
+		public void ChangeEnum(EnumDescription @enum)
 		{
 			Contract.Requires(@enum != null);
 
-			MetaData = @enum;
+			Enum = @enum;
 
 			GetParentContainer()?.ChildHasChanged(this);
 		}
@@ -37,15 +37,15 @@ namespace ReClassNET.Nodes
 		/// <returns></returns>
 		public BaseNumericNode GetUnderlayingNode()
 		{
-			switch (MetaData.Size)
+			switch (Enum.Size)
 			{
-				case EnumMetaData.UnderlyingTypeSize.OneByte:
+				case EnumDescription.UnderlyingTypeSize.OneByte:
 					return new UInt8Node();
-				case EnumMetaData.UnderlyingTypeSize.TwoBytes:
+				case EnumDescription.UnderlyingTypeSize.TwoBytes:
 					return new UInt16Node();
-				case EnumMetaData.UnderlyingTypeSize.FourBytes:
+				case EnumDescription.UnderlyingTypeSize.FourBytes:
 					return new UInt32Node();
-				case EnumMetaData.UnderlyingTypeSize.EightBytes:
+				case EnumDescription.UnderlyingTypeSize.EightBytes:
 					return new UInt64Node();
 			}
 
@@ -54,15 +54,15 @@ namespace ReClassNET.Nodes
 
 		public long ReadValueFromMemory(MemoryBuffer memory)
 		{
-			switch (MetaData.Size)
+			switch (Enum.Size)
 			{
-				case EnumMetaData.UnderlyingTypeSize.OneByte:
+				case EnumDescription.UnderlyingTypeSize.OneByte:
 					return memory.ReadInt8(Offset);
-				case EnumMetaData.UnderlyingTypeSize.TwoBytes:
+				case EnumDescription.UnderlyingTypeSize.TwoBytes:
 					return memory.ReadInt16(Offset);
-				case EnumMetaData.UnderlyingTypeSize.FourBytes:
+				case EnumDescription.UnderlyingTypeSize.FourBytes:
 					return memory.ReadInt32(Offset);
-				case EnumMetaData.UnderlyingTypeSize.EightBytes:
+				case EnumDescription.UnderlyingTypeSize.EightBytes:
 					return memory.ReadInt64(Offset);
 			}
 
@@ -71,15 +71,15 @@ namespace ReClassNET.Nodes
 
 		private string GetStringRepresentation(long value)
 		{
-			if (!MetaData.UseFlagsMode)
+			if (!Enum.UseFlagsMode)
 			{
-				var index = MetaData.Values.FindIndex(kv => kv.Value == value);
+				var index = Enum.Values.FindIndex(kv => kv.Value == value);
 				if (index == -1)
 				{
 					return value.ToString();
 				}
 
-				return MetaData.Values[index].Key;
+				return Enum.Values[index].Key;
 			}
 
 			return GetFlagsStringRepresentation(value);
@@ -89,7 +89,7 @@ namespace ReClassNET.Nodes
 		{
 			var result = (ulong)value;
 
-			var values = MetaData.Values;
+			var values = Enum.Values;
 
 			var index = values.Count - 1;
 			var retval = new StringBuilder();
@@ -158,7 +158,7 @@ namespace ReClassNET.Nodes
 			{
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 			}
-			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{MetaData.Name}>") + view.Font.Width;
+			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{Enum.Name}>") + view.Font.Width;
 			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeEnumType) + view.Font.Width;
 
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "=") + view.Font.Width;

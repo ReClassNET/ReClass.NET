@@ -11,7 +11,7 @@ namespace ReClassNET.Forms
 	{
 		private readonly ReClassNetProject project;
 
-		public EnumMetaData SelectedItem => itemListBox.SelectedItem as EnumMetaData;
+		public EnumDescription SelectedItem => itemListBox.SelectedItem as EnumDescription;
 
 		public EnumSelectionForm(ReClassNetProject project)
 		{
@@ -64,7 +64,7 @@ namespace ReClassNET.Forms
 
 		private void addEnumIconButton_Click(object sender, EventArgs e)
 		{
-			var @enum = new EnumMetaData
+			var @enum = new EnumDescription
 			{
 				Name = "Enum"
 			};

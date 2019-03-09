@@ -13,14 +13,14 @@ namespace ReClassNET.Project
 		public event ClassesChangedEvent ClassAdded;
 		public event ClassesChangedEvent ClassRemoved;
 
-		public delegate void EnumsChangedEvent(EnumMetaData sender);
+		public delegate void EnumsChangedEvent(EnumDescription sender);
 		public event EnumsChangedEvent EnumAdded;
 		public event EnumsChangedEvent EnumRemoved;
 
-		private readonly List<EnumMetaData> enums = new List<EnumMetaData>();
+		private readonly List<EnumDescription> enums = new List<EnumDescription>();
 		private readonly List<ClassNode> classes = new List<ClassNode>();
 
-		public IEnumerable<EnumMetaData> Enums => enums;
+		public IEnumerable<EnumDescription> Enums => enums;
 
 		public IEnumerable<ClassNode> Classes => classes;
 
@@ -143,7 +143,7 @@ namespace ReClassNET.Project
 			}
 		}
 
-		public void AddEnum(EnumMetaData @enum)
+		public void AddEnum(EnumDescription @enum)
 		{
 			Contract.Requires(@enum != null);
 
@@ -152,7 +152,7 @@ namespace ReClassNET.Project
 			EnumAdded?.Invoke(@enum);
 		}
 
-		public void RemoveEnum(EnumMetaData @enum)
+		public void RemoveEnum(EnumDescription @enum)
 		{
 			Contract.Requires(@enum != null);
 
@@ -168,14 +168,14 @@ namespace ReClassNET.Project
 			}
 		}
 
-		private IEnumerable<EnumNode> GetEnumReferences(EnumMetaData @enum)
+		private IEnumerable<EnumNode> GetEnumReferences(EnumDescription @enum)
 		{
 			Contract.Requires(@enum != null);
 
 			return classes
 				.SelectMany(c => c.Nodes.Where(n => n is EnumNode || (n as BaseWrapperNode)?.ResolveMostInnerNode() is EnumNode))
 				.Cast<EnumNode>()
-				.Where(e => e.MetaData == @enum);
+				.Where(e => e.Enum == @enum);
 		}
 	}
 
@@ -198,10 +198,10 @@ namespace ReClassNET.Project
 
 	public class EnumReferencedException : Exception
 	{
-		public EnumMetaData Enum { get; }
+		public EnumDescription Enum { get; }
 		public IEnumerable<ClassNode> References { get; }
 
-		public EnumReferencedException(EnumMetaData @enum, IEnumerable<ClassNode> references)
+		public EnumReferencedException(EnumDescription @enum, IEnumerable<ClassNode> references)
 			: base($"The enum '{@enum.Name}' is referenced in other classes.")
 		{
 			Contract.Requires(@enum != null);

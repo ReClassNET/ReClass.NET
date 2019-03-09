@@ -74,7 +74,7 @@ namespace ReClassNET.DataExchange.ReClass
 						{
 							var name = enumElement.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
 							var useFlagsMode = (bool?)enumElement.Attribute(XmlFlagsAttribute) ?? false;
-							var size = enumElement.Attribute(XmlSizeAttribute).GetEnumValue<EnumMetaData.UnderlyingTypeSize>();
+							var size = enumElement.Attribute(XmlSizeAttribute).GetEnumValue<EnumDescription.UnderlyingTypeSize>();
 
 							var values = new Dictionary<string, long>();
 							foreach (var itemElement in enumElement.Elements(XmlItemElement))
@@ -85,7 +85,7 @@ namespace ReClassNET.DataExchange.ReClass
 								values.Add(itemName, itemValue);
 							}
 
-							var @enum = new EnumMetaData
+							var @enum = new EnumDescription
 							{
 								Name = name
 							};
@@ -299,7 +299,7 @@ namespace ReClassNET.DataExchange.ReClass
 				case EnumNode enumNode:
 				{
 					var enumName = element.Attribute(XmlReferenceAttribute)?.Value ?? string.Empty;
-					var @enum = project.Enums.FirstOrDefault(e => e.Name == enumName) ?? EnumMetaData.Default;
+					var @enum = project.Enums.FirstOrDefault(e => e.Name == enumName) ?? EnumDescription.Default;
 					
 					enumNode.ChangeEnum(@enum);
 					break;

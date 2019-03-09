@@ -96,9 +96,9 @@ namespace ReClassNET.UI
 
 		public class EnumTreeNode : TreeNode
 		{
-			public EnumMetaData Enum { get; }
+			public EnumDescription Enum { get; }
 
-			public EnumTreeNode(EnumMetaData @enum)
+			public EnumTreeNode(EnumDescription @enum)
 			{
 				Contract.Requires(@enum != null);
 
@@ -429,14 +429,14 @@ namespace ReClassNET.UI
 			projectTreeView.EndUpdate();
 		}
 
-		public void AddEnum(EnumMetaData @enum)
+		public void AddEnum(EnumDescription @enum)
 		{
 			Contract.Requires(@enum != null);
 
 			AddEnums(new[] { @enum });
 		}
 
-		public void AddEnums(IEnumerable<EnumMetaData> enums)
+		public void AddEnums(IEnumerable<EnumDescription> enums)
 		{
 			Contract.Requires(enums != null);
 
@@ -454,7 +454,7 @@ namespace ReClassNET.UI
 			projectTreeView.EndUpdate();
 		}
 
-		public void UpdateEnumNode(EnumMetaData @enum)
+		public void UpdateEnumNode(EnumDescription @enum)
 		{
 			Contract.Requires(@enum != null);
 

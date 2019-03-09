@@ -46,7 +46,7 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 		}
 
-		private static IEnumerable<XElement> CreateEnumElements(IEnumerable<EnumMetaData> enums)
+		private static IEnumerable<XElement> CreateEnumElements(IEnumerable<EnumDescription> enums)
 		{
 			return enums.Select(e => new XElement(
 				XmlEnumElement,
@@ -165,7 +165,7 @@ namespace ReClassNET.DataExchange.ReClass
 				}
 				case EnumNode enumNode:
 				{
-					element.SetAttributeValue(XmlReferenceAttribute, enumNode.MetaData.Name);
+					element.SetAttributeValue(XmlReferenceAttribute, enumNode.Enum.Name);
 					break;
 				}
 			}

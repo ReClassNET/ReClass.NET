@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ReClassNET.Project
 {
-	public class EnumMetaData
+	public class EnumDescription
 	{
 		public enum UnderlyingTypeSize
 		{
@@ -14,7 +14,7 @@ namespace ReClassNET.Project
 			EightBytes = 8
 		}
 
-		public static EnumMetaData Default => new EnumMetaData { Name = "DummyEnum" };
+		public static EnumDescription Default => new EnumDescription { Name = "DummyEnum" };
 
 		public string Name { get; set; } = string.Empty;
 
