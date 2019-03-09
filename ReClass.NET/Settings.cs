@@ -67,42 +67,6 @@ namespace ReClassNET
 
 		public Color PluginColor { get; set; } = Color.FromArgb(255, 0, 255);
 
-		// Type Definitions
-
-		public string TypePadding { get; set; } = "char";
-
-		public string TypeBool { get; set; } = "bool";
-
-		public string TypeInt8 { get; set; } = "int8_t";
-		public string TypeInt16 { get; set; } = "int16_t";
-		public string TypeInt32 { get; set; } = "int32_t";
-		public string TypeInt64 { get; set; } = "int64_t";
-
-		public string TypeUInt8 { get; set; } = "uint8_t";
-		public string TypeUInt16 { get; set; } = "uint16_t";
-		public string TypeUInt32 { get; set; } = "uint32_t";
-		public string TypeUInt64 { get; set; } = "uint64_t";
-
-		public string TypeFloat { get; set; } = "float";
-		public string TypeDouble { get; set; } = "double";
-
-		public string TypeVector2 { get; set; } = "Vector2";
-		public string TypeVector3 { get; set; } = "Vector3";
-		public string TypeVector4 { get; set; } = "Vector4";
-
-		public string TypeMatrix3x3 { get; set; } = "Matrix3x3";
-		public string TypeMatrix3x4 { get; set; } = "Matrix3x4";
-		public string TypeMatrix4x4 { get; set; } = "Matrix4x4";
-
-		public string TypeUTF8Text { get; set; } = "char";
-		public string TypeUTF8TextPtr { get; set; } = "char*";
-		public string TypeUTF16Text { get; set; } = "wchar_t"; // Should be char16_t, but this type isn't well supported at the moment.
-		public string TypeUTF16TextPtr { get; set; } = "wchar_t*";
-		public string TypeUTF32Text { get; set; } = "char32_t";
-		public string TypeUTF32TextPtr { get; set; } = "char32_t*";
-
-		public string TypeFunctionPtr { get; set; } = "void*";
-
 		public CustomDataMap CustomData { get; } = new CustomDataMap();
 
 		public Settings Clone() => MemberwiseClone() as Settings;

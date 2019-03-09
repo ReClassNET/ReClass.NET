@@ -11,7 +11,6 @@ namespace ReClassNET.Util
 		private const string XmlGeneralElement = "General";
 		private const string XmlDisplayElement = "Display";
 		private const string XmlColorsElement = "Colors";
-		private const string XmlTypeDefinitionsElement = "TypeDefinitions";
 		private const string XmlCustomDataElement = "CustomData";
 
 		#region Read Settings
@@ -68,35 +67,6 @@ namespace ReClassNET.Util
 						XElementSerializer.TryRead(colors, nameof(settings.CommentColor), e => settings.CommentColor = XElementSerializer.ToColor(e));
 						XElementSerializer.TryRead(colors, nameof(settings.TextColor), e => settings.TextColor = XElementSerializer.ToColor(e));
 						XElementSerializer.TryRead(colors, nameof(settings.VTableColor), e => settings.VTableColor = XElementSerializer.ToColor(e));
-					}
-					var typeDefinitions = root?.Element(XmlTypeDefinitionsElement);
-					if (typeDefinitions != null)
-					{
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypePadding), e => settings.TypePadding = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeBool), e => settings.TypeBool = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeInt8), e => settings.TypeInt8 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeInt16), e => settings.TypeInt16 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeInt32), e => settings.TypeInt32 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeInt64), e => settings.TypeInt64 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeUInt8), e => settings.TypeUInt8 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeUInt16), e => settings.TypeUInt16 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeUInt32), e => settings.TypeUInt32 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeUInt64), e => settings.TypeUInt64 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeFloat), e => settings.TypeFloat = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeDouble), e => settings.TypeDouble = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeVector2), e => settings.TypeVector2 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeVector3), e => settings.TypeVector3 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeVector4), e => settings.TypeVector4 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeMatrix3x3), e => settings.TypeMatrix3x3 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeMatrix3x4), e => settings.TypeMatrix3x4 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeMatrix4x4), e => settings.TypeMatrix4x4 = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeUTF8Text), e => settings.TypeUTF8Text = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeUTF8TextPtr), e => settings.TypeUTF8TextPtr = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeUTF16Text), e => settings.TypeUTF16Text = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeUTF16TextPtr), e => settings.TypeUTF16TextPtr = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeUTF32Text), e => settings.TypeUTF32Text = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeUTF32TextPtr), e => settings.TypeUTF32TextPtr = XElementSerializer.ToString(e));
-						XElementSerializer.TryRead(typeDefinitions, nameof(settings.TypeFunctionPtr), e => settings.TypeFunctionPtr = XElementSerializer.ToString(e));
 					}
 					var customData = root?.Element(XmlCustomDataElement);
 					if (customData != null)
@@ -166,34 +136,6 @@ namespace ReClassNET.Util
 							XElementSerializer.ToXml(nameof(settings.CommentColor), settings.CommentColor),
 							XElementSerializer.ToXml(nameof(settings.TextColor), settings.TextColor),
 							XElementSerializer.ToXml(nameof(settings.VTableColor), settings.VTableColor)
-						),
-						new XElement(
-							XmlTypeDefinitionsElement,
-							XElementSerializer.ToXml(nameof(settings.TypePadding), settings.TypePadding),
-							XElementSerializer.ToXml(nameof(settings.TypeBool), settings.TypeBool),
-							XElementSerializer.ToXml(nameof(settings.TypeInt8), settings.TypeInt8),
-							XElementSerializer.ToXml(nameof(settings.TypeInt16), settings.TypeInt16),
-							XElementSerializer.ToXml(nameof(settings.TypeInt32), settings.TypeInt32),
-							XElementSerializer.ToXml(nameof(settings.TypeInt64), settings.TypeInt64),
-							XElementSerializer.ToXml(nameof(settings.TypeUInt8), settings.TypeUInt8),
-							XElementSerializer.ToXml(nameof(settings.TypeUInt16), settings.TypeUInt16),
-							XElementSerializer.ToXml(nameof(settings.TypeUInt32), settings.TypeUInt32),
-							XElementSerializer.ToXml(nameof(settings.TypeUInt64), settings.TypeUInt64),
-							XElementSerializer.ToXml(nameof(settings.TypeFloat), settings.TypeFloat),
-							XElementSerializer.ToXml(nameof(settings.TypeDouble), settings.TypeDouble),
-							XElementSerializer.ToXml(nameof(settings.TypeVector2), settings.TypeVector2),
-							XElementSerializer.ToXml(nameof(settings.TypeVector3), settings.TypeVector3),
-							XElementSerializer.ToXml(nameof(settings.TypeVector4), settings.TypeVector4),
-							XElementSerializer.ToXml(nameof(settings.TypeMatrix3x3), settings.TypeMatrix3x3),
-							XElementSerializer.ToXml(nameof(settings.TypeMatrix3x4), settings.TypeMatrix3x4),
-							XElementSerializer.ToXml(nameof(settings.TypeMatrix4x4), settings.TypeMatrix4x4),
-							XElementSerializer.ToXml(nameof(settings.TypeUTF8Text), settings.TypeUTF8Text),
-							XElementSerializer.ToXml(nameof(settings.TypeUTF8TextPtr), settings.TypeUTF8TextPtr),
-							XElementSerializer.ToXml(nameof(settings.TypeUTF16Text), settings.TypeUTF16Text),
-							XElementSerializer.ToXml(nameof(settings.TypeUTF16TextPtr), settings.TypeUTF16TextPtr),
-							XElementSerializer.ToXml(nameof(settings.TypeUTF32Text), settings.TypeUTF32Text),
-							XElementSerializer.ToXml(nameof(settings.TypeUTF32TextPtr), settings.TypeUTF32TextPtr),
-							XElementSerializer.ToXml(nameof(settings.TypeFunctionPtr), settings.TypeFunctionPtr)
 						),
 						settings.CustomData.Serialize(XmlCustomDataElement)
 					)
