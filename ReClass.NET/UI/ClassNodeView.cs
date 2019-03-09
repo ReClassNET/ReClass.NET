@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -128,6 +128,10 @@ namespace ReClassNET.UI
 				{
 					return compare.Compare(en1.Text, en2.Text);
 				}
+				if (x is TreeNode tn1 && tn1.Parent == null && y is TreeNode tn2 && tn2.Parent == null)
+				{
+					return (int)tn1.Tag - (int)tn2.Tag;
+				}
 
 				return 0;
 			}
@@ -224,7 +228,8 @@ namespace ReClassNET.UI
 			{
 				Text = "Classes",
 				ImageIndex = 0,
-				SelectedImageIndex = 0
+				SelectedImageIndex = 0,
+				Tag = 0
 			};
 
 			classesTreeView.Nodes.Add(classesRootNode);
@@ -233,7 +238,8 @@ namespace ReClassNET.UI
 			{
 				Text = "Enums",
 				ImageIndex = 2,
-				SelectedImageIndex = 2
+				SelectedImageIndex = 2,
+				Tag = 1
 			};
 
 			classesTreeView.Nodes.Add(enumsRootNode);
