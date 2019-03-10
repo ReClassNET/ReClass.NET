@@ -11,24 +11,25 @@ using ReClassNET.CodeGenerator;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
+using ReClassNET.Project;
 using ReClassNET.UI;
-using ReClassNET.Util;
 using ReClassNET.Util.Rtf;
 
 namespace ReClassNET.Forms
 {
 	public partial class CodeForm : IconForm
 	{
-		public CodeForm(ICodeGenerator generator, IReadOnlyList<ClassNode> classes, ILogger logger)
+		public CodeForm(ICodeGenerator generator, IReadOnlyList<ClassNode> classes, IReadOnlyList<EnumDescription> enums, ILogger logger)
 		{
 			Contract.Requires(generator != null);
 			Contract.Requires(classes != null);
+			Contract.Requires(enums != null);
 
 			InitializeComponent();
 
 			codeRichTextBox.SetInnerPadding(5, 5, 5, 5);
 
-			var code = generator.GenerateCode(classes, logger);
+			var code = generator.GenerateCode(classes, enums, logger);
 
 			var buffer = new StringBuilder(code.Length * 2);
 			using (var writer = new StringWriter(buffer))

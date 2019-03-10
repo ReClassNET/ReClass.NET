@@ -22,26 +22,27 @@ namespace ReClassNET.Forms
 {
 	public partial class MainForm
 	{
-		public void ShowDefaultCodeGeneratorForm(IReadOnlyList<ClassNode> classes)
+		public void ShowPartialCodeGeneratorForm(IReadOnlyList<ClassNode> partialClasses)
 		{
-			Contract.Requires(classes != null);
+			Contract.Requires(partialClasses != null);
 
-			ShowCodeGeneratorForm(classes, new CppCodeGenerator(currentProject.TypeMapping));
+			ShowCodeGeneratorForm(partialClasses, new EnumDescription[0], new CppCodeGenerator(currentProject.TypeMapping));
 		}
 
 		public void ShowCodeGeneratorForm(ICodeGenerator generator)
 		{
 			Contract.Requires(generator != null);
 
-			ShowCodeGeneratorForm(currentProject.Classes, generator);
+			ShowCodeGeneratorForm(currentProject.Classes, currentProject.Enums, generator);
 		}
 
-		public void ShowCodeGeneratorForm(IReadOnlyList<ClassNode> classes, ICodeGenerator generator)
+		public void ShowCodeGeneratorForm(IReadOnlyList<ClassNode> classes, IReadOnlyList<EnumDescription> enums, ICodeGenerator generator)
 		{
 			Contract.Requires(classes != null);
 			Contract.Requires(generator != null);
+			Contract.Requires(enums != null);
 
-			new CodeForm(generator, classes, Program.Logger).Show();
+			new CodeForm(generator, classes, enums, Program.Logger).Show();
 		}
 
 		public void AttachToProcess(string processName)

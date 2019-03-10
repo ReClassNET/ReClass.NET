@@ -6,6 +6,7 @@ using System.Text;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
+using ReClassNET.Project;
 
 namespace ReClassNET.CodeGenerator
 {
@@ -35,7 +36,7 @@ namespace ReClassNET.CodeGenerator
 
 		public Language Language => Language.CSharp;
 
-		public string GenerateCode(IEnumerable<ClassNode> classes, ILogger logger)
+		public string GenerateCode(IReadOnlyList<ClassNode> classes, IReadOnlyList<EnumDescription> enums, ILogger logger)
 		{
 			var sb = new StringBuilder();
 			sb.AppendLine($"// Created with {Constants.ApplicationName} by {Constants.Author}");

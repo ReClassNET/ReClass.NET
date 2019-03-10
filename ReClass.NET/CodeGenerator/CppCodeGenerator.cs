@@ -108,13 +108,50 @@ namespace ReClassNET.CodeGenerator
 			};
 		}
 
-		public string GenerateCode(IReadOnlyList<ClassNode> classes, ILogger logger)
+		public string GenerateCode(IReadOnlyList<ClassNode> classes, IReadOnlyList<EnumDescription> enums, ILogger logger)
 		{
 			var classNodes = classes;
 
 			var sb = new StringBuilder();
 			sb.AppendLine($"// Created with {Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}");
 			sb.AppendLine();
+			sb.AppendLine(
+				string.Join(
+					Environment.NewLine + Environment.NewLine,
+					enums.Select(e =>
+					{
+						var esb = new StringBuilder();
+						esb.Append("enum class ");
+						esb.Append(e.Name);
+						esb.Append(" : ");
+						switch (e.Size)
+						{
+							case EnumDescription.UnderlyingTypeSize.OneByte:
+								esb.AppendLine(nodeTypeToTypeDefinationMap[typeof(Int8Node)]);
+								break;
+							case EnumDescription.UnderlyingTypeSize.TwoBytes:
+								esb.AppendLine(nodeTypeToTypeDefinationMap[typeof(Int16Node)]);
+								break;
+							case EnumDescription.UnderlyingTypeSize.FourBytes:
+								esb.AppendLine(nodeTypeToTypeDefinationMap[typeof(Int32Node)]);
+								break;
+							case EnumDescription.UnderlyingTypeSize.EightBytes:
+								esb.AppendLine(nodeTypeToTypeDefinationMap[typeof(Int64Node)]);
+								break;
+						}
+						esb.AppendLine("{");
+						esb.AppendLine(
+							string.Join(
+								"," + Environment.NewLine,
+								e.Values.Select(kv => $"\t{kv.Key} = {kv.Value}")
+							)
+						);
+						esb.AppendLine("};");
+
+						return esb.ToString();
+					})
+				)
+			);
 			sb.AppendLine(
 				string.Join(
 					Environment.NewLine + Environment.NewLine,
@@ -296,6 +333,10 @@ namespace ReClassNET.CodeGenerator
 			if (node is ClassInstanceNode classInstanceNode)
 			{
 				return $"class {classInstanceNode.InnerNode.Name}";
+			}
+			if (node is EnumNode enumNode)
+			{
+				return enumNode.Enum.Name;
 			}
 
 			return null;

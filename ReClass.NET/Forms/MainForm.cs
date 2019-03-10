@@ -679,7 +679,7 @@ namespace ReClassNET.Forms
 		{
 			if (memoryViewControl.GetSelectedNodes().FirstOrDefault()?.Node is ClassNode node)
 			{
-				ShowDefaultCodeGeneratorForm(new[] { node });
+				ShowPartialCodeGeneratorForm(new[] { node });
 			}
 		}
 
@@ -895,7 +895,7 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			ShowDefaultCodeGeneratorForm(new[] { classNode });
+			ShowPartialCodeGeneratorForm(new[] { classNode });
 		}
 
 		private void enableHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)
