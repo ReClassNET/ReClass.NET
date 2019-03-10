@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Windows.Forms;
@@ -95,7 +96,7 @@ namespace ReClassNET.Forms
 
 		private void ShowFilteredEnums()
 		{
-			var enums = project.Enums;
+			IEnumerable<EnumDescription> enums = project.Enums;
 
 			if (!string.IsNullOrEmpty(filterNameTextBox.Text))
 			{
