@@ -28,8 +28,8 @@ namespace ReClassNET.Util
 			return false;
 		}
 
-		public static bool ToBool(XElement value) => bool.Parse(value.Value);
-		public static int ToInt(XElement value) => int.Parse(value.Value);
+		public static bool ToBool(XElement value) => (bool?)value ?? false;
+		public static int ToInt(XElement value) => (int?)value ?? 0;
 		public static string ToString(XElement value) => value.Value;
 		public static Color ToColor(XElement value) => Color.FromArgb((int)(0xFF000000 | int.Parse(value.Value, NumberStyles.HexNumber)));
 		public static Dictionary<string, string> ToDictionary(XContainer value) => value.Elements().ToDictionary(e => e.Name.ToString(), e => e.Value);

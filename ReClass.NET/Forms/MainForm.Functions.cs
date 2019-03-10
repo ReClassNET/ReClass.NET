@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -377,7 +376,6 @@ namespace ReClassNET.Forms
 				var classNode = selectedNode.GetParentClass();
 				if (containerNode != null && classNode != null)
 				{
-
 					foreach (var node in result.Item2)
 					{
 						if (node is BaseWrapperNode)
