@@ -383,12 +383,12 @@ namespace ReClassNET.Forms
 
 		private void generateCppCodeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ShowCodeForm(new CppCodeGenerator(CurrentProject.TypeMapping));
+			ShowCodeGeneratorForm(new CppCodeGenerator(currentProject.TypeMapping));
 		}
 
 		private void generateCSharpCodeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ShowCodeForm(new CSharpCodeGenerator());
+			ShowCodeGeneratorForm(new CSharpCodeGenerator());
 		}
 
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -679,7 +679,7 @@ namespace ReClassNET.Forms
 		{
 			if (memoryViewControl.GetSelectedNodes().FirstOrDefault()?.Node is ClassNode node)
 			{
-				LinkedWindowFeatures.ShowCodeGeneratorForm(node.Yield(), CurrentProject.TypeMapping);
+				ShowDefaultCodeGeneratorForm(new[] { node });
 			}
 		}
 
@@ -895,7 +895,7 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			LinkedWindowFeatures.ShowCodeGeneratorForm(classNode.Yield(), CurrentProject.TypeMapping);
+			ShowDefaultCodeGeneratorForm(new[] { classNode });
 		}
 
 		private void enableHierarchyViewToolStripMenuItem_Click(object sender, EventArgs e)

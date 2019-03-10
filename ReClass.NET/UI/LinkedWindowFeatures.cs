@@ -132,21 +132,5 @@ namespace ReClassNET.UI
 
 			sf.ExcuteScan(settings, comparer);
 		}
-
-		public static void ShowCodeGeneratorForm(IEnumerable<ClassNode> classes, CppTypeMapping typeMapping)
-		{
-			Contract.Requires(classes != null);
-			Contract.Requires(typeMapping != null);
-
-			ShowCodeGeneratorForm(classes, new CppCodeGenerator(typeMapping));
-		}
-
-		public static void ShowCodeGeneratorForm(IEnumerable<ClassNode> classes, ICodeGenerator generator)
-		{
-			Contract.Requires(classes != null);
-			Contract.Requires(generator != null);
-
-			new CodeForm(generator, classes, Program.Logger).Show();
-		}
 	}
 }

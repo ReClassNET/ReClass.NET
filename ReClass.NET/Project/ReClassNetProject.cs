@@ -20,9 +20,9 @@ namespace ReClassNET.Project
 		private readonly List<EnumDescription> enums = new List<EnumDescription>();
 		private readonly List<ClassNode> classes = new List<ClassNode>();
 
-		public IEnumerable<EnumDescription> Enums => enums;
+		public IReadOnlyList<EnumDescription> Enums => enums;
 
-		public IEnumerable<ClassNode> Classes => classes;
+		public IReadOnlyList<ClassNode> Classes => classes;
 
 		public string Path { get; set; }
 

@@ -19,7 +19,7 @@ namespace ReClassNET.Forms
 {
 	public partial class CodeForm : IconForm
 	{
-		public CodeForm(ICodeGenerator generator, IEnumerable<ClassNode> classes, ILogger logger)
+		public CodeForm(ICodeGenerator generator, IReadOnlyList<ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(generator != null);
 			Contract.Requires(classes != null);

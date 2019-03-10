@@ -108,9 +108,9 @@ namespace ReClassNET.CodeGenerator
 			};
 		}
 
-		public string GenerateCode(IEnumerable<ClassNode> classes, ILogger logger)
+		public string GenerateCode(IReadOnlyList<ClassNode> classes, ILogger logger)
 		{
-			var classNodes = classes as IList<ClassNode> ?? classes.ToList();
+			var classNodes = classes;
 
 			var sb = new StringBuilder();
 			sb.AppendLine($"// Created with {Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}");

@@ -16,7 +16,7 @@ namespace ReClassNET.CodeGenerator
 		/// <param name="classes">The classes to generate code from.</param>
 		/// <param name="logger">The logger used to output messages.</param>
 		/// <returns>The code for the classes.</returns>
-		string GenerateCode(IEnumerable<ClassNode> classes, ILogger logger);
+		string GenerateCode(IReadOnlyList<ClassNode> classes, ILogger logger);
 	}
 
 	[ContractClassFor(typeof(ICodeGenerator))]
@@ -24,7 +24,7 @@ namespace ReClassNET.CodeGenerator
 	{
 		public Language Language => throw new NotImplementedException();
 
-		public string GenerateCode(IEnumerable<ClassNode> classes, ILogger logger)
+		public string GenerateCode(IReadOnlyList<ClassNode> classes, ILogger logger)
 		{
 			Contract.Requires(classes != null);
 			Contract.Requires(Contract.ForAll(classes, c => c != null));

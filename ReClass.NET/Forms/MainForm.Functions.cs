@@ -20,8 +20,30 @@ using ReClassNET.Util;
 
 namespace ReClassNET.Forms
 {
-	public partial class MainForm : IconForm
+	public partial class MainForm
 	{
+		public void ShowDefaultCodeGeneratorForm(IReadOnlyList<ClassNode> classes)
+		{
+			Contract.Requires(classes != null);
+
+			ShowCodeGeneratorForm(classes, new CppCodeGenerator(currentProject.TypeMapping));
+		}
+
+		public void ShowCodeGeneratorForm(ICodeGenerator generator)
+		{
+			Contract.Requires(generator != null);
+
+			ShowCodeGeneratorForm(currentProject.Classes, generator);
+		}
+
+		public void ShowCodeGeneratorForm(IReadOnlyList<ClassNode> classes, ICodeGenerator generator)
+		{
+			Contract.Requires(classes != null);
+			Contract.Requires(generator != null);
+
+			new CodeForm(generator, classes, Program.Logger).Show();
+		}
+
 		public void AttachToProcess(string processName)
 		{
 			var info = Program.CoreFunctions.EnumerateProcesses().FirstOrDefault(p => string.Equals(p.Name, processName, StringComparison.OrdinalIgnoreCase));
@@ -91,15 +113,6 @@ namespace ReClassNET.Forms
 			projectView.AddEnums(currentProject.Enums);
 			projectView.AddClasses(currentProject.Classes);
 			memoryViewControl.ClassNode = currentProject.Classes.FirstOrDefault();
-		}
-
-		/// <summary>Shows the code form with the given <paramref name="generator"/>.</summary>
-		/// <param name="generator">The generator.</param>
-		private void ShowCodeForm(ICodeGenerator generator)
-		{
-			Contract.Requires(generator != null);
-
-			LinkedWindowFeatures.ShowCodeGeneratorForm(currentProject.Classes, generator);
 		}
 
 		/// <summary>Opens the <see cref="InputBytesForm"/> and calls <paramref name="callback"/> with the result.</summary>
