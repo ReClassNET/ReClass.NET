@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -420,7 +420,7 @@ namespace ReClassNET.Nodes
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The new x coordinate after drawing the icon.</returns>
-		protected int AddOpenClose(ViewInfo view, int x, int y)
+		protected int AddOpenCloseIcon(ViewInfo view, int x, int y)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
@@ -433,10 +433,10 @@ namespace ReClassNET.Nodes
 			return AddIcon(view, x, y, LevelsOpen[view.Level] ? Icons.OpenCloseOpen : Icons.OpenCloseClosed, 0, HotSpotType.OpenClose);
 		}
 
-		/// <summary>Draws a type drop icon if the node is selected.</summary>
+		/// <summary>Draws a context drop icon if the node is selected.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="y">The y coordinate.</param>
-		protected void AddTypeDrop(ViewInfo view, int y)
+		protected void AddContextDropDownIcon(ViewInfo view, int y)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
@@ -455,7 +455,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Draws a delete icon if the node is selected.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="y">The y coordinate.</param>
-		protected void AddDelete(ViewInfo view, int y)
+		protected void AddDeleteIcon(ViewInfo view, int y)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
@@ -509,7 +509,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Draws an error indicator if the used memory buffer is not valid.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="y">The y coordinate.</param>
-		protected void DrawInvalidMemoryIndicator(ViewInfo view, int y)
+		protected void DrawInvalidMemoryIndicatorIcon(ViewInfo view, int y)
 		{
 			if (!view.Memory.ContainsValidData)
 			{

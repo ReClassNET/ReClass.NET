@@ -29,7 +29,7 @@ namespace ReClassNET.Nodes
 
 			AddSelection(view, x, y, view.Font.Height);
 
-			x = AddOpenClose(view, x, y);
+			x = AddOpenCloseIcon(view, x, y);
 			x = AddIcon(view, x, y, Icons.Class, HotSpot.NoneId, HotSpotType.None);
 
 			var tx = x;
@@ -45,9 +45,9 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
-			DrawInvalidMemoryIndicator(view, y);
-			AddTypeDrop(view, y);
-			AddDelete(view, y);
+			DrawInvalidMemoryIndicatorIcon(view, y);
+			AddContextDropDownIcon(view, y);
+			AddDeleteIcon(view, y);
 
 			y += view.Font.Height;
 

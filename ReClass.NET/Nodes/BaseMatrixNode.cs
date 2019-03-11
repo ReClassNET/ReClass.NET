@@ -45,15 +45,15 @@ namespace ReClassNET.Nodes
 			{
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
 			}
-			x = AddOpenClose(view, x, y);
+			x = AddOpenCloseIcon(view, x, y);
 
 			x += view.Font.Width;
 
 			x = AddComment(view, x, y);
 
-			DrawInvalidMemoryIndicator(view, y);
-			AddTypeDrop(view, y);
-			AddDelete(view, y);
+			DrawInvalidMemoryIndicatorIcon(view, y);
+			AddContextDropDownIcon(view, y);
+			AddDeleteIcon(view, y);
 
 			if (LevelsOpen[view.Level])
 			{
@@ -75,7 +75,7 @@ namespace ReClassNET.Nodes
 				return DrawHidden(view, x, y);
 			}
 
-			DrawInvalidMemoryIndicator(view, y);
+			DrawInvalidMemoryIndicatorIcon(view, y);
 
 			var origX = x;
 			var origY = y;
@@ -92,7 +92,7 @@ namespace ReClassNET.Nodes
 			{
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
 			}
-			x = AddOpenClose(view, x, y);
+			x = AddOpenCloseIcon(view, x, y);
 
 			if (LevelsOpen[view.Level])
 			{
@@ -103,8 +103,8 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
-			AddTypeDrop(view, y);
-			AddDelete(view, y);
+			AddContextDropDownIcon(view, y);
+			AddDeleteIcon(view, y);
 
 			return new Size(x - origX, y - origY + view.Font.Height);
 		}

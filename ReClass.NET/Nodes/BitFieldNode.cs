@@ -134,7 +134,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 			}
 
-			x = AddOpenClose(view, x, y) + view.Font.Width;
+			x = AddOpenCloseIcon(view, x, y) + view.Font.Width;
 
 			var tx = x - 3;
 
@@ -149,9 +149,9 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
-			DrawInvalidMemoryIndicator(view, y);
-			AddTypeDrop(view, y);
-			AddDelete(view, y);
+			DrawInvalidMemoryIndicatorIcon(view, y);
+			AddContextDropDownIcon(view, y);
+			AddDeleteIcon(view, y);
 
 			if (LevelsOpen[view.Level])
 			{

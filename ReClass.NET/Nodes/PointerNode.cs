@@ -59,7 +59,7 @@ namespace ReClassNET.Nodes
 
 			if (InnerNode != null)
 			{
-				x = AddOpenClose(view, x, y);
+				x = AddOpenCloseIcon(view, x, y);
 			}
 			else
 			{
@@ -88,9 +88,9 @@ namespace ReClassNET.Nodes
 
 			x = AddComment(view, x, y);
 
-			DrawInvalidMemoryIndicator(view, y);
-			AddTypeDrop(view, y);
-			AddDelete(view, y);
+			DrawInvalidMemoryIndicatorIcon(view, y);
+			AddContextDropDownIcon(view, y);
+			AddDeleteIcon(view, y);
 
 			y += view.Font.Height;
 

@@ -106,7 +106,7 @@ namespace ReClassNET.Nodes
 			var origX = x;
 			var origY = y;
 
-			x = AddOpenClose(view, x, y);
+			x = AddOpenCloseIcon(view, x, y);
 
 			var tx = x;
 
