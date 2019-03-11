@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -448,7 +448,7 @@ namespace ReClassNET.Nodes
 
 			if (IsSelected)
 			{
-				AddIcon(view, 0, y, Icons.DropArrow, 0, HotSpotType.Drop);
+				AddIcon(view, 0, y, Icons.DropArrow, 0, HotSpotType.Context);
 			}
 		}
 

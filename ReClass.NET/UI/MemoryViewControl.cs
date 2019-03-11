@@ -353,7 +353,7 @@ namespace ReClassNET.UI
 
 						invalidate = true;
 					}
-					else if (hotSpot.Type == HotSpotType.Drop)
+					else if (hotSpot.Type == HotSpotType.Context)
 					{
 						ShowNodeContextMenu(e.Location);
 
