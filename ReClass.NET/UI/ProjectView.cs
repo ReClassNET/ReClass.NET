@@ -360,23 +360,27 @@ namespace ReClassNET.UI
 		}
 
 		/// <summary>Adds the class to the view.</summary>
-		/// <param name="node">The class to add.</param>
-		public void AddClass(ClassNode node)
+		/// <param name="class">The class to add.</param>
+		public void AddClass(ClassNode @class)
 		{
-			Contract.Requires(node != null);
+			Contract.Requires(@class != null);
 
-			AddClasses(new[] { node });
+			AddClasses(new[] { @class });
 		}
 
-		public void AddClasses(IEnumerable<ClassNode> nodes)
+		/// <summary>
+		/// Adds all classes to the view.
+		/// </summary>
+		/// <param name="classes">The classes to add.</param>
+		public void AddClasses(IEnumerable<ClassNode> classes)
 		{
-			Contract.Requires(nodes != null);
+			Contract.Requires(classes != null);
 
 			projectTreeView.BeginUpdate();
 
-			foreach (var node in nodes)
+			foreach (var @class in classes)
 			{
-				classesRootNode.Nodes.Add(new ClassTreeNode(node, this));
+				classesRootNode.Nodes.Add(new ClassTreeNode(@class, this));
 			}
 
 			classesRootNode.Expand();
@@ -435,13 +439,17 @@ namespace ReClassNET.UI
 				.Where(n => n.ClassNode == node);
 		}
 
-		public void UpdateClassNode(ClassNode node)
+		/// <summary>
+		/// Updates the display for the given class.
+		/// </summary>
+		/// <param name="class">The class to update.</param>
+		public void UpdateClassNode(ClassNode @class)
 		{
-			Contract.Requires(node != null);
+			Contract.Requires(@class != null);
 
 			projectTreeView.BeginUpdate();
 
-			foreach (var tn in FindClassTreeNodes(node))
+			foreach (var tn in FindClassTreeNodes(@class))
 			{
 				tn.Update();
 			}
@@ -451,6 +459,8 @@ namespace ReClassNET.UI
 			projectTreeView.EndUpdate();
 		}
 
+		/// <summary>Adds the enum to the view.</summary>
+		/// <param name="enum">The enum to add.</param>
 		public void AddEnum(EnumDescription @enum)
 		{
 			Contract.Requires(@enum != null);
@@ -458,6 +468,8 @@ namespace ReClassNET.UI
 			AddEnums(new[] { @enum });
 		}
 
+		/// <summary>Adds the enums to the view.</summary>
+		/// <param name="enums">The enums to add.</param>
 		public void AddEnums(IEnumerable<EnumDescription> enums)
 		{
 			Contract.Requires(enums != null);
@@ -476,21 +488,25 @@ namespace ReClassNET.UI
 			projectTreeView.EndUpdate();
 		}
 
+		/// <summary>
+		/// Updates the display for the given enum.
+		/// </summary>
+		/// <param name="enum">The enum to update.</param>
 		public void UpdateEnumNode(EnumDescription @enum)
 		{
 			Contract.Requires(@enum != null);
 
 			projectTreeView.BeginUpdate();
 
-			var nodes = enumsRootNode.Nodes
+			var node = enumsRootNode.Nodes
 				.Cast<EnumTreeNode>()
-				.Where(n => n.Enum == @enum);
-			foreach (var tn in nodes)
-			{
-				tn.Update();
-			}
+				.FirstOrDefault(n => n.Enum == @enum);
 
-			if (nodes.None())
+			if (node != null)
+			{
+				node.Update();
+			}
+			else
 			{
 				AddEnum(@enum);
 			}
