@@ -1,4 +1,4 @@
-/* diStorm 3.3.3 */
+/* diStorm 3.4.0 */
 
 /*
 distorm.h
@@ -6,7 +6,7 @@ distorm.h
 diStorm3 - Powerful disassembler for X86/AMD64
 http://ragestorm.net/distorm/
 distorm at gmail dot com
-Copyright (C) 2003-2016 Gil Dabah
+Copyright (C) 2003-2018 Gil Dabah
 This library is licensed under the BSD license. See the file COPYING.
 */
 
@@ -471,7 +471,7 @@ typedef enum { DECRES_NONE, DECRES_SUCCESS, DECRES_MEMORYERR, DECRES_INPUTERR, D
  *
  * Output: unsigned int - version of compiled library.
  */
-unsigned int distorm_version();
+unsigned int distorm_version(void);
 
 #endif /* DISTORM_STATIC */
 

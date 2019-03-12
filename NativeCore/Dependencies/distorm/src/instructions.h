@@ -4,7 +4,7 @@ instructions.h
 diStorm3 - Powerful disassembler for X86/AMD64
 http://ragestorm.net/distorm/
 distorm at gmail dot com
-Copyright (C) 2003-2016 Gil Dabah
+Copyright (C) 2003-2018 Gil Dabah
 This library is licensed under the BSD license. See the file COPYING.
 */
 

@@ -4,7 +4,7 @@ config.h
 diStorm3 - Powerful disassembler for X86/AMD64
 http://ragestorm.net/distorm/
 distorm at gmail dot com
-Copyright (C) 2003-2016 Gil Dabah
+Copyright (C) 2003-2018 Gil Dabah
 This library is licensed under the BSD license. See the file COPYING.
 */
 
@@ -13,7 +13,7 @@ This library is licensed under the BSD license. See the file COPYING.
 #define CONFIG_H
 
 /* diStorm version number. */
-#define __DISTORMV__ 0x030304
+#define __DISTORMV__ 0x030400
 
 #include <string.h> /* memset, memcpy - can be easily self implemented for libc independency. */
 
@@ -128,34 +128,45 @@ This library is licensed under the BSD license. See the file COPYING.
 
 /* Define stream read functions for big endian systems. */
 #ifdef BE_SYSTEM
+
+/* Avoid defining 'static static' for GCC. */
+#ifndef __GNUC__
+#define STATIC_INLINE static _INLINE_
+#else
+#define STATIC_INLINE static
+#endif
+
 /*
- * These functions can read from the stream safely!
+ * Assumption: These functions can read from the stream safely!
  * Swap endianity of input to little endian.
  */
-static _INLINE_ int16_t RSHORT(const uint8_t *s)
+STATIC_INLINE int16_t RSHORT(const uint8_t *s)
 {
 	return s[0] | (s[1] << 8);
 }
-static _INLINE_ uint16_t RUSHORT(const uint8_t *s)
+STATIC_INLINE uint16_t RUSHORT(const uint8_t *s)
 {
 	return s[0] | (s[1] << 8);
 }
-static _INLINE_ int32_t RLONG(const uint8_t *s)
+STATIC_INLINE int32_t RLONG(const uint8_t *s)
 {
 	return s[0] | (s[1] << 8) | (s[2] << 16) | (s[3] << 24);
 }
-static _INLINE_ uint32_t RULONG(const uint8_t *s)
+STATIC_INLINE uint32_t RULONG(const uint8_t *s)
 {
 	return s[0] | (s[1] << 8) | (s[2] << 16) | (s[3] << 24);
 }
-static _INLINE_ int64_t RLLONG(const uint8_t *s)
+STATIC_INLINE int64_t RLLONG(const uint8_t *s)
 {
 	return s[0] | (s[1] << 8) | (s[2] << 16) | (s[3] << 24) | ((uint64_t)s[4] << 32) | ((uint64_t)s[5] << 40) | ((uint64_t)s[6] << 48) | ((uint64_t)s[7] << 56);
 }
-static _INLINE_ uint64_t RULLONG(const uint8_t *s)
+STATIC_INLINE uint64_t RULLONG(const uint8_t *s)
 {
 	return s[0] | (s[1] << 8) | (s[2] << 16) | (s[3] << 24) | ((uint64_t)s[4] << 32) | ((uint64_t)s[5] << 40) | ((uint64_t)s[6] << 48) | ((uint64_t)s[7] << 56);
 }
+
+#undef STATIC_INLINE
+
 #else
 /* Little endian macro's will just make the cast. */
 #define RSHORT(x) *(int16_t *)x
