@@ -11,6 +11,13 @@ Keys mapping[];
 class DirectInput
 {
 public:
+	DirectInput() = default;
+
+	DirectInput(const DirectInput&) = delete;
+	DirectInput(const DirectInput&&) = delete;
+	DirectInput& operator=(DirectInput const&) = delete;
+	DirectInput& operator=(DirectInput const&&) = delete;
+
 	~DirectInput()
 	{
 		if (keyboardDevice)
