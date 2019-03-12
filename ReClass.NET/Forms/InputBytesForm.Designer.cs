@@ -122,7 +122,6 @@
 			// 
 			// bytesNumericUpDown
 			// 
-			this.bytesNumericUpDown.Hexadecimal = true;
 			this.bytesNumericUpDown.Location = new System.Drawing.Point(8, 25);
 			this.bytesNumericUpDown.Name = "bytesNumericUpDown";
 			this.bytesNumericUpDown.Size = new System.Drawing.Size(212, 20);
