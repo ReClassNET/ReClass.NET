@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -106,6 +106,8 @@ namespace ReClassNET.UI
 
 				ImageIndex = 3;
 				SelectedImageIndex = 3;
+
+				Update();
 			}
 
 			public void Update()
