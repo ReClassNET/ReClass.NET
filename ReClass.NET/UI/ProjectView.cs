@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -333,10 +333,30 @@ namespace ReClassNET.UI
 			}
 		}
 
+		/// <summary>
+		/// Clears all displayed nodes.
+		/// </summary>
 		public void Clear()
 		{
-			classesRootNode.Nodes.Clear();
-			enumsRootNode.Nodes.Clear();
+			Clear(true, true);
+		}
+
+		/// <summary>
+		/// Clears the selected nodes.
+		/// </summary>
+		/// <param name="clearClasses">Clears the classes if set.</param>
+		/// <param name="clearEnums">Clears the enums if set.</param>
+		public void Clear(bool clearClasses, bool clearEnums)
+		{
+			if (clearClasses)
+			{
+				classesRootNode.Nodes.Clear();
+			}
+
+			if (clearEnums)
+			{
+				enumsRootNode.Nodes.Clear();
+			}
 		}
 
 		/// <summary>Adds the class to the view.</summary>
