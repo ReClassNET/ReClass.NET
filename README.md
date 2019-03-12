@@ -7,17 +7,18 @@ This is a port of ReClass to the .NET platform with lots of additional features.
 - Support for x86 / x64
 - File import from ReClass 2007-2016 and ReClass QT
 - Memory Nodes
+  - Arrays and Pointers to every other node types
   - Hex 8 / 16 / 32 / 64
   - Int 8 / 16 / 32 / 64
   - UInt 8 / 16 / 32 / 64
   - Bool
   - Bits ![](https://abload.de/img/bitsnhlql.jpg)
+  - Enumerations
   - Float / Double
   - Vector 2 / 3 / 4
   - Matrix 3x3 / 3x4 / 4x4
-  - UTF8/16/32 Text and pointer to text
-  - Class Arrays and array of pointers to classes
-  - VTable
+  - UTF8 / UTF16 / UTF32 Text and pointer to text
+  - Virtual Tables
   - Function Pointer
   - Function
 - Automatic Node Dissection
