@@ -45,9 +45,9 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(5, 9);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(88, 13);
+			this.label1.Size = new System.Drawing.Size(121, 13);
 			this.label1.TabIndex = 1;
-			this.label1.Text = "Number of Bytes:";
+			this.label1.Text = "Number of Bytes to add:";
 			// 
 			// hexRadioButton
 			// 
@@ -111,7 +111,6 @@
 			// okButton
 			// 
 			this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.okButton.Image = global::ReClassNET.Properties.Resources.B16x16_Accept;
 			this.okButton.Location = new System.Drawing.Point(146, 121);
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size(75, 23);
