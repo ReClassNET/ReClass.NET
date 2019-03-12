@@ -30,6 +30,20 @@ namespace ReClassNET.Forms
 			}
 		}
 
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			GlobalWindowManager.AddWindow(this);
+		}
+
+		protected override void OnFormClosed(FormClosedEventArgs e)
+		{
+			base.OnFormClosed(e);
+
+			GlobalWindowManager.RemoveWindow(this);
+		}
+
 		private void enumDataGridView_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
 		{
 			long value = e.Row.Index;
