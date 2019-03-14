@@ -88,6 +88,8 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public MemoryBuffer Memory { get; set; }
 
+		public ContextMenuStrip NodeContextMenuStrip { get; set; }
+
 		public event EventHandler SelectionChanged;
 		public event NodeClickEventHandler ChangeClassTypeClick;
 		public event NodeClickEventHandler ChangeWrappedTypeClick;
@@ -727,7 +729,7 @@ namespace ReClassNET.UI
 		/// <param name="location">The location where the context menu should be shown.</param>
 		private void ShowNodeContextMenu(Point location)
 		{
-			ContextMenuStrip?.Show(this, location);
+			NodeContextMenuStrip?.Show(this, location);
 		}
 
 		/// <summary>

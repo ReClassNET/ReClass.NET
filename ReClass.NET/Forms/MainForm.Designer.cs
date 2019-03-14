@@ -317,7 +317,7 @@
 			// memoryViewControl
 			// 
 			this.memoryViewControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.memoryViewControl.ContextMenuStrip = this.selectedNodeContextMenuStrip;
+			this.memoryViewControl.NodeContextMenuStrip = this.selectedNodeContextMenuStrip;
 			this.memoryViewControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.memoryViewControl.Location = new System.Drawing.Point(0, 0);
 			this.memoryViewControl.Name = "memoryViewControl";
