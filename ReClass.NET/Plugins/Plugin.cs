@@ -25,7 +25,7 @@ namespace ReClassNET.Plugins
 			/// <summary>
 			/// An instance of a code generator which can process the custom node types.
 			/// </summary>
-			public ICustomCppCodeGenerator CodeGenerator { get; set; }
+			public CustomCppCodeGenerator CodeGenerator { get; set; }
 		}
 
 		/// <summary>

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using ReClassNET.Extensions;
@@ -12,36 +14,78 @@ using ReClassNET.UI;
 
 namespace ReClassNET.CodeGenerator
 {
+	public delegate void WriteNodeFunc(IndentedTextWriter writer, BaseNode node, ILogger logger);
+
 	public delegate string GetTypeDefinitionFunc(BaseNode node, ILogger logger);
 
 	public delegate string ResolveWrappedTypeFunc(BaseNode node, bool isAnonymousExpression, ILogger logger);
 
-	public interface ICustomCppCodeGenerator
+	/// <summary>
+	/// A C++ code generator for custom nodes.
+	/// </summary>
+	public abstract class CustomCppCodeGenerator
 	{
-		bool CanHandle(BaseNode node);
+		/// <summary>
+		/// Returns <c>true</c> if the code generator can handle the given node.
+		/// </summary>
+		/// <param name="node">The node to check.</param>
+		/// <returns>True if the code generator can handle the given node, false otherwise.</returns>
+		public abstract bool CanHandle(BaseNode node);
 
-		BaseNode TransformNode(BaseNode node);
+		/// <summary>
+		/// Outputs the C++ code for the node to the <see cref="TextWriter"/> instance.
+		/// </summary>
+		/// <param name="writer">The writer to output to.</param>
+		/// <param name="node">The node to output.</param>
+		/// <param name="defaultWriteNodeFunc">The default implementation of <see cref="CppCodeGenerator.WriteNode"/>.</param>
+		/// <param name="logger">The logger.</param>
+		/// <returns>True if the code generator has processed the node, false otherwise. If this method returns false, the default implementation is used.</returns>
+		public virtual bool WriteNode(IndentedTextWriter writer, BaseNode node, WriteNodeFunc defaultWriteNodeFunc, ILogger logger)
+		{
+			return false;
+		}
 
-		string GetTypeDefinition(BaseNode node, GetTypeDefinitionFunc defaultGetTypeDefinitionFunc, ResolveWrappedTypeFunc defaultResolveWrappedTypeFunc, ILogger logger);
+		/// <summary>
+		/// Transforms the given node if necessary.
+		/// </summary>
+		/// <param name="node">The node to transform.</param>
+		/// <returns>The transformed node.</returns>
+		public virtual BaseNode TransformNode(BaseNode node)
+		{
+			return node;
+		}
+
+		/// <summary>
+		/// Gets the type definition for the node. If the node is not a simple node <c>null</c> is returned.
+		/// </summary>
+		/// <param name="node">The node.</param>
+		/// <param name="defaultGetTypeDefinitionFunc">The default implementation of <see cref="CppCodeGenerator.GetTypeDefinition"/>.</param>
+		/// <param name="defaultResolveWrappedTypeFunc">The default implementation of <see cref="CppCodeGenerator.ResolveWrappedType"/>.</param>
+		/// <param name="logger">The logger.</param>
+		/// <returns>The type definition for the node or null if no simple type is available.</returns>
+		public virtual string GetTypeDefinition(BaseNode node, GetTypeDefinitionFunc defaultGetTypeDefinitionFunc, ResolveWrappedTypeFunc defaultResolveWrappedTypeFunc, ILogger logger)
+		{
+			return null;
+		}
 	}
 
 	public class CppCodeGenerator : ICodeGenerator
 	{
 		#region Custom Code Generators
 
-		private static readonly ISet<ICustomCppCodeGenerator> customGenerators = new HashSet<ICustomCppCodeGenerator>();
+		private static readonly ISet<CustomCppCodeGenerator> customGenerators = new HashSet<CustomCppCodeGenerator>();
 
-		public static void Add(ICustomCppCodeGenerator generator)
+		public static void Add(CustomCppCodeGenerator generator)
 		{
 			customGenerators.Add(generator);
 		}
 
-		public static void Remove(ICustomCppCodeGenerator generator)
+		public static void Remove(CustomCppCodeGenerator generator)
 		{
 			customGenerators.Remove(generator);
 		}
 
-		private static ICustomCppCodeGenerator GetCustomCodeGeneratorForNode(BaseNode node)
+		private static CustomCppCodeGenerator GetCustomCodeGeneratorForNode(BaseNode node)
 		{
 			return customGenerators.FirstOrDefault(g => g.CanHandle(node));
 		}
@@ -110,161 +154,215 @@ namespace ReClassNET.CodeGenerator
 
 		public string GenerateCode(IReadOnlyList<ClassNode> classes, IReadOnlyList<EnumDescription> enums, ILogger logger)
 		{
-			var classNodes = classes;
-
-			var sb = new StringBuilder();
-			sb.AppendLine($"// Created with {Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}");
-			sb.AppendLine();
-			sb.AppendLine(
-				string.Join(
-					Environment.NewLine + Environment.NewLine,
-					enums.Select(e =>
-					{
-						var esb = new StringBuilder();
-						esb.Append("enum class ");
-						esb.Append(e.Name);
-						esb.Append(" : ");
-						switch (e.Size)
-						{
-							case EnumDescription.UnderlyingTypeSize.OneByte:
-								esb.AppendLine(nodeTypeToTypeDefinationMap[typeof(Int8Node)]);
-								break;
-							case EnumDescription.UnderlyingTypeSize.TwoBytes:
-								esb.AppendLine(nodeTypeToTypeDefinationMap[typeof(Int16Node)]);
-								break;
-							case EnumDescription.UnderlyingTypeSize.FourBytes:
-								esb.AppendLine(nodeTypeToTypeDefinationMap[typeof(Int32Node)]);
-								break;
-							case EnumDescription.UnderlyingTypeSize.EightBytes:
-								esb.AppendLine(nodeTypeToTypeDefinationMap[typeof(Int64Node)]);
-								break;
-						}
-						esb.AppendLine("{");
-						esb.AppendLine(
-							string.Join(
-								"," + Environment.NewLine,
-								e.Values.Select(kv => $"\t{kv.Key} = {kv.Value}")
-							)
-						);
-						esb.AppendLine("};");
-
-						return esb.ToString();
-					})
-				)
-			);
-			sb.AppendLine(
-				string.Join(
-					Environment.NewLine + Environment.NewLine,
-					// Skip class which contains FunctionNodes because these are not data classes.
-					OrderByInheritance(classNodes.Where(c => c.Nodes.None(n => n is FunctionNode))).Select(c =>
-					{
-						var csb = new StringBuilder();
-						csb.Append($"class {c.Name}");
-
-						bool skipFirstMember = false;
-						if (c.Nodes.FirstOrDefault() is ClassInstanceNode inheritedFromNode)
-						{
-							skipFirstMember = true;
-
-							csb.Append(" : public ");
-							csb.Append(inheritedFromNode.InnerNode.Name);
-						}
-
-						if (!string.IsNullOrEmpty(c.Comment))
-						{
-							csb.Append($" // {c.Comment}");
-						}
-						csb.AppendLine();
-
-						csb.AppendLine("{");
-						csb.AppendLine("public:");
-						csb.AppendLine(
-							string.Join(
-								Environment.NewLine,
-								GetTypeDeclerationsForNodes(c.Nodes.Skip(skipFirstMember ? 1 : 0).WhereNot(n => n is FunctionNode), logger)
-									.Select(s => "\t" + s)
-							)
-						);
-
-						var vTableNodes = c.Nodes.OfType<VirtualMethodTableNode>().ToList();
-						if (vTableNodes.Any())
-						{
-							csb.AppendLine();
-							csb.AppendLine(
-								string.Join(
-									Environment.NewLine,
-									vTableNodes.SelectMany(vt => vt.Nodes).OfType<VirtualMethodNode>().Select(m => $"\tvirtual void {m.MethodName}();")
-								)
-							);
-						}
-
-						var functionNodes = classNodes.SelectMany(c2 => c2.Nodes).OfType<FunctionNode>().Where(f => f.BelongsToClass == c).ToList();
-						if (functionNodes.Any())
-						{
-							csb.AppendLine();
-							csb.AppendLine(
-								string.Join(
-									Environment.NewLine,
-									functionNodes.Select(f => $"\t{f.Signature} {{ }}")
-								)
-							);
-						}
-
-						csb.Append($"}}; //Size: 0x{c.MemorySize:X04}");
-						return csb.ToString();
-					})
-				)
-			);
-
-			return sb.ToString();
-		}
-
-		private static IEnumerable<ClassNode> OrderByInheritance(IEnumerable<ClassNode> classes)
-		{
-			Contract.Requires(classes != null);
-			Contract.Requires(Contract.ForAll(classes, c => c != null));
-			Contract.Ensures(Contract.Result<IEnumerable<ClassNode>>() != null);
-
-			var alreadySeen = new HashSet<ClassNode>();
-
-			return classes
-				.SelectMany(c => YieldReversedHierarchy(c, alreadySeen))
-				.Distinct();
-		}
-
-		private static IEnumerable<ClassNode> YieldReversedHierarchy(ClassNode node, ISet<ClassNode> alreadySeen)
-		{
-			Contract.Requires(node != null);
-			Contract.Requires(alreadySeen != null);
-			Contract.Requires(Contract.ForAll(alreadySeen, c => c != null));
-			Contract.Ensures(Contract.Result<IEnumerable<ClassNode>>() != null);
-
-			if (!alreadySeen.Add(node))
+			using (var sw = new StringWriter())
 			{
-				return Enumerable.Empty<ClassNode>();
+				using (var iw = new IndentedTextWriter(sw, "\t"))
+				{
+					iw.WriteLine($"// Created with {Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}");
+					iw.WriteLine();
+
+					using (var en = enums.GetEnumerator())
+					{
+						if (en.MoveNext())
+						{
+							WriteEnum(iw, en.Current);
+
+							while (en.MoveNext())
+							{
+								iw.WriteLine();
+
+								WriteEnum(iw, en.Current);
+							}
+
+							iw.WriteLine();
+						}
+					}
+
+					var alreadySeen = new HashSet<ClassNode>();
+
+					IEnumerable<ClassNode> GetReversedClassHierarchy(ClassNode node)
+					{
+						Contract.Requires(node != null);
+						Contract.Ensures(Contract.Result<IEnumerable<ClassNode>>() != null);
+
+						if (!alreadySeen.Add(node))
+						{
+							return Enumerable.Empty<ClassNode>();
+						}
+
+						var classNodes = node.Nodes
+							.OfType<BaseWrapperNode>()
+							.Where(w => !w.IsNodePresentInChain<PointerNode>()) // Pointers are forward declared
+							.Select(w => w.ResolveMostInnerNode() as ClassNode)
+							.Where(n => n != null);
+
+						return classNodes
+							.SelectMany(GetReversedClassHierarchy)
+							.Append(node);
+					}
+
+					var classesToWrite = classes
+						.Where(c => c.Nodes.None(n => n is FunctionNode)) // Skip class which contains FunctionNodes because these are not data classes.
+						.SelectMany(GetReversedClassHierarchy) // Order the classes by their use hierarchy.
+						.Distinct();
+
+					using (var en = classesToWrite.GetEnumerator())
+					{
+						if (en.MoveNext())
+						{
+							WriteClass(iw, en.Current, classes, logger);
+
+							while (en.MoveNext())
+							{
+								iw.WriteLine();
+
+								WriteClass(iw, en.Current, classes, logger);
+							}
+						}
+					}
+				}
+
+				return sw.ToString();
+			}
+		}
+
+		/// <summary>
+		/// Outputs the C++ code for the given enum to the <see cref="TextWriter"/> instance.
+		/// </summary>
+		/// <param name="writer">The writer to output to.</param>
+		/// <param name="enum">The enum to output.</param>
+		private void WriteEnum(IndentedTextWriter writer, EnumDescription @enum)
+		{
+			Contract.Requires(writer != null);
+			Contract.Requires(@enum != null);
+
+			writer.Write($"enum class {@enum.Name} : ");
+			switch (@enum.Size)
+			{
+				case EnumDescription.UnderlyingTypeSize.OneByte:
+					writer.WriteLine(nodeTypeToTypeDefinationMap[typeof(Int8Node)]);
+					break;
+				case EnumDescription.UnderlyingTypeSize.TwoBytes:
+					writer.WriteLine(nodeTypeToTypeDefinationMap[typeof(Int16Node)]);
+					break;
+				case EnumDescription.UnderlyingTypeSize.FourBytes:
+					writer.WriteLine(nodeTypeToTypeDefinationMap[typeof(Int32Node)]);
+					break;
+				case EnumDescription.UnderlyingTypeSize.EightBytes:
+					writer.WriteLine(nodeTypeToTypeDefinationMap[typeof(Int64Node)]);
+					break;
+			}
+			writer.WriteLine("{");
+			writer.Indent++;
+			for (var j = 0; j < @enum.Values.Count; ++j)
+			{
+				var kv = @enum.Values[j];
+
+				writer.Write(kv.Key);
+				writer.Write(" = ");
+				writer.Write(kv.Value);
+				if (j < @enum.Values.Count - 1)
+				{
+					writer.Write(",");
+				}
+				writer.WriteLine();
+			}
+			writer.Indent--;
+			writer.WriteLine("};");
+		}
+
+		/// <summary>
+		/// Outputs the C++ code for the given class to the <see cref="TextWriter"/> instance.
+		/// </summary>
+		/// <param name="writer">The writer to output to.</param>
+		/// <param name="class">The class to output.</param>
+		/// <param name="classes">The list of all available classes.</param>
+		/// <param name="logger">The logger.</param>
+		private void WriteClass(IndentedTextWriter writer, ClassNode @class, IEnumerable<ClassNode> classes, ILogger logger)
+		{
+			Contract.Requires(writer != null);
+			Contract.Requires(@class != null);
+			Contract.Requires(classes != null);
+
+			writer.Write("class ");
+			writer.Write(@class.Name);
+
+			var skipFirstMember = false;
+			if (@class.Nodes.FirstOrDefault() is ClassInstanceNode inheritedFromNode)
+			{
+				skipFirstMember = true;
+
+				writer.Write(" : public ");
+				writer.Write(inheritedFromNode.InnerNode.Name);
 			}
 
-			var classNodes = node.Nodes
-				.OfType<BaseWrapperNode>()
-				.Where(w => !w.IsNodePresentInChain<PointerNode>()) // Pointers are forward declared
-				.Select(w => w.ResolveMostInnerNode() as ClassNode)
-				.Where(n => n != null);
+			if (!string.IsNullOrEmpty(@class.Comment))
+			{
+				writer.Write(" // ");
+				writer.Write(@class.Comment);
+			}
 
-			return classNodes
-				.SelectMany(c => YieldReversedHierarchy(c, alreadySeen))
-				.Append(node);
+			writer.WriteLine();
+			
+			writer.WriteLine("{");
+			writer.WriteLine("public:");
+			writer.Indent++;
+
+			var nodes = @class.Nodes
+				.Skip(skipFirstMember ? 1 : 0)
+				.WhereNot(n => n is FunctionNode);
+			WriteNodes(writer, nodes, logger);
+
+			var vTableNodes = @class.Nodes.OfType<VirtualMethodTableNode>().ToList();
+			if (vTableNodes.Any())
+			{
+				writer.WriteLine();
+
+				var virtualMethodNodes = vTableNodes
+					.SelectMany(vt => vt.Nodes)
+					.OfType<VirtualMethodNode>();
+				foreach (var node in virtualMethodNodes)
+				{
+					writer.Write("virtual void ");
+					writer.Write(node.MethodName);
+					writer.WriteLine("();");
+				}
+			}
+
+			var functionNodes = classes
+				.SelectMany(c2 => c2.Nodes)
+				.OfType<FunctionNode>()
+				.Where(f => f.BelongsToClass == @class)
+				.ToList();
+			if (functionNodes.Any())
+			{
+				writer.WriteLine();
+
+				foreach (var node in functionNodes)
+				{
+					writer.Write(node.Signature);
+					writer.WriteLine("{ }");
+				}
+			}
+
+			writer.Indent--;
+			writer.Write("}; //Size: 0x");
+			writer.WriteLine($"{@class.MemorySize:X04}");
 		}
 
-		private IEnumerable<string> GetTypeDeclerationsForNodes(IEnumerable<BaseNode> members, ILogger logger)
+		/// <summary>
+		/// Outputs the C++ code for the given nodes to the <see cref="TextWriter"/> instance.
+		/// </summary>
+		/// <param name="writer">The writer to output to.</param>
+		/// <param name="nodes">The nodes to output.</param>
+		/// <param name="logger">The logger.</param>
+		private void WriteNodes(IndentedTextWriter writer, IEnumerable<BaseNode> nodes, ILogger logger)
 		{
-			Contract.Requires(members != null);
-			Contract.Requires(Contract.ForAll(members, m => m != null));
-			Contract.Requires(logger != null);
-			Contract.Ensures(Contract.Result<IEnumerable<string>>() != null);
-			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<string>>(), d => d != null));
+			Contract.Requires(writer != null);
+			Contract.Requires(nodes != null);
 
-			int fill = 0;
-			int fillStart = 0;
+			var fill = 0;
+			var fillStart = 0;
 
 			BaseNode CreatePaddingMember(int offset, int count)
 			{
@@ -280,7 +378,7 @@ namespace ReClassNET.CodeGenerator
 				return node;
 			}
 
-			foreach (var member in members.WhereNot(m => m is VirtualMethodTableNode))
+			foreach (var member in nodes.WhereNot(m => m is VirtualMethodTableNode))
 			{
 				if (member is BaseHexNode)
 				{
@@ -295,30 +393,146 @@ namespace ReClassNET.CodeGenerator
 
 				if (fill != 0)
 				{
-					yield return GetTypeDeclerationForNode(CreatePaddingMember(fillStart, fill), logger);
+					WriteNode(writer, CreatePaddingMember(fillStart, fill), logger);
 
 					fill = 0;
 				}
 
-				var definition = GetTypeDeclerationForNode(member, logger);
-				if (definition != null)
-				{
-					yield return definition;
-				}
-				else
-				{
-					logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {member.GetType()}");
-				}
+				WriteNode(writer, member, logger);
 			}
 
 			if (fill != 0)
 			{
-				yield return GetTypeDeclerationForNode(CreatePaddingMember(fillStart, fill), logger);
+				WriteNode(writer, CreatePaddingMember(fillStart, fill), logger);
 			}
 		}
 
+		/// <summary>
+		/// Outputs the C++ code for the given node to the <see cref="TextWriter"/> instance.
+		/// </summary>
+		/// <param name="writer">The writer to output to.</param>
+		/// <param name="node">The node to output.</param>
+		/// <param name="logger">The logger.</param>
+		private void WriteNode(IndentedTextWriter writer, BaseNode node, ILogger logger)
+		{
+			Contract.Requires(writer != null);
+			Contract.Requires(node != null);
+
+			var custom = GetCustomCodeGeneratorForNode(node);
+			if (custom != null)
+			{
+				if (custom.WriteNode(writer, node, WriteNode, logger))
+				{
+					return;
+				}
+			}
+
+			node = TransformNode(node);
+
+			var simpleType = GetTypeDefinition(node, logger);
+			if (simpleType != null)
+			{
+				//$"{type} {node.Name}; //0x{node.Offset.ToInt32():X04} {node.Comment}".Trim();
+				writer.Write(simpleType);
+				writer.Write(" ");
+				writer.Write(node.Name);
+				writer.Write("; //0x");
+				writer.Write($"{node.Offset.ToInt32():X04}");
+				if (!string.IsNullOrEmpty(node.Comment))
+				{
+					writer.Write(" ");
+					writer.Write(node.Comment);
+				}
+				writer.WriteLine();
+			}
+			else if (node is BaseWrapperNode)
+			{
+				writer.Write(ResolveWrappedType(node, false, logger));
+				writer.Write("; //0x");
+				writer.Write($"{node.Offset.ToInt32():X04}");
+				if (!string.IsNullOrEmpty(node.Comment))
+				{
+					writer.Write(" ");
+					writer.Write(node.Comment);
+				}
+				writer.WriteLine();
+			}
+			else
+			{
+				logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {node.GetType()}");
+			}
+		}
+
+		/// <summary>
+		/// Transforms the given node into some other node if necessary.
+		/// </summary>
+		/// <param name="node">The node to transform.</param>
+		/// <returns>The transformed node.</returns>
+		private static BaseNode TransformNode(BaseNode node)
+		{
+			var custom = GetCustomCodeGeneratorForNode(node);
+			if (custom != null)
+			{
+				return custom.TransformNode(node);
+			}
+
+			BaseNode GetCharacterNodeForEncoding(Encoding encoding)
+			{
+				if (encoding.Equals(Encoding.Unicode))
+				{
+					return new Utf16CharacterNode();
+				}
+				if (encoding.Equals(Encoding.UTF32))
+				{
+					return new Utf32CharacterNode();
+				}
+				return new Utf8CharacterNode();
+			}
+
+			if (node is BaseTextNode textNode)
+			{
+				var arrayNode = new ArrayNode { Count = textNode.Length };
+				arrayNode.CopyFromNode(node);
+				arrayNode.ChangeInnerNode(GetCharacterNodeForEncoding(textNode.Encoding));
+				return arrayNode;
+			}
+
+			if (node is BaseTextPtrNode textPtrNode)
+			{
+				var pointerNode = new PointerNode();
+				pointerNode.CopyFromNode(node);
+				pointerNode.ChangeInnerNode(GetCharacterNodeForEncoding(textPtrNode.Encoding));
+				return pointerNode;
+			}
+
+			if (node is BitFieldNode bitFieldNode)
+			{
+				var underlayingNode = bitFieldNode.GetUnderlayingNode();
+				underlayingNode.CopyFromNode(node);
+				return underlayingNode;
+			}
+
+			if (node is BaseHexNode hexNode)
+			{
+				var arrayNode = new ArrayNode { Count = hexNode.MemorySize };
+				arrayNode.CopyFromNode(node);
+				arrayNode.ChangeInnerNode(new Utf8CharacterNode());
+				return arrayNode;
+			}
+
+			return node;
+		}
+
+		/// <summary>
+		/// Gets the type definition for the given node. If the node is not a simple node <c>null</c> is returned.
+		/// </summary>
+		/// <param name="node">The target node.</param>
+		/// <param name="logger">The logger.</param>
+		/// <returns>The type definition for the node or null if no simple type is available.</returns>
 		private string GetTypeDefinition(BaseNode node, ILogger logger)
 		{
+			Contract.Requires(node != null);
+
 			var custom = GetCustomCodeGeneratorForNode(node);
 			if (custom != null)
 			{
@@ -342,30 +556,13 @@ namespace ReClassNET.CodeGenerator
 			return null;
 		}
 
-		private string GetTypeDeclerationForNode(BaseNode node, ILogger logger)
-		{
-			var transformedNode = TransformNode(node);
-
-			var simpleType = GetTypeDefinition(transformedNode, logger);
-			if (simpleType != null)
-			{
-				return NodeToString(node, simpleType);
-			}
-
-			if (transformedNode is BaseWrapperNode wrapperNode)
-			{
-				var sb = new StringBuilder();
-
-				sb.Append(ResolveWrappedType(node, false, logger));
-
-				sb.Append($"; //0x{node.Offset.ToInt32():X04} {node.Comment}".Trim());
-
-				return sb.ToString();
-			}
-
-			return null;
-		}
-
+		/// <summary>
+		/// Resolves the type of a <see cref="BaseWrapperNode"/> node (<see cref="PointerNode"/> and <see cref="ArrayNode"/>).
+		/// </summary>
+		/// <param name="node">The node to resolve.</param>
+		/// <param name="isAnonymousExpression">Specify if the expression should be anonymous.</param>
+		/// <param name="logger">The logger.</param>
+		/// <returns>The resolved type of the node.</returns>
 		private string ResolveWrappedType(BaseNode node, bool isAnonymousExpression, ILogger logger)
 		{
 			Contract.Requires(node != null);
@@ -428,69 +625,6 @@ namespace ReClassNET.CodeGenerator
 			}
 
 			return sb.ToString().Trim();
-		}
-
-		private static BaseNode TransformNode(BaseNode node)
-		{
-			var custom = GetCustomCodeGeneratorForNode(node);
-			if (custom != null)
-			{
-				return custom.TransformNode(node);
-			}
-
-			BaseNode GetCharacterNodeForEncoding(Encoding encoding)
-			{
-				if (encoding.Equals(Encoding.Unicode))
-				{
-					return new Utf16CharacterNode();
-				}
-				if (encoding.Equals(Encoding.UTF32))
-				{
-					return new Utf32CharacterNode();
-				}
-				return new Utf8CharacterNode();
-			}
-
-			if (node is BaseTextNode textNode)
-			{
-				var arrayNode = new ArrayNode { Count = textNode.Length };
-				arrayNode.CopyFromNode(node);
-				arrayNode.ChangeInnerNode(GetCharacterNodeForEncoding(textNode.Encoding));
-				return arrayNode;
-			}
-
-			if (node is BaseTextPtrNode textPtrNode)
-			{
-				var pointerNode = new PointerNode();
-				pointerNode.CopyFromNode(node);
-				pointerNode.ChangeInnerNode(GetCharacterNodeForEncoding(textPtrNode.Encoding));
-				return pointerNode;
-			}
-
-			if (node is BitFieldNode bitFieldNode)
-			{
-				var underlayingNode = bitFieldNode.GetUnderlayingNode();
-				underlayingNode.CopyFromNode(node);
-				return underlayingNode;
-			}
-
-			if (node is BaseHexNode hexNode)
-			{
-				var arrayNode = new ArrayNode { Count = hexNode.MemorySize };
-				arrayNode.CopyFromNode(node);
-				arrayNode.ChangeInnerNode(new Utf8CharacterNode());
-				return arrayNode;
-			}
-
-			return node;
-		}
-
-		private static string NodeToString(BaseNode node, string type)
-		{
-			Contract.Requires(node != null);
-			Contract.Requires(type != null);
-
-			return $"{type} {node.Name}; //0x{node.Offset.ToInt32():X04} {node.Comment}".Trim();
 		}
 	}
 }
