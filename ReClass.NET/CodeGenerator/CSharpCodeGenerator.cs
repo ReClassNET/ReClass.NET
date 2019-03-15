@@ -1,8 +1,9 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Linq;
-using System.Text;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.Nodes;
@@ -12,7 +13,7 @@ namespace ReClassNET.CodeGenerator
 {
 	public class CSharpCodeGenerator : ICodeGenerator
 	{
-		private static readonly Dictionary<Type, string> typeToTypedefMap = new Dictionary<Type, string>
+		private static readonly Dictionary<Type, string> nodeTypeToTypeDefinationMap = new Dictionary<Type, string>
 		{
 			[typeof(DoubleNode)] = "double",
 			[typeof(FloatNode)] = "float",
@@ -38,76 +39,172 @@ namespace ReClassNET.CodeGenerator
 
 		public string GenerateCode(IReadOnlyList<ClassNode> classes, IReadOnlyList<EnumDescription> enums, ILogger logger)
 		{
-			var sb = new StringBuilder();
-			sb.AppendLine($"// Created with {Constants.ApplicationName} by {Constants.Author}");
-			sb.AppendLine();
-			sb.AppendLine("// Warning: The code generator doesn't support all node types!");
-			sb.AppendLine();
-			sb.AppendLine("using System.Runtime.InteropServices;");
-			sb.AppendLine();
-
-			sb.Append(
-				string.Join(
-					Environment.NewLine + Environment.NewLine,
-					classes.Select(c =>
-					{
-						var csb = new StringBuilder();
-
-						csb.AppendLine("[StructLayout(LayoutKind.Explicit)]");
-						csb.Append($"struct {c.Name}");
-						if (!string.IsNullOrEmpty(c.Comment))
-						{
-							csb.Append($" // {c.Comment}");
-						}
-						csb.AppendLine();
-
-						csb.AppendLine("{");
-
-						csb.AppendLine(
-							string.Join(
-								Environment.NewLine + Environment.NewLine,
-								GetTypeDeclerationsForNodes(c.Nodes, logger)
-									.Select(t => $"\t{t.Item1}{Environment.NewLine}\t{t.Item2}")
-							)
-						);
-						csb.Append("}");
-						return csb.ToString();
-					})
-				)
-			);
-
-			return sb.ToString();
-		}
-
-		private static IEnumerable<Tuple<string, string>> GetTypeDeclerationsForNodes(IEnumerable<BaseNode> members, ILogger logger)
-		{
-			Contract.Requires(members != null);
-			Contract.Requires(Contract.ForAll(members, m => m != null));
-			Contract.Requires(logger != null);
-			Contract.Ensures(Contract.Result<IEnumerable<Tuple<string, string>>>() != null);
-			Contract.Ensures(Contract.ForAll(Contract.Result<IEnumerable<Tuple<string, string>>>(), t => t != null));
-
-			foreach (var member in members.WhereNot(n => n is BaseHexNode))
+			using (var sw = new StringWriter())
 			{
-				var type = GetTypeForNode(member, logger);
-				if (type != null)
+				using (var iw = new IndentedTextWriter(sw, "\t"))
 				{
-					yield return Tuple.Create(
-						$"[FieldOffset({member.Offset.ToInt32()})]",
-						$"public {type} {member.Name}; //0x{member.Offset.ToInt32():X04} {member.Comment}".Trim()
-					);
+					iw.WriteLine($"// Created with {Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}");
+					iw.WriteLine();
+					iw.WriteLine("// Warning: The C# code generator doesn't support all node types!");
+					iw.WriteLine();
+					iw.WriteLine("using System.Runtime.InteropServices;");
+					iw.WriteLine();
+
+					using (var en = enums.GetEnumerator())
+					{
+						if (en.MoveNext())
+						{
+							WriteEnum(iw, en.Current);
+
+							while (en.MoveNext())
+							{
+								iw.WriteLine();
+
+								WriteEnum(iw, en.Current);
+							}
+
+							iw.WriteLine();
+						}
+					}
+
+					var classesToWrite = classes
+						.Where(c => c.Nodes.None(n => n is FunctionNode)) // Skip class which contains FunctionNodes because these are not data classes.
+						.Distinct();
+
+					using (var en = classesToWrite.GetEnumerator())
+					{
+						if (en.MoveNext())
+						{
+							WriteClass(iw, en.Current, logger);
+
+							while (en.MoveNext())
+							{
+								iw.WriteLine();
+
+								WriteClass(iw, en.Current, logger);
+							}
+						}
+					}
 				}
-				else
-				{
-					logger.Log(LogLevel.Warning, $"Skipping node with unhandled type: {member.GetType()}");
-				}
+
+				return sw.ToString();
 			}
 		}
 
-		private static string GetTypeForNode(BaseNode node, ILogger logger)
+		/// <summary>
+		/// Outputs the C# code for the given enum to the <see cref="TextWriter"/> instance.
+		/// </summary>
+		/// <param name="writer">The writer to output to.</param>
+		/// <param name="enum">The enum to output.</param>
+		private static void WriteEnum(IndentedTextWriter writer, EnumDescription @enum)
+		{
+			Contract.Requires(writer != null);
+			Contract.Requires(@enum != null);
+
+			writer.Write($"enum {@enum.Name} : ");
+			switch (@enum.Size)
+			{
+				case EnumDescription.UnderlyingTypeSize.OneByte:
+					writer.WriteLine(nodeTypeToTypeDefinationMap[typeof(Int8Node)]);
+					break;
+				case EnumDescription.UnderlyingTypeSize.TwoBytes:
+					writer.WriteLine(nodeTypeToTypeDefinationMap[typeof(Int16Node)]);
+					break;
+				case EnumDescription.UnderlyingTypeSize.FourBytes:
+					writer.WriteLine(nodeTypeToTypeDefinationMap[typeof(Int32Node)]);
+					break;
+				case EnumDescription.UnderlyingTypeSize.EightBytes:
+					writer.WriteLine(nodeTypeToTypeDefinationMap[typeof(Int64Node)]);
+					break;
+			}
+			writer.WriteLine("{");
+			writer.Indent++;
+			for (var j = 0; j < @enum.Values.Count; ++j)
+			{
+				var kv = @enum.Values[j];
+
+				writer.Write(kv.Key);
+				writer.Write(" = ");
+				writer.Write(kv.Value);
+				if (j < @enum.Values.Count - 1)
+				{
+					writer.Write(",");
+				}
+				writer.WriteLine();
+			}
+			writer.Indent--;
+			writer.WriteLine("};");
+		}
+
+		/// <summary>
+		/// Outputs the C# code for the given class to the <see cref="TextWriter"/> instance.
+		/// </summary>
+		/// <param name="writer">The writer to output to.</param>
+		/// <param name="class">The class to output.</param>
+		/// <param name="logger">The logger.</param>
+		private static void WriteClass(IndentedTextWriter writer, ClassNode @class, ILogger logger)
+		{
+			Contract.Requires(writer != null);
+			Contract.Requires(@class != null);
+			Contract.Requires(logger != null);
+
+			writer.WriteLine("[StructLayout(LayoutKind.Explicit)]");
+			writer.Write("class ");
+			writer.Write(@class.Name);
+
+			if (!string.IsNullOrEmpty(@class.Comment))
+			{
+				writer.Write(" // ");
+				writer.Write(@class.Comment);
+			}
+
+			writer.WriteLine();
+
+			writer.WriteLine("{");
+			writer.Indent++;
+
+			var nodes = @class.Nodes
+				.WhereNot(n => n is FunctionNode || n is BaseHexNode);
+			foreach (var node in nodes)
+			{
+				var type = GetTypeDefinition(node);
+				if (type != null)
+				{
+					writer.Write("[FieldOffset(");
+					writer.Write(node.Offset.ToInt32());
+					writer.WriteLine(")]");
+
+					writer.Write("public ");
+					writer.Write(type);
+					writer.Write(" ");
+					writer.Write(node.Name);
+					writer.Write("; //0x");
+					writer.Write($"{node.Offset.ToInt32():X04}");
+					if (!string.IsNullOrEmpty(node.Comment))
+					{
+						writer.Write(" ");
+						writer.Write(node.Comment);
+					}
+					writer.WriteLine();
+				}
+				else
+				{
+					logger.Log(LogLevel.Warning, $"Skipping node with unhandled type: {node.GetType()}");
+				}
+			}
+
+			writer.Indent--;
+			writer.WriteLine("}");
+		}
+
+		/// <summary>
+		/// Gets the type definition for the given node. If the node is not a simple node <c>null</c> is returned.
+		/// </summary>
+		/// <param name="node">The target node.</param>
+		/// <returns>The type definition for the node or null if no simple type is available.</returns>
+		private static string GetTypeDefinition(BaseNode node)
 		{
 			Contract.Requires(node != null);
-			Contract.Requires(logger != null);
 
 			if (node is BitFieldNode bitFieldNode)
 			{
@@ -116,9 +213,14 @@ namespace ReClassNET.CodeGenerator
 				node = underlayingNode;
 			}
 
-			if (typeToTypedefMap.TryGetValue(node.GetType(), out var type))
+			if (nodeTypeToTypeDefinationMap.TryGetValue(node.GetType(), out var type))
 			{
 				return type;
+			}
+
+			if (node is EnumNode enumNode)
+			{
+				return enumNode.Enum.Name;
 			}
 
 			return null;
