@@ -323,7 +323,7 @@ namespace ReClassNET.Forms
 
 		private void memorySearcherToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			new ScannerForm().Show();
+			new ScannerForm(Program.RemoteProcess).Show();
 		}
 
 		private void namedAddressesToolStripMenuItem_Click(object sender, EventArgs e)

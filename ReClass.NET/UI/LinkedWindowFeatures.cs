@@ -92,7 +92,7 @@ namespace ReClassNET.UI
 			}
 			if (sf == null)
 			{
-				sf = new ScannerForm();
+				sf = new ScannerForm(Program.RemoteProcess);
 				sf.Show();
 			}
 

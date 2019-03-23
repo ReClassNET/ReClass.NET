@@ -27,6 +27,8 @@ namespace ReClassNET.Forms
 
 		private const int MaxVisibleResults = 10000;
 
+		private readonly RemoteProcess process;
+
 		private bool isFirstScan;
 
 		private Scanner scanner;
@@ -34,8 +36,12 @@ namespace ReClassNET.Forms
 
 		private string addressFilePath;
 
-		public ScannerForm()
+		public ScannerForm(RemoteProcess process)
 		{
+			Contract.Requires(process != null);
+
+			this.process = process;
+
 			InitializeComponent();
 
 			toolStripPanel.Renderer = new CustomToolStripProfessionalRenderer(true, false);
@@ -47,10 +53,10 @@ namespace ReClassNET.Forms
 
 			Reset();
 
-			firstScanButton.Enabled = flowLayoutPanel.Enabled = Program.RemoteProcess.IsValid;
+			firstScanButton.Enabled = flowLayoutPanel.Enabled = process.IsValid;
 
-			Program.RemoteProcess.ProcessAttached += RemoteProcessOnProcessAttached;
-			Program.RemoteProcess.ProcessClosing += RemoteProcessOnProcessClosing;
+			process.ProcessAttached += RemoteProcessOnProcessAttached;
+			process.ProcessClosing += RemoteProcessOnProcessClosing;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -85,8 +91,8 @@ namespace ReClassNET.Forms
 				{
 					foreach (var record in addressListMemoryRecordList.Records)
 					{
-						record.ResolveAddress(Program.RemoteProcess);
-						record.RefreshValue(Program.RemoteProcess);
+						record.ResolveAddress(process);
+						record.RefreshValue(process);
 					}
 				}
 			}
@@ -103,14 +109,14 @@ namespace ReClassNET.Forms
 		{
 			scanner?.Dispose();
 
-			Program.RemoteProcess.ProcessAttached -= RemoteProcessOnProcessAttached;
-			Program.RemoteProcess.ProcessClosing -= RemoteProcessOnProcessClosing;
+			process.ProcessAttached -= RemoteProcessOnProcessAttached;
+			process.ProcessClosing -= RemoteProcessOnProcessClosing;
 		}
 
 		private void updateValuesTimer_Tick(object sender, EventArgs e)
 		{
-			resultMemoryRecordList.RefreshValues(Program.RemoteProcess);
-			addressListMemoryRecordList.RefreshValues(Program.RemoteProcess);
+			resultMemoryRecordList.RefreshValues(process);
+			addressListMemoryRecordList.RefreshValues(process);
 		}
 
 		private void scanTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
@@ -147,7 +153,7 @@ namespace ReClassNET.Forms
 
 		private async void nextScanButton_Click(object sender, EventArgs e)
 		{
-			if (!Program.RemoteProcess.IsValid)
+			if (!process.IsValid)
 			{
 				return;
 			}
@@ -245,8 +251,8 @@ namespace ReClassNET.Forms
 							import.Load(ofd.FileName, Program.Logger)
 								.Select(r =>
 								{
-									r.ResolveAddress(Program.RemoteProcess);
-									r.RefreshValue(Program.RemoteProcess);
+									r.ResolveAddress(process);
+									r.RefreshValue(process);
 									return r;
 								})
 						);
@@ -301,7 +307,7 @@ namespace ReClassNET.Forms
 
 		private void showInputCorrelatorIconButton_Click(object sender, EventArgs e)
 		{
-			new InputCorrelatorForm(this).Show();
+			new InputCorrelatorForm(this, process).Show();
 		}
 
 		private void resultListContextMenuStrip_Opening(object sender, CancelEventArgs e)
@@ -415,7 +421,7 @@ namespace ReClassNET.Forms
 					.Select(r =>
 					{
 						var record = new MemoryRecord(r);
-						record.ResolveAddress(Program.RemoteProcess);
+						record.ResolveAddress(process);
 						return record;
 					})
 			);
@@ -586,7 +592,7 @@ namespace ReClassNET.Forms
 		/// <param name="comparer">The comparer.</param>
 		private async Task StartFirstScanEx(ScanSettings settings, IScanComparer comparer)
 		{
-			if (!Program.RemoteProcess.IsValid)
+			if (!process.IsValid)
 			{
 				return;
 			}
@@ -596,7 +602,7 @@ namespace ReClassNET.Forms
 
 			try
 			{
-				scanner = new Scanner(Program.RemoteProcess, settings);
+				scanner = new Scanner(process, settings);
 
 				var report = new Progress<int>(i =>
 				{

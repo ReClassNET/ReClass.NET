@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.Input;
+using ReClassNET.Memory;
 using ReClassNET.MemoryScanner;
 using ReClassNET.UI;
 
@@ -15,17 +16,21 @@ namespace ReClassNET.Forms
 		private static readonly TimeSpan refineInterval = TimeSpan.FromMilliseconds(400);
 
 		private readonly ScannerForm scannerForm;
+		private readonly RemoteProcess process;
+
 		private readonly KeyboardInput input;
 		private InputCorrelatedScanner scanner;
 
 		private bool isScanning = false;
 		private DateTime lastRefineTime;
 
-		public InputCorrelatorForm(ScannerForm sf)
+		public InputCorrelatorForm(ScannerForm scannerForm, RemoteProcess process)
 		{
-			Contract.Requires(sf != null);
+			Contract.Requires(scannerForm != null);
+			Contract.Requires(process != null);
 
-			scannerForm = sf;
+			this.scannerForm = scannerForm;
+			this.process = process;
 
 			InitializeComponent();
 
@@ -122,7 +127,7 @@ namespace ReClassNET.Forms
 				}
 
 				scanner = new InputCorrelatedScanner(
-					Program.RemoteProcess,
+					process,
 					input,
 					hotkeyListBox.Items.Cast<KeyboardHotkey>(),
 					valueTypeComboBox.SelectedValue
