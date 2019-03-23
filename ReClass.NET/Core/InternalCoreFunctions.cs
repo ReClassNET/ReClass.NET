@@ -10,7 +10,7 @@ namespace ReClassNET.Core
 {
 	public delegate bool EnumerateInstructionCallback(ref InstructionData data);
 
-	internal class InternalCoreFunctions : NativeCoreWrapper, IDisposable
+	internal class InternalCoreFunctions : NativeCoreWrapper, IInternalCoreFunctions, IDisposable
 	{
 		private const string CoreFunctionsModuleWindows = "NativeCore.dll";
 		private const string CoreFunctionsModuleUnix = "NativeCore.so";

@@ -148,6 +148,7 @@
     <Compile Include="Core\CoreFunctionsManager.cs" />
     <Compile Include="Core\DataExchange.cs" />
     <Compile Include="Core\ICoreProcessFunctions.cs" />
+    <Compile Include="Core\IInternalCoreFunctions.cs" />
     <Compile Include="Core\InternalCoreFunctions.cs" />
     <Compile Include="Core\NativeCoreWrapper.cs" />
     <Compile Include="DataExchange\ReClass\ReClassClipboard.cs" />

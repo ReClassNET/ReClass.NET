@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using ReClassNET.Debugger;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
-using ReClassNET.Util;
 
 namespace ReClassNET.Core
 {
