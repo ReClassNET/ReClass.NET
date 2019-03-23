@@ -57,7 +57,7 @@ namespace ReClassNET.Nodes
 			var color = view.Settings.HexColor;
 			if (view.Settings.HighlightChangedValues)
 			{
-				var address = view.Address.Add(Offset);
+				var address = view.Address + Offset;
 
 				highlightTimer.RemoveWhere(kv => kv.Value.Value < view.CurrentTime);
 

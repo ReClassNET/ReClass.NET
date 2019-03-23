@@ -31,9 +31,9 @@ namespace ReClassNET.Nodes
 		protected override Size DrawChild(ViewInfo view, int x, int y)
 		{
 			var v = view.Clone();
-			v.Address = view.Address.Add(Offset) + InnerNode.MemorySize * CurrentIndex;
+			v.Address = view.Address + Offset + InnerNode.MemorySize * CurrentIndex;
 			v.Memory = view.Memory.Clone();
-			v.Memory.Offset += Offset.ToInt32() + InnerNode.MemorySize * CurrentIndex;
+			v.Memory.Offset += Offset + InnerNode.MemorySize * CurrentIndex;
 
 			return InnerNode.Draw(v, x, y);
 		}

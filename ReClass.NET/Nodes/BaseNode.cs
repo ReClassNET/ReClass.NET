@@ -29,7 +29,7 @@ namespace ReClassNET.Nodes
 		private string comment = string.Empty;
 
 		/// <summary>Gets or sets the offset of the node.</summary>
-		public IntPtr Offset { get; set; }
+		public int Offset { get; set; }
 
 		/// <summary>Gets or sets the name of the node. If a new name was set the property changed event gets fired.</summary>
 		public virtual string Name { get => name; set { if (value != null && name != value) { name = value; NameChanged?.Invoke(this); } } }
@@ -62,7 +62,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Invariant(name != null);
 			Contract.Invariant(comment != null);
-			Contract.Invariant(Offset.ToInt32() >= 0);
+			Contract.Invariant(Offset >= 0);
 			Contract.Invariant(LevelsOpen != null);
 		}
 
@@ -292,7 +292,7 @@ namespace ReClassNET.Nodes
 			{
 				Rect = spot,
 				Text = text,
-				Address = view.Address.Add(Offset),
+				Address = view.Address + Offset,
 				Id = id,
 				Type = type,
 				Node = this,
@@ -349,12 +349,12 @@ namespace ReClassNET.Nodes
 
 			if (view.Settings.ShowNodeOffset)
 			{
-				x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"{Offset.ToInt32():X04}") + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, $"{Offset:X04}") + view.Font.Width;
 			}
 
 			if (view.Settings.ShowNodeAddress)
 			{
-				x = AddText(view, x, y, view.Settings.AddressColor, HotSpot.AddressId, view.Address.Add(Offset).ToString(Constants.AddressHexFormat)) + view.Font.Width;
+				x = AddText(view, x, y, view.Settings.AddressColor, HotSpot.AddressId, (view.Address + Offset).ToString(Constants.AddressHexFormat)) + view.Font.Width;
 			}
 
 			return x;

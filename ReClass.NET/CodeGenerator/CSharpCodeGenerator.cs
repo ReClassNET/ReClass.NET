@@ -171,7 +171,7 @@ namespace ReClassNET.CodeGenerator
 				if (type != null)
 				{
 					writer.Write("[FieldOffset(");
-					writer.Write(node.Offset.ToInt32());
+					writer.Write(node.Offset);
 					writer.WriteLine(")]");
 
 					writer.Write("public ");
@@ -179,7 +179,7 @@ namespace ReClassNET.CodeGenerator
 					writer.Write(" ");
 					writer.Write(node.Name);
 					writer.Write("; //0x");
-					writer.Write($"{node.Offset.ToInt32():X04}");
+					writer.Write($"{node.Offset:X04}");
 					if (!string.IsNullOrEmpty(node.Comment))
 					{
 						writer.Write(" ");

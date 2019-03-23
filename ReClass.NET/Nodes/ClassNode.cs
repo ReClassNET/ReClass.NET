@@ -39,12 +39,15 @@ namespace ReClassNET.Nodes
 			}
 		}
 
+		private IntPtr address;
+
 		public IntPtr Address
 		{
+			get => address;
 			set
 			{
 				Contract.Ensures(AddressFormula != null);
-
+				address = value;
 				AddressFormula = value.ToString("X");
 			}
 		}
@@ -191,7 +194,7 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id == 0)
 			{
-				Offset = spot.Memory.Process.ParseAddress(spot.Text);
+				Address = spot.Memory.Process.ParseAddress(spot.Text);
 
 				AddressFormula = spot.Text;
 			}
@@ -203,11 +206,11 @@ namespace ReClassNET.Nodes
 
 			try
 			{
-				Offset = process.ParseAddress(AddressFormula);
+				Address = process.ParseAddress(AddressFormula);
 			}
 			catch (ParseException)
 			{
-				Offset = IntPtr.Zero;
+				Address = IntPtr.Zero;
 			}
 		}
 

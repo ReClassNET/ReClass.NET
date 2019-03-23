@@ -67,7 +67,7 @@ namespace ReClassNET.Nodes
 
 			var size = new Size(x - origX, view.Font.Height);
 
-			var ptr = view.Address.Add(Offset);
+			var ptr = view.Address + Offset;
 			DisassembleRemoteCode(view.Memory, ptr);
 
 			if (LevelsOpen[view.Level])

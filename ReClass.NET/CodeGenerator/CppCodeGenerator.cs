@@ -368,7 +368,7 @@ namespace ReClassNET.CodeGenerator
 			{
 				var node = new ArrayNode
 				{
-					Offset = (IntPtr)offset,
+					Offset = offset,
 					Count = count,
 					Name = $"pad_{offset:X04}"
 				};
@@ -384,7 +384,7 @@ namespace ReClassNET.CodeGenerator
 				{
 					if (fill == 0)
 					{
-						fillStart = member.Offset.ToInt32();
+						fillStart = member.Offset;
 					}
 					fill += member.MemorySize;
 
@@ -437,7 +437,7 @@ namespace ReClassNET.CodeGenerator
 				writer.Write(" ");
 				writer.Write(node.Name);
 				writer.Write("; //0x");
-				writer.Write($"{node.Offset.ToInt32():X04}");
+				writer.Write($"{node.Offset:X04}");
 				if (!string.IsNullOrEmpty(node.Comment))
 				{
 					writer.Write(" ");
@@ -449,7 +449,7 @@ namespace ReClassNET.CodeGenerator
 			{
 				writer.Write(ResolveWrappedType(node, false, logger));
 				writer.Write("; //0x");
-				writer.Write($"{node.Offset.ToInt32():X04}");
+				writer.Write($"{node.Offset:X04}");
 				if (!string.IsNullOrEmpty(node.Comment))
 				{
 					writer.Write(" ");

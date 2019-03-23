@@ -7,7 +7,7 @@ namespace ReClassNET.Nodes
 {
 	public class VirtualMethodNode : BaseFunctionPtrNode
 	{
-		public string MethodName => string.IsNullOrEmpty(Name) ? $"Function{Offset.ToInt32() / IntPtr.Size}" : Name;
+		public string MethodName => string.IsNullOrEmpty(Name) ? $"Function{Offset / IntPtr.Size}" : Name;
 
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
@@ -23,7 +23,7 @@ namespace ReClassNET.Nodes
 
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			return Draw(view, x, y, $"({Offset.ToInt32() / IntPtr.Size})", MethodName);
+			return Draw(view, x, y, $"({Offset / IntPtr.Size})", MethodName);
 		}
 	}
 }

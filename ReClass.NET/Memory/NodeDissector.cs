@@ -30,7 +30,7 @@ namespace ReClassNET.Memory
 			Contract.Requires(node != null);
 			Contract.Requires(memory != null);
 
-			var offset = node.Offset.ToInt32();
+			var offset = node.Offset;
 			var is4ByteAligned = offset % 4 == 0;
 			var is8ByteAligned = offset % 8 == 0;
 

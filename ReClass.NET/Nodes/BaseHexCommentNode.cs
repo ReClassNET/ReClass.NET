@@ -81,7 +81,7 @@ namespace ReClassNET.Nodes
 
 				if (view.Settings.ShowCommentPluginInfo)
 				{
-					var nodeAddress = view.Address.Add(Offset);
+					var nodeAddress = view.Address + Offset;
 
 					foreach (var reader in NodeInfoReader)
 					{

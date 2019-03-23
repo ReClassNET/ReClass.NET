@@ -296,7 +296,7 @@ namespace ReClassNET.Forms
 				.WhereNot(s => s.Node is ClassNode)
 				.GroupBy(s => s.Node.GetParentContainer())
 				.SelectMany(g => g
-					.OrderBy(s => s.Node.Offset, IntPtrComparer.Instance)
+					.OrderBy(s => s.Node.Offset)
 					.GroupWhile((h1, h2) => h1.Node.Offset + h1.Node.MemorySize == h2.Node.Offset)
 				);
 
@@ -323,7 +323,7 @@ namespace ReClassNET.Forms
 					{
 						foreach (var createdNode in createdNodes)
 						{
-							hotSpotsToReplace.Enqueue(new MemoryViewControl.SelectedNodeInfo(createdNode, selected.Memory, selected.Address.Add(createdNode.Offset.Sub(node.Offset)), selected.Level));
+							hotSpotsToReplace.Enqueue(new MemoryViewControl.SelectedNodeInfo(createdNode, selected.Memory, selected.Address + createdNode.Offset - node.Offset, selected.Level));
 						}
 					}
 				}

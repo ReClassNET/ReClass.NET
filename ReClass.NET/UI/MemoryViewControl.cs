@@ -159,7 +159,7 @@ namespace ReClassNET.UI
 			}
 
 			Memory.Size = ClassNode.MemorySize;
-			Memory.Update(ClassNode.Offset);
+			Memory.Update(ClassNode.Address);
 
 			var view = new ViewInfo
 			{
@@ -170,7 +170,7 @@ namespace ReClassNET.UI
 				CurrentTime = DateTime.UtcNow,
 				ClientArea = ClientRectangle,
 				HotSpots = hotSpots,
-				Address = ClassNode.Offset,
+				Address = classNode.Address,
 				Level = 0,
 				MultipleNodesSelected = selectedNodes.Count > 1
 			};
@@ -306,7 +306,7 @@ namespace ReClassNET.UI
 										continue;
 									}
 
-									var first = Utils.Min(selectedNodes[0], hotSpot, h => h.Node.Offset.ToInt32());
+									var first = Utils.Min(selectedNodes[0], hotSpot, h => h.Node.Offset);
 									var last = first == hotSpot ? selectedNodes[0] : hotSpot;
 
 									ClearSelection();
@@ -317,7 +317,7 @@ namespace ReClassNET.UI
 										.TakeUntil(n => n == last.Node)
 										.Select(n => new HotSpot
 										{
-											Address = containerNode.Offset.Add(n.Offset),
+											Address = (IntPtr)(containerNode.Offset + n.Offset),
 											Node = n,
 											Memory = first.Memory,
 											Level = first.Level
@@ -584,7 +584,7 @@ namespace ReClassNET.UI
 								selectionCaret = toSelect;
 							}
 
-							var first = Utils.Min(selectionAnchor, selectionCaret, h => h.Node.Offset.ToInt32());
+							var first = Utils.Min(selectionAnchor, selectionCaret, h => h.Node.Offset);
 							var last = first == selectionAnchor ? selectionCaret : selectionAnchor;
 
 							selectedNodes.ForEach(h => h.Node.ClearSelection());
@@ -596,7 +596,7 @@ namespace ReClassNET.UI
 								.TakeUntil(n => n == last.Node)
 								.Select(n => new HotSpot
 								{
-									Address = containerNode.Offset.Add(n.Offset),
+									Address = (IntPtr)(containerNode.Offset + n.Offset),
 									Node = n,
 									Memory = toSelect.Memory,
 									Level = toSelect.Level
