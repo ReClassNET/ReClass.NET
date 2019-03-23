@@ -27,7 +27,7 @@ namespace ReClassNET.Memory
 		/// <param name="address">The address of the code.</param>
 		/// <param name="length">The length of the code in bytes.</param>
 		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
-		public IList<DisassembledInstruction> RemoteDisassembleCode(RemoteProcess process, IntPtr address, int length)
+		public IReadOnlyList<DisassembledInstruction> RemoteDisassembleCode(RemoteProcess process, IntPtr address, int length)
 		{
 			Contract.Requires(process != null);
 			Contract.Ensures(Contract.Result<IList<DisassembledInstruction>>() != null);
@@ -41,7 +41,7 @@ namespace ReClassNET.Memory
 		/// <param name="length">The length of the code in bytes.</param>
 		/// <param name="maxInstructions">The maximum number of instructions to disassemble. If <paramref name="maxInstructions"/> is -1, all available instructions get returned.</param>
 		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
-		public IList<DisassembledInstruction> RemoteDisassembleCode(RemoteProcess process, IntPtr address, int length, int maxInstructions)
+		public IReadOnlyList<DisassembledInstruction> RemoteDisassembleCode(RemoteProcess process, IntPtr address, int length, int maxInstructions)
 		{
 			Contract.Requires(process != null);
 			Contract.Ensures(Contract.Result<IList<DisassembledInstruction>>() != null);
@@ -56,7 +56,7 @@ namespace ReClassNET.Memory
 		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
 		/// <param name="maxInstructions">The maximum number of instructions to disassemble. If <paramref name="maxInstructions"/> is -1, all available instructions get returned.</param>
 		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
-		public IList<DisassembledInstruction> DisassembleCode(byte[] data, IntPtr virtualAddress, int maxInstructions)
+		public IReadOnlyList<DisassembledInstruction> DisassembleCode(byte[] data, IntPtr virtualAddress, int maxInstructions)
 		{
 			Contract.Requires(data != null);
 			Contract.Ensures(Contract.Result<IList<DisassembledInstruction>>() != null);
@@ -89,7 +89,7 @@ namespace ReClassNET.Memory
 		/// <param name="address">The address of the code.</param>
 		/// <param name="maxLength">The maximum maxLength of the code.</param>
 		/// <returns>A list of <see cref="DisassembledInstruction"/> which belong to the function.</returns>
-		public IList<DisassembledInstruction> RemoteDisassembleFunction(RemoteProcess process, IntPtr address, int maxLength)
+		public IReadOnlyList<DisassembledInstruction> RemoteDisassembleFunction(RemoteProcess process, IntPtr address, int maxLength)
 		{
 			Contract.Requires(process != null);
 			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
@@ -103,7 +103,7 @@ namespace ReClassNET.Memory
 		/// <param name="data">The data to disassemble.</param>
 		/// <param name="virtualAddress">The virtual address of the code. This allows to decode instructions located anywhere in memory even if they are not at their original place.</param>
 		/// <returns>A list of <see cref="DisassembledInstruction"/> which belong to the function.</returns>
-		public IList<DisassembledInstruction> DisassembleFunction(byte[] data, IntPtr virtualAddress)
+		public IReadOnlyList<DisassembledInstruction> DisassembleFunction(byte[] data, IntPtr virtualAddress)
 		{
 			Contract.Requires(data != null);
 			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
