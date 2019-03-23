@@ -318,7 +318,7 @@ namespace ReClassNET.Forms
 
 		private void memoryViewerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			new ProcessInfoForm().Show();
+			new ProcessInfoForm(Program.RemoteProcess).Show();
 		}
 
 		private void memorySearcherToolStripMenuItem_Click(object sender, EventArgs e)

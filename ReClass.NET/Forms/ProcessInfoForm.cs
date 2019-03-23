@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -13,11 +14,17 @@ namespace ReClassNET.Forms
 {
 	public partial class ProcessInfoForm : IconForm
 	{
+		private readonly RemoteProcess process;
+
 		/// <summary>The context menu of the sections grid view.</summary>
 		public ContextMenuStrip GridContextMenu => contextMenuStrip;
 
-		public ProcessInfoForm()
+		public ProcessInfoForm(RemoteProcess process)
 		{
+			Contract.Requires(process != null);
+
+			this.process = process;
+
 			InitializeComponent();
 
 			tabControl.ImageList = new ImageList();
@@ -54,7 +61,7 @@ namespace ReClassNET.Forms
 
 		private async void ProcessInfoForm_Load(object sender, EventArgs e)
 		{
-			if (!Program.RemoteProcess.IsValid)
+			if (!process.IsValid)
 			{
 				return;
 			}
@@ -78,7 +85,7 @@ namespace ReClassNET.Forms
 
 			await Task.Run(() =>
 			{
-				Program.RemoteProcess.EnumerateRemoteSectionsAndModules(
+				process.EnumerateRemoteSectionsAndModules(
 					delegate (Section section)
 					{
 						var row = sections.NewRow();
@@ -180,7 +187,7 @@ namespace ReClassNET.Forms
 
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
-					var dumper = new Dumper(Program.RemoteProcess);
+					var dumper = new Dumper(process);
 
 					try
 					{
