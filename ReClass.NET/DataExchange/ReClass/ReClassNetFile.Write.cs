@@ -141,6 +141,11 @@ namespace ReClassNET.DataExchange.ReClass
 					)));
 					break;
 				}
+				case UnionNode unionNode:
+				{
+					element.Add(unionNode.Nodes.Select(n => CreateElementFromNode(n, logger)));
+					break;
+				}
 				case BaseWrapperArrayNode arrayNode:
 				{
 					element.SetAttributeValue(XmlCountAttribute, arrayNode.Count);

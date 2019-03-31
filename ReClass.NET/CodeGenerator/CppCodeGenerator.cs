@@ -457,6 +457,24 @@ namespace ReClassNET.CodeGenerator
 				}
 				writer.WriteLine();
 			}
+			else if (node is UnionNode unionNode)
+			{
+				writer.Write("union //0x");
+				writer.Write($"{node.Offset:X04}");
+				if (!string.IsNullOrEmpty(node.Comment))
+				{
+					writer.Write(" ");
+					writer.Write(node.Comment);
+				}
+				writer.WriteLine();
+				writer.WriteLine("{");
+				writer.Indent++;
+
+				WriteNodes(writer, unionNode.Nodes, logger);
+
+				writer.Indent--;
+				writer.WriteLine("};");
+			}
 			else
 			{
 				logger.Log(LogLevel.Error, $"Skipping node with unhandled type: {node.GetType()}");

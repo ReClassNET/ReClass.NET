@@ -42,7 +42,7 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Calculates the offset of every child node.</summary>
-		public void UpdateOffsets()
+		public virtual void UpdateOffsets()
 		{
 			var offset = 0;
 			foreach (var node in Nodes)

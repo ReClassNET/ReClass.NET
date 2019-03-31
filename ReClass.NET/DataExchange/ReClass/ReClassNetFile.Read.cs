@@ -264,10 +264,16 @@ namespace ReClassNET.DataExchange.ReClass
 							IsHidden = (bool?)e.Attribute(XmlHiddenAttribute) ?? false
 						});
 
-					foreach (var vmethodNode in nodes)
-					{
-						vtableNode.AddNode(vmethodNode);
-					}
+					vtableNode.AddNodes(nodes);
+					break;
+				}
+				case UnionNode unionNode:
+				{
+					var nodes = element
+						.Elements()
+						.Select(e => CreateNodeFromElement(e, unionNode, logger));
+
+					unionNode.AddNodes(nodes);
 					break;
 				}
 				case BaseWrapperArrayNode arrayNode:
