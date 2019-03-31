@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
+using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {
-	public class EnumComboBox<TEnum> : ComboBox where TEnum : Enum
+	public class EnumComboBox<TEnum> : ComboBox where TEnum : struct
 	{
 		#region Properties
 
@@ -52,7 +52,7 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new TEnum SelectedValue
 		{
-			get => ((EnumDescriptionDisplay<TEnum>)base.SelectedItem).Value;
+			get => ((EnumDescriptionDisplay<TEnum>)base.SelectedItem)?.Value ?? default(TEnum);
 			set => base.SelectedItem = base.Items.Cast<EnumDescriptionDisplay<TEnum>>().PredicateOrFirst(e => e.Value.Equals(value));
 		}
 

@@ -144,7 +144,7 @@ namespace ReClassNET.Memory
 			Array.Copy(data, offset, buffer, 0, buffer.Length);
 		}
 
-		public T ReadObject<T>(int offset) where T : unmanaged
+		public T ReadObject<T>(int offset) where T : struct
 		{
 			Contract.Requires(offset >= 0);
 

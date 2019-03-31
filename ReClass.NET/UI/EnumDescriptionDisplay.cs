@@ -5,10 +5,11 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using ReClassNET.Extensions;
+using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {
-	public class EnumDescriptionDisplay<TEnum> where TEnum : Enum
+	public class EnumDescriptionDisplay<TEnum> where TEnum : struct
 	{
 		public TEnum Value { get; internal set; }
 		public string Description { get; internal set; }
