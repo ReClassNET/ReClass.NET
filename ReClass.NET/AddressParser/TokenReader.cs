@@ -138,7 +138,10 @@ namespace ReClassNET.AddressParser
 				{
 					sb.Append(currentCharacter);
 
-					hasHexadecimalIdentifier = !hasHexadecimalIdentifier && IsHexadecimalIdentifier(currentCharacter);
+					if (!hasHexadecimalIdentifier)
+					{
+						hasHexadecimalIdentifier = IsHexadecimalIdentifier(currentCharacter);
+					}
 
 					ReadNextCharacter();
 				}
