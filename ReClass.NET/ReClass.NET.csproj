@@ -135,12 +135,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressParser\AstBuilder.cs" />
     <Compile Include="AddressParser\DynamicCompiler.cs" />
     <Compile Include="AddressParser\IExecuter.cs" />
     <Compile Include="AddressParser\Interpreter.cs" />
-    <Compile Include="AddressParser\Operations.cs" />
+    <Compile Include="AddressParser\Expressions.cs" />
     <Compile Include="AddressParser\ParseException.cs" />
+    <Compile Include="AddressParser\ExpressionParser.cs" />
     <Compile Include="AddressParser\Token.cs" />
     <Compile Include="AddressParser\TokenReader.cs" />
     <Compile Include="CodeGenerator\Language.cs" />

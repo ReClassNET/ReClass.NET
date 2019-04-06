@@ -720,19 +720,9 @@ namespace ReClassNET.Memory
 
 			if (!formulaCache.TryGetValue(addressFormula, out var func))
 			{
-				var reader = new TokenReader();
-				var tokens = reader.Read(addressFormula);
+				var expression = ExpressionParser.Parse(addressFormula);
 
-				var astBuilder = new AstBuilder();
-				var operation = astBuilder.Build(tokens);
-
-				if (operation == null)
-				{
-					return IntPtr.Zero;
-				}
-
-				var compiler = new DynamicCompiler();
-				func = compiler.CompileAddressFormula(operation);
+				func = DynamicCompiler.CompileAddressFormula(expression);
 
 				formulaCache.Add(addressFormula, func);
 			}

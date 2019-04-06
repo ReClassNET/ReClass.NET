@@ -7,57 +7,54 @@ namespace ReClassNET.AddressParser
 {
 	public class Interpreter : IExecuter
 	{
-		public IntPtr Execute(IOperation operation, RemoteProcess process)
+		public IntPtr Execute(IExpression expression, RemoteProcess process)
 		{
-			Contract.Requires(operation != null);
+			Contract.Requires(expression != null);
 			Contract.Requires(process != null);
 
-			if (operation is OffsetOperation offsetOperation)
+			switch (expression)
 			{
-				return offsetOperation.Value;
-			}
-
-			if (operation is ModuleOffsetOperation moduleOffsetOperation)
-			{
-				var module = process.GetModuleByName(moduleOffsetOperation.Name);
-				if (module != null)
+				case ConstantExpression constantExpression:
+#if RECLASSNET64
+					return (IntPtr)nodeNumber.Value;
+#else
+					return (IntPtr)unchecked((int)constantExpression.Value);
+#endif
+				case ModuleExpression moduleExpression:
 				{
-					return module.Start;
+					var module = process.GetModuleByName(moduleExpression.Name);
+					if (module != null)
+					{
+						return module.Start;
+					}
+
+					return IntPtr.Zero;
 				}
-
-				return IntPtr.Zero;
+				case AddExpression addExpression:
+					return Execute(addExpression.Lhs, process).Add(Execute(addExpression.Rhs, process));
+				case SubtractExpression subtractExpression:
+					return Execute(subtractExpression.Lhs, process).Sub(Execute(subtractExpression.Rhs, process));
+				case MultiplyExpression multiplyExpression:
+					return Execute(multiplyExpression.Lhs, process).Mul(Execute(multiplyExpression.Rhs, process));
+				case DivideExpression divideExpression:
+					return Execute(divideExpression.Lhs, process).Div(Execute(divideExpression.Rhs, process));
+				case ReadMemoryExpression readMemoryExpression:
+					var readFromAddress = Execute(readMemoryExpression.Expression, process);
+					if (readMemoryExpression.ByteCount == 4)
+					{
+						return (IntPtr)process.ReadRemoteInt32(readFromAddress);
+					}
+					else
+					{
+#if RECLASSNET64
+						return (IntPtr)process.ReadRemoteInt64(readFromAddress);
+#else
+						return (IntPtr)unchecked((int)process.ReadRemoteUInt64(readFromAddress));
+#endif
+					}
+				default:
+					throw new ArgumentException($"Unsupported operation '{expression.GetType().FullName}'.");
 			}
-
-			if (operation is AdditionOperation additionOperation)
-			{
-				var addition = additionOperation;
-				return Execute(addition.Argument1, process).Add(Execute(addition.Argument2, process));
-			}
-
-			if (operation is SubtractionOperation subtractionOperation)
-			{
-				var addition = subtractionOperation;
-				return Execute(addition.Argument1, process).Sub(Execute(addition.Argument2, process));
-			}
-
-			if (operation is MultiplicationOperation multiplicationOperation)
-			{
-				var multiplication = multiplicationOperation;
-				return Execute(multiplication.Argument1, process).Mul(Execute(multiplication.Argument2, process));
-			}
-
-			if (operation is DivisionOperation divisionOperation)
-			{
-				var division = divisionOperation;
-				return Execute(division.Dividend, process).Div(Execute(division.Divisor, process));
-			}
-
-			if (operation is ReadPointerOperation pointerOperation)
-			{
-				return process.ReadRemoteIntPtr(Execute(pointerOperation.Argument, process));
-			}
-
-			throw new ArgumentException($"Unsupported operation '{operation.GetType().FullName}'.");
 		}
 	}
 }

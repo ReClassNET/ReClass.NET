@@ -1,128 +1,242 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
-using System.Linq;
+using System.Text;
 
 namespace ReClassNET.AddressParser
 {
-	public class TokenReader
+	/// <summary>
+	/// Parses the given text and reads individual tokens from it.
+	/// </summary>
+	public class Tokenizer
 	{
+		private readonly TextReader reader;
+
+		private char currentCharacter;
+
 		/// <summary>
-		/// Read in the provided formula and convert it into a list of takens that can be processed by the
-		/// Abstract Syntax Tree Builder.
+		/// The current token. It is set to <see cref="Token.None"/> if no more tokens are avaiable.
 		/// </summary>
-		/// <param name="formula">The formula that must be converted into a list of tokens.</param>
-		/// <returns>The list of tokens for the provided formula.</returns>
-		public List<Token> Read(string formula)
+		public Token Token { get; private set; }
+
+		/// <summary>
+		/// The current identifier.
+		/// </summary>
+		public string Identifier { get; private set; }
+
+		/// <summary>
+		/// The current number.
+		/// </summary>
+		public long Number { get; private set; }
+
+		public Tokenizer(TextReader reader)
 		{
-			Contract.Requires(formula != null);
+			Contract.Requires(reader != null);
 
-			var tokens = new List<Token>();
+			this.reader = reader;
 
-			var isFormulaSubPart = true;
+			ReadNextCharacter();
+			ReadNextToken();
+		}
 
-			var characters = formula.ToCharArray();
-			for (var i = 0; i < characters.Length; ++i)
+		/// <summary>
+		/// Reads the next token from the input.
+		/// </summary>
+		public void ReadNextToken()
+		{
+			SkipWhitespaces();
+
+			if (currentCharacter == '\0')
 			{
-				if (characters[i] == '<')
-				{
-					var buffer = string.Empty;
-					while (++i < characters.Length && IsPartOfModuleName(characters[i]))
-					{
-						buffer += characters[i];
-					}
+				Token = Token.None;
+				Identifier = null;
+				Number = 0;
 
-					if (i >= characters.Length)
-					{
-						throw new ParseException("Unexpected end of input detected.");
-					}
-					if (characters[i] != '>')
-					{
-						throw new ParseException($"Invalid token '{characters[i]}' detected at position {i}.");
-					}
-					++i;
-
-					tokens.Add(new Token(TokenType.ModuleOffset, buffer));
-					isFormulaSubPart = false;
-
-					if (i == characters.Length)
-					{
-						continue;
-					}
-				}
-
-				if (IsPartOfNumeric(characters[i], true, isFormulaSubPart))
-				{
-					var buffer = characters[i].ToString();
-					while (++i < characters.Length && IsPartOfNumeric(characters[i], false, isFormulaSubPart))
-					{
-						buffer += characters[i];
-					}
-
-					if (buffer.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
-					{
-						buffer = buffer.Substring(2);
-					}
-
-					if (long.TryParse(buffer, NumberStyles.HexNumber, null, out var offsetValue))
-					{
-#if RECLASSNET64
-						var address = (IntPtr)offsetValue;
-#else
-						var address = (IntPtr)unchecked((int)offsetValue);
-#endif
-
-						tokens.Add(new Token(TokenType.Offset, address));
-						isFormulaSubPart = false;
-					}
-					else
-					{
-						throw new ParseException($"'{buffer}' is not a valid number.");
-					}
-
-					if (i == characters.Length)
-					{
-						continue;
-					}
-				}
-
-				switch (characters[i])
-				{
-					case ' ':
-						continue;
-					case '+':
-					case '-':
-					case '*':
-					case '/':
-						tokens.Add(new Token(TokenType.Operation, characters[i]));
-						isFormulaSubPart = true;
-						break;
-					case '[':
-						tokens.Add(new Token(TokenType.LeftBracket, characters[i]));
-						isFormulaSubPart = true;
-						break;
-					case ']':
-						tokens.Add(new Token(TokenType.RightBracket, characters[i]));
-						isFormulaSubPart = false;
-						break;
-					default:
-						throw new ParseException($"Invalid token '{characters[i]}' detected at position {i}.");
-				}
+				return;
 			}
 
-			return tokens;
+			if (TryReadSimpleToken())
+			{
+				ReadNextCharacter();
+
+				return;
+			}
+
+			if (TryReadNumberToken())
+			{
+				return;
+			}
+
+			if (TryReadIdentifierToken())
+			{
+				return;
+			}
 		}
 
-		private bool IsPartOfNumeric(char character, bool isFirstCharacter, bool isFormulaSubPart)
+		private void ReadNextCharacter()
 		{
-			return (character >= '0' && character <= '9') || (character >= 'a' && character <= 'f') || (character >= 'A' && character <= 'F') || (isFormulaSubPart && !isFirstCharacter && (character == 'x' || character == 'X'));
+			var c = reader.Read();
+			currentCharacter = c < 0 ? '\0' : (char)c;
 		}
 
-		private bool IsPartOfModuleName(char character)
+		private void SkipWhitespaces()
 		{
-			return !Path.GetInvalidFileNameChars().Contains(character);
+			while (char.IsWhiteSpace(currentCharacter))
+			{
+				ReadNextCharacter();
+			}
+		}
+
+		private bool TryReadSimpleToken()
+		{
+			switch (currentCharacter)
+			{
+				case '+':
+					Token = Token.Add;
+					return true;
+				case '-':
+					Token = Token.Subtract;
+					return true;
+				case '*':
+					Token = Token.Multiply;
+					return true;
+				case '/':
+					Token = Token.Divide;
+					return true;
+				case '(':
+					Token = Token.OpenParenthesis;
+					return true;
+				case ')':
+					Token = Token.CloseParenthesis;
+					return true;
+				case '[':
+					Token = Token.OpenBrackets;
+					return true;
+				case ']':
+					Token = Token.CloseBrackets;
+					return true;
+				case ',':
+					Token = Token.Comma;
+					return true;
+			}
+
+			return false;
+		}
+
+		private bool TryReadNumberToken()
+		{
+			bool IsHexadecimalDigit(char c) => char.IsDigit(c) || 'a' <= c && c <= 'f' || 'A' <= c && c <= 'F';
+			bool IsHexadecimalIdentifier(char c) => c == 'x' || c == 'X';
+
+			if (IsHexadecimalDigit(currentCharacter))
+			{
+				var sb = new StringBuilder();
+				var hasHexadecimalIdentifier = false;
+
+				while (IsHexadecimalDigit(currentCharacter)
+					|| IsHexadecimalIdentifier(currentCharacter) && !hasHexadecimalIdentifier && sb.Length == 1 && sb[0] == '0')
+				{
+					sb.Append(currentCharacter);
+
+					hasHexadecimalIdentifier = !hasHexadecimalIdentifier && IsHexadecimalIdentifier(currentCharacter);
+
+					ReadNextCharacter();
+				}
+
+				if (hasHexadecimalIdentifier)
+				{
+					sb.Remove(0, 2);
+				}
+
+				Number = long.Parse(sb.ToString(), NumberStyles.HexNumber);
+
+				Token = Token.Number;
+
+				return true;
+			}
+
+			return false;
+		}
+
+		/*private bool TryReadNumberToken()
+		{
+			bool IsDigit(char c) => char.IsDigit(c);
+			bool IsDecimalPoint(char c) => c == '.';
+			bool IsHexadecimalIdentifier(char c) => c == 'x' || c == 'X';
+			bool IsHexadecimalDigit(char c) => 'a' <= c && c <= 'f' || 'A' <= c && c <= 'F';
+
+			if (char.IsDigit(currentCharacter) || currentCharacter == '.')
+			{
+				var sb = new StringBuilder();
+				var hasDecimalPoint = false;
+				var hasHexadecimalIdentifier = false;
+				var hasHexadecimalDigit = false;
+
+				while (IsDigit(currentCharacter)
+					|| IsDecimalPoint(currentCharacter) && !hasDecimalPoint && !hasHexadecimalIdentifier && !hasHexadecimalDigit
+					|| IsHexadecimalIdentifier(currentCharacter) && !hasDecimalPoint && !hasHexadecimalIdentifier && sb.Length == 1 && sb[0] == '0'
+					|| IsHexadecimalDigit(currentCharacter) && !hasDecimalPoint)
+				{
+					sb.Append(currentCharacter);
+
+					hasDecimalPoint = !hasDecimalPoint && IsDecimalPoint(currentCharacter);
+					hasHexadecimalIdentifier = !hasHexadecimalIdentifier && IsHexadecimalIdentifier(currentCharacter);
+					hasHexadecimalDigit = !hasHexadecimalDigit && IsHexadecimalDigit(currentCharacter);
+
+					ReadNextCharacter();
+				}
+
+				if (hasHexadecimalIdentifier || hasHexadecimalDigit)
+				{
+					if (hasHexadecimalIdentifier)
+					{
+						sb.Remove(0, 2);
+					}
+
+					Number = long.Parse(sb.ToString(), NumberStyles.HexNumber);
+				}
+				else
+				{
+					Number = double.Parse(sb.ToString(), CultureInfo.InvariantCulture);
+				}
+
+				Token = Token.Number;
+
+				return true;
+			}
+
+			return false;
+		}*/
+
+		private bool TryReadIdentifierToken()
+		{
+			if (currentCharacter == '<')
+			{
+				ReadNextCharacter();
+
+				var sb = new StringBuilder();
+
+				while (currentCharacter != '\0' && currentCharacter != '>')
+				{
+					sb.Append(currentCharacter);
+
+					ReadNextCharacter();
+				}
+
+				if (currentCharacter != '>')
+				{
+					return false;
+				}
+
+				ReadNextCharacter();
+
+				Identifier = sb.ToString();
+				Token = Token.Identifier;
+
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

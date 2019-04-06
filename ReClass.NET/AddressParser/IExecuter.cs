@@ -5,6 +5,6 @@ namespace ReClassNET.AddressParser
 {
 	public interface IExecuter
 	{
-		IntPtr Execute(IOperation operation, RemoteProcess process);
+		IntPtr Execute(IExpression expression, RemoteProcess process);
 	}
 }
