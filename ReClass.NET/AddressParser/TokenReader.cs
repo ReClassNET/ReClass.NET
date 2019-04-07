@@ -151,7 +151,11 @@ namespace ReClassNET.AddressParser
 					sb.Remove(0, 2);
 				}
 
-				Number = long.Parse(sb.ToString(), NumberStyles.HexNumber);
+				if (!long.TryParse(sb.ToString(), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var number))
+				{
+					throw new ParseException($"Could not parse '{sb}' as number.");
+				}
+				Number = number;
 
 				Token = Token.Number;
 
@@ -160,56 +164,6 @@ namespace ReClassNET.AddressParser
 
 			return false;
 		}
-
-		/*private bool TryReadNumberToken()
-		{
-			bool IsDigit(char c) => char.IsDigit(c);
-			bool IsDecimalPoint(char c) => c == '.';
-			bool IsHexadecimalIdentifier(char c) => c == 'x' || c == 'X';
-			bool IsHexadecimalDigit(char c) => 'a' <= c && c <= 'f' || 'A' <= c && c <= 'F';
-
-			if (char.IsDigit(currentCharacter) || currentCharacter == '.')
-			{
-				var sb = new StringBuilder();
-				var hasDecimalPoint = false;
-				var hasHexadecimalIdentifier = false;
-				var hasHexadecimalDigit = false;
-
-				while (IsDigit(currentCharacter)
-					|| IsDecimalPoint(currentCharacter) && !hasDecimalPoint && !hasHexadecimalIdentifier && !hasHexadecimalDigit
-					|| IsHexadecimalIdentifier(currentCharacter) && !hasDecimalPoint && !hasHexadecimalIdentifier && sb.Length == 1 && sb[0] == '0'
-					|| IsHexadecimalDigit(currentCharacter) && !hasDecimalPoint)
-				{
-					sb.Append(currentCharacter);
-
-					hasDecimalPoint = !hasDecimalPoint && IsDecimalPoint(currentCharacter);
-					hasHexadecimalIdentifier = !hasHexadecimalIdentifier && IsHexadecimalIdentifier(currentCharacter);
-					hasHexadecimalDigit = !hasHexadecimalDigit && IsHexadecimalDigit(currentCharacter);
-
-					ReadNextCharacter();
-				}
-
-				if (hasHexadecimalIdentifier || hasHexadecimalDigit)
-				{
-					if (hasHexadecimalIdentifier)
-					{
-						sb.Remove(0, 2);
-					}
-
-					Number = long.Parse(sb.ToString(), NumberStyles.HexNumber);
-				}
-				else
-				{
-					Number = double.Parse(sb.ToString(), CultureInfo.InvariantCulture);
-				}
-
-				Token = Token.Number;
-
-				return true;
-			}
-
-			return false;
-		}*/
 
 		private bool TryReadIdentifierToken()
 		{
@@ -228,7 +182,7 @@ namespace ReClassNET.AddressParser
 
 				if (currentCharacter != '>')
 				{
-					return false;
+					throw new ParseException("Invalid identifier, missing '>'.");
 				}
 
 				ReadNextCharacter();
