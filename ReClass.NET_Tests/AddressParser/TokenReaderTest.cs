@@ -9,6 +9,10 @@ namespace ReClass.NET_Tests.AddressParser
 	{
 		[Theory]
 		[InlineData("", Token.None)]
+		[InlineData(" ", Token.None)]
+		[InlineData("\t", Token.None)]
+		[InlineData("\n", Token.None)]
+		[InlineData(" \t\n", Token.None)]
 		[InlineData("0", Token.Number)]
 		[InlineData("1", Token.Number)]
 		[InlineData("0x0", Token.Number)]
@@ -25,11 +29,44 @@ namespace ReClass.NET_Tests.AddressParser
 		[InlineData("]", Token.CloseBrackets)]
 		[InlineData(",", Token.Comma)]
 		[InlineData("<test.exe>", Token.Identifier)]
-		public void ReadBasicToken(string formula, Token type)
+		public void TestTokenType(string expression, Token type)
 		{
-			var tokenizer = new Tokenizer(new StringReader(formula));
+			var tokenizer = new Tokenizer(new StringReader(expression));
 
 			Check.That(tokenizer.Token).IsEqualTo(type);
+		}
+
+		[Theory]
+		[InlineData("0", 0)]
+		[InlineData("1", 1)]
+		[InlineData("0x0", 0)]
+		[InlineData("0x1", 1)]
+		[InlineData("00000000", 0)]
+		[InlineData("0x00000000", 0)]
+		[InlineData("12345678", 0x12345678)]
+		[InlineData("0x12345678", 0x12345678)]
+		public void TestNumberValue(string expression, long value)
+		{
+			var tokenizer = new Tokenizer(new StringReader(expression));
+
+			Check.That(tokenizer.Number).IsEqualTo(value);
+		}
+
+		[Theory]
+		[InlineData("<>", "")]
+		[InlineData("<test>", "test")]
+		[InlineData("<module.test>", "module.test")]
+		public void TestIdentifierValue(string expression, string value)
+		{
+			var tokenizer = new Tokenizer(new StringReader(expression));
+
+			Check.That(tokenizer.Identifier).IsEqualTo(value);
+		}
+
+		[Fact]
+		public void TestInvalidIdentifier()
+		{
+			Assert.Throws<ParseException>(() => new Tokenizer(new StringReader("<")));
 		}
 	}
 }
