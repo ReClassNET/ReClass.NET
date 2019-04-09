@@ -3,11 +3,11 @@ using System.IO;
 
 namespace ReClassNET.AddressParser
 {
-	public class ExpressionParser
+	public class Parser
 	{
 		private readonly Tokenizer tokenizer;
 
-		public ExpressionParser(Tokenizer tokenizer)
+		public Parser(Tokenizer tokenizer)
 		{
 			this.tokenizer = tokenizer;
 		}
@@ -190,7 +190,7 @@ namespace ReClassNET.AddressParser
 
 		public static IExpression Parse(Tokenizer tokenizer)
 		{
-			var parser = new ExpressionParser(tokenizer);
+			var parser = new Parser(tokenizer);
 			return parser.ParseExpression();
 		}
 

@@ -71,6 +71,8 @@ namespace ReClassNET.AddressParser
 			{
 				return;
 			}
+
+			throw new ParseException($"Invalid character '{currentCharacter}'.");
 		}
 
 		private void ReadNextCharacter()

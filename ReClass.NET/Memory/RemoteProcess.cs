@@ -720,7 +720,7 @@ namespace ReClassNET.Memory
 
 			if (!formulaCache.TryGetValue(addressFormula, out var func))
 			{
-				var expression = ExpressionParser.Parse(addressFormula);
+				var expression = Parser.Parse(addressFormula);
 
 				func = DynamicCompiler.CompileAddressFormula(expression);
 
