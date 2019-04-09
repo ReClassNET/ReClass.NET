@@ -63,10 +63,15 @@ namespace ReClass.NET_Tests.AddressParser
 			Check.That(tokenizer.Identifier).IsEqualTo(value);
 		}
 
-		[Fact]
-		public void TestInvalidIdentifier()
+		[Theory]
+		[InlineData("<")]
+		[InlineData(">")]
+		[InlineData("10000000000000000")]
+		[InlineData("0x")]
+		[InlineData("x")]
+		public void TestInvalidExpression(string expression)
 		{
-			Assert.Throws<ParseException>(() => new Tokenizer(new StringReader("<")));
+			Check.ThatCode(() => new Tokenizer(new StringReader(expression))).Throws<ParseException>();
 		}
 	}
 }
