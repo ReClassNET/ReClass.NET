@@ -42,10 +42,10 @@
 			this.projectTreeView.ShowRootLines = false;
 			this.projectTreeView.Size = new System.Drawing.Size(150, 150);
 			this.projectTreeView.TabIndex = 0;
-			this.projectTreeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.classesTreeView_BeforeLabelEdit);
-			this.projectTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.classesTreeView_AfterLabelEdit);
-			this.projectTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.classesTreeView_AfterSelect);
-			this.projectTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.classesTreeView_MouseUp);
+			this.projectTreeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.projectTreeView_BeforeLabelEdit);
+			this.projectTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.projectTreeView_AfterLabelEdit);
+			this.projectTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.projectTreeView_AfterSelect);
+			this.projectTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.projectTreeView_MouseUp);
 			// 
 			// ClassNodeView
 			// 

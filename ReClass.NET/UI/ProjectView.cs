@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Nodes;
@@ -207,13 +208,18 @@ namespace ReClassNET.UI
 			}
 		}
 
-		public ContextMenuStrip ProjectTreeNodeContextMenuStrip { get; set; }
+		public ContextMenuStrip ClassesContextMenuStrip { get; set; }
 
-		public ContextMenuStrip ClassTreeNodeContextMenuStrip { get; set; }
+		public ContextMenuStrip ClassContextMenuStrip { get; set; }
+
+		public ContextMenuStrip EnumsContextMenuStrip { get; set; }
+
+		public ContextMenuStrip EnumContextMenuStrip { get; set; }
 
 		public ProjectView()
 		{
 			Contract.Ensures(classesRootNode != null);
+			Contract.Ensures(enumsRootNode != null);
 
 			InitializeComponent();
 
@@ -249,7 +255,7 @@ namespace ReClassNET.UI
 
 		#region Event Handler
 
-		private void classesTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+		private void projectTreeView_AfterSelect(object sender, TreeViewEventArgs e)
 		{
 			if (e.Node.Level == 0)
 			{
@@ -267,7 +273,7 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private void classesTreeView_MouseUp(object sender, MouseEventArgs e)
+		private void projectTreeView_MouseUp(object sender, MouseEventArgs e)
 		{
 			if (e.Button != MouseButtons.Right)
 			{
@@ -280,40 +286,46 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			if (node is ClassTreeNode)
+			ContextMenuStrip cms = null;
+			if (node == classesRootNode)
 			{
-				projectTreeView.SelectedNode = node;
+				cms = ClassesContextMenuStrip;
+			}
+			else if (node is ClassTreeNode)
+			{
+				cms = ClassContextMenuStrip;
 
-				var cms = ClassTreeNodeContextMenuStrip;
-				cms?.Show(projectTreeView, e.Location);
+				projectTreeView.SelectedNode = node;
 			}
-			else if (node == classesRootNode)
+			else if (node == enumsRootNode)
 			{
-				var cms = ProjectTreeNodeContextMenuStrip;
-				cms?.Show(projectTreeView, e.Location);
+				cms = EnumsContextMenuStrip;
 			}
+			else if (node is EnumTreeNode)
+			{
+				cms = EnumContextMenuStrip;
+			}
+			cms?.Show(projectTreeView, e.Location);
 		}
 
-		private void classesTreeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
+		private void projectTreeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
 		{
 			var isClassTreeNode = e.Node is ClassTreeNode;
-			e.CancelEdit = !isClassTreeNode;
+			var isEnumTreeNode = e.Node is EnumTreeNode;
+			e.CancelEdit = !isClassTreeNode && !isEnumTreeNode;
 		}
 
-		private void classesTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+		private void projectTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
 		{
 			if (!string.IsNullOrEmpty(e.Label))
 			{
-				if (e.Node is ClassTreeNode node)
+				if (e.Node is ClassTreeNode classTreeNode)
 				{
-					node.ClassNode.Name = e.Label;
-
-					// Cancel the edit if the class refused the name.
-					// This prevents the tree node from using the wrong name.
-					if (node.ClassNode.Name != e.Label)
-					{
-						e.CancelEdit = true;
-					}
+					classTreeNode.ClassNode.Name = e.Label;
+				}
+				else if (e.Node is EnumTreeNode enumTreeNode)
+				{
+					enumTreeNode.Enum.Name = e.Label;
 				}
 			}
 		}
