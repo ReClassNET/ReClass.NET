@@ -11,7 +11,9 @@ namespace ReClassNET.UI
 		public static Image Delete { get; } = DpiUtil.ScaleImage(Properties.Resources.B16x16_Button_Delete);
 		public static Image DropArrow { get; } = DpiUtil.ScaleImage(Properties.Resources.B16x16_Button_Drop_Down);
 		public static Image Class { get; } = DpiUtil.ScaleImage(Properties.Resources.B16x16_Class_Type);
+		public static Image Enum { get; } = DpiUtil.ScaleImage(Properties.Resources.B16x16_Enum_Type);
 		public static Image Array { get; } = DpiUtil.ScaleImage(Properties.Resources.B16x16_Array_Type);
+		public static Image Union => Array;
 		public static Image LeftArrow { get; } = DpiUtil.ScaleImage(Properties.Resources.B16x16_Left_Button);
 		public static Image RightArrow { get; } = DpiUtil.ScaleImage(Properties.Resources.B16x16_Right_Button);
 		public static Image Change { get; } = DpiUtil.ScaleImage(Properties.Resources.B16x16_Exchange_Button);

@@ -147,8 +147,9 @@ namespace ReClassNET.Nodes
 
 			AddSelection(view, x, y, view.Font.Height);
 
-			x = AddOpenCloseIcon(view, x, y);
-			x = AddIcon(view, x, y, Icons.Class, HotSpot.NoneId, HotSpotType.None);
+			x += TextPadding;
+
+			x = AddIcon(view, x, y, Icons.Enum, HotSpot.NoneId, HotSpotType.None);
 
 			x = AddAddressOffset(view, x, y);
 
