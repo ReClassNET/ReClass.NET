@@ -152,7 +152,7 @@
 			this.Controls.Add(this.bannerBox);
 			this.Name = "EnumSelectionForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "ReClass.NET - Class Selection";
+			this.Text = "ReClass.NET - Enum Selection";
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
