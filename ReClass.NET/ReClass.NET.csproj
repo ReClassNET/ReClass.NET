@@ -179,6 +179,12 @@
     <Compile Include="Forms\EnumEditorForm.Designer.cs">
       <DependentUpon>EnumEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\EnumListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EnumListForm.Designer.cs">
+      <DependentUpon>EnumListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\EnumSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -513,6 +519,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EnumEditorForm.resx">
       <DependentUpon>EnumEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EnumListForm.resx">
+      <DependentUpon>EnumListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EnumSelectionForm.resx">
       <DependentUpon>EnumSelectionForm.cs</DependentUpon>

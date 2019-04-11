@@ -310,6 +310,8 @@ namespace ReClassNET.UI
 			else if (node is EnumTreeNode)
 			{
 				cms = EnumContextMenuStrip;
+
+				projectTreeView.SelectedNode = node;
 			}
 			cms?.Show(projectTreeView, e.Location);
 		}

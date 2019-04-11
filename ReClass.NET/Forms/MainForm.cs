@@ -950,5 +950,33 @@ namespace ReClassNET.Forms
 				Program.Logger.Log(ex);
 			}
 		}
+
+		private void editEnumsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (var elf = new EnumListForm(currentProject))
+			{
+				elf.ShowDialog();
+			}
+		}
+
+		private void editEnumToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var @enum = projectView.SelectedEnum;
+			if (@enum != null)
+			{
+				using (var eef = new EnumEditorForm(@enum))
+				{
+					eef.ShowDialog();
+				}
+			}
+		}
+
+		private void showEnumsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (var elf = new EnumListForm(currentProject))
+			{
+				elf.ShowDialog();
+			}
+		}
 	}
 }

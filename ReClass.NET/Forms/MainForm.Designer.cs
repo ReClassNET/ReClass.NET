@@ -47,6 +47,10 @@
 			this.collapseAllClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator22 = new System.Windows.Forms.ToolStripSeparator();
 			this.addNewClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.projectEnumContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.editEnumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.projectEnumsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.editEnumsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.memoryViewControl = new ReClassNET.UI.MemoryViewControl();
 			this.selectedNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.changeTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -158,12 +162,15 @@
 			this.generateCSharpCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showEnumsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
 			this.projectClassContextMenuStrip.SuspendLayout();
 			this.projectClassesContextMenuStrip.SuspendLayout();
+			this.projectEnumContextMenuStrip.SuspendLayout();
+			this.projectEnumsContextMenuStrip.SuspendLayout();
 			this.selectedNodeContextMenuStrip.SuspendLayout();
 			this.toolStrip.SuspendLayout();
 			this.statusStrip.SuspendLayout();
@@ -200,8 +207,8 @@
 			this.projectView.ClassContextMenuStrip = this.projectClassContextMenuStrip;
 			this.projectView.ClassesContextMenuStrip = this.projectClassesContextMenuStrip;
 			this.projectView.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.projectView.EnumContextMenuStrip = null;
-			this.projectView.EnumsContextMenuStrip = null;
+			this.projectView.EnumContextMenuStrip = this.projectEnumContextMenuStrip;
+			this.projectView.EnumsContextMenuStrip = this.projectEnumsContextMenuStrip;
 			this.projectView.Location = new System.Drawing.Point(0, 0);
 			this.projectView.Name = "projectView";
 			this.projectView.Size = new System.Drawing.Size(201, 524);
@@ -264,7 +271,7 @@
             this.toolStripSeparator22,
             this.addNewClassToolStripMenuItem});
 			this.projectClassesContextMenuStrip.Name = "rootContextMenuStrip";
-			this.projectClassesContextMenuStrip.Size = new System.Drawing.Size(221, 148);
+			this.projectClassesContextMenuStrip.Size = new System.Drawing.Size(221, 126);
 			// 
 			// enableHierarchyViewToolStripMenuItem
 			// 
@@ -315,6 +322,36 @@
 			this.addNewClassToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
 			this.addNewClassToolStripMenuItem.Text = "Add new class";
 			this.addNewClassToolStripMenuItem.Click += new System.EventHandler(this.newClassToolStripButton_Click);
+			// 
+			// projectEnumContextMenuStrip
+			// 
+			this.projectEnumContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editEnumToolStripMenuItem});
+			this.projectEnumContextMenuStrip.Name = "projectEnumContextMenuStrip";
+			this.projectEnumContextMenuStrip.Size = new System.Drawing.Size(138, 26);
+			// 
+			// editEnumToolStripMenuItem
+			// 
+			this.editEnumToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Enum_Type;
+			this.editEnumToolStripMenuItem.Name = "editEnumToolStripMenuItem";
+			this.editEnumToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+			this.editEnumToolStripMenuItem.Text = "Edit Enum...";
+			this.editEnumToolStripMenuItem.Click += new System.EventHandler(this.editEnumToolStripMenuItem_Click);
+			// 
+			// projectEnumsContextMenuStrip
+			// 
+			this.projectEnumsContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editEnumsToolStripMenuItem});
+			this.projectEnumsContextMenuStrip.Name = "projectEnumsContextMenuStrip";
+			this.projectEnumsContextMenuStrip.Size = new System.Drawing.Size(143, 26);
+			// 
+			// editEnumsToolStripMenuItem
+			// 
+			this.editEnumsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Category;
+			this.editEnumsToolStripMenuItem.Name = "editEnumsToolStripMenuItem";
+			this.editEnumsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.editEnumsToolStripMenuItem.Text = "Edit enums...";
+			this.editEnumsToolStripMenuItem.Click += new System.EventHandler(this.editEnumsToolStripMenuItem_Click);
 			// 
 			// memoryViewControl
 			// 
@@ -1240,6 +1277,7 @@
 			this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.goToClassToolStripMenuItem,
             this.cleanUnusedClassesToolStripMenuItem,
+            this.showEnumsToolStripMenuItem,
             this.toolStripSeparator16,
             this.generateCppCodeToolStripMenuItem,
             this.generateCSharpCodeToolStripMenuItem});
@@ -1300,6 +1338,14 @@
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
+			// showEnumsToolStripMenuItem
+			// 
+			this.showEnumsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Category;
+			this.showEnumsToolStripMenuItem.Name = "showEnumsToolStripMenuItem";
+			this.showEnumsToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+			this.showEnumsToolStripMenuItem.Text = "Show Enums...";
+			this.showEnumsToolStripMenuItem.Click += new System.EventHandler(this.showEnumsToolStripMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this.AllowDrop = true;
@@ -1323,6 +1369,8 @@
 			this.splitContainer.ResumeLayout(false);
 			this.projectClassContextMenuStrip.ResumeLayout(false);
 			this.projectClassesContextMenuStrip.ResumeLayout(false);
+			this.projectEnumContextMenuStrip.ResumeLayout(false);
+			this.projectEnumsContextMenuStrip.ResumeLayout(false);
 			this.selectedNodeContextMenuStrip.ResumeLayout(false);
 			this.toolStrip.ResumeLayout(false);
 			this.toolStrip.PerformLayout();
@@ -1466,6 +1514,11 @@
 		private System.Windows.Forms.ToolStripMenuItem collapseAllClassesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator22;
 		private System.Windows.Forms.ToolStripMenuItem addNewClassToolStripMenuItem;
+		private System.Windows.Forms.ContextMenuStrip projectEnumContextMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem editEnumToolStripMenuItem;
+		private System.Windows.Forms.ContextMenuStrip projectEnumsContextMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem editEnumsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showEnumsToolStripMenuItem;
 	}
 }
 
