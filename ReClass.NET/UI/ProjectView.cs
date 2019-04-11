@@ -171,6 +171,10 @@ namespace ReClassNET.UI
 			}
 		}
 
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public EnumDescription SelectedEnum { get; private set; }
+
 		[DefaultValue(false)]
 		public bool AutoExpandClassNodes
 		{
@@ -262,14 +266,16 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			if (!(e.Node is ClassTreeNode node))
+			if (e.Node is ClassTreeNode classTreeNode)
 			{
-				return;
+				if (selectedClass != classTreeNode.ClassNode)
+				{
+					SelectedClass = classTreeNode.ClassNode;
+				}
 			}
-
-			if (selectedClass != node.ClassNode)
+			else if (e.Node is EnumTreeNode enumTreeNode)
 			{
-				SelectedClass = node.ClassNode;
+				SelectedEnum = enumTreeNode.Enum;
 			}
 		}
 
