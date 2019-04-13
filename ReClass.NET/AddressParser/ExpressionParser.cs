@@ -32,11 +32,13 @@ namespace ReClassNET.AddressParser
 			{
 				if (tokenizer.Token == Token.Add || tokenizer.Token == Token.Subtract)
 				{
+					var token = tokenizer.Token;
+
 					tokenizer.ReadNextToken();
 
 					var rhs = ParseMultiplyDivide();
 
-					if (tokenizer.Token == Token.Add)
+					if (token == Token.Add)
 					{
 						lhs = new AddExpression(lhs, rhs);
 					}
@@ -60,11 +62,13 @@ namespace ReClassNET.AddressParser
 			{
 				if (tokenizer.Token == Token.Multiply || tokenizer.Token == Token.Divide)
 				{
+					var token = tokenizer.Token;
+
 					tokenizer.ReadNextToken();
 
 					var rhs = ParseUnary();
 
-					if (tokenizer.Token == Token.Multiply)
+					if (token == Token.Multiply)
 					{
 						lhs = new MultiplyExpression(lhs, rhs);
 					}
