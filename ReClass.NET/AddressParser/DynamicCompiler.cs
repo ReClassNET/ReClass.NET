@@ -86,7 +86,7 @@ namespace ReClassNET.AddressParser
 					{
 #if RECLASSNET64
 						// long -> IntPtr
-						return Expression.Convert(Expression.Constant(nodeNumber.Value), typeof(IntPtr));
+						return Expression.Convert(Expression.Constant(constantExpression.Value), typeof(IntPtr));
 #else
 						// long -> int -> IntPtr
 						return Expression.Convert(Expression.Convert(Expression.Constant(constantExpression.Value), typeof(int)), typeof(IntPtr));

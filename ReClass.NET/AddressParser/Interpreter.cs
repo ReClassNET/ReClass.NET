@@ -16,7 +16,7 @@ namespace ReClassNET.AddressParser
 			{
 				case ConstantExpression constantExpression:
 #if RECLASSNET64
-					return (IntPtr)nodeNumber.Value;
+					return (IntPtr)constantExpression.Value;
 #else
 					return (IntPtr)unchecked((int)constantExpression.Value);
 #endif
