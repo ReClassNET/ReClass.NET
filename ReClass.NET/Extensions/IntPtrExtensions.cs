@@ -144,5 +144,19 @@ namespace ReClassNET.Extensions
 			return value;
 #endif
 		}
+
+		public static IntPtr From(int value)
+		{
+			return (IntPtr)value;
+		}
+
+		public static IntPtr From(long value)
+		{
+#if RECLASSNET64
+			return (IntPtr)value;
+#else
+			return (IntPtr)unchecked((int)value);
+#endif
+		}
 	}
 }

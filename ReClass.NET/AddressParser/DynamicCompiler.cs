@@ -84,13 +84,9 @@ namespace ReClassNET.AddressParser
 					}
 				case ConstantExpression constantExpression:
 					{
-#if RECLASSNET64
-						// long -> IntPtr
-						return Expression.Convert(Expression.Constant(constantExpression.Value), typeof(IntPtr));
-#else
-						// long -> int -> IntPtr
-						return Expression.Convert(Expression.Convert(Expression.Constant(constantExpression.Value), typeof(int)), typeof(IntPtr));
-#endif
+						var convertFn = typeof(IntPtrExtension).GetRuntimeMethod(nameof(IntPtrExtension.From), new[] { typeof(long) });
+
+						return Expression.Call(null, convertFn, Expression.Constant(constantExpression.Value));
 					}
 				case ReadMemoryExpression readMemoryExpression:
 					{
@@ -101,11 +97,10 @@ namespace ReClassNET.AddressParser
 
 						var callExpression = Expression.Call(processParameter, readRemoteIntFn, argument);
 
-#if RECLASSNET64
-						return Expression.Convert(callExpression, typeof(IntPtr));
-#else
-						return Expression.Convert(Expression.Convert(callExpression, typeof(int)), typeof(IntPtr));
-#endif
+						var paramType = readMemoryExpression.ByteCount == 4 ? typeof(int) : typeof(long);
+						var convertFn = typeof(IntPtrExtension).GetRuntimeMethod(nameof(IntPtrExtension.From), new[] { paramType });
+
+						return Expression.Call(null, convertFn, callExpression);
 					}
 			}
 

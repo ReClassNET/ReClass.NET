@@ -15,11 +15,7 @@ namespace ReClassNET.AddressParser
 			switch (expression)
 			{
 				case ConstantExpression constantExpression:
-#if RECLASSNET64
-					return (IntPtr)constantExpression.Value;
-#else
-					return (IntPtr)unchecked((int)constantExpression.Value);
-#endif
+					return IntPtrExtension.From(constantExpression.Value);
 				case ModuleExpression moduleExpression:
 				{
 					var module = process.GetModuleByName(moduleExpression.Name);
@@ -42,15 +38,11 @@ namespace ReClassNET.AddressParser
 					var readFromAddress = Execute(readMemoryExpression.Expression, process);
 					if (readMemoryExpression.ByteCount == 4)
 					{
-						return (IntPtr)process.ReadRemoteInt32(readFromAddress);
+						return IntPtrExtension.From(process.ReadRemoteInt32(readFromAddress));
 					}
 					else
 					{
-#if RECLASSNET64
-						return (IntPtr)process.ReadRemoteInt64(readFromAddress);
-#else
-						return (IntPtr)unchecked((int)process.ReadRemoteUInt64(readFromAddress));
-#endif
+						return IntPtrExtension.From(process.ReadRemoteInt64(readFromAddress));
 					}
 				default:
 					throw new ArgumentException($"Unsupported operation '{expression.GetType().FullName}'.");
