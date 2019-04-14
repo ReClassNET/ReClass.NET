@@ -194,8 +194,6 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id == 0)
 			{
-				Address = spot.Memory.Process.ParseAddress(spot.Text);
-
 				AddressFormula = spot.Text;
 			}
 		}
