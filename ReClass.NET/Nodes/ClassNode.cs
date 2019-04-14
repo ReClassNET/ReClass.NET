@@ -206,11 +206,7 @@ namespace ReClassNET.Nodes
 
 			try
 			{
-				var formula = AddressFormula;
-
-				Address = process.ParseAddress(AddressFormula);
-
-				AddressFormula = formula;
+				address = process.ParseAddress(AddressFormula);
 			}
 			catch (ParseException)
 			{
