@@ -85,5 +85,44 @@
   <ItemGroup>
     <ClInclude Include="NativeCore.hpp" />
     <ClInclude Include="..\ReClassNET_Plugin.hpp" />
+    <ClInclude Include="..\Shared\DistormHelper.hpp">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Keys.hpp">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\distorm\include\distorm.h">
+      <Filter>Dependencies\distorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\distorm\include\mnemonics.h">
+      <Filter>Dependencies\distorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\distorm\src\config.h">
+      <Filter>Dependencies\distorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\distorm\src\decoder.h">
+      <Filter>Dependencies\distorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\distorm\src\instructions.h">
+      <Filter>Dependencies\distorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\distorm\src\insts.h">
+      <Filter>Dependencies\distorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\distorm\src\operands.h">
+      <Filter>Dependencies\distorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\distorm\src\prefix.h">
+      <Filter>Dependencies\distorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\distorm\src\textdefs.h">
+      <Filter>Dependencies\distorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\distorm\src\wstring.h">
+      <Filter>Dependencies\distorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\distorm\src\x86defs.h">
+      <Filter>Dependencies\distorm</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

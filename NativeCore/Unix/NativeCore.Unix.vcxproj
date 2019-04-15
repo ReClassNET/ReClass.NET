@@ -99,7 +99,20 @@
     <ClCompile Include="WriteRemoteMemory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Dependencies\distorm\include\distorm.h" />
+    <ClInclude Include="..\Dependencies\distorm\include\mnemonics.h" />
+    <ClInclude Include="..\Dependencies\distorm\src\config.h" />
+    <ClInclude Include="..\Dependencies\distorm\src\decoder.h" />
+    <ClInclude Include="..\Dependencies\distorm\src\instructions.h" />
+    <ClInclude Include="..\Dependencies\distorm\src\insts.h" />
+    <ClInclude Include="..\Dependencies\distorm\src\operands.h" />
+    <ClInclude Include="..\Dependencies\distorm\src\prefix.h" />
+    <ClInclude Include="..\Dependencies\distorm\src\textdefs.h" />
+    <ClInclude Include="..\Dependencies\distorm\src\wstring.h" />
+    <ClInclude Include="..\Dependencies\distorm\src\x86defs.h" />
     <ClInclude Include="..\ReClassNET_Plugin.hpp" />
+    <ClInclude Include="..\Shared\DistormHelper.hpp" />
+    <ClInclude Include="..\Shared\Keys.hpp" />
     <ClInclude Include="NativeCore.hpp" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
