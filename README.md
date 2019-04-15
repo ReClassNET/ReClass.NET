@@ -19,8 +19,9 @@ This is a port of ReClass to the .NET platform with lots of additional features.
   - Matrix 3x3 / 3x4 / 4x4
   - UTF8 / UTF16 / UTF32 Text and pointer to text
   - Virtual Tables
-  - Function Pointer
   - Function
+  - Function Pointer
+  - Unions
 - Automatic Node Dissection
 - Highlight changed memory
 - Pointer Preview
@@ -36,7 +37,7 @@ This is a port of ReClass to the .NET platform with lots of additional features.
 - Class address calculator
 - Code Generator (C++ / C#)
 - Module / Section Dumper
-- Linux Support (tested on Ubuntu)
+- Linux Support (tested on Ubuntu 18.04)
 - Debugger with "Find out what writes/accesses this address" support
 - Plugin Support
   - Plugins can be written in different languages (example: C++, C++/CLI, C#)
@@ -46,18 +47,18 @@ This is a port of ReClass to the .NET platform with lots of additional features.
   - Plugins can implement custom nodes with load/save and code generation support
 
 ## Plugins
-- [Sample Plugins](https://github.com/KN4CK3R/ReClass.NET-SamplePlugin)
-- [Frostbite Plugin](https://github.com/KN4CK3R/ReClass.NET-FrostbitePlugin)
-- [MemoryPipe Plugin](https://github.com/KN4CK3R/ReClass.NET-MemoryPipePlugin)
-- [LoadBinary Plugin](https://github.com/KN4CK3R/ReClass.NET-LoadBinaryPlugin)
-- [Handle Abuser Plugin](https://github.com/KN4CK3R/ReClass.NET-HandleAbuser)
+- [Sample Plugins](https://github.com/ReClassNET/ReClass.NET-SamplePlugin)
+- [Frostbite Plugin](https://github.com/ReClassNET/ReClass.NET-FrostbitePlugin)
+- [MemoryPipe Plugin](https://github.com/ReClassNET/ReClass.NET-MemoryPipePlugin)
+- [LoadBinary Plugin](https://github.com/ReClassNET/ReClass.NET-LoadBinaryPlugin)
+- [Handle Abuser Plugin](https://github.com/ReClassNET/ReClass.NET-HandleAbuser)
 - [Unreal Plugin](https://github.com/DrP3pp3r/ReClass.NET-UnrealPlugin) (by [DrP3pp3r](https://github.com/DrP3pp3r))
 
 To install a plugin just copy it in the "Plugins" folder.
-If you want to develop your own plugin just learn from the code of the [Sample Plugins](https://github.com/KN4CK3R/ReClass.NET-SamplePlugin) and [Frostbite Plugin](https://github.com/KN4CK3R/ReClass.NET-FrostbitePlugin) repositories. If you have developed a nice plugin, leave me a message and I will add it to the list above.
+If you want to develop your own plugin just learn from the code of the [Sample Plugins](https://github.com/ReClassNET/ReClass.NET-SamplePlugin) and [Frostbite Plugin](https://github.com/ReClassNET/ReClass.NET-FrostbitePlugin) repositories. If you have developed a nice plugin, leave me a message and I will add it to the list above.
 
 ## Installation
-Just download the [latest version](https://github.com/KN4CK3R/ReClass.NET/releases) and start the x86 / x64 version or let the launcher decide.
+Just download the [latest version](https://github.com/ReClassNET/ReClass.NET/releases) and start the x86 / x64 version or let the launcher decide.
 
 ## Tips
 - Lots of elements have a context menu. Just right-click it and see what you can do there.
