@@ -5,9 +5,9 @@ namespace ReClassNET.AddressParser
 {
 	public class Parser
 	{
-		private readonly Tokenizer tokenizer;
+		private readonly ITokenizer tokenizer;
 
-		public Parser(Tokenizer tokenizer)
+		public Parser(ITokenizer tokenizer)
 		{
 			this.tokenizer = tokenizer;
 		}

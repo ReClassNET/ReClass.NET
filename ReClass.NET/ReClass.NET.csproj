@@ -139,6 +139,7 @@
     <Compile Include="AddressParser\IExecuter.cs" />
     <Compile Include="AddressParser\Interpreter.cs" />
     <Compile Include="AddressParser\Expressions.cs" />
+    <Compile Include="AddressParser\ITokenizer.cs" />
     <Compile Include="AddressParser\ParseException.cs" />
     <Compile Include="AddressParser\Parser.cs" />
     <Compile Include="AddressParser\Token.cs" />

@@ -8,25 +8,16 @@ namespace ReClassNET.AddressParser
 	/// <summary>
 	/// Parses the given text and reads individual tokens from it.
 	/// </summary>
-	public class Tokenizer
+	public class Tokenizer : ITokenizer
 	{
 		private readonly TextReader reader;
 
 		private char currentCharacter;
 
-		/// <summary>
-		/// The current token. It is set to <see cref="Token.None"/> if no more tokens are avaiable.
-		/// </summary>
 		public Token Token { get; private set; }
 
-		/// <summary>
-		/// The current identifier.
-		/// </summary>
 		public string Identifier { get; private set; }
 
-		/// <summary>
-		/// The current number.
-		/// </summary>
 		public long Number { get; private set; }
 
 		public Tokenizer(TextReader reader)
@@ -39,9 +30,6 @@ namespace ReClassNET.AddressParser
 			ReadNextToken();
 		}
 
-		/// <summary>
-		/// Reads the next token from the input.
-		/// </summary>
 		public void ReadNextToken()
 		{
 			SkipWhitespaces();
