@@ -6,17 +6,17 @@
 
 		public const string ApplicationExecutableName = ApplicationName + ".exe";
 
-		public const string ApplicationVersion = "1.1";
+		public const string ApplicationVersion = "1.2";
 
 		public const string LauncherExecutableName = ApplicationName + "_Launcher.exe";
 
 		public const string Author = "KN4CK3R";
 
-		public const string HomepageUrl = "https://github.com/KN4CK3R/ReClass.NET";
+		public const string HomepageUrl = "https://github.com/ReClassNET/ReClass.NET";
 
-		public const string HelpUrl = "https://github.com/KN4CK3R/ReClass.NET/issues";
+		public const string HelpUrl = "https://github.com/ReClassNET/ReClass.NET/issues";
 
-		public const string PluginUrl = "https://github.com/KN4CK3R/ReClass.NET#plugins";
+		public const string PluginUrl = "https://github.com/ReClassNET/ReClass.NET#plugins";
 
 #if RECLASSNET64
 		public const string Platform = "x64";
