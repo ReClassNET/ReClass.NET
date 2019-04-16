@@ -151,6 +151,11 @@ namespace ReClassNET.AddressParser
 								throw new ParseException("Missing read byte count");
 							}
 
+							if (tokenizer.Number != 4 && tokenizer.Number != 8)
+							{
+								throw new ParseException("The byte count must be 4 or 8.");
+							}
+
 							byteCount = (int)tokenizer.Number;
 
 							tokenizer.ReadNextToken();
