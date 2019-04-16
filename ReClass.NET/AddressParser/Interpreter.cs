@@ -16,6 +16,8 @@ namespace ReClassNET.AddressParser
 			{
 				case ConstantExpression constantExpression:
 					return IntPtrExtension.From(constantExpression.Value);
+				case NegateExpression negateExpression:
+					return Execute(negateExpression.Expression, processReader).Negate();
 				case ModuleExpression moduleExpression:
 				{
 					var module = processReader.GetModuleByName(moduleExpression.Name);

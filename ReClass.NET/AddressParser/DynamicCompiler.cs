@@ -29,13 +29,27 @@ namespace ReClassNET.AddressParser
 			).Compile();
 		}
 
-		private static Expression GenerateMethodBody(IExpression operation, Expression parameter)
+		private static Expression GenerateMethodBody(IExpression expression, Expression parameter)
 		{
-			Contract.Requires(operation != null);
+			Contract.Requires(expression != null);
 			Contract.Requires(parameter != null);
 
-			switch (operation)
+			switch (expression)
 			{
+				case ConstantExpression constantExpression:
+					{
+						var convertFn = typeof(IntPtrExtension).GetRuntimeMethod(nameof(IntPtrExtension.From), new[] { typeof(long) });
+
+						return Expression.Call(null, convertFn, Expression.Constant(constantExpression.Value));
+					}
+				case NegateExpression negateExpression:
+					{
+						var argument = GenerateMethodBody(negateExpression.Expression, parameter);
+
+						var negateFn = typeof(IntPtrExtension).GetRuntimeMethod(nameof(IntPtrExtension.Negate), new[] { typeof(IntPtr) });
+
+						return Expression.Call(null, negateFn, argument);
+					}
 				case AddExpression addExpression:
 					{
 						var argument1 = GenerateMethodBody(addExpression.Lhs, parameter);
@@ -82,12 +96,6 @@ namespace ReClassNET.AddressParser
 							)
 						);
 					}
-				case ConstantExpression constantExpression:
-					{
-						var convertFn = typeof(IntPtrExtension).GetRuntimeMethod(nameof(IntPtrExtension.From), new[] { typeof(long) });
-
-						return Expression.Call(null, convertFn, Expression.Constant(constantExpression.Value));
-					}
 				case ReadMemoryExpression readMemoryExpression:
 					{
 						var argument = GenerateMethodBody(readMemoryExpression.Expression, parameter);
@@ -104,7 +112,7 @@ namespace ReClassNET.AddressParser
 					}
 			}
 
-			throw new ArgumentException($"Unsupported operation '{operation.GetType().FullName}'.");
+			throw new ArgumentException($"Unsupported operation '{expression.GetType().FullName}'.");
 		}
 
 		private static MethodInfo GetIntPtrExtension(string name)

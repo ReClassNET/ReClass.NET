@@ -83,6 +83,17 @@ namespace ReClassNET.Extensions
 
 		[Pure]
 		[DebuggerStepThrough]
+		public static IntPtr Negate(this IntPtr ptr)
+		{
+#if RECLASSNET64
+			return new IntPtr(-ptr.ToInt64());
+#else
+			return new IntPtr(-ptr.ToInt32());
+#endif
+		}
+
+		[Pure]
+		[DebuggerStepThrough]
 		public static bool InRange(this IntPtr address, IntPtr start, IntPtr end)
 		{
 #if RECLASSNET64
