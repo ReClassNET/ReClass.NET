@@ -566,16 +566,6 @@ namespace ReClassNET.Memory
 			return null;
 		}
 
-		public void EnumerateRemoteSectionsAndModules(Action<Section> callbackSection, Action<Module> callbackModule)
-		{
-			if (!IsValid)
-			{
-				return;
-			}
-
-			coreFunctions.EnumerateRemoteSectionsAndModules(handle, callbackSection, callbackModule);
-		}
-
 		public bool EnumerateRemoteSectionsAndModules(out List<Section> sections, out List<Module> modules)
 		{
 			if (!IsValid)
@@ -586,7 +576,10 @@ namespace ReClassNET.Memory
 				return false;
 			}
 
-			coreFunctions.EnumerateRemoteSectionsAndModules(handle, out sections, out modules);
+			sections = new List<Section>();
+			modules = new List<Module>();
+
+			coreFunctions.EnumerateRemoteSectionsAndModules(handle, sections.Add, modules.Add);
 
 			return true;
 		}
