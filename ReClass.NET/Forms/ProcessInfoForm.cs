@@ -14,12 +14,12 @@ namespace ReClassNET.Forms
 {
 	public partial class ProcessInfoForm : IconForm
 	{
-		private readonly RemoteProcess process;
+		private readonly IProcessReader process;
 
 		/// <summary>The context menu of the sections grid view.</summary>
 		public ContextMenuStrip GridContextMenu => contextMenuStrip;
 
-		public ProcessInfoForm(RemoteProcess process)
+		public ProcessInfoForm(IProcessReader process)
 		{
 			Contract.Requires(process != null);
 
@@ -61,11 +61,6 @@ namespace ReClassNET.Forms
 
 		private async void ProcessInfoForm_Load(object sender, EventArgs e)
 		{
-			if (!process.IsValid)
-			{
-				return;
-			}
-
 			var sectionsTable = new DataTable();
 			sectionsTable.Columns.Add("address", typeof(string));
 			sectionsTable.Columns.Add("size", typeof(string));
@@ -146,11 +141,8 @@ namespace ReClassNET.Forms
 
 		private void dumpToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			bool isModule;
-			string fileName;
-			var initialDirectory = string.Empty;
-			IntPtr address;
-			int size;
+			Func<SaveFileDialog> createDialogFn;
+			Action<Dumper, Stream> dumpFn;
 
 			if (GetToolStripSourceControl(sender) == modulesDataGridView)
 			{
@@ -160,11 +152,18 @@ namespace ReClassNET.Forms
 					return;
 				}
 
-				isModule = true;
-				fileName = $"{Path.GetFileNameWithoutExtension(module.Name)}_Dumped{Path.GetExtension(module.Name)}";
-				initialDirectory = Path.GetDirectoryName(module.Path);
-				address = module.Start;
-				size = module.Size.ToInt32();
+				createDialogFn = () => new SaveFileDialog
+				{
+					FileName = $"{Path.GetFileNameWithoutExtension(module.Name)}_Dumped{Path.GetExtension(module.Name)}",
+					InitialDirectory = Path.GetDirectoryName(module.Path)
+				};
+
+				dumpFn = (d, s) =>
+				{
+					d.DumpModule(module, s);
+
+					MessageBox.Show("Module successfully dumped.", Constants.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				};
 			}
 			else
 			{
@@ -174,42 +173,40 @@ namespace ReClassNET.Forms
 					return;
 				}
 
-				isModule = false;
-				fileName = $"Section_{section.Start.ToString("X")}_{section.End.ToString("X")}.dat";
-				address = section.Start;
-				size = section.Size.ToInt32();
+				createDialogFn = () => new SaveFileDialog
+				{
+					FileName = $"Section_{section.Start.ToString("X")}_{section.End.ToString("X")}.dat"
+				};
+
+				dumpFn = (d, s) =>
+				{
+					d.DumpSection(section, s);
+
+					MessageBox.Show("Section successfully dumped.", Constants.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				};
 			}
 
-			using (var sfd = new SaveFileDialog())
+			using (var sfd = createDialogFn())
 			{
-				sfd.FileName = fileName;
 				sfd.Filter = "All|*.*";
-				sfd.InitialDirectory = initialDirectory;
 
-				if (sfd.ShowDialog() == DialogResult.OK)
+				if (sfd.ShowDialog() != DialogResult.OK)
 				{
-					var dumper = new Dumper(process);
+					return;
+				}
 
-					try
-					{
-						using (var stream = sfd.OpenFile())
-						{
-							if (isModule)
-							{
-								dumper.DumpModule(address, size, stream);
-							}
-							else
-							{
-								dumper.DumpSection(address, size, stream);
-							}
+				var dumper = new Dumper(process);
 
-							MessageBox.Show("Module successfully dumped.", Constants.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-						}
-					}
-					catch (Exception ex)
+				try
+				{
+					using (var stream = sfd.OpenFile())
 					{
-						Program.ShowException(ex);
+						dumpFn(dumper, stream);
 					}
+				}
+				catch (Exception ex)
+				{
+					Program.ShowException(ex);
 				}
 			}
 		}
@@ -235,7 +232,7 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		private Control GetToolStripSourceControl(object sender)
+		private static Control GetToolStripSourceControl(object sender)
 		{
 			return ((sender as ToolStripMenuItem)?.GetCurrentParent() as ContextMenuStrip)?.SourceControl;
 		}

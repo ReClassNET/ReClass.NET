@@ -265,6 +265,7 @@
     <Compile Include="Memory\NodeDissector.cs" />
     <Compile Include="Memory\Dumper.cs" />
     <Compile Include="Memory\Section.cs" />
+    <Compile Include="Memory\SimplePeHeader.cs" />
     <Compile Include="Memory\UnionDataType.cs" />
     <Compile Include="Native\INativeMethods.cs" />
     <Compile Include="Native\NativeMethods.Unix.cs" />
