@@ -3,7 +3,7 @@ using ReClassNET.Memory;
 
 namespace ReClassNET.AddressParser
 {
-	public interface IExecuter
+	public interface IExecutor
 	{
 		IntPtr Execute(IExpression expression, IProcessReader processReader);
 	}

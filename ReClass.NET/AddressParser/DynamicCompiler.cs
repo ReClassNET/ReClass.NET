@@ -7,17 +7,17 @@ using ReClassNET.Memory;
 
 namespace ReClassNET.AddressParser
 {
-	public class DynamicCompiler : IExecuter
+	public class DynamicCompiler : IExecutor
 	{
-		public IntPtr Execute(IExpression operation, IProcessReader processReader)
+		public IntPtr Execute(IExpression expression, IProcessReader processReader)
 		{
-			Contract.Requires(operation != null);
+			Contract.Requires(expression != null);
 			Contract.Requires(processReader != null);
 
-			return CompileAddressFormula(operation)(processReader);
+			return CompileExpression(expression)(processReader);
 		}
 
-		public static Func<IProcessReader, IntPtr> CompileAddressFormula(IExpression expression)
+		public static Func<IProcessReader, IntPtr> CompileExpression(IExpression expression)
 		{
 			Contract.Requires(expression != null);
 

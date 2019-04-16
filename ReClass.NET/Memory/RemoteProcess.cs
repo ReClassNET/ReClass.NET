@@ -650,7 +650,7 @@ namespace ReClassNET.Memory
 			{
 				var expression = Parser.Parse(addressFormula);
 
-				func = DynamicCompiler.CompileAddressFormula(expression);
+				func = DynamicCompiler.CompileExpression(expression);
 
 				formulaCache.Add(addressFormula, func);
 			}

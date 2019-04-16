@@ -13,7 +13,7 @@ namespace ReClass.NET_Tests.AddressParser
 {
 	public abstract class ExecutorTest
 	{
-		protected abstract IExecuter CreateExecutor();
+		protected abstract IExecutor CreateExecutor();
 
 		public static IEnumerable<object[]> GetSimpleExpressionTestData() => new List<object[]>
 		{

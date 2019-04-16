@@ -9,7 +9,7 @@ namespace ReClass.NET_Tests.AddressParser
 {
 	public class InterpreterTest : ExecutorTest
 	{
-		protected override IExecuter CreateExecutor()
+		protected override IExecutor CreateExecutor()
 		{
 			return new Interpreter();
 		}

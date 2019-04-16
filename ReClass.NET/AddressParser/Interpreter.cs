@@ -5,7 +5,7 @@ using ReClassNET.Memory;
 
 namespace ReClassNET.AddressParser
 {
-	public class Interpreter : IExecuter
+	public class Interpreter : IExecutor
 	{
 		public IntPtr Execute(IExpression expression, IProcessReader processReader)
 		{

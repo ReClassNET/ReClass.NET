@@ -9,7 +9,7 @@ namespace ReClass.NET_Tests.AddressParser
 {
 	public class DynamicCompilerTest : ExecutorTest
 	{
-		protected override IExecuter CreateExecutor()
+		protected override IExecutor CreateExecutor()
 		{
 			return new DynamicCompiler();
 		}

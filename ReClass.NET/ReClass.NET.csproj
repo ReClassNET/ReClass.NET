@@ -134,7 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressParser\DynamicCompiler.cs" />
-    <Compile Include="AddressParser\IExecuter.cs" />
+    <Compile Include="AddressParser\IExecutor.cs" />
     <Compile Include="AddressParser\Interpreter.cs" />
     <Compile Include="AddressParser\Expressions.cs" />
     <Compile Include="AddressParser\ITokenizer.cs" />
