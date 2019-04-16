@@ -7,10 +7,10 @@ namespace ReClassNET.AddressParser
 {
 	public class Interpreter : IExecuter
 	{
-		public IntPtr Execute(IExpression expression, RemoteProcess process)
+		public IntPtr Execute(IExpression expression, IProcessReader processReader)
 		{
 			Contract.Requires(expression != null);
-			Contract.Requires(process != null);
+			Contract.Requires(processReader != null);
 
 			switch (expression)
 			{
@@ -18,7 +18,7 @@ namespace ReClassNET.AddressParser
 					return IntPtrExtension.From(constantExpression.Value);
 				case ModuleExpression moduleExpression:
 				{
-					var module = process.GetModuleByName(moduleExpression.Name);
+					var module = processReader.GetModuleByName(moduleExpression.Name);
 					if (module != null)
 					{
 						return module.Start;
@@ -27,22 +27,22 @@ namespace ReClassNET.AddressParser
 					return IntPtr.Zero;
 				}
 				case AddExpression addExpression:
-					return Execute(addExpression.Lhs, process).Add(Execute(addExpression.Rhs, process));
+					return Execute(addExpression.Lhs, processReader).Add(Execute(addExpression.Rhs, processReader));
 				case SubtractExpression subtractExpression:
-					return Execute(subtractExpression.Lhs, process).Sub(Execute(subtractExpression.Rhs, process));
+					return Execute(subtractExpression.Lhs, processReader).Sub(Execute(subtractExpression.Rhs, processReader));
 				case MultiplyExpression multiplyExpression:
-					return Execute(multiplyExpression.Lhs, process).Mul(Execute(multiplyExpression.Rhs, process));
+					return Execute(multiplyExpression.Lhs, processReader).Mul(Execute(multiplyExpression.Rhs, processReader));
 				case DivideExpression divideExpression:
-					return Execute(divideExpression.Lhs, process).Div(Execute(divideExpression.Rhs, process));
+					return Execute(divideExpression.Lhs, processReader).Div(Execute(divideExpression.Rhs, processReader));
 				case ReadMemoryExpression readMemoryExpression:
-					var readFromAddress = Execute(readMemoryExpression.Expression, process);
+					var readFromAddress = Execute(readMemoryExpression.Expression, processReader);
 					if (readMemoryExpression.ByteCount == 4)
 					{
-						return IntPtrExtension.From(process.ReadRemoteInt32(readFromAddress));
+						return IntPtrExtension.From(processReader.ReadRemoteInt32(readFromAddress));
 					}
 					else
 					{
-						return IntPtrExtension.From(process.ReadRemoteInt64(readFromAddress));
+						return IntPtrExtension.From(processReader.ReadRemoteInt64(readFromAddress));
 					}
 				default:
 					throw new ArgumentException($"Unsupported operation '{expression.GetType().FullName}'.");

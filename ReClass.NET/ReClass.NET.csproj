@@ -258,6 +258,9 @@
     <Compile Include="MemoryScanner\ScanSettings.cs" />
     <Compile Include="Memory\Disassembler.cs" />
     <Compile Include="Debugger\IBreakpoint.cs" />
+    <Compile Include="Memory\IProcessReader.cs" />
+    <Compile Include="Memory\IRemoteMemoryReader.cs" />
+    <Compile Include="Memory\IRemoteMemoryWriter.cs" />
     <Compile Include="Memory\Module.cs" />
     <Compile Include="Memory\NodeDissector.cs" />
     <Compile Include="Memory\Dumper.cs" />

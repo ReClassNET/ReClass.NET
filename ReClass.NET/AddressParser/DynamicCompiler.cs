@@ -9,68 +9,68 @@ namespace ReClassNET.AddressParser
 {
 	public class DynamicCompiler : IExecuter
 	{
-		public IntPtr Execute(IExpression operation, RemoteProcess process)
+		public IntPtr Execute(IExpression operation, IProcessReader processReader)
 		{
 			Contract.Requires(operation != null);
-			Contract.Requires(process != null);
+			Contract.Requires(processReader != null);
 
-			return CompileAddressFormula(operation)(process);
+			return CompileAddressFormula(operation)(processReader);
 		}
 
-		public static Func<RemoteProcess, IntPtr> CompileAddressFormula(IExpression expression)
+		public static Func<IProcessReader, IntPtr> CompileAddressFormula(IExpression expression)
 		{
 			Contract.Requires(expression != null);
 
-			var processParameter = Expression.Parameter(typeof(RemoteProcess));
+			var processParameter = Expression.Parameter(typeof(IProcessReader));
 
-			return Expression.Lambda<Func<RemoteProcess, IntPtr>>(
+			return Expression.Lambda<Func<IProcessReader, IntPtr>>(
 				GenerateMethodBody(expression, processParameter),
 				processParameter
 			).Compile();
 		}
 
-		private static Expression GenerateMethodBody(IExpression operation, ParameterExpression processParameter)
+		private static Expression GenerateMethodBody(IExpression operation, Expression parameter)
 		{
 			Contract.Requires(operation != null);
-			Contract.Requires(processParameter != null);
+			Contract.Requires(parameter != null);
 
 			switch (operation)
 			{
 				case AddExpression addExpression:
 					{
-						var argument1 = GenerateMethodBody(addExpression.Lhs, processParameter);
-						var argument2 = GenerateMethodBody(addExpression.Rhs, processParameter);
+						var argument1 = GenerateMethodBody(addExpression.Lhs, parameter);
+						var argument2 = GenerateMethodBody(addExpression.Rhs, parameter);
 
 						return Expression.Call(null, GetIntPtrExtension(nameof(IntPtrExtension.Add)), argument1, argument2);
 					}
 				case SubtractExpression subtractExpression:
 					{
-						var argument1 = GenerateMethodBody(subtractExpression.Lhs, processParameter);
-						var argument2 = GenerateMethodBody(subtractExpression.Rhs, processParameter);
+						var argument1 = GenerateMethodBody(subtractExpression.Lhs, parameter);
+						var argument2 = GenerateMethodBody(subtractExpression.Rhs, parameter);
 
 						return Expression.Call(null, GetIntPtrExtension(nameof(IntPtrExtension.Sub)), argument1, argument2);
 					}
 				case MultiplyExpression multiplyExpression:
 					{
-						var argument1 = GenerateMethodBody(multiplyExpression.Lhs, processParameter);
-						var argument2 = GenerateMethodBody(multiplyExpression.Rhs, processParameter);
+						var argument1 = GenerateMethodBody(multiplyExpression.Lhs, parameter);
+						var argument2 = GenerateMethodBody(multiplyExpression.Rhs, parameter);
 
 						return Expression.Call(null, GetIntPtrExtension(nameof(IntPtrExtension.Mul)), argument1, argument2);
 					}
 				case DivideExpression divideExpression:
 					{
-						var argument1 = GenerateMethodBody(divideExpression.Lhs, processParameter);
-						var argument2 = GenerateMethodBody(divideExpression.Rhs, processParameter);
+						var argument1 = GenerateMethodBody(divideExpression.Lhs, parameter);
+						var argument2 = GenerateMethodBody(divideExpression.Rhs, parameter);
 
 						return Expression.Call(null, GetIntPtrExtension(nameof(IntPtrExtension.Div)), argument1, argument2);
 					}
 				case ModuleExpression moduleExpression:
 					{
-						var getModuleByNameFunc = typeof(RemoteProcess).GetRuntimeMethod(nameof(RemoteProcess.GetModuleByName), new[] { typeof(string) });
+						var getModuleByNameFunc = typeof(IProcessReader).GetRuntimeMethod(nameof(IProcessReader.GetModuleByName), new[] { typeof(string) });
 						var moduleNameConstant = Expression.Constant(moduleExpression.Name);
 
 						var moduleVariable = Expression.Variable(typeof(Memory.Module));
-						var assignExpression = Expression.Assign(moduleVariable, Expression.Call(processParameter, getModuleByNameFunc, moduleNameConstant));
+						var assignExpression = Expression.Assign(moduleVariable, Expression.Call(parameter, getModuleByNameFunc, moduleNameConstant));
 
 						return Expression.Block(
 							new[] { moduleVariable },
@@ -90,12 +90,12 @@ namespace ReClassNET.AddressParser
 					}
 				case ReadMemoryExpression readMemoryExpression:
 					{
-						var argument = GenerateMethodBody(readMemoryExpression.Expression, processParameter);
+						var argument = GenerateMethodBody(readMemoryExpression.Expression, parameter);
 
-						var functionName = readMemoryExpression.ByteCount == 4 ? nameof(RemoteProcess.ReadRemoteInt32) : nameof(RemoteProcess.ReadRemoteInt64);
-						var readRemoteIntFn = typeof(RemoteProcess).GetRuntimeMethod(functionName, new[] { typeof(IntPtr) });
+						var functionName = readMemoryExpression.ByteCount == 4 ? nameof(IProcessReader.ReadRemoteInt32) : nameof(IProcessReader.ReadRemoteInt64);
+						var readRemoteIntFn = typeof(IProcessReader).GetRuntimeMethod(functionName, new[] { typeof(IntPtr) });
 
-						var callExpression = Expression.Call(processParameter, readRemoteIntFn, argument);
+						var callExpression = Expression.Call(parameter, readRemoteIntFn, argument);
 
 						var paramType = readMemoryExpression.ByteCount == 4 ? typeof(int) : typeof(long);
 						var convertFn = typeof(IntPtrExtension).GetRuntimeMethod(nameof(IntPtrExtension.From), new[] { paramType });
