@@ -178,8 +178,6 @@ namespace ReClassNET.AddressParser
 			}
 		}
 
-		#region Convenience Helpers
-
 		public static IExpression Parse(string str)
 		{
 			using (var sr = new StringReader(str))
@@ -188,12 +186,10 @@ namespace ReClassNET.AddressParser
 			}
 		}
 
-		public static IExpression Parse(Tokenizer tokenizer)
+		private static IExpression Parse(ITokenizer tokenizer)
 		{
 			var parser = new Parser(tokenizer);
 			return parser.ParseExpression();
 		}
-
-		#endregion
 	}
 }
