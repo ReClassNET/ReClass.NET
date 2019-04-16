@@ -298,7 +298,6 @@
     <Compile Include="DataExchange\ReClass\CustomNodeSerializer.cs" />
     <Compile Include="DataExchange\ReClass\IReClassExport.cs" />
     <Compile Include="DataExchange\ReClass\ReClassFile.cs" />
-    <Compile Include="DataExchange\ReClass\ReClass2007File.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -992,11 +991,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Button_Remove.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.109.2</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Button_Pointer.png" />

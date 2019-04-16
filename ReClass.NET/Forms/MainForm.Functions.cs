@@ -192,11 +192,10 @@ namespace ReClassNET.Forms
 			using (var ofd = new OpenFileDialog())
 			{
 				ofd.CheckFileExists = true;
-				ofd.Filter = $"All ReClass Types |*{ReClassNetFile.FileExtension};*{ReClassFile.FileExtension};*{ReClassQtFile.FileExtension};*{ReClass2007File.FileExtension}"
+				ofd.Filter = $"All ReClass Types |*{ReClassNetFile.FileExtension};*{ReClassFile.FileExtension};*{ReClassQtFile.FileExtension}"
 					+ $"|{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}"
 					+ $"|{ReClassFile.FormatName} (*{ReClassFile.FileExtension})|*{ReClassFile.FileExtension}"
-					+ $"|{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}"
-					+ $"|{ReClass2007File.FormatName} (*{ReClass2007File.FileExtension})|*{ReClass2007File.FileExtension}";
+					+ $"|{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}";
 
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
@@ -246,9 +245,6 @@ namespace ReClassNET.Forms
 					break;
 				case ReClassFile.FileExtension:
 					import = new ReClassFile(project);
-					break;
-				case ReClass2007File.FileExtension:
-					import = new ReClass2007File(project);
 					break;
 				default:
 					Program.Logger.Log(LogLevel.Error, $"The file '{path}' has an unknown type.");

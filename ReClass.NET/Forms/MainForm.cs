@@ -710,7 +710,6 @@ namespace ReClassNET.Forms
 						case ReClassNetFile.FileExtension:
 						case ReClassQtFile.FileExtension:
 						case ReClassFile.FileExtension:
-						case ReClass2007File.FileExtension:
 							e.Effect = DragDropEffects.Copy;
 							break;
 					}
