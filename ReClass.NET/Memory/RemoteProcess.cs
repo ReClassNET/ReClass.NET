@@ -372,7 +372,7 @@ namespace ReClassNET.Memory
 		/// <summary>Reads a string from the address in the remote process with the given length and encoding. The string gets truncated at the first zero character.</summary>
 		/// <param name="encoding">The encoding used by the string.</param>
 		/// <param name="address">The address of the string.</param>
-		/// <param name="length">The length of the string.</param>
+		/// <param name="length">The maximum length of the string.</param>
 		/// <returns>The string.</returns>
 		public string ReadRemoteStringUntilFirstNullCharacter(Encoding encoding, IntPtr address, int length)
 		{
@@ -391,7 +391,7 @@ namespace ReClassNET.Memory
 
 			try
 			{
-				return Encoding.UTF8.GetString(data, 0, Math.Min(index, data.Length));
+				return encoding.GetString(data, 0, Math.Min(index, data.Length));
 			}
 			catch
 			{
