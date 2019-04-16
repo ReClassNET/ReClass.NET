@@ -100,8 +100,8 @@ namespace ReClassNET.AddressParser
 					{
 						var argument = GenerateMethodBody(readMemoryExpression.Expression, parameter);
 
-						var functionName = readMemoryExpression.ByteCount == 4 ? nameof(IProcessReader.ReadRemoteInt32) : nameof(IProcessReader.ReadRemoteInt64);
-						var readRemoteIntFn = typeof(IProcessReader).GetRuntimeMethod(functionName, new[] { typeof(IntPtr) });
+						var functionName = readMemoryExpression.ByteCount == 4 ? nameof(IRemoteMemoryReader.ReadRemoteInt32) : nameof(IRemoteMemoryReader.ReadRemoteInt64);
+						var readRemoteIntFn = typeof(IRemoteMemoryReader).GetRuntimeMethod(functionName, new[] { typeof(IntPtr) });
 
 						var callExpression = Expression.Call(parameter, readRemoteIntFn, argument);
 

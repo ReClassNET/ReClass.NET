@@ -27,7 +27,8 @@ namespace ReClass.NET_Tests.AddressParser
 			new object[] { "0 + 1", (IntPtr)0x1 },
 			new object[] { "0 - 1", (IntPtr)(-1) },
 			new object[] { "1 + 2 * 3", (IntPtr)0x7 },
-			new object[] { "0x123 + 0x234 * 0x345", (IntPtr)0x73527 }
+			new object[] { "0x123 + 0x234 * 0x345", (IntPtr)0x73527 },
+			new object[] { "4 / 0x2", (IntPtr)0x2 }
 		};
 
 		[Theory]
@@ -56,6 +57,35 @@ namespace ReClass.NET_Tests.AddressParser
 			var mock = new Mock<IProcessReader>();
 			mock.Setup(p => p.GetModuleByName("test.module"))
 				.Returns(new Module { Start = (IntPtr)0x100 });
+
+			var executor = CreateExecutor();
+
+			Check.That(executor.Execute(Parser.Parse(expression), mock.Object)).IsEqualTo(expected);
+		}
+
+		public static IEnumerable<object[]> GetReadMemoryExpressionTestData() => new List<object[]>
+		{
+			new object[] { "[0]", (IntPtr)0x0 },
+			new object[] { "[0] + 10", (IntPtr)0x10 },
+			new object[] { "[10]", (IntPtr)0x10 },
+			new object[] { "[10 + 10]", (IntPtr)0x20 },
+			new object[] { "[[10] + 10]", (IntPtr)0x20 },
+			new object[] { "[[10] + [10]] + [10]", (IntPtr)0x30 }
+		};
+
+		[Theory]
+		[MemberData(nameof(GetReadMemoryExpressionTestData))]
+		public void ReadMemoryExpressionTest(string expression, IntPtr expected)
+		{
+			var mock = new Mock<IProcessReader>();
+			mock.Setup(p => p.ReadRemoteInt32((IntPtr)0))
+				.Returns(0);
+			mock.Setup(p => p.ReadRemoteInt32((IntPtr)0x10))
+				.Returns(0x10);
+			mock.Setup(p => p.ReadRemoteInt32((IntPtr)0x20))
+				.Returns(0x20);
+			mock.Setup(p => p.ReadRemoteInt32((IntPtr)0x30))
+				.Returns(0x30);
 
 			var executor = CreateExecutor();
 
