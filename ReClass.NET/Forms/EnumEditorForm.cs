@@ -26,7 +26,7 @@ namespace ReClassNET.Forms
 
 			foreach (var kv in @enum.Values)
 			{
-				enumDataGridView.Rows.Add(kv.Key, kv.Value);
+				enumDataGridView.Rows.Add(kv.Value, kv.Key);
 			}
 		}
 
