@@ -9,6 +9,8 @@ namespace ReClassNET.Util
 
 		public T DefaultValue { get; set; }
 
+		public int Count => list.Count;
+
 		public GrowingList()
 		{
 			Contract.Ensures(list != null);
@@ -24,6 +26,8 @@ namespace ReClassNET.Util
 
 		private void GrowToSize(int size)
 		{
+			list.Capacity = size;
+
 			for (var i = list.Count; i <= size; ++i)
 			{
 				list.Add(DefaultValue);
