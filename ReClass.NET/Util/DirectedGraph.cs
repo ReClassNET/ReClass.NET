@@ -47,7 +47,7 @@ namespace ReClassNET.Util
 		/// </summary>
 		/// <param name="vertex"></param>
 		/// <returns></returns>
-		public bool HasVertex(T vertex)
+		public bool ContainsVertex(T vertex)
 		{
 			return adjacencyList.ContainsKey(vertex);
 		}
@@ -60,7 +60,7 @@ namespace ReClassNET.Util
 		/// <returns>True if a new edge was added, false otherwise.</returns>
 		public bool AddEdge(T from, T to)
 		{
-			if (!HasVertex(to) || !adjacencyList.TryGetValue(from, out var edges))
+			if (!ContainsVertex(to) || !adjacencyList.TryGetValue(from, out var edges))
 			{
 				throw new ArgumentException("Vertex does not exist in graph.");
 			}
@@ -74,9 +74,9 @@ namespace ReClassNET.Util
 		/// <param name="from"></param>
 		/// <param name="to"></param>
 		/// <returns></returns>
-		public bool HasEdge(T from, T to)
+		public bool ContainsEdge(T from, T to)
 		{
-			if (!HasVertex(to) || !adjacencyList.TryGetValue(from, out var edges))
+			if (!ContainsVertex(to) || !adjacencyList.TryGetValue(from, out var edges))
 			{
 				throw new ArgumentException("Vertex does not exist in graph.");
 			}

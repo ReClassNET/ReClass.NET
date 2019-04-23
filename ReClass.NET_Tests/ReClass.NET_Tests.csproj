@@ -67,6 +67,8 @@
     <Compile Include="AddressParser\TokenizerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\CircularBufferTest.cs" />
+    <Compile Include="Util\CommandLineArgsTest.cs" />
+    <Compile Include="Util\DirectedGraphTest.cs" />
     <Compile Include="Util\GrowingListTest.cs" />
   </ItemGroup>
   <ItemGroup>

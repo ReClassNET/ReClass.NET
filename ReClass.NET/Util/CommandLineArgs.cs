@@ -60,11 +60,6 @@ namespace ReClassNET.Util
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(strKey))
-				{
-					return FileName;
-				}
-
 				if (parms.TryGetValue(strKey.ToLower(), out var strValue))
 				{
 					return strValue;
