@@ -16,11 +16,6 @@ namespace ReClassNET.Util.Rtf
 
 				this.builder = builder;
 
-				if (builder.isLocked)
-				{
-					return;
-				}
-
 				var buffer = builder.buffer;
 
 				int oldLength = buffer.Length;
@@ -67,11 +62,6 @@ namespace ReClassNET.Util.Rtf
 
 			public void Dispose()
 			{
-				if (builder.isLocked)
-				{
-					return;
-				}
-
 				var buffer = builder.buffer;
 
 				var oldLength = buffer.Length;

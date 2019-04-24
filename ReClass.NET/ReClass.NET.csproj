@@ -511,7 +511,6 @@
     <Compile Include="Util\NumberFormat.cs" />
     <Compile Include="Util\PathUtil.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.cs" />
-    <Compile Include="Util\Rtf\RtfBuilder.RtfFormatLock.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.RtfFormatWrapper.cs" />
     <Compile Include="Util\Rtf\RtfFont.cs" />
     <Compile Include="Util\SettingsSerializer.cs" />
