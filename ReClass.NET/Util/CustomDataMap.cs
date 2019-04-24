@@ -47,36 +47,30 @@ namespace ReClassNET.Util
 		}
 
 		/// <summary>
-		/// Sets a configuration item.
+		/// Removes an item.
 		/// </summary>
 		/// <param name="key">The key of the item.</param>
-		/// <param name="value">
-		/// The value of the item.
-		/// If the value is null the item gets removed.
-		/// </param>
-		public void SetString(string key, string value)
+		public void RemoveValue(string key)
 		{
-			if (key == null)
-			{
-				throw new ArgumentNullException(nameof(key));
-			}
-			if (key.Length == 0)
-			{
-				throw new ArgumentException();
-			}
+			ValidateKey(key);
 
-			if (value == null)
-			{
-				data.Remove(key);
-			}
-			else
-			{
-				data[key] = value;
-			}
+			data.Remove(key);
 		}
 
 		/// <summary>
-		/// Sets a configuration item.
+		/// Sets the string value of an item.
+		/// </summary>
+		/// <param name="key">The key of the item.</param>
+		/// <param name="value">The value of the item.</param>
+		public void SetString(string key, string value)
+		{
+			ValidateKey(key);
+
+			data[key] = value;
+		}
+
+		/// <summary>
+		/// Sets the boolean value of an item.
 		/// </summary>
 		/// <param name="key">The key of the item.</param>
 		/// <param name="value">The value of the item.</param>
@@ -86,7 +80,7 @@ namespace ReClassNET.Util
 		}
 
 		/// <summary>
-		/// Sets a configuration item.
+		/// Sets the long value of an item.
 		/// </summary>
 		/// <param name="key">The key of the item.</param>
 		/// <param name="value">The value of the item.</param>
@@ -96,7 +90,7 @@ namespace ReClassNET.Util
 		}
 
 		/// <summary>
-		/// Sets a configuration item.
+		/// Sets the ulong value of an item.
 		/// </summary>
 		/// <param name="key">The key of the item.</param>
 		/// <param name="value">The value of the item.</param>
@@ -105,13 +99,18 @@ namespace ReClassNET.Util
 			SetString(key, value.ToString(NumberFormatInfo.InvariantInfo));
 		}
 
+		/// <summary>
+		/// Sets the XElement value of an item.
+		/// </summary>
+		/// <param name="key">The key of the item.</param>
+		/// <param name="value">The value of the item.</param>
 		public void SetXElement(string key, XElement value)
 		{
-			SetString(key, value.ToString());
+			SetString(key, value?.ToString());
 		}
 
 		/// <summary>
-		/// Gets the value of the config item.
+		/// Gets the string value of the item.
 		/// </summary>
 		/// <param name="key">The key of the item.</param>
 		/// <returns>The value of the config item or null if the key does not exists.</returns>
@@ -121,21 +120,14 @@ namespace ReClassNET.Util
 		}
 
 		/// <summary>
-		/// Gets the value of the config item.
+		/// Gets the string value of the item.
 		/// </summary>
 		/// <param name="key">The key of the item.</param>
 		/// <param name="def">The default value if the key does not exists.</param>
 		/// <returns>The value of the config item or <paramref name="def"/> if the key does not exists.</returns>
 		public string GetString(string key, string def)
 		{
-			if (key == null)
-			{
-				throw new ArgumentNullException(nameof(key));
-			}
-			if (key.Length == 0)
-			{
-				throw new ArgumentException();
-			}
+			ValidateKey(key);
 
 			if (data.TryGetValue(key, out var value))
 			{
@@ -146,7 +138,7 @@ namespace ReClassNET.Util
 		}
 
 		/// <summary>
-		/// Gets the value of the config item.
+		/// Gets the boolean value of the item.
 		/// </summary>
 		/// <param name="key">The key of the item.</param>
 		/// <param name="def">The default value if the key does not exists.</param>
@@ -163,7 +155,7 @@ namespace ReClassNET.Util
 		}
 
 		/// <summary>
-		/// Gets the value of the config item.
+		/// Gets the long value of the item.
 		/// </summary>
 		/// <param name="key">The key of the item.</param>
 		/// <param name="def">The default value if the key does not exists.</param>
@@ -185,7 +177,7 @@ namespace ReClassNET.Util
 		}
 
 		/// <summary>
-		/// Gets the value of the config item.
+		/// Gets the ulong value of the item.
 		/// </summary>
 		/// <param name="key">The key of the item.</param>
 		/// <param name="def">The default value if the key does not exists.</param>
@@ -207,7 +199,7 @@ namespace ReClassNET.Util
 		}
 
 		/// <summary>
-		/// Gets the value of the config item.
+		/// Gets the XElement value of the item.
 		/// </summary>
 		/// <param name="key">The key of the item.</param>
 		/// <param name="def">The default value if the key does not exists.</param>
@@ -221,6 +213,18 @@ namespace ReClassNET.Util
 			}
 
 			return XElement.Parse(str);
+		}
+
+		/// <summary>
+		/// Validates the given key.
+		/// </summary>
+		/// <param name="key">The key of an item.</param>
+		private static void ValidateKey(string key)
+		{
+			if (key == null)
+			{
+				throw new ArgumentNullException(nameof(key));
+			}
 		}
 	}
 }

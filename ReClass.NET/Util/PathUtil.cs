@@ -89,7 +89,7 @@ namespace ReClassNET.Util
 
 			if (url.StartsWith("file:///", StringComparison.OrdinalIgnoreCase))
 			{
-				url = url.Substring(8, url.Length - 8);
+				url = url.Substring(8);
 			}
 
 			url = url.Replace('/', Path.DirectorySeparatorChar);
