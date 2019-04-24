@@ -74,6 +74,7 @@
     <Compile Include="Util\DirectedGraphTest.cs" />
     <Compile Include="Util\GrowingListTest.cs" />
     <Compile Include="Util\HexadecimalFormatterTest.cs" />
+    <Compile Include="Util\IntPtrComparerTest.cs" />
     <Compile Include="Util\NumberFormatTest.cs" />
     <Compile Include="Util\PathUtilTest.cs" />
     <Compile Include="Util\XElementSerializerTest.cs" />

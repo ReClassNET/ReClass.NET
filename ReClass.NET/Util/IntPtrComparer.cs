@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ReClassNET.Extensions;
 
 namespace ReClassNET.Util
 {
@@ -9,7 +10,7 @@ namespace ReClassNET.Util
 
 		public int Compare(IntPtr x, IntPtr y)
 		{
-			return x.ToInt64().CompareTo(y.ToInt64());
+			return x.CompareTo(y);
 		}
 	}
 }
