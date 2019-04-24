@@ -133,12 +133,17 @@ namespace ReClassNET.Nodes
 				nv.Level++;
 				foreach (var node in Nodes)
 				{
+					Size AggregateNodeSizes(Size baseSize, Size newSize)
+					{
+						return new Size(Math.Max(baseSize.Width, newSize.Width), baseSize.Height + newSize.Height);
+					}
+
 					// Draw the node if it is in the visible area.
 					if (view.ClientArea.Contains(tx, y))
 					{
 						var innerSize = node.Draw(nv, tx, y);
 
-						size = Utils.AggregateNodeSizes(size, innerSize.Extend(childOffset, 0));
+						size = AggregateNodeSizes(size, innerSize.Extend(childOffset, 0));
 
 						y += innerSize.Height;
 					}
@@ -153,14 +158,14 @@ namespace ReClassNET.Nodes
 							// then draw the node...
 							var innerSize = node.Draw(nv, tx, y);
 
-							size = Utils.AggregateNodeSizes(size, innerSize.Extend(childOffset, 0));
+							size = AggregateNodeSizes(size, innerSize.Extend(childOffset, 0));
 
 							y += innerSize.Height;
 						}
 						else
 						{
 							// or skip drawing and just use the calculated height.
-							size = Utils.AggregateNodeSizes(size, new Size(0, calculatedHeight));
+							size = AggregateNodeSizes(size, new Size(0, calculatedHeight));
 
 							y += calculatedHeight;
 						}

@@ -764,9 +764,9 @@ namespace ReClassNET.Forms
 					return digits;
 				}
 
-				var nf1 = Utils.GuessNumberFormat(dualValueBox.Value1);
+				var nf1 = NumberFormat.GuessNumberFormat(dualValueBox.Value1);
 				if (!double.TryParse(dualValueBox.Value1, NumberStyles.Float, nf1, out var value1)) throw new InvalidInputException(dualValueBox.Value1);
-				var nf2 = Utils.GuessNumberFormat(dualValueBox.Value2);
+				var nf2 = NumberFormat.GuessNumberFormat(dualValueBox.Value2);
 				if (!double.TryParse(dualValueBox.Value2, NumberStyles.Float, nf2, out var value2) && checkBothInputFields) throw new InvalidInputException(dualValueBox.Value2);
 
 				var significantDigits = Math.Max(

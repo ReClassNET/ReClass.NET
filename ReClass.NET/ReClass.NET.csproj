@@ -505,7 +505,9 @@
     <Compile Include="UI\GlobalWindowManager.cs" />
     <Compile Include="UI\ViewInfo.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
+    <Compile Include="Util\HexadecimalFormatter.cs" />
     <Compile Include="Util\IntPtrComparer.cs" />
+    <Compile Include="Util\NumberFormat.cs" />
     <Compile Include="Util\PathUtil.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.cs" />
     <Compile Include="Util\Rtf\RtfBuilder.RtfFormatLock.cs" />

@@ -253,7 +253,7 @@ namespace ReClassNET.MemoryScanner
 			}
 			else if (ValueType == ScanValueType.Float || ValueType == ScanValueType.Double)
 			{
-				var nf = Utils.GuessNumberFormat(input);
+				var nf = NumberFormat.GuessNumberFormat(input);
 				double.TryParse(input, NumberStyles.Float, nf, out var value);
 
 				switch (ValueType)
@@ -281,7 +281,7 @@ namespace ReClassNET.MemoryScanner
 		private static string FormatValue(long value, bool showAsHex) => showAsHex ? value.ToString("X") : value.ToString();
 		private static string FormatValue(float value) => value.ToString("0.0000");
 		private static string FormatValue(double value) => value.ToString("0.0000");
-		private static string FormatValue(byte[] value) => Utils.ByteArrayToHexString(value);
+		private static string FormatValue(byte[] value) => HexadecimalFormatter.ToString(value);
 		private static string FormatValue(string value) => value;
 	}
 }
