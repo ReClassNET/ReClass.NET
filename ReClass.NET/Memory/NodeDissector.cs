@@ -45,13 +45,13 @@ namespace ReClassNET.Memory
 			var data32 = memory.ReadObject<UInt32FloatData>(offset);
 
 			var raw = memory.ReadBytes(offset, node.MemorySize);
-			if (raw.InterpretAsUtf8().IsLikelyPrintableData() >= 0.75f)
+			if (raw.InterpretAsUtf8().IsLikelyPrintableData())
 			{
 				guessedNode = new Utf8TextNode();
 
 				return true;
 			}
-			if (raw.InterpretAsUtf16().IsLikelyPrintableData() >= 0.75f)
+			if (raw.InterpretAsUtf16().IsLikelyPrintableData())
 			{
 				guessedNode = new Utf16TextNode();
 
@@ -147,13 +147,13 @@ namespace ReClassNET.Memory
 
 				// Check if it is a string.
 				var data = process.ReadRemoteMemory(address, IntPtr.Size * 2);
-				if (data.Take(IntPtr.Size).InterpretAsUtf8().IsLikelyPrintableData() >= 07.5f)
+				if (data.Take(IntPtr.Size).InterpretAsUtf8().IsLikelyPrintableData())
 				{
 					node = new Utf8TextPtrNode();
 
 					return true;
 				}
-				if (data.InterpretAsUtf16().IsLikelyPrintableData() >= 0.75f)
+				if (data.InterpretAsUtf16().IsLikelyPrintableData())
 				{
 					node = new Utf16TextPtrNode();
 

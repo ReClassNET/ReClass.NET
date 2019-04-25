@@ -40,17 +40,23 @@ namespace ReClassNET.Extensions
 		{
 			Contract.Requires(source != null);
 
-			return IsLikelyPrintableData(source) >= 1.0f;
+			return CalculatePrintableDataThreshold(source) >= 1.0f;
 		}
 
 		[DebuggerStepThrough]
-		public static float IsLikelyPrintableData(this IEnumerable<char> source)
+		public static bool IsLikelyPrintableData(this IEnumerable<char> source)
 		{
 			Contract.Requires(source != null);
 
-			bool doCountValid = true;
-			int countValid = 0;
-			int countAll = 0;
+			return CalculatePrintableDataThreshold(source) >= 0.75f;
+		}
+
+		[DebuggerStepThrough]
+		public static float CalculatePrintableDataThreshold(this IEnumerable<char> source)
+		{
+			var doCountValid = true;
+			var countValid = 0;
+			var countAll = 0;
 
 			foreach (var c in source)
 			{
