@@ -17,18 +17,19 @@ namespace ReClassNET.Memory
 
 			foreach (var node in nodes)
 			{
-				var type = GuessExplicitNode(node, memory);
-				if (type != null)
+				if (GuessNode(node, memory, out var guessedNode))
 				{
-					node.GetParentContainer()?.ReplaceChildNode(node, type);
+					node.GetParentContainer()?.ReplaceChildNode(node, guessedNode);
 				}
 			}
 		}
 
-		public static BaseNode GuessExplicitNode(BaseHexNode node, MemoryBuffer memory)
+		public static bool GuessNode(BaseHexNode node, MemoryBuffer memory, out BaseNode guessedNode)
 		{
 			Contract.Requires(node != null);
 			Contract.Requires(memory != null);
+
+			guessedNode = null;
 
 			var offset = node.Offset;
 			var is4ByteAligned = offset % 4 == 0;
@@ -37,7 +38,7 @@ namespace ReClassNET.Memory
 			// The node is not aligned, skip it.
 			if (!is4ByteAligned)
 			{
-				return null;
+				return false;
 			}
 
 			var data64 = memory.ReadObject<UInt64FloatDoubleData>(offset);
@@ -46,46 +47,48 @@ namespace ReClassNET.Memory
 			var raw = memory.ReadBytes(offset, node.MemorySize);
 			if (raw.InterpretAsUtf8().IsLikelyPrintableData() >= 0.75f)
 			{
-				return new Utf8TextNode();
+				guessedNode = new Utf8TextNode();
+
+				return true;
 			}
 			if (raw.InterpretAsUtf16().IsLikelyPrintableData() >= 0.75f)
 			{
-				return new Utf16TextNode();
+				guessedNode = new Utf16TextNode();
+
+				return true;
 			}
 
+#if RECLASSNET64
 			if (is8ByteAligned)
 			{
-#if RECLASSNET64
-				var pointerType = GuessPointerNode(data64.IntPtr, memory);
-				if (pointerType != null)
+				if (GuessPointerNode(data64.IntPtr, memory.Process, out guessedNode))
 				{
-					return pointerType;
+					return true;
 				}
-#endif
 			}
-
+#else
+			if (GuessPointerNode(data32.IntPtr, memory.Process, out guessedNode))
 			{
-#if RECLASSNET32
-				var pointerNode = GuessPointerNode(data32.IntPtr, memory);
-				if (pointerNode != null)
-				{
-					return pointerNode;
-				}
+				return true;
+			}
 #endif
 
-				// 0 could be anything.
-				if (data32.IntValue != 0)
+			// 0 could be anything.
+			if (data32.IntValue != 0)
+			{
+				// If the data represents a reasonable range, it could be a float.
+				if (-999999.0f <= data32.FloatValue && data32.FloatValue <= 999999.0f && !data32.FloatValue.IsNearlyEqual(0.0f, 0.001f))
 				{
-					// If the data represents a reasonable range, it could be a float.
-					if (-999999.0f <= data32.FloatValue && data32.FloatValue <= 999999.0f && !data32.FloatValue.IsNearlyEqual(0.0f, 0.001f))
-					{
-						return new FloatNode();
-					}
+					guessedNode = new FloatNode();
 
-					if (-999999 <= data32.IntValue && data32.IntValue <= 999999)
-					{
-						return new Int32Node();
-					}
+					return true;
+				}
+
+				if (-999999 <= data32.IntValue && data32.IntValue <= 999999)
+				{
+					guessedNode = new Int32Node();
+
+					return true;
 				}
 			}
 
@@ -96,60 +99,74 @@ namespace ReClassNET.Memory
 					// If the data represents a reasonable range, it could be a double.
 					if (-999999.0 <= data64.DoubleValue && data64.DoubleValue <= 999999.0 && !data64.DoubleValue.IsNearlyEqual(0.0, 0.001))
 					{
-						return new DoubleNode();
+						guessedNode = new DoubleNode();
+
+						return true;
 					}
 				}
 			}
 
-			return null;
+			return false;
 		}
 
-		private static BaseNode GuessPointerNode(IntPtr address, MemoryBuffer memory)
+		private static bool GuessPointerNode(IntPtr address, IProcessReader process, out BaseNode node)
 		{
-			Contract.Requires(memory != null);
+			Contract.Requires(process != null);
+
+			node = null;
 
 			if (address.IsNull())
 			{
-				return null;
+				return false;
 			}
 
-			var section = memory.Process.GetSectionToPointer(address);
+			var section = process.GetSectionToPointer(address);
 			if (section == null)
 			{
-				return null;
+				return false;
 			}
 
 			if (section.Category == SectionCategory.CODE) // If the section contains code, it should be a function pointer.
 			{
-				return new FunctionPtrNode();
+				node = new FunctionPtrNode();
+
+				return true;
 			}
 			if (section.Category == SectionCategory.DATA || section.Category == SectionCategory.HEAP) // If the section contains data, it is at least a pointer to a class or something.
 			{
 				// Check if it is a vtable. Check if the first 3 values are pointers to a code section.
-				var possibleVmt = memory.Process.ReadRemoteObject<ThreePointersData>(address);
-				if (memory.Process.GetSectionToPointer(possibleVmt.Pointer1)?.Category == SectionCategory.CODE
-					&& memory.Process.GetSectionToPointer(possibleVmt.Pointer2)?.Category == SectionCategory.CODE
-					&& memory.Process.GetSectionToPointer(possibleVmt.Pointer3)?.Category == SectionCategory.CODE)
+				var possibleVmt = process.ReadRemoteObject<ThreePointersData>(address);
+				if (process.GetSectionToPointer(possibleVmt.Pointer1)?.Category == SectionCategory.CODE
+					&& process.GetSectionToPointer(possibleVmt.Pointer2)?.Category == SectionCategory.CODE
+					&& process.GetSectionToPointer(possibleVmt.Pointer3)?.Category == SectionCategory.CODE)
 				{
-					return new VirtualMethodTableNode();
+					node = new VirtualMethodTableNode();
+
+					return true;
 				}
 
 				// Check if it is a string.
-				var data = memory.Process.ReadRemoteMemory(address, IntPtr.Size * 2);
+				var data = process.ReadRemoteMemory(address, IntPtr.Size * 2);
 				if (data.Take(IntPtr.Size).InterpretAsUtf8().IsLikelyPrintableData() >= 07.5f)
 				{
-					return new Utf8TextPtrNode();
+					node = new Utf8TextPtrNode();
+
+					return true;
 				}
 				if (data.InterpretAsUtf16().IsLikelyPrintableData() >= 0.75f)
 				{
-					return new Utf16TextPtrNode();
+					node = new Utf16TextPtrNode();
+
+					return true;
 				}
 
 				// Now it could be a pointer to something else but we can't tell. :(
-				return new PointerNode();
+				node = new PointerNode();
+
+				return true;
 			}
 
-			return null;
+			return false;
 		}
 	}
 }
