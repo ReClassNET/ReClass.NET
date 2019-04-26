@@ -289,7 +289,7 @@ namespace ReClassNET.Memory
 			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 
-			var data = ReadRemoteMemory(address, length * encoding.GetSimpleByteCountPerChar());
+			var data = ReadRemoteMemory(address, length * encoding.GuessByteCountPerChar());
 
 			try
 			{
@@ -320,10 +320,10 @@ namespace ReClassNET.Memory
 			Contract.Requires(length >= 0);
 			Contract.Ensures(Contract.Result<string>() != null);
 
-			var data = ReadRemoteMemory(address, length * encoding.GetSimpleByteCountPerChar());
+			var data = ReadRemoteMemory(address, length * encoding.GuessByteCountPerChar());
 
 			// TODO We should cache the pattern per encoding.
-			var index = PatternScanner.FindPattern(BytePattern.From(new byte[encoding.GetSimpleByteCountPerChar()]), data);
+			var index = PatternScanner.FindPattern(BytePattern.From(new byte[encoding.GuessByteCountPerChar()]), data);
 			if (index == -1)
 			{
 				index = data.Length;

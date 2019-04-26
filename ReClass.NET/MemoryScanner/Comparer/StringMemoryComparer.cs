@@ -19,7 +19,7 @@ namespace ReClassNET.MemoryScanner.Comparer
 			Value = value;
 			Encoding = encoding;
 			CaseSensitive = caseSensitive;
-			ValueSize = Value.Length * Encoding.GetSimpleByteCountPerChar();
+			ValueSize = Value.Length * Encoding.GuessByteCountPerChar();
 		}
 
 		public bool Compare(byte[] data, int index, out ScanResult result)

@@ -177,7 +177,7 @@ namespace ReClassNET.MemoryScanner
 					buffer = new byte[ValueLength];
 					break;
 				case ScanValueType.String:
-					buffer = new byte[ValueLength * Encoding.GetSimpleByteCountPerChar()];
+					buffer = new byte[ValueLength * Encoding.GuessByteCountPerChar()];
 					break;
 				default:
 					throw new InvalidOperationException();

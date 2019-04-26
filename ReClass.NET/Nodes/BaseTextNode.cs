@@ -17,7 +17,7 @@ namespace ReClassNET.Nodes
 		public abstract Encoding Encoding { get; }
 
 		/// <summary>Size of one character in bytes.</summary>
-		private int CharacterSize => Encoding.GetSimpleByteCountPerChar();
+		private int CharacterSize => Encoding.GuessByteCountPerChar();
 
 		public override void CopyFromNode(BaseNode node)
 		{
