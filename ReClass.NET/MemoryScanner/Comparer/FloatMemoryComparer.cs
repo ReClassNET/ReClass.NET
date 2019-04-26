@@ -45,7 +45,7 @@ namespace ReClassNET.MemoryScanner.Comparer
 			switch (RoundType)
 			{
 				case ScanRoundMode.Strict:
-					return Value1.IsNearlyEqual((float)Math.Round(value, significantDigits, MidpointRounding.AwayFromZero));
+					return Value1.IsNearlyEqual((float)Math.Round(value, significantDigits, MidpointRounding.AwayFromZero), 0.0001f);
 				case ScanRoundMode.Normal:
 					return minValue < value && value < maxValue;
 				case ScanRoundMode.Truncate:

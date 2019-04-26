@@ -8,13 +8,6 @@ namespace ReClassNET.Extensions
 	{
 		[Pure]
 		[DebuggerStepThrough]
-		public static bool IsNearlyEqual(this float val, float other)
-		{
-			return IsNearlyEqual(val, other, float.Epsilon);
-		}
-
-		[Pure]
-		[DebuggerStepThrough]
 		public static bool IsNearlyEqual(this float val, float other, float epsilon)
 		{
 			if (val == other)
@@ -22,20 +15,7 @@ namespace ReClassNET.Extensions
 				return true;
 			}
 
-			var diff = Math.Abs(val - other);
-			if (val == 0.0f || other == 0.0f || diff < float.Epsilon)
-			{
-				return diff < epsilon;
-			}
-
-			return diff / (Math.Abs(val) + Math.Abs(other)) < epsilon;
-		}
-
-		[Pure]
-		[DebuggerStepThrough]
-		public static bool IsNearlyEqual(this double val, double other)
-		{
-			return IsNearlyEqual(val, other, double.Epsilon);
+			return Math.Abs(val - other) <= epsilon;
 		}
 
 		[Pure]
@@ -47,13 +27,7 @@ namespace ReClassNET.Extensions
 				return true;
 			}
 
-			var diff = Math.Abs(val - other);
-			if (val == 0.0 || other == 0.0 || diff < double.Epsilon)
-			{
-				return diff < epsilon;
-			}
-
-			return diff / (Math.Abs(val) + Math.Abs(other)) < epsilon;
+			return Math.Abs(val - other) <= epsilon;
 		}
 	}
 }

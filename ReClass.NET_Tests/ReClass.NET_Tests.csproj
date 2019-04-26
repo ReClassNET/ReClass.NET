@@ -67,7 +67,10 @@
     <Compile Include="AddressParser\InterpreterTest.cs" />
     <Compile Include="AddressParser\ParserTest.cs" />
     <Compile Include="AddressParser\TokenizerTest.cs" />
+    <Compile Include="Extensions\ColorExtensionTest.cs" />
+    <Compile Include="Extensions\DictionaryExtensionTest.cs" />
     <Compile Include="Extensions\EncodingExtensionTest.cs" />
+    <Compile Include="Extensions\FloatingPointExtensionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\CircularBufferTest.cs" />
     <Compile Include="Util\CommandLineArgsTest.cs" />
