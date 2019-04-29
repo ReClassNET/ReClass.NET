@@ -93,7 +93,7 @@ namespace ReClassNET.UI
 
 		public void SetAvailableValues(TEnum item1, params TEnum[] items)
 		{
-			SetAvailableValues(item1.Yield().Concat(items));
+			SetAvailableValues(items.Prepend(item1));
 		}
 
 		public void SetAvailableValues(IEnumerable<TEnum> values)
@@ -105,7 +105,7 @@ namespace ReClassNET.UI
 
 		public void SetAvailableValuesExclude(TEnum item1, params TEnum[] items)
 		{
-			SetAvailableValuesExclude(item1.Yield().Concat(items));
+			SetAvailableValuesExclude(items.Prepend(item1));
 		}
 
 		public void SetAvailableValuesExclude(IEnumerable<TEnum> values)

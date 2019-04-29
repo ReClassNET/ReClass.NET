@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
-using ReClassNET.Extensions;
-using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {
@@ -21,13 +19,6 @@ namespace ReClassNET.UI
 			return CreateExact(Enum.GetValues(typeof(TEnum)).Cast<TEnum>());
 		}
 
-		public static List<EnumDescriptionDisplay<TEnum>> CreateExact(TEnum item1, params TEnum[] include)
-		{
-			Contract.Ensures(Contract.Result<List<EnumDescriptionDisplay<TEnum>>>() != null);
-
-			return CreateExact(item1.Yield().Concat(include));
-		}
-
 		public static List<EnumDescriptionDisplay<TEnum>> CreateExact(IEnumerable<TEnum> include)
 		{
 			Contract.Requires(include != null);
@@ -41,13 +32,6 @@ namespace ReClassNET.UI
 				})
 				.OrderBy(item => item.Value)
 				.ToList();
-		}
-
-		public static List<EnumDescriptionDisplay<TEnum>> CreateExclude(TEnum item1, params TEnum[] exclude)
-		{
-			Contract.Ensures(Contract.Result<List<EnumDescriptionDisplay<TEnum>>>() != null);
-
-			return CreateExclude(item1.Yield().Concat(exclude));
 		}
 
 		public static List<EnumDescriptionDisplay<TEnum>> CreateExclude(IEnumerable<TEnum> exclude)

@@ -114,14 +114,6 @@ namespace ReClassNET.Extensions
 		}
 
 		[DebuggerStepThrough]
-		public static IEnumerable<TSource> Yield<TSource>(this TSource item)
-		{
-			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
-
-			yield return item;
-		}
-
-		[DebuggerStepThrough]
 		public static IEnumerable<TSource> Traverse<TSource>(this IEnumerable<TSource> source, Func<TSource, IEnumerable<TSource>> childSelector)
 		{
 			Contract.Requires(source != null);

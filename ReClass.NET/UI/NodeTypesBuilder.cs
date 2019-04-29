@@ -119,7 +119,7 @@ namespace ReClassNET.UI
 					Text = "None"
 				};
 
-				items = noneItem.Yield().Append(new ToolStripSeparator()).Concat(items);
+				items = items.Prepend(new ToolStripSeparator()).Prepend(noneItem);
 			}
 
 			return items;

@@ -800,7 +800,7 @@ namespace ReClassNET.Forms
 					Name = "None"
 				};
 
-				using (var csf = new ClassSelectionForm(noneClass.Yield().Concat(classes)))
+				using (var csf = new ClassSelectionForm(classes.Prepend(noneClass)))
 				{
 					if (csf.ShowDialog() == DialogResult.OK)
 					{
