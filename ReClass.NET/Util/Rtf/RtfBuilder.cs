@@ -218,11 +218,17 @@ namespace ReClassNET.Util.Rtf
 			sb.Append(@"{\rtf1\ansi\ansicpg1252\deff0\deflang3081");
 
 			sb.Append(@"{\fonttbl");
-			sb.Append(usedFonts.Select((f, i) => string.Format(f, i)).Join());
+			for (var i = 0; i < usedFonts.Count; ++i)
+			{
+				sb.AppendFormat(usedFonts[i], i);
+			}
 			sb.AppendLine("}");
 
 			sb.Append(@"{\colortbl ;");
-			sb.Append(usedColors.Select(c => $@"\red{c.R}\green{c.G}\blue{c.B};").Join());
+			foreach (var color in usedColors)
+			{
+				sb.Append($@"\red{color.R}\green{color.G}\blue{color.B};");
+			}
 			sb.AppendLine("}");
 
 			sb.Append(@"\viewkind4\uc1\pard\plain\f0");

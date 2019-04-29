@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -8,16 +8,6 @@ namespace ReClassNET.Extensions
 {
 	public static class LinqExtension
 	{
-		public static string Join(this IEnumerable<string> source)
-		{
-			return Join(source, string.Empty);
-		}
-
-		public static string Join(this IEnumerable<string> source, string separator)
-		{
-			return string.Join(separator, source);
-		}
-
 		public static TResult Max<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, IComparer<TResult> comparer)
 		{
 			comparer = comparer ?? Comparer<TResult>.Default;
