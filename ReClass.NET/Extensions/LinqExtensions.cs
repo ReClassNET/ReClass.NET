@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -201,45 +201,19 @@ namespace ReClassNET.Extensions
 		}
 
 		[DebuggerStepThrough]
-		public static bool SequenceEqualsEx<T>(this IEnumerable<T> first, IEnumerable<T> second)
+		public static bool IsEquivalentTo<T>(this IEnumerable<T> source, IEnumerable<T> other)
 		{
-			Contract.Requires(first != null);
-			Contract.Requires(second != null);
+			Contract.Requires(source != null);
+			Contract.Requires(other != null);
 
-			return SequenceEqualsEx(first, second, EqualityComparer<T>.Default);
-		}
+			var expected = new List<T>(source);
 
-		[DebuggerStepThrough]
-		public static bool SequenceEqualsEx<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, IEqualityComparer<TSource> comparer)
-		{
-			Contract.Requires(first != null);
-			Contract.Requires(second != null);
-			Contract.Requires(comparer != null);
-
-			var counter = new Dictionary<TSource, int>(comparer);
-			foreach (var element in first)
+			if (other.Any(item => !expected.Remove(item)))
 			{
-				if (counter.ContainsKey(element))
-				{
-					counter[element]++;
-				}
-				else
-				{
-					counter.Add(element, 1);
-				}
+				return false;
 			}
-			foreach (var element in second)
-			{
-				if (counter.ContainsKey(element))
-				{
-					counter[element]--;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			return counter.Values.All(c => c == 0);
+
+			return expected.Count == 0;
 		}
 
 		/// <summary>

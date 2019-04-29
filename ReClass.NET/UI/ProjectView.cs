@@ -72,7 +72,7 @@ namespace ReClassNET.UI
 					.Distinct()
 					.ToList();
 
-				if (distinctClasses.SequenceEqualsEx(Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode)))
+				if (distinctClasses.IsEquivalentTo(Nodes.Cast<ClassTreeNode>().Select(t => t.ClassNode)))
 				{
 					return;
 				}
