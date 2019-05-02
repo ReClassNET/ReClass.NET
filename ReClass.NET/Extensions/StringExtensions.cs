@@ -13,7 +13,7 @@ namespace ReClassNET.Extensions
 		[DebuggerStepThrough]
 		public static bool IsPrintable(this char c)
 		{
-			return ' ' <= c && c <= '~';
+			return !char.IsControl(c) || char.IsWhiteSpace(c);
 		}
 
 		[DebuggerStepThrough]
@@ -73,6 +73,11 @@ namespace ReClassNET.Extensions
 						doCountValid = false;
 					}
 				}
+			}
+
+			if (countAll == 0)
+			{
+				return 0.0f;
 			}
 
 			return countValid / (float)countAll;
