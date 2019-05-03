@@ -188,5 +188,38 @@ namespace ReClass.NET_Tests.Extensions
 		{
 			Check.ThatCode(() => Enumerable.Empty<int>().PredicateOrFirst(i => true)).Throws<InvalidOperationException>();
 		}
+
+		public class Traversable
+		{
+			public IList<Traversable> Children { get; } = new List<Traversable>();
+		}
+
+		[Fact]
+		public void TestTraverse()
+		{
+			var traversable = new Traversable();
+			var child1 = new Traversable();
+			child1.Children.Add(new Traversable());
+			var child2 = new Traversable();
+			child2.Children.Add(new Traversable());
+			child2.Children.Add(new Traversable());
+			var child3 = new Traversable();
+			child3.Children.Add(new Traversable());
+			child3.Children.Add(new Traversable());
+			child3.Children.Add(new Traversable());
+			traversable.Children.Add(child1);
+			traversable.Children.Add(child2);
+			traversable.Children.Add(child3);
+
+			var expected = new[] { traversable }
+				.Append(child1)
+				.Append(child2)
+				.Append(child3)
+				.Concat(child1.Children)
+				.Concat(child2.Children)
+				.Concat(child3.Children);
+
+			Check.That(new[] { traversable }.Traverse(t => t.Children)).ContainsExactly(expected);
+		}
 	}
 }

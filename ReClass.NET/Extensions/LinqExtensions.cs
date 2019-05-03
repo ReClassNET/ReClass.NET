@@ -72,16 +72,16 @@ namespace ReClassNET.Extensions
 			Contract.Requires(childSelector != null);
 			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
 
-			var stack = new Stack<TSource>(source);
-			while (stack.Any())
+			var queue = new Queue<TSource>(source);
+			while (queue.Count > 0)
 			{
-				var next = stack.Pop();
+				var next = queue.Dequeue();
 
 				yield return next;
 
 				foreach (var child in childSelector(next))
 				{
-					stack.Push(child);
+					queue.Enqueue(child);
 				}
 			}
 		}
