@@ -75,10 +75,10 @@ namespace ReClass.NET_Tests.Extensions
 
 		public static TheoryData<IEnumerable<int>> GetTestForEachData => new TheoryData<IEnumerable<int>>
 		{
-			{ Enumerable.Empty<int>() },
-			{ Enumerable.Repeat(0, 1) },
-			{ Enumerable.Repeat(0, 2) },
-			{ Enumerable.Repeat(0, 10) }
+			Enumerable.Empty<int>(),
+			Enumerable.Repeat(0, 1),
+			Enumerable.Repeat(0, 2),
+			Enumerable.Repeat(0, 10)
 		};
 
 		[Theory]
@@ -126,6 +126,75 @@ namespace ReClass.NET_Tests.Extensions
 		public void TestIsEquivalentTo(IEnumerable<int> sut, IEnumerable<int> other, bool expected)
 		{
 			Check.That(sut.IsEquivalentTo(other)).IsEqualTo(expected);
+		}
+
+		public static TheoryData<IEnumerable<int>, Func<int, bool>, IEnumerable<int>> GetTestTakeWhileInclusiveData => new TheoryData<IEnumerable<int>, Func<int, bool>, IEnumerable<int>>
+		{
+			{ Enumerable.Empty<int>(), i => false, Enumerable.Empty<int>() },
+			{ new [] { 1 }, i => false, new [] { 1 } },
+			{ new [] { 1 }, i => true, new [] { 1 } },
+			{ new [] { 1, 1 }, i => false, new [] { 1 } },
+			{ new [] { 1, 1 }, i => true, new [] { 1, 1 } },
+			{ new [] { 1, 2, 3, 4 }, i => i != 2, new [] { 1, 2 } },
+			{ new [] { 1, 2, 3, 4 }, i => i != 3, new [] { 1, 2, 3 } },
+			{ new [] { 4, 3, 2, 1 }, i => false, new [] { 4 } }
+		};
+
+		[Theory]
+		[MemberData(nameof(GetTestTakeWhileInclusiveData))]
+		public void TestTakeWhileInclusive(IEnumerable<int> sut, Func<int, bool> predicate, IEnumerable<int> expected)
+		{
+			Check.That(sut.TakeWhileInclusive(predicate)).IsEquivalentTo(expected);
+		}
+
+		public static TheoryData<IEnumerable<int>, Func<int, int, bool>, IEnumerable<IEnumerable<int>>> GetTestGroupWhileData => new TheoryData<IEnumerable<int>, Func<int, int, bool>, IEnumerable<IEnumerable<int>>>
+		{
+			{ Enumerable.Empty<int>(), (x, y) => false, Enumerable.Empty<IEnumerable<int>>() },
+			{ new [] { 1, 2, 3 }, (x, y) => x == y, new [] { new[] { 1 }, new[] { 2 }, new[] { 3 } } },
+			{ new [] { 1, 1, 2, 3, 3, 4 }, (x, y) => x == y, new [] { new[] { 1, 1 }, new[] { 2 }, new[] { 3, 3 }, new[] { 4 } } },
+			{ new [] { 1, 1, 2, 3, 3, 4 }, (x, y) => x != y, new [] { new[] { 1 }, new[] { 1, 2, 3 }, new[] { 3, 4 } } }
+		};
+
+		[Theory]
+		[MemberData(nameof(GetTestGroupWhileData))]
+		public void TestGroupWhile(IEnumerable<int> sut, Func<int, int, bool> predicate, IEnumerable<IEnumerable<int>> expected)
+		{
+			using (var expectedIt = expected.GetEnumerator())
+			{
+				using (var groupIt = sut.GroupWhile(predicate).GetEnumerator())
+				{
+					while (groupIt.MoveNext())
+					{
+						Check.That(expectedIt.MoveNext()).IsTrue();
+
+						Check.That(groupIt.Current).IsEquivalentTo(expectedIt.Current);
+					}
+				}
+
+				Check.That(expectedIt.MoveNext()).IsFalse();
+			}
+		}
+
+		public static TheoryData<IEnumerable<int>, Func<int, bool>, int> GetTestPredicateOrFirstData => new TheoryData<IEnumerable<int>, Func<int, bool>, int>
+		{
+			{ new [] { 1 }, i => false, 1 },
+			{ new [] { 1 }, i => true, 1 },
+			{ new [] { 1, 2, 3, 4 }, i => i == 2, 2 },
+			{ new [] { 1, 2, 3, 4 }, i => i == 4, 4 },
+			{ new [] { 1, 2, 3, 4 }, i => i == 5, 1 }
+		};
+
+		[Theory]
+		[MemberData(nameof(GetTestPredicateOrFirstData))]
+		public void TestPredicateOrFirst(IEnumerable<int> sut, Func<int, bool> predicate, int expected)
+		{
+			Check.That(sut.PredicateOrFirst(predicate)).IsEqualTo(expected);
+		}
+
+		[Fact]
+		public void TestPredicateOrFirstThrows()
+		{
+			Check.ThatCode(() => Enumerable.Empty<int>().PredicateOrFirst(i => true)).Throws<InvalidOperationException>();
 		}
 	}
 }
