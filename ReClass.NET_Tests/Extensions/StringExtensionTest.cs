@@ -59,7 +59,7 @@ namespace ReClass.NET_Tests.Extensions
 		public static TheoryData<IEnumerable<byte>, IEnumerable<char>> GetTestInterpretAsUtf8Data() => new TheoryData<IEnumerable<byte>, IEnumerable<char>>
 		{
 			{ new byte[0], string.Empty },
-			{ new [] { (byte)'t', (byte)'e', (byte)'s', (byte)'t' }, "test".ToArray() /* https://github.com/tpierrain/NFluent/issues/299 */ }
+			{ new [] { (byte)'t', (byte)'e', (byte)'s', (byte)'t' }, "test" }
 		};
 
 		[Theory]
@@ -72,7 +72,7 @@ namespace ReClass.NET_Tests.Extensions
 		public static TheoryData<IEnumerable<byte>, IEnumerable<char>> GetTestInterpretAsUtf16Data() => new TheoryData<IEnumerable<byte>, IEnumerable<char>>
 		{
 			{ new byte[0], string.Empty },
-			{ new [] { (byte)'t', (byte)0, (byte)'e', (byte)0, (byte)'s', (byte)0, (byte)'t', (byte)0 }, "test".ToArray() /* https://github.com/tpierrain/NFluent/issues/299 */ }
+			{ new [] { (byte)'t', (byte)0, (byte)'e', (byte)0, (byte)'s', (byte)0, (byte)'t', (byte)0 }, "test" }
 		};
 
 		[Theory]
