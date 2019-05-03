@@ -87,30 +87,7 @@ namespace ReClassNET.Extensions
 		}
 
 		[DebuggerStepThrough]
-		public static IEnumerable<TSource> SkipUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
-		{
-			Contract.Requires(source != null);
-			Contract.Requires(predicate != null);
-			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
-
-			using (var iterator = source.GetEnumerator())
-			{
-				while (iterator.MoveNext())
-				{
-					if (predicate(iterator.Current))
-					{
-						break;
-					}
-				}
-				while (iterator.MoveNext())
-				{
-					yield return iterator.Current;
-				}
-			}
-		}
-
-		[DebuggerStepThrough]
-		public static IEnumerable<TSource> TakeUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		public static IEnumerable<TSource> TakeWhileInclusive<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
 		{
 			Contract.Requires(source != null);
 			Contract.Requires(predicate != null);
@@ -120,7 +97,7 @@ namespace ReClassNET.Extensions
 			{
 				yield return item;
 
-				if (predicate(item))
+				if (!predicate(item))
 				{
 					yield break;
 				}

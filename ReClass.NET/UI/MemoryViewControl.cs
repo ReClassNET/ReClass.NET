@@ -314,7 +314,7 @@ namespace ReClassNET.UI
 									var containerNode = selectedNode.GetParentContainer();
 									foreach (var spot in containerNode.Nodes
 										.SkipWhile(n => n != first.Node)
-										.TakeUntil(n => n == last.Node)
+										.TakeWhileInclusive(n => n != last.Node)
 										.Select(n => new HotSpot
 										{
 											Address = (IntPtr)(containerNode.Offset + n.Offset),
@@ -557,7 +557,8 @@ namespace ReClassNET.UI
 						if (key == Keys.Down)
 						{
 							var temp = query
-								.SkipUntil(h => h.Node == selectionCaret.Node)
+								.SkipWhile(h => h.Node != selectionCaret.Node)
+								.Skip(1)
 								.ToList();
 
 							toSelect = temp.FirstOrDefault();
@@ -593,7 +594,7 @@ namespace ReClassNET.UI
 							var containerNode = toSelect.Node.GetParentContainer();
 							foreach (var spot in containerNode.Nodes
 								.SkipWhile(n => n != first.Node)
-								.TakeUntil(n => n == last.Node)
+								.TakeWhileInclusive(n => n != last.Node)
 								.Select(n => new HotSpot
 								{
 									Address = (IntPtr)(containerNode.Offset + n.Offset),
