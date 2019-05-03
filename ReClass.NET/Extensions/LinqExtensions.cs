@@ -163,6 +163,12 @@ namespace ReClassNET.Extensions
 					first = false;
 				}
 			}
+
+			if (first)
+			{
+				throw new InvalidOperationException("Sequence contains no elements");
+			}
+
 			return result;
 		}
 
