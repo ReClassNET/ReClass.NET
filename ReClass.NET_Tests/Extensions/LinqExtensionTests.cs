@@ -73,24 +73,16 @@ namespace ReClass.NET_Tests.Extensions
 			Check.That(sut.FindIndex(i => i == item)).IsEqualTo(expected);
 		}
 
-		public static TheoryData<IEnumerable<int>> GetTestForEachData => new TheoryData<IEnumerable<int>>
-		{
-			Enumerable.Empty<int>(),
-			Enumerable.Repeat(0, 1),
-			Enumerable.Repeat(0, 2),
-			Enumerable.Repeat(0, 10)
-		};
-
 		[Theory]
-		[MemberData(nameof(GetTestForEachData))]
-		public void TestForEach(IEnumerable<int> sut)
+		[InlineData(0)]
+		[InlineData(1)]
+		[InlineData(10)]
+		public void TestForEach(int expected)
 		{
-			var sutCpy = sut.ToList();
-
 			var counter = 0;
-			sutCpy.ForEach(_ => counter++);
+			Enumerable.Repeat(0, expected).ForEach(_ => ++counter);
 
-			Check.That(counter).IsEqualTo(sutCpy.Count);
+			Check.That(counter).IsEqualTo(expected);
 		}
 
 		public static TheoryData<IEnumerable<int>, Func<int, int>, IEnumerable<int>> GetTestDistinctByData => new TheoryData<IEnumerable<int>, Func<int, int>, IEnumerable<int>>
