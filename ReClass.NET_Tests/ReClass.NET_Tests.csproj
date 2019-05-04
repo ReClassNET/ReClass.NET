@@ -78,6 +78,7 @@
     <Compile Include="Extensions\StringBuilderExtensionTest.cs" />
     <Compile Include="Extensions\StringExtensionTest.cs" />
     <Compile Include="Extensions\StringReaderExtensionTest.cs" />
+    <Compile Include="MemoryScanner\BytePatternTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\CircularBufferTest.cs" />
     <Compile Include="Util\CommandLineArgsTest.cs" />

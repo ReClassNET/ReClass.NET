@@ -8,7 +8,7 @@ using ReClassNET.Extensions;
 
 namespace ReClassNET.MemoryScanner
 {
-	public enum PatternFormat
+	public enum PatternMaskFormat
 	{
 		/// <summary>
 		/// Example: AA BB ?? D? ?E FF
@@ -17,7 +17,7 @@ namespace ReClassNET.MemoryScanner
 		/// <summary>
 		/// Example: \xAA\xBB\x00\x00\x00\xFF xx???x
 		/// </summary>
-		PatternAndMask
+		Separated
 	}
 
 	public class BytePattern
@@ -42,7 +42,7 @@ namespace ReClassNET.MemoryScanner
 			/// </summary>
 			/// <param name="format"></param>
 			/// <returns></returns>
-			Tuple<string, string> ToString(PatternFormat format);
+			Tuple<string, string> ToString(PatternMaskFormat format);
 		}
 
 		private class PatternByte : IPatternByte
@@ -128,13 +128,13 @@ namespace ReClassNET.MemoryScanner
 				return false;
 			}
 
-			public Tuple<string, string> ToString(PatternFormat format)
+			public Tuple<string, string> ToString(PatternMaskFormat format)
 			{
 				switch (format)
 				{
-					case PatternFormat.PatternAndMask:
+					case PatternMaskFormat.Separated:
 						return HasWildcard ? Tuple.Create("\\x00", "?") : Tuple.Create($"\\x{ToByte():X02}", "x");
-					case PatternFormat.Combined:
+					case PatternMaskFormat.Combined:
 						var sb = new StringBuilder();
 						if (nibble1.IsWildcard) sb.Append('?');
 						else sb.AppendFormat("{0:X}", nibble1.Value);
@@ -146,7 +146,7 @@ namespace ReClassNET.MemoryScanner
 				}
 			}
 
-			public override string ToString() => ToString(PatternFormat.Combined).Item1;
+			public override string ToString() => ToString(PatternMaskFormat.Combined).Item1;
 		}
 
 		private class SimplePatternByte : IPatternByte
@@ -162,13 +162,13 @@ namespace ReClassNET.MemoryScanner
 
 			public bool Equals(byte b) => value == b;
 
-			public Tuple<string, string> ToString(PatternFormat format)
+			public Tuple<string, string> ToString(PatternMaskFormat format)
 			{
 				switch (format)
 				{
-					case PatternFormat.PatternAndMask:
+					case PatternMaskFormat.Separated:
 						return Tuple.Create($"\\x{ToByte():X02}", "x");
-					case PatternFormat.Combined:
+					case PatternMaskFormat.Combined:
 						return Tuple.Create($"{ToByte():X02}", (string)null);
 					default:
 						throw new ArgumentOutOfRangeException(nameof(format), format, null);
@@ -215,16 +215,23 @@ namespace ReClassNET.MemoryScanner
 
 			using (var sr = new StringReader(value))
 			{
-				var pb = new PatternByte();
-				while (pb.TryRead(sr))
+				while (true)
 				{
-					if (!pb.HasWildcard)
+					var pb = new PatternByte();
+					if (pb.TryRead(sr))
 					{
-						pattern.pattern.Add(new SimplePatternByte(pb.ToByte()));
+						if (!pb.HasWildcard)
+						{
+							pattern.pattern.Add(new SimplePatternByte(pb.ToByte()));
+						}
+						else
+						{
+							pattern.pattern.Add(pb);
+						}
 					}
 					else
 					{
-						pattern.pattern.Add(pb);
+						break;
 					}
 				}
 
@@ -259,9 +266,9 @@ namespace ReClassNET.MemoryScanner
 		{
 			var pattern = new BytePattern();
 
-			foreach (var i in data)
+			foreach (var (value, isWildcard) in data)
 			{
-				var pb = i.Item2 ? (IPatternByte)PatternByte.NewWildcardByte() : new SimplePatternByte(i.Item1);
+				var pb = isWildcard ? (IPatternByte)PatternByte.NewWildcardByte() : new SimplePatternByte(value);
 
 				pattern.pattern.Add(pb);
 			}
@@ -309,32 +316,32 @@ namespace ReClassNET.MemoryScanner
 		}
 
 		/// <summary>
-		/// Formats the <see cref="BytePattern"/> in the specified <see cref="PatternFormat"/>.
+		/// Formats the <see cref="BytePattern"/> in the specified <see cref="PatternMaskFormat"/>.
 		/// </summary>
 		/// <param name="format">The format of the pattern.</param>
-		/// <returns>A tuple containing the format. If <paramref name="format"/> is not <see cref="PatternFormat.PatternAndMask"/> the second item is null.</returns>
-		public Tuple<string, string> ToString(PatternFormat format)
+		/// <returns>A tuple containing the format. If <paramref name="format"/> is not <see cref="PatternMaskFormat.Separated"/> the second item is null.</returns>
+		public Tuple<string, string> ToString(PatternMaskFormat format)
 		{
 			switch (format)
 			{
-				case PatternFormat.PatternAndMask:
+				case PatternMaskFormat.Separated:
 					var sb1 = new StringBuilder();
 					var sb2 = new StringBuilder();
 					pattern
-						.Select(p => p.ToString(PatternFormat.PatternAndMask))
+						.Select(p => p.ToString(PatternMaskFormat.Separated))
 						.ForEach(t =>
 						{
 							sb1.Append(t.Item1);
 							sb2.Append(t.Item2);
 						});
 					return Tuple.Create(sb1.ToString(), sb2.ToString());
-				case PatternFormat.Combined:
-					return Tuple.Create<string, string>(string.Join(" ", pattern.Select(p => p.ToString(PatternFormat.Combined).Item1)), null);
+				case PatternMaskFormat.Combined:
+					return Tuple.Create<string, string>(string.Join(" ", pattern.Select(p => p.ToString(PatternMaskFormat.Combined).Item1)), null);
 				default:
 					throw new ArgumentOutOfRangeException(nameof(format), format, null);
 			}
 		}
 
-		public override string ToString() => ToString(PatternFormat.Combined).Item1;
+		public override string ToString() => ToString(PatternMaskFormat.Combined).Item1;
 	}
 }
