@@ -457,7 +457,7 @@ namespace ReClassNET.UI
 			if (selectedNodes.Count > 1)
 			{
 				var memorySize = selectedNodes.Sum(h => h.Node.MemorySize);
-				nodeInfoToolTip.Show($"{selectedNodes.Count} Nodes selected, {memorySize} bytes", this, toolTipPosition.OffsetEx(16, 16));
+				nodeInfoToolTip.Show($"{selectedNodes.Count} Nodes selected, {memorySize} bytes", this, toolTipPosition.Relocate(16, 16));
 			}
 			else
 			{
@@ -469,14 +469,14 @@ namespace ReClassNET.UI
 						{
 							memoryPreviewPopUp.InitializeMemory(spot.Memory.Process, previewAddress);
 
-							memoryPreviewPopUp.Show(this, toolTipPosition.OffsetEx(16, 16));
+							memoryPreviewPopUp.Show(this, toolTipPosition.Relocate(16, 16));
 						}
 						else
 						{
 							var text = spot.Node.GetToolTipText(spot, spot.Memory);
 							if (!string.IsNullOrEmpty(text))
 							{
-								nodeInfoToolTip.Show(text, this, toolTipPosition.OffsetEx(16, 16));
+								nodeInfoToolTip.Show(text, this, toolTipPosition.Relocate(16, 16));
 							}
 						}
 

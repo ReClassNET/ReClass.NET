@@ -514,7 +514,8 @@ namespace ReClassNET.Memory
 		{
 			lock (sections)
 			{
-				return sections.BinaryFind(s => address.CompareToRange(s.Start, s.End));
+				var index = sections.BinarySearch(s => address.CompareToRange(s.Start, s.End));
+				return index < 0 ? null : sections[index];
 			}
 		}
 
@@ -522,7 +523,8 @@ namespace ReClassNET.Memory
 		{
 			lock (modules)
 			{
-				return modules.BinaryFind(m => address.CompareToRange(m.Start, m.End));
+				var index = modules.BinarySearch(m => address.CompareToRange(m.Start, m.End));
+				return index < 0 ? null : modules[index];
 			}
 		}
 

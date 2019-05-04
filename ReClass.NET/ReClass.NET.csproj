@@ -171,6 +171,9 @@
     <Compile Include="Debugger\RemoteDebugger.Extensions.cs" />
     <Compile Include="Debugger\RemoteDebugger.Thread.cs" />
     <Compile Include="Debugger\SoftwareBreakpoint.cs" />
+    <Compile Include="Extensions\ByteExtension.cs" />
+    <Compile Include="Extensions\ListExtension.cs" />
+    <Compile Include="Extensions\PointExtension.cs" />
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\XAttributeExtensions.cs" />
     <Compile Include="Forms\EnumEditorForm.cs">
@@ -408,7 +411,6 @@
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\HotSpot.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="UI\FontEx.cs" />
     <Compile Include="UI\HotSpotTextBox.cs">
       <SubType>Component</SubType>
