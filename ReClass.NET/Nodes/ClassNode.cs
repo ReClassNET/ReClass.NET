@@ -138,12 +138,17 @@ namespace ReClassNET.Nodes
 						return new Size(Math.Max(baseSize.Width, newSize.Width), baseSize.Height + newSize.Height);
 					}
 
+					Size ExtendWidth(Size baseSize, int width)
+					{
+						return new Size(baseSize.Width + width, baseSize.Height);
+					}
+
 					// Draw the node if it is in the visible area.
 					if (view.ClientArea.Contains(tx, y))
 					{
 						var innerSize = node.Draw(nv, tx, y);
 
-						size = AggregateNodeSizes(size, innerSize.Extend(childOffset, 0));
+						size = AggregateNodeSizes(size, ExtendWidth(innerSize, childOffset));
 
 						y += innerSize.Height;
 					}
@@ -158,7 +163,7 @@ namespace ReClassNET.Nodes
 							// then draw the node...
 							var innerSize = node.Draw(nv, tx, y);
 
-							size = AggregateNodeSizes(size, innerSize.Extend(childOffset, 0));
+							size = AggregateNodeSizes(size, ExtendWidth(innerSize, childOffset));
 
 							y += innerSize.Height;
 						}

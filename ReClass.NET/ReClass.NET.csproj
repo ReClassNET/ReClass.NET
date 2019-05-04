@@ -391,7 +391,6 @@
     <Compile Include="Extensions\GraphicsExtensions.cs" />
     <Compile Include="Extensions\IntPtrExtensions.cs" />
     <Compile Include="Extensions\RichTextBoxExtensions.cs" />
-    <Compile Include="Extensions\SizeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\StringReaderExtensions.cs" />
     <Compile Include="Util\DirectedGraph.cs" />
