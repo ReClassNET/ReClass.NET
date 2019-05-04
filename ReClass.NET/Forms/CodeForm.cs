@@ -27,7 +27,7 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
-			codeRichTextBox.SetInnerPadding(5, 5, 5, 5);
+			codeRichTextBox.SetInnerMargin(5, 5, 5, 5);
 
 			var code = generator.GenerateCode(classes, enums, logger);
 

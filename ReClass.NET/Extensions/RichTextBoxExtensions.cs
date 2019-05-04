@@ -7,7 +7,7 @@ namespace ReClassNET.Extensions
 {
 	public static class RichTextBoxExtension
 	{
-		public static void SetInnerPadding(this TextBoxBase textBox, int left, int top, int right, int bottom)
+		public static void SetInnerMargin(this TextBoxBase textBox, int left, int top, int right, int bottom)
 		{
 			var rect = textBox.GetFormattingRect();
 
@@ -37,7 +37,7 @@ namespace ReClassNET.Extensions
 			}
 		}
 
-		[DllImport("User32.dll", CharSet = CharSet.Auto)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
 		private static extern int SendMessage(IntPtr hWnd, uint msg, int wParam, ref RECT rect);
 
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
