@@ -72,7 +72,9 @@
     <Compile Include="Extensions\EncodingExtensionTest.cs" />
     <Compile Include="Extensions\FloatingPointExtensionTest.cs" />
     <Compile Include="Extensions\LinqExtensionTests.cs" />
+    <Compile Include="Extensions\StringBuilderExtensionTest.cs" />
     <Compile Include="Extensions\StringExtensionTest.cs" />
+    <Compile Include="Extensions\StringReaderExtensionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\CircularBufferTest.cs" />
     <Compile Include="Util\CommandLineArgsTest.cs" />
