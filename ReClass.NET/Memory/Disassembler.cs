@@ -27,7 +27,7 @@ namespace ReClassNET.Memory
 		/// <param name="address">The address of the code.</param>
 		/// <param name="length">The length of the code in bytes.</param>
 		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
-		public IReadOnlyList<DisassembledInstruction> RemoteDisassembleCode(RemoteProcess process, IntPtr address, int length)
+		public IReadOnlyList<DisassembledInstruction> RemoteDisassembleCode(IRemoteMemoryReader process, IntPtr address, int length)
 		{
 			Contract.Requires(process != null);
 			Contract.Ensures(Contract.Result<IList<DisassembledInstruction>>() != null);
@@ -41,7 +41,7 @@ namespace ReClassNET.Memory
 		/// <param name="length">The length of the code in bytes.</param>
 		/// <param name="maxInstructions">The maximum number of instructions to disassemble. If <paramref name="maxInstructions"/> is -1, all available instructions get returned.</param>
 		/// <returns>A list of <see cref="DisassembledInstruction"/>.</returns>
-		public IReadOnlyList<DisassembledInstruction> RemoteDisassembleCode(RemoteProcess process, IntPtr address, int length, int maxInstructions)
+		public IReadOnlyList<DisassembledInstruction> RemoteDisassembleCode(IRemoteMemoryReader process, IntPtr address, int length, int maxInstructions)
 		{
 			Contract.Requires(process != null);
 			Contract.Ensures(Contract.Result<IList<DisassembledInstruction>>() != null);
@@ -89,7 +89,7 @@ namespace ReClassNET.Memory
 		/// <param name="address">The address of the code.</param>
 		/// <param name="maxLength">The maximum maxLength of the code.</param>
 		/// <returns>A list of <see cref="DisassembledInstruction"/> which belong to the function.</returns>
-		public IReadOnlyList<DisassembledInstruction> RemoteDisassembleFunction(RemoteProcess process, IntPtr address, int maxLength)
+		public IReadOnlyList<DisassembledInstruction> RemoteDisassembleFunction(IRemoteMemoryReader process, IntPtr address, int maxLength)
 		{
 			Contract.Requires(process != null);
 			Contract.Ensures(Contract.Result<IEnumerable<DisassembledInstruction>>() != null);
@@ -141,7 +141,7 @@ namespace ReClassNET.Memory
 		/// <param name="process">The process to read from.</param>
 		/// <param name="address">The address of the code.</param>
 		/// <returns>The prior instruction.</returns>
-		public DisassembledInstruction RemoteGetPreviousInstruction(RemoteProcess process, IntPtr address)
+		public DisassembledInstruction RemoteGetPreviousInstruction(IRemoteMemoryReader process, IntPtr address)
 		{
 			const int TotalBufferSize = 7 * MaximumInstructionLength;
 			const int BufferShiftSize = 6 * MaximumInstructionLength;
@@ -203,7 +203,7 @@ namespace ReClassNET.Memory
 		/// <param name="process">The process to read from.</param>
 		/// <param name="address">The address inside the function.</param>
 		/// <returns>The start address of the function (maybe) or <see cref="IntPtr.Zero"/> if no start address could be found.</returns>
-		public IntPtr RemoteGetFunctionStartAddress(RemoteProcess process, IntPtr address)
+		public IntPtr RemoteGetFunctionStartAddress(IRemoteMemoryReader process, IntPtr address)
 		{
 			const int BufferLength = 512;
 
