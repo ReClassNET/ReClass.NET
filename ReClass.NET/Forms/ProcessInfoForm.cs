@@ -142,7 +142,7 @@ namespace ReClassNET.Forms
 		private void dumpToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Func<SaveFileDialog> createDialogFn;
-			Action<Dumper, Stream> dumpFn;
+			Action<IRemoteMemoryReader, Stream> dumpFn;
 
 			if (GetToolStripSourceControl(sender) == modulesDataGridView)
 			{
@@ -158,9 +158,9 @@ namespace ReClassNET.Forms
 					InitialDirectory = Path.GetDirectoryName(module.Path)
 				};
 
-				dumpFn = (d, s) =>
+				dumpFn = (reader, stream) =>
 				{
-					d.DumpModule(module, s);
+					Dumper.DumpModule(reader, module, stream);
 
 					MessageBox.Show("Module successfully dumped.", Constants.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				};
@@ -178,9 +178,9 @@ namespace ReClassNET.Forms
 					FileName = $"Section_{section.Start.ToString("X")}_{section.End.ToString("X")}.dat"
 				};
 
-				dumpFn = (d, s) =>
+				dumpFn = (reader, stream) =>
 				{
-					d.DumpSection(section, s);
+					Dumper.DumpSection(reader, section, stream);
 
 					MessageBox.Show("Section successfully dumped.", Constants.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				};
@@ -195,13 +195,11 @@ namespace ReClassNET.Forms
 					return;
 				}
 
-				var dumper = new Dumper(process);
-
 				try
 				{
 					using (var stream = sfd.OpenFile())
 					{
-						dumpFn(dumper, stream);
+						dumpFn(process, stream);
 					}
 				}
 				catch (Exception ex)
