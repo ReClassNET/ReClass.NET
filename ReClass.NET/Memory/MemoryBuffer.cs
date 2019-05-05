@@ -151,7 +151,7 @@ namespace ReClassNET.Memory
 			offset = Offset + offset;
 			if (offset + Marshal.SizeOf(typeof(T)) > data.Length)
 			{
-				return default(T);
+				return default;
 			}
 
 			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
@@ -173,7 +173,7 @@ namespace ReClassNET.Memory
 			offset = Offset + offset;
 			if (offset + sizeof(sbyte) > data.Length)
 			{
-				return default(sbyte);
+				return default;
 			}
 
 			return (sbyte)data[offset];
@@ -189,7 +189,7 @@ namespace ReClassNET.Memory
 			offset = Offset + offset;
 			if (offset + sizeof(byte) > data.Length)
 			{
-				return default(byte);
+				return default;
 			}
 
 			return data[offset];
@@ -205,7 +205,7 @@ namespace ReClassNET.Memory
 			offset = Offset + offset;
 			if (offset + sizeof(short) > data.Length)
 			{
-				return default(short);
+				return default;
 			}
 
 			return BitConverter.ToInt16(data, offset);
@@ -221,7 +221,7 @@ namespace ReClassNET.Memory
 			offset = Offset + offset;
 			if (offset + sizeof(ushort) > data.Length)
 			{
-				return default(ushort);
+				return default;
 			}
 
 			return BitConverter.ToUInt16(data, offset);
@@ -237,7 +237,7 @@ namespace ReClassNET.Memory
 			offset = Offset + offset;
 			if (offset + sizeof(int) > data.Length)
 			{
-				return default(int);
+				return default;
 			}
 
 			return BitConverter.ToInt32(data, offset);
@@ -253,7 +253,7 @@ namespace ReClassNET.Memory
 			offset = Offset + offset;
 			if (offset + sizeof(uint) > data.Length)
 			{
-				return default(uint);
+				return default;
 			}
 
 			return BitConverter.ToUInt32(data, offset);
@@ -269,7 +269,7 @@ namespace ReClassNET.Memory
 			offset = Offset + offset;
 			if (offset + sizeof(long) > data.Length)
 			{
-				return default(long);
+				return default;
 			}
 
 			return BitConverter.ToInt64(data, offset);
@@ -285,7 +285,7 @@ namespace ReClassNET.Memory
 			offset = Offset + offset;
 			if (offset + sizeof(ulong) > data.Length)
 			{
-				return default(ulong);
+				return default;
 			}
 
 			return BitConverter.ToUInt64(data, offset);
@@ -301,7 +301,7 @@ namespace ReClassNET.Memory
 			offset = Offset + offset;
 			if (offset + sizeof(float) > data.Length)
 			{
-				return default(float);
+				return default;
 			}
 
 			return BitConverter.ToSingle(data, offset);
@@ -317,7 +317,7 @@ namespace ReClassNET.Memory
 			offset = Offset + offset;
 			if (offset + sizeof(double) > data.Length)
 			{
-				return default(double);
+				return default;
 			}
 
 			return BitConverter.ToDouble(data, offset);
@@ -373,7 +373,12 @@ namespace ReClassNET.Memory
 
 			if (Offset + offset + length > data.Length)
 			{
-				length = data.Length - Offset - offset;
+				length = Math.Max(data.Length - Offset - offset, 0);
+			}
+
+			if (length <= 0)
+			{
+				return string.Empty;
 			}
 
 			var sb = new StringBuilder(encoding.GetString(data, Offset + offset, length));
