@@ -161,11 +161,14 @@ namespace ReClassNET.Nodes
 
 				using (var brush = new SolidBrush(view.Settings.ValueColor))
 				{
-					view.Context.DrawString("1", view.Font.Font, brush, tx + (bits - 1) * view.Font.Width + 1, y, format);
+					view.Context.DrawString("0", view.Font.Font, brush, tx + (bits - 1) * view.Font.Width + 1, y, format);
 
 					for (var i = 8; i <= bits; i += 8)
 					{
-						view.Context.DrawString(i.ToString(), view.Font.Font, brush, tx  + (bits - i) * view.Font.Width, y, format);
+						if(i < bits)
+							view.Context.DrawString(i.ToString(), view.Font.Font, brush, tx + (bits - i - 1) * view.Font.Width, y, format);
+						else
+							view.Context.DrawString((i-1).ToString(), view.Font.Font, brush, tx + (bits - i) * view.Font.Width, y, format);
 					}
 				}
 
