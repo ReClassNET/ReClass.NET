@@ -23,7 +23,7 @@ namespace ReClassNET.Nodes
 
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
-			return Draw(view, x, y, view.Settings.ShowNodeText ? view.Memory.ReadPrintableAsciiString(Offset, 2) + "       " : null, 2);
+			return Draw(view, x, y, view.Settings.ShowNodeText ? view.Memory.ReadString(view.Settings.RawDataEncoding, Offset, 2) + "       " : null, 2);
 		}
 
 		public override void Update(HotSpot spot)

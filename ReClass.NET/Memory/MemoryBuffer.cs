@@ -339,31 +339,6 @@ namespace ReClassNET.Memory
 
 		#endregion
 
-		public string ReadPrintableAsciiString(int offset, int length)
-		{
-			Contract.Requires(offset >= 0);
-			Contract.Requires(length >= 0);
-			Contract.Ensures(Contract.Result<string>() != null);
-
-			if (Offset + offset + length > data.Length)
-			{
-				length = Math.Max(data.Length - Offset - offset, 0);
-			}
-
-			if (length <= 0)
-			{
-				return string.Empty;
-			}
-
-			var sb = new StringBuilder(length);
-			for (var i = 0; i < length; ++i)
-			{
-				var c = (char)data[Offset + offset + i];
-				sb.Append(c.IsPrintable() ? c : '.');
-			}
-			return sb.ToString();
-		}
-
 		public string ReadString(Encoding encoding, int offset, int length)
 		{
 			Contract.Requires(encoding != null);

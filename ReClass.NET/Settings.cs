@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Text;
 using ReClassNET.Util;
 
 namespace ReClassNET
@@ -20,6 +21,8 @@ namespace ReClassNET
 		public bool ShowNodeText { get; set; } = true;
 
 		public bool HighlightChangedValues { get; set; } = true;
+
+		public Encoding RawDataEncoding { get; set; } = Encoding.GetEncoding(1252); /* Windows-1252 */
 
 		// Comment Drawing Settings
 
