@@ -261,7 +261,7 @@ namespace ReClassNET.MemoryScanner
 					bw.Write(arrayOfBytesSearchResult.Value);
 					break;
 				case StringScanResult stringSearchResult:
-					bw.Write(stringSearchResult.Encoding == Encoding.UTF8 ? 0 : stringSearchResult.Encoding == Encoding.Unicode ? 1 : 2);
+					bw.Write(stringSearchResult.Encoding.IsSameCodePage(Encoding.UTF8) ? 0 : stringSearchResult.Encoding.IsSameCodePage(Encoding.Unicode) ? 1 : 2);
 					bw.Write(stringSearchResult.Value);
 					break;
 			}

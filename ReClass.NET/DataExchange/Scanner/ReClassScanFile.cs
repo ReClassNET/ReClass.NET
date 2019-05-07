@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using ReClassNET.Extensions;
 using ReClassNET.Logger;
 using ReClassNET.MemoryScanner;
 
@@ -152,7 +153,7 @@ namespace ReClassNET.DataExchange.Scanner
 										temp.SetAttributeValue(XmlValueLengthAttribute, r.ValueLength);
 										if (r.ValueType == ScanValueType.String)
 										{
-											temp.SetAttributeValue(XmlEncodingAttribute, r.Encoding == Encoding.UTF8 ? "UTF8" : r.Encoding == Encoding.Unicode ? "UTF16" : "UTF32");
+											temp.SetAttributeValue(XmlEncodingAttribute, r.Encoding.IsSameCodePage(Encoding.UTF8) ? "UTF8" : r.Encoding.IsSameCodePage(Encoding.Unicode) ? "UTF16" : "UTF32");
 										}
 									}
 									return temp;

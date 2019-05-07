@@ -37,5 +37,26 @@ namespace ReClass.NET_Tests.Extensions
 		{
 			Check.ThatCode(encoding.GuessByteCountPerChar).Throws<NotImplementedException>();
 		}
+
+		public static TheoryData<Encoding, Encoding, bool> GetTestIsSameCodePageData() => new TheoryData<Encoding, Encoding, bool>
+		{
+			{ Encoding.ASCII, Encoding.ASCII, true },
+			{ Encoding.UTF8, Encoding.UTF8, true },
+			{ Encoding.Unicode, Encoding.Unicode, true },
+			{ Encoding.UTF32, Encoding.UTF32, true },
+			{ Encoding.ASCII, Encoding.UTF8, false },
+			{ Encoding.ASCII, Encoding.Unicode, false },
+			{ Encoding.ASCII, Encoding.UTF32, false },
+			{ Encoding.UTF8, Encoding.UTF32, false },
+			{ Encoding.Unicode, Encoding.UTF32, false },
+			{ Encoding.UTF8, Encoding.Unicode, false }
+		};
+
+		[Theory]
+		[MemberData(nameof(GetTestIsSameCodePageData))]
+		public void TestIsSameCodePage(Encoding sut, Encoding other, bool expected)
+		{
+			Check.That(sut.IsSameCodePage(other)).IsEqualTo(expected);
+		}
 	}
 }

@@ -496,11 +496,11 @@ namespace ReClassNET.CodeGenerator
 
 			BaseNode GetCharacterNodeForEncoding(Encoding encoding)
 			{
-				if (encoding.Equals(Encoding.Unicode))
+				if (encoding.IsSameCodePage(Encoding.Unicode))
 				{
 					return new Utf16CharacterNode();
 				}
-				if (encoding.Equals(Encoding.UTF32))
+				if (encoding.IsSameCodePage(Encoding.UTF32))
 				{
 					return new Utf32CharacterNode();
 				}
