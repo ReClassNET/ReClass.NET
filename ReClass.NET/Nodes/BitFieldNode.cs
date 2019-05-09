@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.Text;
 using ReClassNET.Memory;
 using ReClassNET.UI;
 
@@ -88,7 +89,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Converts the memory value to a bit string.</summary>
 		/// <param name="memory">The process memory.</param>
 		/// <returns>The value converted to a bit string.</returns>
-		private string ConvertValueToBitString(MemoryBuffer memory)
+		private string ConvertValueToGroupedBitString(MemoryBuffer memory)
 		{
 			Contract.Requires(memory != null);
 			Contract.Ensures(Contract.Result<string>() != null);
@@ -109,7 +110,17 @@ namespace ReClassNET.Nodes
 					str = Convert.ToString(memory.ReadUInt8(Offset), 2);
 					break;
 			}
-			return str.PadLeft(bits, '0');
+
+			str = str.PadLeft(bits, '0');
+
+			var sb = new StringBuilder(str);
+
+			for (var i = bits - 4; i > 0; i -= 4)
+			{
+				sb.Insert(i, ' ');
+			}
+
+			return sb.ToString();
 		}
 
 		public override Size Draw(ViewInfo view, int x, int y)
@@ -143,7 +154,10 @@ namespace ReClassNET.Nodes
 				var rect = new Rectangle(x + i * view.Font.Width, y, view.Font.Width, view.Font.Height);
 				AddHotSpot(view, rect, string.Empty, i, HotSpotType.Edit);
 			}
-			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, ConvertValueToBitString(view.Memory)) + view.Font.Width;
+
+			var value = ConvertValueToGroupedBitString(view.Memory);
+
+			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, value) + view.Font.Width;
 
 			x += view.Font.Width;
 
@@ -161,11 +175,11 @@ namespace ReClassNET.Nodes
 
 				using (var brush = new SolidBrush(view.Settings.ValueColor))
 				{
-					view.Context.DrawString("0", view.Font.Font, brush, tx + (bits - 1) * view.Font.Width + 1, y, format);
+					var maxCharCount = bits + (bits / 4 - 1) - 1;
 
-					for (var i = 4; i < bits; i += 4)
+					for (int bitCount = 0, padding = 0; bitCount < bits; bitCount += 4, padding += 5)
 					{
-						view.Context.DrawString(i.ToString(), view.Font.Font, brush, tx + (bits - i - 1) * view.Font.Width, y, format);
+						view.Context.DrawString(bitCount.ToString(), view.Font.Font, brush, tx + (maxCharCount - padding) * view.Font.Width, y, format);
 					}
 				}
 
