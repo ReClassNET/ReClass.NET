@@ -383,6 +383,7 @@
     <Compile Include="UI\PlaceholderTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Util\BitString.cs" />
     <Compile Include="Util\CircularBuffer.cs" />
     <Compile Include="Util\CommandLineArgs.cs" />
     <Compile Include="Util\CustomDataMap.cs" />

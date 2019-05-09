@@ -81,6 +81,7 @@
     <Compile Include="MemoryScanner\BytePatternTest.cs" />
     <Compile Include="Memory\MemoryBufferTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\BitStringTest.cs" />
     <Compile Include="Util\CircularBufferTest.cs" />
     <Compile Include="Util\CommandLineArgsTest.cs" />
     <Compile Include="Util\CustomDataMapTest.cs" />

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
-using System.Text;
 using ReClassNET.Memory;
 using ReClassNET.UI;
+using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -94,33 +94,17 @@ namespace ReClassNET.Nodes
 			Contract.Requires(memory != null);
 			Contract.Ensures(Contract.Result<string>() != null);
 
-			string str;
 			switch(bits)
 			{
 				case 64:
-					str = Convert.ToString(memory.ReadInt64(Offset), 2);
-					break;
+					return BitString.ToString(memory.ReadInt64(Offset));
 				case 32:
-					str = Convert.ToString(memory.ReadInt32(Offset), 2);
-					break;
+					return BitString.ToString(memory.ReadInt32(Offset));
 				case 16:
-					str = Convert.ToString(memory.ReadInt16(Offset), 2);
-					break;
+					return BitString.ToString(memory.ReadInt16(Offset));
 				default:
-					str = Convert.ToString(memory.ReadUInt8(Offset), 2);
-					break;
+					return BitString.ToString(memory.ReadUInt8(Offset));
 			}
-
-			str = str.PadLeft(bits, '0');
-
-			var sb = new StringBuilder(str);
-
-			for (var i = bits - 4; i > 0; i -= 4)
-			{
-				sb.Insert(i, ' ');
-			}
-
-			return sb.ToString();
 		}
 
 		public override Size Draw(ViewInfo view, int x, int y)
