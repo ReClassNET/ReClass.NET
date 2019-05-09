@@ -13,6 +13,7 @@ namespace ReClass.NET_Tests.Extensions
 		public static TheoryData<Encoding, int> GetTestSimpleByteCountData() => new TheoryData<Encoding, int>
 		{
 			{ Encoding.ASCII, 1 },
+			{ Encoding.GetEncoding(1252), 1 },
 			{ Encoding.UTF8, 1 },
 			{ Encoding.Unicode, 2 },
 			{ Encoding.BigEndianUnicode, 2 },
@@ -28,7 +29,7 @@ namespace ReClass.NET_Tests.Extensions
 
 		public static IEnumerable<object[]> GetTestSimpleByteCountNotImplementedData() => Encoding.GetEncodings()
 			.Select(e => e.GetEncoding())
-			.WhereNot(e => e.Equals(Encoding.ASCII) || e.Equals(Encoding.UTF8) || e.Equals(Encoding.Unicode) || e.Equals(Encoding.BigEndianUnicode) || e.Equals(Encoding.UTF32))
+			.WhereNot(e => e.IsSameCodePage(Encoding.ASCII) || e.IsSameCodePage(Encoding.UTF8) || e.IsSameCodePage(Encoding.Unicode) || e.IsSameCodePage(Encoding.BigEndianUnicode) || e.IsSameCodePage(Encoding.UTF32) || e.CodePage == 1252)
 			.Select(e => new object[] { e });
 
 		[Theory]
