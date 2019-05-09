@@ -89,7 +89,7 @@ namespace ReClassNET.Nodes
 		/// <summary>Converts the memory value to a bit string.</summary>
 		/// <param name="memory">The process memory.</param>
 		/// <returns>The value converted to a bit string.</returns>
-		private string ConvertValueToGroupedBitString(MemoryBuffer memory)
+		private string ConvertValueToBitString(MemoryBuffer memory)
 		{
 			Contract.Requires(memory != null);
 			Contract.Ensures(Contract.Result<string>() != null);
@@ -139,7 +139,7 @@ namespace ReClassNET.Nodes
 				AddHotSpot(view, rect, string.Empty, i, HotSpotType.Edit);
 			}
 
-			var value = ConvertValueToGroupedBitString(view.Memory);
+			var value = ConvertValueToBitString(view.Memory);
 
 			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, value) + view.Font.Width;
 
