@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using NFluent;
 using ReClassNET.Memory;
 using Xunit;
@@ -129,7 +130,6 @@ namespace ReClass.NET_Tests.Memory
 		{
 			{ CreateFromBytes(), 0, 0.0 },
 			{ CreateFromBytes(), 4, 0.0 },
-			//409349ba786c2268
 			{ CreateFromBytes(0x54, 0x74, 0x24, 0x97, 0x1F, 0xE1, 0xB0, 0x40), 0, 4321.1234 },
 			{ CreateFromBytes(1, 2, 0x68, 0x22, 0x6C, 0x78, 0xBA, 0x49, 0x93, 0x40), 2, 1234.4321 }
 		};
@@ -139,6 +139,30 @@ namespace ReClass.NET_Tests.Memory
 		public void TestReadDouble(MemoryBuffer sut, int offset, double expected)
 		{
 			Check.That(sut.ReadDouble(offset)).IsCloseTo(expected, 0.0001);
+		}
+
+		public static TheoryData<MemoryBuffer, Encoding, int, int, string> GetTestReadStringData() => new TheoryData<MemoryBuffer, Encoding, int, int, string>
+		{
+			{ CreateFromBytes(), Encoding.ASCII, 0, 0, string.Empty },
+			{ CreateFromBytes(), Encoding.ASCII, 4, 0, string.Empty },
+			{ CreateFromBytes(), Encoding.ASCII, 0, 4, string.Empty },
+			{ CreateFromBytes(0x31, 0x32, 0x33, 0x61, 0x62, 0x63), Encoding.ASCII, 0, 6, "123abc" },
+			{ CreateFromBytes(0x31, 0x32, 0x33, 0x61, 0x62, 0x63), Encoding.ASCII, 2, 3, "3ab" },
+			{ CreateFromBytes(0, 0, 0, 0, 0, 0), Encoding.GetEncoding(1252), 0, 6, "......" },
+			{ CreateFromBytes(0, 0, 0, 0, 0, 0), Encoding.UTF8, 0, 6, "......" },
+			{ CreateFromBytes(0, 1, 2, 3, 4, 5), Encoding.UTF8, 0, 6, "......" },
+			{ CreateFromBytes(0x31, 0x32, 0x33, 0x61, 0x62, 0x63, 0xC4, 0xD6, 0xDC), Encoding.GetEncoding(1252), 0, 9, "123abcÄÖÜ" },
+			{ CreateFromBytes(0x31, 0x32, 0x33, 0x61, 0x62, 0x63, 0xC3, 0x84, 0xC3, 0x96, 0xC3, 0x9C), Encoding.UTF8, 0, 12, "123abcÄÖÜ" },
+			{ CreateFromBytes(0x61, 0xC3), Encoding.UTF8, 0, 2, "a." },
+			{ CreateFromBytes(0x31, 0x00, 0x32, 0x00, 0x33, 0x00, 0x61, 0x00, 0x62, 0x00, 0x63, 0x00, 0xC4, 0x00, 0xD6, 0x00, 0xDC, 0x00), Encoding.Unicode, 0, 18, "123abcÄÖÜ" },
+			{ CreateFromBytes(0x31, 0x00, 0x00, 0x00, 0x32, 0x00, 0x00, 0x00, 0x33, 0x00, 0x00, 0x00, 0x61, 0x00, 0x00, 0x00, 0x62, 0x00, 0x00, 0x00, 0x63, 0x00, 0x00, 0x00, 0xC4, 0x00, 0x00, 0x00, 0xD6, 0x00, 0x00, 0x00, 0xDC, 0x00, 0x00, 0x00), Encoding.UTF32, 0, 36, "123abcÄÖÜ" }
+		};
+
+		[Theory]
+		[MemberData(nameof(GetTestReadStringData))]
+		public void TestReadString(MemoryBuffer sut, Encoding encoding, int offset, int length, string expected)
+		{
+			Check.That(sut.ReadString(encoding, offset, length)).IsEqualTo(expected);
 		}
 	}
 }
