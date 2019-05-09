@@ -13,7 +13,7 @@ namespace ReClassNET.Extensions
 		[DebuggerStepThrough]
 		public static bool IsPrintable(this char c)
 		{
-			return !char.IsControl(c) || char.IsWhiteSpace(c);
+			return (!char.IsControl(c) || char.IsWhiteSpace(c)) && c != '\xFFFD' /* Unicode REPLACEMENT CHARACTER � */;
 		}
 
 		[DebuggerStepThrough]
