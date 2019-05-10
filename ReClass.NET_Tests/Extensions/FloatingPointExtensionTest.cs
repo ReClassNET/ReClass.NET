@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NFluent;
-using NFluent.Extensions;
+﻿using NFluent;
 using ReClassNET.Extensions;
 using Xunit;
 
