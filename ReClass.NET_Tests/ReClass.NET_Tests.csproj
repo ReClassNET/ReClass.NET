@@ -72,7 +72,7 @@
     <Compile Include="Extensions\DictionaryExtensionTest.cs" />
     <Compile Include="Extensions\EncodingExtensionTest.cs" />
     <Compile Include="Extensions\FloatingPointExtensionTest.cs" />
-    <Compile Include="Extensions\LinqExtensionTests.cs" />
+    <Compile Include="Extensions\EnumerableExtensionTests.cs" />
     <Compile Include="Extensions\ListExtensionTest.cs" />
     <Compile Include="Extensions\PointExtensionTest.cs" />
     <Compile Include="Extensions\StringBuilderExtensionTest.cs" />

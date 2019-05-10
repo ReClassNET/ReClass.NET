@@ -508,7 +508,7 @@
     <Compile Include="Symbols\SymbolStore.cs" />
     <Compile Include="UI\GlobalWindowManager.cs" />
     <Compile Include="UI\ViewInfo.cs" />
-    <Compile Include="Extensions\LinqExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtension.cs" />
     <Compile Include="Util\HexadecimalFormatter.cs" />
     <Compile Include="Util\IntPtrComparer.cs" />
     <Compile Include="Util\NumberFormat.cs" />

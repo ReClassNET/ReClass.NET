@@ -7,7 +7,7 @@ using Xunit;
 
 namespace ReClass.NET_Tests.Extensions
 {
-	public class LinqExtensionTests
+	public class EnumerableExtensionTest
 	{
 		public static TheoryData<IEnumerable<int>, bool> GetTestNoneData => new TheoryData<IEnumerable<int>, bool>
 		{

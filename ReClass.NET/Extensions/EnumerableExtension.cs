@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ReClassNET.Extensions
 {
-	public static class LinqExtension
+	public static class EnumerableExtension
 	{
 		[DebuggerStepThrough]
 		public static bool None<TSource>(this IEnumerable<TSource> source)
