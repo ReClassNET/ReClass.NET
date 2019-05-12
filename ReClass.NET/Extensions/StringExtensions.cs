@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -17,7 +17,7 @@ namespace ReClassNET.Extensions
 		}
 
 		[DebuggerStepThrough]
-		public static IEnumerable<char> InterpretAsUtf8(this IEnumerable<byte> source)
+		public static IEnumerable<char> InterpretAsSingleByteCharacter(this IEnumerable<byte> source)
 		{
 			Contract.Requires(source != null);
 
@@ -25,7 +25,7 @@ namespace ReClassNET.Extensions
 		}
 
 		[DebuggerStepThrough]
-		public static IEnumerable<char> InterpretAsUtf16(this IEnumerable<byte> source)
+		public static IEnumerable<char> InterpretAsDoubleByteCharacter(this IEnumerable<byte> source)
 		{
 			Contract.Requires(source != null);
 

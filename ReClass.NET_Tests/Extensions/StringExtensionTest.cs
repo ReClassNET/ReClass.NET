@@ -55,30 +55,30 @@ namespace ReClass.NET_Tests.Extensions
 			Check.ThatCode(() => "".LimitLength(-1)).Throws<ArgumentOutOfRangeException>();
 		}
 
-		public static TheoryData<IEnumerable<byte>, IEnumerable<char>> GetTestInterpretAsUtf8Data() => new TheoryData<IEnumerable<byte>, IEnumerable<char>>
+		public static TheoryData<IEnumerable<byte>, IEnumerable<char>> GetTestInterpretAsSingleByteCharacterData() => new TheoryData<IEnumerable<byte>, IEnumerable<char>>
 		{
 			{ new byte[0], string.Empty },
 			{ new [] { (byte)'t', (byte)'e', (byte)'s', (byte)'t' }, "test" }
 		};
 
 		[Theory]
-		[MemberData(nameof(GetTestInterpretAsUtf8Data))]
-		public void TestInterpretAsUtf8(IEnumerable<byte> sut, IEnumerable<char> expected)
+		[MemberData(nameof(GetTestInterpretAsSingleByteCharacterData))]
+		public void TestInterpretAsSingleByteCharacter(IEnumerable<byte> sut, IEnumerable<char> expected)
 		{
-			Check.That(sut.InterpretAsUtf8()).ContainsExactly(expected);
+			Check.That(sut.InterpretAsSingleByteCharacter()).ContainsExactly(expected);
 		}
 
-		public static TheoryData<IEnumerable<byte>, IEnumerable<char>> GetTestInterpretAsUtf16Data() => new TheoryData<IEnumerable<byte>, IEnumerable<char>>
+		public static TheoryData<IEnumerable<byte>, IEnumerable<char>> GetTestInterpretAsDoubleByteCharacterData() => new TheoryData<IEnumerable<byte>, IEnumerable<char>>
 		{
 			{ new byte[0], string.Empty },
 			{ new [] { (byte)'t', (byte)0, (byte)'e', (byte)0, (byte)'s', (byte)0, (byte)'t', (byte)0 }, "test" }
 		};
 
 		[Theory]
-		[MemberData(nameof(GetTestInterpretAsUtf16Data))]
-		public void TestInterpretAsUtf16(IEnumerable<byte> sut, IEnumerable<char> expected)
+		[MemberData(nameof(GetTestInterpretAsDoubleByteCharacterData))]
+		public void TestInterpretAsDoubleByteCharacter(IEnumerable<byte> sut, IEnumerable<char> expected)
 		{
-			Check.That(sut.InterpretAsUtf16()).ContainsExactly(expected);
+			Check.That(sut.InterpretAsDoubleByteCharacter()).ContainsExactly(expected);
 		}
 
 		public static TheoryData<IEnumerable<char>, float> GetTestCalculatePrintableDataThresholdData() => new TheoryData<IEnumerable<char>, float>
