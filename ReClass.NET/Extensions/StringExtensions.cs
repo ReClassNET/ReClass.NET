@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -13,7 +13,7 @@ namespace ReClassNET.Extensions
 		[DebuggerStepThrough]
 		public static bool IsPrintable(this char c)
 		{
-			return (!char.IsControl(c) || char.IsWhiteSpace(c)) && c != '\xFFFD' /* Unicode REPLACEMENT CHARACTER � */;
+			return (' ' <= c && c <= '~' || '\xA1' <= c && c <= '\xFF')  && c != '\xFFFD' /* Unicode REPLACEMENT CHARACTER � */;
 		}
 
 		[DebuggerStepThrough]
