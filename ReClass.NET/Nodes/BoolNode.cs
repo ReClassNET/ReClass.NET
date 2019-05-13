@@ -62,7 +62,7 @@ namespace ReClassNET.Nodes
 			{
 				if (bool.TryParse(spot.Text, out var val))
 				{
-					spot.Memory.Process.WriteRemoteMemory(spot.Address, (byte)(val ? 1 : 0));
+					spot.Process.WriteRemoteMemory(spot.Address, (byte)(val ? 1 : 0));
 				}
 			}
 		}

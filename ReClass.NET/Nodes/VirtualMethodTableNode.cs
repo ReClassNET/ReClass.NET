@@ -72,8 +72,7 @@ namespace ReClassNET.Nodes
 				var ptr = view.Memory.ReadIntPtr(Offset);
 
 				memory.Size = Nodes.Count * IntPtr.Size;
-				memory.Process = view.Memory.Process;
-				memory.Update(ptr);
+				memory.UpdateFrom(view.Process, ptr);
 
 				var v = view.Clone();
 				v.Address = ptr;

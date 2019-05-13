@@ -106,10 +106,9 @@ namespace ReClassNET.Nodes
 
 		public abstract void GetUserInterfaceInfo(out string name, out Image icon);
 
-		public virtual bool UseMemoryPreviewToolTip(HotSpot spot, MemoryBuffer memory, out IntPtr address)
+		public virtual bool UseMemoryPreviewToolTip(HotSpot spot, out IntPtr address)
 		{
 			Contract.Requires(spot != null);
-			Contract.Requires(memory != null);
 
 			address = IntPtr.Zero;
 
@@ -118,12 +117,10 @@ namespace ReClassNET.Nodes
 
 		/// <summary>Gets informations about this node to show in a tool tip.</summary>
 		/// <param name="spot">The spot.</param>
-		/// <param name="memory">The process memory.</param>
 		/// <returns>The information to show in a tool tip or null if no information should be shown.</returns>
-		public virtual string GetToolTipText(HotSpot spot, MemoryBuffer memory)
+		public virtual string GetToolTipText(HotSpot spot)
 		{
 			Contract.Requires(spot != null);
-			Contract.Requires(memory != null);
 
 			return null;
 		}
@@ -297,6 +294,7 @@ namespace ReClassNET.Nodes
 				Type = type,
 				Node = this,
 				Level = view.Level,
+				Process = view.Process,
 				Memory = view.Memory
 			});
 		}

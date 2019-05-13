@@ -13,11 +13,11 @@ namespace ReClassNET.Nodes
 	{
 		public override int MemorySize => IntPtr.Size;
 
-		public override string GetToolTipText(HotSpot spot, MemoryBuffer memory)
+		public override string GetToolTipText(HotSpot spot)
 		{
-			var ptr = memory.ReadIntPtr(Offset);
+			var ptr = spot.Memory.ReadIntPtr(Offset);
 
-			DisassembleRemoteCode(memory, ptr);
+			DisassembleRemoteCode(spot.Process, ptr);
 
 			return string.Join("\n", instructions.Select(i => i.Instruction));
 		}
@@ -59,10 +59,10 @@ namespace ReClassNET.Nodes
 			{
 				var value = view.Memory.ReadIntPtr(Offset);
 
-				var module = view.Memory.Process.GetModuleToPointer(value);
+				var module = view.Process.GetModuleToPointer(value);
 				if (module != null)
 				{
-					var symbols = view.Memory.Process.Symbols.GetSymbolsForModule(module);
+					var symbols = view.Process.Symbols.GetSymbolsForModule(module);
 					var symbol = symbols?.GetSymbolString(value, module);
 					if (!string.IsNullOrEmpty(symbol))
 					{
@@ -81,7 +81,7 @@ namespace ReClassNET.Nodes
 			{
 				var ptr = view.Memory.ReadIntPtr(Offset);
 
-				DisassembleRemoteCode(view.Memory, ptr);
+				DisassembleRemoteCode(view.Process, ptr);
 
 				var instructionSize = DrawInstructions(view, tx, y);
 
@@ -107,9 +107,9 @@ namespace ReClassNET.Nodes
 			return height;
 		}
 
-		private void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address)
+		private void DisassembleRemoteCode(RemoteProcess process, IntPtr address)
 		{
-			Contract.Requires(memory != null);
+			Contract.Requires(process != null);
 
 			if (this.address != address)
 			{
@@ -117,9 +117,9 @@ namespace ReClassNET.Nodes
 
 				this.address = address;
 
-				if (!address.IsNull() && memory.Process.IsValid)
+				if (!address.IsNull() && process.IsValid)
 				{
-					DisassembleRemoteCode(memory, address, out _);
+					DisassembleRemoteCode(process, address, out _);
 				}
 			}
 		}

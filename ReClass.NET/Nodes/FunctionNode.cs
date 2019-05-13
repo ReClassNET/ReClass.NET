@@ -23,9 +23,9 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_Function;
 		}
 
-		public override string GetToolTipText(HotSpot spot, MemoryBuffer memory)
+		public override string GetToolTipText(HotSpot spot)
 		{
-			DisassembleRemoteCode(memory, spot.Address);
+			DisassembleRemoteCode(spot.Process, spot.Address);
 
 			return string.Join("\n", instructions.Select(i => i.Instruction));
 		}
@@ -68,7 +68,7 @@ namespace ReClassNET.Nodes
 			var size = new Size(x - origX, view.Font.Height);
 
 			var ptr = view.Address + Offset;
-			DisassembleRemoteCode(view.Memory, ptr);
+			DisassembleRemoteCode(view.Process, ptr);
 
 			if (LevelsOpen[view.Level])
 			{
@@ -118,9 +118,9 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		private void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address)
+		private void DisassembleRemoteCode(RemoteProcess process, IntPtr address)
 		{
-			Contract.Requires(memory != null);
+			Contract.Requires(process != null);
 
 			if (this.address != address)
 			{
@@ -128,9 +128,9 @@ namespace ReClassNET.Nodes
 
 				this.address = address;
 
-				if (!address.IsNull() && memory.Process.IsValid)
+				if (!address.IsNull() && process.IsValid)
 				{
-					DisassembleRemoteCode(memory, address, out memorySize);
+					DisassembleRemoteCode(process, address, out memorySize);
 				}
 
 				GetParentContainer()?.ChildHasChanged(this);

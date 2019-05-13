@@ -13,8 +13,6 @@ namespace ReClassNET.Memory
 
 		private bool hasHistory;
 
-		public RemoteProcess Process { get; set; }
-
 		public byte[] RawData => data;
 
 		public int Size
@@ -81,19 +79,13 @@ namespace ReClassNET.Memory
 
 			return new MemoryBuffer(this)
 			{
-				Offset = Offset,
-				Process = Process
+				Offset = Offset
 			};
 		}
 
-		public void Update(IntPtr address)
+		public void UpdateFrom(IRemoteMemoryReader reader, IntPtr address)
 		{
-			Update(address, true);
-		}
-
-		public void Update(IntPtr address, bool setHistory)
-		{
-			if (Process == null)
+			if (reader == null)
 			{
 				data.FillWithZero();
 
@@ -102,14 +94,11 @@ namespace ReClassNET.Memory
 				return;
 			}
 
-			if (setHistory)
-			{
-				Array.Copy(data, historyData, data.Length);
+			Array.Copy(data, historyData, data.Length);
 
-				hasHistory = ContainsValidData;
-			}
+			hasHistory = ContainsValidData;
 
-			ContainsValidData = Process.ReadRemoteMemoryIntoBuffer(address, ref data);
+			ContainsValidData = reader.ReadRemoteMemoryIntoBuffer(address, ref data);
 			if (!ContainsValidData)
 			{
 				data.FillWithZero();

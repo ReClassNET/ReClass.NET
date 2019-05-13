@@ -54,14 +54,14 @@ namespace ReClassNET.Nodes
 			return new Size(maxWidth, y - origY);
 		}
 
-		protected void DisassembleRemoteCode(MemoryBuffer memory, IntPtr address, out int memorySize)
+		protected void DisassembleRemoteCode(RemoteProcess process, IntPtr address, out int memorySize)
 		{
-			Contract.Requires(memory != null);
+			Contract.Requires(process != null);
 
 			memorySize = 0;
 
-			var disassembler = new Disassembler(memory.Process.CoreFunctions);
-			foreach (var instruction in disassembler.RemoteDisassembleFunction(memory.Process, address, 8192))
+			var disassembler = new Disassembler(process.CoreFunctions);
+			foreach (var instruction in disassembler.RemoteDisassembleFunction(process, address, 8192))
 			{
 				memorySize += instruction.Length;
 

@@ -15,18 +15,18 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_Hex_32;
 		}
 
-		public override bool UseMemoryPreviewToolTip(HotSpot spot, MemoryBuffer memory, out IntPtr address)
+		public override bool UseMemoryPreviewToolTip(HotSpot spot, out IntPtr address)
 		{
-			var value = memory.ReadObject<UInt32FloatData>(Offset);
+			var value = spot.Memory.ReadObject<UInt32FloatData>(Offset);
 
 			address = value.IntPtr;
 
-			return memory.Process?.GetNamedAddress(value.IntPtr) != null;
+			return spot.Process?.GetNamedAddress(value.IntPtr) != null;
 		}
 
-		public override string GetToolTipText(HotSpot spot, MemoryBuffer memory)
+		public override string GetToolTipText(HotSpot spot)
 		{
-			var value = memory.ReadObject<UInt32FloatData>(Offset);
+			var value = spot.Memory.ReadObject<UInt32FloatData>(Offset);
 
 			return $"Int32: {value.IntValue}\nUInt32: 0x{value.UIntValue:X08}\nFloat: {value.FloatValue:0.000}";
 		}

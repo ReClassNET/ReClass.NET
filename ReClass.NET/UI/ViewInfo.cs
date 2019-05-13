@@ -12,6 +12,7 @@ namespace ReClassNET.UI
 		public Graphics Context { get; set; }
 		public FontEx Font { get; set; }
 
+		public RemoteProcess Process { get; set; }
 		public MemoryBuffer Memory { get; set; }
 
 		public DateTime CurrentTime { get; set; }
@@ -29,6 +30,7 @@ namespace ReClassNET.UI
 				Settings = Settings,
 				Context = Context,
 				Font = Font,
+				Process = Process,
 				Memory = Memory,
 				CurrentTime = CurrentTime,
 				ClientArea = ClientArea,

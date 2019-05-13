@@ -42,6 +42,8 @@ namespace ReClassNET.UI
 
 		public IntPtr Address { get; set; }
 
+		public RemoteProcess Process { get; set; }
+
 		public MemoryBuffer Memory { get; set; }
 	}
 }

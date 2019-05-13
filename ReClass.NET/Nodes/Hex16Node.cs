@@ -14,9 +14,9 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_Hex_16;
 		}
 
-		public override string GetToolTipText(HotSpot spot, MemoryBuffer memory)
+		public override string GetToolTipText(HotSpot spot)
 		{
-			var value = memory.ReadObject<UInt16Data>(Offset);
+			var value = spot.Memory.ReadObject<UInt16Data>(Offset);
 
 			return $"Int16: {value.ShortValue}\nUInt16: 0x{value.UShortValue:X04}";
 		}

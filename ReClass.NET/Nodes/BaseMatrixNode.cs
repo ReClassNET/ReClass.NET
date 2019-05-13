@@ -136,7 +136,7 @@ namespace ReClassNET.Nodes
 			{
 				if (float.TryParse(spot.Text, out var val))
 				{
-					spot.Memory.Process.WriteRemoteMemory(spot.Address + spot.Id * ValueTypeSize, val);
+					spot.Process.WriteRemoteMemory(spot.Address + spot.Id * ValueTypeSize, val);
 				}
 			}
 		}

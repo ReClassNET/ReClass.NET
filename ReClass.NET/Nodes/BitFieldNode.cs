@@ -209,7 +209,7 @@ namespace ReClassNET.Nodes
 					{
 						val &= (byte)~(1 << bit);
 					}
-					spot.Memory.Process.WriteRemoteMemory(spot.Address + add, val);
+					spot.Process.WriteRemoteMemory(spot.Address + add, val);
 				}
 			}
 		}

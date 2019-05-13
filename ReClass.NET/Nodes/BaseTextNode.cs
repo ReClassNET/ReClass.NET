@@ -88,7 +88,7 @@ namespace ReClassNET.Nodes
 			else if (spot.Id == 1)
 			{
 				var data = Encoding.GetBytes(spot.Text);
-				spot.Memory.Process.WriteRemoteMemory(spot.Address, data);
+				spot.Process.WriteRemoteMemory(spot.Address, data);
 			}
 		}
 

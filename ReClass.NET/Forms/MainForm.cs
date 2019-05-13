@@ -62,10 +62,8 @@ namespace ReClassNET.Forms
 				processInfoToolStripStatusLabel.Text = "No process selected";
 			};
 
-			memoryViewControl.Memory = new MemoryBuffer
-			{
-				Process = Program.RemoteProcess
-			};
+			memoryViewControl.Process = Program.RemoteProcess;
+			memoryViewControl.Memory = new MemoryBuffer();
 
 			pluginManager = new PluginManager(new DefaultPluginHost(this, Program.RemoteProcess, Program.Logger));
 		}
@@ -555,7 +553,7 @@ namespace ReClassNET.Forms
 
 			foreach (var g in hexNodes.GroupBy(n => n.Node.GetParentContainer()))
 			{
-				NodeDissector.DissectNodes(g.Select(h => (BaseHexNode)h.Node), g.First().Memory);
+				NodeDissector.DissectNodes(g.Select(h => (BaseHexNode)h.Node), Program.RemoteProcess, g.First().Memory);
 			}
 
 			ClearSelection();

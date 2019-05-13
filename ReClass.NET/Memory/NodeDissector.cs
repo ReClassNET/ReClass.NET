@@ -9,7 +9,7 @@ namespace ReClassNET.Memory
 {
 	public class NodeDissector
 	{
-		public static void DissectNodes(IEnumerable<BaseHexNode> nodes, MemoryBuffer memory)
+		public static void DissectNodes(IEnumerable<BaseHexNode> nodes, IProcessReader reader, MemoryBuffer memory)
 		{
 			Contract.Requires(nodes != null);
 			Contract.Requires(Contract.ForAll(nodes, n => n != null));
@@ -17,14 +17,14 @@ namespace ReClassNET.Memory
 
 			foreach (var node in nodes)
 			{
-				if (GuessNode(node, memory, out var guessedNode))
+				if (GuessNode(node, reader, memory, out var guessedNode))
 				{
 					node.GetParentContainer()?.ReplaceChildNode(node, guessedNode);
 				}
 			}
 		}
 
-		public static bool GuessNode(BaseHexNode node, MemoryBuffer memory, out BaseNode guessedNode)
+		public static bool GuessNode(BaseHexNode node, IProcessReader reader, MemoryBuffer memory, out BaseNode guessedNode)
 		{
 			Contract.Requires(node != null);
 			Contract.Requires(memory != null);
@@ -61,13 +61,13 @@ namespace ReClassNET.Memory
 #if RECLASSNET64
 			if (is8ByteAligned)
 			{
-				if (GuessPointerNode(data64.IntPtr, memory.Process, out guessedNode))
+				if (GuessPointerNode(data64.IntPtr, reader, out guessedNode))
 				{
 					return true;
 				}
 			}
 #else
-			if (GuessPointerNode(data32.IntPtr, memory.Process, out guessedNode))
+			if (GuessPointerNode(data32.IntPtr, reader, out guessedNode))
 			{
 				return true;
 			}

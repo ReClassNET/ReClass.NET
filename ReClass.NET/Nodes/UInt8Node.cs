@@ -30,7 +30,7 @@ namespace ReClassNET.Nodes
 			{
 				if (byte.TryParse(spot.Text, out var val) || spot.Text.TryGetHexString(out var hexValue) && byte.TryParse(hexValue, NumberStyles.HexNumber, null, out val))
 				{
-					spot.Memory.Process.WriteRemoteMemory(spot.Address, val);
+					spot.Process.WriteRemoteMemory(spot.Address, val);
 				}
 			}
 		}

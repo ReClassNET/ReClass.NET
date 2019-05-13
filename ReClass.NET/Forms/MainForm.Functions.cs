@@ -310,7 +310,7 @@ namespace ReClassNET.Forms
 
 					node.IsSelected = true;
 
-					var info = new MemoryViewControl.SelectedNodeInfo(node, selected.Memory, selected.Address, selected.Level);
+					var info = new MemoryViewControl.SelectedNodeInfo(node, selected.Process, selected.Memory, selected.Address, selected.Level);
 
 					newSelected.Add(info);
 
@@ -319,7 +319,7 @@ namespace ReClassNET.Forms
 					{
 						foreach (var createdNode in createdNodes)
 						{
-							hotSpotsToReplace.Enqueue(new MemoryViewControl.SelectedNodeInfo(createdNode, selected.Memory, selected.Address + createdNode.Offset - node.Offset, selected.Level));
+							hotSpotsToReplace.Enqueue(new MemoryViewControl.SelectedNodeInfo(createdNode, selected.Process, selected.Memory, selected.Address + createdNode.Offset - node.Offset, selected.Level));
 						}
 					}
 				}

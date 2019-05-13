@@ -27,7 +27,7 @@ namespace ReClassNET.Nodes
 			{
 				if (double.TryParse(spot.Text, out var val))
 				{
-					spot.Memory.Process.WriteRemoteMemory(spot.Address, val);
+					spot.Process.WriteRemoteMemory(spot.Address, val);
 				}
 			}
 		}

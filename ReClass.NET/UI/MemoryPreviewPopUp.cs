@@ -212,15 +212,15 @@ namespace ReClassNET.UI
 
 			memoryAddress = address;
 
-			var memory = panel.ViewInfo.Memory;
-			memory.Process = process;
-			memory.Update(address);
+			panel.ViewInfo.Process = process;
+
+			panel.ViewInfo.Memory.UpdateFrom(process, address);
 		}
 
 		/// <summary>Updates the memory buffer to get current data.</summary>
 		public void UpdateMemory()
 		{
-			panel.ViewInfo.Memory.Update(memoryAddress);
+			panel.ViewInfo.Memory.UpdateFrom(panel.ViewInfo.Process, memoryAddress);
 
 			panel.Invalidate();
 		}

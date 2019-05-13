@@ -24,7 +24,9 @@ namespace ReClassNET.UI
 			/// The selected node.
 			/// </summary>
 			public BaseNode Node { get; }
-			
+
+			public RemoteProcess Process { get; }
+
 			/// <summary>
 			/// The memory this node uses.
 			/// </summary>
@@ -37,12 +39,14 @@ namespace ReClassNET.UI
 
 			public int Level { get; }
 
-			public SelectedNodeInfo(BaseNode node, MemoryBuffer memory, IntPtr address, int level)
+			public SelectedNodeInfo(BaseNode node, RemoteProcess process, MemoryBuffer memory, IntPtr address, int level)
 			{
 				Contract.Requires(node != null);
+				Contract.Requires(process != null);
 				Contract.Requires(memory != null);
 
 				Node = node;
+				Process = process;
 				Memory = memory;
 				Address = address;
 				Level = level;
@@ -75,14 +79,18 @@ namespace ReClassNET.UI
 				classNode = value;
 				
 				VerticalScroll.Value = VerticalScroll.Minimum;
-				if (classNode != null && Memory?.Process != null)
+				if (classNode != null && Process != null)
 				{
-					classNode.UpdateAddress(Memory.Process);
+					classNode.UpdateAddress(Process);
 				}
 				
 				Invalidate();
 			}
 		}
+
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public RemoteProcess Process { get; set; }
 
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -148,9 +156,9 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			if (Memory.Process != null)
+			if (Process != null)
 			{
-				ClassNode.UpdateAddress(Memory.Process);
+				ClassNode.UpdateAddress(Process);
 			}
 
 			if (memoryPreviewPopUp.Visible)
@@ -159,13 +167,14 @@ namespace ReClassNET.UI
 			}
 
 			Memory.Size = ClassNode.MemorySize;
-			Memory.Update(ClassNode.Address);
+			Memory.UpdateFrom(Process, ClassNode.Address);
 
 			var view = new ViewInfo
 			{
 				Settings = Program.Settings,
 				Context = e.Graphics,
 				Font = font,
+				Process = Process,
 				Memory = Memory,
 				CurrentTime = DateTime.UtcNow,
 				ClientArea = ClientRectangle,
@@ -319,6 +328,7 @@ namespace ReClassNET.UI
 										{
 											Address = (IntPtr)(containerNode.Offset + n.Offset),
 											Node = n,
+											Process = first.Process,
 											Memory = first.Memory,
 											Level = first.Level
 										}))
@@ -465,15 +475,15 @@ namespace ReClassNET.UI
 				{
 					if (spot.Rect.Contains(toolTipPosition))
 					{
-						if (spot.Node.UseMemoryPreviewToolTip(spot, spot.Memory, out var previewAddress))
+						if (spot.Node.UseMemoryPreviewToolTip(spot, out var previewAddress))
 						{
-							memoryPreviewPopUp.InitializeMemory(spot.Memory.Process, previewAddress);
+							memoryPreviewPopUp.InitializeMemory(spot.Process, previewAddress);
 
 							memoryPreviewPopUp.Show(this, toolTipPosition.Relocate(16, 16));
 						}
 						else
 						{
-							var text = spot.Node.GetToolTipText(spot, spot.Memory);
+							var text = spot.Node.GetToolTipText(spot);
 							if (!string.IsNullOrEmpty(text))
 							{
 								nodeInfoToolTip.Show(text, this, toolTipPosition.Relocate(16, 16));
@@ -599,6 +609,7 @@ namespace ReClassNET.UI
 								{
 									Address = (IntPtr)(containerNode.Offset + n.Offset),
 									Node = n,
+									Process = toSelect.Process,
 									Memory = toSelect.Memory,
 									Level = toSelect.Level
 								}))
@@ -704,7 +715,7 @@ namespace ReClassNET.UI
 		public IReadOnlyList<SelectedNodeInfo> GetSelectedNodes()
 		{
 			return selectedNodes
-				.Select(h => new SelectedNodeInfo(h.Node, h.Memory, h.Address, h.Level))
+				.Select(h => new SelectedNodeInfo(h.Node, h.Process, h.Memory, h.Address, h.Level))
 				.ToList();
 		}
 
@@ -718,7 +729,7 @@ namespace ReClassNET.UI
 
 			selectedNodes.Clear();
 
-			selectedNodes.AddRange(nodes.Select(i => new HotSpot { Type = HotSpotType.Select, Node = i.Node, Memory = i.Memory, Address = i.Address, Level = i.Level }));
+			selectedNodes.AddRange(nodes.Select(i => new HotSpot { Type = HotSpotType.Select, Node = i.Node, Process = i.Process, Memory = i.Memory, Address = i.Address, Level = i.Level }));
 			selectedNodes.ForEach(h => h.Node.IsSelected = true);
 
 			OnSelectionChanged();

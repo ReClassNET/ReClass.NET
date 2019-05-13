@@ -30,7 +30,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var ptr = view.Memory.ReadIntPtr(Offset);
-			var text = view.Memory.Process.ReadRemoteString(Encoding, ptr, 64);
+			var text = view.Process.ReadRemoteString(Encoding, ptr, 64);
 
 			var origX = x;
 
