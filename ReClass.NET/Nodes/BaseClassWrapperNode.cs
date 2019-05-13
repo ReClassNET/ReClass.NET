@@ -4,8 +4,10 @@
 	{
 		public override void Initialize()
 		{
-			InnerNode = ClassNode.Create();
-			InnerNode.Initialize();
+			var node = ClassNode.Create();
+			node.Initialize();
+
+			ChangeInnerNode(node);
 		}
 
 		public override bool CanChangeInnerNodeTo(BaseNode node)

@@ -6,7 +6,7 @@ namespace ReClassNET.Nodes
 	public abstract class BaseWrapperNode : BaseNode
 	{
 		/// <summary>Gets or sets the inner node.</summary>
-		public BaseNode InnerNode { get; protected set; }
+		public BaseNode InnerNode { get; private set; }
 
 		/// <summary>Gets signaled if the inner node was changed.</summary>
 		public event NodeEventHandler InnerNodeChanged;

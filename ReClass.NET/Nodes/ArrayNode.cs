@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using ReClassNET.Extensions;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -20,7 +19,7 @@ namespace ReClassNET.Nodes
 
 		public override void Initialize()
 		{
-			InnerNode = IntPtr.Size == 4 ? (BaseNode)new Hex32Node() : new Hex64Node();
+			ChangeInnerNode(IntPtr.Size == 4 ? (BaseNode)new Hex32Node() : new Hex64Node());
 		}
 
 		public override Size Draw(ViewInfo view, int x, int y)
