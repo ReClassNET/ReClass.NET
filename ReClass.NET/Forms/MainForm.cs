@@ -29,6 +29,10 @@ namespace ReClassNET.Forms
 		private ReClassNetProject currentProject;
 		public ReClassNetProject CurrentProject => currentProject;
 
+		private ClassNode currentClassNode;
+
+		private readonly MemoryBuffer memoryViewBuffer = new MemoryBuffer();
+
 		private Task updateProcessInformationsTask;
 		private Task loadSymbolsTask;
 		private CancellationTokenSource loadSymbolsTaskToken;
@@ -36,6 +40,20 @@ namespace ReClassNET.Forms
 		public ProjectView ProjectView => projectView;
 
 		public MenuStrip MainMenu => mainMenuStrip;
+
+		public ClassNode CurrentClassNode
+		{
+			get => currentClassNode;
+			set
+			{
+				currentClassNode = value;
+
+				projectView.SelectedClass = value;
+
+				memoryViewControl.Reset();
+				memoryViewControl.Invalidate();
+			}
+		}
 
 		public MainForm()
 		{
@@ -61,9 +79,6 @@ namespace ReClassNET.Forms
 				Text = $"{Constants.ApplicationName} ({Constants.Platform})";
 				processInfoToolStripStatusLabel.Text = "No process selected";
 			};
-
-			memoryViewControl.Process = Program.RemoteProcess;
-			memoryViewControl.Memory = new MemoryBuffer();
 
 			pluginManager = new PluginManager(new DefaultPluginHost(this, Program.RemoteProcess, Program.Logger));
 		}
@@ -250,8 +265,6 @@ namespace ReClassNET.Forms
 		private void clearProjectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SetProject(new ReClassNetProject());
-
-			memoryViewControl.ClassNode = null;
 		}
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -744,9 +757,7 @@ namespace ReClassNET.Forms
 
 		private void classesView_ClassSelected(object sender, ClassNode node)
 		{
-			memoryViewControl.ClassNode = node;
-
-			memoryViewControl.Invalidate();
+			CurrentClassNode = node;
 		}
 
 		private void memoryViewControl_KeyDown(object sender, KeyEventArgs e)
@@ -973,6 +984,26 @@ namespace ReClassNET.Forms
 			using (var elf = new EnumListForm(currentProject))
 			{
 				elf.ShowDialog();
+			}
+		}
+
+		private void memoryViewControl_DrawContextRequested(object sender, DrawContextRequestEventArgs args)
+		{
+			var process = Program.RemoteProcess;
+
+			var classNode = CurrentClassNode;
+			if (classNode != null)
+			{
+				classNode.UpdateAddress(process);
+
+				memoryViewBuffer.Size = classNode.MemorySize;
+				memoryViewBuffer.UpdateFrom(process, classNode.Address);
+
+				args.Settings = Program.Settings;
+				args.Process = process;
+				args.Memory = memoryViewBuffer;
+				args.Node = classNode;
+				args.BaseAddress = classNode.Address;
 			}
 		}
 	}

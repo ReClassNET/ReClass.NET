@@ -157,12 +157,12 @@
 			this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.goToClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cleanUnusedClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showEnumsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
 			this.generateCppCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateCSharpCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.showEnumsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
@@ -349,7 +349,7 @@
 			// 
 			this.editEnumsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Category;
 			this.editEnumsToolStripMenuItem.Name = "editEnumsToolStripMenuItem";
-			this.editEnumsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.editEnumsToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
 			this.editEnumsToolStripMenuItem.Text = "Edit enums...";
 			this.editEnumsToolStripMenuItem.Click += new System.EventHandler(this.editEnumsToolStripMenuItem_Click);
 			// 
@@ -362,6 +362,7 @@
 			this.memoryViewControl.NodeContextMenuStrip = this.selectedNodeContextMenuStrip;
 			this.memoryViewControl.Size = new System.Drawing.Size(936, 524);
 			this.memoryViewControl.TabIndex = 0;
+			this.memoryViewControl.DrawContextRequested += new ReClassNET.UI.DrawContextRequestEventHandler(this.memoryViewControl_DrawContextRequested);
 			this.memoryViewControl.SelectionChanged += new System.EventHandler(this.memoryViewControl_SelectionChanged);
 			this.memoryViewControl.ChangeClassTypeClick += new ReClassNET.UI.NodeClickEventHandler(this.memoryViewControl_ChangeClassTypeClick);
 			this.memoryViewControl.ChangeWrappedTypeClick += new ReClassNET.UI.NodeClickEventHandler(this.memoryViewControl_ChangeWrappedTypeClick);
@@ -1301,6 +1302,14 @@
 			this.cleanUnusedClassesToolStripMenuItem.Text = "Remove unused classes";
 			this.cleanUnusedClassesToolStripMenuItem.Click += new System.EventHandler(this.cleanUnusedClassesToolStripMenuItem_Click);
 			// 
+			// showEnumsToolStripMenuItem
+			// 
+			this.showEnumsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Category;
+			this.showEnumsToolStripMenuItem.Name = "showEnumsToolStripMenuItem";
+			this.showEnumsToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+			this.showEnumsToolStripMenuItem.Text = "Show Enums...";
+			this.showEnumsToolStripMenuItem.Click += new System.EventHandler(this.showEnumsToolStripMenuItem_Click);
+			// 
 			// toolStripSeparator16
 			// 
 			this.toolStripSeparator16.Name = "toolStripSeparator16";
@@ -1337,14 +1346,6 @@
 			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-			// 
-			// showEnumsToolStripMenuItem
-			// 
-			this.showEnumsToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Category;
-			this.showEnumsToolStripMenuItem.Name = "showEnumsToolStripMenuItem";
-			this.showEnumsToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-			this.showEnumsToolStripMenuItem.Text = "Show Enums...";
-			this.showEnumsToolStripMenuItem.Click += new System.EventHandler(this.showEnumsToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 

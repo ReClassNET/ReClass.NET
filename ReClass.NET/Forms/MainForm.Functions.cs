@@ -112,7 +112,7 @@ namespace ReClassNET.Forms
 			projectView.Clear();
 			projectView.AddEnums(currentProject.Enums);
 			projectView.AddClasses(currentProject.Classes);
-			memoryViewControl.ClassNode = currentProject.Classes.FirstOrDefault();
+			CurrentClassNode = currentProject.Classes.FirstOrDefault();
 		}
 
 		/// <summary>Opens the <see cref="InputBytesForm"/> and calls <paramref name="callback"/> with the result.</summary>
@@ -123,12 +123,13 @@ namespace ReClassNET.Forms
 			Contract.Requires(title != null);
 			Contract.Requires(callback != null);
 
-			if (memoryViewControl.ClassNode == null)
+			var classNode = CurrentClassNode;
+			if (classNode == null)
 			{
 				return;
 			}
 
-			using (var ib = new InputBytesForm(memoryViewControl.ClassNode.MemorySize))
+			using (var ib = new InputBytesForm(classNode.MemorySize))
 			{
 				ib.Text = title;
 

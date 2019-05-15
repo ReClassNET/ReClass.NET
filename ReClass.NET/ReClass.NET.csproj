@@ -313,6 +313,7 @@
     </Compile>
     <Compile Include="UI\BannerFactory.cs" />
     <Compile Include="UI\BindingDisplayWrapper.cs" />
+    <Compile Include="UI\DrawContextRequestEventArgs.cs" />
     <Compile Include="UI\NodeClickEventArgs.cs" />
     <Compile Include="UI\DpiUtil.cs" />
     <Compile Include="Nodes\INodeInfoReader.cs" />

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
@@ -53,8 +51,6 @@ namespace ReClassNET.UI
 			}
 		}
 
-		private ClassNode classNode;
-
 		private readonly List<HotSpot> hotSpots = new List<HotSpot>();
 		private readonly List<HotSpot> selectedNodes = new List<HotSpot>();
 
@@ -63,41 +59,9 @@ namespace ReClassNET.UI
 
 		private readonly FontEx font;
 
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public ClassNode ClassNode
-		{
-			get => classNode;
-			set
-			{
-				editBox.Visible = false;
-
-				ClearSelection();
-
-				OnSelectionChanged();
-
-				classNode = value;
-				
-				VerticalScroll.Value = VerticalScroll.Minimum;
-				if (classNode != null && Process != null)
-				{
-					classNode.UpdateAddress(Process);
-				}
-				
-				Invalidate();
-			}
-		}
-
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public RemoteProcess Process { get; set; }
-
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public MemoryBuffer Memory { get; set; }
-
 		public ContextMenuStrip NodeContextMenuStrip { get; set; }
 
+		public event DrawContextRequestEventHandler DrawContextRequested;
 		public event EventHandler SelectionChanged;
 		public event NodeClickEventHandler ChangeClassTypeClick;
 		public event NodeClickEventHandler ChangeWrappedTypeClick;
@@ -144,6 +108,11 @@ namespace ReClassNET.UI
 				return;
 			}
 
+			var args = new DrawContextRequestEventArgs();
+
+			var requestHandler = DrawContextRequested;
+			requestHandler?.Invoke(this, args);
+
 			hotSpots.Clear();
 
 			using (var brush = new SolidBrush(Program.Settings.BackgroundColor))
@@ -151,14 +120,9 @@ namespace ReClassNET.UI
 				e.Graphics.FillRectangle(brush, ClientRectangle);
 			}
 
-			if (ClassNode == null)
+			if (args.Process == null || args.Memory == null || args.Node == null)
 			{
 				return;
-			}
-
-			if (Process != null)
-			{
-				ClassNode.UpdateAddress(Process);
 			}
 
 			if (memoryPreviewPopUp.Visible)
@@ -166,71 +130,59 @@ namespace ReClassNET.UI
 				memoryPreviewPopUp.UpdateMemory();
 			}
 
-			Memory.Size = ClassNode.MemorySize;
-			Memory.UpdateFrom(Process, ClassNode.Address);
-
 			var view = new ViewInfo
 			{
-				Settings = Program.Settings,
+				Settings = args.Settings,
 				Context = e.Graphics,
 				Font = font,
-				Process = Process,
-				Memory = Memory,
-				CurrentTime = DateTime.UtcNow,
+				Process = args.Process,
+				Memory = args.Memory,
+				CurrentTime = args.CurrentTime,
 				ClientArea = ClientRectangle,
 				HotSpots = hotSpots,
-				Address = classNode.Address,
+				Address = args.BaseAddress,
 				Level = 0,
 				MultipleNodesSelected = selectedNodes.Count > 1
 			};
 
-			try
+			var drawnSize = args.Node.Draw(
+				view,
+				-HorizontalScroll.Value,
+				-VerticalScroll.Value * font.Height
+			);
+			drawnSize.Width += 10;
+
+			/*foreach (var spot in hotSpots.Where(h => h.Type == HotSpotType.Select))
 			{
-				var drawnSize = ClassNode.Draw(
-					view,
-					-HorizontalScroll.Value,
-					-VerticalScroll.Value * font.Height
-				);
-				drawnSize.Width += 50;
+				e.Graphics.DrawRectangle(new Pen(new SolidBrush(Color.FromArgb(150, 255, 0, 0)), 1), spot.Rect);
+			}*/
 
-				/*foreach (var spot in hotSpots.Where(h => h.Type == HotSpotType.Select))
-				{
-					e.Graphics.DrawRectangle(new Pen(new SolidBrush(Color.FromArgb(150, 255, 0, 0)), 1), spot.Rect);
-				}*/
+			if (drawnSize.Height > ClientSize.Height)
+			{
+				VerticalScroll.Enabled = true;
 
-				if (drawnSize.Height > ClientSize.Height)
-				{
-					VerticalScroll.Enabled = true;
-
-					VerticalScroll.LargeChange = ClientSize.Height / font.Height;
-					VerticalScroll.Maximum = (drawnSize.Height - ClientSize.Height) / font.Height + VerticalScroll.LargeChange;
-				}
-				else
-				{
-					VerticalScroll.Enabled = false;
-
-					VerticalScroll.Value = VerticalScroll.Minimum;
-				}
-
-				if (drawnSize.Width > ClientSize.Width)
-				{
-					HorizontalScroll.Enabled = true;
-
-					HorizontalScroll.LargeChange = ClientSize.Width;
-					HorizontalScroll.Maximum = drawnSize.Width - ClientSize.Width + HorizontalScroll.LargeChange;
-				}
-				else
-				{
-					HorizontalScroll.Enabled = false;
-
-					HorizontalScroll.Value = HorizontalScroll.Minimum;
-				}
+				VerticalScroll.LargeChange = ClientSize.Height / font.Height;
+				VerticalScroll.Maximum = (drawnSize.Height - ClientSize.Height) / font.Height + VerticalScroll.LargeChange;
 			}
-			catch (Exception)
+			else
 			{
-				Debug.Assert(false);
+				VerticalScroll.Enabled = false;
 
-				throw;
+				VerticalScroll.Value = VerticalScroll.Minimum;
+			}
+
+			if (drawnSize.Width > ClientSize.Width)
+			{
+				HorizontalScroll.Enabled = true;
+
+				HorizontalScroll.LargeChange = ClientSize.Width;
+				HorizontalScroll.Maximum = drawnSize.Width - ClientSize.Width + HorizontalScroll.LargeChange;
+			}
+			else
+			{
+				HorizontalScroll.Enabled = false;
+
+				HorizontalScroll.Value = HorizontalScroll.Minimum;
 			}
 		}
 
@@ -758,6 +710,18 @@ namespace ReClassNET.UI
 			OnSelectionChanged();
 
 			//Invalidate();
+		}
+
+		/// <summary>
+		/// Resets the control to the initial state.
+		/// </summary>
+		public void Reset()
+		{
+			ClearSelection();
+
+			editBox.Visible = false;
+
+			VerticalScroll.Value = VerticalScroll.Minimum;
 		}
 	}
 }
