@@ -18,6 +18,15 @@ namespace ReClassNET.Nodes
 			LevelsOpen.DefaultValue = true;
 		}
 
+		public override void Initialize()
+		{
+			var node = new ClassInstanceNode();
+			node.Initialize();
+			((BaseContainerNode)node.InnerNode).AddBytes(16 * IntPtr.Size);
+
+			ChangeInnerNode(node);
+		}
+
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
 			name = "Pointer";
