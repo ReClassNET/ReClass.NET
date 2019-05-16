@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ReClassNET.AddressParser;
 using ReClassNET.CodeGenerator;
 using ReClassNET.Core;
 using ReClassNET.DataExchange.ReClass;
@@ -994,16 +995,24 @@ namespace ReClassNET.Forms
 			var classNode = CurrentClassNode;
 			if (classNode != null)
 			{
-				classNode.UpdateAddress(process);
-
 				memoryViewBuffer.Size = classNode.MemorySize;
-				memoryViewBuffer.UpdateFrom(process, classNode.Address);
+
+				IntPtr address;
+				try
+				{
+					address = process.ParseAddress(classNode.AddressFormula);
+				}
+				catch (ParseException)
+				{
+					address = IntPtr.Zero;
+				}
+				memoryViewBuffer.UpdateFrom(process, address);
 
 				args.Settings = Program.Settings;
 				args.Process = process;
 				args.Memory = memoryViewBuffer;
 				args.Node = classNode;
-				args.BaseAddress = classNode.Address;
+				args.BaseAddress = address;
 			}
 		}
 	}

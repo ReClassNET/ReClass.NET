@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
-using ReClassNET.AddressParser;
-using ReClassNET.Extensions;
-using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -19,8 +14,10 @@ namespace ReClassNET.Nodes
 
 #if RECLASSNET64
 		public static IntPtr DefaultAddress { get; } = (IntPtr)0x140000000;
+		public static string DefaultAddressFormula { get; } = "140000000";
 #else
 		public static IntPtr DefaultAddress { get; } = (IntPtr)0x400000;
+		public static string DefaultAddressFormula { get; } = "400000";
 #endif
 
 		public override int MemorySize => Nodes.Sum(n => n.MemorySize);
@@ -39,20 +36,7 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		private IntPtr address;
-
-		public IntPtr Address
-		{
-			get => address;
-			set
-			{
-				Contract.Ensures(AddressFormula != null);
-				address = value;
-				AddressFormula = value.ToString("X");
-			}
-		}
-
-		public string AddressFormula { get; set; }
+		public string AddressFormula { get; set; } = DefaultAddressFormula;
 
 		public event NodeEventHandler NodesChanged;
 
@@ -63,8 +47,6 @@ namespace ReClassNET.Nodes
 			LevelsOpen.DefaultValue = true;
 
 			Uuid = new NodeUuid(true);
-
-			Address = DefaultAddress;
 
 			if (notifyClassCreated)
 			{
@@ -205,20 +187,6 @@ namespace ReClassNET.Nodes
 			if (spot.Id == 0)
 			{
 				AddressFormula = spot.Text;
-			}
-		}
-
-		public void UpdateAddress(RemoteProcess process)
-		{
-			Contract.Requires(process != null);
-
-			try
-			{
-				address = process.ParseAddress(AddressFormula);
-			}
-			catch (ParseException)
-			{
-				Address = IntPtr.Zero;
 			}
 		}
 

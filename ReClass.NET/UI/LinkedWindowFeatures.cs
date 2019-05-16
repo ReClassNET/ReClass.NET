@@ -22,10 +22,10 @@ namespace ReClassNET.UI
 			var classView = Program.MainForm.ProjectView;
 
 			var node = ClassNode.Create();
-			node.Address = address;
+			node.AddressFormula = address.ToString("X");
 			if (addDefaultBytes)
 			{
-				node.AddBytes(64);
+				node.AddBytes(16 * IntPtr.Size);
 			}
 
 			classView.SelectedClass = node;
@@ -56,7 +56,7 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			classNode.Address = address;
+			classNode.AddressFormula = address.ToString("X");
 		}
 
 		public static void FindWhatInteractsWithAddress(IntPtr address, int size, bool writeOnly)
