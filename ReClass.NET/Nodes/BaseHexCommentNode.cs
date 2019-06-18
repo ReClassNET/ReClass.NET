@@ -85,7 +85,7 @@ namespace ReClassNET.Nodes
 
 					foreach (var reader in NodeInfoReader)
 					{
-						var info = reader.ReadNodeInfo(this, nodeAddress, ivalue, view.Memory);
+						var info = reader.ReadNodeInfo(this, view.Process, view.Memory, nodeAddress, ivalue);
 						if (info != null)
 						{
 							x = AddText(view, x, y, view.Settings.PluginColor, HotSpot.ReadOnlyId, info) + view.Font.Width;
