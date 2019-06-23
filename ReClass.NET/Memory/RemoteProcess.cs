@@ -296,7 +296,7 @@ namespace ReClassNET.Memory
 				var sb = new StringBuilder(encoding.GetString(data));
 				for (var i = 0; i < sb.Length; ++i)
 				{
-					if (sb[i] == 0)
+					if (sb[i] == '\0')
 					{
 						sb.Length = i;
 						break;

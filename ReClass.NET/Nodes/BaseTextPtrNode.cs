@@ -8,6 +8,8 @@ namespace ReClassNET.Nodes
 {
 	public abstract class BaseTextPtrNode : BaseNode
 	{
+		private const int MaxStringCharacterCount = 256;
+
 		public override int MemorySize => IntPtr.Size;
 
 		/// <summary>The encoding of the string.</summary>
@@ -30,7 +32,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var ptr = view.Memory.ReadIntPtr(Offset);
-			var text = view.Process.ReadRemoteString(Encoding, ptr, 64);
+			var text = view.Process.ReadRemoteString(Encoding, ptr, MaxStringCharacterCount);
 
 			var origX = x;
 
