@@ -47,7 +47,7 @@ namespace ReClassNET.Nodes
 			}
 
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "= '");
-			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text);
+			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.ReadOnlyId, text);
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
 
 			x = AddComment(view, x, y);
