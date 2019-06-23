@@ -66,16 +66,26 @@ namespace ReClassNET.Nodes
 				{
 					var data = view.Process.ReadRemoteMemory(ivalue, 64);
 
+					var isWideString = false;
+					string text = null;
+
 					// First check if it could be an UTF8 string and if not try UTF16.
 					if (data.Take(IntPtr.Size).InterpretAsSingleByteCharacter().IsPrintableData())
 					{
-						var text = new string(Encoding.UTF8.GetChars(data).TakeWhile(c => c != 0).ToArray());
-						x = AddText(view, x, y, view.Settings.TextColor, HotSpot.ReadOnlyId, $"'{text}'") + view.Font.Width;
+						text = new string(Encoding.UTF8.GetChars(data).TakeWhile(c => c != 0).ToArray());
 					}
 					else if(data.Take(IntPtr.Size * 2).InterpretAsDoubleByteCharacter().IsPrintableData())
 					{
-						var text = new string(Encoding.Unicode.GetChars(data).TakeWhile(c => c != 0).ToArray());
-						x = AddText(view, x, y, view.Settings.TextColor, HotSpot.ReadOnlyId, $"L'{text}'") + view.Font.Width;
+						isWideString = true;
+
+						text = new string(Encoding.Unicode.GetChars(data).TakeWhile(c => c != 0).ToArray());
+					}
+
+					if (text != null)
+					{
+						x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, isWideString ? "L'" : "'");
+						x = AddText(view, x, y, view.Settings.TextColor, HotSpot.ReadOnlyId, text);
+						x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
 					}
 				}
 
