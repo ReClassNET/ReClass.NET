@@ -146,5 +146,24 @@ namespace ReClass.NET_Tests.Extensions
 		{
 			Check.That(sut.IsPrintableData()).IsFalse();
 		}
+
+		[Theory]
+		[InlineData("", false, null)]
+		[InlineData("-", false, null)]
+		[InlineData("-0", false, null)]
+		[InlineData("-0x0", false, null)]
+		[InlineData("-h0", false, null)]
+		[InlineData("0", true, "0")]
+		[InlineData("h0", true, "0")]
+		[InlineData("0x0", true, "0")]
+		[InlineData("0123456789abcdef", true, "0123456789abcdef")]
+		[InlineData("h0123456789abcdef", true, "0123456789abcdef")]
+		[InlineData("0x0123456789abcdef", true, "0123456789abcdef")]
+		[InlineData("0123456789ABCDEF", true, "0123456789ABCDEF")]
+		public void TestTryGetHexString(string input, bool expectedResult, string expectedValue)
+		{
+			Check.That(input.TryGetHexString(out var value)).IsEqualTo(expectedResult);
+			Check.That(value).IsEqualTo(expectedValue);
+		}
 	}
 }

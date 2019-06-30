@@ -97,10 +97,12 @@ namespace ReClassNET.Extensions
 			return s.Substring(0, length);
 		}
 
-		private static readonly Regex HexRegex = new Regex("(0x|h)?([0-9A-F]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+		private static readonly Regex hexadecimalValueRegex = new Regex("^(0x|h)?([0-9A-F]+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 		public static bool TryGetHexString(this string s, out string value)
 		{
-			var match = HexRegex.Match(s);
+			Contract.Requires(s != null);
+
+			var match = hexadecimalValueRegex.Match(s);
 			value = match.Success ? match.Groups[2].Value : null;
 
 			return match.Success;
