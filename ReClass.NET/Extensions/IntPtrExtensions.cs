@@ -20,7 +20,7 @@ namespace ReClassNET.Extensions
 #if RECLASSNET64
 			return ptr.InRange((IntPtr)0x10000, (IntPtr)long.MaxValue);
 #else
-			return ptr.InRange((IntPtr)0x10000, (IntPtr)int.MaxValue);
+			return ptr.IsInRange((IntPtr)0x10000, (IntPtr)int.MaxValue);
 #endif
 		}
 
@@ -94,7 +94,7 @@ namespace ReClassNET.Extensions
 
 		[Pure]
 		[DebuggerStepThrough]
-		public static bool InRange(this IntPtr address, IntPtr start, IntPtr end)
+		public static bool IsInRange(this IntPtr address, IntPtr start, IntPtr end)
 		{
 #if RECLASSNET64
 			var val = (ulong)address.ToInt64();
@@ -120,7 +120,7 @@ namespace ReClassNET.Extensions
 		[DebuggerStepThrough]
 		public static int CompareToRange(this IntPtr address, IntPtr start, IntPtr end)
 		{
-			if (InRange(address, start, end))
+			if (IsInRange(address, start, end))
 			{
 				return 0;
 			}
