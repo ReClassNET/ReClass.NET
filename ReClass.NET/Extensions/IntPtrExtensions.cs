@@ -156,11 +156,15 @@ namespace ReClassNET.Extensions
 #endif
 		}
 
+		[Pure]
+		[DebuggerStepThrough]
 		public static IntPtr From(int value)
 		{
 			return (IntPtr)value;
 		}
 
+		[Pure]
+		[DebuggerStepThrough]
 		public static IntPtr From(long value)
 		{
 #if RECLASSNET64
