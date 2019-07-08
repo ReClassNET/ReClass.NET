@@ -80,6 +80,9 @@
     <Compile Include="Extensions\StringExtensionTest.cs" />
     <Compile Include="Extensions\StringReaderExtensionTest.cs" />
     <Compile Include="MemoryScanner\BytePatternTest.cs" />
+    <Compile Include="MemoryScanner\Comparer\ByteMemoryComparerTest.cs" />
+    <Compile Include="MemoryScanner\Comparer\ShortMemoryComparerTest.cs" />
+    <Compile Include="MemoryScanner\Comparer\LongMemoryComparerTest.cs" />
     <Compile Include="MemoryScanner\Comparer\IntegerMemoryComparerTest.cs" />
     <Compile Include="Memory\MemoryBufferTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
