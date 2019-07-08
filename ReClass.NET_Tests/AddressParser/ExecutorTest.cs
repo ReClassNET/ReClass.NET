@@ -44,7 +44,8 @@ namespace ReClass.NET_Tests.AddressParser
 			new object[] { "<test.module>", (IntPtr)0x100 },
 			new object[] { "<test.module> + 0", (IntPtr)0x100 },
 			new object[] { "<test.module> + 10", (IntPtr)0x110 },
-			new object[] { "<test.module> * 2", (IntPtr)0x200 }
+			new object[] { "<test.module> * 2", (IntPtr)0x200 },
+			new object[] { "<not.found>", (IntPtr)0x0 },
 		};
 
 		[Theory]
