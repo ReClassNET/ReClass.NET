@@ -18,7 +18,7 @@ namespace ReClassNET.Extensions
 		public static bool MayBeValid(this IntPtr ptr)
 		{
 #if RECLASSNET64
-			return ptr.InRange((IntPtr)0x10000, (IntPtr)long.MaxValue);
+			return ptr.IsInRange((IntPtr)0x10000, (IntPtr)long.MaxValue);
 #else
 			return ptr.IsInRange((IntPtr)0x10000, (IntPtr)int.MaxValue);
 #endif
