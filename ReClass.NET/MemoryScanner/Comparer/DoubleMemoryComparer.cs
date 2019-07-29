@@ -21,14 +21,6 @@ namespace ReClassNET.MemoryScanner.Comparer
 		{
 			CompareType = compareType;
 
-			if (compareType == ScanCompareType.Between || compareType == ScanCompareType.BetweenOrEqual)
-			{
-				if (value1 > value2)
-				{
-					Utils.Swap(ref value1, ref value2);
-				}
-			}
-
 			RoundType = roundType;
 			this.significantDigits = Math.Max(significantDigits, 1);
 			Value1 = Math.Round(value1, this.significantDigits, MidpointRounding.AwayFromZero);
