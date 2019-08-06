@@ -26,7 +26,7 @@ namespace ReClassNET.Project
 
 		public void SetData(bool useFlagsMode, UnderlyingTypeSize size, IEnumerable<KeyValuePair<string, long>> values)
 		{
-			var temp = values.OrderBy(t => t.Key).ToList();
+			var temp = values.OrderBy(t => t.Value).ToList();
 
 			if (useFlagsMode)
 			{
