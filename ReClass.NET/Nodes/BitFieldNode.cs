@@ -109,6 +109,8 @@ namespace ReClassNET.Nodes
 
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
+			const int BitsPerBlock = 4;
+
 			if (IsHidden && !IsWrapped)
 			{
 				return DrawHidden(view, x, y);
@@ -135,7 +137,7 @@ namespace ReClassNET.Nodes
 
 			for (var i = 0; i < bits; ++i)
 			{
-				var rect = new Rectangle(x + i * view.Font.Width, y, view.Font.Width, view.Font.Height);
+				var rect = new Rectangle(x + (i + i / BitsPerBlock) * view.Font.Width, y, view.Font.Width, view.Font.Height);
 				AddHotSpot(view, rect, string.Empty, i, HotSpotType.Edit);
 			}
 

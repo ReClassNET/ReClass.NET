@@ -51,15 +51,17 @@ namespace ReClassNET.Util
 
 		private static string AddPaddingAndBuildBlocks(int bits, string value)
 		{
+			const int BitsPerBlock = 4;
+
 			var sb = new StringBuilder(bits);
 
 			var padding = bits - value.Length;
 
 			// Add full padding blocks.
-			while (padding > 4)
+			while (padding > BitsPerBlock)
 			{
 				sb.Append("0000 ");
-				padding -= 4;
+				padding -= BitsPerBlock;
 			}
 
 			// Add only a part of a block.
@@ -72,7 +74,7 @@ namespace ReClassNET.Util
 				}
 
 				// and {4 - padding} bits of the value.
-				sb.Append(value, 0, 4 - padding);
+				sb.Append(value, 0, BitsPerBlock - padding);
 
 				if (value.Length > padding)
 				{
@@ -81,10 +83,10 @@ namespace ReClassNET.Util
 			}
 
 			// Add all remaining blocks.
-			for (var i = padding == 0 ? 0 : 4 - padding; i < value.Length; i += 4)
+			for (var i = padding == 0 ? 0 : BitsPerBlock - padding; i < value.Length; i += BitsPerBlock)
 			{
-				sb.Append(value, i, 4);
-				if (i < value.Length - 4)
+				sb.Append(value, i, BitsPerBlock);
+				if (i < value.Length - BitsPerBlock)
 				{
 					sb.Append(' ');
 				}
