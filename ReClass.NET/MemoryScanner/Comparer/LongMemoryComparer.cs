@@ -15,14 +15,6 @@ namespace ReClassNET.MemoryScanner.Comparer
 		{
 			CompareType = compareType;
 
-			if (compareType == ScanCompareType.Between || compareType == ScanCompareType.BetweenOrEqual)
-			{
-				if (value1 > value2)
-				{
-					Utils.Swap(ref value1, ref value2);
-				}
-			}
-
 			Value1 = value1;
 			Value2 = value2;
 		}

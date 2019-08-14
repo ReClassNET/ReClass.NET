@@ -23,10 +23,6 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 			Check.That(sut.ValueSize).IsEqualTo(sizeof(long));
 			Check.That(sut.Value1).IsOneOf(value1, value2);
 			Check.That(sut.Value2).IsOneOf(value1, value2);
-			if (compareType == ScanCompareType.Between || compareType == ScanCompareType.BetweenOrEqual)
-			{
-				Check.That(sut.Value1 <= sut.Value2).IsTrue();
-			}
 		}
 
 		public static TheoryData<ScanCompareType, long, long, byte[], bool, ScanResult> GetTestCompareBasicData() => new TheoryData<ScanCompareType, long, long, byte[], bool, ScanResult>
