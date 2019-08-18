@@ -348,6 +348,8 @@ namespace ReClassNET.CodeGenerator
 			writer.Indent--;
 			writer.Write("}; //Size: 0x");
 			writer.WriteLine($"{@class.MemorySize:X04}");
+
+			writer.WriteLine($"static_assert(sizeof({@class.Name}) == 0x{@class.MemorySize:X});");
 		}
 
 		/// <summary>
