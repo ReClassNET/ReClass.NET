@@ -51,7 +51,12 @@ namespace ReClassNET.Nodes
 			throw new Exception(); // TODO
 		}
 
-		private long ReadValueFromMemory(MemoryBuffer memory)
+		private string GetTextRepresentation(MemoryBuffer memory)
+		{
+			return Enum.UseFlagsMode ? GetFlagsStringRepresentation(memory) : GetStringRepresentation(memory);
+		}
+
+		private long ReadSignedValueFromMemory(MemoryBuffer memory)
 		{
 			switch (Enum.Size)
 			{
@@ -63,12 +68,24 @@ namespace ReClassNET.Nodes
 					return memory.ReadInt32(Offset);
 				case EnumDescription.UnderlyingTypeSize.EightBytes:
 					return memory.ReadInt64(Offset);
+				default:
+					throw new ArgumentOutOfRangeException();
 			}
-
-			throw new Exception(); // TODO
 		}
 
-		private ulong ReadFlagsValueFromMemory(MemoryBuffer memory)
+		private string GetStringRepresentation(MemoryBuffer memory)
+		{
+			var value = ReadSignedValueFromMemory(memory);
+			var index = Enum.Values.FindIndex(kv => kv.Value == value);
+			if (index == -1)
+			{
+				return value.ToString();
+			}
+
+			return Enum.Values[index].Key;
+		}
+
+		private ulong ReadUnsignedValueFromMemory(MemoryBuffer memory)
 		{
 			switch (Enum.Size)
 			{
@@ -80,31 +97,14 @@ namespace ReClassNET.Nodes
 					return memory.ReadUInt32(Offset);
 				case EnumDescription.UnderlyingTypeSize.EightBytes:
 					return memory.ReadUInt64(Offset);
+				default:
+					throw new ArgumentOutOfRangeException();
 			}
-
-			throw new Exception(); // TODO
-		}
-
-		private string GetTextRepresentation(MemoryBuffer memory)
-		{
-			return Enum.UseFlagsMode ? GetFlagsStringRepresentation(memory) : GetStringRepresentation(memory);
-		}
-
-		private string GetStringRepresentation(MemoryBuffer memory)
-		{
-			var value = ReadValueFromMemory(memory);
-			var index = Enum.Values.FindIndex(kv => kv.Value == value);
-			if (index == -1)
-			{
-				return value.ToString();
-			}
-
-			return Enum.Values[index].Key;
 		}
 
 		private string GetFlagsStringRepresentation(MemoryBuffer memory)
 		{
-			var value = ReadFlagsValueFromMemory(memory);
+			var value = ReadUnsignedValueFromMemory(memory);
 			var result = value;
 
 			var values = Enum.Values;
