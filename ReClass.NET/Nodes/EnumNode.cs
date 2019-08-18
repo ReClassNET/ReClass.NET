@@ -53,60 +53,59 @@ namespace ReClassNET.Nodes
 
 		private long ReadValueFromMemory(MemoryBuffer memory)
 		{
-            switch (Enum.Size)
-            {
-                case EnumDescription.UnderlyingTypeSize.OneByte:
-                    return memory.ReadInt8(Offset);
-                case EnumDescription.UnderlyingTypeSize.TwoBytes:
-                    return memory.ReadInt16(Offset);
-                case EnumDescription.UnderlyingTypeSize.FourBytes:
-                    return memory.ReadInt32(Offset);
-                case EnumDescription.UnderlyingTypeSize.EightBytes:
-                    return memory.ReadInt64(Offset);
-            }
+			switch (Enum.Size)
+			{
+				case EnumDescription.UnderlyingTypeSize.OneByte:
+					return memory.ReadInt8(Offset);
+				case EnumDescription.UnderlyingTypeSize.TwoBytes:
+					return memory.ReadInt16(Offset);
+				case EnumDescription.UnderlyingTypeSize.FourBytes:
+					return memory.ReadInt32(Offset);
+				case EnumDescription.UnderlyingTypeSize.EightBytes:
+					return memory.ReadInt64(Offset);
+			}
 
-            throw new Exception(); // TODO
-        }
+			throw new Exception(); // TODO
+		}
 
 		private ulong ReadFlagsValueFromMemory(MemoryBuffer memory)
 		{
-            // Flags should be read as an unsigned value.
-            switch (Enum.Size)
-            {
-                case EnumDescription.UnderlyingTypeSize.OneByte:
-                    return memory.ReadUInt8(Offset);
-                case EnumDescription.UnderlyingTypeSize.TwoBytes:
-                    return memory.ReadUInt16(Offset);
-                case EnumDescription.UnderlyingTypeSize.FourBytes:
-                    return memory.ReadUInt32(Offset);
-                case EnumDescription.UnderlyingTypeSize.EightBytes:
-                    return memory.ReadUInt64(Offset);
-            }
+			switch (Enum.Size)
+			{
+				case EnumDescription.UnderlyingTypeSize.OneByte:
+					return memory.ReadUInt8(Offset);
+				case EnumDescription.UnderlyingTypeSize.TwoBytes:
+					return memory.ReadUInt16(Offset);
+				case EnumDescription.UnderlyingTypeSize.FourBytes:
+					return memory.ReadUInt32(Offset);
+				case EnumDescription.UnderlyingTypeSize.EightBytes:
+					return memory.ReadUInt64(Offset);
+			}
 
-            throw new Exception(); // TODO
-        }
+			throw new Exception(); // TODO
+		}
 
-        private string GetTextRepresentation(MemoryBuffer memory)
-        {
-            return Enum.UseFlagsMode ? GetFlagsStringRepresentation(memory) : GetStringRepresentation(memory);
-        }
+		private string GetTextRepresentation(MemoryBuffer memory)
+		{
+			return Enum.UseFlagsMode ? GetFlagsStringRepresentation(memory) : GetStringRepresentation(memory);
+		}
 
 		private string GetStringRepresentation(MemoryBuffer memory)
 		{
-                var value = ReadValueFromMemory(memory);
-				var index = Enum.Values.FindIndex(kv => kv.Value == value);
-				if (index == -1)
-				{
-					return value.ToString();
-				}
+			var value = ReadValueFromMemory(memory);
+			var index = Enum.Values.FindIndex(kv => kv.Value == value);
+			if (index == -1)
+			{
+				return value.ToString();
+			}
 
-				return Enum.Values[index].Key;
+			return Enum.Values[index].Key;
 		}
 
 		private string GetFlagsStringRepresentation(MemoryBuffer memory)
 		{
-            var value = ReadFlagsValueFromMemory(memory);
-            var result = value;
+			var value = ReadFlagsValueFromMemory(memory);
+			var result = value;
 
 			var values = Enum.Values;
 
@@ -152,7 +151,7 @@ namespace ReClassNET.Nodes
 
 				return "0";
 			}
-			
+
 			return retval.ToString();
 		}
 
@@ -183,7 +182,7 @@ namespace ReClassNET.Nodes
 
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "=") + view.Font.Width;
 
-            var text = GetTextRepresentation(view.Memory);
+			var text = GetTextRepresentation(view.Memory);
 
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text) + view.Font.Width;
 
