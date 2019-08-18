@@ -30,27 +30,6 @@ namespace ReClassNET.Nodes
 			GetParentContainer()?.ChildHasChanged(this);
 		}
 
-		/// <summary>
-		/// Gets the underlaying node for the enum field.
-		/// </summary>
-		/// <returns></returns>
-		public BaseNumericNode GetUnderlayingNode()
-		{
-			switch (Enum.Size)
-			{
-				case EnumDescription.UnderlyingTypeSize.OneByte:
-					return new UInt8Node();
-				case EnumDescription.UnderlyingTypeSize.TwoBytes:
-					return new UInt16Node();
-				case EnumDescription.UnderlyingTypeSize.FourBytes:
-					return new UInt32Node();
-				case EnumDescription.UnderlyingTypeSize.EightBytes:
-					return new UInt64Node();
-			}
-
-			throw new Exception(); // TODO
-		}
-
 		private string GetTextRepresentation(MemoryBuffer memory)
 		{
 			return Enum.UseFlagsMode ? GetFlagsStringRepresentation(memory) : GetStringRepresentation(memory);
