@@ -6,8 +6,7 @@
 
 #include "NativeCore.hpp"
 
-template <typename Proc>
-static DWORD EnumerateRemoteModulesNative(HANDLE process, Proc proc)
+static DWORD GetRemotePeb(HANDLE process, PPEB* ppeb)
 {
 	const auto ntdll = GetModuleHandle(TEXT("ntdll"));
 	if (!ntdll)
@@ -27,18 +26,31 @@ static DWORD EnumerateRemoteModulesNative(HANDLE process, Proc proc)
 			_In_ ULONG ProcessInformationLength,
 			_Out_opt_ PULONG ReturnLength
 		);
-	
+
 	const auto _NtQueryInformationProcess = tNtQueryInformationProcess(GetProcAddress(ntdll, "NtQueryInformationProcess"));
 	if (!_NtQueryInformationProcess)
 		return ERROR_NOT_FOUND;
-	
+
 	PROCESS_BASIC_INFORMATION pbi;
 	const auto status = _NtQueryInformationProcess(process, ProcessBasicInformation, &pbi, sizeof(pbi), nullptr);
 	if (!NT_SUCCESS(status))
 		return _RtlNtStatusToDosError(status);
 
+	*ppeb = pbi.PebBaseAddress;
+	
+	return ERROR_SUCCESS;
+}
+
+template <typename Proc>
+static DWORD EnumerateRemoteModulesNative(HANDLE process, Proc proc)
+{
+	PPEB ppeb;
+	const auto error = GetRemotePeb(process, &ppeb);
+	if (error != ERROR_SUCCESS)
+		return error;
+	
 	PPEB_LDR_DATA ldr;
-	auto success = ReadRemoteMemory(process, &pbi.PebBaseAddress->Ldr, &ldr, 0, sizeof(ldr));
+	auto success = ReadRemoteMemory(process, ppeb->Ldr, &ldr, 0, sizeof(ldr));
 	if (!success)
 		return ERROR_READ_FAULT; // we seem to swallow the error anyways, might aswell give a distinctive one back
 
