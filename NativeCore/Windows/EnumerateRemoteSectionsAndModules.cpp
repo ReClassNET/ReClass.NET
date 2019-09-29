@@ -15,8 +15,8 @@ static DWORD GetRemotePeb(HANDLE process, PPEB* ppeb)
 	using tRtlNtStatusToDosError = ULONG (NTAPI *)(
 			_In_ NTSTATUS Status
 		);
-	const auto _RtlNtStatusToDosError = tRtlNtStatusToDosError(GetProcAddress(ntdll, "RtlNtStatusToDosError"));
-	if (!_RtlNtStatusToDosError)
+	const auto pRtlNtStatusToDosError = tRtlNtStatusToDosError(GetProcAddress(ntdll, "RtlNtStatusToDosError"));
+	if (!pRtlNtStatusToDosError)
 		return ERROR_NOT_FOUND;
 
 	using tNtQueryInformationProcess = NTSTATUS (NTAPI *)(
@@ -27,14 +27,14 @@ static DWORD GetRemotePeb(HANDLE process, PPEB* ppeb)
 			_Out_opt_ PULONG ReturnLength
 		);
 
-	const auto _NtQueryInformationProcess = tNtQueryInformationProcess(GetProcAddress(ntdll, "NtQueryInformationProcess"));
-	if (!_NtQueryInformationProcess)
+	const auto pNtQueryInformationProcess = tNtQueryInformationProcess(GetProcAddress(ntdll, "NtQueryInformationProcess"));
+	if (!pNtQueryInformationProcess)
 		return ERROR_NOT_FOUND;
 
 	PROCESS_BASIC_INFORMATION pbi;
-	const auto status = _NtQueryInformationProcess(process, ProcessBasicInformation, &pbi, sizeof(pbi), nullptr);
+	const auto status = pNtQueryInformationProcess(process, ProcessBasicInformation, &pbi, sizeof(pbi), nullptr);
 	if (!NT_SUCCESS(status))
-		return _RtlNtStatusToDosError(status);
+		return pRtlNtStatusToDosError(status);
 
 	*ppeb = pbi.PebBaseAddress;
 	
