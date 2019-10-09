@@ -1290,6 +1290,7 @@
 			// 
 			this.goToClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Class_Type;
 			this.goToClassToolStripMenuItem.Name = "goToClassToolStripMenuItem";
+			this.goToClassToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
 			this.goToClassToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
 			this.goToClassToolStripMenuItem.Text = "Go to class...";
 			this.goToClassToolStripMenuItem.Click += new System.EventHandler(this.goToClassToolStripMenuItem_Click);
