@@ -1,8 +1,7 @@
 #include <windows.h>
 #include <tlhelp32.h>
 #include <psapi.h>
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
+#include <filesystem>
 
 #include "NativeCore.hpp"
 
@@ -73,7 +72,7 @@ void RC_CallConv EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 						EnumerateProcessData data = { };
 						data.Id = pe32.th32ProcessID;
 						GetModuleFileNameExW(process, nullptr, reinterpret_cast<LPWSTR>(data.Path), PATH_MAXIMUM_LENGTH);
-						const auto name = fs::path(data.Path).filename().u16string();
+						const auto name = std::filesystem::path(data.Path).filename().u16string();
 						str16cpy(data.Name, name.c_str(), std::min<size_t>(name.length(), PATH_MAXIMUM_LENGTH - 1));
 
 						callbackProcess(&data);
