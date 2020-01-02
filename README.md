@@ -53,6 +53,7 @@ This is a port of ReClass to the .NET platform with lots of additional features.
 - [LoadBinary Plugin](https://github.com/ReClassNET/ReClass.NET-LoadBinaryPlugin)
 - [Handle Abuser Plugin](https://github.com/ReClassNET/ReClass.NET-HandleAbuser)
 - [Unreal Plugin](https://github.com/DrP3pp3r/ReClass.NET-UnrealPlugin) (by [DrP3pp3r](https://github.com/DrP3pp3r))
+- [DriverReader](https://github.com/niemand-sec/ReClass.NET-DriverReader) (by [Niemand](https://github.com/niemand-sec))
 
 To install a plugin just copy it in the "Plugins" folder.
 If you want to develop your own plugin just learn from the code of the [Sample Plugins](https://github.com/ReClassNET/ReClass.NET-SamplePlugin) and [Frostbite Plugin](https://github.com/ReClassNET/ReClass.NET-FrostbitePlugin) repositories. If you have developed a nice plugin, leave me a message and I will add it to the list above.
