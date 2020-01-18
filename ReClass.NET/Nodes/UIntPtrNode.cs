@@ -34,7 +34,7 @@ namespace ReClassNET.Nodes
 			if (spot.Id == 0 || spot.Id == 1)
 			{
 #if RECLASSNET64
-				if ( ulong.TryParse(spot.Text, out var val) 
+				if (ulong.TryParse(spot.Text, out var val) 
 					|| spot.Text.TryGetHexString(out var hexValue) 
 					&& ulong.TryParse(hexValue, NumberStyles.HexNumber, null, out val))
 				{

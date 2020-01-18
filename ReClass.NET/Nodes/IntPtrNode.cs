@@ -27,9 +27,9 @@ namespace ReClassNET.Nodes
 		{
 			base.Update(spot);
 
-			if ( spot.Id == 0 || spot.Id == 1 ) {
+			if (spot.Id == 0 || spot.Id == 1) {
 #if RECLASSNET64
-				if ( long.TryParse(spot.Text, out var val) 
+				if (long.TryParse(spot.Text, out var val) 
 					|| spot.Text.TryGetHexString(out var hexValue) 
 					&& long.TryParse(hexValue, NumberStyles.HexNumber, null, out val))
 				{
