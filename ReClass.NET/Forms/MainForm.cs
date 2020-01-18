@@ -473,6 +473,8 @@ namespace ReClassNET.Forms
 				case UInt32Node _:
 				case Int64Node _:
 				case UInt64Node _:
+				case IntPtrNode _:
+				case UIntPtrNode _:
 				case Utf8TextNode _:
 				case Utf16TextNode _:
 				case Utf32TextNode _:
@@ -616,6 +618,12 @@ namespace ReClassNET.Forms
 					break;
 				case UInt64Node node:
 					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case UIntPtrNode node:
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					break;
+				case IntPtrNode node:
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory).ToInt64(), 0);
 					break;
 				case Utf8TextNode node:
 					comparer = new StringMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory), Encoding.UTF8, true);

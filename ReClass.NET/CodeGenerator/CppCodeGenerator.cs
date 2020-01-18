@@ -126,8 +126,7 @@ namespace ReClassNET.CodeGenerator
 
 		public CppCodeGenerator(CppTypeMapping typeMapping)
 		{
-			nodeTypeToTypeDefinationMap = new Dictionary<Type, string>
-			{
+			nodeTypeToTypeDefinationMap = new Dictionary<Type, string> {
 				[typeof(BoolNode)] = typeMapping.TypeBool,
 				[typeof(DoubleNode)] = typeMapping.TypeDouble,
 				[typeof(FloatNode)] = typeMapping.TypeFloat,
@@ -136,6 +135,7 @@ namespace ReClassNET.CodeGenerator
 				[typeof(Int16Node)] = typeMapping.TypeInt16,
 				[typeof(Int32Node)] = typeMapping.TypeInt32,
 				[typeof(Int64Node)] = typeMapping.TypeInt64,
+				[typeof(IntPtrNode)] = typeMapping.TypeIntPtr,
 				[typeof(Matrix3x3Node)] = typeMapping.TypeMatrix3x3,
 				[typeof(Matrix3x4Node)] = typeMapping.TypeMatrix3x4,
 				[typeof(Matrix4x4Node)] = typeMapping.TypeMatrix4x4,
@@ -143,6 +143,7 @@ namespace ReClassNET.CodeGenerator
 				[typeof(UInt16Node)] = typeMapping.TypeUInt16,
 				[typeof(UInt32Node)] = typeMapping.TypeUInt32,
 				[typeof(UInt64Node)] = typeMapping.TypeUInt64,
+				[typeof(UIntPtrNode)] = typeMapping.TypeUIntPtr,
 				[typeof(Utf8CharacterNode)] = typeMapping.TypeUtf8Text,
 				[typeof(Utf16CharacterNode)] = typeMapping.TypeUtf16Text,
 				[typeof(Utf32CharacterNode)] = typeMapping.TypeUtf32Text,

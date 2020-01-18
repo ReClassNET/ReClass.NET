@@ -284,8 +284,10 @@
     <Compile Include="Nodes\ClassUtil.cs" />
     <Compile Include="Nodes\EnumNode.cs" />
     <Compile Include="Nodes\FunctionNode.cs" />
+    <Compile Include="Nodes\IntPtrNode.cs" />
     <Compile Include="Nodes\NodeUuid.cs" />
     <Compile Include="Nodes\PointerNode.cs" />
+    <Compile Include="Nodes\UIntPtrNode.cs" />
     <Compile Include="Nodes\UnionNode.cs" />
     <Compile Include="Project\CppTypeMapping.cs" />
     <Compile Include="Project\EnumDescription.cs" />
@@ -1008,6 +1010,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Button_Union.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Size.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_Int_Ptr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_UInt_Ptr.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

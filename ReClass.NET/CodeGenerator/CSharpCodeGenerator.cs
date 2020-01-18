@@ -13,8 +13,7 @@ namespace ReClassNET.CodeGenerator
 {
 	public class CSharpCodeGenerator : ICodeGenerator
 	{
-		private static readonly Dictionary<Type, string> nodeTypeToTypeDefinationMap = new Dictionary<Type, string>
-		{
+		private static readonly Dictionary<Type, string> nodeTypeToTypeDefinationMap = new Dictionary<Type, string> {
 			[typeof(DoubleNode)] = "double",
 			[typeof(FloatNode)] = "float",
 			[typeof(BoolNode)] = "bool",
@@ -22,10 +21,12 @@ namespace ReClassNET.CodeGenerator
 			[typeof(Int16Node)] = "short",
 			[typeof(Int32Node)] = "int",
 			[typeof(Int64Node)] = "long",
+			[typeof(IntPtrNode)] = "IntPtr",
 			[typeof(UInt8Node)] = "byte",
 			[typeof(UInt16Node)] = "ushort",
 			[typeof(UInt32Node)] = "uint",
 			[typeof(UInt64Node)] = "ulong",
+			[typeof(UIntPtrNode)] = "UIntPtr",
 
 			[typeof(FunctionPtrNode)] = "IntPtr",
 			[typeof(Utf8TextPtrNode)] = "IntPtr",
@@ -51,6 +52,7 @@ namespace ReClassNET.CodeGenerator
 					iw.WriteLine();
 					iw.WriteLine("// Warning: The C# code generator doesn't support all node types!");
 					iw.WriteLine();
+					iw.WriteLine("using System;");
 					iw.WriteLine("using System.Runtime.InteropServices;");
 
 					iw.WriteLine("// optional namespace, only for vectors");

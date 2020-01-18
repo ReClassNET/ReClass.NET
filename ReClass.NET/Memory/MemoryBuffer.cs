@@ -326,6 +326,20 @@ namespace ReClassNET.Memory
 #endif
 		}
 
+		/// <summary>Reads a <see cref="UIntPtr"/> from the specific offset.</summary>
+		/// <param name="offset">The offset into the data.</param>
+		/// <returns>The data read as <see cref="UIntPtr"/> or 0 if the offset is outside the data.</returns>
+		public UIntPtr ReadUIntPtr(int offset)
+		{
+			Contract.Requires(offset >= 0);
+
+#if RECLASSNET64
+			return (UIntPtr)ReadInt64(offset);
+#else
+			return (UIntPtr)ReadUInt32(offset);
+#endif
+		}
+
 		#endregion
 
 		public string ReadString(Encoding encoding, int offset, int length)

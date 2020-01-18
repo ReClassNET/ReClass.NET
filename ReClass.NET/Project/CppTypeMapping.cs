@@ -6,16 +6,19 @@ namespace ReClassNET.Project
 	public class CppTypeMapping
 	{
 		public string TypeBool { get; set; } = "bool";
+		public string TypeSize { get; set; } = "size_t";
 
 		public string TypeInt8 { get; set; } = "int8_t";
 		public string TypeInt16 { get; set; } = "int16_t";
 		public string TypeInt32 { get; set; } = "int32_t";
 		public string TypeInt64 { get; set; } = "int64_t";
+		public string TypeIntPtr { get; set; } = "intptr_t";
 
 		public string TypeUInt8 { get; set; } = "uint8_t";
 		public string TypeUInt16 { get; set; } = "uint16_t";
 		public string TypeUInt32 { get; set; } = "uint32_t";
 		public string TypeUInt64 { get; set; } = "uint64_t";
+		public string TypeUIntPtr { get; set; } = "uintptr_t";
 
 		public string TypeFloat { get; set; } = "float";
 		public string TypeDouble { get; set; } = "double";
@@ -43,10 +46,12 @@ namespace ReClassNET.Project
 				XElementSerializer.ToXml(nameof(TypeInt16), TypeInt16),
 				XElementSerializer.ToXml(nameof(TypeInt32), TypeInt32),
 				XElementSerializer.ToXml(nameof(TypeInt64), TypeInt64),
+				XElementSerializer.ToXml(nameof(TypeIntPtr), TypeIntPtr),
 				XElementSerializer.ToXml(nameof(TypeUInt8), TypeUInt8),
 				XElementSerializer.ToXml(nameof(TypeUInt16), TypeUInt16),
 				XElementSerializer.ToXml(nameof(TypeUInt32), TypeUInt32),
 				XElementSerializer.ToXml(nameof(TypeUInt64), TypeUInt64),
+				XElementSerializer.ToXml(nameof(TypeUIntPtr), TypeUIntPtr),
 				XElementSerializer.ToXml(nameof(TypeFloat), TypeFloat),
 				XElementSerializer.ToXml(nameof(TypeDouble), TypeDouble),
 				XElementSerializer.ToXml(nameof(TypeVector2), TypeVector2),
@@ -69,10 +74,12 @@ namespace ReClassNET.Project
 			XElementSerializer.TryRead(element, nameof(TypeInt16), e => TypeInt16 = XElementSerializer.ToString(e));
 			XElementSerializer.TryRead(element, nameof(TypeInt32), e => TypeInt32 = XElementSerializer.ToString(e));
 			XElementSerializer.TryRead(element, nameof(TypeInt64), e => TypeInt64 = XElementSerializer.ToString(e));
+			XElementSerializer.TryRead(element, nameof(TypeIntPtr), e => TypeIntPtr = XElementSerializer.ToString(e));
 			XElementSerializer.TryRead(element, nameof(TypeUInt8), e => TypeUInt8 = XElementSerializer.ToString(e));
 			XElementSerializer.TryRead(element, nameof(TypeUInt16), e => TypeUInt16 = XElementSerializer.ToString(e));
 			XElementSerializer.TryRead(element, nameof(TypeUInt32), e => TypeUInt32 = XElementSerializer.ToString(e));
 			XElementSerializer.TryRead(element, nameof(TypeUInt64), e => TypeUInt64 = XElementSerializer.ToString(e));
+			XElementSerializer.TryRead(element, nameof(TypeUIntPtr), e => TypeUIntPtr = XElementSerializer.ToString(e));
 			XElementSerializer.TryRead(element, nameof(TypeFloat), e => TypeFloat = XElementSerializer.ToString(e));
 			XElementSerializer.TryRead(element, nameof(TypeDouble), e => TypeDouble = XElementSerializer.ToString(e));
 			XElementSerializer.TryRead(element, nameof(TypeVector2), e => TypeVector2 = XElementSerializer.ToString(e));

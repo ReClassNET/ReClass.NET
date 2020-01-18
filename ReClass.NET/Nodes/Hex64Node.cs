@@ -28,7 +28,10 @@ namespace ReClassNET.Nodes
 		{
 			var value = spot.Memory.ReadObject<UInt64FloatDoubleData>(Offset);
 
-			return $"Int64: {value.LongValue}\nUInt64: 0x{value.ULongValue:X016}\nFloat: {value.FloatValue:0.000}\nDouble: {value.DoubleValue:0.000}";
+			return @$"Int64: {value.LongValue}
+UInt64: 0x{value.ULongValue:X016}
+Float: {value.FloatValue:0.000}
+Double: {value.DoubleValue:0.000}";
 		}
 
 		public override Size Draw(ViewInfo view, int x, int y)

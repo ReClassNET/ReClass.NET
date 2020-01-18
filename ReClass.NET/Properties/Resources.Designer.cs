@@ -19,7 +19,7 @@ namespace ReClassNET.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -483,6 +483,16 @@ namespace ReClassNET.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Button_Int_Ptr {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Button_Int_Ptr", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B16x16_Button_Matrix_3x3 {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Button_Matrix_3x3", resourceCulture);
@@ -596,6 +606,16 @@ namespace ReClassNET.Properties {
         internal static System.Drawing.Bitmap B16x16_Button_UInt_8 {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Button_UInt_8", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Button_UInt_Ptr {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Button_UInt_Ptr", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1351,7 +1371,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2019/03/31 20:34:22
+        ///   Looks up a localized string similar to 2020/01/18 09:25:38
         ///.
         /// </summary>
         internal static string BuildDate {
