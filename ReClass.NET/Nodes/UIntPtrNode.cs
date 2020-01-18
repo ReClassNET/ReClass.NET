@@ -38,7 +38,7 @@ namespace ReClassNET.Nodes
 					|| spot.Text.TryGetHexString(out var hexValue) 
 					&& ulong.TryParse(hexValue, NumberStyles.HexNumber, null, out val))
 				{
-					spot.Process.WriteRemoteMemory(spot.Address, val);
+					spot.Process.WriteRemoteMemory(spot.Address, (UIntPtr)val);
 				}
 #else
 				if (uint.TryParse(spot.Text, out var val) 
