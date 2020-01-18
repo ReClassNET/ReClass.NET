@@ -20,7 +20,7 @@ namespace ReClassNET.Nodes
 		public override Size Draw(ViewInfo view, int x, int y)
 		{
 			var value = ReadValueFromMemory(view.Memory);
-#if RECLASS64
+#if RECLASSNET64
 			return DrawNumeric(view, x, y, Icons.Unsigned, "UIntPtr", value.ToString(), $"0x{value.ToUInt64():X}");
 #else
 			return DrawNumeric(view, x, y, Icons.Unsigned, "UIntPtr", value.ToString(), $"0x{value.ToUInt32():X}");
@@ -33,8 +33,8 @@ namespace ReClassNET.Nodes
 
 			if (spot.Id == 0 || spot.Id == 1)
 			{
-#if RECLASS64
-				if (ulong.TryParse(spot.Text, out var val) 
+#if RECLASSNET64
+				if ( ulong.TryParse(spot.Text, out var val) 
 					|| spot.Text.TryGetHexString(out var hexValue) 
 					&& ulong.TryParse(hexValue, NumberStyles.HexNumber, null, out val))
 				{
