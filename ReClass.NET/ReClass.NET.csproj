@@ -1012,9 +1012,6 @@
     <None Include="Resources\Images\B16x16_Button_Union.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Images\B16x16_Button_Size.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Images\B16x16_Button_Int_Ptr.png" />
   </ItemGroup>
   <ItemGroup>
