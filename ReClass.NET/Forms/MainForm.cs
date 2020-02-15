@@ -63,21 +63,25 @@ namespace ReClassNET.Forms
 
 			InitializeComponent();
 
-			Text = $"{Constants.ApplicationName} ({Constants.Platform})";
+			string randomWindowTitle = Utils.RandomString(Program.GlobalRandom.Next(15, 20));
+
+			Text = $"{(Program.Settings.RandomizeWindowTitle ? randomWindowTitle : Constants.ApplicationName)} ({Constants.Platform})";
 
 			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true, true);
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(true, false);
 
 			Program.RemoteProcess.ProcessAttached += sender =>
 			{
+				string randomWindowTitle = Utils.RandomString(Program.GlobalRandom.Next(15, 20));
 				var text = $"{sender.UnderlayingProcess.Name} (ID: {sender.UnderlayingProcess.Id.ToString()})";
 
-				Text = $"{Constants.ApplicationName} ({Constants.Platform}) - {text}";
+				Text = $"{(Program.Settings.RandomizeWindowTitle ? randomWindowTitle : Constants.ApplicationName)} ({Constants.Platform}) - {text}";
 				processInfoToolStripStatusLabel.Text = text;
 			};
 			Program.RemoteProcess.ProcessClosed += sender =>
 			{
-				Text = $"{Constants.ApplicationName} ({Constants.Platform})";
+				string randomWindowTitle = Utils.RandomString(Program.GlobalRandom.Next(15, 20));
+				Text = $"{(Program.Settings.RandomizeWindowTitle ? randomWindowTitle : Constants.ApplicationName)} ({Constants.Platform})";
 				processInfoToolStripStatusLabel.Text = "No process selected";
 			};
 

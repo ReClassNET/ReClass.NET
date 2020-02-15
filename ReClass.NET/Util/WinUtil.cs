@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Security.Principal;
 using Microsoft.Win32;
 
 namespace ReClassNET.Util
@@ -22,6 +23,9 @@ namespace ReClassNET.Util
 		public static bool IsAtLeastWindows8 { get; }
 
 		public static bool IsAtLeastWindows10 { get; }
+
+		//from https://stackoverflow.com/a/11660205
+		public static bool IsAdministrator => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 
 		static WinUtil()
 		{

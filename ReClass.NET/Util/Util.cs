@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace ReClassNET.Util
 {
@@ -49,6 +50,14 @@ namespace ReClassNET.Util
 			var temp = lhs;
 			lhs = rhs;
 			rhs = temp;
+		}
+
+		//thx again stack overflow https://stackoverflow.com/a/1344242
+		public static string RandomString(int length)
+		{
+			const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+			return new string(Enumerable.Repeat(chars, length)
+			  .Select(s => s[Program.GlobalRandom.Next(s.Length)]).ToArray());
 		}
 	}
 }

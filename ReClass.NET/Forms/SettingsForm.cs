@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
@@ -105,6 +106,8 @@ namespace ReClassNET.Forms
 			SetBinding(showSymbolsCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.ShowCommentSymbol));
 			SetBinding(showStringCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.ShowCommentString));
 			SetBinding(showPluginInfoCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.ShowCommentPluginInfo));
+			SetBinding(runAsAdminCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.RunAsAdmin));
+			SetBinding(randomizeWindowTitleCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.RandomizeWindowTitle));
 		}
 
 		private void SetColorBindings()
@@ -148,6 +151,21 @@ namespace ReClassNET.Forms
 			SetBinding(utf8TextTypeTextBox, nameof(TextBox.Text), typeMapping, nameof(CppTypeMapping.TypeUtf8Text));
 			SetBinding(utf16TextTypeTextBox, nameof(TextBox.Text), typeMapping, nameof(CppTypeMapping.TypeUtf16Text));
 			SetBinding(functionPtrTypeTextBox, nameof(TextBox.Text), typeMapping, nameof(CppTypeMapping.TypeFunctionPtr));
+		}
+
+		private void runAsAdminCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			settings.RunAsAdmin = runAsAdminCheckBox.Checked;
+
+			if (runAsAdminCheckBox.Checked && !WinUtil.IsAdministrator)
+			{
+				var msgboxResult = MessageBox.Show("Would you like to restart ReClass.NET as administrator now?", "ReClass.NET", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+				if(msgboxResult == DialogResult.Yes)
+				{
+					WinUtil.RunElevated(Process.GetCurrentProcess().MainModule.FileName, string.Empty);
+					Program.MainForm.Close();
+				}
+			}
 		}
 	}
 }

@@ -43,6 +43,8 @@
 			this.showIntegerCheckBox = new System.Windows.Forms.CheckBox();
 			this.showFloatCheckBox = new System.Windows.Forms.CheckBox();
 			this.displayGroupBox = new System.Windows.Forms.GroupBox();
+			this.randomizeWindowTitleCheckBox = new System.Windows.Forms.CheckBox();
+			this.runAsAdminCheckBox = new System.Windows.Forms.CheckBox();
 			this.highlightChangedValuesCheckBox = new System.Windows.Forms.CheckBox();
 			this.showTextCheckBox = new System.Windows.Forms.CheckBox();
 			this.showNodeOffsetCheckBox = new System.Windows.Forms.CheckBox();
@@ -288,16 +290,39 @@
 			// 
 			// displayGroupBox
 			// 
+			this.displayGroupBox.Controls.Add(this.randomizeWindowTitleCheckBox);
+			this.displayGroupBox.Controls.Add(this.runAsAdminCheckBox);
 			this.displayGroupBox.Controls.Add(this.highlightChangedValuesCheckBox);
 			this.displayGroupBox.Controls.Add(this.showTextCheckBox);
 			this.displayGroupBox.Controls.Add(this.showNodeOffsetCheckBox);
 			this.displayGroupBox.Controls.Add(this.showNodeAddressCheckBox);
 			this.displayGroupBox.Location = new System.Drawing.Point(283, 39);
 			this.displayGroupBox.Name = "displayGroupBox";
-			this.displayGroupBox.Size = new System.Drawing.Size(265, 113);
+			this.displayGroupBox.Size = new System.Drawing.Size(265, 160);
 			this.displayGroupBox.TabIndex = 2;
 			this.displayGroupBox.TabStop = false;
 			this.displayGroupBox.Text = "Display";
+			// 
+			// randomizeWindowTitleCheckBox
+			// 
+			this.randomizeWindowTitleCheckBox.AutoSize = true;
+			this.randomizeWindowTitleCheckBox.Location = new System.Drawing.Point(6, 134);
+			this.randomizeWindowTitleCheckBox.Name = "randomizeWindowTitleCheckBox";
+			this.randomizeWindowTitleCheckBox.Size = new System.Drawing.Size(137, 17);
+			this.randomizeWindowTitleCheckBox.TabIndex = 5;
+			this.randomizeWindowTitleCheckBox.Text = "Randomize window title";
+			this.randomizeWindowTitleCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// runAsAdminCheckBox
+			// 
+			this.runAsAdminCheckBox.AutoSize = true;
+			this.runAsAdminCheckBox.Location = new System.Drawing.Point(6, 111);
+			this.runAsAdminCheckBox.Name = "runAsAdminCheckBox";
+			this.runAsAdminCheckBox.Size = new System.Drawing.Size(122, 17);
+			this.runAsAdminCheckBox.TabIndex = 4;
+			this.runAsAdminCheckBox.Text = "Run as administrator";
+			this.runAsAdminCheckBox.UseVisualStyleBackColor = true;
+			this.runAsAdminCheckBox.CheckedChanged += new System.EventHandler(this.runAsAdminCheckBox_CheckedChanged);
 			// 
 			// highlightChangedValuesCheckBox
 			// 
@@ -695,7 +720,7 @@
 			this.boolSettingsLabel.TabIndex = 46;
 			this.boolSettingsLabel.Text = "Bool:";
 			// 
-			// boolSettingsTextBox
+			// boolTypeTextBox
 			// 
 			this.boolTypeTextBox.Location = new System.Drawing.Point(346, 32);
 			this.boolTypeTextBox.Name = "boolTypeTextBox";
@@ -720,7 +745,7 @@
 			this.functionPtrSettingsLabel.TabIndex = 43;
 			this.functionPtrSettingsLabel.Text = "Function Pointer:";
 			// 
-			// functionPtrSettingsTextBox
+			// functionPtrTypeTextBox
 			// 
 			this.functionPtrTypeTextBox.Location = new System.Drawing.Point(346, 230);
 			this.functionPtrTypeTextBox.Name = "functionPtrTypeTextBox";
@@ -736,7 +761,7 @@
 			this.utf16TextSettingsLabel.TabIndex = 39;
 			this.utf16TextSettingsLabel.Text = "UTF16:";
 			// 
-			// utf16TextSettingsTextBox
+			// utf16TextTypeTextBox
 			// 
 			this.utf16TextTypeTextBox.Location = new System.Drawing.Point(346, 208);
 			this.utf16TextTypeTextBox.Name = "utf16TextTypeTextBox";
@@ -752,7 +777,7 @@
 			this.utf8TextSettingsLabel.TabIndex = 35;
 			this.utf8TextSettingsLabel.Text = "UTF8:";
 			// 
-			// utf8TextSettingsTextBox
+			// utf8TextTypeTextBox
 			// 
 			this.utf8TextTypeTextBox.Location = new System.Drawing.Point(346, 186);
 			this.utf8TextTypeTextBox.Name = "utf8TextTypeTextBox";
@@ -768,7 +793,7 @@
 			this.matrix3x3SettingsLabel.TabIndex = 33;
 			this.matrix3x3SettingsLabel.Text = "Matrix (3x3):";
 			// 
-			// matrix3x3SettingsTextBox
+			// matrix3x3TypeTextBox
 			// 
 			this.matrix3x3TypeTextBox.Location = new System.Drawing.Point(346, 120);
 			this.matrix3x3TypeTextBox.Name = "matrix3x3TypeTextBox";
@@ -784,7 +809,7 @@
 			this.matrix3x4SettingsLabel.TabIndex = 31;
 			this.matrix3x4SettingsLabel.Text = "Matrix (3x4):";
 			// 
-			// matrix3x4SettingsTextBox
+			// matrix3x4TypeTextBox
 			// 
 			this.matrix3x4TypeTextBox.Location = new System.Drawing.Point(346, 142);
 			this.matrix3x4TypeTextBox.Name = "matrix3x4TypeTextBox";
@@ -800,7 +825,7 @@
 			this.matrix4x4SettingsLabel.TabIndex = 29;
 			this.matrix4x4SettingsLabel.Text = "Matrix (4x4):";
 			// 
-			// matrix4x4SettingsTextBox
+			// matrix4x4TypeTextBox
 			// 
 			this.matrix4x4TypeTextBox.Location = new System.Drawing.Point(346, 164);
 			this.matrix4x4TypeTextBox.Name = "matrix4x4TypeTextBox";
@@ -816,7 +841,7 @@
 			this.vector2SettingsLabel.TabIndex = 27;
 			this.vector2SettingsLabel.Text = "Vector2:";
 			// 
-			// vector2SettingsTextBox
+			// vector2TypeTextBox
 			// 
 			this.vector2TypeTextBox.Location = new System.Drawing.Point(346, 54);
 			this.vector2TypeTextBox.Name = "vector2TypeTextBox";
@@ -832,7 +857,7 @@
 			this.vector3SettingsLabel.TabIndex = 25;
 			this.vector3SettingsLabel.Text = "Vector3:";
 			// 
-			// vector3SettingsTextBox
+			// vector3TypeTextBox
 			// 
 			this.vector3TypeTextBox.Location = new System.Drawing.Point(346, 76);
 			this.vector3TypeTextBox.Name = "vector3TypeTextBox";
@@ -848,7 +873,7 @@
 			this.vector4SettingsLabel.TabIndex = 23;
 			this.vector4SettingsLabel.Text = "Vector4:";
 			// 
-			// vector4SettingsTextBox
+			// vector4TypeTextBox
 			// 
 			this.vector4TypeTextBox.Location = new System.Drawing.Point(346, 98);
 			this.vector4TypeTextBox.Name = "vector4TypeTextBox";
@@ -864,7 +889,7 @@
 			this.doubleSettingsLabel.TabIndex = 21;
 			this.doubleSettingsLabel.Text = "Double:";
 			// 
-			// doubleSettingsTextBox
+			// doubleTypeTextBox
 			// 
 			this.doubleTypeTextBox.Location = new System.Drawing.Point(98, 230);
 			this.doubleTypeTextBox.Name = "doubleTypeTextBox";
@@ -880,7 +905,7 @@
 			this.floatSettingsLabel.TabIndex = 19;
 			this.floatSettingsLabel.Text = "Float:";
 			// 
-			// floatSettingsTextBox
+			// floatTypeTextBox
 			// 
 			this.floatTypeTextBox.Location = new System.Drawing.Point(98, 208);
 			this.floatTypeTextBox.Name = "floatTypeTextBox";
@@ -896,7 +921,7 @@
 			this.uint64SettingsLabel.TabIndex = 17;
 			this.uint64SettingsLabel.Text = "UInt64:";
 			// 
-			// uint64SettingsTextBox
+			// uint64TypeTextBox
 			// 
 			this.uint64TypeTextBox.Location = new System.Drawing.Point(98, 186);
 			this.uint64TypeTextBox.Name = "uint64TypeTextBox";
@@ -912,7 +937,7 @@
 			this.uint32SettingsLabel.TabIndex = 15;
 			this.uint32SettingsLabel.Text = "UInt32:";
 			// 
-			// uint32SettingsTextBox
+			// uint32TypeTextBox
 			// 
 			this.uint32TypeTextBox.Location = new System.Drawing.Point(98, 164);
 			this.uint32TypeTextBox.Name = "uint32TypeTextBox";
@@ -928,7 +953,7 @@
 			this.uint16SettingsLabel.TabIndex = 13;
 			this.uint16SettingsLabel.Text = "UInt16:";
 			// 
-			// uint16SettingsTextBox
+			// uint16TypeTextBox
 			// 
 			this.uint16TypeTextBox.Location = new System.Drawing.Point(98, 142);
 			this.uint16TypeTextBox.Name = "uint16TypeTextBox";
@@ -944,7 +969,7 @@
 			this.uint8SettingsLabel.TabIndex = 11;
 			this.uint8SettingsLabel.Text = "UInt8:";
 			// 
-			// uint8SettingsTextBox
+			// uint8TypeTextBox
 			// 
 			this.uint8TypeTextBox.Location = new System.Drawing.Point(98, 120);
 			this.uint8TypeTextBox.Name = "uint8TypeTextBox";
@@ -960,7 +985,7 @@
 			this.int64SettingsLabel.TabIndex = 9;
 			this.int64SettingsLabel.Text = "Int64:";
 			// 
-			// int64SettingsTextBox
+			// int64TypeTextBox
 			// 
 			this.int64TypeTextBox.Location = new System.Drawing.Point(98, 98);
 			this.int64TypeTextBox.Name = "int64TypeTextBox";
@@ -976,7 +1001,7 @@
 			this.int32SettingsLabel.TabIndex = 7;
 			this.int32SettingsLabel.Text = "Int32:";
 			// 
-			// int32SettingsTextBox
+			// int32TypeTextBox
 			// 
 			this.int32TypeTextBox.Location = new System.Drawing.Point(98, 76);
 			this.int32TypeTextBox.Name = "int32TypeTextBox";
@@ -992,7 +1017,7 @@
 			this.int16SettingsLabel.TabIndex = 5;
 			this.int16SettingsLabel.Text = "Int16:";
 			// 
-			// int16SettingsTextBox
+			// int16TypeTextBox
 			// 
 			this.int16TypeTextBox.Location = new System.Drawing.Point(98, 54);
 			this.int16TypeTextBox.Name = "int16TypeTextBox";
@@ -1008,7 +1033,7 @@
 			this.int8SettingsLabel.TabIndex = 3;
 			this.int8SettingsLabel.Text = "Int8:";
 			// 
-			// int8SettingsTextBox
+			// int8TypeTextBox
 			// 
 			this.int8TypeTextBox.Location = new System.Drawing.Point(98, 32);
 			this.int8TypeTextBox.Name = "int8TypeTextBox";
@@ -1153,5 +1178,7 @@
 		private System.Windows.Forms.Button removeAssociationButton;
 		private System.Windows.Forms.Button createAssociationButton;
 		private System.Windows.Forms.Label associationInfoLabel;
+		private System.Windows.Forms.CheckBox randomizeWindowTitleCheckBox;
+		private System.Windows.Forms.CheckBox runAsAdminCheckBox;
 	}
 }
