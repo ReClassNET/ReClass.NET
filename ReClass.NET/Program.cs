@@ -69,8 +69,7 @@ namespace ReClassNET
 
 			if(Settings.RunAsAdmin && !WinUtil.IsAdministrator)
 			{
-				//todo: maybe better paramaters than just the first one?
-				WinUtil.RunElevated(Process.GetCurrentProcess().MainModule.FileName, CommandLineArgs.FileName); 
+				WinUtil.RunElevated(Process.GetCurrentProcess().MainModule.FileName, args.Length > 0 ? string.Join(" ", args) : null); 
 				return;
 			}
 
