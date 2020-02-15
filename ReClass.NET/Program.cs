@@ -67,7 +67,7 @@ namespace ReClassNET
 			Settings = SettingsSerializer.Load();
 			Logger = new GuiLogger();
 
-			if(Settings.RunAsAdmin && !WinUtil.IsAdministrator)
+			if(!NativeMethods.IsUnix() && Settings.RunAsAdmin && !WinUtil.IsAdministrator)
 			{
 				WinUtil.RunElevated(Process.GetCurrentProcess().MainModule.FileName, args.Length > 0 ? string.Join(" ", args) : null); 
 				return;

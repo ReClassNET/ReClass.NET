@@ -318,11 +318,10 @@
 			this.runAsAdminCheckBox.AutoSize = true;
 			this.runAsAdminCheckBox.Location = new System.Drawing.Point(6, 111);
 			this.runAsAdminCheckBox.Name = "runAsAdminCheckBox";
-			this.runAsAdminCheckBox.Size = new System.Drawing.Size(122, 17);
+			this.runAsAdminCheckBox.Size = new System.Drawing.Size(200, 17);
 			this.runAsAdminCheckBox.TabIndex = 4;
-			this.runAsAdminCheckBox.Text = "Run as administrator";
+			this.runAsAdminCheckBox.Text = "Run as administrator (requires restart)";
 			this.runAsAdminCheckBox.UseVisualStyleBackColor = true;
-			this.runAsAdminCheckBox.CheckedChanged += new System.EventHandler(this.runAsAdminCheckBox_CheckedChanged);
 			// 
 			// highlightChangedValuesCheckBox
 			// 
