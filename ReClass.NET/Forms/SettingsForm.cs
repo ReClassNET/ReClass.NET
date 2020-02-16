@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
@@ -43,6 +44,7 @@ namespace ReClassNET.Forms
 			if (NativeMethods.IsUnix())
 			{
 				fileAssociationGroupBox.Enabled = false;
+				runAsAdminCheckBox.Enabled = false;
 			}
 			else
 			{
@@ -105,6 +107,8 @@ namespace ReClassNET.Forms
 			SetBinding(showSymbolsCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.ShowCommentSymbol));
 			SetBinding(showStringCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.ShowCommentString));
 			SetBinding(showPluginInfoCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.ShowCommentPluginInfo));
+			SetBinding(runAsAdminCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.RunAsAdmin));
+			SetBinding(randomizeWindowTitleCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.RandomizeWindowTitle));
 		}
 
 		private void SetColorBindings()

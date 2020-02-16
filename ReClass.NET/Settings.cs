@@ -12,6 +12,10 @@ namespace ReClassNET
 
 		public bool StayOnTop { get; set; } = false;
 
+		public bool RunAsAdmin { get; set; } = false;
+
+		public bool RandomizeWindowTitle { get; set; } = false;
+
 		// Node Drawing Settings
 
 		public bool ShowNodeAddress { get; set; } = true;
