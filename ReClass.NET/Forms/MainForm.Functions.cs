@@ -292,38 +292,47 @@ namespace ReClassNET.Forms
 			var hotSpotPartitions = selectedNodes
 				.WhereNot(s => s.Node is ClassNode)
 				.GroupBy(s => s.Node.GetParentContainer())
-				.SelectMany(g => g
-					.OrderBy(s => s.Node.Offset)
-					.GroupWhile((h1, h2) => h1.Node.Offset + h1.Node.MemorySize == h2.Node.Offset)
-				);
-
-			foreach (var selectedPartition in hotSpotPartitions)
-			{
-				var hotSpotsToReplace = new Queue<MemoryViewControl.SelectedNodeInfo>(selectedPartition);
-				while (hotSpotsToReplace.Count > 0)
+				.Select(g => new
 				{
-					var selected = hotSpotsToReplace.Dequeue();
+					Container = g.Key,
+					Partitions = g.OrderBy(s => s.Node.Offset)
+						.GroupWhile((s1, s2) => s1.Node.Offset + s1.Node.MemorySize == s2.Node.Offset)
+				});
 
-					var node = BaseNode.CreateInstanceFromType(type);
+			foreach (var containerPartitions in hotSpotPartitions)
+			{
+				containerPartitions.Container.BeginUpdate();
 
-					var createdNodes = new List<BaseNode>();
-					selected.Node.GetParentContainer().ReplaceChildNode(selected.Node, node, ref createdNodes);
-
-					node.IsSelected = true;
-
-					var info = new MemoryViewControl.SelectedNodeInfo(node, selected.Process, selected.Memory, selected.Address, selected.Level);
-
-					newSelected.Add(info);
-
-					// If more than one node is selected I assume the user wants to replace the complete range with the desired node type.
-					if (selectedNodes.Count > 1)
+				foreach (var partition in containerPartitions.Partitions)
+				{
+					var hotSpotsToReplace = new Queue<MemoryViewControl.SelectedNodeInfo>(partition);
+					while (hotSpotsToReplace.Count > 0)
 					{
-						foreach (var createdNode in createdNodes)
+						var selected = hotSpotsToReplace.Dequeue();
+
+						var node = BaseNode.CreateInstanceFromType(type);
+
+						var createdNodes = new List<BaseNode>();
+						containerPartitions.Container.ReplaceChildNode(selected.Node, node, ref createdNodes);
+
+						node.IsSelected = true;
+
+						var info = new MemoryViewControl.SelectedNodeInfo(node, selected.Process, selected.Memory, selected.Address, selected.Level);
+
+						newSelected.Add(info);
+
+						// If more than one node is selected I assume the user wants to replace the complete range with the desired node type.
+						if (selectedNodes.Count > 1)
 						{
-							hotSpotsToReplace.Enqueue(new MemoryViewControl.SelectedNodeInfo(createdNode, selected.Process, selected.Memory, selected.Address + createdNode.Offset - node.Offset, selected.Level));
+							foreach (var createdNode in createdNodes)
+							{
+								hotSpotsToReplace.Enqueue(new MemoryViewControl.SelectedNodeInfo(createdNode, selected.Process, selected.Memory, selected.Address + createdNode.Offset - node.Offset, selected.Level));
+							}
 						}
 					}
 				}
+
+				containerPartitions.Container.EndUpdate();
 			}
 
 			memoryViewControl.ClearSelection();
@@ -373,6 +382,8 @@ namespace ReClassNET.Forms
 				var classNode = selectedNode.GetParentClass();
 				if (containerNode != null && classNode != null)
 				{
+					containerNode.BeginUpdate();
+
 					foreach (var node in result.Item2)
 					{
 						if (node is BaseWrapperNode)
@@ -394,6 +405,8 @@ namespace ReClassNET.Forms
 
 						containerNode.InsertNode(selectedNode, node);
 					}
+
+					containerNode.EndUpdate();
 				}
 			}
 		}
