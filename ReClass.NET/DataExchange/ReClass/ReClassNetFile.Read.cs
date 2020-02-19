@@ -17,10 +17,9 @@ namespace ReClassNET.DataExchange.ReClass
 	{
 		public void Load(string filePath, ILogger logger)
 		{
-			using (var fs = new FileStream(filePath, FileMode.Open))
-			{
-				Load(fs, logger);
-			}
+			using var fs = new FileStream(filePath, FileMode.Open);
+
+			Load(fs, logger);
 		}
 
 		public void Load(Stream input, ILogger logger)
@@ -28,110 +27,107 @@ namespace ReClassNET.DataExchange.ReClass
 			Contract.Requires(input != null);
 			Contract.Requires(logger != null);
 
-			using (var archive = new ZipArchive(input, ZipArchiveMode.Read))
+			using var archive = new ZipArchive(input, ZipArchiveMode.Read);
+			var dataEntry = archive.GetEntry(DataFileName);
+			if (dataEntry == null)
 			{
-				var dataEntry = archive.GetEntry(DataFileName);
-				if (dataEntry == null)
+				throw new FormatException();
+			}
+
+			using var entryStream = dataEntry.Open();
+			var document = XDocument.Load(entryStream);
+			if (document.Root?.Element(XmlClassesElement) == null)
+			{
+				throw new FormatException("The data has not the correct format.");
+			}
+
+			uint.TryParse(document.Root.Attribute(XmlVersionAttribute)?.Value, out var fileVersion);
+			if ((fileVersion & FileVersionCriticalMask) > (FileVersion & FileVersionCriticalMask))
+			{
+				throw new FormatException($"The file version is unsupported. A newer {Constants.ApplicationName} version is required to read it.");
+			}
+
+			var platform = document.Root.Attribute(XmlPlatformAttribute)?.Value;
+			if (platform != Constants.Platform)
+			{
+				logger.Log(LogLevel.Warning, $"The platform of the file ({platform}) doesn't match the program platform ({Constants.Platform}).");
+			}
+
+			var customDataElement = document.Root.Element(XmlCustomDataElement);
+			if (customDataElement != null)
+			{
+				project.CustomData.Deserialize(customDataElement);
+			}
+
+			var typeMappingElement = document.Root.Element(XmlTypeMappingElement);
+			if (typeMappingElement != null)
+			{
+				project.TypeMapping.Deserialize(typeMappingElement);
+			}
+
+			var enumsElement = document.Root.Element(XmlEnumsElement);
+			if (enumsElement != null)
+			{
+				foreach (var enumElement in enumsElement.Elements(XmlEnumElement))
 				{
-					throw new FormatException();
+					var name = enumElement.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
+					var useFlagsMode = (bool?)enumElement.Attribute(XmlFlagsAttribute) ?? false;
+					var size = enumElement.Attribute(XmlSizeAttribute).GetEnumValue<EnumDescription.UnderlyingTypeSize>();
+
+					var values = new Dictionary<string, long>();
+					foreach (var itemElement in enumElement.Elements(XmlItemElement))
+					{
+						var itemName = itemElement.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
+						var itemValue = (long?)itemElement.Attribute(XmlValueAttribute) ?? 0L;
+
+						values.Add(itemName, itemValue);
+					}
+
+					var @enum = new EnumDescription
+					{
+						Name = name
+					};
+					@enum.SetData(useFlagsMode, size, values);
+
+					project.AddEnum(@enum);
 				}
-				using (var entryStream = dataEntry.Open())
+			}
+
+			var classes = new List<Tuple<XElement, ClassNode>>();
+
+			var classesElement = document.Root.Element(XmlClassesElement);
+			if (classesElement != null)
+			{
+				foreach (var element in classesElement
+					.Elements(XmlClassElement)
+					.DistinctBy(e => e.Attribute(XmlUuidAttribute)?.Value))
 				{
-					var document = XDocument.Load(entryStream);
-					if (document.Root?.Element(XmlClassesElement) == null)
+					var node = new ClassNode(false)
 					{
-						throw new FormatException("The data has not the correct format.");
-					}
+						Uuid = NodeUuid.FromBase64String(element.Attribute(XmlUuidAttribute)?.Value, true),
+						Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
+						Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
+						AddressFormula = element.Attribute(XmlAddressAttribute)?.Value ?? string.Empty
+					};
 
-					uint.TryParse(document.Root.Attribute(XmlVersionAttribute)?.Value, out var fileVersion);
-					if ((fileVersion & FileVersionCriticalMask) > (FileVersion & FileVersionCriticalMask))
+					if (!project.ContainsClass(node.Uuid))
 					{
-						throw new FormatException($"The file version is unsupported. A newer {Constants.ApplicationName} version is required to read it.");
+						project.AddClass(node);
+
+						classes.Add(Tuple.Create(element, node));
 					}
+				}
+			}
 
-					var platform = document.Root.Attribute(XmlPlatformAttribute)?.Value;
-					if (platform != Constants.Platform)
-					{
-						logger.Log(LogLevel.Warning, $"The platform of the file ({platform}) doesn't match the program platform ({Constants.Platform}).");
-					}
+			foreach (var t in classes)
+			{
+				var nodes = t.Item1.Elements(XmlNodeElement)
+					.Select(e => CreateNodeFromElement(e, t.Item2, logger))
+					.Where(n => n != null);
 
-					var customDataElement = document.Root.Element(XmlCustomDataElement);
-					if (customDataElement != null)
-					{
-						project.CustomData.Deserialize(customDataElement);
-					}
-
-					var typeMappingElement = document.Root.Element(XmlTypeMappingElement);
-					if (typeMappingElement != null)
-					{
-						project.TypeMapping.Deserialize(typeMappingElement);
-					}
-
-					var enumsElement = document.Root.Element(XmlEnumsElement);
-					if (enumsElement != null)
-					{
-						foreach (var enumElement in enumsElement.Elements(XmlEnumElement))
-						{
-							var name = enumElement.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
-							var useFlagsMode = (bool?)enumElement.Attribute(XmlFlagsAttribute) ?? false;
-							var size = enumElement.Attribute(XmlSizeAttribute).GetEnumValue<EnumDescription.UnderlyingTypeSize>();
-
-							var values = new Dictionary<string, long>();
-							foreach (var itemElement in enumElement.Elements(XmlItemElement))
-							{
-								var itemName = itemElement.Attribute(XmlNameAttribute)?.Value ?? string.Empty;
-								var itemValue = (long?)itemElement.Attribute(XmlValueAttribute) ?? 0L;
-
-								values.Add(itemName, itemValue);
-							}
-
-							var @enum = new EnumDescription
-							{
-								Name = name
-							};
-							@enum.SetData(useFlagsMode, size, values);
-
-							project.AddEnum(@enum);
-						}
-					}
-
-					var classes = new List<Tuple<XElement, ClassNode>>();
-
-					var classesElement = document.Root.Element(XmlClassesElement);
-					if (classesElement != null)
-					{
-						foreach (var element in classesElement
-							.Elements(XmlClassElement)
-							.DistinctBy(e => e.Attribute(XmlUuidAttribute)?.Value))
-						{
-							var node = new ClassNode(false)
-							{
-								Uuid = NodeUuid.FromBase64String(element.Attribute(XmlUuidAttribute)?.Value, true),
-								Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
-								Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
-								AddressFormula = element.Attribute(XmlAddressAttribute)?.Value ?? string.Empty
-							};
-
-							if (!project.ContainsClass(node.Uuid))
-							{
-								project.AddClass(node);
-
-								classes.Add(Tuple.Create(element, node));
-							}
-						}
-					}
-
-					foreach (var t in classes)
-					{
-						var nodes = t.Item1.Elements(XmlNodeElement)
-							.Select(e => CreateNodeFromElement(e, t.Item2, logger))
-							.Where(n => n != null);
-
-						foreach (var node in nodes)
-						{
-							t.Item2.AddNode(node);
-						}
-					}
+				foreach (var node in nodes)
+				{
+					t.Item2.AddNode(node);
 				}
 			}
 		}
@@ -199,15 +195,11 @@ namespace ReClassNET.DataExchange.ReClass
 						return null;
 					}
 
-					switch (node)
+					node = node switch
 					{
-						case BaseClassArrayNode classArrayNode:
-							node = classArrayNode.GetEquivalentNode(0, innerClass);
-							break;
-						case ClassPointerNode classPointerNode:
-							node = classPointerNode.GetEquivalentNode(innerClass);
-							break;
-					}
+						BaseClassArrayNode classArrayNode => classArrayNode.GetEquivalentNode(0, innerClass),
+						ClassPointerNode classPointerNode => classPointerNode.GetEquivalentNode(innerClass)
+					};
 				}
 				else
 				{
@@ -321,26 +313,24 @@ namespace ReClassNET.DataExchange.ReClass
 			Contract.Requires(logger != null);
 			Contract.Ensures(Contract.Result<Tuple<List<ClassNode>, List<BaseNode>>>() != null);
 
-			using (var project = new ReClassNetProject())
+			using var project = new ReClassNetProject();
+			templateProject?.Classes.ForEach(project.AddClass);
+
+			var file = new ReClassNetFile(project);
+			file.Load(input, logger);
+
+			var classes = project.Classes
+				.Where(c => c.Name != SerializationClassName);
+			if (templateProject != null)
 			{
-				templateProject?.Classes.ForEach(project.AddClass);
-
-				var file = new ReClassNetFile(project);
-				file.Load(input, logger);
-
-				var classes = project.Classes
-					.Where(c => c.Name != SerializationClassName);
-				if (templateProject != null)
-				{
-					classes = classes.Where(c => !templateProject.ContainsClass(c.Uuid));
-				}
-
-				var nodes = project.Classes
-					.Where(c => c.Name == SerializationClassName)
-					.SelectMany(c => c.Nodes);
-
-				return Tuple.Create(classes.ToList(), nodes.ToList());
+				classes = classes.Where(c => !templateProject.ContainsClass(c.Uuid));
 			}
+
+			var nodes = project.Classes
+				.Where(c => c.Name == SerializationClassName)
+				.SelectMany(c => c.Nodes);
+
+			return Tuple.Create(classes.ToList(), nodes.ToList());
 		}
 	}
 }
