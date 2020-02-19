@@ -1,11 +1,35 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ReClassNET.UI
 {
 	public class ScrollableCustomControl : UserControl
 	{
+		private const int WM_HSCROLL = 0x114;
+		private const int WM_VSCROLL = 0x115;
+		private const int SBS_HORZ = 0x0000;
+		private const int SBS_VERT = 0x0001;
+		private const int SIF_ALL = 0x0001 | 0x0002 | 0x0004 | 0x0010;
+
+		[DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
+		private static extern bool GetScrollInfo(HandleRef hWnd, int fnBar, SCROLLINFO si);
+
+		[StructLayout(LayoutKind.Sequential)]
+		private class SCROLLINFO
+		{
+			public int cbSize = Marshal.SizeOf(typeof(SCROLLINFO));
+			public int fMask = SIF_ALL;
+			public int nMin;
+			public int nMax;
+			public int nPage;
+			public int nPos;
+			public int nTrackPos;
+		}
+
+		private readonly SCROLLINFO scrollinfo = new SCROLLINFO();
+
 		public ScrollableCustomControl()
 		{
 			VScroll = true;
@@ -49,7 +73,7 @@ namespace ReClassNET.UI
 		private const int SB_BOTTOM = 7;
 		private const int SB_ENDSCROLL = 8;
 
-		private ScrollEventType WParamToScrollEventType(IntPtr wParam)
+		private static ScrollEventType WParamToScrollEventType(IntPtr wParam)
 		{
 			switch (LoWord((int)wParam))
 			{
@@ -75,9 +99,6 @@ namespace ReClassNET.UI
 					return ScrollEventType.EndScroll;
 			}
 		}
-
-		private const int WM_HSCROLL = 0x114;
-		private const int WM_VSCROLL = 0x115;
 
 		private void SetValue(ScrollEventType type, ScrollProperties scrollProperties, int newValue)
 		{
@@ -163,9 +184,20 @@ namespace ReClassNET.UI
 			SetValue(ScrollEventType.ThumbPosition, scrollProperties, scrollProperties.Value + amount);
 		}
 
-		private void ProcessMessage(ref Message msg, ScrollProperties scrollProperties)
+		private void ProcessMessage(ref Message msg)
 		{
-			Contract.Requires(scrollProperties != null);
+			ScrollProperties scrollProperties;
+			int bar;
+			if (msg.Msg == WM_VSCROLL)
+			{
+				scrollProperties = VerticalScroll;
+				bar = SBS_VERT;
+			}
+			else
+			{
+				scrollProperties = HorizontalScroll;
+				bar = SBS_HORZ;
+			}
 
 			var type = WParamToScrollEventType(msg.WParam);
 			switch (type)
@@ -180,7 +212,11 @@ namespace ReClassNET.UI
 					break;
 				case ScrollEventType.ThumbTrack:
 				case ScrollEventType.ThumbPosition:
-					SetValue(type, scrollProperties, HiWord((int)msg.WParam));
+					
+					if (GetScrollInfo(new HandleRef(this, Handle), bar, scrollinfo))
+					{
+						SetValue(type, scrollProperties, scrollinfo.nTrackPos);
+					}
 					break;
 			}
 		}
@@ -198,7 +234,7 @@ namespace ReClassNET.UI
 							break;
 						}
 
-						ProcessMessage(ref msg, msg.Msg == WM_VSCROLL ? VerticalScroll : (ScrollProperties)HorizontalScroll);
+						ProcessMessage(ref msg);
 
 						return;
 				}
@@ -206,8 +242,6 @@ namespace ReClassNET.UI
 
 			base.WndProc(ref msg);
 		}
-
-		static int HiWord(int number) => (number >> 16) & 0xffff;
 
 		static int LoWord(int number) => number & 0xffff;
 	}
