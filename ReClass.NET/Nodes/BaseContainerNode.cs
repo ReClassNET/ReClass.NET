@@ -8,6 +8,8 @@ namespace ReClassNET.Nodes
 	{
 		private readonly List<BaseNode> nodes = new List<BaseNode>();
 
+		private int updateCount;
+
 		/// <summary>The child nodes of the container.</summary>
 		public IReadOnlyList<BaseNode> Nodes => nodes;
 
@@ -122,6 +124,35 @@ namespace ReClassNET.Nodes
 			return true;
 		}
 
+		/// <summary>
+		/// Disables internal events to speed up batch processing.
+		/// <see cref="EndUpdate"/> must be called to restore the functionality.
+		/// </summary>
+		public void BeginUpdate()
+		{
+			updateCount++;
+		}
+
+		/// <summary>
+		/// Enables internal events disabled by <see cref="BeginUpdate"/>.
+		/// </summary>
+		public void EndUpdate()
+		{
+			updateCount = Math.Max(0, updateCount - 1);
+
+			OnNodesUpdated();
+		}
+
+		private void OnNodesUpdated()
+		{
+			if (updateCount == 0)
+			{
+				UpdateOffsets();
+
+				GetParentContainer()?.ChildHasChanged(this);
+			}
+		}
+
 		/// <summary>Replaces the old node with the new node.</summary>
 		/// <param name="oldNode">The old node to replacce.</param>
 		/// <param name="newNode">The new node.</param>
@@ -172,9 +203,7 @@ namespace ReClassNET.Nodes
 				}*/
 			}
 
-			UpdateOffsets();
-
-			GetParentContainer()?.ChildHasChanged(this);
+			OnNodesUpdated();
 		}
 
 		/// <summary>
@@ -253,9 +282,7 @@ namespace ReClassNET.Nodes
 				index++;
 			}
 
-			UpdateOffsets();
-
-			GetParentContainer()?.ChildHasChanged(this);
+			OnNodesUpdated();
 		}
 
 		/// <summary>
@@ -286,9 +313,7 @@ namespace ReClassNET.Nodes
 
 			nodes.Add(node);
 
-			UpdateOffsets();
-
-			GetParentContainer()?.ChildHasChanged(this);
+			OnNodesUpdated();
 		}
 
 		/// <summary>
@@ -312,9 +337,7 @@ namespace ReClassNET.Nodes
 
 			nodes.Insert(index, node);
 
-			UpdateOffsets();
-
-			GetParentContainer()?.ChildHasChanged(this);
+			OnNodesUpdated();
 		}
 
 		/// <summary>Removes the specified node.</summary>
@@ -327,9 +350,7 @@ namespace ReClassNET.Nodes
 			var result = nodes.Remove(node);
 			if (result)
 			{
-				UpdateOffsets();
-
-				GetParentContainer()?.ChildHasChanged(this);
+				OnNodesUpdated();
 			}
 			return result;
 		}

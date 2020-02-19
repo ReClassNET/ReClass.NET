@@ -93,7 +93,7 @@ namespace ReClassNET.DataExchange.ReClass
 				}
 			}
 
-			var classes = new List<Tuple<XElement, ClassNode>>();
+			var classes = new List<(XElement, ClassNode)>();
 
 			var classesElement = document.Root.Element(XmlClassesElement);
 			if (classesElement != null)
@@ -114,21 +114,20 @@ namespace ReClassNET.DataExchange.ReClass
 					{
 						project.AddClass(node);
 
-						classes.Add(Tuple.Create(element, node));
+						classes.Add((element, node));
 					}
 				}
 			}
 
-			foreach (var t in classes)
+			foreach (var (element, classNode) in classes)
 			{
-				var nodes = t.Item1.Elements(XmlNodeElement)
-					.Select(e => CreateNodeFromElement(e, t.Item2, logger))
+				var nodes = element.Elements(XmlNodeElement)
+					.Select(e => CreateNodeFromElement(e, classNode, logger))
 					.Where(n => n != null);
 
-				foreach (var node in nodes)
-				{
-					t.Item2.AddNode(node);
-				}
+				classNode.BeginUpdate();
+				classNode.AddNodes(nodes);
+				classNode.EndUpdate();
 			}
 		}
 
