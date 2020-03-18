@@ -50,7 +50,7 @@ static DWORD EnumerateRemoteModulesNative(HANDLE process, Proc proc)
 		return error;
 	
 	PPEB_LDR_DATA ldr;
-	auto success = ReadRemoteMemory(process, ppeb->Ldr, &ldr, 0, sizeof(ldr));
+	auto success = ReadRemoteMemory(process, &ppeb->Ldr, &ldr, 0, sizeof(ldr));
 	if (!success)
 		return ERROR_READ_FAULT; // we seem to swallow the error anyways, might aswell give a distinctive one back
 
