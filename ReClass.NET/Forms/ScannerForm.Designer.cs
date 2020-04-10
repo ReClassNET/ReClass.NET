@@ -43,6 +43,7 @@
 			this.scanCopyOnWriteCheckBox = new System.Windows.Forms.CheckBox();
 			this.scanExecutableCheckBox = new System.Windows.Forms.CheckBox();
 			this.scanWritableCheckBox = new System.Windows.Forms.CheckBox();
+			this.scanMappedMemoryCheckBox = new System.Windows.Forms.CheckBox();
 			this.stopAddressTextBox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.startAddressTextBox = new System.Windows.Forms.TextBox();
@@ -191,6 +192,7 @@
 			this.scanOptionsGroupBox.Controls.Add(this.scanCopyOnWriteCheckBox);
 			this.scanOptionsGroupBox.Controls.Add(this.scanExecutableCheckBox);
 			this.scanOptionsGroupBox.Controls.Add(this.scanWritableCheckBox);
+			this.scanOptionsGroupBox.Controls.Add(this.scanMappedMemoryCheckBox);
 			this.scanOptionsGroupBox.Controls.Add(this.stopAddressTextBox);
 			this.scanOptionsGroupBox.Controls.Add(this.label4);
 			this.scanOptionsGroupBox.Controls.Add(this.startAddressTextBox);
@@ -258,6 +260,17 @@
 			this.scanWritableCheckBox.Text = "Writable";
 			this.scanWritableCheckBox.ThreeState = true;
 			this.scanWritableCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// scanMappedMemoryCheckBox
+			// 
+			this.scanMappedMemoryCheckBox.AutoSize = true;
+			this.scanMappedMemoryCheckBox.Checked = true;
+			this.scanMappedMemoryCheckBox.Location = new System.Drawing.Point(189, 91);
+			this.scanMappedMemoryCheckBox.Name = "scanMappedMemoryCheckBox";
+			this.scanMappedMemoryCheckBox.Size = new System.Drawing.Size(105, 17);
+			this.scanMappedMemoryCheckBox.TabIndex = 10;
+			this.scanMappedMemoryCheckBox.Text = "Skip Mapped";
+			this.scanMappedMemoryCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// stopAddressTextBox
 			// 
@@ -461,8 +474,8 @@
 			// 
 			// resultMemoryRecordList
 			// 
-			this.resultMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.resultMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.resultMemoryRecordList.ContextMenuStrip = this.resultListContextMenuStrip;
 			this.resultMemoryRecordList.Location = new System.Drawing.Point(11, 80);
 			this.resultMemoryRecordList.Name = "resultMemoryRecordList";
@@ -478,17 +491,17 @@
 			// resultListContextMenuStrip
 			// 
 			this.resultListContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addSelectedResultsToAddressListToolStripMenuItem,
-            this.removeSelectedRecordsToolStripMenuItem,
-            this.changeToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.setCurrentClassAddressToolStripMenuItem,
-            this.createClassAtAddressToolStripMenuItem,
-            this.toolStripSeparator3,
-            this.findOutWhatAccessesThisAddressToolStripMenuItem,
-            this.findOutWhatWritesToThisAddressToolStripMenuItem,
-            this.toolStripSeparator4,
-            this.copyAddressToolStripMenuItem});
+			this.addSelectedResultsToAddressListToolStripMenuItem,
+			this.removeSelectedRecordsToolStripMenuItem,
+			this.changeToolStripMenuItem,
+			this.toolStripSeparator2,
+			this.setCurrentClassAddressToolStripMenuItem,
+			this.createClassAtAddressToolStripMenuItem,
+			this.toolStripSeparator3,
+			this.findOutWhatAccessesThisAddressToolStripMenuItem,
+			this.findOutWhatWritesToThisAddressToolStripMenuItem,
+			this.toolStripSeparator4,
+			this.copyAddressToolStripMenuItem});
 			this.resultListContextMenuStrip.Name = "resultListContextMenuStrip";
 			this.resultListContextMenuStrip.Size = new System.Drawing.Size(270, 198);
 			this.resultListContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.resultListContextMenuStrip_Opening);
@@ -512,10 +525,10 @@
 			// changeToolStripMenuItem
 			// 
 			this.changeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.descriptionToolStripMenuItem,
-            this.addressToolStripMenuItem,
-            this.valueTypeToolStripMenuItem,
-            this.valueToolStripMenuItem});
+			this.descriptionToolStripMenuItem,
+			this.addressToolStripMenuItem,
+			this.valueTypeToolStripMenuItem,
+			this.valueToolStripMenuItem});
 			this.changeToolStripMenuItem.Enabled = false;
 			this.changeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Textfield_Rename;
 			this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
@@ -603,9 +616,9 @@
 			// 
 			// addressListMemoryRecordList
 			// 
-			this.addressListMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.addressListMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+			| System.Windows.Forms.AnchorStyles.Left)
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.addressListMemoryRecordList.ContextMenuStrip = this.resultListContextMenuStrip;
 			this.addressListMemoryRecordList.Location = new System.Drawing.Point(11, 402);
 			this.addressListMemoryRecordList.Name = "addressListMemoryRecordList";
@@ -632,11 +645,11 @@
 			this.menuToolStrip.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.menuToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openAddressFileToolStripButton,
-            this.saveAddressFileToolStripButton,
-            this.saveAddressFileAsToolStripButton,
-            this.toolStripSeparator1,
-            this.clearAddressListToolStripButton});
+			this.openAddressFileToolStripButton,
+			this.saveAddressFileToolStripButton,
+			this.saveAddressFileAsToolStripButton,
+			this.toolStripSeparator1,
+			this.clearAddressListToolStripButton});
 			this.menuToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuToolStrip.Name = "menuToolStrip";
 			this.menuToolStrip.Size = new System.Drawing.Size(101, 25);
@@ -785,6 +798,7 @@
 		private System.Windows.Forms.CheckBox scanCopyOnWriteCheckBox;
 		private System.Windows.Forms.CheckBox scanExecutableCheckBox;
 		private System.Windows.Forms.CheckBox scanWritableCheckBox;
+		private System.Windows.Forms.CheckBox scanMappedMemoryCheckBox;
 		private System.Windows.Forms.TextBox stopAddressTextBox;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox startAddressTextBox;

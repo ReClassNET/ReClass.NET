@@ -676,6 +676,7 @@ namespace ReClassNET.Forms
 			}
 
 			settings.ScanWritableMemory = CheckStateToSettingState(scanWritableCheckBox.CheckState);
+			settings.ScanMappedMemory = !scanMappedMemoryCheckBox.Checked;
 			settings.ScanExecutableMemory = CheckStateToSettingState(scanExecutableCheckBox.CheckState);
 			settings.ScanCopyOnWriteMemory = CheckStateToSettingState(scanCopyOnWriteCheckBox.CheckState);
 
@@ -697,7 +698,7 @@ namespace ReClassNET.Forms
 
 			fastScanCheckBox.Checked = settings.EnableFastScan;
 			fastScanAlignmentTextBox.Text = Math.Max(1, settings.FastScanAlignment).ToString();
-			
+
 			CheckState SettingStateToCheckState(SettingState state)
 			{
 				switch (state)
@@ -712,6 +713,7 @@ namespace ReClassNET.Forms
 			}
 
 			scanWritableCheckBox.CheckState = SettingStateToCheckState(settings.ScanWritableMemory);
+			scanMappedMemoryCheckBox.Checked = !settings.ScanMappedMemory;
 			scanExecutableCheckBox.CheckState = SettingStateToCheckState(settings.ScanExecutableMemory);
 			scanCopyOnWriteCheckBox.CheckState = SettingStateToCheckState(settings.ScanCopyOnWriteMemory);
 		}
@@ -865,7 +867,7 @@ namespace ReClassNET.Forms
 		public InvalidInputException(string input)
 			: base($"'{input}' is not a valid input.")
 		{
-			
+
 		}
 	}
 }
