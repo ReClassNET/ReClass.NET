@@ -43,6 +43,9 @@
 			this.scanCopyOnWriteCheckBox = new System.Windows.Forms.CheckBox();
 			this.scanExecutableCheckBox = new System.Windows.Forms.CheckBox();
 			this.scanWritableCheckBox = new System.Windows.Forms.CheckBox();
+			this.scanMappedCheckBox = new System.Windows.Forms.CheckBox();
+			this.scanImageCheckBox = new System.Windows.Forms.CheckBox();
+			this.scanPrivateCheckBox = new System.Windows.Forms.CheckBox();
 			this.stopAddressTextBox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.startAddressTextBox = new System.Windows.Forms.TextBox();
@@ -191,6 +194,9 @@
 			this.scanOptionsGroupBox.Controls.Add(this.scanCopyOnWriteCheckBox);
 			this.scanOptionsGroupBox.Controls.Add(this.scanExecutableCheckBox);
 			this.scanOptionsGroupBox.Controls.Add(this.scanWritableCheckBox);
+			this.scanOptionsGroupBox.Controls.Add(this.scanMappedCheckBox);
+			this.scanOptionsGroupBox.Controls.Add(this.scanImageCheckBox);
+			this.scanOptionsGroupBox.Controls.Add(this.scanPrivateCheckBox);
 			this.scanOptionsGroupBox.Controls.Add(this.stopAddressTextBox);
 			this.scanOptionsGroupBox.Controls.Add(this.label4);
 			this.scanOptionsGroupBox.Controls.Add(this.startAddressTextBox);
@@ -198,37 +204,37 @@
 			this.scanOptionsGroupBox.Location = new System.Drawing.Point(3, 239);
 			this.scanOptionsGroupBox.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
 			this.scanOptionsGroupBox.Name = "scanOptionsGroupBox";
-			this.scanOptionsGroupBox.Size = new System.Drawing.Size(308, 120);
+			this.scanOptionsGroupBox.Size = new System.Drawing.Size(308, 141);
 			this.scanOptionsGroupBox.TabIndex = 9;
 			this.scanOptionsGroupBox.TabStop = false;
 			this.scanOptionsGroupBox.Text = "Scan Options";
 			// 
 			// fastScanAlignmentTextBox
 			// 
-			this.fastScanAlignmentTextBox.Location = new System.Drawing.Point(133, 91);
+			this.fastScanAlignmentTextBox.Location = new System.Drawing.Point(144, 112);
 			this.fastScanAlignmentTextBox.Name = "fastScanAlignmentTextBox";
 			this.fastScanAlignmentTextBox.Size = new System.Drawing.Size(26, 20);
-			this.fastScanAlignmentTextBox.TabIndex = 9;
+			this.fastScanAlignmentTextBox.TabIndex = 11;
 			// 
 			// fastScanCheckBox
 			// 
 			this.fastScanCheckBox.AutoSize = true;
 			this.fastScanCheckBox.Checked = true;
 			this.fastScanCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.fastScanCheckBox.Location = new System.Drawing.Point(9, 93);
+			this.fastScanCheckBox.Location = new System.Drawing.Point(9, 114);
 			this.fastScanCheckBox.Name = "fastScanCheckBox";
 			this.fastScanCheckBox.Size = new System.Drawing.Size(129, 17);
-			this.fastScanCheckBox.TabIndex = 8;
+			this.fastScanCheckBox.TabIndex = 10;
 			this.fastScanCheckBox.Text = "Fast Scan, Alignment:";
 			this.fastScanCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// scanCopyOnWriteCheckBox
 			// 
 			this.scanCopyOnWriteCheckBox.AutoSize = true;
-			this.scanCopyOnWriteCheckBox.Location = new System.Drawing.Point(189, 68);
+			this.scanCopyOnWriteCheckBox.Location = new System.Drawing.Point(189, 91);
 			this.scanCopyOnWriteCheckBox.Name = "scanCopyOnWriteCheckBox";
 			this.scanCopyOnWriteCheckBox.Size = new System.Drawing.Size(95, 17);
-			this.scanCopyOnWriteCheckBox.TabIndex = 7;
+			this.scanCopyOnWriteCheckBox.TabIndex = 9;
 			this.scanCopyOnWriteCheckBox.Text = "Copy On Write";
 			this.scanCopyOnWriteCheckBox.ThreeState = true;
 			this.scanCopyOnWriteCheckBox.UseVisualStyleBackColor = true;
@@ -238,10 +244,10 @@
 			this.scanExecutableCheckBox.AutoSize = true;
 			this.scanExecutableCheckBox.Checked = true;
 			this.scanExecutableCheckBox.CheckState = System.Windows.Forms.CheckState.Indeterminate;
-			this.scanExecutableCheckBox.Location = new System.Drawing.Point(91, 68);
+			this.scanExecutableCheckBox.Location = new System.Drawing.Point(91, 91);
 			this.scanExecutableCheckBox.Name = "scanExecutableCheckBox";
 			this.scanExecutableCheckBox.Size = new System.Drawing.Size(79, 17);
-			this.scanExecutableCheckBox.TabIndex = 6;
+			this.scanExecutableCheckBox.TabIndex = 8;
 			this.scanExecutableCheckBox.Text = "Executable";
 			this.scanExecutableCheckBox.ThreeState = true;
 			this.scanExecutableCheckBox.UseVisualStyleBackColor = true;
@@ -251,13 +257,47 @@
 			this.scanWritableCheckBox.AutoSize = true;
 			this.scanWritableCheckBox.Checked = true;
 			this.scanWritableCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.scanWritableCheckBox.Location = new System.Drawing.Point(9, 68);
+			this.scanWritableCheckBox.Location = new System.Drawing.Point(9, 91);
 			this.scanWritableCheckBox.Name = "scanWritableCheckBox";
 			this.scanWritableCheckBox.Size = new System.Drawing.Size(65, 17);
-			this.scanWritableCheckBox.TabIndex = 5;
+			this.scanWritableCheckBox.TabIndex = 7;
 			this.scanWritableCheckBox.Text = "Writable";
 			this.scanWritableCheckBox.ThreeState = true;
 			this.scanWritableCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// scanMappedCheckBox
+			// 
+			this.scanMappedCheckBox.AutoSize = true;
+			this.scanMappedCheckBox.Location = new System.Drawing.Point(189, 68);
+			this.scanMappedCheckBox.Name = "scanMappedCheckBox";
+			this.scanMappedCheckBox.Size = new System.Drawing.Size(65, 17);
+			this.scanMappedCheckBox.TabIndex = 6;
+			this.scanMappedCheckBox.Text = "Mapped";
+			this.scanMappedCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// scanImageCheckBox
+			// 
+			this.scanImageCheckBox.AutoSize = true;
+			this.scanImageCheckBox.Checked = true;
+			this.scanImageCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.scanImageCheckBox.Location = new System.Drawing.Point(91, 68);
+			this.scanImageCheckBox.Name = "scanImageCheckBox";
+			this.scanImageCheckBox.Size = new System.Drawing.Size(55, 17);
+			this.scanImageCheckBox.TabIndex = 5;
+			this.scanImageCheckBox.Text = "Image";
+			this.scanImageCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// scanPrivateCheckBox
+			// 
+			this.scanPrivateCheckBox.AutoSize = true;
+			this.scanPrivateCheckBox.Checked = true;
+			this.scanPrivateCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.scanPrivateCheckBox.Location = new System.Drawing.Point(9, 68);
+			this.scanPrivateCheckBox.Name = "scanPrivateCheckBox";
+			this.scanPrivateCheckBox.Size = new System.Drawing.Size(59, 17);
+			this.scanPrivateCheckBox.TabIndex = 4;
+			this.scanPrivateCheckBox.Text = "Private";
+			this.scanPrivateCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// stopAddressTextBox
 			// 
@@ -302,7 +342,7 @@
 			this.flowLayoutPanel.Location = new System.Drawing.Point(292, 80);
 			this.flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel.Name = "flowLayoutPanel";
-			this.flowLayoutPanel.Size = new System.Drawing.Size(317, 294);
+			this.flowLayoutPanel.Size = new System.Drawing.Size(317, 314);
 			this.flowLayoutPanel.TabIndex = 9;
 			this.flowLayoutPanel.WrapContents = false;
 			// 
@@ -461,8 +501,8 @@
 			// 
 			// resultMemoryRecordList
 			// 
-			this.resultMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.resultMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.resultMemoryRecordList.ContextMenuStrip = this.resultListContextMenuStrip;
 			this.resultMemoryRecordList.Location = new System.Drawing.Point(11, 80);
 			this.resultMemoryRecordList.Name = "resultMemoryRecordList";
@@ -471,24 +511,24 @@
 			this.resultMemoryRecordList.ShowPreviousValueColumn = true;
 			this.resultMemoryRecordList.ShowValueColumn = true;
 			this.resultMemoryRecordList.ShowValueTypeColumn = false;
-			this.resultMemoryRecordList.Size = new System.Drawing.Size(268, 292);
+			this.resultMemoryRecordList.Size = new System.Drawing.Size(268, 314);
 			this.resultMemoryRecordList.TabIndex = 16;
 			this.resultMemoryRecordList.RecordDoubleClick += new ReClassNET.UI.MemorySearchResultControlResultDoubleClickEventHandler(this.memorySearchResultControl_ResultDoubleClick);
 			// 
 			// resultListContextMenuStrip
 			// 
 			this.resultListContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addSelectedResultsToAddressListToolStripMenuItem,
-            this.removeSelectedRecordsToolStripMenuItem,
-            this.changeToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.setCurrentClassAddressToolStripMenuItem,
-            this.createClassAtAddressToolStripMenuItem,
-            this.toolStripSeparator3,
-            this.findOutWhatAccessesThisAddressToolStripMenuItem,
-            this.findOutWhatWritesToThisAddressToolStripMenuItem,
-            this.toolStripSeparator4,
-            this.copyAddressToolStripMenuItem});
+			this.addSelectedResultsToAddressListToolStripMenuItem,
+			this.removeSelectedRecordsToolStripMenuItem,
+			this.changeToolStripMenuItem,
+			this.toolStripSeparator2,
+			this.setCurrentClassAddressToolStripMenuItem,
+			this.createClassAtAddressToolStripMenuItem,
+			this.toolStripSeparator3,
+			this.findOutWhatAccessesThisAddressToolStripMenuItem,
+			this.findOutWhatWritesToThisAddressToolStripMenuItem,
+			this.toolStripSeparator4,
+			this.copyAddressToolStripMenuItem});
 			this.resultListContextMenuStrip.Name = "resultListContextMenuStrip";
 			this.resultListContextMenuStrip.Size = new System.Drawing.Size(270, 198);
 			this.resultListContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.resultListContextMenuStrip_Opening);
@@ -512,10 +552,10 @@
 			// changeToolStripMenuItem
 			// 
 			this.changeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.descriptionToolStripMenuItem,
-            this.addressToolStripMenuItem,
-            this.valueTypeToolStripMenuItem,
-            this.valueToolStripMenuItem});
+			this.descriptionToolStripMenuItem,
+			this.addressToolStripMenuItem,
+			this.valueTypeToolStripMenuItem,
+			this.valueToolStripMenuItem});
 			this.changeToolStripMenuItem.Enabled = false;
 			this.changeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Textfield_Rename;
 			this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
@@ -603,11 +643,11 @@
 			// 
 			// addressListMemoryRecordList
 			// 
-			this.addressListMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.addressListMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+			| System.Windows.Forms.AnchorStyles.Left)
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.addressListMemoryRecordList.ContextMenuStrip = this.resultListContextMenuStrip;
-			this.addressListMemoryRecordList.Location = new System.Drawing.Point(11, 402);
+			this.addressListMemoryRecordList.Location = new System.Drawing.Point(11, 425);
 			this.addressListMemoryRecordList.Name = "addressListMemoryRecordList";
 			this.addressListMemoryRecordList.ShowAddressColumn = true;
 			this.addressListMemoryRecordList.ShowDescriptionColumn = true;
@@ -620,7 +660,7 @@
 			// toolStripPanel
 			// 
 			this.toolStripPanel.Controls.Add(this.menuToolStrip);
-			this.toolStripPanel.Location = new System.Drawing.Point(11, 375);
+			this.toolStripPanel.Location = new System.Drawing.Point(11, 397);
 			this.toolStripPanel.Name = "toolStripPanel";
 			this.toolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			this.toolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -632,11 +672,11 @@
 			this.menuToolStrip.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.menuToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openAddressFileToolStripButton,
-            this.saveAddressFileToolStripButton,
-            this.saveAddressFileAsToolStripButton,
-            this.toolStripSeparator1,
-            this.clearAddressListToolStripButton});
+			this.openAddressFileToolStripButton,
+			this.saveAddressFileToolStripButton,
+			this.saveAddressFileAsToolStripButton,
+			this.toolStripSeparator1,
+			this.clearAddressListToolStripButton});
 			this.menuToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuToolStrip.Name = "menuToolStrip";
 			this.menuToolStrip.Size = new System.Drawing.Size(101, 25);
@@ -707,7 +747,7 @@
 			// 
 			this.showInputCorrelatorIconButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.showInputCorrelatorIconButton.Image = global::ReClassNET.Properties.Resources.B16x16_Canvas_Size;
-			this.showInputCorrelatorIconButton.Location = new System.Drawing.Point(580, 378);
+			this.showInputCorrelatorIconButton.Location = new System.Drawing.Point(580, 398);
 			this.showInputCorrelatorIconButton.Name = "showInputCorrelatorIconButton";
 			this.showInputCorrelatorIconButton.Pressed = false;
 			this.showInputCorrelatorIconButton.Selected = false;
@@ -731,7 +771,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(612, 584);
+			this.ClientSize = new System.Drawing.Size(612, 607);
 			this.Controls.Add(this.cancelScanIconButton);
 			this.Controls.Add(this.showInputCorrelatorIconButton);
 			this.Controls.Add(this.undoIconButton);
@@ -785,6 +825,9 @@
 		private System.Windows.Forms.CheckBox scanCopyOnWriteCheckBox;
 		private System.Windows.Forms.CheckBox scanExecutableCheckBox;
 		private System.Windows.Forms.CheckBox scanWritableCheckBox;
+		private System.Windows.Forms.CheckBox scanMappedCheckBox;
+		private System.Windows.Forms.CheckBox scanImageCheckBox;
+		private System.Windows.Forms.CheckBox scanPrivateCheckBox;
 		private System.Windows.Forms.TextBox stopAddressTextBox;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox startAddressTextBox;
