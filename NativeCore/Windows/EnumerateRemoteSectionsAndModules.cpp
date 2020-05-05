@@ -3,6 +3,7 @@
 #include <tlhelp32.h>
 #include <vector>
 #include <algorithm>
+#include <functional>
 
 #include "NativeCore.hpp"
 
@@ -41,24 +42,25 @@ static DWORD GetRemotePeb(HANDLE process, PPEB* ppeb)
 	return ERROR_SUCCESS;
 }
 
-template <typename Proc>
-static DWORD EnumerateRemoteModulesNative(HANDLE process, Proc proc)
+using InternalEnumerateRemoteModulesCallback = std::function<void(EnumerateRemoteModuleData&)>;
+
+static bool EnumerateRemoteModulesNative(HANDLE process, const InternalEnumerateRemoteModulesCallback& callback)
 {
 	PPEB ppeb;
 	const auto error = GetRemotePeb(process, &ppeb);
 	if (error != ERROR_SUCCESS)
-		return error;
+		return false;
 	
 	PPEB_LDR_DATA ldr;
 	auto success = ReadRemoteMemory(process, &ppeb->Ldr, &ldr, 0, sizeof(ldr));
 	if (!success)
-		return ERROR_READ_FAULT; // we seem to swallow the error anyways, might aswell give a distinctive one back
+		return false;
 
 	const auto list_head = &ldr->InMemoryOrderModuleList; // remote address
 	PLIST_ENTRY list_current; // remote address
 	success = ReadRemoteMemory(process, &list_head->Flink, &list_current, 0, sizeof(list_current));
 	if (!success)
-		return ERROR_READ_FAULT;
+		return false;
 	
 	while (list_current != list_head)
 	{
@@ -67,7 +69,7 @@ static DWORD EnumerateRemoteModulesNative(HANDLE process, Proc proc)
 		LDR_DATA_TABLE_ENTRY mod;
 		success = ReadRemoteMemory(process, CONTAINING_RECORD(list_current, LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks), &mod, 0, sizeof(mod));
 		if (!success)
-			return ERROR_SUCCESS; // return success here to prevent running the other one
+			break;
 
 		EnumerateRemoteModuleData data = {};
 		data.BaseAddress = mod.DllBase;
@@ -75,25 +77,26 @@ static DWORD EnumerateRemoteModulesNative(HANDLE process, Proc proc)
 		const auto path_len = std::min(sizeof(RC_UnicodeChar) * (PATH_MAXIMUM_LENGTH - 1), size_t(mod.FullDllName.Length));
 		success = ReadRemoteMemory(process, mod.FullDllName.Buffer, data.Path, 0, int(path_len));
 		if (!success)
-			return ERROR_SUCCESS; // return success here to prevent running the other one
+			break;
 		
 		// UNICODE_STRING is not guaranteed to be null terminated
 		data.Path[path_len / 2] = 0;
 		
-		proc(&data);
+		callback(data);
 		
 		list_current = mod.InMemoryOrderLinks.Flink;
 	}
 	
-	return ERROR_SUCCESS;
+	return true;
 }
 
-template <typename Proc>
-static DWORD EnumerateRemoteModulesWinapi(HANDLE process, Proc proc)
+bool EnumerateRemoteModulesWinapi(HANDLE process, const InternalEnumerateRemoteModulesCallback& callback)
 {
 	const auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetProcessId(process));
 	if (handle == INVALID_HANDLE_VALUE)
-		return GetLastError();
+	{
+		return false;
+	}
 	
 	MODULEENTRY32W me32 = {};
 	me32.dwSize = sizeof(MODULEENTRY32W);
@@ -106,13 +109,13 @@ static DWORD EnumerateRemoteModulesWinapi(HANDLE process, Proc proc)
 			data.Size = me32.modBaseSize;
 			std::memcpy(data.Path, me32.szExePath, std::min(MAX_PATH, PATH_MAXIMUM_LENGTH));
 
-			proc(&data);
+			callback(data);
 		} while (Module32NextW(handle, &me32));
 	}
 
 	CloseHandle(handle);
 
-	return ERROR_SUCCESS;
+	return true;
 }
 
 void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
@@ -165,16 +168,16 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 		address = reinterpret_cast<size_t>(memInfo.BaseAddress) + memInfo.RegionSize;
 	}
 
-	const auto moduleEnumerator = [&](EnumerateRemoteModuleData* data)
+	const auto moduleEnumerator = [&](EnumerateRemoteModuleData& data)
 	{
 		if (callbackModule != nullptr)
 		{
-			callbackModule(data);
+			callbackModule(&data);
 		}
 
 		if (callbackSection != nullptr)
 		{
-			auto it = std::lower_bound(std::begin(sections), std::end(sections), static_cast<LPVOID>(data->BaseAddress), [&sections](const auto& lhs, const LPVOID& rhs)
+			auto it = std::lower_bound(std::begin(sections), std::end(sections), static_cast<LPVOID>(data.BaseAddress), [&sections](const auto& lhs, const LPVOID& rhs)
 			{
 				return lhs.BaseAddress < rhs;
 			});
@@ -182,17 +185,17 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 			IMAGE_DOS_HEADER imageDosHeader = {};
 			IMAGE_NT_HEADERS imageNtHeaders = {};
 
-			if (!ReadRemoteMemory(process, data->BaseAddress, &imageDosHeader, 0, sizeof(IMAGE_DOS_HEADER))
-				|| !ReadRemoteMemory(process, PUCHAR(data->BaseAddress) + imageDosHeader.e_lfanew, &imageNtHeaders, 0, sizeof(IMAGE_NT_HEADERS)))
+			if (!ReadRemoteMemory(process, data.BaseAddress, &imageDosHeader, 0, sizeof(IMAGE_DOS_HEADER))
+				|| !ReadRemoteMemory(process, PUCHAR(data.BaseAddress) + imageDosHeader.e_lfanew, &imageNtHeaders, 0, sizeof(IMAGE_NT_HEADERS)))
 			{
 				return;
 			}
 
 			std::vector<IMAGE_SECTION_HEADER> sectionHeaders(imageNtHeaders.FileHeader.NumberOfSections);
-			ReadRemoteMemory(process, PUCHAR(data->BaseAddress) + imageDosHeader.e_lfanew + sizeof(IMAGE_NT_HEADERS), sectionHeaders.data(), 0, imageNtHeaders.FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER));
+			ReadRemoteMemory(process, PUCHAR(data.BaseAddress) + imageDosHeader.e_lfanew + sizeof(IMAGE_NT_HEADERS), sectionHeaders.data(), 0, imageNtHeaders.FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER));
 			for (auto&& sectionHeader : sectionHeaders)
 			{
-				const auto sectionAddress = reinterpret_cast<size_t>(data->BaseAddress) + sectionHeader.VirtualAddress;
+				const auto sectionAddress = reinterpret_cast<size_t>(data.BaseAddress) + sectionHeader.VirtualAddress;
 
 				for (; it != std::end(sections); ++it)
 				{
@@ -200,7 +203,7 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 					
 					if (sectionAddress >= reinterpret_cast<size_t>(section.BaseAddress) 
 						&& sectionAddress < reinterpret_cast<size_t>(section.BaseAddress) + static_cast<size_t>(section.Size)
-						&& sectionHeader.VirtualAddress + sectionHeader.Misc.VirtualSize <= data->Size)
+						&& sectionHeader.VirtualAddress + sectionHeader.Misc.VirtualSize <= data.Size)
 					{
 						if ((sectionHeader.Characteristics & IMAGE_SCN_CNT_CODE) == IMAGE_SCN_CNT_CODE)
 						{
@@ -222,7 +225,7 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 						{
 							std::memset(section.Name, 0, sizeof(section.Name));
 						}
-						std::memcpy(section.ModulePath, data->Path, std::min(MAX_PATH, PATH_MAXIMUM_LENGTH));
+						std::memcpy(section.ModulePath, data.Path, std::min(MAX_PATH, PATH_MAXIMUM_LENGTH));
 
 						break;
 					}
@@ -231,7 +234,7 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 		}
 	};
 	
-	if (EnumerateRemoteModulesNative(process, moduleEnumerator) != ERROR_SUCCESS)
+	if (!EnumerateRemoteModulesNative(process, moduleEnumerator))
 	{
 		EnumerateRemoteModulesWinapi(process, moduleEnumerator);
 	}
