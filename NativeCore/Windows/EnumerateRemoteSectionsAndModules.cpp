@@ -7,47 +7,37 @@
 
 #include "NativeCore.hpp"
 
-static DWORD GetRemotePeb(HANDLE process, PPEB* ppeb)
+PPEB GetRemotePeb(const HANDLE process)
 {
-	const auto ntdll = GetModuleHandle(TEXT("ntdll"));
+	static auto* const ntdll = GetModuleHandle(TEXT("ntdll"));
 	if (!ntdll)
-		return ERROR_MOD_NOT_FOUND;
+	{
+		return nullptr;
+	}
 
-	using tRtlNtStatusToDosError = ULONG (NTAPI *)(
-			_In_ NTSTATUS Status
-		);
-	const auto pRtlNtStatusToDosError = tRtlNtStatusToDosError(GetProcAddress(ntdll, "RtlNtStatusToDosError"));
-	if (!pRtlNtStatusToDosError)
-		return ERROR_NOT_FOUND;
+	using tNtQueryInformationProcess = NTSTATUS (NTAPI*)(_In_ HANDLE ProcessHandle, _In_ PROCESSINFOCLASS ProcessInformationClass, _Out_writes_bytes_(ProcessInformationLength) PVOID ProcessInformation, _In_ ULONG ProcessInformationLength, _Out_opt_ PULONG ReturnLength);
 
-	using tNtQueryInformationProcess = NTSTATUS (NTAPI *)(
-			_In_ HANDLE ProcessHandle,
-			_In_ PROCESSINFOCLASS ProcessInformationClass,
-			_Out_writes_bytes_(ProcessInformationLength) PVOID ProcessInformation,
-			_In_ ULONG ProcessInformationLength,
-			_Out_opt_ PULONG ReturnLength
-		);
-
-	const auto pNtQueryInformationProcess = tNtQueryInformationProcess(GetProcAddress(ntdll, "NtQueryInformationProcess"));
+	static const auto pNtQueryInformationProcess = tNtQueryInformationProcess(GetProcAddress(ntdll, "NtQueryInformationProcess"));
 	if (!pNtQueryInformationProcess)
-		return ERROR_NOT_FOUND;
+	{
+		return nullptr;
+	}
 
 	PROCESS_BASIC_INFORMATION pbi;
-	const auto status = pNtQueryInformationProcess(process, ProcessBasicInformation, &pbi, sizeof(pbi), nullptr);
-	if (!NT_SUCCESS(status))
-		return pRtlNtStatusToDosError(status);
+	if (!NT_SUCCESS(pNtQueryInformationProcess(process, ProcessBasicInformation, &pbi, sizeof(PROCESS_BASIC_INFORMATION), nullptr)))
+	{
+		return nullptr;
+	}
 
-	*ppeb = pbi.PebBaseAddress;
-	
-	return ERROR_SUCCESS;
+	return pbi.PebBaseAddress;
 }
 
 using InternalEnumerateRemoteModulesCallback = std::function<void(EnumerateRemoteModuleData&)>;
 
 bool EnumerateRemoteModulesNative(const RC_Pointer process, const InternalEnumerateRemoteModulesCallback& callback)
 {
-	PPEB ppeb;
-	if (GetRemotePeb(process, &ppeb) != ERROR_SUCCESS)
+	auto* const ppeb = GetRemotePeb(process);
+	if (ppeb == nullptr)
 	{
 		return false;
 	}
@@ -58,7 +48,7 @@ bool EnumerateRemoteModulesNative(const RC_Pointer process, const InternalEnumer
 		return false;
 	}
 
-	const auto head = &ldr->InMemoryOrderModuleList;
+	auto* const head = &ldr->InMemoryOrderModuleList;
 	PLIST_ENTRY current;
 	if (!ReadRemoteMemory(process, &head->Flink, &current, 0, sizeof(PLIST_ENTRY)))
 	{
@@ -94,7 +84,7 @@ bool EnumerateRemoteModulesNative(const RC_Pointer process, const InternalEnumer
 
 bool EnumerateRemoteModulesWinapi(const RC_Pointer process, const InternalEnumerateRemoteModulesCallback& callback)
 {
-	const auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetProcessId(process));
+	auto* const handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetProcessId(process));
 	if (handle == INVALID_HANDLE_VALUE)
 	{
 		return false;
@@ -129,28 +119,28 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 
 	std::vector<EnumerateRemoteSectionData> sections;
 
-	MEMORY_BASIC_INFORMATION memInfo = { };
-	memInfo.RegionSize = 0x1000;
+	MEMORY_BASIC_INFORMATION memory = { };
+	memory.RegionSize = 0x1000;
 	size_t address = 0;
-	while (VirtualQueryEx(process, reinterpret_cast<LPCVOID>(address), &memInfo, sizeof(MEMORY_BASIC_INFORMATION)) != 0 && address + memInfo.RegionSize > address)
+	while (VirtualQueryEx(process, reinterpret_cast<LPCVOID>(address), &memory, sizeof(MEMORY_BASIC_INFORMATION)) != 0 && address + memory.RegionSize > address)
 	{
-		if (memInfo.State == MEM_COMMIT)
+		if (memory.State == MEM_COMMIT)
 		{
 			EnumerateRemoteSectionData section = {};
-			section.BaseAddress = memInfo.BaseAddress;
-			section.Size = memInfo.RegionSize;
+			section.BaseAddress = memory.BaseAddress;
+			section.Size = memory.RegionSize;
 			
 			section.Protection = SectionProtection::NoAccess;
-			if ((memInfo.Protect & PAGE_EXECUTE) == PAGE_EXECUTE) section.Protection |= SectionProtection::Execute;
-			if ((memInfo.Protect & PAGE_EXECUTE_READ) == PAGE_EXECUTE_READ) section.Protection |= SectionProtection::Execute | SectionProtection::Read;
-			if ((memInfo.Protect & PAGE_EXECUTE_READWRITE) == PAGE_EXECUTE_READWRITE) section.Protection |= SectionProtection::Execute | SectionProtection::Read | SectionProtection::Write;
-			if ((memInfo.Protect & PAGE_EXECUTE_WRITECOPY) == PAGE_EXECUTE_WRITECOPY) section.Protection |= SectionProtection::Execute | SectionProtection::Read | SectionProtection::CopyOnWrite;
-			if ((memInfo.Protect & PAGE_READONLY) == PAGE_READONLY) section.Protection |= SectionProtection::Read;
-			if ((memInfo.Protect & PAGE_READWRITE) == PAGE_READWRITE) section.Protection |= SectionProtection::Read | SectionProtection::Write;
-			if ((memInfo.Protect & PAGE_WRITECOPY) == PAGE_WRITECOPY) section.Protection |= SectionProtection::Read | SectionProtection::CopyOnWrite;
-			if ((memInfo.Protect & PAGE_GUARD) == PAGE_GUARD) section.Protection |= SectionProtection::Guard;
+			if ((memory.Protect & PAGE_EXECUTE) == PAGE_EXECUTE) section.Protection |= SectionProtection::Execute;
+			if ((memory.Protect & PAGE_EXECUTE_READ) == PAGE_EXECUTE_READ) section.Protection |= SectionProtection::Execute | SectionProtection::Read;
+			if ((memory.Protect & PAGE_EXECUTE_READWRITE) == PAGE_EXECUTE_READWRITE) section.Protection |= SectionProtection::Execute | SectionProtection::Read | SectionProtection::Write;
+			if ((memory.Protect & PAGE_EXECUTE_WRITECOPY) == PAGE_EXECUTE_WRITECOPY) section.Protection |= SectionProtection::Execute | SectionProtection::Read | SectionProtection::CopyOnWrite;
+			if ((memory.Protect & PAGE_READONLY) == PAGE_READONLY) section.Protection |= SectionProtection::Read;
+			if ((memory.Protect & PAGE_READWRITE) == PAGE_READWRITE) section.Protection |= SectionProtection::Read | SectionProtection::Write;
+			if ((memory.Protect & PAGE_WRITECOPY) == PAGE_WRITECOPY) section.Protection |= SectionProtection::Read | SectionProtection::CopyOnWrite;
+			if ((memory.Protect & PAGE_GUARD) == PAGE_GUARD) section.Protection |= SectionProtection::Guard;
 			
-			switch (memInfo.Type)
+			switch (memory.Type)
 			{
 			case MEM_IMAGE:
 				section.Type = SectionType::Image;
@@ -167,7 +157,7 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 
 			sections.push_back(section);
 		}
-		address = reinterpret_cast<size_t>(memInfo.BaseAddress) + memInfo.RegionSize;
+		address = reinterpret_cast<size_t>(memory.BaseAddress) + memory.RegionSize;
 	}
 
 	const auto moduleEnumerator = [&](EnumerateRemoteModuleData& data)
