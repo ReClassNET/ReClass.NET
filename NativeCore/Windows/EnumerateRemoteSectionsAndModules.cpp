@@ -44,53 +44,55 @@ static DWORD GetRemotePeb(HANDLE process, PPEB* ppeb)
 
 using InternalEnumerateRemoteModulesCallback = std::function<void(EnumerateRemoteModuleData&)>;
 
-static bool EnumerateRemoteModulesNative(HANDLE process, const InternalEnumerateRemoteModulesCallback& callback)
+bool EnumerateRemoteModulesNative(const RC_Pointer process, const InternalEnumerateRemoteModulesCallback& callback)
 {
 	PPEB ppeb;
-	const auto error = GetRemotePeb(process, &ppeb);
-	if (error != ERROR_SUCCESS)
+	if (GetRemotePeb(process, &ppeb) != ERROR_SUCCESS)
+	{
 		return false;
+	}
 	
 	PPEB_LDR_DATA ldr;
-	auto success = ReadRemoteMemory(process, &ppeb->Ldr, &ldr, 0, sizeof(ldr));
-	if (!success)
-		return false;
-
-	const auto list_head = &ldr->InMemoryOrderModuleList; // remote address
-	PLIST_ENTRY list_current; // remote address
-	success = ReadRemoteMemory(process, &list_head->Flink, &list_current, 0, sizeof(list_current));
-	if (!success)
-		return false;
-	
-	while (list_current != list_head)
+	if (!ReadRemoteMemory(process, &ppeb->Ldr, &ldr, 0, sizeof(PPEB_LDR_DATA)))
 	{
-		// TODO: error handling - what do we do if module list changed? We can't un-call the callback
+		return false;
+	}
 
-		LDR_DATA_TABLE_ENTRY mod;
-		success = ReadRemoteMemory(process, CONTAINING_RECORD(list_current, LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks), &mod, 0, sizeof(mod));
-		if (!success)
+	const auto head = &ldr->InMemoryOrderModuleList;
+	PLIST_ENTRY current;
+	if (!ReadRemoteMemory(process, &head->Flink, &current, 0, sizeof(PLIST_ENTRY)))
+	{
+		return false;
+	}
+	
+	while (current != head)
+	{
+		LDR_DATA_TABLE_ENTRY entry;
+		if (!ReadRemoteMemory(process, CONTAINING_RECORD(current, LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks), &entry, 0, sizeof(entry)))
+		{
 			break;
+		}
 
 		EnumerateRemoteModuleData data = {};
-		data.BaseAddress = mod.DllBase;
-		data.Size = *(ULONG*)&mod.Reserved2[1]; // instead of undocced member could read ImageSize from headers
-		const auto path_len = std::min(sizeof(RC_UnicodeChar) * (PATH_MAXIMUM_LENGTH - 1), size_t(mod.FullDllName.Length));
-		success = ReadRemoteMemory(process, mod.FullDllName.Buffer, data.Path, 0, int(path_len));
-		if (!success)
+		data.BaseAddress = entry.DllBase;
+		data.Size = *reinterpret_cast<ULONG*>(&entry.Reserved2[1]); // instead of undocced member could read ImageSize from headers
+
+		const auto length = std::min<int>(sizeof(RC_UnicodeChar) * (PATH_MAXIMUM_LENGTH - 1), entry.FullDllName.Length);
+		if (!ReadRemoteMemory(process, entry.FullDllName.Buffer, data.Path, 0, length))
+		{
 			break;
-		
-		// UNICODE_STRING is not guaranteed to be null terminated
-		data.Path[path_len / 2] = 0;
+		}
+		data.Path[length / 2] = 0;
 		
 		callback(data);
 		
-		list_current = mod.InMemoryOrderLinks.Flink;
+		current = entry.InMemoryOrderLinks.Flink;
 	}
 	
 	return true;
 }
 
-bool EnumerateRemoteModulesWinapi(HANDLE process, const InternalEnumerateRemoteModulesCallback& callback)
+bool EnumerateRemoteModulesWinapi(const RC_Pointer process, const InternalEnumerateRemoteModulesCallback& callback)
 {
 	const auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetProcessId(process));
 	if (handle == INVALID_HANDLE_VALUE)
