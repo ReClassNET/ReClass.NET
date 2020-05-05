@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -32,8 +32,12 @@ namespace ReClassNET.CodeGenerator
 			[typeof(Utf16TextPtrNode)] = "IntPtr",
 			[typeof(Utf32TextPtrNode)] = "IntPtr",
 			[typeof(PointerNode)] = "IntPtr",
-			[typeof(VirtualMethodTableNode)] = "IntPtr"
-		};
+			[typeof(VirtualMethodTableNode)] = "IntPtr",
+
+			[typeof(Vector2Node)] = "Vector2",
+			[typeof(Vector3Node)] = "Vector3",
+			[typeof(Vector4Node)] = "Vector4"
+        };
 
 		public Language Language => Language.CSharp;
 
@@ -48,6 +52,9 @@ namespace ReClassNET.CodeGenerator
 					iw.WriteLine("// Warning: The C# code generator doesn't support all node types!");
 					iw.WriteLine();
 					iw.WriteLine("using System.Runtime.InteropServices;");
+
+					iw.WriteLine("// optional namespace, only for vectors");
+					iw.WriteLine("using System.Numerics;");
 					iw.WriteLine();
 
 					using (var en = enums.GetEnumerator())
@@ -149,7 +156,7 @@ namespace ReClassNET.CodeGenerator
 			Contract.Requires(logger != null);
 
 			writer.WriteLine("[StructLayout(LayoutKind.Explicit)]");
-			writer.Write("class ");
+			writer.Write("public struct ");
 			writer.Write(@class.Name);
 
 			if (!string.IsNullOrEmpty(@class.Comment))
@@ -170,16 +177,7 @@ namespace ReClassNET.CodeGenerator
 				var type = GetTypeDefinition(node);
 				if (type != null)
 				{
-					writer.Write("[FieldOffset(");
-					writer.Write(node.Offset);
-					writer.WriteLine(")]");
-
-					writer.Write("public ");
-					writer.Write(type);
-					writer.Write(" ");
-					writer.Write(node.Name);
-					writer.Write("; //0x");
-					writer.Write($"{node.Offset:X04}");
+					writer.Write($"[FieldOffset(0x{node.Offset:X})] public readonly {type} {node.Name};");
 					if (!string.IsNullOrEmpty(node.Comment))
 					{
 						writer.Write(" ");

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
@@ -65,6 +66,12 @@ namespace ReClassNET
 
 			Settings = SettingsSerializer.Load();
 			Logger = new GuiLogger();
+
+			if(!NativeMethods.IsUnix() && Settings.RunAsAdmin && !WinUtil.IsAdministrator)
+			{
+				WinUtil.RunElevated(Process.GetCurrentProcess().MainModule.FileName, args.Length > 0 ? string.Join(" ", args) : null); 
+				return;
+			}
 
 #if !DEBUG
 			try

@@ -56,14 +56,23 @@ namespace ReClassNET.Forms
 			}
 		}
 
+		private void UpdateWindowTitle(string extra = null)
+		{
+			var title = $"{(Program.Settings.RandomizeWindowTitle ? Utils.RandomString(Program.GlobalRandom.Next(15, 20)) : Constants.ApplicationName)} ({Constants.Platform})";
+			if (!string.IsNullOrEmpty(extra))
+			{
+				title += $" - {extra}";
+			}
+			Text = title;
+		}
+
 		public MainForm()
 		{
 			Contract.Ensures(pluginManager != null);
 			Contract.Ensures(currentProject != null);
 
 			InitializeComponent();
-
-			Text = $"{Constants.ApplicationName} ({Constants.Platform})";
+			UpdateWindowTitle();
 
 			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true, true);
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(true, false);
@@ -71,13 +80,13 @@ namespace ReClassNET.Forms
 			Program.RemoteProcess.ProcessAttached += sender =>
 			{
 				var text = $"{sender.UnderlayingProcess.Name} (ID: {sender.UnderlayingProcess.Id.ToString()})";
-
-				Text = $"{Constants.ApplicationName} ({Constants.Platform}) - {text}";
 				processInfoToolStripStatusLabel.Text = text;
+				UpdateWindowTitle(text);
+
 			};
 			Program.RemoteProcess.ProcessClosed += sender =>
 			{
-				Text = $"{Constants.ApplicationName} ({Constants.Platform})";
+				UpdateWindowTitle();
 				processInfoToolStripStatusLabel.Text = "No process selected";
 			};
 

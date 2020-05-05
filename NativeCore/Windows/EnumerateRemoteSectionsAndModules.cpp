@@ -192,26 +192,31 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 				const auto sectionAddress = reinterpret_cast<size_t>(data->BaseAddress) + sectionHeader.VirtualAddress;
 				for (auto j = it; j != std::end(sections); ++j)
 				{
-					if (sectionAddress >= reinterpret_cast<size_t>(j->BaseAddress) && sectionAddress < reinterpret_cast<size_t>(j->BaseAddress) + static_cast<size_t>(j->Size))
-					{
-						// Copy the name because it is not null padded.
-						char buffer[IMAGE_SIZEOF_SHORT_NAME + 1] = { 0 };
-						std::memcpy(buffer, sectionHeader.Name, IMAGE_SIZEOF_SHORT_NAME);
+					if (sectionAddress >= reinterpret_cast<size_t>(j->BaseAddress) 
+								&& sectionAddress < reinterpret_cast<size_t>(j->BaseAddress) + static_cast<size_t>(j->Size)
+								&& sectionHeader.VirtualAddress + sectionHeader.Misc.VirtualSize <= me32.modBaseSize )
+							{
+								if ((sectionHeader.Characteristics & IMAGE_SCN_CNT_CODE) == IMAGE_SCN_CNT_CODE)
+								{
+									j->Category = SectionCategory::CODE;
+								}
+								else if (sectionHeader.Characteristics & (IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_CNT_UNINITIALIZED_DATA))
+								{
+									j->Category = SectionCategory::DATA;
+								}
 
-						if (std::strcmp(buffer, ".text") == 0 || std::strcmp(buffer, "code") == 0)
-						{
-							j->Category = SectionCategory::CODE;
-						}
-						else if (std::strcmp(buffer, ".data") == 0 || std::strcmp(buffer, "data") == 0 || std::strcmp(buffer, ".rdata") == 0 || std::strcmp(buffer, ".idata") == 0)
-						{
-							j->Category = SectionCategory::DATA;
-						}
+								try {
+									// Copy the name because it is not null padded.
+									char buffer[IMAGE_SIZEOF_SHORT_NAME + 1] = { 0 };
+									std::memcpy(buffer, sectionHeader.Name, IMAGE_SIZEOF_SHORT_NAME);
+									MultiByteToUnicode(buffer, j->Name, IMAGE_SIZEOF_SHORT_NAME);
+								} catch (std::range_error &) {
+									std::memset(j->Name, 0, sizeof j->Name);
+								}
+								std::memcpy(j->ModulePath, me32.szExePath, std::min(MAX_PATH, PATH_MAXIMUM_LENGTH));
 
-						MultiByteToUnicode(buffer, j->Name, IMAGE_SIZEOF_SHORT_NAME);
-						std::memcpy(j->ModulePath, data->Path, std::min(MAX_PATH, PATH_MAXIMUM_LENGTH));
-
-						break;
-					}
+								break;
+							}
 				}
 
 			}
