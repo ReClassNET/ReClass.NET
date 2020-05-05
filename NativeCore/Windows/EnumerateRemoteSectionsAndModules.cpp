@@ -160,7 +160,7 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 
 			section.Category = section.Type == SectionType::Private ? SectionCategory::HEAP : SectionCategory::Unknown;
 
-			sections.push_back(std::move(section));
+			sections.push_back(section);
 		}
 		address = reinterpret_cast<size_t>(memInfo.BaseAddress) + memInfo.RegionSize;
 	}
@@ -168,52 +168,61 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 	const auto moduleEnumerator = [&](EnumerateRemoteModuleData* data)
 	{
 		if (callbackModule != nullptr)
+		{
 			callbackModule(data);
+		}
 
 		if (callbackSection != nullptr)
 		{
 			auto it = std::lower_bound(std::begin(sections), std::end(sections), static_cast<LPVOID>(data->BaseAddress), [&sections](const auto& lhs, const LPVOID& rhs)
-				{
-					return lhs.BaseAddress < rhs;
-				});
-
-			IMAGE_DOS_HEADER DosHdr = {};
-			IMAGE_NT_HEADERS NtHdr = {};
-
-			ReadRemoteMemory(process, data->BaseAddress, &DosHdr, 0, sizeof(IMAGE_DOS_HEADER));
-			ReadRemoteMemory(process, PUCHAR(data->BaseAddress) + DosHdr.e_lfanew, &NtHdr, 0, sizeof(IMAGE_NT_HEADERS));
-
-			std::vector<IMAGE_SECTION_HEADER> sectionHeaders(NtHdr.FileHeader.NumberOfSections);
-			ReadRemoteMemory(process, PUCHAR(data->BaseAddress) + DosHdr.e_lfanew + sizeof(IMAGE_NT_HEADERS), sectionHeaders.data(), 0, NtHdr.FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER));
-			for (auto i = 0; i < NtHdr.FileHeader.NumberOfSections; ++i)
 			{
-				auto&& sectionHeader = sectionHeaders[i];
+				return lhs.BaseAddress < rhs;
+			});
 
+			IMAGE_DOS_HEADER imageDosHeader = {};
+			IMAGE_NT_HEADERS imageNtHeaders = {};
+
+			if (!ReadRemoteMemory(process, data->BaseAddress, &imageDosHeader, 0, sizeof(IMAGE_DOS_HEADER))
+				|| !ReadRemoteMemory(process, PUCHAR(data->BaseAddress) + imageDosHeader.e_lfanew, &imageNtHeaders, 0, sizeof(IMAGE_NT_HEADERS)))
+			{
+				return;
+			}
+
+			std::vector<IMAGE_SECTION_HEADER> sectionHeaders(imageNtHeaders.FileHeader.NumberOfSections);
+			ReadRemoteMemory(process, PUCHAR(data->BaseAddress) + imageDosHeader.e_lfanew + sizeof(IMAGE_NT_HEADERS), sectionHeaders.data(), 0, imageNtHeaders.FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER));
+			for (auto&& sectionHeader : sectionHeaders)
+			{
 				const auto sectionAddress = reinterpret_cast<size_t>(data->BaseAddress) + sectionHeader.VirtualAddress;
-				for (auto j = it; j != std::end(sections); ++j)
+
+				for (; it != std::end(sections); ++it)
 				{
-					if (sectionAddress >= reinterpret_cast<size_t>(j->BaseAddress) 
-						&& sectionAddress < reinterpret_cast<size_t>(j->BaseAddress) + static_cast<size_t>(j->Size)
+					auto&& section = *it;
+					
+					if (sectionAddress >= reinterpret_cast<size_t>(section.BaseAddress) 
+						&& sectionAddress < reinterpret_cast<size_t>(section.BaseAddress) + static_cast<size_t>(section.Size)
 						&& sectionHeader.VirtualAddress + sectionHeader.Misc.VirtualSize <= data->Size)
 					{
 						if ((sectionHeader.Characteristics & IMAGE_SCN_CNT_CODE) == IMAGE_SCN_CNT_CODE)
 						{
-							j->Category = SectionCategory::CODE;
+							section.Category = SectionCategory::CODE;
 						}
 						else if (sectionHeader.Characteristics & (IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_CNT_UNINITIALIZED_DATA))
 						{
-							j->Category = SectionCategory::DATA;
+							section.Category = SectionCategory::DATA;
 						}
 
-						try {
+						try
+						{
 							// Copy the name because it is not null padded.
 							char buffer[IMAGE_SIZEOF_SHORT_NAME + 1] = { 0 };
 							std::memcpy(buffer, sectionHeader.Name, IMAGE_SIZEOF_SHORT_NAME);
-							MultiByteToUnicode(buffer, j->Name, IMAGE_SIZEOF_SHORT_NAME);
-						} catch (std::range_error &) {
-							std::memset(j->Name, 0, sizeof j->Name);
+							MultiByteToUnicode(buffer, section.Name, IMAGE_SIZEOF_SHORT_NAME);
 						}
-						std::memcpy(j->ModulePath, data->Path, std::min(MAX_PATH, PATH_MAXIMUM_LENGTH));
+						catch (std::range_error &)
+						{
+							std::memset(section.Name, 0, sizeof(section.Name));
+						}
+						std::memcpy(section.ModulePath, data->Path, std::min(MAX_PATH, PATH_MAXIMUM_LENGTH));
 
 						break;
 					}
@@ -222,8 +231,10 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 		}
 	};
 	
-	if(EnumerateRemoteModulesNative(process, moduleEnumerator) != ERROR_SUCCESS)
+	if (EnumerateRemoteModulesNative(process, moduleEnumerator) != ERROR_SUCCESS)
+	{
 		EnumerateRemoteModulesWinapi(process, moduleEnumerator);
+	}
 
 	if (callbackSection != nullptr)
 	{
