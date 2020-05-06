@@ -61,12 +61,10 @@ namespace ReClassNET.Memory
 		{
 			get
 			{
-				List<Module> cpy;
 				lock (modules)
 				{
-					cpy = modules.ToList();
+					return new List<Module>(modules);
 				}
-				return cpy;
 			}
 		}
 
@@ -75,12 +73,10 @@ namespace ReClassNET.Memory
 		{
 			get
 			{
-				List<Section> cpy;
 				lock (sections)
 				{
-					cpy = sections.ToList();
+					return new List<Section>(sections);
 				}
-				return cpy;
 			}
 		}
 
@@ -568,20 +564,20 @@ namespace ReClassNET.Memory
 			return null;
 		}
 
-		public bool EnumerateRemoteSectionsAndModules(out List<Section> sections, out List<Module> modules)
+		public bool EnumerateRemoteSectionsAndModules(out List<Section> _sections, out List<Module> _modules)
 		{
 			if (!IsValid)
 			{
-				sections = null;
-				modules = null;
+				_sections = null;
+				_modules = null;
 
 				return false;
 			}
 
-			sections = new List<Section>();
-			modules = new List<Module>();
+			_sections = new List<Section>();
+			_modules = new List<Module>();
 
-			coreFunctions.EnumerateRemoteSectionsAndModules(handle, sections.Add, modules.Add);
+			coreFunctions.EnumerateRemoteSectionsAndModules(handle, _sections.Add, _modules.Add);
 
 			return true;
 		}
@@ -600,11 +596,11 @@ namespace ReClassNET.Memory
 
 			if (!IsValid)
 			{
-				lock(modules)
+				lock (modules)
 				{
 					modules.Clear();
 				}
-				lock(sections)
+				lock (sections)
 				{
 					sections.Clear();
 				}
