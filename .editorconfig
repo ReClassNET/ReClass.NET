@@ -4,6 +4,13 @@ root = true
 charset = utf-8
 trim_trailing_whitespace = true
 
+[*.{c,h,cpp,hpp}]
+
+# Indentation and spacing
+indent_size = 4
+indent_style = tab
+tab_width = 4
+
 [*.cs]
 
 #### Core EditorConfig Options ####
@@ -198,7 +205,7 @@ dotnet_naming_style.begins_with_i.required_suffix =
 dotnet_naming_style.begins_with_i.word_separator = 
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
 
-# Warnings
+#### Warnings ####
 
 # CS8509: The switch expression does not handle all possible values of its input type (it is not exhaustive).
 dotnet_diagnostic.CS8509.severity = none
