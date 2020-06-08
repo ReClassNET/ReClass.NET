@@ -70,7 +70,7 @@ namespace ReClassNET.Forms
 
 				var itemName = Convert.ToString(row.Cells[1].Value);
 
-				values.Add(itemName, itemValue);
+				values.Add(itemValue, itemName);
 			}
 
 			@enum.SetData(enumFlagCheckBox.Checked, enumUnderlyingTypeSizeComboBox.SelectedValue, values);
