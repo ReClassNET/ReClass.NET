@@ -404,7 +404,8 @@ namespace ReClassNET.MemoryScanner
 		{
 			if (comparer is ISimpleScanComparer simpleScanComparer)
 			{
-				return new ScannerWorker(settings, simpleScanComparer);
+				return new SimpleScannerWorker(settings, simpleScanComparer);
+			}
 			}
 
 			throw new Exception();

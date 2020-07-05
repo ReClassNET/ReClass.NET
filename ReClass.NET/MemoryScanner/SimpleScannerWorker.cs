@@ -6,12 +6,12 @@ using ReClassNET.MemoryScanner.Comparer;
 
 namespace ReClassNET.MemoryScanner
 {
-	internal class ScannerWorker : IScannerWorker
+	internal class SimpleScannerWorker : IScannerWorker
 	{
 		private readonly ScanSettings settings;
 		private readonly ISimpleScanComparer comparer;
 
-		public ScannerWorker(ScanSettings settings, ISimpleScanComparer comparer)
+		public SimpleScannerWorker(ScanSettings settings, ISimpleScanComparer comparer)
 		{
 			Contract.Requires(settings != null);
 			Contract.Requires(comparer != null);

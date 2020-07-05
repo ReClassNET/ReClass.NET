@@ -254,7 +254,7 @@
     <Compile Include="MemoryScanner\PatternScanner.cs" />
     <Compile Include="MemoryScanner\ScanCompareType.cs" />
     <Compile Include="MemoryScanner\ScannerContext.cs" />
-    <Compile Include="MemoryScanner\ScannerWorker.cs" />
+    <Compile Include="MemoryScanner\SimpleScannerWorker.cs" />
     <Compile Include="MemoryScanner\ScanResultBlock.cs" />
     <Compile Include="MemoryScanner\ScanResultStore.cs" />
     <Compile Include="MemoryScanner\ScanValueType.cs" />
