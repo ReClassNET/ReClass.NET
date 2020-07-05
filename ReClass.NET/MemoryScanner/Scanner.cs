@@ -82,9 +82,9 @@ namespace ReClassNET.MemoryScanner
 			return CurrentStore.GetResultBlocks().SelectMany(rb => rb.Results.Select(r =>
 			{
 				// Convert the block offset to a real address.
-				var c = r.Clone();
-				c.Address = c.Address.Add(rb.Start);
-				return c;
+				var scanResult = r.Clone();
+				scanResult.Address = scanResult.Address.Add(rb.Start);
+				return scanResult;
 			}));
 		}
 
