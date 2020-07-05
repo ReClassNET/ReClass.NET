@@ -37,7 +37,7 @@ namespace ReClassNET.MemoryScanner.Comparer
 			var match = Pattern.Match(buffer);
 			while (match.Success)
 			{
-				var byteOffset = Encoding.GetByteCount(bufferArray, lastIndex, match.Index) + lastOffset;
+				var byteOffset = Encoding.GetByteCount(bufferArray, lastIndex, match.Index - lastIndex) + lastOffset;
 
 				lastIndex = match.Index;
 				lastOffset = byteOffset;
