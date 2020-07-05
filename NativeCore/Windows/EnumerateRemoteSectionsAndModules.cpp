@@ -65,7 +65,7 @@ bool EnumerateRemoteModulesNative(const RC_Pointer process, const InternalEnumer
 
 		EnumerateRemoteModuleData data = {};
 		data.BaseAddress = entry.DllBase;
-		data.Size = *reinterpret_cast<ULONG*>(&entry.Reserved2[1]); // instead of undocced member could read ImageSize from headers
+		data.Size = *reinterpret_cast<ULONG*>(&entry.Reserved3[1]); // instead of undocced member could read ImageSize from headers
 
 		const auto length = std::min<int>(sizeof(RC_UnicodeChar) * (PATH_MAXIMUM_LENGTH - 1), entry.FullDllName.Length);
 		if (!ReadRemoteMemory(process, entry.FullDllName.Buffer, data.Path, 0, length))
