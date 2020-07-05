@@ -21,7 +21,7 @@ namespace ReClassNET.DataExchange.ReClass
 
 		static ReClassNetFile()
 		{
-			// Obsolete: The name of the class was changed. Because of this older files can't load this nodes.
+			// Obsolete: The name of the class was changed. Because of this older versions can't load these nodes.
 			buildInStringToTypeMap["UTF8TextNode"] = typeof(Utf8TextNode);
 			buildInStringToTypeMap["UTF8TextPtrNode"] = typeof(Utf8TextPtrNode);
 			buildInStringToTypeMap["UTF16TextNode"] = typeof(Utf16TextNode);
