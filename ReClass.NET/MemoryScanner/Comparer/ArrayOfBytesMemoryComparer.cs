@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 
 namespace ReClassNET.MemoryScanner.Comparer
 {
-	public class ArrayOfBytesMemoryComparer : IScanComparer
+	public class ArrayOfBytesMemoryComparer : ISimpleScanComparer
 	{
 		public ScanCompareType CompareType => ScanCompareType.Equal;
 		public int ValueSize => bytePattern?.Length ?? byteArray.Length;

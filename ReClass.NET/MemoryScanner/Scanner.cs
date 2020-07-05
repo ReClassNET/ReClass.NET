@@ -216,7 +216,7 @@ namespace ReClassNET.MemoryScanner
 
 				var result = Parallel.ForEach(
 					regions, // Sections get grouped by the framework to balance the workers.
-					() => new ScannerContext(Settings, comparer, initialBufferSize), // Create a new context for every worker (thread).
+					() => new ScannerContext(CreateWorker(Settings, comparer), initialBufferSize), // Create a new context for every worker (thread).
 					(s, state, _, context) =>
 					{
 						if (!ct.IsCancellationRequested)
@@ -295,7 +295,7 @@ namespace ReClassNET.MemoryScanner
 			{
 				var result = Parallel.ForEach(
 					CurrentStore.GetResultBlocks(),
-					() => new ScannerContext(Settings, comparer, 0),
+					() => new ScannerContext(CreateWorker(Settings, comparer), 0),
 					(b, state, _, context) =>
 					{
 						if (!ct.IsCancellationRequested)
@@ -396,6 +396,16 @@ namespace ReClassNET.MemoryScanner
 				results
 			);
 			return block;
+		}
+
+		private static IScannerWorker CreateWorker(ScanSettings settings, IScanComparer comparer)
+		{
+			if (comparer is ISimpleScanComparer simpleScanComparer)
+			{
+				return new ScannerWorker(settings, simpleScanComparer);
+			}
+
+			throw new Exception();
 		}
 	}
 }

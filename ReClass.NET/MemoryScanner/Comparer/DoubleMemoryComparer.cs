@@ -4,7 +4,7 @@ using ReClassNET.Extensions;
 
 namespace ReClassNET.MemoryScanner.Comparer
 {
-	public class DoubleMemoryComparer : IScanComparer
+	public class DoubleMemoryComparer : ISimpleScanComparer
 	{
 		public ScanCompareType CompareType { get; }
 		public ScanRoundMode RoundType { get; }

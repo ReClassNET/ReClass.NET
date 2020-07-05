@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ReClassNET.MemoryScanner.Comparer
 {
-	public class IntegerMemoryComparer : IScanComparer
+	public class IntegerMemoryComparer : ISimpleScanComparer
 	{
 		public ScanCompareType CompareType { get; }
 		public int Value1 { get; }

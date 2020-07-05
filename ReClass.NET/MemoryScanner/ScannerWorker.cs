@@ -9,9 +9,9 @@ namespace ReClassNET.MemoryScanner
 	internal class ScannerWorker : IScannerWorker
 	{
 		private readonly ScanSettings settings;
-		private readonly IScanComparer comparer;
+		private readonly ISimpleScanComparer comparer;
 
-		public ScannerWorker(ScanSettings settings, IScanComparer comparer)
+		public ScannerWorker(ScanSettings settings, ISimpleScanComparer comparer)
 		{
 			Contract.Requires(settings != null);
 			Contract.Requires(comparer != null);

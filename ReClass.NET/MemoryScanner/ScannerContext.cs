@@ -1,24 +1,21 @@
-﻿using System.Diagnostics.Contracts;
-using ReClassNET.MemoryScanner.Comparer;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.MemoryScanner
 {
 	internal class ScannerContext
 	{
 		public byte[] Buffer { get; private set; }
-		public ScannerWorker Worker { get; }
+		public IScannerWorker Worker { get; }
 
-		public ScannerContext(ScanSettings settings, IScanComparer comparer, int bufferSize)
+		public ScannerContext(IScannerWorker worker, int bufferSize)
 		{
-			Contract.Requires(settings != null);
-			Contract.Requires(comparer != null);
 			Contract.Requires(bufferSize >= 0);
 			Contract.Ensures(Buffer != null);
 			Contract.Ensures(Worker != null);
 
 			EnsureBufferSize(bufferSize);
 
-			Worker = new ScannerWorker(settings, comparer);
+			Worker = worker;
 		}
 
 		public void EnsureBufferSize(int size)

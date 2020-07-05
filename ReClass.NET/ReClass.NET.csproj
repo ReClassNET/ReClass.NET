@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -244,10 +244,12 @@
     <Compile Include="MemoryScanner\Comparer\FloatMemoryComparer.cs" />
     <Compile Include="MemoryScanner\Comparer\IScanComparer.cs" />
     <Compile Include="MemoryScanner\Comparer\IntegerMemoryComparer.cs" />
+    <Compile Include="MemoryScanner\Comparer\ISimpleScanComparer.cs" />
     <Compile Include="MemoryScanner\Comparer\LongMemoryComparer.cs" />
     <Compile Include="MemoryScanner\Comparer\ShortMemoryComparer.cs" />
     <Compile Include="MemoryScanner\Comparer\StringMemoryComparer.cs" />
     <Compile Include="MemoryScanner\InputCorrelatedScanner.cs" />
+    <Compile Include="MemoryScanner\IScannerWorker.cs" />
     <Compile Include="MemoryScanner\MemoryRecord.cs" />
     <Compile Include="MemoryScanner\PatternScanner.cs" />
     <Compile Include="MemoryScanner\ScanCompareType.cs" />

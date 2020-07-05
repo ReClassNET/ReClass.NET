@@ -5,7 +5,7 @@ using ReClassNET.Extensions;
 
 namespace ReClassNET.MemoryScanner.Comparer
 {
-	public class StringMemoryComparer : IScanComparer
+	public class StringMemoryComparer : ISimpleScanComparer
 	{
 		public ScanCompareType CompareType => ScanCompareType.Equal;
 		public bool CaseSensitive { get; }
