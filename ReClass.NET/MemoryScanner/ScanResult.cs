@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using ReClassNET.Extensions;
 
 namespace ReClassNET.MemoryScanner
 {
@@ -260,7 +261,7 @@ namespace ReClassNET.MemoryScanner
 	{
 		public override ScanValueType ValueType => ScanValueType.String;
 
-		public override int ValueSize => Value.Length;
+		public override int ValueSize => Value.Length * Encoding.GuessByteCountPerChar();
 
 		public string Value { get; }
 
@@ -298,6 +299,8 @@ namespace ReClassNET.MemoryScanner
 
 	public class RegexStringScanResult : StringScanResult
 	{
+		public override ScanValueType ValueType => ScanValueType.Regex;
+
 		public RegexStringScanResult(string value, Encoding encoding)
 			: base(value, encoding)
 		{
