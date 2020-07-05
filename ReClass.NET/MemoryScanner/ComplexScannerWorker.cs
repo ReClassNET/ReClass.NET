@@ -45,8 +45,6 @@ namespace ReClassNET.MemoryScanner
 
 				if (comparer.CompareWithPrevious(data, count, previousResult, out var result))
 				{
-					result.Address = previousResult.Address;
-
 					results.Add(result);
 				}
 			}
