@@ -244,7 +244,7 @@ namespace ReClassNET.MemoryScanner
 									.ToList();
 								if (results.Count > 0)
 								{
-									var block = CreateResultBlock(results, start, comparer.ValueSize);
+									var block = CreateResultBlock(results, start);
 									store.AddBlock(block); // Store the result block.
 								}
 							}
@@ -309,7 +309,7 @@ namespace ReClassNET.MemoryScanner
 									.ToList();
 								if (results.Count > 0)
 								{
-									var block = CreateResultBlock(results, b.Start, comparer.ValueSize);
+									var block = CreateResultBlock(results, b.Start);
 									store.AddBlock(block);
 								}
 							}
@@ -375,16 +375,18 @@ namespace ReClassNET.MemoryScanner
 		/// </summary>
 		/// <param name="results">The results in this block.</param>
 		/// <param name="previousStartAddress">The start address of the previous block or section.</param>
-		/// <param name="valueSize">The size of the value type.</param>
 		/// <returns>The new result block.</returns>
-		private static ScanResultBlock CreateResultBlock(IReadOnlyList<ScanResult> results, IntPtr previousStartAddress, int valueSize)
+		private static ScanResultBlock CreateResultBlock(IReadOnlyList<ScanResult> results, IntPtr previousStartAddress)
 		{
+			var firstResult = results.First();
+			var lastResult = results.Last();
+
 			// Calculate start and end address
-			var startAddress = results.First().Address.Add(previousStartAddress);
-			var endAddress = results.Last().Address.Add(previousStartAddress) + valueSize;
+			var startAddress = firstResult.Address.Add(previousStartAddress);
+			var endAddress = lastResult.Address.Add(previousStartAddress) + lastResult.ValueSize;
 
 			// Adjust the offsets of the results
-			var firstOffset = results.First().Address;
+			var firstOffset = firstResult.Address;
 			foreach (var result in results)
 			{
 				result.Address = result.Address.Sub(firstOffset);
