@@ -14,36 +14,33 @@ namespace ReClassNET.DataExchange.ReClass
 	{
 		public void Save(string filePath, ILogger logger)
 		{
-			using (var fs = new FileStream(filePath, FileMode.Create))
-			{
-				Save(fs, logger);
-			}
+			using var fs = new FileStream(filePath, FileMode.Create);
+
+			Save(fs, logger);
 		}
 
 		public void Save(Stream output, ILogger logger)
 		{
-			using (var archive = new ZipArchive(output, ZipArchiveMode.Create))
-			{
-				var dataEntry = archive.CreateEntry(DataFileName);
-				using (var entryStream = dataEntry.Open())
-				{
-					var document = new XDocument(
-						new XComment($"{Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}"),
-						new XComment($"Website: {Constants.HomepageUrl}"),
-						new XElement(
-							XmlRootElement,
-							new XAttribute(XmlVersionAttribute, FileVersion),
-							new XAttribute(XmlPlatformAttribute, Constants.Platform),
-							project.CustomData.Serialize(XmlCustomDataElement),
-							project.TypeMapping.Serialize(XmlTypeMappingElement),
-							new XElement(XmlEnumsElement, CreateEnumElements(project.Enums)),
-							new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger))
-						)
-					);
+			using var archive = new ZipArchive(output, ZipArchiveMode.Create);
 
-					document.Save(entryStream);
-				}
-			}
+			var dataEntry = archive.CreateEntry(DataFileName);
+			using var entryStream = dataEntry.Open();
+
+			var document = new XDocument(
+				new XComment($"{Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}"),
+				new XComment($"Website: {Constants.HomepageUrl}"),
+				new XElement(
+					XmlRootElement,
+					new XAttribute(XmlVersionAttribute, FileVersion),
+					new XAttribute(XmlPlatformAttribute, Constants.Platform),
+					project.CustomData.Serialize(XmlCustomDataElement),
+					project.TypeMapping.Serialize(XmlTypeMappingElement),
+					new XElement(XmlEnumsElement, CreateEnumElements(project.Enums)),
+					new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger))
+				)
+			);
+
+			document.Save(entryStream);
 		}
 
 		private static IEnumerable<XElement> CreateEnumElements(IEnumerable<EnumDescription> enums)
@@ -185,61 +182,60 @@ namespace ReClassNET.DataExchange.ReClass
 			Contract.Requires(Contract.ForAll(nodes, n => n != null));
 			Contract.Requires(logger != null);
 
-			using (var project = new ReClassNetProject())
+			using var project = new ReClassNetProject();
+
+			void RecursiveAddClasses(BaseNode node)
 			{
-				void RecursiveAddClasses(BaseNode node)
+				ClassNode classNode = null;
+				switch (node)
 				{
-					ClassNode classNode = null;
-					switch (node)
-					{
-						case ClassNode c1:
-							classNode = c1;
-							break;
-						case BaseWrapperNode wrapperNode when wrapperNode.ResolveMostInnerNode() is ClassNode c2:
-							classNode = c2;
-							break;
-					}
-
-					if (classNode == null || project.ContainsClass(classNode.Uuid))
-					{
-						return;
-					}
-
-					project.AddClass(classNode);
-
-					foreach (var wrapperNodeChild in classNode.Nodes.OfType<BaseWrapperNode>())
-					{
-						RecursiveAddClasses(wrapperNodeChild);
-					}
+					case ClassNode c1:
+						classNode = c1;
+						break;
+					case BaseWrapperNode wrapperNode when wrapperNode.ResolveMostInnerNode() is ClassNode c2:
+						classNode = c2;
+						break;
 				}
 
-				var serialisationClass = new ClassNode(false)
+				if (classNode == null || project.ContainsClass(classNode.Uuid))
 				{
-					Name = SerializationClassName
-				};
-
-				var needsSerialisationClass = true;
-
-				foreach (var node in nodes)
-				{
-					RecursiveAddClasses(node);
-
-					if (!(node is ClassNode))
-					{
-						if (needsSerialisationClass)
-						{
-							needsSerialisationClass = false;
-
-							project.AddClass(serialisationClass);
-						}
-
-						serialisationClass.AddNode(node);
-					}
+					return;
 				}
 
-				var file = new ReClassNetFile(project);
-				file.Save(output, logger);
+				project.AddClass(classNode);
+
+				foreach (var wrapperNodeChild in classNode.Nodes.OfType<BaseWrapperNode>())
+				{
+					RecursiveAddClasses(wrapperNodeChild);
+				}
 			}
+
+			var serialisationClass = new ClassNode(false)
+			{
+				Name = SerializationClassName
+			};
+
+			var needsSerialisationClass = true;
+
+			foreach (var node in nodes)
+			{
+				RecursiveAddClasses(node);
+
+				if (!(node is ClassNode))
+				{
+					if (needsSerialisationClass)
+					{
+						needsSerialisationClass = false;
+
+						project.AddClass(serialisationClass);
+					}
+
+					serialisationClass.AddNode(node);
+				}
+			}
+
+			var file = new ReClassNetFile(project);
+			file.Save(output, logger);
 		}
 	}
 }

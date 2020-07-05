@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Logger
 {
-	class BaseLogger : ILogger
+	public abstract class BaseLogger : ILogger
 	{
 		private readonly object sync = new object();
 

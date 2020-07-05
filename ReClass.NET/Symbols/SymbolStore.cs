@@ -89,25 +89,23 @@ namespace ReClassNET.Symbols
 
 		private void ResolveSearchPath()
 		{
-			using (var vsKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\VisualStudio"))
+			using var vsKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\VisualStudio");
+			if (vsKey == null)
 			{
-				if (vsKey != null)
-				{
-					foreach (var subKeyName in vsKey.GetSubKeyNames())
-					{
-						using (var debuggerKey = vsKey.OpenSubKey($@"{subKeyName}\Debugger"))
-						{
-							if (debuggerKey?.GetValue("SymbolCacheDir") is string symbolCacheDir)
-							{
-								if (Directory.Exists(symbolCacheDir))
-								{
-									SymbolCachePath = symbolCacheDir;
-								}
+				return;
+			}
 
-								return;
-							}
-						}
+			foreach (var subKeyName in vsKey.GetSubKeyNames())
+			{
+				using var debuggerKey = vsKey.OpenSubKey($@"{subKeyName}\Debugger");
+				if (debuggerKey?.GetValue("SymbolCacheDir") is string symbolCacheDir)
+				{
+					if (Directory.Exists(symbolCacheDir))
+					{
+						SymbolCachePath = symbolCacheDir;
 					}
+
+					break;
 				}
 			}
 		}

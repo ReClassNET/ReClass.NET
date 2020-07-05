@@ -56,23 +56,16 @@ namespace ReClassNET.MemoryScanner
 		{
 			Contract.Ensures(Contract.Result<IScanComparer>() != null);
 
-			switch (Settings.ValueType)
+			return Settings.ValueType switch
 			{
-				case ScanValueType.Byte:
-					return new ByteMemoryComparer(compareType, 0, 0);
-				case ScanValueType.Short:
-					return new ShortMemoryComparer(compareType, 0, 0);
-				case ScanValueType.Integer:
-					return new IntegerMemoryComparer(compareType, 0, 0);
-				case ScanValueType.Long:
-					return new LongMemoryComparer(compareType, 0, 0);
-				case ScanValueType.Float:
-					return new FloatMemoryComparer(compareType, ScanRoundMode.Normal, 2, 0, 0);
-				case ScanValueType.Double:
-					return new DoubleMemoryComparer(compareType, ScanRoundMode.Normal, 2, 0, 0);
-				default:
-					throw new InvalidOperationException();
-			}
+				ScanValueType.Byte => new ByteMemoryComparer(compareType, 0, 0),
+				ScanValueType.Short => new ShortMemoryComparer(compareType, 0, 0),
+				ScanValueType.Integer => new IntegerMemoryComparer(compareType, 0, 0),
+				ScanValueType.Long => new LongMemoryComparer(compareType, 0, 0),
+				ScanValueType.Float => new FloatMemoryComparer(compareType, ScanRoundMode.Normal, 2, 0, 0),
+				ScanValueType.Double => new DoubleMemoryComparer(compareType, ScanRoundMode.Normal, 2, 0, 0),
+				_ => throw new InvalidOperationException(),
+			};
 		}
 
 		/// <summary>

@@ -43,59 +43,56 @@ namespace ReClassNET.CodeGenerator
 
 		public string GenerateCode(IReadOnlyList<ClassNode> classes, IReadOnlyList<EnumDescription> enums, ILogger logger)
 		{
-			using (var sw = new StringWriter())
+			using var sw = new StringWriter();
+			using var iw = new IndentedTextWriter(sw, "\t");
+
+			iw.WriteLine($"// Created with {Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}");
+			iw.WriteLine();
+			iw.WriteLine("// Warning: The C# code generator doesn't support all node types!");
+			iw.WriteLine();
+			iw.WriteLine("using System.Runtime.InteropServices;");
+
+			iw.WriteLine("// optional namespace, only for vectors");
+			iw.WriteLine("using System.Numerics;");
+			iw.WriteLine();
+
+			using (var en = enums.GetEnumerator())
 			{
-				using (var iw = new IndentedTextWriter(sw, "\t"))
+				if (en.MoveNext())
 				{
-					iw.WriteLine($"// Created with {Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}");
-					iw.WriteLine();
-					iw.WriteLine("// Warning: The C# code generator doesn't support all node types!");
-					iw.WriteLine();
-					iw.WriteLine("using System.Runtime.InteropServices;");
+					WriteEnum(iw, en.Current);
 
-					iw.WriteLine("// optional namespace, only for vectors");
-					iw.WriteLine("using System.Numerics;");
-					iw.WriteLine();
-
-					using (var en = enums.GetEnumerator())
+					while (en.MoveNext())
 					{
-						if (en.MoveNext())
-						{
-							WriteEnum(iw, en.Current);
+						iw.WriteLine();
 
-							while (en.MoveNext())
-							{
-								iw.WriteLine();
-
-								WriteEnum(iw, en.Current);
-							}
-
-							iw.WriteLine();
-						}
+						WriteEnum(iw, en.Current);
 					}
 
-					var classesToWrite = classes
-						.Where(c => c.Nodes.None(n => n is FunctionNode)) // Skip class which contains FunctionNodes because these are not data classes.
-						.Distinct();
+					iw.WriteLine();
+				}
+			}
 
-					using (var en = classesToWrite.GetEnumerator())
+			var classesToWrite = classes
+				.Where(c => c.Nodes.None(n => n is FunctionNode)) // Skip class which contains FunctionNodes because these are not data classes.
+				.Distinct();
+
+			using (var en = classesToWrite.GetEnumerator())
+			{
+				if (en.MoveNext())
+				{
+					WriteClass(iw, en.Current, logger);
+
+					while (en.MoveNext())
 					{
-						if (en.MoveNext())
-						{
-							WriteClass(iw, en.Current, logger);
+						iw.WriteLine();
 
-							while (en.MoveNext())
-							{
-								iw.WriteLine();
-
-								WriteClass(iw, en.Current, logger);
-							}
-						}
+						WriteClass(iw, en.Current, logger);
 					}
 				}
-
-				return sw.ToString();
 			}
+
+			return sw.ToString();
 		}
 
 		/// <summary>

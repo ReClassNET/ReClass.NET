@@ -10,8 +10,7 @@
 
 				foreach (var bp in breakpoints)
 				{
-					var hwbp = bp as HardwareBreakpoint;
-					if (hwbp?.Register == causedBy)
+					if (bp is HardwareBreakpoint hwbp && hwbp.Register == causedBy)
 					{
 						hwbp.Handler(ref evt);
 

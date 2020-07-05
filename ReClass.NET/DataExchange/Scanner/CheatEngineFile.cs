@@ -27,65 +27,64 @@ namespace ReClassNET.DataExchange.Scanner
 
 		public IEnumerable<MemoryRecord> Load(string filePath, ILogger logger)
 		{
-			using (var stream = File.OpenRead(filePath))
+			using var stream = File.OpenRead(filePath);
+
+			var document = XDocument.Load(stream);
+			if (document.Root != null)
 			{
-				var document = XDocument.Load(stream);
-				if (document.Root != null)
+				var version = document.Root.Attribute(XmlVersionElement)?.Value;
+				if (string.Compare(version, Version26, StringComparison.Ordinal) >= 0)
 				{
-					var version = document.Root.Attribute(XmlVersionElement)?.Value;
-					if (string.Compare(version, Version26, StringComparison.Ordinal) >= 0)
+					var entries = document.Root.Element(XmlEntriesElement);
+					if (entries != null)
 					{
-						var entries = document.Root.Element(XmlEntriesElement);
-						if (entries != null)
+						foreach (var entry in entries.Elements(XmlEntryElement))
 						{
-							foreach (var entry in entries.Elements(XmlEntryElement))
+							var description = entry.Element(XmlDescriptionElement)?.Value.Trim() ?? string.Empty;
+							if (description == "\"No description\"")
 							{
-								var description = entry.Element(XmlDescriptionElement)?.Value.Trim() ?? string.Empty;
-								if (description == "\"No description\"")
-								{
-									description = string.Empty;
-								}
-								var variableTypeStr = entry.Element(XmlValueTypeElement)?.Value.Trim() ?? string.Empty;
-								var valueType = Parse(variableTypeStr, logger);
-
-								var record = new MemoryRecord
-								{
-									Description = description,
-									ValueType = valueType
-								};
-
-								var addressStr = entry.Element(XmlAddressElement)?.Value.Trim() ?? string.Empty;
-								var addressParts = addressStr.Split('+');
-								if (addressParts.Length == 2)
-								{
-									long.TryParse(addressParts[1], NumberStyles.HexNumber, null, out var value);
-									record.AddressOrOffset = (IntPtr)value;
-
-									record.ModuleName = addressParts[0].Trim();
-								}
-								else
-								{
-									long.TryParse(addressStr, NumberStyles.HexNumber, null, out var value);
-									record.AddressOrOffset = (IntPtr)value;
-								}
-
-								if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)
-								{
-									var lengthStr = entry.Element(XmlLengthElement)?.Value ?? string.Empty;
-									int.TryParse(lengthStr, NumberStyles.Integer, null, out var valueLength);
-
-									record.ValueLength = Math.Max(1, valueLength);
-
-									if (valueType == ScanValueType.String)
-									{
-										var isUnicode = (entry.Element(XmlUnicodeElement)?.Value ?? string.Empty) == "1";
-
-										record.Encoding = isUnicode ? Encoding.Unicode : Encoding.UTF8;
-									}
-								}
-
-								yield return record;
+								description = string.Empty;
 							}
+							var variableTypeStr = entry.Element(XmlValueTypeElement)?.Value.Trim() ?? string.Empty;
+							var valueType = Parse(variableTypeStr, logger);
+
+							var record = new MemoryRecord
+							{
+								Description = description,
+								ValueType = valueType
+							};
+
+							var addressStr = entry.Element(XmlAddressElement)?.Value.Trim() ?? string.Empty;
+							var addressParts = addressStr.Split('+');
+							if (addressParts.Length == 2)
+							{
+								long.TryParse(addressParts[1], NumberStyles.HexNumber, null, out var value);
+								record.AddressOrOffset = (IntPtr)value;
+
+								record.ModuleName = addressParts[0].Trim();
+							}
+							else
+							{
+								long.TryParse(addressStr, NumberStyles.HexNumber, null, out var value);
+								record.AddressOrOffset = (IntPtr)value;
+							}
+
+							if (valueType == ScanValueType.ArrayOfBytes || valueType == ScanValueType.String)
+							{
+								var lengthStr = entry.Element(XmlLengthElement)?.Value ?? string.Empty;
+								int.TryParse(lengthStr, NumberStyles.Integer, null, out var valueLength);
+
+								record.ValueLength = Math.Max(1, valueLength);
+
+								if (valueType == ScanValueType.String)
+								{
+									var isUnicode = (entry.Element(XmlUnicodeElement)?.Value ?? string.Empty) == "1";
+
+									record.Encoding = isUnicode ? Encoding.Unicode : Encoding.UTF8;
+								}
+							}
+
+							yield return record;
 						}
 					}
 				}

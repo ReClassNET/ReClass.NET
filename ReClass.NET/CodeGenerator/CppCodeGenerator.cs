@@ -154,76 +154,73 @@ namespace ReClassNET.CodeGenerator
 
 		public string GenerateCode(IReadOnlyList<ClassNode> classes, IReadOnlyList<EnumDescription> enums, ILogger logger)
 		{
-			using (var sw = new StringWriter())
+			using var sw = new StringWriter();
+			using var iw = new IndentedTextWriter(sw, "\t");
+
+			iw.WriteLine($"// Created with {Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}");
+			iw.WriteLine();
+
+			using (var en = enums.GetEnumerator())
 			{
-				using (var iw = new IndentedTextWriter(sw, "\t"))
+				if (en.MoveNext())
 				{
-					iw.WriteLine($"// Created with {Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}");
+					WriteEnum(iw, en.Current);
+
+					while (en.MoveNext())
+					{
+						iw.WriteLine();
+
+						WriteEnum(iw, en.Current);
+					}
+
 					iw.WriteLine();
+				}
+			}
 
-					using (var en = enums.GetEnumerator())
-					{
-						if (en.MoveNext())
-						{
-							WriteEnum(iw, en.Current);
+			var alreadySeen = new HashSet<ClassNode>();
 
-							while (en.MoveNext())
-							{
-								iw.WriteLine();
+			IEnumerable<ClassNode> GetReversedClassHierarchy(ClassNode node)
+			{
+				Contract.Requires(node != null);
+				Contract.Ensures(Contract.Result<IEnumerable<ClassNode>>() != null);
 
-								WriteEnum(iw, en.Current);
-							}
-
-							iw.WriteLine();
-						}
-					}
-
-					var alreadySeen = new HashSet<ClassNode>();
-
-					IEnumerable<ClassNode> GetReversedClassHierarchy(ClassNode node)
-					{
-						Contract.Requires(node != null);
-						Contract.Ensures(Contract.Result<IEnumerable<ClassNode>>() != null);
-
-						if (!alreadySeen.Add(node))
-						{
-							return Enumerable.Empty<ClassNode>();
-						}
-
-						var classNodes = node.Nodes
-							.OfType<BaseWrapperNode>()
-							.Where(w => !w.IsNodePresentInChain<PointerNode>()) // Pointers are forward declared
-							.Select(w => w.ResolveMostInnerNode() as ClassNode)
-							.Where(n => n != null);
-
-						return classNodes
-							.SelectMany(GetReversedClassHierarchy)
-							.Append(node);
-					}
-
-					var classesToWrite = classes
-						.Where(c => c.Nodes.None(n => n is FunctionNode)) // Skip class which contains FunctionNodes because these are not data classes.
-						.SelectMany(GetReversedClassHierarchy) // Order the classes by their use hierarchy.
-						.Distinct();
-
-					using (var en = classesToWrite.GetEnumerator())
-					{
-						if (en.MoveNext())
-						{
-							WriteClass(iw, en.Current, classes, logger);
-
-							while (en.MoveNext())
-							{
-								iw.WriteLine();
-
-								WriteClass(iw, en.Current, classes, logger);
-							}
-						}
-					}
+				if (!alreadySeen.Add(node))
+				{
+					return Enumerable.Empty<ClassNode>();
 				}
 
-				return sw.ToString();
+				var classNodes = node.Nodes
+					.OfType<BaseWrapperNode>()
+					.Where(w => !w.IsNodePresentInChain<PointerNode>()) // Pointers are forward declared
+					.Select(w => w.ResolveMostInnerNode() as ClassNode)
+					.Where(n => n != null);
+
+				return classNodes
+					.SelectMany(GetReversedClassHierarchy)
+					.Append(node);
 			}
+
+			var classesToWrite = classes
+				.Where(c => c.Nodes.None(n => n is FunctionNode)) // Skip class which contains FunctionNodes because these are not data classes.
+				.SelectMany(GetReversedClassHierarchy) // Order the classes by their use hierarchy.
+				.Distinct();
+
+			using (var en = classesToWrite.GetEnumerator())
+			{
+				if (en.MoveNext())
+				{
+					WriteClass(iw, en.Current, classes, logger);
+
+					while (en.MoveNext())
+					{
+						iw.WriteLine();
+
+						WriteClass(iw, en.Current, classes, logger);
+					}
+				}
+			}
+
+			return sw.ToString();
 		}
 
 		/// <summary>
@@ -366,7 +363,7 @@ namespace ReClassNET.CodeGenerator
 			var fill = 0;
 			var fillStart = 0;
 
-			BaseNode CreatePaddingMember(int offset, int count)
+			static BaseNode CreatePaddingMember(int offset, int count)
 			{
 				var node = new ArrayNode
 				{
@@ -496,7 +493,7 @@ namespace ReClassNET.CodeGenerator
 				return custom.TransformNode(node);
 			}
 
-			BaseNode GetCharacterNodeForEncoding(Encoding encoding)
+			static BaseNode GetCharacterNodeForEncoding(Encoding encoding)
 			{
 				if (encoding.IsSameCodePage(Encoding.Unicode))
 				{
@@ -509,35 +506,35 @@ namespace ReClassNET.CodeGenerator
 				return new Utf8CharacterNode();
 			}
 
-			if (node is BaseTextNode textNode)
+			switch (node)
 			{
-				var arrayNode = new ArrayNode { Count = textNode.Length };
-				arrayNode.CopyFromNode(node);
-				arrayNode.ChangeInnerNode(GetCharacterNodeForEncoding(textNode.Encoding));
-				return arrayNode;
-			}
-
-			if (node is BaseTextPtrNode textPtrNode)
-			{
-				var pointerNode = new PointerNode();
-				pointerNode.CopyFromNode(node);
-				pointerNode.ChangeInnerNode(GetCharacterNodeForEncoding(textPtrNode.Encoding));
-				return pointerNode;
-			}
-
-			if (node is BitFieldNode bitFieldNode)
-			{
-				var underlayingNode = bitFieldNode.GetUnderlayingNode();
-				underlayingNode.CopyFromNode(node);
-				return underlayingNode;
-			}
-
-			if (node is BaseHexNode hexNode)
-			{
-				var arrayNode = new ArrayNode { Count = hexNode.MemorySize };
-				arrayNode.CopyFromNode(node);
-				arrayNode.ChangeInnerNode(new Utf8CharacterNode());
-				return arrayNode;
+				case BaseTextNode textNode:
+				{
+					var arrayNode = new ArrayNode { Count = textNode.Length };
+					arrayNode.CopyFromNode(node);
+					arrayNode.ChangeInnerNode(GetCharacterNodeForEncoding(textNode.Encoding));
+					return arrayNode;
+				}
+				case BaseTextPtrNode textPtrNode:
+				{
+					var pointerNode = new PointerNode();
+					pointerNode.CopyFromNode(node);
+					pointerNode.ChangeInnerNode(GetCharacterNodeForEncoding(textPtrNode.Encoding));
+					return pointerNode;
+				}
+				case BitFieldNode bitFieldNode:
+				{
+					var underlayingNode = bitFieldNode.GetUnderlayingNode();
+					underlayingNode.CopyFromNode(node);
+					return underlayingNode;
+				}
+				case BaseHexNode hexNode:
+				{
+					var arrayNode = new ArrayNode { Count = hexNode.MemorySize };
+					arrayNode.CopyFromNode(node);
+					arrayNode.ChangeInnerNode(new Utf8CharacterNode());
+					return arrayNode;
+				}
 			}
 
 			return node;
@@ -564,13 +561,12 @@ namespace ReClassNET.CodeGenerator
 				return type;
 			}
 
-			if (node is ClassInstanceNode classInstanceNode)
+			switch (node)
 			{
-				return $"class {classInstanceNode.InnerNode.Name}";
-			}
-			if (node is EnumNode enumNode)
-			{
-				return enumNode.Enum.Name;
+				case ClassInstanceNode classInstanceNode:
+					return $"class {classInstanceNode.InnerNode.Name}";
+				case EnumNode enumNode:
+					return enumNode.Enum.Name;
 			}
 
 			return null;

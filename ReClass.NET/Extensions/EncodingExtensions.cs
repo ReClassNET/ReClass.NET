@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 
 namespace ReClassNET.Extensions
@@ -10,9 +10,18 @@ namespace ReClassNET.Extensions
 		/// <returns>The byte count per character.</returns>
 		public static int GuessByteCountPerChar(this Encoding encoding)
 		{
-			if (encoding.IsSameCodePage(Encoding.UTF8) || encoding.CodePage == 1252 /* Windows-1252 */ || encoding.IsSameCodePage(Encoding.ASCII)) return 1;
-			if (encoding.IsSameCodePage(Encoding.Unicode) || encoding.IsSameCodePage(Encoding.BigEndianUnicode)) return 2;
-			if (encoding.IsSameCodePage(Encoding.UTF32)) return 4;
+			if (encoding.IsSameCodePage(Encoding.UTF8) || encoding.CodePage == 1252 /* Windows-1252 */ || encoding.IsSameCodePage(Encoding.ASCII))
+			{
+				return 1;
+			}
+			if (encoding.IsSameCodePage(Encoding.Unicode) || encoding.IsSameCodePage(Encoding.BigEndianUnicode))
+			{
+				return 2;
+			}
+			if (encoding.IsSameCodePage(Encoding.UTF32))
+			{
+				return 4;
+			}
 
 			throw new NotImplementedException();
 		}

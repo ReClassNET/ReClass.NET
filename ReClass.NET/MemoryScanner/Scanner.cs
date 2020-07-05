@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -125,45 +125,42 @@ namespace ReClassNET.MemoryScanner
 				.Where(s => s.Start.IsInRange(Settings.StartAddress, Settings.StopAddress)
 							|| Settings.StartAddress.IsInRange(s.Start, s.End)
 							|| Settings.StopAddress.IsInRange(s.Start, s.End))
-				.Where(s =>
+				.Where(s => s.Type switch
 				{
-					switch (s.Type)
-					{
-						case SectionType.Private: return Settings.ScanPrivateMemory;
-						case SectionType.Image: return Settings.ScanImageMemory;
-						case SectionType.Mapped: return Settings.ScanMappedMemory;
-						default: return false;
-					}
+					SectionType.Private => Settings.ScanPrivateMemory,
+					SectionType.Image => Settings.ScanImageMemory,
+					SectionType.Mapped => Settings.ScanMappedMemory,
+					_ => false
 				})
 				.Where(s =>
 				{
 					var isWritable = s.Protection.HasFlag(SectionProtection.Write);
-					switch (Settings.ScanWritableMemory)
+					return Settings.ScanWritableMemory switch
 					{
-						case SettingState.Yes: return isWritable;
-						case SettingState.No: return !isWritable;
-						default: return true;
-					}
+						SettingState.Yes => isWritable,
+						SettingState.No => !isWritable,
+						_ => true
+					};
 				})
 				.Where(s =>
 				{
 					var isExecutable = s.Protection.HasFlag(SectionProtection.Execute);
-					switch (Settings.ScanExecutableMemory)
+					return Settings.ScanExecutableMemory switch
 					{
-						case SettingState.Yes: return isExecutable;
-						case SettingState.No: return !isExecutable;
-						default: return true;
-					}
+						SettingState.Yes => isExecutable,
+						SettingState.No => !isExecutable,
+						_ => true
+					};
 				})
 				.Where(s =>
 				{
 					var isCopyOnWrite = s.Protection.HasFlag(SectionProtection.CopyOnWrite);
-					switch (Settings.ScanCopyOnWriteMemory)
+					return Settings.ScanCopyOnWriteMemory switch
 					{
-						case SettingState.Yes: return isCopyOnWrite;
-						case SettingState.No: return !isCopyOnWrite;
-						default: return true;
-					}
+						SettingState.Yes => isCopyOnWrite,
+						SettingState.No => !isCopyOnWrite,
+						_ => true
+					};
 				})
 				.ToList();
 		}
@@ -230,12 +227,12 @@ namespace ReClassNET.MemoryScanner
 
 							if (Settings.StartAddress.IsInRange(start, end))
 							{
-								size = size - Settings.StartAddress.Sub(start).ToInt32();
+								size -= Settings.StartAddress.Sub(start).ToInt32();
 								start = Settings.StartAddress;
 							}
 							if (Settings.StopAddress.IsInRange(start, end))
 							{
-								size = size - end.Sub(Settings.StopAddress).ToInt32();
+								size -= end.Sub(Settings.StopAddress).ToInt32();
 							}
 
 							context.EnsureBufferSize(size);

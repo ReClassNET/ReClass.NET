@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReClassNET.Memory
 {
@@ -36,18 +32,14 @@ namespace ReClassNET.Memory
 		{
 			var pe = new SimplePeHeader(data);
 
-			using (var ms = new MemoryStream(data))
+			using var ms = new MemoryStream(data);
+			using var bw = new BinaryWriter(ms);
+			for (var i = 0; i < pe.NumberOfSections; ++i)
 			{
-				using (var bw = new BinaryWriter(ms))
-				{
-					for (var i = 0; i < pe.NumberOfSections; ++i)
-					{
-						var offset = pe.SectionOffset(i);
-						bw.Seek(offset + 16, SeekOrigin.Begin);
-						bw.Write(BitConverter.ToUInt32(data, offset + 8)); // SizeOfRawData = VirtualSize
-						bw.Write(BitConverter.ToUInt32(data, offset + 12)); // PointerToRawData = VirtualAddress
-					}
-				}
+				var offset = pe.SectionOffset(i);
+				bw.Seek(offset + 16, SeekOrigin.Begin);
+				bw.Write(BitConverter.ToUInt32(data, offset + 8)); // SizeOfRawData = VirtualSize
+				bw.Write(BitConverter.ToUInt32(data, offset + 12)); // PointerToRawData = VirtualAddress
 			}
 		}
 	}

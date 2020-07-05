@@ -24,10 +24,8 @@ namespace ReClassNET.Memory
 			Path = path;
 			icon = new Lazy<Image>(() =>
 			{
-				using (var i = NativeMethods.GetIconForFile(Path))
-				{
-					return i?.ToBitmap();
-				}
+				using var i = NativeMethods.GetIconForFile(Path);
+				return i?.ToBitmap();
 			});
 		}
 	}

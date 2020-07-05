@@ -213,33 +213,31 @@ namespace ReClassNET.MemoryScanner
 
 			var pattern = new BytePattern();
 
-			using (var sr = new StringReader(value))
+			using var sr = new StringReader(value);
+			while (true)
 			{
-				while (true)
+				var pb = new PatternByte();
+				if (pb.TryRead(sr))
 				{
-					var pb = new PatternByte();
-					if (pb.TryRead(sr))
+					if (!pb.HasWildcard)
 					{
-						if (!pb.HasWildcard)
-						{
-							pattern.pattern.Add(new SimplePatternByte(pb.ToByte()));
-						}
-						else
-						{
-							pattern.pattern.Add(pb);
-						}
+						pattern.pattern.Add(new SimplePatternByte(pb.ToByte()));
 					}
 					else
 					{
-						break;
+						pattern.pattern.Add(pb);
 					}
 				}
-
-				// Check if we are not at the end of the stream
-				if (sr.Peek() != -1)
+				else
 				{
-					throw new ArgumentException($"'{value}' is not a valid byte pattern.");
+					break;
 				}
+			}
+
+			// Check if we are not at the end of the stream
+			if (sr.Peek() != -1)
+			{
+				throw new ArgumentException($"'{value}' is not a valid byte pattern.");
 			}
 
 			return pattern;

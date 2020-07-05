@@ -4,7 +4,6 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
 using ReClassNET.Extensions;
-using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner
 {
@@ -130,16 +129,14 @@ namespace ReClassNET.MemoryScanner
 		{
 			Contract.Requires(block != null);
 
-			using (var bw = new BinaryWriter(fileStream, Encoding.Unicode, true))
-			{
-				bw.Write(block.Start);
-				bw.Write(block.End);
-				bw.Write(block.Results.Count);
+			using var bw = new BinaryWriter(fileStream, Encoding.Unicode, true);
+			bw.Write(block.Start);
+			bw.Write(block.End);
+			bw.Write(block.Results.Count);
 
-				foreach (var result in block.Results)
-				{
-					WriteSearchResult(bw, result);
-				}
+			foreach (var result in block.Results)
+			{
+				WriteSearchResult(bw, result);
 			}
 		}
 
@@ -150,28 +147,25 @@ namespace ReClassNET.MemoryScanner
 		{
 			Contract.Ensures(Contract.Result<IEnumerable<ScanResultBlock>>() != null);
 
-			using (var stream = File.OpenRead(storePath))
+			using var stream = File.OpenRead(storePath);
+			using var br = new BinaryReader(stream, Encoding.Unicode);
+
+			var length = stream.Length;
+
+			while (stream.Position < length)
 			{
-				using (var br = new BinaryReader(stream, Encoding.Unicode))
+				var start = br.ReadIntPtr();
+				var end = br.ReadIntPtr();
+
+				var resultCount = br.ReadInt32();
+
+				var results = new List<ScanResult>(resultCount);
+				for (var i = 0; i < resultCount; ++i)
 				{
-					var length = stream.Length;
-
-					while (stream.Position < length)
-					{
-						var start = br.ReadIntPtr();
-						var end = br.ReadIntPtr();
-
-						var resultCount = br.ReadInt32();
-
-						var results = new List<ScanResult>(resultCount);
-						for (var i = 0; i < resultCount; ++i)
-						{
-							results.Add(ReadScanResult(br));
-						}
-
-						yield return new ScanResultBlock(start, end, results);
-					}
+					results.Add(ReadScanResult(br));
 				}
+
+				yield return new ScanResultBlock(start, end, results);
 			}
 		}
 

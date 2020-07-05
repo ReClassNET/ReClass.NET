@@ -177,31 +177,29 @@ namespace ReClassNET.Extensions
 			Contract.Requires(source != null);
 			Contract.Requires(condition != null);
 
-			using (var it = source.GetEnumerator())
+			using var it = source.GetEnumerator();
+			if (it.MoveNext())
 			{
-				if (it.MoveNext())
+				var previous = it.Current;
+				var list = new List<T> { previous };
+
+				while (it.MoveNext())
 				{
-					var previous = it.Current;
-					var list = new List<T> { previous };
+					var item = it.Current;
 
-					while (it.MoveNext())
+					if (condition(previous, item) == false)
 					{
-						var item = it.Current;
+						yield return list;
 
-						if (condition(previous, item) == false)
-						{
-							yield return list;
-
-							list = new List<T>();
-						}
-
-						list.Add(item);
-
-						previous = item;
+						list = new List<T>();
 					}
 
-					yield return list;
+					list.Add(item);
+
+					previous = item;
 				}
+
+				yield return list;
 			}
 		}
 	}

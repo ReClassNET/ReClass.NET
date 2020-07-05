@@ -5,7 +5,6 @@ using System.Linq;
 using ReClassNET.Extensions;
 using ReClassNET.Forms;
 using ReClassNET.Memory;
-using ReClassNET.Util;
 
 namespace ReClassNET.Debugger
 {

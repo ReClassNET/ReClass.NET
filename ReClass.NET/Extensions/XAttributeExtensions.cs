@@ -7,7 +7,7 @@ namespace ReClassNET.Extensions
 	{
 		public static TEnum GetEnumValue<TEnum>(this XAttribute attribute) where TEnum : struct
 		{
-			TEnum @enum = default(TEnum);
+			TEnum @enum = default;
 			if (attribute != null)
 			{
 				Enum.TryParse(attribute.Value, out @enum);

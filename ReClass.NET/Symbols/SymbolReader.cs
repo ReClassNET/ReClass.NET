@@ -5,7 +5,6 @@ using Dia2Lib;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.Native;
-using ReClassNET.Util;
 
 namespace ReClassNET.Symbols
 {
@@ -49,10 +48,8 @@ namespace ReClassNET.Symbols
 		{
 			Contract.Requires(module != null);
 
-			using (var diaSource = new ComDisposableWrapper<DiaSource>(new DiaSource()))
-			{
-				diaSource.Interface.loadDataForExe(module.Path, searchPath, null);
-			}
+			using var diaSource = new ComDisposableWrapper<DiaSource>(new DiaSource());
+			diaSource.Interface.loadDataForExe(module.Path, searchPath, null);
 		}
 
 		public static SymbolReader FromModule(Module module, string searchPath)
@@ -93,12 +90,11 @@ namespace ReClassNET.Symbols
 			diaSession.Interface.findSymbolByRVA((uint)rva.ToInt32(), SymTagEnum.SymTagNull, out var diaSymbol);
 			if (diaSymbol != null)
 			{
-				using (var symbol = new ComDisposableWrapper<IDiaSymbol>(diaSymbol))
-				{
-					var sb = new StringBuilder();
-					ReadSymbol(symbol.Interface, sb);
-					return sb.ToString();
-				}
+				using var symbol = new ComDisposableWrapper<IDiaSymbol>(diaSymbol);
+
+				var sb = new StringBuilder();
+				ReadSymbol(symbol.Interface, sb);
+				return sb.ToString();
 			}
 			return null;
 		}
@@ -134,10 +130,9 @@ namespace ReClassNET.Symbols
 
 			if (symbol.type != null)
 			{
-				using (var type = new ComDisposableWrapper<IDiaSymbol>(symbol.type))
-				{
-					ReadType(type.Interface, sb);
-				}
+				using var type = new ComDisposableWrapper<IDiaSymbol>(symbol.type);
+
+				ReadType(type.Interface, sb);
 			}
 		}
 
