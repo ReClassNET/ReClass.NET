@@ -74,15 +74,15 @@ namespace ReClassNET.DataExchange.ReClass
 			}
 
 			var classMap = classes.ToDictionary(t => t.Item2.Name, t => t.Item2);
-			foreach (var t in classes)
+			foreach (var (classElement, classNode) in classes)
 			{
 				ReadNodeElements(
-					t.Item1.Elements("Node"),
-					t.Item2,
+					classElement.Elements("Node"),
+					classNode,
 					classMap,
 					typeMap,
 					logger
-				).ForEach(t.Item2.AddNode);
+				).ForEach(classNode.AddNode);
 			}
 		}
 
