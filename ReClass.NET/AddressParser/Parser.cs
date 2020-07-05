@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace ReClassNET.AddressParser
@@ -185,10 +185,9 @@ namespace ReClassNET.AddressParser
 
 		public static IExpression Parse(string str)
 		{
-			using (var sr = new StringReader(str))
-			{
-				return Parse(new Tokenizer(sr));
-			}
+			using var sr = new StringReader(str);
+
+			return Parse(new Tokenizer(sr));
 		}
 
 		private static IExpression Parse(ITokenizer tokenizer)

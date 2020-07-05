@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using ReClassNET.UI;
@@ -8,7 +8,7 @@ namespace ReClassNET.Nodes
 	public class Matrix4x4Node : BaseMatrixNode
 	{
 		[StructLayout(LayoutKind.Explicit)]
-		private struct Matrix4x4Data
+		private readonly struct Matrix4x4Data
 		{
 			[FieldOffset(0)]
 			public readonly float _11;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+using System;
 using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 using ReClassNET.Extensions;

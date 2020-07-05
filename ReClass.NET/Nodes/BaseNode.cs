@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using ReClassNET.Extensions;
-using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;
 
@@ -16,7 +15,7 @@ namespace ReClassNET.Nodes
 	[ContractClass(typeof(BaseNodeContract))]
 	public abstract class BaseNode
 	{
-		private string DebuggerDisplay => $"Type: {GetType().Name} Name: {Name} Offset: 0x{Offset.ToString("X")}";
+		private string DebuggerDisplay => $"Type: {GetType().Name} Name: {Name} Offset: 0x{Offset:X}";
 
 		internal static readonly List<INodeInfoReader> NodeInfoReader = new List<INodeInfoReader>();
 
@@ -375,10 +374,9 @@ namespace ReClassNET.Nodes
 
 			if (IsSelected)
 			{
-				using (var brush = new SolidBrush(view.Settings.SelectedColor))
-				{
-					view.Context.FillRectangle(brush, 0, y, view.ClientArea.Right, height);
-				}
+				using var brush = new SolidBrush(view.Settings.SelectedColor);
+
+				view.Context.FillRectangle(brush, 0, y, view.ClientArea.Right, height);
 			}
 
 			AddHotSpot(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), string.Empty, HotSpot.NoneId, HotSpotType.Select);

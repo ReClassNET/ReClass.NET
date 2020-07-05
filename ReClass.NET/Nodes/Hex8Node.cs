@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using ReClassNET.Memory;
+using System.Drawing;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes

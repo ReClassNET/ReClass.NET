@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -16,7 +16,7 @@ namespace ReClassNET.Extensions
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		private struct RECT
+		private readonly struct RECT
 		{
 			public readonly int Left;
 			public readonly int Top;

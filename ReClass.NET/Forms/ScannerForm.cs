@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -206,58 +206,60 @@ namespace ReClassNET.Forms
 
 		private void openAddressFileToolStripButton_Click(object sender, EventArgs e)
 		{
-			using (var ofd = new OpenFileDialog())
+			using var ofd = new OpenFileDialog
 			{
-				ofd.CheckFileExists = true;
-				ofd.Filter = $"All Scanner Types |*{ReClassScanFile.FileExtension};*{CheatEngineFile.FileExtension};*{CrySearchFile.FileExtension}"
-							+ $"|{ReClassScanFile.FormatName} (*{ReClassScanFile.FileExtension})|*{ReClassScanFile.FileExtension}"
-							+ $"|{CheatEngineFile.FormatName} (*{CheatEngineFile.FileExtension})|*{CheatEngineFile.FileExtension}"
-							+ $"|{CrySearchFile.FormatName} (*{CrySearchFile.FileExtension})|*{CrySearchFile.FileExtension}";
+				CheckFileExists = true,
+				Filter = $"All Scanner Types |*{ReClassScanFile.FileExtension};*{CheatEngineFile.FileExtension};*{CrySearchFile.FileExtension}"
+				         + $"|{ReClassScanFile.FormatName} (*{ReClassScanFile.FileExtension})|*{ReClassScanFile.FileExtension}"
+				         + $"|{CheatEngineFile.FormatName} (*{CheatEngineFile.FileExtension})|*{CheatEngineFile.FileExtension}"
+				         + $"|{CrySearchFile.FormatName} (*{CrySearchFile.FileExtension})|*{CrySearchFile.FileExtension}"
+			};
 
-				if (ofd.ShowDialog() == DialogResult.OK)
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				IScannerImport import = null;
+				switch (Path.GetExtension(ofd.FileName)?.ToLower())
 				{
-					IScannerImport import = null;
-					switch (Path.GetExtension(ofd.FileName)?.ToLower())
-					{
-						case ReClassScanFile.FileExtension:
-							import = new ReClassScanFile();
-							break;
-						case CheatEngineFile.FileExtension:
-							import = new CheatEngineFile();
-							break;
-						case CrySearchFile.FileExtension:
-							import = new CrySearchFile();
-							break;
-						default:
-							Program.Logger.Log(LogLevel.Error, $"The file '{ofd.FileName}' has an unknown type.");
-							break;
-					}
-					if (import != null)
-					{
-						if (addressListMemoryRecordList.Records.Any())
-						{
-							if (MessageBox.Show("The address list contains addresses. Do you really want to open the file?", $"{Constants.ApplicationName} Scanner", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-							{
-								return;
-							}
-						}
+					case ReClassScanFile.FileExtension:
+						import = new ReClassScanFile();
+						break;
+					case CheatEngineFile.FileExtension:
+						import = new CheatEngineFile();
+						break;
+					case CrySearchFile.FileExtension:
+						import = new CrySearchFile();
+						break;
+					default:
+						Program.Logger.Log(LogLevel.Error, $"The file '{ofd.FileName}' has an unknown type.");
+						break;
+				}
+				if (import == null)
+				{
+					return;
+				}
 
-						if (import is ReClassScanFile)
-						{
-							addressFilePath = ofd.FileName;
-						}
-
-						addressListMemoryRecordList.SetRecords(
-							import.Load(ofd.FileName, Program.Logger)
-								.Select(r =>
-								{
-									r.ResolveAddress(process);
-									r.RefreshValue(process);
-									return r;
-								})
-						);
+				if (addressListMemoryRecordList.Records.Any())
+				{
+					if (MessageBox.Show("The address list contains addresses. Do you really want to open the file?", $"{Constants.ApplicationName} Scanner", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+					{
+						return;
 					}
 				}
+
+				if (import is ReClassScanFile)
+				{
+					addressFilePath = ofd.FileName;
+				}
+
+				addressListMemoryRecordList.SetRecords(
+					import.Load(ofd.FileName, Program.Logger)
+						.Select(r =>
+						{
+							r.ResolveAddress(process);
+							r.RefreshValue(process);
+							return r;
+						})
+				);
 			}
 		}
 
@@ -286,17 +288,17 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			using (var sfd = new SaveFileDialog())
+			using var sfd = new SaveFileDialog
 			{
-				sfd.DefaultExt = ReClassScanFile.FileExtension;
-				sfd.Filter = $"{ReClassScanFile.FormatName} (*{ReClassScanFile.FileExtension})|*{ReClassScanFile.FileExtension}";
+				DefaultExt = ReClassScanFile.FileExtension,
+				Filter = $"{ReClassScanFile.FormatName} (*{ReClassScanFile.FileExtension})|*{ReClassScanFile.FileExtension}"
+			};
 
-				if (sfd.ShowDialog() == DialogResult.OK)
-				{
-					addressFilePath = sfd.FileName;
+			if (sfd.ShowDialog() == DialogResult.OK)
+			{
+				addressFilePath = sfd.FileName;
 
-					saveAddressFileToolStripButton_Click(sender, e);
-				}
+				saveAddressFileToolStripButton_Click(sender, e);
 			}
 		}
 
@@ -652,8 +654,8 @@ namespace ReClassNET.Forms
 			long.TryParse(startAddressTextBox.Text, NumberStyles.HexNumber, null, out var startAddressVar);
 			long.TryParse(stopAddressTextBox.Text, NumberStyles.HexNumber, null, out var endAddressVar);
 #if RECLASSNET64
-			settings.StartAddress = unchecked((IntPtr)startAddressVar);
-			settings.StopAddress = unchecked((IntPtr)endAddressVar);
+			settings.StartAddress = (IntPtr)startAddressVar;
+			settings.StopAddress = (IntPtr)endAddressVar;
 #else
 			settings.StartAddress = unchecked((IntPtr)(int)startAddressVar);
 			settings.StopAddress = unchecked((IntPtr)(int)endAddressVar);
@@ -662,7 +664,7 @@ namespace ReClassNET.Forms
 			int.TryParse(fastScanAlignmentTextBox.Text, out var alignment);
 			settings.FastScanAlignment = Math.Max(1, alignment);
 
-			SettingState CheckStateToSettingState(CheckState state)
+			static SettingState CheckStateToSettingState(CheckState state)
 			{
 				switch (state)
 				{
@@ -701,7 +703,7 @@ namespace ReClassNET.Forms
 			fastScanCheckBox.Checked = settings.EnableFastScan;
 			fastScanAlignmentTextBox.Text = Math.Max(1, settings.FastScanAlignment).ToString();
 
-			CheckState SettingStateToCheckState(SettingState state)
+			static CheckState SettingStateToCheckState(SettingState state)
 			{
 				switch (state)
 				{

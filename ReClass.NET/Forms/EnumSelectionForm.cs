@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -57,10 +57,9 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			using (var eef = new EnumEditorForm(@enum))
-			{
-				eef.ShowDialog();
-			}
+			using var eef = new EnumEditorForm(@enum);
+
+			eef.ShowDialog();
 		}
 
 		private void addEnumIconButton_Click(object sender, EventArgs e)
@@ -70,14 +69,13 @@ namespace ReClassNET.Forms
 				Name = "Enum"
 			};
 
-			using (var eef = new EnumEditorForm(@enum))
-			{
-				if (eef.ShowDialog() == DialogResult.OK)
-				{
-					project.AddEnum(@enum);
+			using var eef = new EnumEditorForm(@enum);
 
-					ShowFilteredEnums();
-				}
+			if (eef.ShowDialog() == DialogResult.OK)
+			{
+				project.AddEnum(@enum);
+
+				ShowFilteredEnums();
 			}
 		}
 

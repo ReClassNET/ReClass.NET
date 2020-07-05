@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -72,7 +72,7 @@ namespace ReClassNET.DataExchange.Scanner
 									switch (valueTypeStr)
 									{
 										default:
-										case "8":
+										// case "8":
 											record.Encoding = Encoding.UTF8;
 											break;
 										case "9":

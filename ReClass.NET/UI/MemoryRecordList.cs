@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.MemoryScanner;
-using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -43,21 +43,19 @@ namespace ReClassNET.UI
 
 			try
 			{
-				using (var g = Graphics.FromHwnd(IntPtr.Zero))
-				{
-					dpiX = (int)g.DpiX;
-					dpiY = (int)g.DpiY;
+				using var g = Graphics.FromHwnd(IntPtr.Zero);
+				dpiX = (int)g.DpiX;
+				dpiY = (int)g.DpiY;
 
-					if (dpiX <= 0 || dpiY <= 0)
-					{
-						dpiX = StdDpi;
-						dpiY = StdDpi;
-					}
+				if (dpiX <= 0 || dpiY <= 0)
+				{
+					dpiX = StdDpi;
+					dpiY = StdDpi;
 				}
 			}
 			catch
 			{
-
+				// ignored
 			}
 
 			scaleX = dpiX / (double)StdDpi;
@@ -111,34 +109,32 @@ namespace ReClassNET.UI
 			Contract.Requires(w >= 0);
 			Contract.Requires(h >= 0);
 
-			var bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb);
-			using (Graphics g = Graphics.FromImage(bmp))
+			using var bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb);
+			using var g = Graphics.FromImage(bmp);
+			g.Clear(Color.Transparent);
+
+			g.SmoothingMode = SmoothingMode.HighQuality;
+			g.CompositingQuality = CompositingQuality.HighQuality;
+
+			var wSrc = img.Width;
+			var hSrc = img.Height;
+
+			var im = InterpolationMode.HighQualityBicubic;
+			if (wSrc > 0 && hSrc > 0)
 			{
-				g.Clear(Color.Transparent);
-
-				g.SmoothingMode = SmoothingMode.HighQuality;
-				g.CompositingQuality = CompositingQuality.HighQuality;
-
-				var wSrc = img.Width;
-				var hSrc = img.Height;
-
-				InterpolationMode im = InterpolationMode.HighQualityBicubic;
-				if (wSrc > 0 && hSrc > 0)
+				if ((w % wSrc) == 0 && (h % hSrc) == 0)
 				{
-					if ((w % wSrc) == 0 && (h % hSrc) == 0)
-					{
-						im = InterpolationMode.NearestNeighbor;
-					}
+					im = InterpolationMode.NearestNeighbor;
 				}
-
-				g.InterpolationMode = im;
-
-				var rSource = new RectangleF(0.0f, 0.0f, wSrc, hSrc);
-				var rDest = new RectangleF(0.0f, 0.0f, w, h);
-				AdjustScaleRects(ref rSource, ref rDest);
-
-				g.DrawImage(img, rDest, rSource, GraphicsUnit.Pixel);
 			}
+
+			g.InterpolationMode = im;
+
+			var rSource = new RectangleF(0.0f, 0.0f, wSrc, hSrc);
+			var rDest = new RectangleF(0.0f, 0.0f, w, h);
+			AdjustScaleRects(ref rSource, ref rDest);
+
+			g.DrawImage(img, rDest, rSource, GraphicsUnit.Pixel);
 
 			return bmp;
 		}

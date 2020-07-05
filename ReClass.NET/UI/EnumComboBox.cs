@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
-using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {
@@ -52,7 +51,7 @@ namespace ReClassNET.UI
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new TEnum SelectedValue
 		{
-			get => ((EnumDescriptionDisplay<TEnum>)base.SelectedItem)?.Value ?? default(TEnum);
+			get => ((EnumDescriptionDisplay<TEnum>)base.SelectedItem)?.Value ?? default;
 			set => base.SelectedItem = base.Items.Cast<EnumDescriptionDisplay<TEnum>>().PredicateOrFirst(e => e.Value.Equals(value));
 		}
 

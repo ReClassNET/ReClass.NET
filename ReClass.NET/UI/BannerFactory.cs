@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -113,13 +113,10 @@ namespace ReClassNET.UI
 
 		private static void DrawText(Graphics g, string text, int x, int y, Font font, Color color)
 		{
-			using (var brush = new SolidBrush(color))
-			{
-				using (var format = new StringFormat(StringFormatFlags.FitBlackBox | StringFormatFlags.NoClip))
-				{
-					g.DrawString(text, font, brush, x, y, format);
-				}
-			}
+			using var brush = new SolidBrush(color);
+			using var format = new StringFormat(StringFormatFlags.FitBlackBox | StringFormatFlags.NoClip);
+
+			g.DrawString(text, font, brush, x, y, format);
 		}
 
 		private static int DpiScaleInt(int x, int height) => (int)Math.Round((x * height) / (double)StdHeight);

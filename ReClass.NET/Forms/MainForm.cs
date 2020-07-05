@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -164,7 +164,7 @@ namespace ReClassNET.Forms
 					}
 					catch
 					{
-
+						// ignored
 					}
 
 					loadSymbolsTask = null;
@@ -178,7 +178,7 @@ namespace ReClassNET.Forms
 					}
 					catch
 					{
-
+						// ignored
 					}
 
 					updateProcessInformationsTask = null;
@@ -259,15 +259,14 @@ namespace ReClassNET.Forms
 
 		private void goToClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var csf = new ClassSelectionForm(currentProject.Classes.OrderBy(c => c.Name)))
+			using var csf = new ClassSelectionForm(currentProject.Classes.OrderBy(c => c.Name));
+
+			if (csf.ShowDialog() == DialogResult.OK)
 			{
-				if (csf.ShowDialog() == DialogResult.OK)
+				var selectedClassNode = csf.SelectedClass;
+				if (selectedClassNode != null)
 				{
-					var selectedClassNode = csf.SelectedClass;
-					if (selectedClassNode != null)
-					{
-						projectView.SelectedClass = selectedClassNode;
-					}
+					projectView.SelectedClass = selectedClassNode;
 				}
 			}
 		}
@@ -302,34 +301,32 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			using (var sfd = new SaveFileDialog())
+			using var sfd = new SaveFileDialog
 			{
-				sfd.DefaultExt = ReClassNetFile.FileExtension;
-				sfd.Filter = $"{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}";
+				DefaultExt = ReClassNetFile.FileExtension,
+				Filter = $"{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}"
+			};
 
-				if (sfd.ShowDialog() == DialogResult.OK)
-				{
-					currentProject.Path = sfd.FileName;
+			if (sfd.ShowDialog() == DialogResult.OK)
+			{
+				currentProject.Path = sfd.FileName;
 
-					saveToolStripMenuItem_Click(sender, e);
-				}
+				saveToolStripMenuItem_Click(sender, e);
 			}
 		}
 
 		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var sd = new SettingsForm(Program.Settings, CurrentProject.TypeMapping))
-			{
-				sd.ShowDialog();
-			}
+			using var sd = new SettingsForm(Program.Settings, CurrentProject.TypeMapping);
+
+			sd.ShowDialog();
 		}
 
 		private void pluginsToolStripButton_Click(object sender, EventArgs e)
 		{
-			using (var pf = new PluginForm(pluginManager))
-			{
-				pf.ShowDialog();
-			}
+			using var pf = new PluginForm(pluginManager);
+
+			pf.ShowDialog();
 		}
 
 		private void quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -354,20 +351,21 @@ namespace ReClassNET.Forms
 
 		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var ofd = new OpenFileDialog())
+			using var ofd = new OpenFileDialog
 			{
-				ofd.Filter = "Program Debug Database (*.pdb)|*.pdb|All Files (*.*)|*.*";
+				Filter = "Program Debug Database (*.pdb)|*.pdb|All Files (*.*)|*.*"
+			};
 
-				if (ofd.ShowDialog() == DialogResult.OK)
+
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				try
 				{
-					try
-					{
-						Program.RemoteProcess.Symbols.LoadSymbolsFromPDB(ofd.FileName);
-					}
-					catch (Exception ex)
-					{
-						Program.Logger.Log(ex);
-					}
+					Program.RemoteProcess.Symbols.LoadSymbolsFromPDB(ofd.FileName);
+				}
+				catch (Exception ex)
+				{
+					Program.Logger.Log(ex);
 				}
 			}
 		}
@@ -414,10 +412,9 @@ namespace ReClassNET.Forms
 
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var af = new AboutForm())
-			{
-				af.ShowDialog();
-			}
+			using var af = new AboutForm();
+
+			af.ShowDialog();
 		}
 
 		#endregion
@@ -426,18 +423,17 @@ namespace ReClassNET.Forms
 
 		private void attachToProcessToolStripSplitButton_ButtonClick(object sender, EventArgs e)
 		{
-			using (var pb = new ProcessBrowserForm(Program.Settings.LastProcess))
-			{
-				if (pb.ShowDialog() == DialogResult.OK)
-				{
-					if (pb.SelectedProcess != null)
-					{
-						AttachToProcess(pb.SelectedProcess);
+			using var pb = new ProcessBrowserForm(Program.Settings.LastProcess);
 
-						if (pb.LoadSymbols)
-						{
-							LoadAllSymbolsForCurrentProcess();
-						}
+			if (pb.ShowDialog() == DialogResult.OK)
+			{
+				if (pb.SelectedProcess != null)
+				{
+					AttachToProcess(pb.SelectedProcess);
+
+					if (pb.LoadSymbols)
+					{
+						LoadAllSymbolsForCurrentProcess();
 					}
 				}
 			}
@@ -819,36 +815,34 @@ namespace ReClassNET.Forms
 					Name = "None"
 				};
 
-				using (var csf = new ClassSelectionForm(classes.Prepend(noneClass)))
-				{
-					if (csf.ShowDialog() == DialogResult.OK)
-					{
-						var selectedClassNode = csf.SelectedClass;
-						if (selectedClassNode != null)
-						{
-							if (selectedClassNode == noneClass)
-							{
-								selectedClassNode = null;
-							}
+				using var csf = new ClassSelectionForm(classes.Prepend(noneClass));
 
-							functionNode.BelongsToClass = selectedClassNode;
+				if (csf.ShowDialog() == DialogResult.OK)
+				{
+					var selectedClassNode = csf.SelectedClass;
+					if (selectedClassNode != null)
+					{
+						if (selectedClassNode == noneClass)
+						{
+							selectedClassNode = null;
 						}
+
+						functionNode.BelongsToClass = selectedClassNode;
 					}
 				}
 			}
 			else if (e.Node is BaseWrapperNode refNode)
 			{
-				using (var csf = new ClassSelectionForm(classes))
+				using var csf = new ClassSelectionForm(classes);
+
+				if (csf.ShowDialog() == DialogResult.OK)
 				{
-					if (csf.ShowDialog() == DialogResult.OK)
+					var selectedClassNode = csf.SelectedClass;
+					if (refNode.CanChangeInnerNodeTo(selectedClassNode))
 					{
-						var selectedClassNode = csf.SelectedClass;
-						if (refNode.CanChangeInnerNodeTo(selectedClassNode))
+						if (!refNode.GetRootWrapperNode().ShouldPerformCycleCheckForInnerNode() || IsCycleFree(e.Node.GetParentClass(), selectedClassNode))
 						{
-							if (!refNode.GetRootWrapperNode().ShouldPerformCycleCheckForInnerNode() || IsCycleFree(e.Node.GetParentClass(), selectedClassNode))
-							{
-								refNode.ChangeInnerNode(selectedClassNode);
-							}
+							refNode.ChangeInnerNode(selectedClassNode);
 						}
 					}
 				}
@@ -878,24 +872,23 @@ namespace ReClassNET.Forms
 		{
 			if (e.Node is EnumNode enumNode)
 			{
-				using (var csf = new EnumSelectionForm(CurrentProject))
+				using var csf = new EnumSelectionForm(CurrentProject);
+
+				var size = enumNode.Enum.Size;
+
+				if (csf.ShowDialog() == DialogResult.OK)
 				{
-					var size = enumNode.Enum.Size;
-
-					if (csf.ShowDialog() == DialogResult.OK)
+					var @enum = csf.SelectedItem;
+					if (@enum != null)
 					{
-						var @enum = csf.SelectedItem;
-						if (@enum != null)
-						{
-							enumNode.ChangeEnum(@enum);
-						}
+						enumNode.ChangeEnum(@enum);
 					}
+				}
 
-					if (size != enumNode.Enum.Size)
-					{
-						// Update the parent container because the enum size has changed.
-						enumNode.GetParentContainer()?.ChildHasChanged(enumNode);
-					}
+				if (size != enumNode.Enum.Size)
+				{
+					// Update the parent container because the enum size has changed.
+					enumNode.GetParentContainer()?.ChildHasChanged(enumNode);
 				}
 
 				foreach (var @enum in CurrentProject.Enums)
@@ -971,10 +964,9 @@ namespace ReClassNET.Forms
 
 		private void editEnumsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var elf = new EnumListForm(currentProject))
-			{
-				elf.ShowDialog();
-			}
+			using var elf = new EnumListForm(currentProject);
+
+			elf.ShowDialog();
 		}
 
 		private void editEnumToolStripMenuItem_Click(object sender, EventArgs e)
@@ -982,19 +974,17 @@ namespace ReClassNET.Forms
 			var @enum = projectView.SelectedEnum;
 			if (@enum != null)
 			{
-				using (var eef = new EnumEditorForm(@enum))
-				{
-					eef.ShowDialog();
-				}
+				using var eef = new EnumEditorForm(@enum);
+
+				eef.ShowDialog();
 			}
 		}
 
 		private void showEnumsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var elf = new EnumListForm(currentProject))
-			{
-				elf.ShowDialog();
-			}
+			using var elf = new EnumListForm(currentProject);
+
+			elf.ShowDialog();
 		}
 
 		private void memoryViewControl_DrawContextRequested(object sender, DrawContextRequestEventArgs args)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -56,7 +56,7 @@ namespace ReClassNET.Util
 			}
 
 			var dequeued = buffer[head];
-			buffer[head] = default(T);
+			buffer[head] = default;
 			if (head == 0)
 			{
 				head = Capacity - 1;

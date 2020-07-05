@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -9,22 +9,21 @@ using Microsoft.Win32;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.Native;
-using ReClassNET.Util;
 
 namespace ReClassNET.Symbols
 {
 	class DiaUtil : IDisposable
 	{
-		public readonly IDiaDataSource diaDataSource;
-		public readonly IDiaSession diaSession;
+		public readonly IDiaDataSource DiaDataSource;
+		public readonly IDiaSession DiaSession;
 
 		public DiaUtil(string pdbName)
 		{
 			Contract.Requires(pdbName != null);
 
-			diaDataSource = new DiaSource();
-			diaDataSource.loadDataFromPdb(pdbName);
-			diaDataSource.openSession(out diaSession);
+			DiaDataSource = new DiaSource();
+			DiaDataSource.loadDataFromPdb(pdbName);
+			DiaDataSource.openSession(out DiaSession);
 		}
 
 		private bool isDisposed;
@@ -33,8 +32,8 @@ namespace ReClassNET.Symbols
 		{
 			if (!isDisposed)
 			{
-				Marshal.ReleaseComObject(diaSession);
-				Marshal.ReleaseComObject(diaDataSource);
+				Marshal.ReleaseComObject(DiaSession);
+				Marshal.ReleaseComObject(DiaDataSource);
 
 				isDisposed = true;
 			}

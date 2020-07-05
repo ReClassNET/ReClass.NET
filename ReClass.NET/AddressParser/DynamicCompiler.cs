@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -92,7 +92,7 @@ namespace ReClassNET.AddressParser
 							Expression.Condition(
 								Expression.Equal(moduleVariable, Expression.Constant(null)),
 								Expression.Constant(IntPtr.Zero),
-								Expression.MakeMemberAccess(moduleVariable, typeof(Memory.Module).GetProperty(nameof(Memory.Module.Start)))
+								Expression.MakeMemberAccess(moduleVariable, typeof(Memory.Module).GetProperty(nameof(Memory.Module.Start))!)
 							)
 						);
 					}

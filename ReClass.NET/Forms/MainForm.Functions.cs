@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -15,7 +15,6 @@ using ReClassNET.Memory;
 using ReClassNET.Nodes;
 using ReClassNET.Project;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Forms
 {
@@ -129,14 +128,14 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			using (var ib = new InputBytesForm(classNode.MemorySize))
+			using var ib = new InputBytesForm(classNode.MemorySize)
 			{
-				ib.Text = title;
+				Text = title
+			};
 
-				if (ib.ShowDialog() == DialogResult.OK)
-				{
-					callback(ib.Bytes);
-				}
+			if (ib.ShowDialog() == DialogResult.OK)
+			{
+				callback(ib.Bytes);
 			}
 		}
 
@@ -190,18 +189,18 @@ namespace ReClassNET.Forms
 		/// <returns>The path to the selected file or null if no file was selected.</returns>
 		public static string ShowOpenProjectFileDialog()
 		{
-			using (var ofd = new OpenFileDialog())
+			using var ofd = new OpenFileDialog
 			{
-				ofd.CheckFileExists = true;
-				ofd.Filter = $"All ReClass Types |*{ReClassNetFile.FileExtension};*{ReClassFile.FileExtension};*{ReClassQtFile.FileExtension}"
-					+ $"|{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}"
-					+ $"|{ReClassFile.FormatName} (*{ReClassFile.FileExtension})|*{ReClassFile.FileExtension}"
-					+ $"|{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}";
+				CheckFileExists = true,
+				Filter = $"All ReClass Types |*{ReClassNetFile.FileExtension};*{ReClassFile.FileExtension};*{ReClassQtFile.FileExtension}"
+				         + $"|{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}"
+				         + $"|{ReClassFile.FormatName} (*{ReClassFile.FileExtension})|*{ReClassFile.FileExtension}"
+				         + $"|{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}"
+			};
 
-				if (ofd.ShowDialog() == DialogResult.OK)
-				{
-					return ofd.FileName;
-				}
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				return ofd.FileName;
 			}
 
 			return null;
@@ -264,7 +263,7 @@ namespace ReClassNET.Forms
 
 			infoToolStripStatusLabel.Visible = true;
 
-			int index = 0;
+			var index = 0;
 
 			var progress = new Progress<Tuple<Module, IReadOnlyList<Module>>>(
 				report =>
@@ -365,8 +364,8 @@ namespace ReClassNET.Forms
 
 		private void PasteNodeFromClipboardToSelection()
 		{
-			var result = ReClassClipboard.Paste(CurrentProject, Program.Logger);
-			foreach (var pastedClassNode in result.Item1)
+			var (classNodes, nodes) = ReClassClipboard.Paste(CurrentProject, Program.Logger);
+			foreach (var pastedClassNode in classNodes)
 			{
 				if (!CurrentProject.ContainsClass(pastedClassNode.Uuid))
 				{
@@ -384,7 +383,7 @@ namespace ReClassNET.Forms
 				{
 					containerNode.BeginUpdate();
 
-					foreach (var node in result.Item2)
+					foreach (var node in nodes)
 					{
 						if (node is BaseWrapperNode)
 						{

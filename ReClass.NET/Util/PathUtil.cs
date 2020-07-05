@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Reflection;
@@ -14,9 +14,9 @@ namespace ReClassNET.Util
 			{
 				path = Assembly.GetExecutingAssembly().Location;
 			}
-			catch (Exception)
+			catch
 			{
-
+				// ignored
 			}
 
 			if (string.IsNullOrEmpty(path))

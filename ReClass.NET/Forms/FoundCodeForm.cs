@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -10,7 +10,6 @@ using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Forms
 {

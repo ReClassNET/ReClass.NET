@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
@@ -231,7 +231,7 @@ namespace ReClassNET.MemoryScanner
 
 		public bool Equals(ArrayOfBytesScanResult other)
 		{
-			return other != null && Address == other.Address && Enumerable.SequenceEqual(Value, other.Value);
+			return other != null && Address == other.Address && Value.SequenceEqual(other.Value);
 		}
 
 		public override int GetHashCode()

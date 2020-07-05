@@ -1,4 +1,4 @@
-﻿namespace ReClassNET.AddressParser
+namespace ReClassNET.AddressParser
 {
 	public interface ITokenizer
 	{

@@ -79,7 +79,7 @@ namespace ReClassNET.Plugins
 				}
 				catch
 				{
-
+					// ignored
 				}
 			}
 

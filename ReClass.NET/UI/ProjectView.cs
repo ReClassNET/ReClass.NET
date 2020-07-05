@@ -1,9 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Nodes;

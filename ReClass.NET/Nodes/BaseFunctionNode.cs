@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -17,8 +17,8 @@ namespace ReClassNET.Nodes
 			public string Instruction { get; set; }
 		}
 
-		protected IntPtr address = IntPtr.Zero;
-		protected readonly List<FunctionNodeInstruction> instructions = new List<FunctionNodeInstruction>();
+		protected IntPtr Address = IntPtr.Zero;
+		protected readonly List<FunctionNodeInstruction> Instructions = new List<FunctionNodeInstruction>();
 
 		protected Size DrawInstructions(ViewInfo view, int tx, int y)
 		{
@@ -31,7 +31,7 @@ namespace ReClassNET.Nodes
 
 			using (var brush = new SolidBrush(view.Settings.HiddenColor))
 			{
-				foreach (var instruction in instructions)
+				foreach (var instruction in Instructions)
 				{
 					y += view.Font.Height;
 
@@ -65,7 +65,7 @@ namespace ReClassNET.Nodes
 			{
 				memorySize += instruction.Length;
 
-				instructions.Add(new FunctionNodeInstruction
+				Instructions.Add(new FunctionNodeInstruction
 				{
 					Address = instruction.Address.ToString(Constants.AddressHexFormat),
 					Data = string.Join(" ", instruction.Data.Take(instruction.Length).Select(b => $"{b:X2}")),

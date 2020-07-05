@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.Contracts;
+using System.Diagnostics.Contracts;
 
 namespace ReClassNET.Util
 {
@@ -12,7 +12,7 @@ namespace ReClassNET.Util
 			for (var i = 0; i < 256; i++)
 			{
 				var s = i.ToString("X2");
-				result[i] = (uint)s[0] + ((uint)s[1] << 16);
+				result[i] = s[0] + ((uint)s[1] << 16);
 			}
 			return result;
 		}

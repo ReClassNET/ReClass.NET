@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Windows.Forms;
-using ReClassNET.CodeGenerator;
 using ReClassNET.Debugger;
 using ReClassNET.Forms;
 using ReClassNET.MemoryScanner;
 using ReClassNET.MemoryScanner.Comparer;
 using ReClassNET.Nodes;
-using ReClassNET.Project;
 
 namespace ReClassNET.UI
 {

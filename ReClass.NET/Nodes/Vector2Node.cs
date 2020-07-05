@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using ReClassNET.UI;
 
@@ -7,7 +7,7 @@ namespace ReClassNET.Nodes
 	public class Vector2Node : BaseMatrixNode
 	{
 		[StructLayout(LayoutKind.Explicit)]
-		private struct Vector2Data
+		private readonly struct Vector2Data
 		{
 			[FieldOffset(0)]
 			public readonly float X;

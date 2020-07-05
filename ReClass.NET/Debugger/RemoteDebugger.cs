@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -168,13 +168,11 @@ namespace ReClassNET.Debugger
 						continue;
 					}
 				}
-				if (size >= 1)
-				{
-					splits.Add(new BreakpointSplit { Address = address, Size = 1 });
 
-					address += 1;
-					size -= 1;
-				}
+				splits.Add(new BreakpointSplit { Address = address, Size = 1 });
+
+				address += 1;
+				size -= 1;
 			}
 
 			return splits;

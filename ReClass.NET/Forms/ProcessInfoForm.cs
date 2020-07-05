@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -186,26 +186,23 @@ namespace ReClassNET.Forms
 				};
 			}
 
-			using (var sfd = createDialogFn())
+			using var sfd = createDialogFn();
+			sfd.Filter = "All|*.*";
+
+			if (sfd.ShowDialog() != DialogResult.OK)
 			{
-				sfd.Filter = "All|*.*";
+				return;
+			}
 
-				if (sfd.ShowDialog() != DialogResult.OK)
-				{
-					return;
-				}
+			try
+			{
+				using var stream = sfd.OpenFile();
 
-				try
-				{
-					using (var stream = sfd.OpenFile())
-					{
-						dumpFn(process, stream);
-					}
-				}
-				catch (Exception ex)
-				{
-					Program.ShowException(ex);
-				}
+				dumpFn(process, stream);
+			}
+			catch (Exception ex)
+			{
+				Program.ShowException(ex);
 			}
 		}
 
@@ -224,10 +221,7 @@ namespace ReClassNET.Forms
 			{
 				return GetSelectedModule()?.Start ?? IntPtr.Zero;
 			}
-			else
-			{
-				return GetSelectedSection()?.Start ?? IntPtr.Zero;
-			}
+			return GetSelectedSection()?.Start ?? IntPtr.Zero;
 		}
 
 		private static Control GetToolStripSourceControl(object sender)

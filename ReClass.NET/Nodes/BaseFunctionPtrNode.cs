@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.UI;
-using ReClassNET.Util;
 
 namespace ReClassNET.Nodes
 {
@@ -19,7 +18,7 @@ namespace ReClassNET.Nodes
 
 			DisassembleRemoteCode(spot.Process, ptr);
 
-			return string.Join("\n", instructions.Select(i => i.Instruction));
+			return string.Join("\n", Instructions.Select(i => i.Instruction));
 		}
 
 		protected Size Draw(ViewInfo view, int x, int y, string type, string name)
@@ -102,7 +101,7 @@ namespace ReClassNET.Nodes
 			var height = view.Font.Height;
 			if (LevelsOpen[view.Level])
 			{
-				height += instructions.Count * view.Font.Height;
+				height += Instructions.Count * view.Font.Height;
 			}
 			return height;
 		}
@@ -111,11 +110,11 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Requires(process != null);
 
-			if (this.address != address)
+			if (this.Address != address)
 			{
-				instructions.Clear();
+				Instructions.Clear();
 
-				this.address = address;
+				this.Address = address;
 
 				if (!address.IsNull() && process.IsValid)
 				{

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -77,22 +77,21 @@ namespace ReClassNET.UI
 			}
 			catch
 			{
-
+				// ignored
 			}
 		}
 
 		private void OnPanelClick(object sender, EventArgs e)
 		{
-			using (var cd = new ColorDialog
+			using var cd = new ColorDialog
 			{
 				FullOpen = true,
 				Color = Color
-			})
+			};
+
+			if (cd.ShowDialog() == DialogResult.OK)
 			{
-				if (cd.ShowDialog() == DialogResult.OK)
-				{
-					Color = cd.Color;
-				}
+				Color = cd.Color;
 			}
 		}
 

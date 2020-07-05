@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Security.Principal;
@@ -43,21 +43,19 @@ namespace ReClassNET.Util
 
 			try
 			{
-				using (var rk = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", false))
+				using var rk = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", false);
+				if (rk != null)
 				{
-					if (rk != null)
+					var str = rk.GetValue("CurrentMajorVersionNumber", string.Empty)?.ToString();
+					if (uint.TryParse(str, out var u))
 					{
-						var str = rk.GetValue("CurrentMajorVersionNumber", string.Empty)?.ToString();
-						if (uint.TryParse(str, out var u))
-						{
-							IsAtLeastWindows10 = u >= 10;
-						}
+						IsAtLeastWindows10 = u >= 10;
 					}
 				}
 			}
 			catch
 			{
-				
+				// ignored
 			}
 		}
 

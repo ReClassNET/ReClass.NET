@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -66,10 +66,9 @@ namespace ReClassNET.UI
 
 			if (string.IsNullOrEmpty(Text) && Focused == false)
 			{
-				using (var brush = new SolidBrush(PlaceholderColor))
-				{
-					e.Graphics.DrawString(PlaceholderText ?? string.Empty, Font, brush, new PointF(-1.0f, 1.0f));
-				}
+				using var brush = new SolidBrush(PlaceholderColor);
+
+				e.Graphics.DrawString(PlaceholderText ?? string.Empty, Font, brush, new PointF(-1.0f, 1.0f));
 			}
 		}
 	}

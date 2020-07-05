@@ -47,7 +47,7 @@ namespace ReClassNET
 			}
 			catch
 			{
-				
+				// ignored
 			}
 
 			MonoSpaceFont = new FontEx
@@ -69,7 +69,7 @@ namespace ReClassNET
 
 			if (!NativeMethods.IsUnix() && Settings.RunAsAdmin && !WinUtil.IsAdministrator)
 			{
-				WinUtil.RunElevated(Process.GetCurrentProcess().MainModule.FileName, args.Length > 0 ? string.Join(" ", args) : null);
+				WinUtil.RunElevated(Process.GetCurrentProcess().MainModule?.FileName, args.Length > 0 ? string.Join(" ", args) : null);
 				return;
 			}
 

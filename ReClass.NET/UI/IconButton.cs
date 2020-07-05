@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -100,18 +100,16 @@ namespace ReClassNET.UI
 			else
 			{
 				drawHotBorder = false;
-				using (var brush = new SolidBrush(BackColor))
-				{
-					g.FillRectangle(brush, bounds);
-				}
+				using var brush = new SolidBrush(BackColor);
+
+				g.FillRectangle(brush, bounds);
 			}
 
 			if (drawHotBorder)
 			{
-				using (var pen = new Pen(colorTable.ButtonSelectedBorder))
-				{
-					g.DrawRectangle(pen, bounds.X, bounds.Y, bounds.Width - 1, bounds.Height - 1);
-				}
+				using var pen = new Pen(colorTable.ButtonSelectedBorder);
+
+				g.DrawRectangle(pen, bounds.X, bounds.Y, bounds.Width - 1, bounds.Height - 1);
 			}
 		}
 
@@ -124,10 +122,9 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			using (var brush = new LinearGradientBrush(bounds, colorTable.ButtonPressedGradientBegin, colorTable.ButtonPressedGradientEnd, LinearGradientMode.Vertical))
-			{
-				g.FillRectangle(brush, bounds);
-			}
+			using var brush = new LinearGradientBrush(bounds, colorTable.ButtonPressedGradientBegin, colorTable.ButtonPressedGradientEnd, LinearGradientMode.Vertical);
+
+			g.FillRectangle(brush, bounds);
 		}
 
 		private void RenderSelectedButtonFill(Graphics g, Rectangle bounds)
@@ -139,10 +136,9 @@ namespace ReClassNET.UI
 				return;
 			}
 
-			using (var brush = new LinearGradientBrush(bounds, colorTable.ButtonSelectedGradientBegin, colorTable.ButtonSelectedGradientEnd, LinearGradientMode.Vertical))
-			{
-				g.FillRectangle(brush, bounds);
-			}
+			using var brush = new LinearGradientBrush(bounds, colorTable.ButtonSelectedGradientBegin, colorTable.ButtonSelectedGradientEnd, LinearGradientMode.Vertical);
+
+			g.FillRectangle(brush, bounds);
 		}
 
 		private void RenderImage(Graphics g)

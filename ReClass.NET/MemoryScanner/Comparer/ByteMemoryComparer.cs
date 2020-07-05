@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Diagnostics;
-using ReClassNET.Util;
 
 namespace ReClassNET.MemoryScanner.Comparer
 {

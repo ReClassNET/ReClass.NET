@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -231,9 +231,9 @@ namespace ReClassNET.Native
 
 				ShChangeNotify();
 			}
-			catch (Exception)
+			catch
 			{
-				
+				// ignored
 			}
 		}
 
@@ -243,9 +243,9 @@ namespace ReClassNET.Native
 			{
 				SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
 			}
-			catch (Exception)
+			catch
 			{
-				
+				// ignored
 			}
 		}
 
@@ -268,9 +268,9 @@ namespace ReClassNET.Native
 
 				SendMessage(h, BCM_SETSHIELD, IntPtr.Zero, (IntPtr)(setShield ? 1 : 0));
 			}
-			catch (Exception)
+			catch
 			{
-				
+				// ignored
 			}
 		}
 	}
