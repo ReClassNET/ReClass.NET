@@ -25,7 +25,7 @@ namespace ReClassNET.MemoryScanner.Comparer
 		{
 			result = null;
 
-			var value = Encoding.GetString(data, index, Value.Length);
+			var value = Encoding.GetString(data, index, ValueSize);
 
 			if (!Value.Equals(value, CaseSensitive ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase))
 			{
