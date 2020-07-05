@@ -295,4 +295,18 @@ namespace ReClassNET.MemoryScanner
 			return Address.GetHashCode() * 19 + Value.GetHashCode() * 19 + Encoding.GetHashCode();
 		}
 	}
+
+	public class RegexStringScanResult : StringScanResult
+	{
+		public RegexStringScanResult(string value, Encoding encoding)
+			: base(value, encoding)
+		{
+
+		}
+
+		public override ScanResult Clone()
+		{
+			return new RegexStringScanResult(Value, Encoding) { Address = Address };
+		}
+	}
 }

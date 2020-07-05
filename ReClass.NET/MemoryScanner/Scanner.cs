@@ -406,6 +406,9 @@ namespace ReClassNET.MemoryScanner
 			{
 				return new SimpleScannerWorker(settings, simpleScanComparer);
 			}
+			if (comparer is IComplexScanComparer complexScanComparer)
+			{
+				return new ComplexScannerWorker(settings, complexScanComparer);
 			}
 
 			throw new Exception();
