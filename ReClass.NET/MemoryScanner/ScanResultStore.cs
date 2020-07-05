@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -206,8 +206,16 @@ namespace ReClassNET.MemoryScanner
 					result = new ArrayOfBytesScanResult(br.ReadBytes(br.ReadInt32()));
 					break;
 				case ScanValueType.String:
-					var encoding = br.ReadInt32();
-					result = new StringScanResult(br.ReadString(), encoding == 0 ? Encoding.UTF8 : encoding == 1 ? Encoding.Unicode : Encoding.UTF32);
+				case ScanValueType.Regex:
+					var encoding = br.ReadInt32() switch
+					{
+						0 => Encoding.UTF8,
+						1 => Encoding.Unicode,
+						_ => Encoding.UTF32
+					};
+					var value = br.ReadString();
+
+					result = valueType == ScanValueType.String ? new StringScanResult(value, encoding) : new RegexStringScanResult(value, encoding);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

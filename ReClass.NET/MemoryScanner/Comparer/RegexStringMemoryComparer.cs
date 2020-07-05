@@ -13,9 +13,15 @@ namespace ReClassNET.MemoryScanner.Comparer
 
 		public Encoding Encoding { get; }
 
-		public RegexStringMemoryComparer(string pattern, Encoding encoding)
+		public RegexStringMemoryComparer(string pattern, Encoding encoding, bool caseSensitive)
 		{
-			Pattern = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled);
+			var options = RegexOptions.Singleline | RegexOptions.Compiled;
+			if (!caseSensitive)
+			{
+				options |= RegexOptions.IgnoreCase;
+			}
+
+			Pattern = new Regex(pattern, options);
 
 			Encoding = encoding;
 		}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -102,6 +102,7 @@ namespace ReClassNET.MemoryScanner
 					ValueStr = FormatValue(byteData);
 					break;
 				case ScanValueType.String:
+				case ScanValueType.Regex:
 					var strResult = (StringScanResult)result;
 					ValueLength = strResult.Value.Length;
 					Encoding = strResult.Encoding;
@@ -177,6 +178,7 @@ namespace ReClassNET.MemoryScanner
 					buffer = new byte[ValueLength];
 					break;
 				case ScanValueType.String:
+				case ScanValueType.Regex:
 					buffer = new byte[ValueLength * Encoding.GuessByteCountPerChar()];
 					break;
 				default:
@@ -209,6 +211,7 @@ namespace ReClassNET.MemoryScanner
 						ValueStr = FormatValue(buffer);
 						break;
 					case ScanValueType.String:
+					case ScanValueType.Regex:
 						ValueStr = FormatValue(Encoding.GetString(buffer));
 						break;
 				}

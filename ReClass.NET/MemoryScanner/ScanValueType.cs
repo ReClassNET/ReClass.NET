@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace ReClassNET.MemoryScanner
 {
@@ -19,6 +19,8 @@ namespace ReClassNET.MemoryScanner
 		[Description("Array of Bytes")]
 		ArrayOfBytes,
 		[Description("String")]
-		String
+		String,
+		[Description("Regular Expression")]
+		Regex
 	}
 }
