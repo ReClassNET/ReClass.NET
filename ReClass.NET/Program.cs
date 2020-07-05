@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -67,9 +67,9 @@ namespace ReClassNET
 			Settings = SettingsSerializer.Load();
 			Logger = new GuiLogger();
 
-			if(!NativeMethods.IsUnix() && Settings.RunAsAdmin && !WinUtil.IsAdministrator)
+			if (!NativeMethods.IsUnix() && Settings.RunAsAdmin && !WinUtil.IsAdministrator)
 			{
-				WinUtil.RunElevated(Process.GetCurrentProcess().MainModule.FileName, args.Length > 0 ? string.Join(" ", args) : null); 
+				WinUtil.RunElevated(Process.GetCurrentProcess().MainModule.FileName, args.Length > 0 ? string.Join(" ", args) : null);
 				return;
 			}
 
@@ -106,6 +106,7 @@ namespace ReClassNET
 
 			var msg = new ExceptionMessageBox(ex)
 			{
+				Beep = false,
 				ShowToolBar = true,
 				Symbol = ExceptionMessageBoxSymbol.Error
 			};
