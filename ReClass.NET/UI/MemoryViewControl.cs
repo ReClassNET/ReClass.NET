@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -11,7 +11,7 @@ using ReClassNET.Util;
 
 namespace ReClassNET.UI
 {
-	public partial class MemoryViewControl : ScrollableCustomControl
+	public partial class MemoryViewControl : UserControl
 	{
 		/// <summary>
 		/// Contains informations about a selected node.
@@ -78,23 +78,13 @@ namespace ReClassNET.UI
 				return;
 			}
 
+			AutoScroll = true;
+
 			font = Program.MonoSpaceFont;
 
 			editBox.Font = font;
 
 			memoryPreviewPopUp = new MemoryPreviewPopUp(font);
-		}
-
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-			VerticalScroll.Enabled = true;
-			VerticalScroll.Visible = true;
-			VerticalScroll.SmallChange = 10;
-			HorizontalScroll.Enabled = true;
-			HorizontalScroll.Visible = true;
-			HorizontalScroll.SmallChange = 100;
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -147,8 +137,8 @@ namespace ReClassNET.UI
 
 			var drawnSize = args.Node.Draw(
 				view,
-				-HorizontalScroll.Value,
-				-VerticalScroll.Value * font.Height
+				AutoScrollPosition.X,
+				AutoScrollPosition.Y
 			);
 			drawnSize.Width += 10;
 
@@ -157,33 +147,7 @@ namespace ReClassNET.UI
 				e.Graphics.DrawRectangle(new Pen(new SolidBrush(Color.FromArgb(150, 255, 0, 0)), 1), spot.Rect);
 			}*/
 
-			if (drawnSize.Height > ClientSize.Height)
-			{
-				VerticalScroll.Enabled = true;
-
-				VerticalScroll.LargeChange = ClientSize.Height / font.Height;
-				VerticalScroll.Maximum = (drawnSize.Height - ClientSize.Height) / font.Height + VerticalScroll.LargeChange;
-			}
-			else
-			{
-				VerticalScroll.Enabled = false;
-
-				VerticalScroll.Value = VerticalScroll.Minimum;
-			}
-
-			if (drawnSize.Width > ClientSize.Width)
-			{
-				HorizontalScroll.Enabled = true;
-
-				HorizontalScroll.LargeChange = ClientSize.Width;
-				HorizontalScroll.Maximum = drawnSize.Width - ClientSize.Width + HorizontalScroll.LargeChange;
-			}
-			else
-			{
-				HorizontalScroll.Enabled = false;
-
-				HorizontalScroll.Value = HorizontalScroll.Minimum;
-			}
+			AutoScrollMinSize = new Size(Math.Max(drawnSize.Width, ClientSize.Width), Math.Max(drawnSize.Height, ClientSize.Height));
 		}
 
 		private void OnSelectionChanged()
@@ -333,9 +297,12 @@ namespace ReClassNET.UI
 					}
 					else if (hotSpot.Type == HotSpotType.ChangeClassType || hotSpot.Type == HotSpotType.ChangeWrappedType || hotSpot.Type == HotSpotType.ChangeEnumType)
 					{
-						var handler = hotSpot.Type == HotSpotType.ChangeClassType
-							? ChangeClassTypeClick : hotSpot.Type == HotSpotType.ChangeWrappedType
-								? ChangeWrappedTypeClick : ChangeEnumTypeClick;
+						var handler = hotSpot.Type switch
+						{
+							HotSpotType.ChangeClassType => ChangeClassTypeClick,
+							HotSpotType.ChangeWrappedType => ChangeWrappedTypeClick,
+							HotSpotType.ChangeEnumType => ChangeEnumTypeClick
+						};
 
 						handler?.Invoke(this, new NodeClickEventArgs(hitObject, hotSpot.Address, hotSpot.Memory, e.Button, e.Location));
 
@@ -574,7 +541,10 @@ namespace ReClassNET.UI
 
 							if (isAtEnd)
 							{
-								DoScroll(ScrollOrientation.VerticalScroll, key == Keys.Down ? 1 : - 1);
+								const int ScrollAmount = 3;
+
+								var position = AutoScrollPosition;
+								AutoScrollPosition = new Point(-position.X, -position.Y + (key == Keys.Down ? ScrollAmount : -ScrollAmount) * font.Height);
 							}
 
 							Invalidate();
