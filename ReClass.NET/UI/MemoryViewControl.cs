@@ -135,10 +135,12 @@ namespace ReClassNET.UI
 				MultipleNodesSelected = selectedNodes.Count > 1
 			};
 
+			var scrollPosition = AutoScrollPosition;
+
 			var drawnSize = args.Node.Draw(
 				view,
-				AutoScrollPosition.X,
-				AutoScrollPosition.Y
+				scrollPosition.X,
+				scrollPosition.Y
 			);
 			drawnSize.Width += 10;
 
@@ -148,6 +150,9 @@ namespace ReClassNET.UI
 			}*/
 
 			AutoScrollMinSize = new Size(Math.Max(drawnSize.Width, ClientSize.Width), Math.Max(drawnSize.Height, ClientSize.Height));
+
+			// Sometimes setting AutoScrollMinSize resets AutoScrollPosition. This restores the original position.
+			AutoScrollPosition = new Point(-scrollPosition.X, -scrollPosition.Y);
 		}
 
 		private void OnSelectionChanged()
