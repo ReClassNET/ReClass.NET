@@ -83,73 +83,74 @@ namespace ReClassNET.UI
 			return (int)Math.Round(i * scaleY);
 		}
 
-		public static Image ScaleImage(Image img)
+		public static Image ScaleImage(Image sourceImage)
 		{
-			if (img == null)
+			if (sourceImage == null)
 			{
 				return null;
 			}
 
-			int w = img.Width;
-			int h = img.Height;
-			int sw = ScaleIntX(w);
-			int sh = ScaleIntY(h);
+			var width = sourceImage.Width;
+			var height = sourceImage.Height;
+			var scaledWidth = ScaleIntX(width);
+			var scaledHeight = ScaleIntY(height);
 
-			if (w == sw && h == sh)
+			if (width == scaledWidth && height == scaledHeight)
 			{
-				return img;
+				return sourceImage;
 			}
 
-			return ScaleImage(img, sw, sh);
+			return ScaleImage(sourceImage, scaledWidth, scaledHeight);
 		}
 
-		private static Image ScaleImage(Image img, int w, int h)
+		private static Image ScaleImage(Image sourceImage, int width, int height)
 		{
-			Contract.Requires(img != null);
-			Contract.Requires(w >= 0);
-			Contract.Requires(h >= 0);
+			Contract.Requires(sourceImage != null);
+			Contract.Requires(width >= 0);
+			Contract.Requires(height >= 0);
 
-			var bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb);
-			using var g = Graphics.FromImage(bmp);
+			var scaledImage = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+			using var g = Graphics.FromImage(scaledImage);
 			g.Clear(Color.Transparent);
 
 			g.SmoothingMode = SmoothingMode.HighQuality;
 			g.CompositingQuality = CompositingQuality.HighQuality;
 
-			var wSrc = img.Width;
-			var hSrc = img.Height;
+			var sourceWidth = sourceImage.Width;
+			var sourceHeight = sourceImage.Height;
 
-			var im = InterpolationMode.HighQualityBicubic;
-			if (wSrc > 0 && hSrc > 0)
+			var interpolationMode = InterpolationMode.HighQualityBicubic;
+			if (sourceWidth > 0 && sourceHeight > 0)
 			{
-				if ((w % wSrc) == 0 && (h % hSrc) == 0)
+				if ((width % sourceWidth) == 0 && (height % sourceHeight) == 0)
 				{
-					im = InterpolationMode.NearestNeighbor;
+					interpolationMode = InterpolationMode.NearestNeighbor;
 				}
 			}
 
-			g.InterpolationMode = im;
+			g.InterpolationMode = interpolationMode;
 
-			var rSource = new RectangleF(0.0f, 0.0f, wSrc, hSrc);
-			var rDest = new RectangleF(0.0f, 0.0f, w, h);
-			AdjustScaleRects(ref rSource, ref rDest);
+			var srcRect = new RectangleF(0.0f, 0.0f, sourceWidth, sourceHeight);
+			var destRect = new RectangleF(0.0f, 0.0f, width, height);
+			AdjustScaleRects(ref srcRect, ref destRect);
 
-			g.DrawImage(img, rDest, rSource, GraphicsUnit.Pixel);
+			g.DrawImage(sourceImage, destRect, srcRect, GraphicsUnit.Pixel);
 
-			return bmp;
+			return scaledImage;
 		}
 
-		private static void AdjustScaleRects(ref RectangleF rSource, ref RectangleF rDest)
+		private static void AdjustScaleRects(ref RectangleF srcRect, ref RectangleF destRect)
 		{
-			if (rDest.Width > rSource.Width)
-				rSource.X = rSource.X - 0.5f;
-			if (rDest.Height > rSource.Height)
-				rSource.Y = rSource.Y - 0.5f;
+			if (destRect.Width > srcRect.Width)
+				srcRect.X -= 0.5f;
+			if (destRect.Height > srcRect.Height)
+				srcRect.Y -= 0.5f;
 
-			if (rDest.Width < rSource.Width)
-				rSource.X = rSource.X + 0.5f;
-			if (rDest.Height < rSource.Height)
-				rSource.Y = rSource.Y + 0.5f;
+			if (destRect.Width < srcRect.Width)
+				srcRect.X += 0.5f;
+			if (destRect.Height < srcRect.Height)
+				srcRect.Y += 0.5f;
 		}
 	}
 }
