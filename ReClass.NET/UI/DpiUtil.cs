@@ -109,7 +109,7 @@ namespace ReClassNET.UI
 			Contract.Requires(w >= 0);
 			Contract.Requires(h >= 0);
 
-			using var bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb);
+			var bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb);
 			using var g = Graphics.FromImage(bmp);
 			g.Clear(Color.Transparent);
 
