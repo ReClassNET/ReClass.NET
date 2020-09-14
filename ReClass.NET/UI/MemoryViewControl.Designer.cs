@@ -1,4 +1,4 @@
-﻿namespace ReClassNET.UI
+namespace ReClassNET.UI
 {
 	partial class MemoryViewControl
 	{

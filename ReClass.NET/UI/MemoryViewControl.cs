@@ -381,6 +381,20 @@ namespace ReClassNET.UI
 			base.OnMouseDoubleClick(e);
 		}
 
+		public void ShowEditBoxForName(SelectedNodeInfo selection)
+		{
+			var hotSpot = hotSpots.FirstOrDefault(spot => spot.Address == selection.Address &&
+			                                                      spot.Type == HotSpotType.Edit &&
+			                                                      spot.Text == selection.Node.Name);
+			if (hotSpot != null)
+			{
+				editBox.BackColor = Program.Settings.SelectedColor;
+				editBox.HotSpot = hotSpot;
+				editBox.Visible = true;
+				editBox.ReadOnly = false;
+			}
+		}
+
 		private Point toolTipPosition;
 		protected override void OnMouseHover(EventArgs e)
 		{
