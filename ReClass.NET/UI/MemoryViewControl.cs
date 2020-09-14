@@ -631,6 +631,8 @@ namespace ReClassNET.UI
 
 				Invalidate();
 			}
+
+			Focus();
 		}
 
 		#endregion
