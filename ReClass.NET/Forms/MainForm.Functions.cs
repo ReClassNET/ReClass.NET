@@ -410,6 +410,17 @@ namespace ReClassNET.Forms
 			}
 		}
 
+		private void EditSelectedNodeName()
+		{
+			var selected = memoryViewControl.GetSelectedNodes();
+			var selectedNode = selected.FirstOrDefault();
+
+			if (selected.Count == 1)
+			{
+				memoryViewControl.ShowEditBoxForName(selectedNode);
+			}
+		}
+
 		private void RemoveSelectedNodes()
 		{
 			memoryViewControl.GetSelectedNodes()
