@@ -766,22 +766,24 @@ namespace ReClassNET.Forms
 			CurrentClassNode = node;
 		}
 
-		private void memoryViewControl_KeyDown(object sender, KeyEventArgs e)
+		private void memoryViewControl_KeyDown(object sender, KeyEventArgs args)
 		{
-			if (e.Control)
+			switch (args.KeyCode)
 			{
-				if (e.KeyCode == Keys.C)
-				{
+				case Keys.C when args.Control:
 					CopySelectedNodesToClipboard();
-				}
-				else if (e.KeyCode == Keys.V)
-				{
+					break;
+				case Keys.V when args.Control:
 					PasteNodeFromClipboardToSelection();
-				}
-			}
-			else if (e.KeyCode == Keys.Delete)
-			{
-				RemoveSelectedNodes();
+					break;
+
+				case Keys.Delete:
+					RemoveSelectedNodes();
+					break;
+
+				case Keys.F2:
+					EditSelectedNodeName();
+					break;
 			}
 		}
 
