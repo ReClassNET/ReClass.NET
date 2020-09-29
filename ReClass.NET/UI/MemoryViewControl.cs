@@ -354,11 +354,7 @@ namespace ReClassNET.UI
 					}
 					if (hotSpot.Type == HotSpotType.Edit)
 					{
-						editBox.BackColor = Program.Settings.SelectedColor;
-						editBox.HotSpot = hotSpot;
-						editBox.Visible = true;
-
-						editBox.ReadOnly = hotSpot.Id == HotSpot.ReadOnlyId;
+						ShowNodeNameEditBox(hotSpot);
 
 						break;
 					}
@@ -381,18 +377,27 @@ namespace ReClassNET.UI
 			base.OnMouseDoubleClick(e);
 		}
 
-		public void ShowEditBoxForName(SelectedNodeInfo selection)
+		public void ShowNodeNameEditBox(BaseNode node)
 		{
-			var hotSpot = hotSpots.FirstOrDefault(spot => spot.Address == selection.Address &&
-			                                                      spot.Type == HotSpotType.Edit &&
-			                                                      spot.Text == selection.Node.Name);
+			if (node == null || node is BaseHexNode)
+			{
+				return;
+			}
+
+			var hotSpot = hotSpots
+				.FirstOrDefault(s => s.Node == node && s.Type == HotSpotType.Edit && s.Id == HotSpot.NameId);
 			if (hotSpot != null)
 			{
-				editBox.BackColor = Program.Settings.SelectedColor;
-				editBox.HotSpot = hotSpot;
-				editBox.Visible = true;
-				editBox.ReadOnly = false;
+				ShowNodeNameEditBox(hotSpot);
 			}
+		}
+
+		private void ShowNodeNameEditBox(HotSpot hotSpot)
+		{
+			editBox.BackColor = Program.Settings.SelectedColor;
+			editBox.HotSpot = hotSpot;
+			editBox.Visible = true;
+			editBox.ReadOnly = hotSpot.Id == HotSpot.ReadOnlyId;
 		}
 
 		private Point toolTipPosition;
