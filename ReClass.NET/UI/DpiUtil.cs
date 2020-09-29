@@ -9,77 +9,55 @@ namespace ReClassNET.UI
 {
 	public static class DpiUtil
 	{
-		private const int StdDpi = 96;
+		public const int DefalutDpi = 96;
 
-		private static bool initialized;
-
-		private static int dpiX = StdDpi;
-		private static int dpiY = StdDpi;
+		private static int dpiX = DefalutDpi;
+		private static int dpiY = DefalutDpi;
 
 		private static double scaleX = 1.0;
 		private static double scaleY = 1.0;
-
-		public static bool ScalingRequired
-		{
-			get
-			{
-				if (Program.DesignMode)
-				{
-					return false;
-				}
-
-				EnsureInitialized();
-
-				return dpiX != StdDpi || dpiY != StdDpi;
-			}
-		}
-
-		private static void EnsureInitialized()
-		{
-			if (initialized)
-			{
-				return;
-			}
-
-			try
-			{
-				using var g = Graphics.FromHwnd(IntPtr.Zero);
-				dpiX = (int)g.DpiX;
-				dpiY = (int)g.DpiY;
-
-				if (dpiX <= 0 || dpiY <= 0)
-				{
-					dpiX = StdDpi;
-					dpiY = StdDpi;
-				}
-			}
-			catch
-			{
-				// ignored
-			}
-
-			scaleX = dpiX / (double)StdDpi;
-			scaleY = dpiY / (double)StdDpi;
-
-			initialized = true;
-		}
 
 		public static void ConfigureProcess()
 		{
 			NativeMethods.SetProcessDpiAwareness();
 		}
 
+		public static void SetDpi(int x, int y)
+		{
+			dpiX = x;
+			dpiY = y;
+
+			if (dpiX <= 0 || dpiY <= 0)
+			{
+				dpiX = DefalutDpi;
+				dpiY = DefalutDpi;
+			}
+
+			scaleX = dpiX / (double)DefalutDpi;
+			scaleY = dpiY / (double)DefalutDpi;
+		}
+
+		public static void TrySetDpiFromCurrentDesktop()
+		{
+			try
+			{
+				using var g = Graphics.FromHwnd(IntPtr.Zero);
+
+				SetDpi((int)g.DpiX, (int)g.DpiY);
+			}
+			catch
+			{
+				// ignored
+			}
+		}
+
 		public static int ScaleIntX(int i)
 		{
-			EnsureInitialized();
-
 			return (int)Math.Round(i * scaleX);
 		}
 
 		public static int ScaleIntY(int i)
 		{
-			EnsureInitialized();
-
 			return (int)Math.Round(i * scaleY);
 		}
 

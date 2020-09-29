@@ -44,6 +44,7 @@ namespace ReClassNET
 			try
 			{
 				DpiUtil.ConfigureProcess();
+				DpiUtil.TrySetDpiFromCurrentDesktop();
 			}
 			catch
 			{

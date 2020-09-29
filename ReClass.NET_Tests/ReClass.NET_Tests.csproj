@@ -87,6 +87,7 @@
     <Compile Include="MemoryScanner\Comparer\IntegerMemoryComparerTest.cs" />
     <Compile Include="Memory\MemoryBufferTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\DpiUtilTest.cs" />
     <Compile Include="Util\BitStringTest.cs" />
     <Compile Include="Util\CircularBufferTest.cs" />
     <Compile Include="Util\CommandLineArgsTest.cs" />
@@ -121,5 +122,6 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
