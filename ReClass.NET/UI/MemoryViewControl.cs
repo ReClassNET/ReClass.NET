@@ -464,6 +464,8 @@ namespace ReClassNET.UI
 
 		protected override void OnMouseWheel(MouseEventArgs e)
 		{
+			editBox.Visible = false;
+
 			if (memoryPreviewPopUp.Visible)
 			{
 				memoryPreviewPopUp.HandleMouseWheelEvent(e);
@@ -472,15 +474,6 @@ namespace ReClassNET.UI
 			{
 				base.OnMouseWheel(e);
 			}
-		}
-
-		protected override void OnScroll(ScrollEventArgs e)
-		{
-			Contract.Requires(e != null);
-
-			base.OnScroll(e);
-
-			editBox.Visible = false;
 		}
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
