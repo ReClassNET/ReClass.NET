@@ -120,3 +120,4 @@ Settings
 - [buddyfavors](https://github.com/buddyfavors)
 - [DrP3pp3r](https://github.com/DrP3pp3r)
 - [ko1N](https://github.com/ko1N)
+- [Niemand](https://github.com/niemand-sec) (see his talk at [BlackHat Europe 2019 (London) "Unveiling the underground world of Anti-Cheats"](https://www.blackhat.com/eu-19/briefings/schedule/index.html#unveiling-the-underground-world-of-anti-cheats-17358))
