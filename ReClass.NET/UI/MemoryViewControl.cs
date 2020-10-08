@@ -82,7 +82,7 @@ namespace ReClassNET.UI
 
 			font = Program.MonoSpaceFont;
 
-			editBox.Font = font;
+			hotSpotEditBox.Font = font;
 
 			memoryPreviewPopUp = new MemoryPreviewPopUp(font);
 		}
@@ -165,6 +165,8 @@ namespace ReClassNET.UI
 		protected override void OnMouseClick(MouseEventArgs e)
 		{
 			Contract.Requires(e != null);
+
+			hotSpotEditBox.Hide();
 
 			var invalidate = false;
 
@@ -316,8 +318,6 @@ namespace ReClassNET.UI
 				}
 			}
 
-			editBox.Visible = false;
-
 			if (invalidate)
 			{
 				Invalidate();
@@ -330,7 +330,7 @@ namespace ReClassNET.UI
 		{
 			Contract.Requires(e != null);
 
-			editBox.Visible = false;
+			hotSpotEditBox.Hide();
 
 			var invalidate = false;
 
@@ -354,7 +354,7 @@ namespace ReClassNET.UI
 					}
 					if (hotSpot.Type == HotSpotType.Edit)
 					{
-						ShowNodeNameEditBox(hotSpot);
+						hotSpotEditBox.ShowOnHotSpot(hotSpot);
 
 						break;
 					}
@@ -441,7 +441,7 @@ namespace ReClassNET.UI
 
 		protected override void OnMouseWheel(MouseEventArgs e)
 		{
-			editBox.Visible = false;
+			hotSpotEditBox.Hide();
 
 			if (memoryPreviewPopUp.Visible)
 			{
@@ -455,7 +455,7 @@ namespace ReClassNET.UI
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
-			if (editBox.Visible == false) // Only process keys if the edit field is not visible.
+			if (hotSpotEditBox.Visible == false) // Only process keys if the edit field is not visible.
 			{
 				var key = keyData & Keys.KeyCode;
 				var modifier = keyData & Keys.Modifiers;
@@ -602,11 +602,9 @@ namespace ReClassNET.UI
 			Invalidate(false);
 		}
 
-		private void editBox_Committed(object sender, EventArgs e)
+		private void editBox_Committed(object sender, HotSpotTextBoxCommitEventArgs e)
 		{
-			var hotspotTextBox = sender as HotSpotTextBox;
-
-			var hotSpot = hotspotTextBox?.HotSpot;
+			var hotSpot = e.HotSpot;
 			if (hotSpot != null)
 			{
 				try
@@ -673,16 +671,8 @@ namespace ReClassNET.UI
 				.FirstOrDefault(s => s.Node == node && s.Type == HotSpotType.Edit && s.Id == HotSpot.NameId);
 			if (hotSpot != null)
 			{
-				ShowNodeNameEditBox(hotSpot);
+				hotSpotEditBox.ShowOnHotSpot(hotSpot);
 			}
-		}
-
-		private void ShowNodeNameEditBox(HotSpot hotSpot)
-		{
-			editBox.BackColor = Program.Settings.SelectedColor;
-			editBox.HotSpot = hotSpot;
-			editBox.Visible = true;
-			editBox.ReadOnly = hotSpot.Id == HotSpot.ReadOnlyId;
 		}
 
 		/// <summary>
@@ -708,7 +698,7 @@ namespace ReClassNET.UI
 		{
 			ClearSelection();
 
-			editBox.Visible = false;
+			hotSpotEditBox.Hide();
 
 			VerticalScroll.Value = VerticalScroll.Minimum;
 		}

@@ -1,34 +1,13 @@
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ReClassNET.UI
 {
 	public class HotSpotTextBox : TextBox
 	{
-		private HotSpot hotSpot;
-
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public HotSpot HotSpot
-		{
-			get => hotSpot;
-			set
-			{
-				if (hotSpot != value)
-				{
-					hotSpot = value;
-
-					var rect = hotSpot.Rect;
-
-					SetBounds(rect.Left + 2, rect.Top, rect.Width, rect.Height);
-
-					minimumWidth = rect.Width;
-
-					Text = hotSpot.Text.Trim();
-				}
-			}
-		}
+		private HotSpot currentHotSpot;
 
 		private FontEx font;
 		private int minimumWidth;
@@ -49,12 +28,14 @@ namespace ReClassNET.UI
 			}
 		}
 
-		public event EventHandler Committed;
+		public event HotSpotTextBoxCommitEventHandler Committed;
 
 		public HotSpotTextBox()
 		{
 			BorderStyle = BorderStyle.None;
 		}
+
+		#region Events
 
 		protected override void OnVisibleChanged(EventArgs e)
 		{
@@ -62,7 +43,9 @@ namespace ReClassNET.UI
 
 			if (Visible)
 			{
-				if (HotSpot != null)
+				BackColor = Program.Settings.BackgroundColor;
+
+				if (currentHotSpot != null)
 				{
 					Focus();
 					Select(0, TextLength);
@@ -83,13 +66,6 @@ namespace ReClassNET.UI
 			base.OnKeyDown(e);
 		}
 
-		/*protected override void OnLeave(EventArgs e)
-		{
-			base.OnLeave(e);
-
-			OnCommit();
-		}*/
-
 		protected override void OnTextChanged(EventArgs e)
 		{
 			base.OnTextChanged(e);
@@ -105,9 +81,49 @@ namespace ReClassNET.UI
 		{
 			Visible = false;
 
-			hotSpot.Text = Text.Trim();
+			currentHotSpot.Text = Text.Trim();
 
-			Committed?.Invoke(this, EventArgs.Empty);
+			Committed?.Invoke(this, new HotSpotTextBoxCommitEventArgs(currentHotSpot));
+		}
+
+		#endregion
+
+		public void ShowOnHotSpot(HotSpot hotSpot)
+		{
+			currentHotSpot = hotSpot;
+
+			if (hotSpot == null)
+			{
+				Visible = false;
+
+				return;
+			}
+
+			AlignToRect(hotSpot.Rect);
+
+			Text = hotSpot.Text.Trim();
+			ReadOnly = hotSpot.Id == HotSpot.ReadOnlyId;
+
+			Visible = true;
+		}
+
+		private void AlignToRect(Rectangle rect)
+		{
+			SetBounds(rect.Left + 2, rect.Top, rect.Width, rect.Height);
+
+			minimumWidth = rect.Width;
+		}
+	}
+
+	public delegate void HotSpotTextBoxCommitEventHandler(object sender, HotSpotTextBoxCommitEventArgs e);
+
+	public class HotSpotTextBoxCommitEventArgs : EventArgs
+	{
+		public HotSpot HotSpot { get; set; }
+
+		public HotSpotTextBoxCommitEventArgs(HotSpot hotSpot)
+		{
+			HotSpot = hotSpot;
 		}
 	}
 }
