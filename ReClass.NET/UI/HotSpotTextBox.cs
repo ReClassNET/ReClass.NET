@@ -19,18 +19,19 @@ namespace ReClassNET.UI
 				{
 					hotSpot = value;
 
-					SetBounds(hotSpot.Rect.Left + 2, hotSpot.Rect.Top, hotSpot.Rect.Width, hotSpot.Rect.Height);
+					var rect = hotSpot.Rect;
 
-					MinimumWidth = Width;
+					SetBounds(rect.Left + 2, rect.Top, rect.Width, rect.Height);
+
+					minimumWidth = rect.Width;
 
 					Text = hotSpot.Text.Trim();
 				}
 			}
 		}
 
-		public int MinimumWidth { get; set; }
-
 		private FontEx font;
+		private int minimumWidth;
 
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -94,7 +95,7 @@ namespace ReClassNET.UI
 			base.OnTextChanged(e);
 
 			var w = (TextLength + 1) * font.Width;
-			if (w > MinimumWidth)
+			if (w > minimumWidth)
 			{
 				Width = w;
 			}

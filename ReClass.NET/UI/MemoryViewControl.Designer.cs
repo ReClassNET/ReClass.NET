@@ -43,8 +43,7 @@ namespace ReClassNET.UI
 			// editBox
 			// 
 			this.editBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.editBox.Location = new System.Drawing.Point(36, 81);
-			this.editBox.MinimumWidth = 0;
+			this.editBox.Location = new System.Drawing.Point(0, 0);
 			this.editBox.Name = "editBox";
 			this.editBox.Size = new System.Drawing.Size(100, 13);
 			this.editBox.TabIndex = 1;
