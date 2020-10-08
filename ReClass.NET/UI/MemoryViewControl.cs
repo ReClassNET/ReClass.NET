@@ -377,29 +377,6 @@ namespace ReClassNET.UI
 			base.OnMouseDoubleClick(e);
 		}
 
-		public void ShowNodeNameEditBox(BaseNode node)
-		{
-			if (node == null || node is BaseHexNode)
-			{
-				return;
-			}
-
-			var hotSpot = hotSpots
-				.FirstOrDefault(s => s.Node == node && s.Type == HotSpotType.Edit && s.Id == HotSpot.NameId);
-			if (hotSpot != null)
-			{
-				ShowNodeNameEditBox(hotSpot);
-			}
-		}
-
-		private void ShowNodeNameEditBox(HotSpot hotSpot)
-		{
-			editBox.BackColor = Program.Settings.SelectedColor;
-			editBox.HotSpot = hotSpot;
-			editBox.Visible = true;
-			editBox.ReadOnly = hotSpot.Id == HotSpot.ReadOnlyId;
-		}
-
 		private Point toolTipPosition;
 		protected override void OnMouseHover(EventArgs e)
 		{
@@ -683,6 +660,29 @@ namespace ReClassNET.UI
 		private void ShowNodeContextMenu(Point location)
 		{
 			NodeContextMenuStrip?.Show(this, location);
+		}
+
+		public void ShowNodeNameEditBox(BaseNode node)
+		{
+			if (node == null || node is BaseHexNode)
+			{
+				return;
+			}
+
+			var hotSpot = hotSpots
+				.FirstOrDefault(s => s.Node == node && s.Type == HotSpotType.Edit && s.Id == HotSpot.NameId);
+			if (hotSpot != null)
+			{
+				ShowNodeNameEditBox(hotSpot);
+			}
+		}
+
+		private void ShowNodeNameEditBox(HotSpot hotSpot)
+		{
+			editBox.BackColor = Program.Settings.SelectedColor;
+			editBox.HotSpot = hotSpot;
+			editBox.Visible = true;
+			editBox.ReadOnly = hotSpot.Id == HotSpot.ReadOnlyId;
 		}
 
 		/// <summary>
