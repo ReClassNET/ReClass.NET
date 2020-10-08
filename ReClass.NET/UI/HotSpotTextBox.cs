@@ -19,10 +19,7 @@ namespace ReClassNET.UI
 				{
 					hotSpot = value;
 
-					Left = hotSpot.Rect.Left + 2;
-					Top = hotSpot.Rect.Top;
-					Width = hotSpot.Rect.Width;
-					Height = hotSpot.Rect.Height;
+					SetBounds(hotSpot.Rect.Left + 2, hotSpot.Rect.Top, hotSpot.Rect.Width, hotSpot.Rect.Height);
 
 					MinimumWidth = Width;
 
