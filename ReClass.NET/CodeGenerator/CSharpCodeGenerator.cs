@@ -174,7 +174,8 @@ namespace ReClassNET.CodeGenerator
 				var type = GetTypeDefinition(node);
 				if (type != null)
 				{
-					writer.Write($"[FieldOffset(0x{node.Offset:X})] public readonly {type} {node.Name};");
+					writer.WriteLine($"[FieldOffset(0x{node.Offset:X})]");
+					writer.Write($"public readonly {type} {node.Name};");
 					if (!string.IsNullOrEmpty(node.Comment))
 					{
 						writer.Write(" ");
