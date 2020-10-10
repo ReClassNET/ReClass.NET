@@ -30,7 +30,7 @@ namespace ReClassNET.Nodes
 			AddSelection(view, x, y, view.Font.Height);
 
 			x = AddOpenCloseIcon(view, x, y);
-			x = AddIcon(view, x, y, Icons.Class, HotSpot.NoneId, HotSpotType.None);
+			x = AddIcon(view, x, y, view.IconProvider.Class, HotSpot.NoneId, HotSpotType.None);
 
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
@@ -41,7 +41,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 			}
 			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{InnerNode.Name}>") + view.Font.Width;
-			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeClassType) + view.Font.Width;
+			x = AddIcon(view, x, y, view.IconProvider.Change, 4, HotSpotType.ChangeClassType) + view.Font.Width;
 
 			x = AddComment(view, x, y);
 

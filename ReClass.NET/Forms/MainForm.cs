@@ -27,6 +27,7 @@ namespace ReClassNET.Forms
 	public partial class MainForm : IconForm
 	{
 		private readonly PluginManager pluginManager;
+		private readonly IconProvider iconProvider = new IconProvider();
 
 		private ReClassNetProject currentProject;
 		public ReClassNetProject CurrentProject => currentProject;
@@ -1011,6 +1012,7 @@ namespace ReClassNET.Forms
 				memoryViewBuffer.UpdateFrom(process, address);
 
 				args.Settings = Program.Settings;
+				args.IconProvider = iconProvider;
 				args.Process = process;
 				args.Memory = memoryViewBuffer;
 				args.Node = classNode;

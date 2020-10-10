@@ -146,9 +146,9 @@ namespace ReClassNET.Nodes
 
 			AddSelection(view, x, y, view.Font.Height);
 
-			x += TextPadding;
+			x = AddIconPadding(view, x);
 
-			x = AddIcon(view, x, y, Icons.Enum, HotSpot.NoneId, HotSpotType.None);
+			x = AddIcon(view, x, y, view.IconProvider.Enum, HotSpot.NoneId, HotSpotType.None);
 
 			x = AddAddressOffset(view, x, y);
 
@@ -158,7 +158,7 @@ namespace ReClassNET.Nodes
 				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
 			}
 			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{Enum.Name}>") + view.Font.Width;
-			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeEnumType) + view.Font.Width;
+			x = AddIcon(view, x, y, view.IconProvider.Change, 4, HotSpotType.ChangeEnumType) + view.Font.Width;
 
 			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "=") + view.Font.Width;
 

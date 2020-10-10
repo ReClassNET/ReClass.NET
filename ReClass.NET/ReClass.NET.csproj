@@ -371,6 +371,7 @@
     <Compile Include="Controls\IconButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UI\IconProvider.cs" />
     <Compile Include="UI\LinkedWindowFeatures.cs" />
     <Compile Include="Controls\MemoryPreviewPopUp.cs">
       <SubType>Component</SubType>
@@ -423,7 +424,6 @@
     <Compile Include="Controls\HotSpotTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\Icons.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

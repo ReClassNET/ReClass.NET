@@ -20,7 +20,6 @@ namespace ReClassNET.Nodes
 
 		internal static readonly List<INodeInfoReader> NodeInfoReader = new List<INodeInfoReader>();
 
-		protected static readonly int TextPadding = Icons.Dimensions;
 		protected static readonly int HiddenHeight = 0;
 
 		private static int nodeIndex = 0;
@@ -383,6 +382,11 @@ namespace ReClassNET.Nodes
 			AddHotSpot(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), string.Empty, HotSpot.NoneId, HotSpotType.Select);
 		}
 
+		protected int AddIconPadding(ViewInfo view, int x)
+		{
+			return x + view.IconProvider.Dimensions;
+		}
+
 		/// <summary>Draws an icon and adds a <see cref="HotSpot"/> if <paramref name="id"/> is not <see cref="HotSpot.NoneId"/>.</summary>
 		/// <param name="view">The view information.</param>
 		/// <param name="x">The x coordinate.</param>
@@ -397,19 +401,21 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view.Context != null);
 			Contract.Requires(icon != null);
 
-			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0)
+			var size = view.IconProvider.Dimensions;
+
+			if (y > view.ClientArea.Bottom || y + size < 0)
 			{
-				return x + Icons.Dimensions;
+				return x + size;
 			}
 
-			view.Context.DrawImage(icon, x + 2, y, Icons.Dimensions, Icons.Dimensions);
+			view.Context.DrawImage(icon, x + 2, y, size, size);
 
 			if (id != HotSpot.NoneId)
 			{
-				AddHotSpot(view, new Rectangle(x, y, Icons.Dimensions, Icons.Dimensions), string.Empty, id, type);
+				AddHotSpot(view, new Rectangle(x, y, size, size), string.Empty, id, type);
 			}
 
-			return x + Icons.Dimensions;
+			return x + size;
 		}
 
 		/// <summary>Adds a togglable Open/Close icon.</summary>
@@ -422,12 +428,13 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
 
-			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0)
+			if (y > view.ClientArea.Bottom || y + view.IconProvider.Dimensions < 0)
 			{
-				return x + Icons.Dimensions;
+				return x + view.IconProvider.Dimensions;
 			}
 
-			return AddIcon(view, x, y, LevelsOpen[view.Level] ? Icons.OpenCloseOpen : Icons.OpenCloseClosed, 0, HotSpotType.OpenClose);
+			var icon = LevelsOpen[view.Level] ? view.IconProvider.OpenCloseOpen : view.IconProvider.OpenCloseClosed;
+			return AddIcon(view, x, y, icon, 0, HotSpotType.OpenClose);
 		}
 
 		/// <summary>Draws a context drop icon if the node is selected.</summary>
@@ -438,14 +445,14 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
 
-			if (view.MultipleNodesSelected || y > view.ClientArea.Bottom || y + Icons.Dimensions < 0 || IsWrapped)
+			if (view.MultipleNodesSelected || y > view.ClientArea.Bottom || y + view.IconProvider.Dimensions < 0 || IsWrapped)
 			{
 				return;
 			}
 
 			if (IsSelected)
 			{
-				AddIcon(view, 0, y, Icons.DropArrow, 0, HotSpotType.Context);
+				AddIcon(view, 0, y, view.IconProvider.DropArrow, 0, HotSpotType.Context);
 			}
 		}
 
@@ -457,14 +464,14 @@ namespace ReClassNET.Nodes
 			Contract.Requires(view != null);
 			Contract.Requires(view.Context != null);
 
-			if (y > view.ClientArea.Bottom || y + Icons.Dimensions < 0 || IsWrapped)
+			if (y > view.ClientArea.Bottom || y + view.IconProvider.Dimensions < 0 || IsWrapped)
 			{
 				return;
 			}
 
 			if (IsSelected)
 			{
-				AddIcon(view, view.ClientArea.Right - Icons.Dimensions, y, Icons.Delete, 0, HotSpotType.Delete);
+				AddIcon(view, view.ClientArea.Right - view.IconProvider.Dimensions, y, view.IconProvider.Delete, 0, HotSpotType.Delete);
 			}
 		}
 

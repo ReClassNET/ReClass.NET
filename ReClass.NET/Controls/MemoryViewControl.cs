@@ -126,6 +126,7 @@ namespace ReClassNET.Controls
 				Settings = args.Settings,
 				Context = e.Graphics,
 				Font = font,
+				IconProvider = args.IconProvider,
 				Process = args.Process,
 				Memory = args.Memory,
 				CurrentTime = args.CurrentTime,

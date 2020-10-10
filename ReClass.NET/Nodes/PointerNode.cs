@@ -73,9 +73,9 @@ namespace ReClassNET.Nodes
 			}
 			else
 			{
-				x += TextPadding;
+				x = AddIconPadding(view, x);
 			}
-			x = AddIcon(view, x, y, Icons.Pointer, HotSpot.NoneId, HotSpotType.None);
+			x = AddIcon(view, x, y, view.IconProvider.Pointer, HotSpot.NoneId, HotSpotType.None);
 
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
@@ -89,7 +89,7 @@ namespace ReClassNET.Nodes
 			{
 				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, "<void>") + view.Font.Width;
 			}
-			x = AddIcon(view, x, y, Icons.Change, 4, HotSpotType.ChangeWrappedType) + view.Font.Width;
+			x = AddIcon(view, x, y, view.IconProvider.Change, 4, HotSpotType.ChangeWrappedType) + view.Font.Width;
 
 			var ptr = view.Memory.ReadIntPtr(Offset);
 
