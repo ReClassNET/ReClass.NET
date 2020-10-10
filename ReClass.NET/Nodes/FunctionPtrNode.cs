@@ -11,9 +11,9 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_Function_Pointer;
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
-			return Draw(view, x, y, "FunctionPtr", Name);
+			return Draw(context, x, y, "FunctionPtr", Name);
 		}
 	}
 }

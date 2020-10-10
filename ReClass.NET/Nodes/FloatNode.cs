@@ -15,9 +15,9 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_Float;
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
-			return DrawNumeric(view, x, y, view.IconProvider.Float, "Float", ReadValueFromMemory(view.Memory).ToString("0.000"), null);
+			return DrawNumeric(context, x, y, context.IconProvider.Float, "Float", ReadValueFromMemory(context.Memory).ToString("0.000"), null);
 		}
 
 		public override void Update(HotSpot spot)

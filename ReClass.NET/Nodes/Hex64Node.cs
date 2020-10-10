@@ -32,9 +32,9 @@ namespace ReClassNET.Nodes
 			return $"Int64: {value.LongValue}\nUInt64: 0x{value.ULongValue:X016}\nFloat: {value.FloatValue:0.000}\nDouble: {value.DoubleValue:0.000}";
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
-			return Draw(view, x, y, view.Settings.ShowNodeText ? view.Memory.ReadString(view.Settings.RawDataEncoding, Offset, 8) + " " : null, 8);
+			return Draw(context, x, y, context.Settings.ShowNodeText ? context.Memory.ReadString(context.Settings.RawDataEncoding, Offset, 8) + " " : null, 8);
 		}
 
 		public override void Update(HotSpot spot)
@@ -42,7 +42,7 @@ namespace ReClassNET.Nodes
 			Update(spot, 8);
 		}
 
-		protected override int AddComment(ViewInfo view, int x, int y)
+		protected override int AddComment(DrawContext view, int x, int y)
 		{
 			x = base.AddComment(view, x, y);
 

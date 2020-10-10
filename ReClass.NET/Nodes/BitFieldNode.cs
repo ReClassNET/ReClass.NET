@@ -108,76 +108,76 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
 			const int BitsPerBlock = 4;
 
 			if (IsHidden && !IsWrapped)
 			{
-				return DrawHidden(view, x, y);
+				return DrawHidden(context, x, y);
 			}
 
 			var origX = x;
 			var origY = y;
 
-			AddSelection(view, x, y, view.Font.Height);
+			AddSelection(context, x, y, context.Font.Height);
 
-			x = AddIconPadding(view, x);
-			x = AddIconPadding(view, x);
+			x = AddIconPadding(context, x);
+			x = AddIconPadding(context, x);
 
-			x = AddAddressOffset(view, x, y);
+			x = AddAddressOffset(context, x, y);
 
-			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Bits") + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.TypeColor, HotSpot.NoneId, "Bits") + context.Font.Width;
 			if (!IsWrapped)
 			{
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NameId, Name) + context.Font.Width;
 			}
 
-			x = AddOpenCloseIcon(view, x, y) + view.Font.Width;
+			x = AddOpenCloseIcon(context, x, y) + context.Font.Width;
 
 			var tx = x - 3;
 
 			for (var i = 0; i < bits; ++i)
 			{
-				var rect = new Rectangle(x + (i + i / BitsPerBlock) * view.Font.Width, y, view.Font.Width, view.Font.Height);
-				AddHotSpot(view, rect, string.Empty, i, HotSpotType.Edit);
+				var rect = new Rectangle(x + (i + i / BitsPerBlock) * context.Font.Width, y, context.Font.Width, context.Font.Height);
+				AddHotSpot(context, rect, string.Empty, i, HotSpotType.Edit);
 			}
 
-			var value = ConvertValueToBitString(view.Memory);
+			var value = ConvertValueToBitString(context.Memory);
 
-			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, value) + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.ValueColor, HotSpot.NoneId, value) + context.Font.Width;
 
-			x += view.Font.Width;
+			x += context.Font.Width;
 
-			x = AddComment(view, x, y);
+			x = AddComment(context, x, y);
 
-			DrawInvalidMemoryIndicatorIcon(view, y);
-			AddContextDropDownIcon(view, y);
-			AddDeleteIcon(view, y);
+			DrawInvalidMemoryIndicatorIcon(context, y);
+			AddContextDropDownIcon(context, y);
+			AddDeleteIcon(context, y);
 
-			if (LevelsOpen[view.Level])
+			if (LevelsOpen[context.Level])
 			{
-				y += view.Font.Height;
+				y += context.Font.Height;
 
 				var format = new StringFormat(StringFormatFlags.DirectionVertical);
 
-				using (var brush = new SolidBrush(view.Settings.ValueColor))
+				using (var brush = new SolidBrush(context.Settings.ValueColor))
 				{
 					var maxCharCount = bits + (bits / 4 - 1) - 1;
 
 					for (int bitCount = 0, padding = 0; bitCount < bits; bitCount += 4, padding += 5)
 					{
-						view.Context.DrawString(bitCount.ToString(), view.Font.Font, brush, tx + (maxCharCount - padding) * view.Font.Width, y, format);
+						context.Graphics.DrawString(bitCount.ToString(), context.Font.Font, brush, tx + (maxCharCount - padding) * context.Font.Width, y, format);
 					}
 				}
 
 				y += 2;
 			}
 
-			return new Size(x - origX, y - origY + view.Font.Height);
+			return new Size(x - origX, y - origY + context.Font.Height);
 		}
 
-		public override int CalculateDrawnHeight(ViewInfo view)
+		public override int CalculateDrawnHeight(DrawContext view)
 		{
 			if (IsHidden && !IsWrapped)
 			{

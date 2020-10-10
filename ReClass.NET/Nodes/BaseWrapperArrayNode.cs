@@ -28,7 +28,7 @@ namespace ReClassNET.Nodes
 			return true;
 		}
 
-		protected Size Draw(ViewInfo view, int x, int y, string type)
+		protected Size Draw(DrawContext view, int x, int y, string type)
 		{
 			if (IsHidden && !IsWrapped)
 			{
@@ -85,9 +85,9 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		protected abstract Size DrawChild(ViewInfo view, int x, int y);
+		protected abstract Size DrawChild(DrawContext view, int x, int y);
 
-		public override int CalculateDrawnHeight(ViewInfo view)
+		public override int CalculateDrawnHeight(DrawContext view)
 		{
 			if (IsHidden && !IsWrapped)
 			{

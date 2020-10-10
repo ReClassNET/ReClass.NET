@@ -135,47 +135,47 @@ namespace ReClassNET.Nodes
 			return retval.ToString();
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
 			if (IsHidden && !IsWrapped)
 			{
-				return DrawHidden(view, x, y);
+				return DrawHidden(context, x, y);
 			}
 
 			var origX = x;
 
-			AddSelection(view, x, y, view.Font.Height);
+			AddSelection(context, x, y, context.Font.Height);
 
-			x = AddIconPadding(view, x);
+			x = AddIconPadding(context, x);
 
-			x = AddIcon(view, x, y, view.IconProvider.Enum, HotSpot.NoneId, HotSpotType.None);
+			x = AddIcon(context, x, y, context.IconProvider.Enum, HotSpot.NoneId, HotSpotType.None);
 
-			x = AddAddressOffset(view, x, y);
+			x = AddAddressOffset(context, x, y);
 
-			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Enum") + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.TypeColor, HotSpot.NoneId, "Enum") + context.Font.Width;
 			if (!IsWrapped)
 			{
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NameId, Name) + context.Font.Width;
 			}
-			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<{Enum.Name}>") + view.Font.Width;
-			x = AddIcon(view, x, y, view.IconProvider.Change, 4, HotSpotType.ChangeEnumType) + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.ValueColor, HotSpot.NoneId, $"<{Enum.Name}>") + context.Font.Width;
+			x = AddIcon(context, x, y, context.IconProvider.Change, 4, HotSpotType.ChangeEnumType) + context.Font.Width;
 
-			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "=") + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.TextColor, HotSpot.NoneId, "=") + context.Font.Width;
 
-			var text = GetTextRepresentation(view.Memory);
+			var text = GetTextRepresentation(context.Memory);
 
-			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text) + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.TextColor, HotSpot.NoneId, text) + context.Font.Width;
 
-			x = AddComment(view, x, y);
+			x = AddComment(context, x, y);
 
-			DrawInvalidMemoryIndicatorIcon(view, y);
-			AddContextDropDownIcon(view, y);
-			AddDeleteIcon(view, y);
+			DrawInvalidMemoryIndicatorIcon(context, y);
+			AddContextDropDownIcon(context, y);
+			AddDeleteIcon(context, y);
 
-			return new Size(x - origX, view.Font.Height);
+			return new Size(x - origX, context.Font.Height);
 		}
 
-		public override int CalculateDrawnHeight(ViewInfo view)
+		public override int CalculateDrawnHeight(DrawContext view)
 		{
 			return IsHidden && !IsWrapped ? HiddenHeight : view.Font.Height;
 		}

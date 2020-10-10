@@ -121,10 +121,10 @@ namespace ReClassNET.Controls
 				memoryPreviewPopUp.UpdateMemory();
 			}
 
-			var view = new ViewInfo
+			var view = new DrawContext
 			{
 				Settings = args.Settings,
-				Context = e.Graphics,
+				Graphics = e.Graphics,
 				Font = font,
 				IconProvider = args.IconProvider,
 				Process = args.Process,

@@ -6,11 +6,11 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Controls
 {
-	public class ViewInfo
+	public class DrawContext
 	{
 		public Settings Settings { get; set; }
 
-		public Graphics Context { get; set; }
+		public Graphics Graphics { get; set; }
 		public FontEx Font { get; set; }
 		public IconProvider IconProvider { get; set; }
 
@@ -25,12 +25,12 @@ namespace ReClassNET.Controls
 		public int Level { get; set; }
 		public bool MultipleNodesSelected { get; set; }
 
-		public ViewInfo Clone()
+		public DrawContext Clone()
 		{
-			return new ViewInfo
+			return new DrawContext
 			{
 				Settings = Settings,
-				Context = Context,
+				Graphics = Graphics,
 				Font = Font,
 				IconProvider = IconProvider,
 				Process = Process,

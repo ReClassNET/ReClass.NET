@@ -31,62 +31,62 @@ namespace ReClassNET.Nodes
 			return string.Join("\n", Instructions.Select(i => i.Instruction));
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
-			Contract.Requires(view != null);
+			Contract.Requires(context != null);
 
 			if (IsHidden && !IsWrapped)
 			{
-				return DrawHidden(view, x, y);
+				return DrawHidden(context, x, y);
 			}
 
 			var origX = x;
 
-			AddSelection(view, x, y, view.Font.Height);
+			AddSelection(context, x, y, context.Font.Height);
 
-			x = AddIconPadding(view, x);
+			x = AddIconPadding(context, x);
 
-			x = AddIcon(view, x, y, view.IconProvider.Function, HotSpot.NoneId, HotSpotType.None);
+			x = AddIcon(context, x, y, context.IconProvider.Function, HotSpot.NoneId, HotSpotType.None);
 
 			var tx = x;
 
-			x = AddAddressOffset(view, x, y);
+			x = AddAddressOffset(context, x, y);
 
-			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Function") + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.TypeColor, HotSpot.NoneId, "Function") + context.Font.Width;
 			if (!IsWrapped)
 			{
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name) + view.Font.Width;
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NameId, Name) + context.Font.Width;
 			}
 
-			x = AddOpenCloseIcon(view, x, y) + view.Font.Width;
+			x = AddOpenCloseIcon(context, x, y) + context.Font.Width;
 
-			x = AddComment(view, x, y);
+			x = AddComment(context, x, y);
 
-			DrawInvalidMemoryIndicatorIcon(view, y);
-			AddContextDropDownIcon(view, y);
-			AddDeleteIcon(view, y);
+			DrawInvalidMemoryIndicatorIcon(context, y);
+			AddContextDropDownIcon(context, y);
+			AddDeleteIcon(context, y);
 
-			var size = new Size(x - origX, view.Font.Height);
+			var size = new Size(x - origX, context.Font.Height);
 
-			var ptr = view.Address + Offset;
-			DisassembleRemoteCode(view.Process, ptr);
+			var ptr = context.Address + Offset;
+			DisassembleRemoteCode(context.Process, ptr);
 
-			if (LevelsOpen[view.Level])
+			if (LevelsOpen[context.Level])
 			{
-				y += view.Font.Height;
-				x = AddText(view, tx, y, view.Settings.TypeColor, HotSpot.NoneId, "Signature:") + view.Font.Width;
-				x = AddText(view, x, y, view.Settings.ValueColor, 0, Signature);
+				y += context.Font.Height;
+				x = AddText(context, tx, y, context.Settings.TypeColor, HotSpot.NoneId, "Signature:") + context.Font.Width;
+				x = AddText(context, x, y, context.Settings.ValueColor, 0, Signature);
 				size.Width = Math.Max(size.Width, x - origX);
-				size.Height += view.Font.Height;
+				size.Height += context.Font.Height;
 
-				y += view.Font.Height;
-				x = AddText(view, tx, y, view.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
-				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>") + view.Font.Width;
-				x = AddIcon(view, x, y, view.IconProvider.Change, 1, HotSpotType.ChangeClassType);
+				y += context.Font.Height;
+				x = AddText(context, tx, y, context.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
+				x = AddText(context, x, y, context.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>") + context.Font.Width;
+				x = AddIcon(context, x, y, context.IconProvider.Change, 1, HotSpotType.ChangeClassType);
 				size.Width = Math.Max(size.Width, x - origX);
-				size.Height += view.Font.Height;
+				size.Height += context.Font.Height;
 
-				var instructionSize = DrawInstructions(view, tx, y + 4);
+				var instructionSize = DrawInstructions(context, tx, y + 4);
 				size.Width = Math.Max(size.Width, instructionSize.Width + tx - origX);
 				size.Height += instructionSize.Height + 4;
 			}
@@ -94,7 +94,7 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override int CalculateDrawnHeight(ViewInfo view)
+		public override int CalculateDrawnHeight(DrawContext view)
 		{
 			if (IsHidden && !IsWrapped)
 			{

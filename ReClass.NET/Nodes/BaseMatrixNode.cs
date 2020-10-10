@@ -17,7 +17,7 @@ namespace ReClassNET.Nodes
 
 		protected delegate void DrawMatrixValues(int x, ref int maxX, ref int y);
 
-		protected Size DrawMatrixType(ViewInfo view, int x, int y, string type, DrawMatrixValues drawValues)
+		protected Size DrawMatrixType(DrawContext view, int x, int y, string type, DrawMatrixValues drawValues)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -65,7 +65,7 @@ namespace ReClassNET.Nodes
 		}
 
 		protected delegate void DrawVectorValues(ref int x, ref int y);
-		protected Size DrawVectorType(ViewInfo view, int x, int y, string type, DrawVectorValues drawValues)
+		protected Size DrawVectorType(DrawContext view, int x, int y, string type, DrawVectorValues drawValues)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -110,7 +110,7 @@ namespace ReClassNET.Nodes
 			return new Size(x - origX, y - origY + view.Font.Height);
 		}
 
-		public override int CalculateDrawnHeight(ViewInfo view)
+		public override int CalculateDrawnHeight(DrawContext view)
 		{
 			if (IsHidden && !IsWrapped)
 			{
@@ -125,7 +125,7 @@ namespace ReClassNET.Nodes
 			return height;
 		}
 
-		protected abstract int CalculateValuesHeight(ViewInfo view);
+		protected abstract int CalculateValuesHeight(DrawContext view);
 
 		public void Update(HotSpot spot, int max)
 		{

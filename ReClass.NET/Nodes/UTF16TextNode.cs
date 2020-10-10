@@ -14,9 +14,9 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_UText;
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
-			return DrawText(view, x, y, "Text16");
+			return DrawText(context, x, y, "Text16");
 		}
 	}
 }

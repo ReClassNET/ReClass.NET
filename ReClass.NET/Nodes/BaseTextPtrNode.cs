@@ -17,12 +17,12 @@ namespace ReClassNET.Nodes
 		public abstract Encoding Encoding { get; }
 
 		/// <summary>Draws this node.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <param name="type">The name of the type.</param>
 		/// <returns>The pixel size the node occupies.</returns>
-		public Size DrawText(ViewInfo view, int x, int y, string type)
+		public Size DrawText(DrawContext view, int x, int y, string type)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -63,7 +63,7 @@ namespace ReClassNET.Nodes
 			return new Size(x - origX, view.Font.Height);
 		}
 
-		public override int CalculateDrawnHeight(ViewInfo view)
+		public override int CalculateDrawnHeight(DrawContext view)
 		{
 			return IsHidden && !IsWrapped ? HiddenHeight : view.Font.Height;
 		}

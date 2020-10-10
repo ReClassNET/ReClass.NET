@@ -41,48 +41,48 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_Matrix_3x3;
 		}
 
-		public override Size Draw(ViewInfo view, int x2, int y2)
+		public override Size Draw(DrawContext context, int x2, int y2)
 		{
-			return DrawMatrixType(view, x2, y2, "Matrix (3x3)", (int defaultX, ref int maxX, ref int y) =>
+			return DrawMatrixType(context, x2, y2, "Matrix (3x3)", (int defaultX, ref int maxX, ref int y) =>
 			{
-				var value = view.Memory.ReadObject<Matrix3x3Data>(Offset);
+				var value = context.Memory.ReadObject<Matrix3x3Data>(Offset);
 
-				y += view.Font.Height;
+				y += context.Font.Height;
 				var x = defaultX;
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
-				x = AddText(view, x, y, view.Settings.ValueColor, 0, $"{value._11,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.ValueColor, 1, $"{value._12,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.ValueColor, 2, $"{value._13,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(context, x, y, context.Settings.ValueColor, 0, $"{value._11,14:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(context, x, y, context.Settings.ValueColor, 1, $"{value._12,14:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(context, x, y, context.Settings.ValueColor, 2, $"{value._13,14:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, "|");
 				maxX = Math.Max(x, maxX);
 
-				y += view.Font.Height;
+				y += context.Font.Height;
 				x = defaultX;
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
-				x = AddText(view, x, y, view.Settings.ValueColor, 3, $"{value._21,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.ValueColor, 4, $"{value._22,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.ValueColor, 5, $"{value._23,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(context, x, y, context.Settings.ValueColor, 3, $"{value._21,14:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(context, x, y, context.Settings.ValueColor, 4, $"{value._22,14:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(context, x, y, context.Settings.ValueColor, 5, $"{value._23,14:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, "|");
 				maxX = Math.Max(x, maxX);
 
-				y += view.Font.Height;
+				y += context.Font.Height;
 				x = defaultX;
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
-				x = AddText(view, x, y, view.Settings.ValueColor, 6, $"{value._31,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.ValueColor, 7, $"{value._32,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.ValueColor, 8, $"{value._33,14:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, "|");
+				x = AddText(context, x, y, context.Settings.ValueColor, 6, $"{value._31,14:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(context, x, y, context.Settings.ValueColor, 7, $"{value._32,14:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(context, x, y, context.Settings.ValueColor, 8, $"{value._33,14:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, "|");
 				maxX = Math.Max(x, maxX);
 			});
 		}
 
-		protected override int CalculateValuesHeight(ViewInfo view)
+		protected override int CalculateValuesHeight(DrawContext view)
 		{
 			return 3 * view.Font.Height;
 		}

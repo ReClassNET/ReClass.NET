@@ -17,10 +17,10 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_UInt_64;
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
-			var value = ReadValueFromMemory(view.Memory);
-			return DrawNumeric(view, x, y, view.IconProvider.Unsigned, "UInt64", value.ToString(), $"0x{value:X}");
+			var value = ReadValueFromMemory(context.Memory);
+			return DrawNumeric(context, x, y, context.IconProvider.Unsigned, "UInt64", value.ToString(), $"0x{value:X}");
 		}
 
 		public override void Update(HotSpot spot)

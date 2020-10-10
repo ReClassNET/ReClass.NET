@@ -21,9 +21,9 @@ namespace ReClassNET.Nodes
 			return $"Int8: {(int)b}\nUInt8: 0x{b:X02}";
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
-			return Draw(view, x, y, view.Settings.ShowNodeText ? view.Memory.ReadString(view.Settings.RawDataEncoding, Offset, 1) + "        " : null, 1);
+			return Draw(context, x, y, context.Settings.ShowNodeText ? context.Memory.ReadString(context.Settings.RawDataEncoding, Offset, 1) + "        " : null, 1);
 		}
 
 		public override void Update(HotSpot spot)

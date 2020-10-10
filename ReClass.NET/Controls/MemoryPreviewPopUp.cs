@@ -23,7 +23,7 @@ namespace ReClassNET.Controls
 		{
 			private const int MinNodeCount = 10;
 
-			public ViewInfo ViewInfo { get; }
+			public DrawContext DrawContext { get; }
 
 			private readonly List<BaseHexNode> nodes;
 
@@ -35,7 +35,7 @@ namespace ReClassNET.Controls
 
 				nodes = new List<BaseHexNode>();
 
-				ViewInfo = new ViewInfo
+				DrawContext = new DrawContext
 				{
 					Font = font,
 
@@ -75,7 +75,7 @@ namespace ReClassNET.Controls
 					nodes.RemoveRange(count, nodes.Count - count);
 				}
 
-				ViewInfo.Memory.Size = nodes.Select(n => n.MemorySize).Sum();
+				DrawContext.Memory.Size = nodes.Select(n => n.MemorySize).Sum();
 			}
 
 			/// <summary>Changes the number of nodes with the provided delta.</summary>
@@ -100,29 +100,29 @@ namespace ReClassNET.Controls
 			{
 				var size = new Size(
 					ToolTipWidth,
-					nodes.Sum(n => n.CalculateDrawnHeight(ViewInfo)) + ToolTipPadding
+					nodes.Sum(n => n.CalculateDrawnHeight(DrawContext)) + ToolTipPadding
 				);
 
-				ViewInfo.ClientArea = new Rectangle(ToolTipPadding / 2, ToolTipPadding / 2, size.Width - ToolTipPadding, size.Height - ToolTipPadding);
+				DrawContext.ClientArea = new Rectangle(ToolTipPadding / 2, ToolTipPadding / 2, size.Width - ToolTipPadding, size.Height - ToolTipPadding);
 
 				Size = MinimumSize = MaximumSize = size;
 			}
 
 			protected override void OnPaint(PaintEventArgs e)
 			{
-				ViewInfo.HotSpots.Clear();
+				DrawContext.HotSpots.Clear();
 
 				// Some settings are not usefull for the preview.
-				ViewInfo.Settings = Program.Settings.Clone();
-				ViewInfo.Settings.ShowNodeAddress = false;
+				DrawContext.Settings = Program.Settings.Clone();
+				DrawContext.Settings.ShowNodeAddress = false;
 
-				ViewInfo.Context = e.Graphics;
+				DrawContext.Graphics = e.Graphics;
 
-				using (var brush = new SolidBrush(ViewInfo.Settings.BackgroundColor))
+				using (var brush = new SolidBrush(DrawContext.Settings.BackgroundColor))
 				{
 					e.Graphics.FillRectangle(brush, ClientRectangle);
 				}
-				using (var pen = new Pen(ViewInfo.Settings.BackgroundColor.Invert(), 1))
+				using (var pen = new Pen(DrawContext.Settings.BackgroundColor.Invert(), 1))
 				{
 					e.Graphics.DrawRectangle(pen, new Rectangle(Bounds.X, Bounds.Y, Bounds.Width - 1, Bounds.Height - 1));
 				}
@@ -131,7 +131,7 @@ namespace ReClassNET.Controls
 				int y = 2;
 				foreach (var node in nodes)
 				{
-					y += node.Draw(ViewInfo, x, y).Height;
+					y += node.Draw(DrawContext, x, y).Height;
 				}
 			}
 		}
@@ -213,15 +213,15 @@ namespace ReClassNET.Controls
 
 			memoryAddress = address;
 
-			panel.ViewInfo.Process = process;
+			panel.DrawContext.Process = process;
 
-			panel.ViewInfo.Memory.UpdateFrom(process, address);
+			panel.DrawContext.Memory.UpdateFrom(process, address);
 		}
 
 		/// <summary>Updates the memory buffer to get current data.</summary>
 		public void UpdateMemory()
 		{
-			panel.ViewInfo.Memory.UpdateFrom(panel.ViewInfo.Process, memoryAddress);
+			panel.DrawContext.Memory.UpdateFrom(panel.DrawContext.Process, memoryAddress);
 
 			panel.Invalidate();
 		}

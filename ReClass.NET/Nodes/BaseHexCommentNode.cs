@@ -10,7 +10,7 @@ namespace ReClassNET.Nodes
 {
 	public abstract class BaseHexCommentNode : BaseHexNode
 	{
-		protected int AddComment(ViewInfo view, int x, int y, float fvalue, IntPtr ivalue, UIntPtr uvalue)
+		protected int AddComment(DrawContext view, int x, int y, float fvalue, IntPtr ivalue, UIntPtr uvalue)
 		{
 			Contract.Requires(view != null);
 

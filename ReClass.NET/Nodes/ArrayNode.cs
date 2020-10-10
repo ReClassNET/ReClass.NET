@@ -22,12 +22,12 @@ namespace ReClassNET.Nodes
 			ChangeInnerNode(IntPtr.Size == 4 ? (BaseNode)new Hex32Node() : new Hex64Node());
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
-			return Draw(view, x, y, "Array");
+			return Draw(context, x, y, "Array");
 		}
 
-		protected override Size DrawChild(ViewInfo view, int x, int y)
+		protected override Size DrawChild(DrawContext view, int x, int y)
 		{
 			var v = view.Clone();
 			v.Address = view.Address + Offset + InnerNode.MemorySize * CurrentIndex;

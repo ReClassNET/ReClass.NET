@@ -44,45 +44,45 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
 			if (IsHidden && !IsWrapped)
 			{
-				return DrawHidden(view, x, y);
+				return DrawHidden(context, x, y);
 			}
 
 			var origX = x;
 			var origY = y;
 
-			AddSelection(view, x, y, view.Font.Height);
+			AddSelection(context, x, y, context.Font.Height);
 
-			x = AddOpenCloseIcon(view, x, y);
-			x = AddIcon(view, x, y, view.IconProvider.Union, -1, HotSpotType.None);
+			x = AddOpenCloseIcon(context, x, y);
+			x = AddIcon(context, x, y, context.IconProvider.Union, -1, HotSpotType.None);
 
 			var tx = x;
-			x = AddAddressOffset(view, x, y);
+			x = AddAddressOffset(context, x, y);
 
-			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Union") + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.TypeColor, HotSpot.NoneId, "Union") + context.Font.Width;
 
-			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"[Nodes: {Nodes.Count}, Size: {MemorySize}]") + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.ValueColor, HotSpot.NoneId, $"[Nodes: {Nodes.Count}, Size: {MemorySize}]") + context.Font.Width;
 
-			x = AddComment(view, x, y);
+			x = AddComment(context, x, y);
 
-			DrawInvalidMemoryIndicatorIcon(view, y);
-			AddContextDropDownIcon(view, y);
-			AddDeleteIcon(view, y);
+			DrawInvalidMemoryIndicatorIcon(context, y);
+			AddContextDropDownIcon(context, y);
+			AddDeleteIcon(context, y);
 
-			y += view.Font.Height;
+			y += context.Font.Height;
 
 			var size = new Size(x - origX, y - origY);
 
-			if (LevelsOpen[view.Level])
+			if (LevelsOpen[context.Level])
 			{
-				var v = view.Clone();
+				var v = context.Clone();
 				v.Settings = Program.Settings.Clone();
 				v.Settings.ShowNodeAddress = false;
-				v.Address = view.Address + Offset;
-				v.Memory = view.Memory.Clone();
+				v.Address = context.Address + Offset;
+				v.Memory = context.Memory.Clone();
 				v.Memory.Offset += Offset;
 
 				foreach (var node in Nodes)
@@ -99,7 +99,7 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override int CalculateDrawnHeight(ViewInfo view)
+		public override int CalculateDrawnHeight(DrawContext view)
 		{
 			if (IsHidden && !IsWrapped)
 			{

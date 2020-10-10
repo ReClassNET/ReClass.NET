@@ -510,7 +510,7 @@
     <Compile Include="Symbols\SymbolReader.cs" />
     <Compile Include="Symbols\SymbolStore.cs" />
     <Compile Include="UI\GlobalWindowManager.cs" />
-    <Compile Include="Controls\ViewInfo.cs" />
+    <Compile Include="Controls\DrawContext.cs" />
     <Compile Include="Extensions\EnumerableExtension.cs" />
     <Compile Include="Util\HexadecimalFormatter.cs" />
     <Compile Include="Util\IntPtrComparer.cs" />

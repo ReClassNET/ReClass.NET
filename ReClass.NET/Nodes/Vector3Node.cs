@@ -28,23 +28,23 @@ namespace ReClassNET.Nodes
 			icon = Properties.Resources.B16x16_Button_Vector_3;
 		}
 
-		public override Size Draw(ViewInfo view, int x2, int y2)
+		public override Size Draw(DrawContext context, int x2, int y2)
 		{
-			return DrawVectorType(view, x2, y2, "Vector3", (ref int x, ref int y) =>
+			return DrawVectorType(context, x2, y2, "Vector3", (ref int x, ref int y) =>
 			{
-				var value = view.Memory.ReadObject<Vector3Data>(Offset);
+				var value = context.Memory.ReadObject<Vector3Data>(Offset);
 
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, "(");
-				x = AddText(view, x, y, view.Settings.ValueColor, 0, $"{value.X:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.ValueColor, 1, $"{value.Y:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ",");
-				x = AddText(view, x, y, view.Settings.ValueColor, 2, $"{value.Z:0.000}");
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NoneId, ")");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, "(");
+				x = AddText(context, x, y, context.Settings.ValueColor, 0, $"{value.X:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(context, x, y, context.Settings.ValueColor, 1, $"{value.Y:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, ",");
+				x = AddText(context, x, y, context.Settings.ValueColor, 2, $"{value.Z:0.000}");
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, ")");
 			});
 		}
 
-		protected override int CalculateValuesHeight(ViewInfo view)
+		protected override int CalculateValuesHeight(DrawContext view)
 		{
 			return 0;
 		}

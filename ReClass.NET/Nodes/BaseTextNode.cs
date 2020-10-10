@@ -25,7 +25,7 @@ namespace ReClassNET.Nodes
 			Length = node.MemorySize / CharacterSize;
 		}
 
-		protected Size DrawText(ViewInfo view, int x, int y, string type)
+		protected Size DrawText(DrawContext view, int x, int y, string type)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -69,7 +69,7 @@ namespace ReClassNET.Nodes
 			return new Size(x - origX, view.Font.Height);
 		}
 
-		public override int CalculateDrawnHeight(ViewInfo view)
+		public override int CalculateDrawnHeight(DrawContext view)
 		{
 			return IsHidden && !IsWrapped ? HiddenHeight : view.Font.Height;
 		}

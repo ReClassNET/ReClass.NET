@@ -22,7 +22,7 @@ namespace ReClassNET.Nodes
 			return string.Join("\n", Instructions.Select(i => i.Instruction));
 		}
 
-		protected Size Draw(ViewInfo view, int x, int y, string type, string name)
+		protected Size Draw(DrawContext view, int x, int y, string type, string name)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(type != null);
@@ -92,7 +92,7 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override int CalculateDrawnHeight(ViewInfo view)
+		public override int CalculateDrawnHeight(DrawContext view)
 		{
 			if (IsHidden)
 			{

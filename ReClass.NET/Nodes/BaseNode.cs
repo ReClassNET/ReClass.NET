@@ -221,20 +221,20 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Draws the node.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="context">The drawing context.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The pixel size the node occupies.</returns>
-		public abstract Size Draw(ViewInfo view, int x, int y);
+		public abstract Size Draw(DrawContext context, int x, int y);
 
 		/// <summary>
 		/// Calculates the height of the node if drawn.
 		/// This method is used to determine if a node outside the visible area should be drawn.
-		/// The returned height must be equal to the height which is returned by the <see cref="Draw(ViewInfo, int, int)"/> method.
+		/// The returned height must be equal to the height which is returned by the <see cref="Draw(DrawContext, int, int)"/> method.
 		/// </summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <returns>The calculated height.</returns>
-		public abstract int CalculateDrawnHeight(ViewInfo view);
+		public abstract int CalculateDrawnHeight(DrawContext view);
 
 		/// <summary>Updates the node from the given <paramref name="spot"/>. Sets the <see cref="Name"/> and <see cref="Comment"/> of the node.</summary>
 		/// <param name="spot">The spot.</param>
@@ -268,12 +268,12 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Adds a <see cref="HotSpot"/> the user can interact with.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="spot">The spot.</param>
 		/// <param name="text">The text to edit.</param>
 		/// <param name="id">The id of the spot.</param>
 		/// <param name="type">The type of the spot.</param>
-		protected void AddHotSpot(ViewInfo view, Rectangle spot, string text, int id, HotSpotType type)
+		protected void AddHotSpot(DrawContext view, Rectangle spot, string text, int id, HotSpotType type)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(view.Memory != null);
@@ -299,17 +299,17 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Draws the specific text and adds a <see cref="HotSpot"/> if <paramref name="hitId"/> is not <see cref="HotSpot.NoneId"/>.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <param name="color">The color of the text.</param>
 		/// <param name="hitId">Id for the clickable area.</param>
 		/// <param name="text">The text to draw.</param>
 		/// <returns>The new x coordinate after drawing the text.</returns>
-		protected int AddText(ViewInfo view, int x, int y, Color color, int hitId, string text)
+		protected int AddText(DrawContext view, int x, int y, Color color, int hitId, string text)
 		{
 			Contract.Requires(view != null);
-			Contract.Requires(view.Context != null);
+			Contract.Requires(view.Graphics != null);
 			Contract.Requires(view.Font != null);
 			Contract.Requires(text != null);
 
@@ -323,10 +323,10 @@ namespace ReClassNET.Nodes
 					AddHotSpot(view, rect, text, hitId, HotSpotType.Edit);
 				}
 
-				view.Context.DrawStringEx(text, view.Font.Font, color, x, y);
+				view.Graphics.DrawStringEx(text, view.Font.Font, color, x, y);
 				/*using (var brush = new SolidBrush(color))
 				{
-					view.Context.DrawString(text, view.Font.Font, brush, x, y);
+					context.Graphics.DrawString(text, context.Font.Font, brush, x, y);
 				}*/
 			}
 
@@ -334,14 +334,14 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Draws the address and <see cref="Offset"/> of the node.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The new x coordinate after drawing the text.</returns>
-		protected int AddAddressOffset(ViewInfo view, int x, int y)
+		protected int AddAddressOffset(DrawContext view, int x, int y)
 		{
 			Contract.Requires(view != null);
-			Contract.Requires(view.Context != null);
+			Contract.Requires(view.Graphics != null);
 			Contract.Requires(view.Font != null);
 
 			if (view.Settings.ShowNodeOffset)
@@ -358,14 +358,14 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Draws a bar which indicates the selection status of the node. A <see cref="HotSpot"/> for this area gets added too.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <param name="height">The height of the bar.</param>
-		protected void AddSelection(ViewInfo view, int x, int y, int height)
+		protected void AddSelection(DrawContext view, int x, int y, int height)
 		{
 			Contract.Requires(view != null);
-			Contract.Requires(view.Context != null);
+			Contract.Requires(view.Graphics != null);
 
 			if (y > view.ClientArea.Bottom || y + height < 0 || IsWrapped)
 			{
@@ -376,29 +376,29 @@ namespace ReClassNET.Nodes
 			{
 				using var brush = new SolidBrush(view.Settings.SelectedColor);
 
-				view.Context.FillRectangle(brush, 0, y, view.ClientArea.Right, height);
+				view.Graphics.FillRectangle(brush, 0, y, view.ClientArea.Right, height);
 			}
 
 			AddHotSpot(view, new Rectangle(0, y, view.ClientArea.Right - (IsSelected ? 16 : 0), height), string.Empty, HotSpot.NoneId, HotSpotType.Select);
 		}
 
-		protected int AddIconPadding(ViewInfo view, int x)
+		protected int AddIconPadding(DrawContext view, int x)
 		{
 			return x + view.IconProvider.Dimensions;
 		}
 
 		/// <summary>Draws an icon and adds a <see cref="HotSpot"/> if <paramref name="id"/> is not <see cref="HotSpot.NoneId"/>.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <param name="icon">The icon.</param>
 		/// <param name="id">The id of the spot.</param>
 		/// <param name="type">The type of the spot.</param>
 		/// <returns>The new x coordinate after drawing the icon.</returns>
-		protected int AddIcon(ViewInfo view, int x, int y, Image icon, int id, HotSpotType type)
+		protected int AddIcon(DrawContext view, int x, int y, Image icon, int id, HotSpotType type)
 		{
 			Contract.Requires(view != null);
-			Contract.Requires(view.Context != null);
+			Contract.Requires(view.Graphics != null);
 			Contract.Requires(icon != null);
 
 			var size = view.IconProvider.Dimensions;
@@ -408,7 +408,7 @@ namespace ReClassNET.Nodes
 				return x + size;
 			}
 
-			view.Context.DrawImage(icon, x + 2, y, size, size);
+			view.Graphics.DrawImage(icon, x + 2, y, size, size);
 
 			if (id != HotSpot.NoneId)
 			{
@@ -419,14 +419,14 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Adds a togglable Open/Close icon.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The new x coordinate after drawing the icon.</returns>
-		protected int AddOpenCloseIcon(ViewInfo view, int x, int y)
+		protected int AddOpenCloseIcon(DrawContext view, int x, int y)
 		{
 			Contract.Requires(view != null);
-			Contract.Requires(view.Context != null);
+			Contract.Requires(view.Graphics != null);
 
 			if (y > view.ClientArea.Bottom || y + view.IconProvider.Dimensions < 0)
 			{
@@ -438,12 +438,12 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Draws a context drop icon if the node is selected.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="y">The y coordinate.</param>
-		protected void AddContextDropDownIcon(ViewInfo view, int y)
+		protected void AddContextDropDownIcon(DrawContext view, int y)
 		{
 			Contract.Requires(view != null);
-			Contract.Requires(view.Context != null);
+			Contract.Requires(view.Graphics != null);
 
 			if (view.MultipleNodesSelected || y > view.ClientArea.Bottom || y + view.IconProvider.Dimensions < 0 || IsWrapped)
 			{
@@ -457,12 +457,12 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Draws a delete icon if the node is selected.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="y">The y coordinate.</param>
-		protected void AddDeleteIcon(ViewInfo view, int y)
+		protected void AddDeleteIcon(DrawContext view, int y)
 		{
 			Contract.Requires(view != null);
-			Contract.Requires(view.Context != null);
+			Contract.Requires(view.Graphics != null);
 
 			if (y > view.ClientArea.Bottom || y + view.IconProvider.Dimensions < 0 || IsWrapped)
 			{
@@ -476,14 +476,14 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Draws the <see cref="Comment"/>.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The new x coordinate after drawing the comment.</returns>
-		protected virtual int AddComment(ViewInfo view, int x, int y)
+		protected virtual int AddComment(DrawContext view, int x, int y)
 		{
 			Contract.Requires(view != null);
-			Contract.Requires(view.Context != null);
+			Contract.Requires(view.Graphics != null);
 			Contract.Requires(view.Font != null);
 
 			x = AddText(view, x, y, view.Settings.CommentColor, HotSpot.NoneId, "//");
@@ -493,27 +493,27 @@ namespace ReClassNET.Nodes
 		}
 
 		/// <summary>Draws a vertical line to show the hidden state.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <returns>The size of the drawing.</returns>
-		protected Size DrawHidden(ViewInfo view, int x, int y)
+		protected Size DrawHidden(DrawContext view, int x, int y)
 		{
 			Contract.Requires(view != null);
-			Contract.Requires(view.Context != null);
+			Contract.Requires(view.Graphics != null);
 
 			using (var brush = new SolidBrush(IsSelected ? view.Settings.SelectedColor : view.Settings.HiddenColor))
 			{
-				view.Context.FillRectangle(brush, 0, y, view.ClientArea.Right, 1);
+				view.Graphics.FillRectangle(brush, 0, y, view.ClientArea.Right, 1);
 			}
 
 			return new Size(0, HiddenHeight);
 		}
 
 		/// <summary>Draws an error indicator if the used memory buffer is not valid.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="y">The y coordinate.</param>
-		protected void DrawInvalidMemoryIndicatorIcon(ViewInfo view, int y)
+		protected void DrawInvalidMemoryIndicatorIcon(DrawContext view, int y)
 		{
 			if (!view.Memory.ContainsValidData)
 			{
@@ -535,14 +535,14 @@ namespace ReClassNET.Nodes
 			}
 		}
 
-		public override Size Draw(ViewInfo view, int x, int y)
+		public override Size Draw(DrawContext context, int x, int y)
 		{
-			Contract.Requires(view != null);
+			Contract.Requires(context != null);
 
 			throw new NotImplementedException();
 		}
 
-		public override int CalculateDrawnHeight(ViewInfo view)
+		public override int CalculateDrawnHeight(DrawContext view)
 		{
 			Contract.Requires(view != null);
 

@@ -8,7 +8,7 @@ namespace ReClassNET.Nodes
 	public abstract class BaseNumericNode : BaseNode
 	{
 		/// <summary>Draws the node.</summary>
-		/// <param name="view">The view information.</param>
+		/// <param name="view">The drawing context.</param>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		/// <param name="icon">The icon of the node.</param>
@@ -16,7 +16,7 @@ namespace ReClassNET.Nodes
 		/// <param name="value">The value of the node.</param>
 		/// <param name="alternativeValue">An alternative value of the node.</param>
 		/// <returns>The pixel size the node occupies.</returns>
-		protected Size DrawNumeric(ViewInfo view, int x, int y, Image icon, string type, string value, string alternativeValue)
+		protected Size DrawNumeric(DrawContext view, int x, int y, Image icon, string type, string value, string alternativeValue)
 		{
 			Contract.Requires(view != null);
 			Contract.Requires(icon != null);
@@ -58,7 +58,7 @@ namespace ReClassNET.Nodes
 			return new Size(x - origX, view.Font.Height);
 		}
 
-		public override int CalculateDrawnHeight(ViewInfo view)
+		public override int CalculateDrawnHeight(DrawContext view)
 		{
 			return IsHidden && !IsWrapped ? HiddenHeight : view.Font.Height;
 		}

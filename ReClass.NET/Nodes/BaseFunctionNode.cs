@@ -21,7 +21,7 @@ namespace ReClassNET.Nodes
 		protected IntPtr Address = IntPtr.Zero;
 		protected readonly List<FunctionNodeInstruction> Instructions = new List<FunctionNodeInstruction>();
 
-		protected Size DrawInstructions(ViewInfo view, int tx, int y)
+		protected Size DrawInstructions(DrawContext view, int tx, int y)
 		{
 			Contract.Requires(view != null);
 
@@ -38,12 +38,12 @@ namespace ReClassNET.Nodes
 
 					var x = AddText(view, tx, y, view.Settings.AddressColor, HotSpot.ReadOnlyId, instruction.Address) + 6;
 
-					view.Context.FillRectangle(brush, x, y, 1, view.Font.Height);
+					view.Graphics.FillRectangle(brush, x, y, 1, view.Font.Height);
 					x += 6;
 
 					x = Math.Max(AddText(view, x, y, view.Settings.HexColor, HotSpot.ReadOnlyId, instruction.Data) + 6, x + minWidth);
 
-					view.Context.FillRectangle(brush, x, y, 1, view.Font.Height);
+					view.Graphics.FillRectangle(brush, x, y, 1, view.Font.Height);
 					x += 6;
 
 					x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.ReadOnlyId, instruction.Instruction);
