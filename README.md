@@ -74,7 +74,7 @@ Just download the [latest version](https://github.com/ReClassNET/ReClass.NET/rel
   Valid operations are read ([..]), add (+), sub (-), mul (*) and div (/). Please note that all operations are integer calculations.
 
 ## Compiling
-If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file with Visual Studio 2017.
+If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file with Visual Studio 2019.
 Compile the project and copy the dependencies to the output folder.
 
 ## Videos
