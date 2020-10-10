@@ -96,7 +96,7 @@ namespace ReClassNET.Nodes
 
 			var tx = x;
 
-			x = AddIcon(view, x, y, Icons.Class, HotSpot.NoneId, HotSpotType.None);
+			x = AddIcon(view, x, y, view.IconProvider.Class, HotSpot.NoneId, HotSpotType.None);
 			x = AddText(view, x, y, view.Settings.OffsetColor, 0, AddressFormula) + view.Font.Width;
 
 			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, "Class") + view.Font.Width;

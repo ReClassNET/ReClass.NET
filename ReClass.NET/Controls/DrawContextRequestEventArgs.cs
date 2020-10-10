@@ -1,6 +1,7 @@
 using System;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
+using ReClassNET.UI;
 
 namespace ReClassNET.Controls
 {
@@ -9,6 +10,8 @@ namespace ReClassNET.Controls
 		public DateTime CurrentTime { get; set; } = DateTime.UtcNow;
 
 		public Settings Settings { get; set; }
+
+		public IconProvider IconProvider { get; set; }
 
 		public RemoteProcess Process { get; set; }
 

@@ -40,7 +40,7 @@ namespace ReClassNET.Nodes
 			AddSelection(view, x, y, view.Font.Height);
 
 			x = AddOpenCloseIcon(view, x, y);
-			x = AddIcon(view, x, y, Icons.Array, HotSpot.NoneId, HotSpotType.None);
+			x = AddIcon(view, x, y, view.IconProvider.Array, HotSpot.NoneId, HotSpotType.None);
 
 			var tx = x;
 			x = AddAddressOffset(view, x, y);
@@ -54,14 +54,14 @@ namespace ReClassNET.Nodes
 			x = AddText(view, x, y, view.Settings.IndexColor, IsReadOnly ? HotSpot.NoneId : 0, Count.ToString());
 			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "]");
 
-			x = AddIcon(view, x, y, Icons.LeftArrow, 2, HotSpotType.Click);
+			x = AddIcon(view, x, y, view.IconProvider.LeftArrow, 2, HotSpotType.Click);
 			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "(");
 			x = AddText(view, x, y, view.Settings.IndexColor, 1, CurrentIndex.ToString());
 			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, ")");
-			x = AddIcon(view, x, y, Icons.RightArrow, 3, HotSpotType.Click) + view.Font.Width;
+			x = AddIcon(view, x, y, view.IconProvider.RightArrow, 3, HotSpotType.Click) + view.Font.Width;
 
 			x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, $"<Size={MemorySize}>") + view.Font.Width;
-			x = AddIcon(view, x + 2, y, Icons.Change, 4, HotSpotType.ChangeWrappedType);
+			x = AddIcon(view, x + 2, y, view.IconProvider.Change, 4, HotSpotType.ChangeWrappedType);
 
 			x += view.Font.Width;
 			x = AddComment(view, x, y);

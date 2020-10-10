@@ -44,9 +44,9 @@ namespace ReClassNET.Nodes
 
 			AddSelection(view, x, y, view.Font.Height);
 
-			x += TextPadding;
+			x = AddIconPadding(view, x);
 
-			x = AddIcon(view, x, y, Icons.Function, HotSpot.NoneId, HotSpotType.None);
+			x = AddIcon(view, x, y, view.IconProvider.Function, HotSpot.NoneId, HotSpotType.None);
 
 			var tx = x;
 
@@ -82,7 +82,7 @@ namespace ReClassNET.Nodes
 				y += view.Font.Height;
 				x = AddText(view, tx, y, view.Settings.TextColor, HotSpot.NoneId, "Belongs to: ");
 				x = AddText(view, x, y, view.Settings.ValueColor, HotSpot.NoneId, BelongsToClass == null ? "<None>" : $"<{BelongsToClass.Name}>") + view.Font.Width;
-				x = AddIcon(view, x, y, Icons.Change, 1, HotSpotType.ChangeClassType);
+				x = AddIcon(view, x, y, view.IconProvider.Change, 1, HotSpotType.ChangeClassType);
 				size.Width = Math.Max(size.Width, x - origX);
 				size.Height += view.Font.Height;
 

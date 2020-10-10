@@ -47,7 +47,7 @@ namespace ReClassNET.Nodes
 			AddSelection(view, x, y, view.Font.Height);
 
 			x = AddOpenCloseIcon(view, x, y);
-			x = AddIcon(view, x, y, Icons.VTable, HotSpot.NoneId, HotSpotType.None);
+			x = AddIcon(view, x, y, view.IconProvider.VirtualTable, HotSpot.NoneId, HotSpotType.None);
 
 			var tx = x;
 			x = AddAddressOffset(view, x, y);

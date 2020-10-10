@@ -12,6 +12,7 @@ namespace ReClassNET.Controls
 
 		public Graphics Context { get; set; }
 		public FontEx Font { get; set; }
+		public IconProvider IconProvider { get; set; }
 
 		public RemoteProcess Process { get; set; }
 		public MemoryBuffer Memory { get; set; }
@@ -31,6 +32,7 @@ namespace ReClassNET.Controls
 				Settings = Settings,
 				Context = Context,
 				Font = Font,
+				IconProvider = IconProvider,
 				Process = Process,
 				Memory = Memory,
 				CurrentTime = CurrentTime,

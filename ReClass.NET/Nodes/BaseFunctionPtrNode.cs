@@ -37,9 +37,9 @@ namespace ReClassNET.Nodes
 
 			AddSelection(view, x, y, view.Font.Height);
 
-			x += TextPadding;
+			x = AddIconPadding(view, x);
 
-			x = AddIcon(view, x, y, Icons.Function, HotSpot.NoneId, HotSpotType.None);
+			x = AddIcon(view, x, y, view.IconProvider.Function, HotSpot.NoneId, HotSpotType.None);
 
 			var tx = x;
 
