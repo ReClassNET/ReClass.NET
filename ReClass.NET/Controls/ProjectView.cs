@@ -8,7 +8,7 @@ using ReClassNET.Extensions;
 using ReClassNET.Nodes;
 using ReClassNET.Project;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	public partial class ProjectView : UserControl
 	{

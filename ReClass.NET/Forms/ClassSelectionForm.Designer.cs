@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class ClassSelectionForm
 	{
@@ -28,9 +30,9 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.bannerBox = new BannerBox();
 			this.classesListBox = new System.Windows.Forms.ListBox();
-			this.filterNameTextBox = new ReClassNET.UI.PlaceholderTextBox();
+			this.filterNameTextBox = new PlaceholderTextBox();
 			this.cancelButton = new System.Windows.Forms.Button();
 			this.selectButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
@@ -118,9 +120,9 @@
 
 		#endregion
 
-		private UI.BannerBox bannerBox;
+		private BannerBox bannerBox;
 		private System.Windows.Forms.ListBox classesListBox;
-		private UI.PlaceholderTextBox filterNameTextBox;
+		private PlaceholderTextBox filterNameTextBox;
 		private System.Windows.Forms.Button cancelButton;
 		private System.Windows.Forms.Button selectButton;
 	}

@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using ReClassNET.Memory;
+using ReClassNET.UI;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	public class ViewInfo
 	{

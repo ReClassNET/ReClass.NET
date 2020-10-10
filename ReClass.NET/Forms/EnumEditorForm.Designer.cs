@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class EnumEditorForm
 	{
@@ -28,7 +30,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.bannerBox = new BannerBox();
 			this.saveButton = new System.Windows.Forms.Button();
 			this.enumNameLabel = new System.Windows.Forms.Label();
 			this.cancelButton = new System.Windows.Forms.Button();
@@ -179,7 +181,7 @@
 
 		#endregion
 
-		private UI.BannerBox bannerBox;
+		private BannerBox bannerBox;
 		private System.Windows.Forms.Button saveButton;
 		private System.Windows.Forms.Label enumNameLabel;
 		private System.Windows.Forms.Button cancelButton;

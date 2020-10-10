@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class EnumSelectionForm
 	{
@@ -30,12 +32,12 @@
 		{
 			this.selectButton = new System.Windows.Forms.Button();
 			this.cancelButton = new System.Windows.Forms.Button();
-			this.filterNameTextBox = new ReClassNET.UI.PlaceholderTextBox();
+			this.filterNameTextBox = new PlaceholderTextBox();
 			this.itemListBox = new System.Windows.Forms.ListBox();
-			this.bannerBox = new ReClassNET.UI.BannerBox();
-			this.addEnumIconButton = new ReClassNET.UI.IconButton();
-			this.removeEnumIconButton = new ReClassNET.UI.IconButton();
-			this.editEnumIconButton = new ReClassNET.UI.IconButton();
+			this.bannerBox = new BannerBox();
+			this.addEnumIconButton = new IconButton();
+			this.removeEnumIconButton = new IconButton();
+			this.editEnumIconButton = new IconButton();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -163,11 +165,11 @@
 
 		private System.Windows.Forms.Button selectButton;
 		private System.Windows.Forms.Button cancelButton;
-		private UI.PlaceholderTextBox filterNameTextBox;
+		private PlaceholderTextBox filterNameTextBox;
 		private System.Windows.Forms.ListBox itemListBox;
-		private UI.BannerBox bannerBox;
-		private UI.IconButton addEnumIconButton;
-		private UI.IconButton removeEnumIconButton;
-		private UI.IconButton editEnumIconButton;
+		private BannerBox bannerBox;
+		private IconButton addEnumIconButton;
+		private IconButton removeEnumIconButton;
+		private IconButton editEnumIconButton;
 	}
 }

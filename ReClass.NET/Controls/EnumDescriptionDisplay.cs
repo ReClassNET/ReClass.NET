@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	public class EnumDescriptionDisplay<TEnum> where TEnum : struct
 	{

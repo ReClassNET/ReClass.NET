@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	public class DrawContextRequestEventArgs : EventArgs
 	{

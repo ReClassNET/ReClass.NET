@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ReClassNET.AddressParser;
 using ReClassNET.CodeGenerator;
+using ReClassNET.Controls;
 using ReClassNET.Core;
 using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Extensions;

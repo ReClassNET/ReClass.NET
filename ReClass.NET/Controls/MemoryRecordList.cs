@@ -7,8 +7,9 @@ using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.MemoryScanner;
+using ReClassNET.UI;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	public delegate void MemorySearchResultControlResultDoubleClickEventHandler(object sender, MemoryRecord record);
 

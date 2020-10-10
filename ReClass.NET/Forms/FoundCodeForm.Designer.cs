@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class FoundCodeForm
 	{
@@ -36,7 +38,7 @@
 			this.stopButton = new System.Windows.Forms.Button();
 			this.closeButton = new System.Windows.Forms.Button();
 			this.createFunctionButton = new System.Windows.Forms.Button();
-			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.bannerBox = new BannerBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
@@ -194,6 +196,6 @@
 		private System.Windows.Forms.Button closeButton;
 		private System.Windows.Forms.TextBox infoTextBox;
 		private System.Windows.Forms.Button createFunctionButton;
-		private UI.BannerBox bannerBox;
+		private BannerBox bannerBox;
 	}
 }

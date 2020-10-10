@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ReClassNET.Controls;
 using ReClassNET.DataExchange.Scanner;
 using ReClassNET.Extensions;
 using ReClassNET.Logger;

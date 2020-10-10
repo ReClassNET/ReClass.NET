@@ -7,9 +7,10 @@ using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
+using ReClassNET.UI;
 using ReClassNET.Util;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	public partial class MemoryViewControl : UserControl
 	{

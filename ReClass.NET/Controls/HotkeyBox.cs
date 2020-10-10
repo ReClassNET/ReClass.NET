@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using ReClassNET.Input;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	[Designer(typeof(HotkeyBoxDesigner))]
 	public partial class HotkeyBox : UserControl

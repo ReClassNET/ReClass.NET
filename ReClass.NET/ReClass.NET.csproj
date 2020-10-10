@@ -295,7 +295,7 @@
     <Compile Include="Project\CppTypeMapping.cs" />
     <Compile Include="Project\EnumDescription.cs" />
     <Compile Include="Project\ReClassNetProject.cs" />
-    <Compile Include="UI\BannerBox.cs">
+    <Compile Include="Controls\BannerBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -318,14 +318,14 @@
     </Compile>
     <Compile Include="UI\BannerFactory.cs" />
     <Compile Include="UI\BindingDisplayWrapper.cs" />
-    <Compile Include="UI\DrawContextRequestEventArgs.cs" />
-    <Compile Include="UI\NodeClickEventArgs.cs" />
+    <Compile Include="Controls\DrawContextRequestEventArgs.cs" />
+    <Compile Include="Controls\NodeClickEventArgs.cs" />
     <Compile Include="UI\DpiUtil.cs" />
     <Compile Include="Nodes\INodeInfoReader.cs" />
-    <Compile Include="UI\ProjectView.cs">
+    <Compile Include="Controls\ProjectView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\ProjectView.Designer.cs">
+    <Compile Include="Controls\ProjectView.Designer.cs">
       <DependentUpon>ProjectView.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\CodeForm.cs">
@@ -334,13 +334,13 @@
     <Compile Include="Forms\CodeForm.Designer.cs">
       <DependentUpon>CodeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\ColorBox.cs">
+    <Compile Include="Controls\ColorBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\ColorBox.Designer.cs">
+    <Compile Include="Controls\ColorBox.Designer.cs">
       <DependentUpon>ColorBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CustomToolStripItems.cs">
+    <Compile Include="Controls\CustomToolStripItems.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\IconForm.cs">
@@ -352,41 +352,41 @@
     <Compile Include="Forms\LogForm.Designer.cs">
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\DualValueBox.cs">
+    <Compile Include="Controls\DualValueBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\DualValueBox.Designer.cs">
+    <Compile Include="Controls\DualValueBox.Designer.cs">
       <DependentUpon>DualValueBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\EnumComboBox.cs">
+    <Compile Include="Controls\EnumComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\EnumDescriptionDisplay.cs" />
-    <Compile Include="UI\HotkeyBox.cs">
+    <Compile Include="Controls\EnumDescriptionDisplay.cs" />
+    <Compile Include="Controls\HotkeyBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\HotkeyBox.Designer.cs">
+    <Compile Include="Controls\HotkeyBox.Designer.cs">
       <DependentUpon>HotkeyBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\IconButton.cs">
+    <Compile Include="Controls\IconButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\LinkedWindowFeatures.cs" />
-    <Compile Include="UI\MemoryPreviewPopUp.cs">
+    <Compile Include="Controls\MemoryPreviewPopUp.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\MemoryRecordList.cs">
+    <Compile Include="Controls\MemoryRecordList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\MemoryRecordList.Designer.cs">
+    <Compile Include="Controls\MemoryRecordList.Designer.cs">
       <DependentUpon>MemoryRecordList.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\MemoryViewControl.Designer.cs">
+    <Compile Include="Controls\MemoryViewControl.Designer.cs">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomToolStripProfessionalRenderer.cs" />
     <Compile Include="UI\NodeTypesBuilder.cs" />
-    <Compile Include="UI\PlaceholderTextBox.cs">
+    <Compile Include="Controls\PlaceholderTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Util\BitString.cs" />
@@ -420,7 +420,7 @@
     </Compile>
     <Compile Include="UI\HotSpot.cs" />
     <Compile Include="UI\FontEx.cs" />
-    <Compile Include="UI\HotSpotTextBox.cs">
+    <Compile Include="Controls\HotSpotTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\Icons.cs" />
@@ -439,7 +439,7 @@
     <Compile Include="Logger\LogLevel.cs" />
     <Compile Include="Logger\NullLogger.cs" />
     <Compile Include="Memory\MemoryBuffer.cs" />
-    <Compile Include="UI\MemoryViewControl.cs">
+    <Compile Include="Controls\MemoryViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Native\NativeMethods.cs" />
@@ -510,7 +510,7 @@
     <Compile Include="Symbols\SymbolReader.cs" />
     <Compile Include="Symbols\SymbolStore.cs" />
     <Compile Include="UI\GlobalWindowManager.cs" />
-    <Compile Include="UI\ViewInfo.cs" />
+    <Compile Include="Controls\ViewInfo.cs" />
     <Compile Include="Extensions\EnumerableExtension.cs" />
     <Compile Include="Util\HexadecimalFormatter.cs" />
     <Compile Include="Util\IntPtrComparer.cs" />
@@ -558,7 +558,7 @@
     <EmbeddedResource Include="Forms\ScannerForm.resx">
       <DependentUpon>ScannerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ProjectView.resx">
+    <EmbeddedResource Include="Controls\ProjectView.resx">
       <DependentUpon>ProjectView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -569,19 +569,19 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ColorBox.resx">
+    <EmbeddedResource Include="Controls\ColorBox.resx">
       <DependentUpon>ColorBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\DualValueBox.resx">
+    <EmbeddedResource Include="Controls\DualValueBox.resx">
       <DependentUpon>DualValueBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\HotkeyBox.resx">
+    <EmbeddedResource Include="Controls\HotkeyBox.resx">
       <DependentUpon>HotkeyBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\MemoryRecordList.resx">
+    <EmbeddedResource Include="Controls\MemoryRecordList.resx">
       <DependentUpon>MemoryRecordList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\MemoryViewControl.resx">
+    <EmbeddedResource Include="Controls\MemoryViewControl.resx">
       <DependentUpon>MemoryViewControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PluginForm.resx">
@@ -1011,6 +1011,7 @@
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Button_Union.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">powershell -Command "((Get-Date).ToUniversalTime()).ToString(\"yyyy\/MM\/dd HH:mm:ss\") | Out-File '$(ProjectDir)Resources\BuildDate.txt'"</PreBuildEvent>

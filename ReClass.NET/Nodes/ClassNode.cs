@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
+using ReClassNET.Controls;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes

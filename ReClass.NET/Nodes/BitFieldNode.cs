@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using ReClassNET.Controls;
 using ReClassNET.Memory;
 using ReClassNET.UI;
 using ReClassNET.Util;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -8,8 +8,9 @@ using System.Windows.Forms;
 using ReClassNET.Extensions;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
+using ReClassNET.UI;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	[ToolboxItem(false)]
 	public class MemoryPreviewPopUp : ToolStripDropDown

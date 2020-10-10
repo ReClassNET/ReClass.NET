@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class ScannerForm
 	{
@@ -29,14 +31,14 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.bannerBox = new BannerBox();
 			this.filterGroupBox = new System.Windows.Forms.GroupBox();
 			this.valueTypeComboBox = new ReClassNET.Forms.ScannerForm.ScanValueTypeComboBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.compareTypeComboBox = new ReClassNET.Forms.ScannerForm.ScanCompareTypeComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.isHexCheckBox = new System.Windows.Forms.CheckBox();
-			this.dualValueBox = new ReClassNET.UI.DualValueBox();
+			this.dualValueBox = new DualValueBox();
 			this.scanOptionsGroupBox = new System.Windows.Forms.GroupBox();
 			this.fastScanAlignmentTextBox = new System.Windows.Forms.TextBox();
 			this.fastScanCheckBox = new System.Windows.Forms.CheckBox();
@@ -65,7 +67,7 @@
 			this.scanProgressBar = new System.Windows.Forms.ProgressBar();
 			this.resultCountLabel = new System.Windows.Forms.Label();
 			this.updateValuesTimer = new System.Windows.Forms.Timer(this.components);
-			this.resultMemoryRecordList = new ReClassNET.UI.MemoryRecordList();
+			this.resultMemoryRecordList = new MemoryRecordList();
 			this.resultListContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.addSelectedResultsToAddressListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeSelectedRecordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,7 +84,7 @@
 			this.findOutWhatWritesToThisAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.copyAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.addressListMemoryRecordList = new ReClassNET.UI.MemoryRecordList();
+			this.addressListMemoryRecordList = new MemoryRecordList();
 			this.toolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.menuToolStrip = new System.Windows.Forms.ToolStrip();
 			this.openAddressFileToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -91,9 +93,9 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.clearAddressListToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.infoToolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.undoIconButton = new ReClassNET.UI.IconButton();
-			this.showInputCorrelatorIconButton = new ReClassNET.UI.IconButton();
-			this.cancelScanIconButton = new ReClassNET.UI.IconButton();
+			this.undoIconButton = new IconButton();
+			this.showInputCorrelatorIconButton = new IconButton();
+			this.cancelScanIconButton = new IconButton();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.filterGroupBox.SuspendLayout();
 			this.scanOptionsGroupBox.SuspendLayout();
@@ -513,7 +515,7 @@
 			this.resultMemoryRecordList.ShowValueTypeColumn = false;
 			this.resultMemoryRecordList.Size = new System.Drawing.Size(268, 314);
 			this.resultMemoryRecordList.TabIndex = 16;
-			this.resultMemoryRecordList.RecordDoubleClick += new ReClassNET.UI.MemorySearchResultControlResultDoubleClickEventHandler(this.memorySearchResultControl_ResultDoubleClick);
+			this.resultMemoryRecordList.RecordDoubleClick += new MemorySearchResultControlResultDoubleClickEventHandler(this.memorySearchResultControl_ResultDoubleClick);
 			// 
 			// resultListContextMenuStrip
 			// 
@@ -811,9 +813,9 @@
 
 		#endregion
 
-		private UI.BannerBox bannerBox;
+		private BannerBox bannerBox;
 		private System.Windows.Forms.GroupBox filterGroupBox;
-		private UI.DualValueBox dualValueBox;
+		private DualValueBox dualValueBox;
 		private System.Windows.Forms.CheckBox isHexCheckBox;
 		private ScanCompareTypeComboBox compareTypeComboBox;
 		private System.Windows.Forms.Label label1;
@@ -847,8 +849,8 @@
 		private System.Windows.Forms.ProgressBar scanProgressBar;
 		private System.Windows.Forms.Label resultCountLabel;
 		private System.Windows.Forms.Timer updateValuesTimer;
-		private UI.MemoryRecordList resultMemoryRecordList;
-		private UI.MemoryRecordList addressListMemoryRecordList;
+		private MemoryRecordList resultMemoryRecordList;
+		private MemoryRecordList addressListMemoryRecordList;
 		private System.Windows.Forms.ToolStripPanel toolStripPanel;
 		private System.Windows.Forms.ToolStrip menuToolStrip;
 		private System.Windows.Forms.ToolStripButton openAddressFileToolStripButton;
@@ -873,8 +875,8 @@
 		private System.Windows.Forms.ToolStripMenuItem valueToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem copyAddressToolStripMenuItem;
-		private UI.IconButton undoIconButton;
-		private UI.IconButton showInputCorrelatorIconButton;
-		private UI.IconButton cancelScanIconButton;
+		private IconButton undoIconButton;
+		private IconButton showInputCorrelatorIconButton;
+		private IconButton cancelScanIconButton;
 	}
 }

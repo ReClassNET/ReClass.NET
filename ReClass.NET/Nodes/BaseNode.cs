@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using ReClassNET.Controls;
 using ReClassNET.Extensions;
 using ReClassNET.UI;
 using ReClassNET.Util;

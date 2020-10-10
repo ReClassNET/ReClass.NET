@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Windows.Forms;
 using ReClassNET.Memory;
 using ReClassNET.Nodes;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	public class NodeClickEventArgs : EventArgs
 	{

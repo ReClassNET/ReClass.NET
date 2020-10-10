@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class NamedAddressesForm
 	{
@@ -28,12 +30,12 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.bannerBox = new ReClassNET.UI.BannerBox();
-			this.addressTextBox = new ReClassNET.UI.PlaceholderTextBox();
-			this.nameTextBox = new ReClassNET.UI.PlaceholderTextBox();
+			this.bannerBox = new BannerBox();
+			this.addressTextBox = new PlaceholderTextBox();
+			this.nameTextBox = new PlaceholderTextBox();
 			this.namedAddressesListBox = new System.Windows.Forms.ListBox();
-			this.removeAddressIconButton = new ReClassNET.UI.IconButton();
-			this.addAddressIconButton = new ReClassNET.UI.IconButton();
+			this.removeAddressIconButton = new IconButton();
+			this.addAddressIconButton = new IconButton();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -128,11 +130,11 @@
 
 		#endregion
 
-		private UI.BannerBox bannerBox;
-		private UI.PlaceholderTextBox addressTextBox;
-		private UI.PlaceholderTextBox nameTextBox;
+		private BannerBox bannerBox;
+		private PlaceholderTextBox addressTextBox;
+		private PlaceholderTextBox nameTextBox;
 		private System.Windows.Forms.ListBox namedAddressesListBox;
-		private UI.IconButton removeAddressIconButton;
-		private UI.IconButton addAddressIconButton;
+		private IconButton removeAddressIconButton;
+		private IconButton addAddressIconButton;
 	}
 }

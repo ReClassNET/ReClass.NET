@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class ProcessInfoForm
 	{
@@ -41,7 +43,7 @@
 			this.protectionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.typeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.moduleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.bannerBox1 = new ReClassNET.UI.BannerBox();
+			this.bannerBox1 = new BannerBox();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.modulesTabPage = new System.Windows.Forms.TabPage();
 			this.modulesDataGridView = new System.Windows.Forms.DataGridView();
@@ -325,7 +327,7 @@
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem setCurrentClassAddressToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem createClassAtAddressToolStripMenuItem;
-		private UI.BannerBox bannerBox1;
+		private BannerBox bannerBox1;
 		private System.Windows.Forms.TabControl tabControl;
 		private System.Windows.Forms.TabPage modulesTabPage;
 		private System.Windows.Forms.DataGridView modulesDataGridView;
