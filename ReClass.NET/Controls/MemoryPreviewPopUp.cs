@@ -38,6 +38,7 @@ namespace ReClassNET.Controls
 				DrawContext = new DrawContext
 				{
 					Font = font,
+					IconProvider = new IconProvider(), // TODO use single instance
 
 					Memory = new MemoryBuffer(),
 
