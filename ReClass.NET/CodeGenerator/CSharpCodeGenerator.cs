@@ -171,10 +171,14 @@ namespace ReClassNET.CodeGenerator
 				.WhereNot(n => n is FunctionNode || n is BaseHexNode);
 			foreach (var node in nodes)
 			{
-				var type = GetTypeDefinition(node);
+				var (type, attribute) = GetTypeDefinition(node);
 				if (type != null)
 				{
 					writer.WriteLine($"[FieldOffset(0x{node.Offset:X})]");
+					if (attribute != null)
+					{
+						writer.WriteLine(attribute);
+					}
 					writer.Write($"public readonly {type} {node.Name};");
 					if (!string.IsNullOrEmpty(node.Comment))
 					{
@@ -198,7 +202,7 @@ namespace ReClassNET.CodeGenerator
 		/// </summary>
 		/// <param name="node">The target node.</param>
 		/// <returns>The type definition for the node or null if no simple type is available.</returns>
-		private static string GetTypeDefinition(BaseNode node)
+		private static (string typeName, string attribute) GetTypeDefinition(BaseNode node)
 		{
 			Contract.Requires(node != null);
 
@@ -211,15 +215,20 @@ namespace ReClassNET.CodeGenerator
 
 			if (nodeTypeToTypeDefinationMap.TryGetValue(node.GetType(), out var type))
 			{
-				return type;
+				return (type, null);
 			}
 
 			if (node is EnumNode enumNode)
 			{
-				return enumNode.Enum.Name;
+				return (enumNode.Enum.Name, null);
 			}
 
-			return null;
+			if (node is Utf8TextNode utf8TextNode)
+			{
+				return ("string", $"[MarshalAs(UnmanagedType.ByValTStr, SizeConst = {utf8TextNode.Length})]");
+			}
+
+			return (null, null);
 		}
 	}
 }
