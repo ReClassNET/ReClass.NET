@@ -178,7 +178,7 @@ namespace ReClassNET.CodeGenerator
 					writer.Write($"public readonly {type} {node.Name};");
 					if (!string.IsNullOrEmpty(node.Comment))
 					{
-						writer.Write(" ");
+						writer.Write(" //");
 						writer.Write(node.Comment);
 					}
 					writer.WriteLine();
