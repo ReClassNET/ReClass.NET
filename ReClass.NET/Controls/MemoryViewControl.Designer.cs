@@ -1,4 +1,4 @@
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	partial class MemoryViewControl
 	{
@@ -30,7 +30,7 @@ namespace ReClassNET.UI
 		{
             this.components = new System.ComponentModel.Container();
             this.repaintTimer = new System.Windows.Forms.Timer(this.components);
-            this.hotSpotEditBox = new ReClassNET.UI.HotSpotTextBox();
+            this.hotSpotEditBox = new HotSpotTextBox();
             this.nodeInfoToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
@@ -49,7 +49,7 @@ namespace ReClassNET.UI
             this.hotSpotEditBox.TabIndex = 1;
             this.hotSpotEditBox.TabStop = false;
             this.hotSpotEditBox.Visible = false;
-            this.hotSpotEditBox.Committed += new ReClassNET.UI.HotSpotTextBoxCommitEventHandler(this.editBox_Committed);
+            this.hotSpotEditBox.Committed += new HotSpotTextBoxCommitEventHandler(this.editBox_Committed);
             // 
             // nodeInfoToolTip
             // 

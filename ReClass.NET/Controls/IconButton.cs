@@ -6,7 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	/// <summary>
 	/// Based on <see cref="ToolStripButton" />.

@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ReClassNET.Controls;
 using ReClassNET.Nodes;
 using ReClassNET.Plugins;
 

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Drawing;
+using ReClassNET.Controls;
 using ReClassNET.Nodes;
-using ReClassNET.UI;
 
 namespace ReClassNET.DataExchange.ReClass.Legacy
 {

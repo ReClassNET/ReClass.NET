@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
 	public class IntegerToolStripMenuItem : ToolStripMenuItem

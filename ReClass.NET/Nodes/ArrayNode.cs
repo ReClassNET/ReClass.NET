@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using System.Drawing;
-using ReClassNET.UI;
+using ReClassNET.Controls;
 
 namespace ReClassNET.Nodes
 {

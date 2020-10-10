@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class CodeForm
 	{
@@ -28,7 +30,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.bannerBox = new BannerBox();
 			this.codeRichTextBox = new System.Windows.Forms.RichTextBox();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.SuspendLayout();
@@ -71,7 +73,7 @@
 		}
 
 		#endregion
-		private UI.BannerBox bannerBox;
+		private BannerBox bannerBox;
 		private System.Windows.Forms.RichTextBox codeRichTextBox;
 	}
 }

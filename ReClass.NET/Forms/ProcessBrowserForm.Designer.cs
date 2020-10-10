@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class ProcessBrowserForm
 	{
@@ -42,7 +44,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.filterTextBox = new System.Windows.Forms.TextBox();
-			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.bannerBox = new BannerBox();
 			((System.ComponentModel.ISupportInitialize)(this.processDataGridView)).BeginInit();
 			this.filterGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
@@ -271,6 +273,6 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox filterTextBox;
-		private UI.BannerBox bannerBox;
+		private BannerBox bannerBox;
 	}
 }

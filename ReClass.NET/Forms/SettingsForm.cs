@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Windows.Forms;
+using ReClassNET.Controls;
 using ReClassNET.Extensions;
 using ReClassNET.Native;
 using ReClassNET.Project;

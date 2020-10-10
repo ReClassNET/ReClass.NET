@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class PluginForm
 	{
@@ -43,7 +45,7 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.getMoreLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.closeButton = new System.Windows.Forms.Button();
-			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.bannerBox = new BannerBox();
 			this.tabControl.SuspendLayout();
 			this.pluginsTabPage.SuspendLayout();
 			this.descriptionGroupBox.SuspendLayout();
@@ -275,7 +277,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn versionColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn authorColumn;
-		private UI.BannerBox bannerBox;
+		private BannerBox bannerBox;
 		private System.Windows.Forms.ComboBox functionsProvidersComboBox;
 		private System.Windows.Forms.Label label2;
 	}

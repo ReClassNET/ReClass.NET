@@ -2,8 +2,9 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using ReClassNET.UI;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	public class HotSpotTextBox : TextBox
 	{

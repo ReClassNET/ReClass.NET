@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ReClassNET.Extensions;
 
-namespace ReClassNET.UI
+namespace ReClassNET.Controls
 {
 	public class EnumComboBox<TEnum> : ComboBox where TEnum : struct
 	{

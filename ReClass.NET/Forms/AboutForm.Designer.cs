@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class AboutForm
 	{
@@ -29,7 +31,7 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
-			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.bannerBox = new BannerBox();
 			this.infoLabel = new System.Windows.Forms.Label();
 			this.platformLabel = new System.Windows.Forms.Label();
 			this.buildTimeLabel = new System.Windows.Forms.Label();
@@ -191,7 +193,7 @@
 
 		#endregion
 
-		private UI.BannerBox bannerBox;
+		private BannerBox bannerBox;
 		private System.Windows.Forms.Label infoLabel;
 		private System.Windows.Forms.Label platformLabel;
 		private System.Windows.Forms.Label buildTimeLabel;

@@ -1,4 +1,6 @@
-﻿namespace ReClassNET.Forms
+using ReClassNET.Controls;
+
+namespace ReClassNET.Forms
 {
 	partial class InputCorrelatorForm
 	{
@@ -30,14 +32,14 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.refineTimer = new System.Windows.Forms.Timer(this.components);
-			this.bannerBox = new ReClassNET.UI.BannerBox();
+			this.bannerBox = new BannerBox();
 			this.settingsGroupBox = new System.Windows.Forms.GroupBox();
 			this.removeButton = new System.Windows.Forms.Button();
 			this.addButton = new System.Windows.Forms.Button();
 			this.valueTypeComboBox = new ReClassNET.Forms.ScannerForm.ScanValueTypeComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.hotkeyListBox = new System.Windows.Forms.ListBox();
-			this.hotkeyBox = new ReClassNET.UI.HotkeyBox();
+			this.hotkeyBox = new HotkeyBox();
 			this.startStopButton = new System.Windows.Forms.Button();
 			this.infoLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
@@ -181,9 +183,9 @@
 
 		#endregion
 		private System.Windows.Forms.Timer refineTimer;
-		private UI.BannerBox bannerBox;
+		private BannerBox bannerBox;
 		private System.Windows.Forms.GroupBox settingsGroupBox;
-		private UI.HotkeyBox hotkeyBox;
+		private HotkeyBox hotkeyBox;
 		private System.Windows.Forms.ListBox hotkeyListBox;
 		private System.Windows.Forms.Button removeButton;
 		private System.Windows.Forms.Button addButton;
