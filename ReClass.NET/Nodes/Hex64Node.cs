@@ -42,13 +42,13 @@ namespace ReClassNET.Nodes
 			Update(spot, 8);
 		}
 
-		protected override int AddComment(DrawContext view, int x, int y)
+		protected override int AddComment(DrawContext context, int x, int y)
 		{
-			x = base.AddComment(view, x, y);
+			x = base.AddComment(context, x, y);
 
-			var value = view.Memory.ReadObject<UInt64FloatDoubleData>(Offset);
+			var value = context.Memory.ReadObject<UInt64FloatDoubleData>(Offset);
 
-			x = AddComment(view, x, y, value.FloatValue, value.IntPtr, value.UIntPtr);
+			x = AddComment(context, x, y, value.FloatValue, value.IntPtr, value.UIntPtr);
 
 			return x;
 		}

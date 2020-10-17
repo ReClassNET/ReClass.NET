@@ -44,7 +44,7 @@ namespace ReClassNET.Nodes
 			});
 		}
 
-		protected override int CalculateValuesHeight(DrawContext view)
+		protected override int CalculateValuesHeight(DrawContext context)
 		{
 			return 0;
 		}

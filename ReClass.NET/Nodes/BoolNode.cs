@@ -49,9 +49,9 @@ namespace ReClassNET.Nodes
 			return new Size(x - origX, context.Font.Height);
 		}
 
-		public override int CalculateDrawnHeight(DrawContext view)
+		public override int CalculateDrawnHeight(DrawContext context)
 		{
-			return IsHidden && !IsWrapped ? HiddenHeight : view.Font.Height;
+			return IsHidden && !IsWrapped ? HiddenHeight : context.Font.Height;
 		}
 
 		/// <summary>Updates the node from the given spot and sets the value.</summary>

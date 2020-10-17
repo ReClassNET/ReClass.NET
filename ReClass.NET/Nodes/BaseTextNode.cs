@@ -25,53 +25,53 @@ namespace ReClassNET.Nodes
 			Length = node.MemorySize / CharacterSize;
 		}
 
-		protected Size DrawText(DrawContext view, int x, int y, string type)
+		protected Size DrawText(DrawContext context, int x, int y, string type)
 		{
-			Contract.Requires(view != null);
+			Contract.Requires(context != null);
 			Contract.Requires(type != null);
 
 			if (IsHidden && !IsWrapped)
 			{
-				return DrawHidden(view, x, y);
+				return DrawHidden(context, x, y);
 			}
 
 			var length = MemorySize / CharacterSize;
-			var text = ReadValueFromMemory(view.Memory);
+			var text = ReadValueFromMemory(context.Memory);
 
 			var origX = x;
 
-			AddSelection(view, x, y, view.Font.Height);
+			AddSelection(context, x, y, context.Font.Height);
 
-			x = AddIconPadding(view, x);
+			x = AddIconPadding(context, x);
 
-			x = AddIcon(view, x, y, view.IconProvider.Text, HotSpot.NoneId, HotSpotType.None);
-			x = AddAddressOffset(view, x, y);
+			x = AddIcon(context, x, y, context.IconProvider.Text, HotSpot.NoneId, HotSpotType.None);
+			x = AddAddressOffset(context, x, y);
 
-			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.TypeColor, HotSpot.NoneId, type) + context.Font.Width;
 			if (!IsWrapped)
 			{
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, Name);
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NameId, Name);
 			}
-			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "[");
-			x = AddText(view, x, y, view.Settings.IndexColor, 0, length.ToString());
-			x = AddText(view, x, y, view.Settings.IndexColor, HotSpot.NoneId, "]") + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.IndexColor, HotSpot.NoneId, "[");
+			x = AddText(context, x, y, context.Settings.IndexColor, 0, length.ToString());
+			x = AddText(context, x, y, context.Settings.IndexColor, HotSpot.NoneId, "]") + context.Font.Width;
 
-			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "= '");
-			x = AddText(view, x, y, view.Settings.TextColor, 1, text.LimitLength(150));
-			x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.TextColor, HotSpot.NoneId, "= '");
+			x = AddText(context, x, y, context.Settings.TextColor, 1, text.LimitLength(150));
+			x = AddText(context, x, y, context.Settings.TextColor, HotSpot.NoneId, "'") + context.Font.Width;
 
-			x = AddComment(view, x, y);
+			x = AddComment(context, x, y);
 
-			DrawInvalidMemoryIndicatorIcon(view, y);
-			AddContextDropDownIcon(view, y);
-			AddDeleteIcon(view, y);
+			DrawInvalidMemoryIndicatorIcon(context, y);
+			AddContextDropDownIcon(context, y);
+			AddDeleteIcon(context, y);
 
-			return new Size(x - origX, view.Font.Height);
+			return new Size(x - origX, context.Font.Height);
 		}
 
-		public override int CalculateDrawnHeight(DrawContext view)
+		public override int CalculateDrawnHeight(DrawContext context)
 		{
-			return IsHidden && !IsWrapped ? HiddenHeight : view.Font.Height;
+			return IsHidden && !IsWrapped ? HiddenHeight : context.Font.Height;
 		}
 
 		public override void Update(HotSpot spot)

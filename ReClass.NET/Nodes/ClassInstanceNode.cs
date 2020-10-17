@@ -55,12 +55,12 @@ namespace ReClassNET.Nodes
 
 			if (LevelsOpen[context.Level])
 			{
-				var v = context.Clone();
-				v.Address = context.Address + Offset;
-				v.Memory = context.Memory.Clone();
-				v.Memory.Offset += Offset;
+				var innerContext = context.Clone();
+				innerContext.Address = context.Address + Offset;
+				innerContext.Memory = context.Memory.Clone();
+				innerContext.Memory.Offset += Offset;
 
-				var innerSize = InnerNode.Draw(v, tx, y);
+				var innerSize = InnerNode.Draw(innerContext, tx, y);
 				size.Width = Math.Max(size.Width, innerSize.Width + tx - origX);
 				size.Height += innerSize.Height;
 			}
@@ -68,17 +68,17 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override int CalculateDrawnHeight(DrawContext view)
+		public override int CalculateDrawnHeight(DrawContext context)
 		{
 			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}
 
-			var height = view.Font.Height;
-			if (LevelsOpen[view.Level])
+			var height = context.Font.Height;
+			if (LevelsOpen[context.Level])
 			{
-				height += InnerNode.CalculateDrawnHeight(view);
+				height += InnerNode.CalculateDrawnHeight(context);
 			}
 			return height;
 		}

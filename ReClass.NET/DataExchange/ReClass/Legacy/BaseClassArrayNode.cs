@@ -14,7 +14,7 @@ namespace ReClassNET.DataExchange.ReClass.Legacy
 			throw new NotImplementedException();
 		}
 
-		public override int CalculateDrawnHeight(DrawContext view)
+		public override int CalculateDrawnHeight(DrawContext context)
 		{
 			throw new NotImplementedException();
 		}

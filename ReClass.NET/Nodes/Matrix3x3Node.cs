@@ -82,9 +82,9 @@ namespace ReClassNET.Nodes
 			});
 		}
 
-		protected override int CalculateValuesHeight(DrawContext view)
+		protected override int CalculateValuesHeight(DrawContext context)
 		{
-			return 3 * view.Font.Height;
+			return 3 * context.Font.Height;
 		}
 
 		public override void Update(HotSpot spot)

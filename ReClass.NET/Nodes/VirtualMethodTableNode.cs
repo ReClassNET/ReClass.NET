@@ -75,13 +75,13 @@ namespace ReClassNET.Nodes
 				memory.Size = Nodes.Count * IntPtr.Size;
 				memory.UpdateFrom(context.Process, ptr);
 
-				var v = context.Clone();
-				v.Address = ptr;
-				v.Memory = memory;
+				var innerContext = context.Clone();
+				innerContext.Address = ptr;
+				innerContext.Memory = memory;
 
 				foreach (var node in Nodes)
 				{
-					var innerSize = node.Draw(v, tx, y);
+					var innerSize = node.Draw(innerContext, tx, y);
 
 					size.Width = Math.Max(size.Width, innerSize.Width + tx - origX);
 					size.Height += innerSize.Height;
@@ -93,17 +93,17 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override int CalculateDrawnHeight(DrawContext view)
+		public override int CalculateDrawnHeight(DrawContext context)
 		{
 			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}
 
-			var height = view.Font.Height;
-			if (LevelsOpen[view.Level])
+			var height = context.Font.Height;
+			if (LevelsOpen[context.Level])
 			{
-				height += Nodes.Sum(n => n.CalculateDrawnHeight(view));
+				height += Nodes.Sum(n => n.CalculateDrawnHeight(context));
 			}
 			return height;
 		}

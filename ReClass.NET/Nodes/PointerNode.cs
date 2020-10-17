@@ -43,17 +43,13 @@ namespace ReClassNET.Nodes
 			return spot.Process.GetNamedAddress(address) != null;
 		}
 
-		public override bool CanChangeInnerNodeTo(BaseNode node)
-		{
-			switch (node)
+		public override bool CanChangeInnerNodeTo(BaseNode node) =>
+			node switch
 			{
-				case ClassNode _:
-				case VirtualMethodNode _:
-					return false;
-			}
-
-			return true;
-		}
+				ClassNode _ => false,
+				VirtualMethodNode _ => false,
+				_ => true
+			};
 
 		public override Size Draw(DrawContext context, int x, int y)
 		{
@@ -111,11 +107,11 @@ namespace ReClassNET.Nodes
 				memory.Size = InnerNode.MemorySize;
 				memory.UpdateFrom(context.Process, ptr);
 
-				var v = context.Clone();
-				v.Address = ptr;
-				v.Memory = memory;
+				var innerContext = context.Clone();
+				innerContext.Address = ptr;
+				innerContext.Memory = memory;
 
-				var innerSize = InnerNode.Draw(v, tx, y);
+				var innerSize = InnerNode.Draw(innerContext, tx, y);
 
 				size.Width = Math.Max(size.Width, innerSize.Width + tx - origX);
 				size.Height += innerSize.Height;
@@ -124,17 +120,17 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override int CalculateDrawnHeight(DrawContext view)
+		public override int CalculateDrawnHeight(DrawContext context)
 		{
 			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}
 
-			var height = view.Font.Height;
-			if (LevelsOpen[view.Level] && InnerNode != null)
+			var height = context.Font.Height;
+			if (LevelsOpen[context.Level] && InnerNode != null)
 			{
-				height += InnerNode.CalculateDrawnHeight(view);
+				height += InnerNode.CalculateDrawnHeight(context);
 			}
 			return height;
 		}

@@ -32,53 +32,53 @@ namespace ReClassNET.Nodes
 			buffer = new byte[MemorySize];
 		}
 
-		protected Size Draw(DrawContext view, int x, int y, string text, int length)
+		protected Size Draw(DrawContext context, int x, int y, string text, int length)
 		{
-			Contract.Requires(view != null);
+			Contract.Requires(context != null);
 
 			if (IsHidden && !IsWrapped)
 			{
-				return DrawHidden(view, x, y);
+				return DrawHidden(context, x, y);
 			}
 
 			var origX = x;
 
-			AddSelection(view, x, y, view.Font.Height);
+			AddSelection(context, x, y, context.Font.Height);
 
-			x = AddIconPadding(view, x);
-			x = AddIconPadding(view, x);
+			x = AddIconPadding(context, x);
+			x = AddIconPadding(context, x);
 
-			x = AddAddressOffset(view, x, y);
+			x = AddAddressOffset(context, x, y);
 
 			if (!string.IsNullOrEmpty(text))
 			{
-				x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, text);
+				x = AddText(context, x, y, context.Settings.TextColor, HotSpot.NoneId, text);
 			}
 
-			view.Memory.ReadBytes(Offset, buffer);
+			context.Memory.ReadBytes(Offset, buffer);
 
-			var color = view.Settings.HexColor;
-			if (view.Settings.HighlightChangedValues)
+			var color = context.Settings.HexColor;
+			if (context.Settings.HighlightChangedValues)
 			{
-				var address = view.Address + Offset;
+				var address = context.Address + Offset;
 
-				highlightTimer.RemoveWhere(kv => kv.Value.Value < view.CurrentTime);
+				highlightTimer.RemoveWhere(kv => kv.Value.Value < context.CurrentTime);
 
 				if (highlightTimer.TryGetValue(address, out var until))
 				{
-					if (until.Value >= view.CurrentTime)
+					if (until.Value >= context.CurrentTime)
 					{
 						color = GetRandomHighlightColor();
 
-						if (view.Memory.HasChanged(Offset, MemorySize))
+						if (context.Memory.HasChanged(Offset, MemorySize))
 						{
-							until.Value = view.CurrentTime.Add(hightlightDuration);
+							until.Value = context.CurrentTime.Add(hightlightDuration);
 						}
 					}
 				}
-				else if (view.Memory.HasChanged(Offset, MemorySize))
+				else if (context.Memory.HasChanged(Offset, MemorySize))
 				{
-					highlightTimer.Add(address, view.CurrentTime.Add(hightlightDuration));
+					highlightTimer.Add(address, context.CurrentTime.Add(hightlightDuration));
 
 					color = GetRandomHighlightColor();
 				}
@@ -86,21 +86,21 @@ namespace ReClassNET.Nodes
 
 			for (var i = 0; i < length; ++i)
 			{
-				x = AddText(view, x, y, color, i, $"{buffer[i]:X02}") + view.Font.Width;
+				x = AddText(context, x, y, color, i, $"{buffer[i]:X02}") + context.Font.Width;
 			}
 
-			x = AddComment(view, x, y);
+			x = AddComment(context, x, y);
 
-			DrawInvalidMemoryIndicatorIcon(view, y);
-			AddContextDropDownIcon(view, y);
-			AddDeleteIcon(view, y);
+			DrawInvalidMemoryIndicatorIcon(context, y);
+			AddContextDropDownIcon(context, y);
+			AddDeleteIcon(context, y);
 
-			return new Size(x - origX, view.Font.Height);
+			return new Size(x - origX, context.Font.Height);
 		}
 
-		public override int CalculateDrawnHeight(DrawContext view)
+		public override int CalculateDrawnHeight(DrawContext context)
 		{
-			return IsHidden && !IsWrapped ? HiddenHeight : view.Font.Height;
+			return IsHidden && !IsWrapped ? HiddenHeight : context.Font.Height;
 		}
 
 		/// <summary>Updates the node from the given spot. Sets the value of the selected byte.</summary>

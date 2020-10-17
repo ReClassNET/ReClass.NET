@@ -27,14 +27,14 @@ namespace ReClassNET.Nodes
 			return Draw(context, x, y, "Array");
 		}
 
-		protected override Size DrawChild(DrawContext view, int x, int y)
+		protected override Size DrawChild(DrawContext context, int x, int y)
 		{
-			var v = view.Clone();
-			v.Address = view.Address + Offset + InnerNode.MemorySize * CurrentIndex;
-			v.Memory = view.Memory.Clone();
-			v.Memory.Offset += Offset + InnerNode.MemorySize * CurrentIndex;
+			var innerContext = context.Clone();
+			innerContext.Address = context.Address + Offset + InnerNode.MemorySize * CurrentIndex;
+			innerContext.Memory = context.Memory.Clone();
+			innerContext.Memory.Offset += Offset + InnerNode.MemorySize * CurrentIndex;
 
-			return InnerNode.Draw(v, x, y);
+			return InnerNode.Draw(innerContext, x, y);
 		}
 	}
 }

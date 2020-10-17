@@ -22,68 +22,68 @@ namespace ReClassNET.Nodes
 			return string.Join("\n", Instructions.Select(i => i.Instruction));
 		}
 
-		protected Size Draw(DrawContext view, int x, int y, string type, string name)
+		protected Size Draw(DrawContext context, int x, int y, string type, string name)
 		{
-			Contract.Requires(view != null);
+			Contract.Requires(context != null);
 			Contract.Requires(type != null);
 			Contract.Requires(name != null);
 
 			if (IsHidden && !IsWrapped)
 			{
-				return DrawHidden(view, x, y);
+				return DrawHidden(context, x, y);
 			}
 
 			var origX = x;
 
-			AddSelection(view, x, y, view.Font.Height);
+			AddSelection(context, x, y, context.Font.Height);
 
-			x = AddIconPadding(view, x);
+			x = AddIconPadding(context, x);
 
-			x = AddIcon(view, x, y, view.IconProvider.Function, HotSpot.NoneId, HotSpotType.None);
+			x = AddIcon(context, x, y, context.IconProvider.Function, HotSpot.NoneId, HotSpotType.None);
 
 			var tx = x;
 
-			x = AddAddressOffset(view, x, y);
+			x = AddAddressOffset(context, x, y);
 
-			x = AddText(view, x, y, view.Settings.TypeColor, HotSpot.NoneId, type) + view.Font.Width;
+			x = AddText(context, x, y, context.Settings.TypeColor, HotSpot.NoneId, type) + context.Font.Width;
 			if (!IsWrapped)
 			{
-				x = AddText(view, x, y, view.Settings.NameColor, HotSpot.NameId, name) + view.Font.Width;
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NameId, name) + context.Font.Width;
 			}
 
-			x = AddOpenCloseIcon(view, x, y) + view.Font.Width;
+			x = AddOpenCloseIcon(context, x, y) + context.Font.Width;
 
-			x = AddComment(view, x, y);
+			x = AddComment(context, x, y);
 
-			if (view.Settings.ShowCommentSymbol)
+			if (context.Settings.ShowCommentSymbol)
 			{
-				var value = view.Memory.ReadIntPtr(Offset);
+				var value = context.Memory.ReadIntPtr(Offset);
 
-				var module = view.Process.GetModuleToPointer(value);
+				var module = context.Process.GetModuleToPointer(value);
 				if (module != null)
 				{
-					var symbols = view.Process.Symbols.GetSymbolsForModule(module);
+					var symbols = context.Process.Symbols.GetSymbolsForModule(module);
 					var symbol = symbols?.GetSymbolString(value, module);
 					if (!string.IsNullOrEmpty(symbol))
 					{
-						x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol);
+						x = AddText(context, x, y, context.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol);
 					}
 				}
 			}
 
-			DrawInvalidMemoryIndicatorIcon(view, y);
-			AddContextDropDownIcon(view, y);
-			AddDeleteIcon(view, y);
+			DrawInvalidMemoryIndicatorIcon(context, y);
+			AddContextDropDownIcon(context, y);
+			AddDeleteIcon(context, y);
 
-			var size = new Size(x - origX, view.Font.Height);
+			var size = new Size(x - origX, context.Font.Height);
 
-			if (LevelsOpen[view.Level])
+			if (LevelsOpen[context.Level])
 			{
-				var ptr = view.Memory.ReadIntPtr(Offset);
+				var ptr = context.Memory.ReadIntPtr(Offset);
 
-				DisassembleRemoteCode(view.Process, ptr);
+				DisassembleRemoteCode(context.Process, ptr);
 
-				var instructionSize = DrawInstructions(view, tx, y);
+				var instructionSize = DrawInstructions(context, tx, y);
 
 				size.Width = Math.Max(size.Width, instructionSize.Width + tx - origX);
 				size.Height += instructionSize.Height;
@@ -92,17 +92,17 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override int CalculateDrawnHeight(DrawContext view)
+		public override int CalculateDrawnHeight(DrawContext context)
 		{
 			if (IsHidden)
 			{
 				return HiddenHeight;
 			}
 
-			var height = view.Font.Height;
-			if (LevelsOpen[view.Level])
+			var height = context.Font.Height;
+			if (LevelsOpen[context.Level])
 			{
-				height += Instructions.Count * view.Font.Height;
+				height += Instructions.Count * context.Font.Height;
 			}
 			return height;
 		}

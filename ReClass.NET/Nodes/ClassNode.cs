@@ -112,8 +112,8 @@ namespace ReClassNET.Nodes
 			{
 				var childOffset = tx - origX;
 
-				var nv = context.Clone();
-				nv.Level++;
+				var innerContext = context.Clone();
+				innerContext.Level++;
 				foreach (var node in Nodes)
 				{
 					Size AggregateNodeSizes(Size baseSize, Size newSize)
@@ -129,7 +129,7 @@ namespace ReClassNET.Nodes
 					// Draw the node if it is in the visible area.
 					if (context.ClientArea.Contains(tx, y))
 					{
-						var innerSize = node.Draw(nv, tx, y);
+						var innerSize = node.Draw(innerContext, tx, y);
 
 						size = AggregateNodeSizes(size, ExtendWidth(innerSize, childOffset));
 
@@ -138,13 +138,13 @@ namespace ReClassNET.Nodes
 					else
 					{
 						// Otherwise calculate the height...
-						var calculatedHeight = node.CalculateDrawnHeight(nv);
+						var calculatedHeight = node.CalculateDrawnHeight(innerContext);
 
 						// and check if the node area overlaps with the visible area...
 						if (new Rectangle(tx, y, 9999999, calculatedHeight).IntersectsWith(context.ClientArea))
 						{
 							// then draw the node...
-							var innerSize = node.Draw(nv, tx, y);
+							var innerSize = node.Draw(innerContext, tx, y);
 
 							size = AggregateNodeSizes(size, ExtendWidth(innerSize, childOffset));
 
@@ -164,17 +164,17 @@ namespace ReClassNET.Nodes
 			return size;
 		}
 
-		public override int CalculateDrawnHeight(DrawContext view)
+		public override int CalculateDrawnHeight(DrawContext context)
 		{
 			if (IsHidden)
 			{
 				return HiddenHeight;
 			}
 
-			var height = view.Font.Height;
-			if (LevelsOpen[view.Level])
+			var height = context.Font.Height;
+			if (LevelsOpen[context.Level])
 			{
-				var nv = view.Clone();
+				var nv = context.Clone();
 				nv.Level++;
 				height += Nodes.Sum(n => n.CalculateDrawnHeight(nv));
 			}

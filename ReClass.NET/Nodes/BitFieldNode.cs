@@ -177,17 +177,17 @@ namespace ReClassNET.Nodes
 			return new Size(x - origX, y - origY + context.Font.Height);
 		}
 
-		public override int CalculateDrawnHeight(DrawContext view)
+		public override int CalculateDrawnHeight(DrawContext context)
 		{
 			if (IsHidden && !IsWrapped)
 			{
 				return HiddenHeight;
 			}
 
-			var height = view.Font.Height;
-			if (LevelsOpen[view.Level])
+			var height = context.Font.Height;
+			if (LevelsOpen[context.Level])
 			{
-				height += view.Font.Height + 2;
+				height += context.Font.Height + 2;
 			}
 			return height;
 		}
