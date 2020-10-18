@@ -289,8 +289,10 @@
     <Compile Include="Nodes\ClassUtil.cs" />
     <Compile Include="Nodes\EnumNode.cs" />
     <Compile Include="Nodes\FunctionNode.cs" />
+    <Compile Include="Nodes\IntNativeNode.cs" />
     <Compile Include="Nodes\NodeUuid.cs" />
     <Compile Include="Nodes\PointerNode.cs" />
+    <Compile Include="Nodes\UIntNativeNode.cs" />
     <Compile Include="Nodes\UnionNode.cs" />
     <Compile Include="Project\CppTypeMapping.cs" />
     <Compile Include="Project\EnumDescription.cs" />

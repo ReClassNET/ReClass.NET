@@ -1,0 +1,53 @@
+using System;
+using System.Drawing;
+using System.Globalization;
+using ReClassNET.Controls;
+using ReClassNET.Extensions;
+using ReClassNET.Memory;
+using ReClassNET.UI;
+
+namespace ReClassNET.Nodes
+{
+	public class UIntNativeNode : BaseNumericNode
+	{
+		public override int MemorySize => 8;
+
+		public override void GetUserInterfaceInfo(out string name, out Image icon)
+		{
+			name = "NUInt";
+			icon = Properties.Resources.B16x16_Button_UInt_64;
+		}
+
+		public override Size Draw(DrawContext context, int x, int y)
+		{
+			var value = ReadValueFromMemory(context.Memory);
+			var uvalue = value.ToUInt64();
+			return DrawNumeric(context, x, y, context.IconProvider.Unsigned, "NUInt", uvalue.ToString(), "0x" + uvalue.ToString(Constants.AddressHexFormat));
+		}
+
+		public override void Update(HotSpot spot)
+		{
+			base.Update(spot);
+
+			if (spot.Id == 0 || spot.Id == 1)
+			{
+#if RECLASSNET64
+				if (ulong.TryParse(spot.Text, out var val) || spot.Text.TryGetHexString(out var hexValue) && ulong.TryParse(hexValue, NumberStyles.HexNumber, null, out val))
+				{
+					spot.Process.WriteRemoteMemory(spot.Address, val);
+				}
+#else
+				if (uint.TryParse(spot.Text, out var val) || spot.Text.TryGetHexString(out var hexValue) && uint.TryParse(hexValue, NumberStyles.HexNumber, null, out val))
+				{
+					spot.Process.WriteRemoteMemory(spot.Address, val);
+				}
+#endif
+			}
+		}
+
+		public UIntPtr ReadValueFromMemory(MemoryBuffer memory)
+		{
+			return memory.ReadUIntPtr(Offset);
+		}
+	}
+}

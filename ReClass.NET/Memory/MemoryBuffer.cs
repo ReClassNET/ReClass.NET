@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -323,6 +323,20 @@ namespace ReClassNET.Memory
 			return (IntPtr)ReadInt64(offset);
 #else
 			return (IntPtr)ReadInt32(offset);
+#endif
+		}
+
+		/// <summary>Reads a <see cref="UIntPtr"/> from the specific offset.</summary>
+		/// <param name="offset">The offset into the data.</param>
+		/// <returns>The data read as <see cref="UIntPtr"/> or 0 if the offset is outside the data.</returns>
+		public UIntPtr ReadUIntPtr(int offset)
+		{
+			Contract.Requires(offset >= 0);
+
+#if RECLASSNET64
+			return (UIntPtr)ReadUInt64(offset);
+#else
+			return (UIntPtr)ReadUInt32(offset);
 #endif
 		}
 
