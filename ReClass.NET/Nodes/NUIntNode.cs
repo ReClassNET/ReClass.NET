@@ -8,7 +8,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
 {
-	public class UIntNativeNode : BaseNumericNode
+	public class NUIntNode : BaseNumericNode
 	{
 		public override int MemorySize => UIntPtr.Size;
 
