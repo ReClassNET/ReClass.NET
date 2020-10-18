@@ -22,10 +22,12 @@ namespace ReClassNET.CodeGenerator
 			[typeof(Int16Node)] = "short",
 			[typeof(Int32Node)] = "int",
 			[typeof(Int64Node)] = "long",
+			[typeof(NIntNode)] = "IntPtr",
 			[typeof(UInt8Node)] = "byte",
 			[typeof(UInt16Node)] = "ushort",
 			[typeof(UInt32Node)] = "uint",
 			[typeof(UInt64Node)] = "ulong",
+			[typeof(NUIntNode)] = "UIntPtr",
 
 			[typeof(FunctionPtrNode)] = "IntPtr",
 			[typeof(Utf8TextPtrNode)] = "IntPtr",

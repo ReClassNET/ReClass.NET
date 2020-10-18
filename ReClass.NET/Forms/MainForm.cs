@@ -595,10 +595,10 @@ namespace ReClassNET.Forms
 					comparer = new ArrayOfBytesMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory));
 					break;
 				case FloatNode node:
-					comparer = new FloatMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					comparer = new FloatMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0.0f);
 					break;
 				case DoubleNode node:
-					comparer = new DoubleMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					comparer = new DoubleMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0.0);
 					break;
 				case Int8Node node:
 					comparer = new ByteMemoryComparer(ScanCompareType.Equal, (byte)node.ReadValueFromMemory(selectedNode.Memory), 0);
@@ -619,11 +619,31 @@ namespace ReClassNET.Forms
 					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, (int)node.ReadValueFromMemory(selectedNode.Memory), 0);
 					break;
 				case Int64Node node:
-					comparer = new LongMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0L);
 					break;
 				case UInt64Node node:
-					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)node.ReadValueFromMemory(selectedNode.Memory), 0L);
 					break;
+				case NIntNode node:
+				{
+					var value = node.ReadValueFromMemory(selectedNode.Memory);
+#if RECLASSNET64
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, value.ToInt64(), 0L);
+#else
+					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, value.ToInt32(), 0);
+#endif
+					break;
+				}
+				case NUIntNode node:
+				{
+					var value = node.ReadValueFromMemory(selectedNode.Memory);
+#if RECLASSNET64
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)value.ToUInt64(), 0L);
+#else
+					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, (int)value.ToUInt32(), 0);
+#endif
+					break;
+				}
 				case Utf8TextNode node:
 					comparer = new StringMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory), Encoding.UTF8, true);
 					break;
@@ -716,7 +736,7 @@ namespace ReClassNET.Forms
 			}
 		}
 
-		#endregion
+#endregion
 
 		private void MainForm_DragEnter(object sender, DragEventArgs e)
 		{

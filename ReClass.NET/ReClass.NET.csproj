@@ -289,8 +289,10 @@
     <Compile Include="Nodes\ClassUtil.cs" />
     <Compile Include="Nodes\EnumNode.cs" />
     <Compile Include="Nodes\FunctionNode.cs" />
+    <Compile Include="Nodes\NIntNode.cs" />
     <Compile Include="Nodes\NodeUuid.cs" />
     <Compile Include="Nodes\PointerNode.cs" />
+    <Compile Include="Nodes\NUIntNode.cs" />
     <Compile Include="Nodes\UnionNode.cs" />
     <Compile Include="Project\CppTypeMapping.cs" />
     <Compile Include="Project\EnumDescription.cs" />
@@ -1011,7 +1013,12 @@
   <ItemGroup>
     <None Include="Resources\Images\B16x16_Button_Union.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_NInt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\B16x16_Button_NUInt.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">powershell -Command "((Get-Date).ToUniversalTime()).ToString(\"yyyy\/MM\/dd HH:mm:ss\") | Out-File '$(ProjectDir)Resources\BuildDate.txt'"</PreBuildEvent>

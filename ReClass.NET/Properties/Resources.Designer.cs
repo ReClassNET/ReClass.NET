@@ -19,7 +19,7 @@ namespace ReClassNET.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -506,6 +506,26 @@ namespace ReClassNET.Properties {
         internal static System.Drawing.Bitmap B16x16_Button_Matrix_4x4 {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Button_Matrix_4x4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Button_NInt {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Button_NInt", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Button_NUInt {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Button_NUInt", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1351,7 +1371,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2019/03/31 20:34:22
+        ///   Looks up a localized string similar to 2020/10/17 09:45:04
         ///.
         /// </summary>
         internal static string BuildDate {
