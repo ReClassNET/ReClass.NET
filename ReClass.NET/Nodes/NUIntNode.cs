@@ -20,9 +20,8 @@ namespace ReClassNET.Nodes
 
 		public override Size Draw(DrawContext context, int x, int y)
 		{
-			var value = ReadValueFromMemory(context.Memory);
-			var uvalue = value.ToUInt64();
-			return DrawNumeric(context, x, y, context.IconProvider.Unsigned, "NUInt", uvalue.ToString(), "0x" + uvalue.ToString(Constants.AddressHexFormat));
+			var value = ReadValueFromMemory(context.Memory).ToUInt64();
+			return DrawNumeric(context, x, y, context.IconProvider.Unsigned, "NUInt", value.ToString(), $"0x{value:X}");
 		}
 
 		public override void Update(HotSpot spot)
