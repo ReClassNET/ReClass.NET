@@ -10,7 +10,7 @@ namespace ReClassNET.Nodes
 {
 	public class UIntNativeNode : BaseNumericNode
 	{
-		public override int MemorySize => 8;
+		public override int MemorySize => UIntPtr.Size;
 
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
