@@ -18,8 +18,8 @@ namespace ReClassNET.UI
 		static NodeTypesBuilder()
 		{
 			defaultNodeTypeGroupList.Add(new[] { typeof(Hex64Node), typeof(Hex32Node), typeof(Hex16Node), typeof(Hex8Node) });
-			defaultNodeTypeGroupList.Add(new[] { typeof(Int64Node), typeof(Int32Node), typeof(Int16Node), typeof(Int8Node) });
-			defaultNodeTypeGroupList.Add(new[] { typeof(UInt64Node), typeof(UInt32Node), typeof(UInt16Node), typeof(UInt8Node) });
+			defaultNodeTypeGroupList.Add(new[] { typeof(NIntNode), typeof(Int64Node), typeof(Int32Node), typeof(Int16Node), typeof(Int8Node) });
+			defaultNodeTypeGroupList.Add(new[] { typeof(NUIntNode), typeof(UInt64Node), typeof(UInt32Node), typeof(UInt16Node), typeof(UInt8Node) });
 			defaultNodeTypeGroupList.Add(new[] { typeof(BoolNode), typeof(BitFieldNode), typeof(EnumNode) });
 			defaultNodeTypeGroupList.Add(new[] { typeof(FloatNode), typeof(DoubleNode) });
 			defaultNodeTypeGroupList.Add(new[] { typeof(Vector4Node), typeof(Vector3Node), typeof(Vector2Node), typeof(Matrix4x4Node), typeof(Matrix3x4Node), typeof(Matrix3x3Node) });
