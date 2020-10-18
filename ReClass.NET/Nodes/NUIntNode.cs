@@ -20,7 +20,12 @@ namespace ReClassNET.Nodes
 
 		public override Size Draw(DrawContext context, int x, int y)
 		{
-			var value = ReadValueFromMemory(context.Memory).ToUInt64();
+			var value = ReadValueFromMemory(context.Memory)
+#if RECLASSNET64
+				.ToUInt64();
+#else
+				.ToUInt32();
+#endif
 			return DrawNumeric(context, x, y, context.IconProvider.Unsigned, "NUInt", value.ToString(), $"0x{value:X}");
 		}
 
