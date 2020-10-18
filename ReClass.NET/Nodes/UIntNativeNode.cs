@@ -15,7 +15,7 @@ namespace ReClassNET.Nodes
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
 			name = "NUInt";
-			icon = Properties.Resources.B16x16_Button_UInt_64;
+			icon = Properties.Resources.B16x16_Button_NUInt;
 		}
 
 		public override Size Draw(DrawContext context, int x, int y)
