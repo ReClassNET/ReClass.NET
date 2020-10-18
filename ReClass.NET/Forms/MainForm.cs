@@ -466,26 +466,26 @@ namespace ReClassNET.Forms
 			var parentNode = node?.GetParentContainer();
 
 			var nodeIsClass = node is ClassNode;
-			var nodeIsSearchableValueNode = false;
-			switch (node)
+			var nodeIsSearchableValueNode = node switch
 			{
-				case BaseHexNode _:
-				case FloatNode _:
-				case DoubleNode _:
-				case Int8Node _:
-				case UInt8Node _:
-				case Int16Node _:
-				case UInt16Node _:
-				case Int32Node _:
-				case UInt32Node _:
-				case Int64Node _:
-				case UInt64Node _:
-				case Utf8TextNode _:
-				case Utf16TextNode _:
-				case Utf32TextNode _:
-					nodeIsSearchableValueNode = true;
-					break;
-			}
+				BaseHexNode _ => true,
+				FloatNode _ => true,
+				DoubleNode _ => true,
+				Int8Node _ => true,
+				UInt8Node _ => true,
+				Int16Node _ => true,
+				UInt16Node _ => true,
+				Int32Node _ => true,
+				UInt32Node _ => true,
+				Int64Node _ => true,
+				UInt64Node _ => true,
+				NIntNode _ => true,
+				NUIntNode _ => true,
+				Utf8TextNode _ => true,
+				Utf16TextNode _ => true,
+				Utf32TextNode _ => true,
+				_ => false
+			};
 
 			addBytesToolStripMenuItem.Enabled = parentNode != null || nodeIsClass;
 			insertBytesToolStripMenuItem.Enabled = count == 1 && parentNode != null;
