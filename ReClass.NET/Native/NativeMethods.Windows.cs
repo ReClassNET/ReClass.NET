@@ -188,11 +188,6 @@ namespace ReClassNET.Native
 
 					using (var icon = extensionInfoKey?.CreateSubKey("DefaultIcon"))
 					{
-						if (applicationPath.IndexOfAny(new[] { ' ', '\t' }) < 0)
-						{
-							applicationPath = "\"" + applicationPath + "\"";
-						}
-
 						icon?.SetValue(string.Empty, "\"" + applicationPath + "\",0", RegistryValueKind.String);
 					}
 
