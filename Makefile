@@ -26,6 +26,10 @@ clean_release:
 	cd NativeCore/Unix && make clean_release
 	rm -rf build/Release
 
+test:
+	echo ${PWD}
+	echo ${USER}
+
 update:
 	cd ReClass.NET && make update
 
@@ -37,12 +41,12 @@ docker_all:
 docker_debug:
 	cd ReClass.NET_Launcher && make docker_debug
 	cd ReClass.NET && make docker_debug
-	docker container run --rm -v ${PWD}:/build:z -w /build gcc:latest bash -c "cd NativeCore/Unix && make debug"
+	docker container run --rm -v ${PWD}:/build:z -w /build -u $(shell id -u ${USER}):$(shell id -g ${USER}) gcc:latest bash -c "cd NativeCore/Unix && make debug"
 
 docker_release:
 	cd ReClass.NET_Launcher && make docker_release
 	cd ReClass.NET && make docker_release
-	docker container run --rm -v ${PWD}:/build:z -w /build gcc:latest bash -c "cd NativeCore/Unix && make release"
+	docker container run --rm -v ${PWD}:/build:z -w /build -u $(shell id -u ${USER}):$(shell id -g ${USER}) gcc:latest bash -c "cd NativeCore/Unix && make release"
 
 podman_all:
 	make podman_debug
