@@ -26,10 +26,6 @@ clean_release:
 	cd NativeCore/Unix && make clean_release
 	rm -rf build/Release
 
-test:
-	echo ${PWD}
-	echo ${USER}
-
 update:
 	cd ReClass.NET && make update
 
