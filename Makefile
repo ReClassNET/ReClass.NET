@@ -1,3 +1,5 @@
+.PHONY: all clean debug clean_debug release clean_release update docker_all docker_debug docker_release podman_all podman_debug podman_release dist
+
 all: debug release dist
 
 clean: clean_debug clean_release
@@ -26,6 +28,36 @@ clean_release:
 
 update:
 	cd ReClass.NET && make update
+
+docker_all:
+	make docker_debug
+	make docker_release
+	make dist
+
+docker_debug:
+	cd ReClass.NET_Launcher && make docker_debug
+	cd ReClass.NET && make docker_debug
+	docker container run --rm -v ${PWD}:/build:z -w /build -u $(shell id -u ${USER}):$(shell id -g ${USER}) gcc:latest bash -c "cd NativeCore/Unix && make debug"
+
+docker_release:
+	cd ReClass.NET_Launcher && make docker_release
+	cd ReClass.NET && make docker_release
+	docker container run --rm -v ${PWD}:/build:z -w /build -u $(shell id -u ${USER}):$(shell id -g ${USER}) gcc:latest bash -c "cd NativeCore/Unix && make release"
+
+podman_all:
+	make podman_debug
+	make podman_release
+	make dist
+
+podman_debug:
+	cd ReClass.NET_Launcher && make podman_debug
+	cd ReClass.NET && make podman_debug
+	podman container run --rm -v ${PWD}:/build:z -w /build gcc:latest bash -c "cd NativeCore/Unix && make debug"
+
+podman_release:
+	cd ReClass.NET_Launcher && make podman_release
+	cd ReClass.NET && make podman_release
+	podman container run --rm -v ${PWD}:/build:z -w /build gcc:latest bash -c "cd NativeCore/Unix && make release"
 
 dist:
 	test -d build || mkdir -p build
