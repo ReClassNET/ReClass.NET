@@ -35,17 +35,17 @@ namespace ReClassNET.Forms
 			this.descriptionGroupBox = new System.Windows.Forms.GroupBox();
 			this.descriptionLabel = new System.Windows.Forms.Label();
 			this.pluginsDataGridView = new System.Windows.Forms.DataGridView();
-			this.iconColumn = new System.Windows.Forms.DataGridViewImageColumn();
-			this.nameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.versionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.authorColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.nativesTabPage = new System.Windows.Forms.TabPage();
 			this.label2 = new System.Windows.Forms.Label();
 			this.functionsProvidersComboBox = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.getMoreLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.closeButton = new System.Windows.Forms.Button();
-			this.bannerBox = new BannerBox();
+			this.bannerBox = new ReClassNET.Controls.BannerBox();
+			this.iconColumn = new System.Windows.Forms.DataGridViewImageColumn();
+			this.nameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.versionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.authorColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.tabControl.SuspendLayout();
 			this.pluginsTabPage.SuspendLayout();
 			this.descriptionGroupBox.SuspendLayout();
@@ -118,43 +118,6 @@ namespace ReClassNET.Forms
 			this.pluginsDataGridView.Size = new System.Drawing.Size(702, 197);
 			this.pluginsDataGridView.TabIndex = 0;
 			this.pluginsDataGridView.SelectionChanged += new System.EventHandler(this.pluginsDataGridView_SelectionChanged);
-			// 
-			// iconColumn
-			// 
-			this.iconColumn.DataPropertyName = "Icon";
-			this.iconColumn.HeaderText = "";
-			this.iconColumn.MinimumWidth = 18;
-			this.iconColumn.Name = "iconColumn";
-			this.iconColumn.ReadOnly = true;
-			this.iconColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-			this.iconColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-			this.iconColumn.Width = 18;
-			// 
-			// nameColumn
-			// 
-			this.nameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.nameColumn.DataPropertyName = "Name";
-			this.nameColumn.HeaderText = "Name";
-			this.nameColumn.Name = "nameColumn";
-			this.nameColumn.ReadOnly = true;
-			// 
-			// versionColumn
-			// 
-			this.versionColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.versionColumn.DataPropertyName = "Version";
-			this.versionColumn.HeaderText = "Version";
-			this.versionColumn.Name = "versionColumn";
-			this.versionColumn.ReadOnly = true;
-			this.versionColumn.Width = 67;
-			// 
-			// authorColumn
-			// 
-			this.authorColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.authorColumn.DataPropertyName = "Author";
-			this.authorColumn.HeaderText = "Author";
-			this.authorColumn.Name = "authorColumn";
-			this.authorColumn.ReadOnly = true;
-			this.authorColumn.Width = 63;
 			// 
 			// nativesTabPage
 			// 
@@ -233,6 +196,44 @@ namespace ReClassNET.Forms
 			this.bannerBox.Text = "Here you can configure all loaded ReClass.NET plugins.";
 			this.bannerBox.Title = "Plugins";
 			// 
+			// iconColumn
+			// 
+			this.iconColumn.DataPropertyName = "Icon";
+			this.iconColumn.HeaderText = "";
+			this.iconColumn.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+			this.iconColumn.MinimumWidth = 18;
+			this.iconColumn.Name = "iconColumn";
+			this.iconColumn.ReadOnly = true;
+			this.iconColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.iconColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+			this.iconColumn.Width = 18;
+			// 
+			// nameColumn
+			// 
+			this.nameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.nameColumn.DataPropertyName = "Name";
+			this.nameColumn.HeaderText = "Name";
+			this.nameColumn.Name = "nameColumn";
+			this.nameColumn.ReadOnly = true;
+			// 
+			// versionColumn
+			// 
+			this.versionColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.versionColumn.DataPropertyName = "Version";
+			this.versionColumn.HeaderText = "Version";
+			this.versionColumn.Name = "versionColumn";
+			this.versionColumn.ReadOnly = true;
+			this.versionColumn.Width = 67;
+			// 
+			// authorColumn
+			// 
+			this.authorColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.authorColumn.DataPropertyName = "Author";
+			this.authorColumn.HeaderText = "Author";
+			this.authorColumn.Name = "authorColumn";
+			this.authorColumn.ReadOnly = true;
+			this.authorColumn.Width = 63;
+			// 
 			// PluginForm
 			// 
 			this.AcceptButton = this.closeButton;
@@ -273,12 +274,12 @@ namespace ReClassNET.Forms
 		private System.Windows.Forms.Button closeButton;
 		private System.Windows.Forms.Label descriptionLabel;
 		private System.Windows.Forms.Label label1;
+		private BannerBox bannerBox;
+		private System.Windows.Forms.ComboBox functionsProvidersComboBox;
+		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.DataGridViewImageColumn iconColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn versionColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn authorColumn;
-		private BannerBox bannerBox;
-		private System.Windows.Forms.ComboBox functionsProvidersComboBox;
-		private System.Windows.Forms.Label label2;
 	}
 }
