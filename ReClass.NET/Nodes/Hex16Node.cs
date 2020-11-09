@@ -17,7 +17,7 @@ namespace ReClassNET.Nodes
 
 		public override string GetToolTipText(HotSpot spot)
 		{
-			var value = spot.Memory.ReadObject<UInt16Data>(Offset);
+			var value = new UInt16Data { ShortValue = spot.Memory.ReadInt16(Offset) };
 
 			return $"Int16: {value.ShortValue}\nUInt16: 0x{value.UShortValue:X04}";
 		}

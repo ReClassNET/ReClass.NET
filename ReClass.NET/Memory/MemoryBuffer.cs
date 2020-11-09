@@ -133,23 +133,6 @@ namespace ReClassNET.Memory
 			Array.Copy(data, offset, buffer, 0, buffer.Length);
 		}
 
-		public T ReadObject<T>(int offset) where T : struct
-		{
-			Contract.Requires(offset >= 0);
-
-			offset = Offset + offset;
-			if (offset + Marshal.SizeOf(typeof(T)) > data.Length)
-			{
-				return default;
-			}
-
-			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			var obj = Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject() + offset);
-			handle.Free();
-
-			return obj;
-		}
-
 		#region Read Primitive Types
 
 		/// <summary>Reads a <see cref="sbyte"/> from the specific offset.</summary>

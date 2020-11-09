@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using ReClassNET.Controls;
@@ -17,11 +18,10 @@ namespace ReClassNET.Nodes
 
 		protected delegate void DrawMatrixValues(int x, ref int maxX, ref int y);
 
-		protected Size DrawMatrixType(DrawContext context, int x, int y, string type, DrawMatrixValues drawValues)
+		protected Size DrawMatrixType(DrawContext context, int x, int y, string type, int rows, int columns)
 		{
 			Contract.Requires(context != null);
 			Contract.Requires(type != null);
-			Contract.Requires(drawValues != null);
 
 			if (IsHidden && !IsWrapped)
 			{
@@ -58,18 +58,36 @@ namespace ReClassNET.Nodes
 
 			if (LevelsOpen[context.Level])
 			{
-				drawValues(tx, ref x, ref y);
+				var index = 0;
+				for (var row = 0; row < rows; ++row)
+				{
+					y += context.Font.Height;
+					var x2 = tx;
+
+					x2 = AddText(context, x2, y, context.Settings.NameColor, HotSpot.NoneId, "|");
+
+					for (var column = 0; column < columns; ++column)
+					{
+						var value = context.Memory.ReadFloat(Offset + index * sizeof(float));
+						x2 = AddText(context, x2, y, context.Settings.ValueColor, index, $"{value,14:0.000}");
+
+						index++;
+					}
+
+					x2 = AddText(context, x2, y, context.Settings.NameColor, HotSpot.NoneId, "|");
+
+					x = Math.Max(x2, x);
+				}
 			}
 
 			return new Size(x - origX, y - origY + context.Font.Height);
 		}
 
 		protected delegate void DrawVectorValues(ref int x, ref int y);
-		protected Size DrawVectorType(DrawContext context, int x, int y, string type, DrawVectorValues drawValues)
+		protected Size DrawVectorType(DrawContext context, int x, int y, string type, int columns)
 		{
 			Contract.Requires(context != null);
 			Contract.Requires(type != null);
-			Contract.Requires(drawValues != null);
 
 			if (IsHidden && !IsWrapped)
 			{
@@ -97,7 +115,19 @@ namespace ReClassNET.Nodes
 
 			if (LevelsOpen[context.Level])
 			{
-				drawValues(ref x, ref y);
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, "(");
+				for (var column = 0; column < columns; ++column)
+				{
+					var value = context.Memory.ReadFloat(Offset + column * sizeof(float));
+
+					x = AddText(context, x, y, context.Settings.ValueColor, column, $"{value:0.000}");
+
+					if (column < columns - 1)
+					{
+						x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, ",");
+					}
+				}
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NoneId, ")");
 			}
 
 			x += context.Font.Width;

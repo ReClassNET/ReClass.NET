@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace ReClassNET.Memory
@@ -27,6 +27,9 @@ namespace ReClassNET.Memory
 	public struct UInt32FloatData
 	{
 		[FieldOffset(0)]
+		public int Raw;
+
+		[FieldOffset(0)]
 		public int IntValue;
 
 		public IntPtr IntPtr => (IntPtr)IntValue;
@@ -43,6 +46,12 @@ namespace ReClassNET.Memory
 	[StructLayout(LayoutKind.Explicit)]
 	public struct UInt64FloatDoubleData
 	{
+		[FieldOffset(0)]
+		public int Raw1;
+
+		[FieldOffset(4)]
+		public int Raw2;
+
 		[FieldOffset(0)]
 		public long LongValue;
 
@@ -68,13 +77,5 @@ namespace ReClassNET.Memory
 
 		[FieldOffset(0)]
 		public double DoubleValue;
-	}
-
-	[StructLayout(LayoutKind.Sequential)]
-	public struct ThreePointersData
-	{
-		public IntPtr Pointer1;
-		public IntPtr Pointer2;
-		public IntPtr Pointer3;
 	}
 }

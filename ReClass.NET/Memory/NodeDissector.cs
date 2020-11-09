@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -41,8 +41,15 @@ namespace ReClassNET.Memory
 				return false;
 			}
 
-			var data64 = memory.ReadObject<UInt64FloatDoubleData>(offset);
-			var data32 = memory.ReadObject<UInt32FloatData>(offset);
+			var data64 = new UInt64FloatDoubleData
+			{
+				Raw1 = memory.ReadInt32(offset),
+				Raw2 = memory.ReadInt32(offset + sizeof(int))
+			}; ;
+			var data32 = new UInt32FloatData
+			{
+				Raw = memory.ReadInt32(offset)
+			};
 
 			var raw = memory.ReadBytes(offset, node.MemorySize);
 			if (raw.InterpretAsSingleByteCharacter().IsLikelyPrintableData())
@@ -135,10 +142,9 @@ namespace ReClassNET.Memory
 			if (section.Category == SectionCategory.DATA || section.Category == SectionCategory.HEAP) // If the section contains data, it is at least a pointer to a class or something.
 			{
 				// Check if it is a vtable. Check if the first 3 values are pointers to a code section.
-				var possibleVmt = process.ReadRemoteObject<ThreePointersData>(address);
-				if (process.GetSectionToPointer(possibleVmt.Pointer1)?.Category == SectionCategory.CODE
-					&& process.GetSectionToPointer(possibleVmt.Pointer2)?.Category == SectionCategory.CODE
-					&& process.GetSectionToPointer(possibleVmt.Pointer3)?.Category == SectionCategory.CODE)
+				if (process.GetSectionToPointer(process.ReadRemoteIntPtr(address))?.Category == SectionCategory.CODE
+				    && process.GetSectionToPointer(process.ReadRemoteIntPtr(address + IntPtr.Size))?.Category == SectionCategory.CODE
+				    && process.GetSectionToPointer(process.ReadRemoteIntPtr(address + 2 * IntPtr.Size))?.Category == SectionCategory.CODE)
 				{
 					node = new VirtualMethodTableNode();
 

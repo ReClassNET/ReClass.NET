@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -183,17 +183,6 @@ namespace ReClassNET.Memory
 			var data = new byte[size];
 			ReadRemoteMemoryIntoBuffer(address, ref data);
 			return data;
-		}
-
-		public T ReadRemoteObject<T>(IntPtr address) where T : struct
-		{
-			var data = ReadRemoteMemory(address, Marshal.SizeOf<T>());
-
-			var gcHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			var obj = (T)Marshal.PtrToStructure(gcHandle.AddrOfPinnedObject(), typeof(T));
-			gcHandle.Free();
-
-			return obj;
 		}
 
 		#region Read Remote Primitive Types

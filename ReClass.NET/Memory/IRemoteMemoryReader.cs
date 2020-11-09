@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 
 namespace ReClassNET.Memory
@@ -22,12 +22,6 @@ namespace ReClassNET.Memory
 		/// <param name="size">The size in bytes to read.</param>
 		/// <returns>An array of bytes.</returns>
 		byte[] ReadRemoteMemory(IntPtr address, int size);
-
-		/// <summary>Reads the object from the address in the remote process.</summary>
-		/// <typeparam name="T">Type of the value to read.</typeparam>
-		/// <param name="address">The address to read from.</param>
-		/// <returns>The remote object.</returns>
-		T ReadRemoteObject<T>(IntPtr address) where T : struct;
 
 		/// <summary>Reads a <see cref="sbyte"/> from the address in the remote process.</summary>
 		/// <param name="address">The address to read from.</param>
