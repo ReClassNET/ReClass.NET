@@ -42,12 +42,10 @@ namespace ReClassNET.MemoryScanner.Comparer
 
 		public bool Compare(byte[] data, int index, out ScanResult result)
 		{
-			result = null;
-
-			var value = BitConverter.ToDouble(data, index);
-
-			bool IsMatch() =>
-				CompareType switch
+			return CompareInternal(
+				data,
+				index,
+				value => CompareType switch
 			{
 					ScanCompareType.Equal => CheckRoundedEquality(value),
 					ScanCompareType.NotEqual => !CheckRoundedEquality(value),
@@ -59,17 +57,10 @@ namespace ReClassNET.MemoryScanner.Comparer
 					ScanCompareType.BetweenOrEqual => Value1 <= value && value <= Value2,
 					ScanCompareType.Unknown => true,
 					_ => throw new InvalidCompareTypeException(CompareType)
-				};
-
-			if (!IsMatch())
-			{
-				return false;
+				},
+				out result
+			);
 			}
-
-			result = new DoubleScanResult(value);
-
-			return true;
-		}
 
 		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
 		{
@@ -82,12 +73,10 @@ namespace ReClassNET.MemoryScanner.Comparer
 
 		public bool Compare(byte[] data, int index, DoubleScanResult previous, out ScanResult result)
 		{
-			result = null;
-
-			var value = BitConverter.ToDouble(data, index);
-
-			bool IsMatch() =>
-				CompareType switch
+			return CompareInternal(
+				data,
+				index,
+				value => CompareType switch
 			{
 					ScanCompareType.Equal => CheckRoundedEquality(value),
 					ScanCompareType.NotEqual => !CheckRoundedEquality(value),
@@ -104,9 +93,18 @@ namespace ReClassNET.MemoryScanner.Comparer
 					ScanCompareType.Between => Value1 < value && value < Value2,
 					ScanCompareType.BetweenOrEqual => Value1 <= value && value <= Value2,
 					_ => throw new InvalidCompareTypeException(CompareType)
-				};
+				},
+				out result
+			);
+		}
 
-			if (!IsMatch())
+		private static bool CompareInternal(byte[] data, int index, Func<double, bool> matcher, out ScanResult result)
+		{
+			result = null;
+
+			var value = BitConverter.ToDouble(data, index);
+
+			if (!matcher(value))
 			{
 				return false;
 			}
