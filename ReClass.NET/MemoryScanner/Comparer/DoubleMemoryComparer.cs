@@ -31,20 +31,14 @@ namespace ReClassNET.MemoryScanner.Comparer
 			maxValue = value1 + 1.0 / factor;
 		}
 
-		private bool CheckRoundedEquality(double value)
+		private bool CheckRoundedEquality(double value) =>
+			RoundType switch
 		{
-			switch (RoundType)
-			{
-				case ScanRoundMode.Strict:
-					return Value1.IsNearlyEqual(Math.Round(value, significantDigits, MidpointRounding.AwayFromZero), 0.0001);
-				case ScanRoundMode.Normal:
-					return minValue < value && value < maxValue;
-				case ScanRoundMode.Truncate:
-					return (long)value == (long)Value1;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
-		}
+				ScanRoundMode.Strict => Value1.IsNearlyEqual(Math.Round(value, significantDigits, MidpointRounding.AwayFromZero), 0.0001),
+				ScanRoundMode.Normal => minValue < value && value < maxValue,
+				ScanRoundMode.Truncate => (long)value == (long)Value1,
+				_ => throw new ArgumentOutOfRangeException()
+			};
 
 		public bool Compare(byte[] data, int index, out ScanResult result)
 		{
@@ -52,32 +46,20 @@ namespace ReClassNET.MemoryScanner.Comparer
 
 			var value = BitConverter.ToDouble(data, index);
 
-			bool IsMatch()
+			bool IsMatch() =>
+				CompareType switch
 			{
-				switch (CompareType)
-				{
-					case ScanCompareType.Equal:
-						return CheckRoundedEquality(value);
-					case ScanCompareType.NotEqual:
-						return !CheckRoundedEquality(value);
-					case ScanCompareType.GreaterThan:
-						return value > Value1;
-					case ScanCompareType.GreaterThanOrEqual:
-						return value >= Value1;
-					case ScanCompareType.LessThan:
-						return value < Value1;
-					case ScanCompareType.LessThanOrEqual:
-						return value <= Value1;
-					case ScanCompareType.Between:
-						return Value1 < value && value < Value2;
-					case ScanCompareType.BetweenOrEqual:
-						return Value1 <= value && value <= Value2;
-					case ScanCompareType.Unknown:
-						return true;
-					default:
-						throw new InvalidCompareTypeException(CompareType);
-				}
-			}
+					ScanCompareType.Equal => CheckRoundedEquality(value),
+					ScanCompareType.NotEqual => !CheckRoundedEquality(value),
+					ScanCompareType.GreaterThan => value > Value1,
+					ScanCompareType.GreaterThanOrEqual => value >= Value1,
+					ScanCompareType.LessThan => value < Value1,
+					ScanCompareType.LessThanOrEqual => value <= Value1,
+					ScanCompareType.Between => Value1 < value && value < Value2,
+					ScanCompareType.BetweenOrEqual => Value1 <= value && value <= Value2,
+					ScanCompareType.Unknown => true,
+					_ => throw new InvalidCompareTypeException(CompareType)
+				};
 
 			if (!IsMatch())
 			{
@@ -104,42 +86,25 @@ namespace ReClassNET.MemoryScanner.Comparer
 
 			var value = BitConverter.ToDouble(data, index);
 
-			bool IsMatch()
+			bool IsMatch() =>
+				CompareType switch
 			{
-				switch (CompareType)
-				{
-					case ScanCompareType.Equal:
-						return CheckRoundedEquality(value);
-					case ScanCompareType.NotEqual:
-						return !CheckRoundedEquality(value);
-					case ScanCompareType.Changed:
-						return value != previous.Value;
-					case ScanCompareType.NotChanged:
-						return value == previous.Value;
-					case ScanCompareType.GreaterThan:
-						return value > Value1;
-					case ScanCompareType.GreaterThanOrEqual:
-						return value >= Value1;
-					case ScanCompareType.Increased:
-						return value > previous.Value;
-					case ScanCompareType.IncreasedOrEqual:
-						return value >= previous.Value;
-					case ScanCompareType.LessThan:
-						return value < Value1;
-					case ScanCompareType.LessThanOrEqual:
-						return value <= Value1;
-					case ScanCompareType.Decreased:
-						return value < previous.Value;
-					case ScanCompareType.DecreasedOrEqual:
-						return value <= previous.Value;
-					case ScanCompareType.Between:
-						return Value1 < value && value < Value2;
-					case ScanCompareType.BetweenOrEqual:
-						return Value1 <= value && value <= Value2;
-					default:
-						throw new InvalidCompareTypeException(CompareType);
-				}
-			}
+					ScanCompareType.Equal => CheckRoundedEquality(value),
+					ScanCompareType.NotEqual => !CheckRoundedEquality(value),
+					ScanCompareType.Changed => value != previous.Value,
+					ScanCompareType.NotChanged => value == previous.Value,
+					ScanCompareType.GreaterThan => value > Value1,
+					ScanCompareType.GreaterThanOrEqual => value >= Value1,
+					ScanCompareType.Increased => value > previous.Value,
+					ScanCompareType.IncreasedOrEqual => value >= previous.Value,
+					ScanCompareType.LessThan => value < Value1,
+					ScanCompareType.LessThanOrEqual => value <= Value1,
+					ScanCompareType.Decreased => value < previous.Value,
+					ScanCompareType.DecreasedOrEqual => value <= previous.Value,
+					ScanCompareType.Between => Value1 < value && value < Value2,
+					ScanCompareType.BetweenOrEqual => Value1 <= value && value <= Value2,
+					_ => throw new InvalidCompareTypeException(CompareType)
+				};
 
 			if (!IsMatch())
 			{
