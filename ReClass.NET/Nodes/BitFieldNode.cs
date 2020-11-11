@@ -171,7 +171,7 @@ namespace ReClassNET.Nodes
 					}
 				}
 
-				y += 2;
+				y += 8;
 			}
 
 			return new Size(x - origX, y - origY + context.Font.Height);
@@ -187,7 +187,7 @@ namespace ReClassNET.Nodes
 			var height = context.Font.Height;
 			if (LevelsOpen[context.Level])
 			{
-				height += context.Font.Height + 2;
+				height += context.Font.Height + 8;
 			}
 			return height;
 		}
