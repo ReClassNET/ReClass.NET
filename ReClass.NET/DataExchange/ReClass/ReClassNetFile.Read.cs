@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -104,7 +104,7 @@ namespace ReClassNET.DataExchange.ReClass
 				{
 					var node = new ClassNode(false)
 					{
-						Uuid = NodeUuid.FromBase64String(element.Attribute(XmlUuidAttribute)?.Value, true),
+						Uuid = ParseUuid(element.Attribute(XmlUuidAttribute)?.Value),
 						Name = element.Attribute(XmlNameAttribute)?.Value ?? string.Empty,
 						Comment = element.Attribute(XmlCommentAttribute)?.Value ?? string.Empty,
 						AddressFormula = element.Attribute(XmlAddressAttribute)?.Value ?? string.Empty
@@ -173,7 +173,7 @@ namespace ReClassNET.DataExchange.ReClass
 			{
 				ClassNode GetClassNodeFromElementReference()
 				{
-					var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
+					var reference = ParseUuid(element.Attribute(XmlReferenceAttribute)?.Value);
 					if (!project.ContainsClass(reference))
 					{
 						logger.Log(LogLevel.Error, $"Skipping node with unknown reference: {reference}");
@@ -286,7 +286,7 @@ namespace ReClassNET.DataExchange.ReClass
 				{
 					functionNode.Signature = element.Attribute(XmlSignatureAttribute)?.Value ?? string.Empty;
 
-					var reference = NodeUuid.FromBase64String(element.Attribute(XmlReferenceAttribute)?.Value, false);
+					var reference = ParseUuid(element.Attribute(XmlReferenceAttribute)?.Value);
 					if (project.ContainsClass(reference))
 					{
 						functionNode.BelongsToClass = project.GetClassByUuid(reference);
@@ -305,6 +305,12 @@ namespace ReClassNET.DataExchange.ReClass
 
 			return node;
 		}
+
+		private static Guid ParseUuid(string raw) => raw == null
+				? throw new ArgumentNullException()
+				: raw.Length == 24
+					? new Guid(Convert.FromBase64String(raw))
+					: Guid.Parse(raw);
 
 		public static Tuple<List<ClassNode>, List<BaseNode>> DeserializeNodesFromStream(Stream input, ReClassNetProject templateProject, ILogger logger)
 		{

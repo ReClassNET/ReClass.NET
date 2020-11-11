@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.Compression;
@@ -67,7 +68,7 @@ namespace ReClassNET.DataExchange.ReClass
 
 			return classes.Select(c => new XElement(
 				XmlClassElement,
-				new XAttribute(XmlUuidAttribute, c.Uuid.ToBase64String()),
+				new XAttribute(XmlUuidAttribute, c.Uuid),
 				new XAttribute(XmlNameAttribute, c.Name ?? string.Empty),
 				new XAttribute(XmlCommentAttribute, c.Comment ?? string.Empty),
 				new XAttribute(XmlAddressAttribute, c.AddressFormula ?? string.Empty),
@@ -118,7 +119,7 @@ namespace ReClassNET.DataExchange.ReClass
 			{
 				if (node is BaseClassWrapperNode classWrapperNode)
 				{
-					element.SetAttributeValue(XmlReferenceAttribute, ((ClassNode)classWrapperNode.InnerNode).Uuid.ToBase64String());
+					element.SetAttributeValue(XmlReferenceAttribute, ((ClassNode)classWrapperNode.InnerNode).Uuid);
 				}
 				else if (wrapperNode.InnerNode != null)
 				{
@@ -160,8 +161,8 @@ namespace ReClassNET.DataExchange.ReClass
 				}
 				case FunctionNode functionNode:
 				{
-					var uuid = functionNode.BelongsToClass == null ? NodeUuid.Zero : functionNode.BelongsToClass.Uuid;
-					element.SetAttributeValue(XmlReferenceAttribute, uuid.ToBase64String());
+					var uuid = functionNode.BelongsToClass?.Uuid ?? Guid.Empty;
+					element.SetAttributeValue(XmlReferenceAttribute, uuid);
 					element.SetAttributeValue(XmlSignatureAttribute, functionNode.Signature);
 					break;
 				}

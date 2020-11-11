@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -59,14 +59,14 @@ namespace ReClassNET.Project
 			ClassAdded?.Invoke(node);
 		}
 
-		public bool ContainsClass(NodeUuid uuid)
+		public bool ContainsClass(Guid uuid)
 		{
 			Contract.Requires(uuid != null);
 
 			return classes.Any(c => c.Uuid.Equals(uuid));
 		}
 
-		public ClassNode GetClassByUuid(NodeUuid uuid)
+		public ClassNode GetClassByUuid(Guid uuid)
 		{
 			Contract.Requires(uuid != null);
 

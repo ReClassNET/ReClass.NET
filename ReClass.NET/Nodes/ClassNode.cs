@@ -25,17 +25,7 @@ namespace ReClassNET.Nodes
 
 		protected override bool ShouldCompensateSizeChanges => true;
 
-		private NodeUuid uuid;
-		public NodeUuid Uuid
-		{
-			get => uuid;
-			set
-			{
-				Contract.Requires(value != null);
-
-				uuid = value;
-			}
-		}
+		public Guid Uuid { get; set; }
 
 		public string AddressFormula { get; set; } = DefaultAddressFormula;
 
@@ -47,7 +37,7 @@ namespace ReClassNET.Nodes
 
 			LevelsOpen.DefaultValue = true;
 
-			Uuid = new NodeUuid(true);
+			Uuid = Guid.NewGuid();
 
 			if (notifyClassCreated)
 			{
