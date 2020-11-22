@@ -21,6 +21,7 @@ using ReClassNET.Plugins;
 using ReClassNET.Project;
 using ReClassNET.UI;
 using ReClassNET.Util;
+using ReClassNET.Util.Conversion;
 
 namespace ReClassNET.Forms
 {
@@ -78,6 +79,7 @@ namespace ReClassNET.Forms
 
 			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true, true);
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(true, false);
+			isLittleEndianToolStripMenuItem.Checked = BitConverter.IsLittleEndian;
 
 			Program.RemoteProcess.ProcessAttached += sender =>
 			{
@@ -349,6 +351,11 @@ namespace ReClassNET.Forms
 		private void namedAddressesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			new NamedAddressesForm(Program.RemoteProcess).Show();
+		}
+
+		private void isLittleEndianToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Program.RemoteProcess.BitConverter = isLittleEndianToolStripMenuItem.Checked ? (EndianBitConverter)EndianBitConverter.Little : EndianBitConverter.Big;
 		}
 
 		private void loadSymbolToolStripMenuItem_Click(object sender, EventArgs e)

@@ -34,7 +34,7 @@ namespace ReClassNET.Forms
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.processUpdateTimer = new System.Windows.Forms.Timer(this.components);
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
-			this.projectView = new ProjectView();
+			this.projectView = new ReClassNET.Controls.ProjectView();
 			this.projectClassContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.deleteClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
@@ -53,26 +53,26 @@ namespace ReClassNET.Forms
 			this.editEnumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.projectEnumsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.editEnumsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.memoryViewControl = new MemoryViewControl();
+			this.memoryViewControl = new ReClassNET.Controls.MemoryViewControl();
 			this.selectedNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.changeTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.addBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.integerToolStripMenuItem1 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem2 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem3 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem4 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem5 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem6 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem7 = new IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem1 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem2 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem3 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem4 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem5 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem6 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem7 = new ReClassNET.Controls.IntegerToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.insertBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.integerToolStripMenuItem8 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem9 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem10 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem11 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem12 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem13 = new IntegerToolStripMenuItem();
-			this.integerToolStripMenuItem14 = new IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem8 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem9 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem10 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem11 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem12 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem13 = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.integerToolStripMenuItem14 = new ReClassNET.Controls.IntegerToolStripMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.createClassFromNodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,22 +107,22 @@ namespace ReClassNET.Forms
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.newClassToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.addBytesToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
-			this.add4BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.add8BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.add64BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.add256BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.add1024BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.add2048BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.add4096BytesToolStripMenuItem = new IntegerToolStripMenuItem();
+			this.add4BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.add8BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.add64BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.add256BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.add1024BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.add2048BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.add4096BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
 			this.addXBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.insertBytesToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
-			this.insert4BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.insert8BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.insert64BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.insert256BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.insert1024BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.insert2048BytesToolStripMenuItem = new IntegerToolStripMenuItem();
-			this.insert4096BytesToolStripMenuItem = new IntegerToolStripMenuItem();
+			this.insert4BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.insert8BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.insert64BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.insert256BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.insert1024BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.insert2048BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
+			this.insert4096BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
 			this.insertXBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.nodeTypesToolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -149,6 +149,8 @@ namespace ReClassNET.Forms
 			this.processInformationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.memorySearcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.namedAddressesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator23 = new System.Windows.Forms.ToolStripSeparator();
+			this.isLittleEndianToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
 			this.loadSymbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.loadSymbolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -215,7 +217,7 @@ namespace ReClassNET.Forms
 			this.projectView.Name = "projectView";
 			this.projectView.Size = new System.Drawing.Size(201, 524);
 			this.projectView.TabIndex = 0;
-			this.projectView.SelectionChanged += new ProjectView.SelectionChangedEvent(this.classesView_ClassSelected);
+			this.projectView.SelectionChanged += new ReClassNET.Controls.ProjectView.SelectionChangedEvent(this.classesView_ClassSelected);
 			// 
 			// projectClassContextMenuStrip
 			// 
@@ -273,33 +275,33 @@ namespace ReClassNET.Forms
             this.toolStripSeparator22,
             this.addNewClassToolStripMenuItem});
 			this.projectClassesContextMenuStrip.Name = "rootContextMenuStrip";
-			this.projectClassesContextMenuStrip.Size = new System.Drawing.Size(221, 126);
+			this.projectClassesContextMenuStrip.Size = new System.Drawing.Size(222, 126);
 			// 
 			// enableHierarchyViewToolStripMenuItem
 			// 
 			this.enableHierarchyViewToolStripMenuItem.Name = "enableHierarchyViewToolStripMenuItem";
-			this.enableHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.enableHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
 			this.enableHierarchyViewToolStripMenuItem.Text = "Enable hierarchy view";
 			this.enableHierarchyViewToolStripMenuItem.Click += new System.EventHandler(this.enableHierarchyViewToolStripMenuItem_Click);
 			// 
 			// autoExpandHierarchyViewToolStripMenuItem
 			// 
 			this.autoExpandHierarchyViewToolStripMenuItem.Name = "autoExpandHierarchyViewToolStripMenuItem";
-			this.autoExpandHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.autoExpandHierarchyViewToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
 			this.autoExpandHierarchyViewToolStripMenuItem.Text = "Auto expand hierarchy view";
 			this.autoExpandHierarchyViewToolStripMenuItem.Click += new System.EventHandler(this.autoExpandHierarchyViewToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator21
 			// 
 			this.toolStripSeparator21.Name = "toolStripSeparator21";
-			this.toolStripSeparator21.Size = new System.Drawing.Size(217, 6);
+			this.toolStripSeparator21.Size = new System.Drawing.Size(218, 6);
 			// 
 			// expandAllClassesToolStripMenuItem
 			// 
 			this.expandAllClassesToolStripMenuItem.Enabled = false;
 			this.expandAllClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Tree_Expand;
 			this.expandAllClassesToolStripMenuItem.Name = "expandAllClassesToolStripMenuItem";
-			this.expandAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.expandAllClassesToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
 			this.expandAllClassesToolStripMenuItem.Text = "Expand all classes";
 			this.expandAllClassesToolStripMenuItem.Click += new System.EventHandler(this.expandAllClassesToolStripMenuItem_Click);
 			// 
@@ -308,20 +310,20 @@ namespace ReClassNET.Forms
 			this.collapseAllClassesToolStripMenuItem.Enabled = false;
 			this.collapseAllClassesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Tree_Collapse;
 			this.collapseAllClassesToolStripMenuItem.Name = "collapseAllClassesToolStripMenuItem";
-			this.collapseAllClassesToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.collapseAllClassesToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
 			this.collapseAllClassesToolStripMenuItem.Text = "Collapse all classes";
 			this.collapseAllClassesToolStripMenuItem.Click += new System.EventHandler(this.collapseAllClassesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator22
 			// 
 			this.toolStripSeparator22.Name = "toolStripSeparator22";
-			this.toolStripSeparator22.Size = new System.Drawing.Size(217, 6);
+			this.toolStripSeparator22.Size = new System.Drawing.Size(218, 6);
 			// 
 			// addNewClassToolStripMenuItem
 			// 
 			this.addNewClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
 			this.addNewClassToolStripMenuItem.Name = "addNewClassToolStripMenuItem";
-			this.addNewClassToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+			this.addNewClassToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
 			this.addNewClassToolStripMenuItem.Text = "Add new class";
 			this.addNewClassToolStripMenuItem.Click += new System.EventHandler(this.newClassToolStripButton_Click);
 			// 
@@ -364,11 +366,11 @@ namespace ReClassNET.Forms
 			this.memoryViewControl.NodeContextMenuStrip = this.selectedNodeContextMenuStrip;
 			this.memoryViewControl.Size = new System.Drawing.Size(936, 524);
 			this.memoryViewControl.TabIndex = 0;
-			this.memoryViewControl.DrawContextRequested += new DrawContextRequestEventHandler(this.memoryViewControl_DrawContextRequested);
+			this.memoryViewControl.DrawContextRequested += new ReClassNET.Controls.DrawContextRequestEventHandler(this.memoryViewControl_DrawContextRequested);
 			this.memoryViewControl.SelectionChanged += new System.EventHandler(this.memoryViewControl_SelectionChanged);
-			this.memoryViewControl.ChangeClassTypeClick += new NodeClickEventHandler(this.memoryViewControl_ChangeClassTypeClick);
-			this.memoryViewControl.ChangeWrappedTypeClick += new NodeClickEventHandler(this.memoryViewControl_ChangeWrappedTypeClick);
-			this.memoryViewControl.ChangeEnumTypeClick += new NodeClickEventHandler(this.memoryViewControl_ChangeEnumTypeClick);
+			this.memoryViewControl.ChangeClassTypeClick += new ReClassNET.Controls.NodeClickEventHandler(this.memoryViewControl_ChangeClassTypeClick);
+			this.memoryViewControl.ChangeWrappedTypeClick += new ReClassNET.Controls.NodeClickEventHandler(this.memoryViewControl_ChangeWrappedTypeClick);
+			this.memoryViewControl.ChangeEnumTypeClick += new ReClassNET.Controls.NodeClickEventHandler(this.memoryViewControl_ChangeEnumTypeClick);
 			this.memoryViewControl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.memoryViewControl_KeyDown);
 			// 
 			// selectedNodeContextMenuStrip
@@ -1190,6 +1192,8 @@ namespace ReClassNET.Forms
             this.processInformationsToolStripMenuItem,
             this.memorySearcherToolStripMenuItem,
             this.namedAddressesToolStripMenuItem,
+            this.toolStripSeparator23,
+            this.isLittleEndianToolStripMenuItem,
             this.toolStripSeparator17,
             this.loadSymbolToolStripMenuItem,
             this.loadSymbolsToolStripMenuItem,
@@ -1224,6 +1228,19 @@ namespace ReClassNET.Forms
 			this.namedAddressesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.namedAddressesToolStripMenuItem.Text = "Named Addresses...";
 			this.namedAddressesToolStripMenuItem.Click += new System.EventHandler(this.namedAddressesToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator23
+			// 
+			this.toolStripSeparator23.Name = "toolStripSeparator23";
+			this.toolStripSeparator23.Size = new System.Drawing.Size(191, 6);
+			// 
+			// isLittleEndianToolStripMenuItem
+			// 
+			this.isLittleEndianToolStripMenuItem.CheckOnClick = true;
+			this.isLittleEndianToolStripMenuItem.Name = "isLittleEndianToolStripMenuItem";
+			this.isLittleEndianToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+			this.isLittleEndianToolStripMenuItem.Text = "Is Little Endian";
+			this.isLittleEndianToolStripMenuItem.Click += new System.EventHandler(this.isLittleEndianToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator17
 			// 
@@ -1523,6 +1540,8 @@ namespace ReClassNET.Forms
 		private System.Windows.Forms.ContextMenuStrip projectEnumsContextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem editEnumsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem showEnumsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator23;
+		private System.Windows.Forms.ToolStripMenuItem isLittleEndianToolStripMenuItem;
 	}
 }
 
