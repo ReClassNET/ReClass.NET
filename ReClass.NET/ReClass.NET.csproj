@@ -25,7 +25,7 @@
     <Optimize>false</Optimize>
     <OutputPath>$(SolutionDir)bin\Debug\x86\</OutputPath>
     <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\x86\$(MSBuildProjectName)\</IntermediateOutputPath>
-    <DefineConstants>TRACE;DEBUG;RECLASSNET32</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -79,7 +79,7 @@
     <Optimize>true</Optimize>
     <OutputPath>$(SolutionDir)bin\Release\x86\</OutputPath>
     <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\x86\$(MSBuildProjectName)\</IntermediateOutputPath>
-    <DefineConstants>TRACE;RECLASSNET32;RELEASE</DefineConstants>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
