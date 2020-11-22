@@ -1,10 +1,13 @@
 using System;
 using System.Text;
+using ReClassNET.Util.Conversion;
 
 namespace ReClassNET.Memory
 {
 	public interface IRemoteMemoryReader
 	{
+		EndianBitConverter BitConverter { get; set; }
+
 		/// <summary>Reads remote memory from the address into the buffer.</summary>
 		/// <param name="address">The address to read from.</param>
 		/// <param name="buffer">[out] The data buffer to fill. If the remote process is not valid, the buffer will get filled with zeros.</param>

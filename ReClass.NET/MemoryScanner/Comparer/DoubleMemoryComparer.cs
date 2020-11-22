@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using ReClassNET.Extensions;
+using ReClassNET.Util.Conversion;
 
 namespace ReClassNET.MemoryScanner.Comparer
 {
@@ -16,7 +17,9 @@ namespace ReClassNET.MemoryScanner.Comparer
 		private readonly double minValue;
 		private readonly double maxValue;
 
-		public DoubleMemoryComparer(ScanCompareType compareType, ScanRoundMode roundType, int significantDigits, double value1, double value2)
+		private readonly EndianBitConverter bitConverter;
+
+		public DoubleMemoryComparer(ScanCompareType compareType, ScanRoundMode roundType, int significantDigits, double value1, double value2, EndianBitConverter bitConverter)
 		{
 			CompareType = compareType;
 
@@ -29,11 +32,13 @@ namespace ReClassNET.MemoryScanner.Comparer
 
 			minValue = value1 - 1.0 / factor;
 			maxValue = value1 + 1.0 / factor;
+
+			this.bitConverter = bitConverter;
 		}
 
 		private bool CheckRoundedEquality(double value) =>
 			RoundType switch
-		{
+			{
 				ScanRoundMode.Strict => Value1.IsNearlyEqual(Math.Round(value, significantDigits, MidpointRounding.AwayFromZero), 0.0001),
 				ScanRoundMode.Normal => minValue < value && value < maxValue,
 				ScanRoundMode.Truncate => (long)value == (long)Value1,
@@ -46,7 +51,7 @@ namespace ReClassNET.MemoryScanner.Comparer
 				data,
 				index,
 				value => CompareType switch
-			{
+				{
 					ScanCompareType.Equal => CheckRoundedEquality(value),
 					ScanCompareType.NotEqual => !CheckRoundedEquality(value),
 					ScanCompareType.GreaterThan => value > Value1,
@@ -60,7 +65,7 @@ namespace ReClassNET.MemoryScanner.Comparer
 				},
 				out result
 			);
-			}
+		}
 
 		public bool Compare(byte[] data, int index, ScanResult previous, out ScanResult result)
 		{
@@ -77,7 +82,7 @@ namespace ReClassNET.MemoryScanner.Comparer
 				data,
 				index,
 				value => CompareType switch
-			{
+				{
 					ScanCompareType.Equal => CheckRoundedEquality(value),
 					ScanCompareType.NotEqual => !CheckRoundedEquality(value),
 					ScanCompareType.Changed => value != previous.Value,
@@ -98,11 +103,11 @@ namespace ReClassNET.MemoryScanner.Comparer
 			);
 		}
 
-		private static bool CompareInternal(byte[] data, int index, Func<double, bool> matcher, out ScanResult result)
+		private bool CompareInternal(byte[] data, int index, Func<double, bool> matcher, out ScanResult result)
 		{
 			result = null;
 
-			var value = BitConverter.ToDouble(data, index);
+			var value = bitConverter.ToDouble(data, index);
 
 			if (!matcher(value))
 			{

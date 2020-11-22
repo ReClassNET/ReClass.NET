@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.Runtime.InteropServices;
 using System.Text;
 using ReClassNET.Extensions;
+using ReClassNET.Util.Conversion;
 
 namespace ReClassNET.Memory
 {
@@ -15,12 +15,14 @@ namespace ReClassNET.Memory
 
 		public byte[] RawData => data;
 
+		public EndianBitConverter BitConverter { get; set; } = EndianBitConverter.System;
+
 		public int Size
 		{
 			get => data.Length;
 			set
 			{
-				if (value != data.Length)
+				if (value >= 0 && value != data.Length)
 				{
 					data = new byte[value];
 					historyData = new byte[value];
@@ -44,41 +46,26 @@ namespace ReClassNET.Memory
 		}
 
 		public MemoryBuffer()
-			: this(0)
 		{
 			Contract.Ensures(data != null);
 			Contract.Ensures(historyData != null);
-		}
 
-		public MemoryBuffer(int size)
-		{
-			Contract.Requires(size >= 0);
-			Contract.Ensures(data != null);
-			Contract.Ensures(historyData != null);
-
-			data = new byte[size];
-			historyData = new byte[size];
-		}
-
-		public MemoryBuffer(MemoryBuffer other)
-		{
-			Contract.Requires(other != null);
-			Contract.Ensures(data != null);
-			Contract.Ensures(historyData != null);
-
-			data = other.data;
-			historyData = other.historyData;
-			hasHistory = other.hasHistory;
-
-			ContainsValidData = other.ContainsValidData;
+			data = Array.Empty<byte>();
+			historyData = Array.Empty<byte>();
 		}
 
 		public MemoryBuffer Clone()
 		{
 			Contract.Ensures(Contract.Result<MemoryBuffer>() != null);
 
-			return new MemoryBuffer(this)
+			return new MemoryBuffer
 			{
+				data = data,
+				historyData = historyData,
+				hasHistory = hasHistory,
+
+				BitConverter = BitConverter,
+				ContainsValidData = ContainsValidData,
 				Offset = Offset
 			};
 		}
@@ -97,6 +84,8 @@ namespace ReClassNET.Memory
 			Array.Copy(data, historyData, data.Length);
 
 			hasHistory = ContainsValidData;
+
+			BitConverter = reader.BitConverter;
 
 			ContainsValidData = reader.ReadRemoteMemoryIntoBuffer(address, ref data);
 			if (!ContainsValidData)
