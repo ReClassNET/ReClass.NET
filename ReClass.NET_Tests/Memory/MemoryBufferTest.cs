@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using NFluent;
 using ReClassNET.Memory;
@@ -10,7 +10,10 @@ namespace ReClass.NET_Tests.Memory
 	{
 		private static MemoryBuffer CreateFromBytes(params byte[] data)
 		{
-			var buffer = new MemoryBuffer(data.Length);
+			var buffer = new MemoryBuffer
+			{
+				Size = data.Length
+			};
 			Array.Copy(data, buffer.RawData, data.Length);
 			return buffer;
 		}

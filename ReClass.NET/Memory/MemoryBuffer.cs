@@ -20,7 +20,7 @@ namespace ReClassNET.Memory
 			get => data.Length;
 			set
 			{
-				if (value != data.Length)
+				if (value >= 0 && value != data.Length)
 				{
 					data = new byte[value];
 					historyData = new byte[value];
@@ -44,20 +44,12 @@ namespace ReClassNET.Memory
 		}
 
 		public MemoryBuffer()
-			: this(0)
 		{
 			Contract.Ensures(data != null);
 			Contract.Ensures(historyData != null);
-		}
 
-		public MemoryBuffer(int size)
-		{
-			Contract.Requires(size >= 0);
-			Contract.Ensures(data != null);
-			Contract.Ensures(historyData != null);
-
-			data = new byte[size];
-			historyData = new byte[size];
+			data = Array.Empty<byte>();
+			historyData = Array.Empty<byte>();
 		}
 
 		public MemoryBuffer(MemoryBuffer other)
