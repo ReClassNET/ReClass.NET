@@ -193,19 +193,19 @@ namespace ReClassNET.MemoryScanner
 						ValueStr = FormatValue(buffer[0], ShowValueHexadecimal);
 						break;
 					case ScanValueType.Short:
-						ValueStr = FormatValue(BitConverter.ToInt16(buffer, 0), ShowValueHexadecimal);
+						ValueStr = FormatValue(process.BitConverter.ToInt16(buffer, 0), ShowValueHexadecimal);
 						break;
 					case ScanValueType.Integer:
-						ValueStr = FormatValue(BitConverter.ToInt32(buffer, 0), ShowValueHexadecimal);
+						ValueStr = FormatValue(process.BitConverter.ToInt32(buffer, 0), ShowValueHexadecimal);
 						break;
 					case ScanValueType.Long:
-						ValueStr = FormatValue(BitConverter.ToInt64(buffer, 0), ShowValueHexadecimal);
+						ValueStr = FormatValue(process.BitConverter.ToInt64(buffer, 0), ShowValueHexadecimal);
 						break;
 					case ScanValueType.Float:
-						ValueStr = FormatValue(BitConverter.ToSingle(buffer, 0));
+						ValueStr = FormatValue(process.BitConverter.ToSingle(buffer, 0));
 						break;
 					case ScanValueType.Double:
-						ValueStr = FormatValue(BitConverter.ToDouble(buffer, 0));
+						ValueStr = FormatValue(process.BitConverter.ToDouble(buffer, 0));
 						break;
 					case ScanValueType.ArrayOfBytes:
 						ValueStr = FormatValue(buffer);
@@ -241,16 +241,16 @@ namespace ReClassNET.MemoryScanner
 				switch (ValueType)
 				{
 					case ScanValueType.Byte:
-						data = BitConverter.GetBytes((byte)value);
+						data = process.BitConverter.GetBytes((byte)value);
 						break;
 					case ScanValueType.Short:
-						data = BitConverter.GetBytes((short)value);
+						data = process.BitConverter.GetBytes((short)value);
 						break;
 					case ScanValueType.Integer:
-						data = BitConverter.GetBytes((int)value);
+						data = process.BitConverter.GetBytes((int)value);
 						break;
 					case ScanValueType.Long:
-						data = BitConverter.GetBytes(value);
+						data = process.BitConverter.GetBytes(value);
 						break;
 				}
 			}
@@ -262,10 +262,10 @@ namespace ReClassNET.MemoryScanner
 				switch (ValueType)
 				{
 					case ScanValueType.Float:
-						data = BitConverter.GetBytes((float)value);
+						data = process.BitConverter.GetBytes((float)value);
 						break;
 					case ScanValueType.Double:
-						data = BitConverter.GetBytes(value);
+						data = process.BitConverter.GetBytes(value);
 						break;
 				}
 			}

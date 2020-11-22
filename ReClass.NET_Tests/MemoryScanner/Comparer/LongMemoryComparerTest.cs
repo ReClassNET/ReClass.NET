@@ -1,13 +1,16 @@
-﻿using System;
+using System;
 using NFluent;
 using ReClassNET.MemoryScanner;
 using ReClassNET.MemoryScanner.Comparer;
+using ReClassNET.Util.Conversion;
 using Xunit;
 
 namespace ReClass.NET_Tests.MemoryScanner.Comparer
 {
 	public class LongMemoryComparerTest
 	{
+		private static EndianBitConverter BitConverter { get; } = EndianBitConverter.System;
+
 		[Theory]
 		[InlineData(ScanCompareType.Equal, 0L, 0L)]
 		[InlineData(ScanCompareType.Equal, 1L, 2L)]
@@ -17,7 +20,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[InlineData(ScanCompareType.NotEqual, 0L, 0L)]
 		public void TestConstructor(ScanCompareType compareType, long value1, long value2)
 		{
-			var sut = new LongMemoryComparer(compareType, value1, value2);
+			var sut = new LongMemoryComparer(compareType, value1, value2, BitConverter);
 
 			Check.That(sut.CompareType).IsEqualTo(compareType);
 			Check.That(sut.ValueSize).IsEqualTo(sizeof(long));
@@ -64,7 +67,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[MemberData(nameof(GetTestCompareScanCompareTypeUnknownData))]
 		public void TestCompare(ScanCompareType compareType, long value1, long value2, byte[] data, bool expectedResult, ScanResult expectedScanResult)
 		{
-			var sut = new LongMemoryComparer(compareType, value1, value2);
+			var sut = new LongMemoryComparer(compareType, value1, value2, BitConverter);
 
 			Check.That(sut.Compare(data, 0, out var scanResult)).IsEqualTo(expectedResult);
 			Check.That(scanResult).IsEqualTo(expectedScanResult);
@@ -83,7 +86,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[InlineData(ScanCompareType.IncreasedOrEqual)]
 		public void TestCompareInvalidCompareTypeThrows(ScanCompareType compareType)
 		{
-			var sut = new LongMemoryComparer(compareType, 0L, 0L);
+			var sut = new LongMemoryComparer(compareType, 0L, 0L, BitConverter);
 
 			Check.ThatCode(() => sut.Compare(BitConverter.GetBytes(0L), 0, out _)).Throws<InvalidCompareTypeException>();
 		}
@@ -101,7 +104,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[MemberData(nameof(GetTestCompareThrowsData))]
 		public void TestCompareInvalidDataThrows(byte[] data, int index, Type expectedExceptionType)
 		{
-			var sut = new LongMemoryComparer(ScanCompareType.Equal, 0L, 0L);
+			var sut = new LongMemoryComparer(ScanCompareType.Equal, 0L, 0L, BitConverter);
 
 			Check.ThatCode(() => sut.Compare(data, index, out _)).ThrowsType(expectedExceptionType);
 		}
@@ -141,7 +144,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[MemberData(nameof(GetTestCompareWithPreviousData))]
 		public void TestCompareWithPrevious(ScanCompareType compareType, long value1, long value2, byte[] data, ScanResult previousScanResult, bool expectedResult, ScanResult expectedScanResult)
 		{
-			var sut = new LongMemoryComparer(compareType, value1, value2);
+			var sut = new LongMemoryComparer(compareType, value1, value2, BitConverter);
 
 			Check.That(sut.Compare(data, 0, previousScanResult, out var scanResult)).IsEqualTo(expectedResult);
 			Check.That(scanResult).IsEqualTo(expectedScanResult);
@@ -154,7 +157,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[Fact]
 		public void TestCompareWithPreviousThrows()
 		{
-			var sut = new LongMemoryComparer(ScanCompareType.Unknown, 0L, 0L);
+			var sut = new LongMemoryComparer(ScanCompareType.Unknown, 0L, 0L, BitConverter);
 
 			Check.ThatCode(() => sut.Compare(BitConverter.GetBytes(0L), 0, new LongScanResult(0L), out _)).Throws<InvalidCompareTypeException>();
 		}

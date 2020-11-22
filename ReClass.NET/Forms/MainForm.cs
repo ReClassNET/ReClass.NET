@@ -588,6 +588,8 @@ namespace ReClassNET.Forms
 				return;
 			}
 
+			var bitConverter = Program.RemoteProcess.BitConverter;
+
 			IScanComparer comparer;
 			switch (selectedNode.Node)
 			{
@@ -595,10 +597,10 @@ namespace ReClassNET.Forms
 					comparer = new ArrayOfBytesMemoryComparer(node.ReadValueFromMemory(selectedNode.Memory));
 					break;
 				case FloatNode node:
-					comparer = new FloatMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0.0f);
+					comparer = new FloatMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0.0f, bitConverter);
 					break;
 				case DoubleNode node:
-					comparer = new DoubleMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0.0);
+					comparer = new DoubleMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, 2, node.ReadValueFromMemory(selectedNode.Memory), 0.0, bitConverter);
 					break;
 				case Int8Node node:
 					comparer = new ByteMemoryComparer(ScanCompareType.Equal, (byte)node.ReadValueFromMemory(selectedNode.Memory), 0);
@@ -607,30 +609,30 @@ namespace ReClassNET.Forms
 					comparer = new ByteMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
 					break;
 				case Int16Node node:
-					comparer = new ShortMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					comparer = new ShortMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0, bitConverter);
 					break;
 				case UInt16Node node:
-					comparer = new ShortMemoryComparer(ScanCompareType.Equal, (short)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					comparer = new ShortMemoryComparer(ScanCompareType.Equal, (short)node.ReadValueFromMemory(selectedNode.Memory), 0, bitConverter);
 					break;
 				case Int32Node node:
-					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0);
+					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0, bitConverter);
 					break;
 				case UInt32Node node:
-					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, (int)node.ReadValueFromMemory(selectedNode.Memory), 0);
+					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, (int)node.ReadValueFromMemory(selectedNode.Memory), 0, bitConverter);
 					break;
 				case Int64Node node:
-					comparer = new LongMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0L);
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, node.ReadValueFromMemory(selectedNode.Memory), 0L, bitConverter);
 					break;
 				case UInt64Node node:
-					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)node.ReadValueFromMemory(selectedNode.Memory), 0L);
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)node.ReadValueFromMemory(selectedNode.Memory), 0L, bitConverter);
 					break;
 				case NIntNode node:
 				{
 					var value = node.ReadValueFromMemory(selectedNode.Memory);
 #if RECLASSNET64
-					comparer = new LongMemoryComparer(ScanCompareType.Equal, value.ToInt64(), 0L);
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, value.ToInt64(), 0L, bitConverter);
 #else
-					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, value.ToInt32(), 0);
+					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, value.ToInt32(), 0, bitConverter);
 #endif
 					break;
 				}
@@ -638,9 +640,9 @@ namespace ReClassNET.Forms
 				{
 					var value = node.ReadValueFromMemory(selectedNode.Memory);
 #if RECLASSNET64
-					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)value.ToUInt64(), 0L);
+					comparer = new LongMemoryComparer(ScanCompareType.Equal, (long)value.ToUInt64(), 0L, bitConverter);
 #else
-					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, (int)value.ToUInt32(), 0);
+					comparer = new IntegerMemoryComparer(ScanCompareType.Equal, (int)value.ToUInt32(), 0, bitConverter);
 #endif
 					break;
 				}

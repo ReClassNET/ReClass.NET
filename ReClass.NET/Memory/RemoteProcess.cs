@@ -13,6 +13,7 @@ using ReClassNET.Extensions;
 using ReClassNET.MemoryScanner;
 using ReClassNET.Native;
 using ReClassNET.Symbols;
+using ReClassNET.Util.Conversion;
 
 namespace ReClassNET.Memory
 {
@@ -55,6 +56,8 @@ namespace ReClassNET.Memory
 		public ProcessInfo UnderlayingProcess => process;
 
 		public SymbolStore Symbols => symbols;
+
+		public EndianBitConverter BitConverter { get; set; } = EndianBitConverter.System;
 
 		/// <summary>Gets a copy of the current modules list. This list may change if the remote process (un)loads a module.</summary>
 		public IEnumerable<Module> Modules

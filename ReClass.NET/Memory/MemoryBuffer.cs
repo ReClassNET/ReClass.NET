@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.Runtime.InteropServices;
 using System.Text;
 using ReClassNET.Extensions;
+using ReClassNET.Util.Conversion;
 
 namespace ReClassNET.Memory
 {
@@ -14,6 +14,8 @@ namespace ReClassNET.Memory
 		private bool hasHistory;
 
 		public byte[] RawData => data;
+
+		public EndianBitConverter BitConverter { get; set; } = EndianBitConverter.System;
 
 		public int Size
 		{
@@ -52,25 +54,18 @@ namespace ReClassNET.Memory
 			historyData = Array.Empty<byte>();
 		}
 
-		public MemoryBuffer(MemoryBuffer other)
-		{
-			Contract.Requires(other != null);
-			Contract.Ensures(data != null);
-			Contract.Ensures(historyData != null);
-
-			data = other.data;
-			historyData = other.historyData;
-			hasHistory = other.hasHistory;
-
-			ContainsValidData = other.ContainsValidData;
-		}
-
 		public MemoryBuffer Clone()
 		{
 			Contract.Ensures(Contract.Result<MemoryBuffer>() != null);
 
-			return new MemoryBuffer(this)
+			return new MemoryBuffer
 			{
+				data = data,
+				historyData = historyData,
+				hasHistory = hasHistory,
+
+				BitConverter = BitConverter,
+				ContainsValidData = ContainsValidData,
 				Offset = Offset
 			};
 		}
@@ -89,6 +84,8 @@ namespace ReClassNET.Memory
 			Array.Copy(data, historyData, data.Length);
 
 			hasHistory = ContainsValidData;
+
+			BitConverter = reader.BitConverter;
 
 			ContainsValidData = reader.ReadRemoteMemoryIntoBuffer(address, ref data);
 			if (!ContainsValidData)

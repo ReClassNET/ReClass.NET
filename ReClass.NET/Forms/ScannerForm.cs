@@ -758,11 +758,11 @@ namespace ReClassNET.Forms
 					case ScanValueType.Byte:
 						return new ByteMemoryComparer(compareType, (byte)value1, (byte)value2);
 					case ScanValueType.Short:
-						return new ShortMemoryComparer(compareType, (short)value1, (short)value2);
+						return new ShortMemoryComparer(compareType, (short)value1, (short)value2, process.BitConverter);
 					case ScanValueType.Integer:
-						return new IntegerMemoryComparer(compareType, (int)value1, (int)value2);
+						return new IntegerMemoryComparer(compareType, (int)value1, (int)value2, process.BitConverter);
 					case ScanValueType.Long:
-						return new LongMemoryComparer(compareType, value1, value2);
+						return new LongMemoryComparer(compareType, value1, value2, process.BitConverter);
 				}
 			}
 			else if (settings.ValueType == ScanValueType.Float || settings.ValueType == ScanValueType.Double)
@@ -806,9 +806,9 @@ namespace ReClassNET.Forms
 				switch (settings.ValueType)
 				{
 					case ScanValueType.Float:
-						return new FloatMemoryComparer(compareType, roundMode, significantDigits, (float)value1, (float)value2);
+						return new FloatMemoryComparer(compareType, roundMode, significantDigits, (float)value1, (float)value2, process.BitConverter);
 					case ScanValueType.Double:
-						return new DoubleMemoryComparer(compareType, roundMode, significantDigits, value1, value2);
+						return new DoubleMemoryComparer(compareType, roundMode, significantDigits, value1, value2, process.BitConverter);
 				}
 			}
 			else if (settings.ValueType == ScanValueType.ArrayOfBytes)

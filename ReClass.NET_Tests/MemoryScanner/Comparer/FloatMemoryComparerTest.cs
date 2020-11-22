@@ -1,13 +1,16 @@
-﻿using System;
+using System;
 using NFluent;
 using ReClassNET.MemoryScanner;
 using ReClassNET.MemoryScanner.Comparer;
+using ReClassNET.Util.Conversion;
 using Xunit;
 
 namespace ReClass.NET_Tests.MemoryScanner.Comparer
 {
 	public class FloatMemoryComparerTest
 	{
+		private static EndianBitConverter BitConverter { get; } = EndianBitConverter.System;
+
 		[Theory]
 		[InlineData(ScanCompareType.Equal, ScanRoundMode.Normal, 0.0f, 0.0f)]
 		[InlineData(ScanCompareType.Equal, ScanRoundMode.Strict, 1.0f, 2.0f)]
@@ -17,7 +20,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[InlineData(ScanCompareType.NotEqual, ScanRoundMode.Truncate, 0.0f, 0.0f)]
 		public void TestConstructor(ScanCompareType compareType, ScanRoundMode roundMode, float value1, float value2)
 		{
-			var sut = new FloatMemoryComparer(compareType, roundMode, 1, value1, value2);
+			var sut = new FloatMemoryComparer(compareType, roundMode, 1, value1, value2, BitConverter);
 
 			Check.That(sut.CompareType).IsEqualTo(compareType);
 			Check.That(sut.RoundType).IsEqualTo(roundMode);
@@ -35,7 +38,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 			const float Value1 = 1.234567f;
 			const float Value2 = 7.654321f;
 
-			var sut = new FloatMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, significantDigits, Value1, Value2);
+			var sut = new FloatMemoryComparer(ScanCompareType.Equal, ScanRoundMode.Normal, significantDigits, Value1, Value2, BitConverter);
 
 			Check.That(sut.Value1).IsEqualTo((float)Math.Round(Value1, significantDigits, MidpointRounding.AwayFromZero));
 			Check.That(sut.Value2).IsEqualTo((float)Math.Round(Value2, significantDigits, MidpointRounding.AwayFromZero));
@@ -74,7 +77,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[MemberData(nameof(GetTestCompareScanCompareTypeUnknownData))]
 		public void TestCompare(ScanCompareType compareType, float value1, float value2, byte[] data, bool expectedResult, ScanResult expectedScanResult)
 		{
-			var sut = new FloatMemoryComparer(compareType, ScanRoundMode.Normal, 1, value1, value2);
+			var sut = new FloatMemoryComparer(compareType, ScanRoundMode.Normal, 1, value1, value2, BitConverter);
 
 			Check.That(sut.Compare(data, 0, out var scanResult)).IsEqualTo(expectedResult);
 			Check.That(scanResult).IsEqualTo(expectedScanResult);
@@ -93,7 +96,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[InlineData(ScanCompareType.IncreasedOrEqual)]
 		public void TestCompareInvalidCompareTypeThrows(ScanCompareType compareType)
 		{
-			var sut = new FloatMemoryComparer(compareType, ScanRoundMode.Normal, 1, 0.0f, 0.0f);
+			var sut = new FloatMemoryComparer(compareType, ScanRoundMode.Normal, 1, 0.0f, 0.0f, BitConverter);
 
 			Check.ThatCode(() => sut.Compare(BitConverter.GetBytes(0.0f), 0, out _)).Throws<InvalidCompareTypeException>();
 		}
@@ -109,7 +112,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[MemberData(nameof(GetTestCompareThrowsData))]
 		public void TestCompareInvalidDataThrows(byte[] data, int index, Type expectedExceptionType)
 		{
-			var sut = new FloatMemoryComparer(ScanCompareType.Unknown, ScanRoundMode.Normal, 1, 0.0f, 0.0f);
+			var sut = new FloatMemoryComparer(ScanCompareType.Unknown, ScanRoundMode.Normal, 1, 0.0f, 0.0f, BitConverter);
 
 			Check.ThatCode(() => sut.Compare(data, index, out _)).ThrowsType(expectedExceptionType);
 		}
@@ -149,7 +152,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[MemberData(nameof(GetTestCompareWithPreviousData))]
 		public void TestCompareWithPrevious(ScanCompareType compareType, float value1, float value2, byte[] data, ScanResult previousScanResult, bool expectedResult, ScanResult expectedScanResult)
 		{
-			var sut = new FloatMemoryComparer(compareType, ScanRoundMode.Normal, 1, value1, value2);
+			var sut = new FloatMemoryComparer(compareType, ScanRoundMode.Normal, 1, value1, value2, BitConverter);
 
 			Check.That(sut.Compare(data, 0, previousScanResult, out var scanResult)).IsEqualTo(expectedResult);
 			Check.That(scanResult).IsEqualTo(expectedScanResult);
@@ -162,7 +165,7 @@ namespace ReClass.NET_Tests.MemoryScanner.Comparer
 		[Fact]
 		public void TestCompareWithPreviousThrows()
 		{
-			var sut = new FloatMemoryComparer(ScanCompareType.Unknown, ScanRoundMode.Normal, 1, 0, 0);
+			var sut = new FloatMemoryComparer(ScanCompareType.Unknown, ScanRoundMode.Normal, 1, 0, 0, BitConverter);
 
 			Check.ThatCode(() => sut.Compare(BitConverter.GetBytes(0.0f), 0, new FloatScanResult(0.0f), out _)).Throws<InvalidCompareTypeException>();
 		}
