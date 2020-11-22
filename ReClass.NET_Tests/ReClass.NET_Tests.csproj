@@ -91,6 +91,9 @@
     <Compile Include="Util\BitStringTest.cs" />
     <Compile Include="Util\CircularBufferTest.cs" />
     <Compile Include="Util\CommandLineArgsTest.cs" />
+    <Compile Include="Util\Conversion\BigEndianBitConverterTest.cs" />
+    <Compile Include="Util\Conversion\EndianBitConverterTest.cs" />
+    <Compile Include="Util\Conversion\LittleEndianBitConverterTest.cs" />
     <Compile Include="Util\CustomDataMapTest.cs" />
     <Compile Include="Util\DirectedGraphTest.cs" />
     <Compile Include="Util\GrowingListTest.cs" />

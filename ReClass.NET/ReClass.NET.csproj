@@ -394,6 +394,9 @@
     <Compile Include="Util\BitString.cs" />
     <Compile Include="Util\CircularBuffer.cs" />
     <Compile Include="Util\CommandLineArgs.cs" />
+    <Compile Include="Util\Conversion\BigEndianBitConverter.cs" />
+    <Compile Include="Util\Conversion\EndianBitConverter.cs" />
+    <Compile Include="Util\Conversion\LittleEndianBitConverter.cs" />
     <Compile Include="Util\CustomDataMap.cs" />
     <Compile Include="Extensions\BinaryReaderWriterExtensions.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
