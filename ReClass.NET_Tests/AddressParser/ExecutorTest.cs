@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Moq;
 using NFluent;
 using ReClassNET.AddressParser;
-using ReClassNET.Extensions;
 using ReClassNET.Memory;
+using ReClassNET.Util.Conversion;
 using Xunit;
 
 namespace ReClass.NET_Tests.AddressParser
@@ -76,15 +76,20 @@ namespace ReClass.NET_Tests.AddressParser
 		[MemberData(nameof(GetReadMemoryExpressionTestData), 4)]
 		public void ReadMemoryExpression32Test(string expression, IntPtr expected)
 		{
+			var converter = EndianBitConverter.System;
+
 			var mock = new Mock<IProcessReader>();
-			mock.Setup(p => p.ReadRemoteInt32((IntPtr)0))
-				.Returns(0);
-			mock.Setup(p => p.ReadRemoteInt32((IntPtr)0x10))
-				.Returns(0x10);
-			mock.Setup(p => p.ReadRemoteInt32((IntPtr)0x20))
-				.Returns(0x20);
-			mock.Setup(p => p.ReadRemoteInt32((IntPtr)0x30))
-				.Returns(0x30);
+			mock.SetupProperty(p => p.BitConverter)
+				.SetupGet(p => p.BitConverter)
+				.Returns(converter);
+			mock.Setup(p => p.ReadRemoteMemory((IntPtr)0, sizeof(int)))
+				.Returns(converter.GetBytes(0));
+			mock.Setup(p => p.ReadRemoteMemory((IntPtr)0x10, sizeof(int)))
+				.Returns(converter.GetBytes(0x10));
+			mock.Setup(p => p.ReadRemoteMemory((IntPtr)0x20, sizeof(int)))
+				.Returns(converter.GetBytes(0x20));
+			mock.Setup(p => p.ReadRemoteMemory((IntPtr)0x30, sizeof(int)))
+				.Returns(converter.GetBytes(0x30));
 
 			var executor = CreateExecutor();
 
@@ -95,15 +100,20 @@ namespace ReClass.NET_Tests.AddressParser
 		[MemberData(nameof(GetReadMemoryExpressionTestData), 8)]
 		public void ReadMemoryExpression64Test(string expression, IntPtr expected)
 		{
+			var converter = EndianBitConverter.System;
+
 			var mock = new Mock<IProcessReader>();
-			mock.Setup(p => p.ReadRemoteInt64((IntPtr)0))
-				.Returns(0);
-			mock.Setup(p => p.ReadRemoteInt64((IntPtr)0x10))
-				.Returns(0x10);
-			mock.Setup(p => p.ReadRemoteInt64((IntPtr)0x20))
-				.Returns(0x20);
-			mock.Setup(p => p.ReadRemoteInt64((IntPtr)0x30))
-				.Returns(0x30);
+			mock.SetupProperty(p => p.BitConverter)
+				.SetupGet(p => p.BitConverter)
+				.Returns(converter);
+			mock.Setup(p => p.ReadRemoteMemory((IntPtr)0, sizeof(long)))
+				.Returns(converter.GetBytes(0L));
+			mock.Setup(p => p.ReadRemoteMemory((IntPtr)0x10, sizeof(long)))
+				.Returns(converter.GetBytes(0x10L));
+			mock.Setup(p => p.ReadRemoteMemory((IntPtr)0x20, sizeof(long)))
+				.Returns(converter.GetBytes(0x20L));
+			mock.Setup(p => p.ReadRemoteMemory((IntPtr)0x30, sizeof(long)))
+				.Returns(converter.GetBytes(0x30L));
 
 			var executor = CreateExecutor();
 
@@ -113,11 +123,16 @@ namespace ReClass.NET_Tests.AddressParser
 		[Fact]
 		public void ReadMemoryExpressionInvariantTest()
 		{
+			var converter = EndianBitConverter.System;
+
 			var mock = new Mock<IProcessReader>();
-			mock.Setup(p => p.ReadRemoteInt32((IntPtr)0x10))
-				.Returns(0x10);
-			mock.Setup(p => p.ReadRemoteInt64((IntPtr)0x10))
-				.Returns(0x10);
+			mock.SetupProperty(p => p.BitConverter)
+				.SetupGet(p => p.BitConverter)
+				.Returns(converter);
+			mock.Setup(p => p.ReadRemoteMemory((IntPtr)0x10, sizeof(int)))
+				.Returns(converter.GetBytes(0x10));
+			mock.Setup(p => p.ReadRemoteMemory((IntPtr)0x10, sizeof(long)))
+				.Returns(converter.GetBytes(0x10L));
 
 			var executor = CreateExecutor();
 
