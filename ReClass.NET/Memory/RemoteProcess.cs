@@ -345,17 +345,6 @@ namespace ReClassNET.Memory
 			return coreFunctions.WriteRemoteMemory(handle, address, ref data, 0, data.Length);
 		}
 
-		public bool WriteRemoteMemory<T>(IntPtr address, T value) where T : struct
-		{
-			var data = new byte[Marshal.SizeOf<T>()];
-
-			var gcHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			Marshal.StructureToPtr(value, gcHandle.AddrOfPinnedObject(), false);
-			gcHandle.Free();
-
-			return WriteRemoteMemory(address, data);
-		}
-
 		#endregion
 
 		public Section GetSectionToPointer(IntPtr address)

@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using ReClassNET.Controls;
+using ReClassNET.Extensions;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
