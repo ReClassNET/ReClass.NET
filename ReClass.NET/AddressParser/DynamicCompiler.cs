@@ -102,9 +102,15 @@ namespace ReClassNET.AddressParser
 					{
 						var addressParameter = GenerateMethodBody(readMemoryExpression.Expression, processParameter);
 
-						var readRemoteIntPtrFn = typeof(IRemoteMemoryReaderExtension).GetRuntimeMethod(nameof(IRemoteMemoryReaderExtension.ReadRemoteIntPtr), new[] { typeof(IRemoteMemoryReader), typeof(IntPtr) });
+						var functionName = readMemoryExpression.ByteCount == 4 ? nameof(IRemoteMemoryReaderExtension.ReadRemoteInt32) : nameof(IRemoteMemoryReaderExtension.ReadRemoteInt64);
+						var readRemoteIntPtrFn = typeof(IRemoteMemoryReaderExtension).GetRuntimeMethod(functionName, new[] { typeof(IRemoteMemoryReader), typeof(IntPtr) });
 
-						return Expression.Call(null, readRemoteIntPtrFn, processParameter, addressParameter);
+						var callExpression = Expression.Call(null, readRemoteIntPtrFn, processParameter, addressParameter);
+
+						var paramType = readMemoryExpression.ByteCount == 4 ? typeof(int) : typeof(long);
+						var convertFn = typeof(IntPtrExtension).GetRuntimeMethod(nameof(IntPtrExtension.From), new[] { paramType });
+
+						return Expression.Call(null, convertFn, callExpression);
 					}
 			}
 
