@@ -31,75 +31,78 @@ namespace ReClassNET.Nodes
 				}
 			}
 
-			var namedAddress = view.Process.GetNamedAddress(ivalue);
-			if (!string.IsNullOrEmpty(namedAddress))
+			if (ivalue != IntPtr.Zero)
 			{
-				if (view.Settings.ShowCommentPointer)
+				var namedAddress = view.Process.GetNamedAddress(ivalue);
+				if (!string.IsNullOrEmpty(namedAddress))
 				{
-					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, "->") + view.Font.Width;
-					x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, namedAddress) + view.Font.Width;
-				}
-
-				if (view.Settings.ShowCommentRtti)
-				{
-					var rtti = view.Process.ReadRemoteRuntimeTypeInformation(ivalue);
-					if (!string.IsNullOrEmpty(rtti))
+					if (view.Settings.ShowCommentPointer)
 					{
-						x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, rtti) + view.Font.Width;
+						x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.NoneId, "->") + view.Font.Width;
+						x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, namedAddress) + view.Font.Width;
 					}
-				}
 
-				if (view.Settings.ShowCommentSymbol)
-				{
-					var module = view.Process.GetModuleToPointer(ivalue);
-					if (module != null)
+					if (view.Settings.ShowCommentRtti)
 					{
-						var symbols = view.Process.Symbols.GetSymbolsForModule(module);
-						var symbol = symbols?.GetSymbolString(ivalue, module);
-						if (!string.IsNullOrEmpty(symbol))
+						var rtti = view.Process.ReadRemoteRuntimeTypeInformation(ivalue);
+						if (!string.IsNullOrEmpty(rtti))
 						{
-							x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol) + view.Font.Width;
+							x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, rtti) + view.Font.Width;
 						}
 					}
-				}
 
-				if (view.Settings.ShowCommentString)
-				{
-					var data = view.Process.ReadRemoteMemory(ivalue, 64);
-
-					var isWideString = false;
-					string text = null;
-
-					// First check if it could be an UTF8 string and if not try UTF16.
-					if (data.Take(IntPtr.Size).InterpretAsSingleByteCharacter().IsPrintableData())
+					if (view.Settings.ShowCommentSymbol)
 					{
-						text = new string(Encoding.UTF8.GetChars(data).TakeWhile(c => c != 0).ToArray());
-					}
-					else if(data.Take(IntPtr.Size * 2).InterpretAsDoubleByteCharacter().IsPrintableData())
-					{
-						isWideString = true;
-
-						text = new string(Encoding.Unicode.GetChars(data).TakeWhile(c => c != 0).ToArray());
-					}
-
-					if (text != null)
-					{
-						x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, isWideString ? "L'" : "'");
-						x = AddText(view, x, y, view.Settings.TextColor, HotSpot.ReadOnlyId, text);
-						x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
-					}
-				}
-
-				if (view.Settings.ShowCommentPluginInfo)
-				{
-					var nodeAddress = view.Address + Offset;
-
-					foreach (var reader in NodeInfoReader)
-					{
-						var info = reader.ReadNodeInfo(this, view.Process, view.Memory, nodeAddress, ivalue);
-						if (info != null)
+						var module = view.Process.GetModuleToPointer(ivalue);
+						if (module != null)
 						{
-							x = AddText(view, x, y, view.Settings.PluginColor, HotSpot.ReadOnlyId, info) + view.Font.Width;
+							var symbols = view.Process.Symbols.GetSymbolsForModule(module);
+							var symbol = symbols?.GetSymbolString(ivalue, module);
+							if (!string.IsNullOrEmpty(symbol))
+							{
+								x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, symbol) + view.Font.Width;
+							}
+						}
+					}
+
+					if (view.Settings.ShowCommentString)
+					{
+						var data = view.Process.ReadRemoteMemory(ivalue, 64);
+
+						var isWideString = false;
+						string text = null;
+
+						// First check if it could be an UTF8 string and if not try UTF16.
+						if (data.Take(IntPtr.Size).InterpretAsSingleByteCharacter().IsPrintableData())
+						{
+							text = new string(Encoding.UTF8.GetChars(data).TakeWhile(c => c != 0).ToArray());
+						}
+						else if (data.Take(IntPtr.Size * 2).InterpretAsDoubleByteCharacter().IsPrintableData())
+						{
+							isWideString = true;
+
+							text = new string(Encoding.Unicode.GetChars(data).TakeWhile(c => c != 0).ToArray());
+						}
+
+						if (text != null)
+						{
+							x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, isWideString ? "L'" : "'");
+							x = AddText(view, x, y, view.Settings.TextColor, HotSpot.ReadOnlyId, text);
+							x = AddText(view, x, y, view.Settings.TextColor, HotSpot.NoneId, "'") + view.Font.Width;
+						}
+					}
+
+					if (view.Settings.ShowCommentPluginInfo)
+					{
+						var nodeAddress = view.Address + Offset;
+
+						foreach (var reader in NodeInfoReader)
+						{
+							var info = reader.ReadNodeInfo(this, view.Process, view.Memory, nodeAddress, ivalue);
+							if (info != null)
+							{
+								x = AddText(view, x, y, view.Settings.PluginColor, HotSpot.ReadOnlyId, info) + view.Font.Width;
+							}
 						}
 					}
 				}
