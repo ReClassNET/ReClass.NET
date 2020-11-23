@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Text;
 using ReClassNET.Controls;
+using ReClassNET.Extensions;
 using ReClassNET.UI;
 
 namespace ReClassNET.Nodes
@@ -33,7 +34,7 @@ namespace ReClassNET.Nodes
 			}
 
 			var ptr = context.Memory.ReadIntPtr(Offset);
-			var text = context.Process.ReadRemoteString(Encoding, ptr, MaxStringCharacterCount);
+			var text = context.Process.ReadRemoteString(ptr, Encoding, MaxStringCharacterCount);
 
 			var origX = x;
 

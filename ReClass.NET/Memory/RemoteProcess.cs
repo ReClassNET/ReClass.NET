@@ -10,7 +10,6 @@ using ReClassNET.AddressParser;
 using ReClassNET.Core;
 using ReClassNET.Debugger;
 using ReClassNET.Extensions;
-using ReClassNET.MemoryScanner;
 using ReClassNET.Native;
 using ReClassNET.Symbols;
 using ReClassNET.Util.Conversion;
@@ -188,152 +187,13 @@ namespace ReClassNET.Memory
 			return data;
 		}
 
-		#region Read Remote Primitive Types
-
-		public sbyte ReadRemoteInt8(IntPtr address)
-		{
-			var data = ReadRemoteMemory(address, sizeof(sbyte));
-
-			return (sbyte)data[0];
-		}
-
-		public byte ReadRemoteUInt8(IntPtr address)
-		{
-			var data = ReadRemoteMemory(address, sizeof(byte));
-
-			return data[0];
-		}
-
-		public short ReadRemoteInt16(IntPtr address)
-		{
-			var data = ReadRemoteMemory(address, sizeof(short));
-
-			return BitConverter.ToInt16(data, 0);
-		}
-
-		public ushort ReadRemoteUInt16(IntPtr address)
-		{
-			var data = ReadRemoteMemory(address, sizeof(ushort));
-
-			return BitConverter.ToUInt16(data, 0);
-		}
-
-		public int ReadRemoteInt32(IntPtr address)
-		{
-			var data = ReadRemoteMemory(address, sizeof(int));
-
-			return BitConverter.ToInt32(data, 0);
-		}
-
-		public uint ReadRemoteUInt32(IntPtr address)
-		{
-			var data = ReadRemoteMemory(address, sizeof(uint));
-
-			return BitConverter.ToUInt32(data, 0);
-		}
-
-		public long ReadRemoteInt64(IntPtr address)
-		{
-			var data = ReadRemoteMemory(address, sizeof(long));
-
-			return BitConverter.ToInt64(data, 0);
-		}
-
-		public ulong ReadRemoteUInt64(IntPtr address)
-		{
-			var data = ReadRemoteMemory(address, sizeof(ulong));
-
-			return BitConverter.ToUInt64(data, 0);
-		}
-
-		public float ReadRemoteFloat(IntPtr address)
-		{
-			var data = ReadRemoteMemory(address, sizeof(float));
-
-			return BitConverter.ToSingle(data, 0);
-		}
-
-		public double ReadRemoteDouble(IntPtr address)
-		{
-			var data = ReadRemoteMemory(address, sizeof(double));
-
-			return BitConverter.ToDouble(data, 0);
-		}
-
-		public IntPtr ReadRemoteIntPtr(IntPtr address)
-		{
-#if RECLASSNET64
-			return (IntPtr)ReadRemoteInt64(address);
-#else
-			return (IntPtr)ReadRemoteInt32(address);
-#endif
-		}
-
-		#endregion
-
-		public string ReadRemoteString(Encoding encoding, IntPtr address, int length)
-		{
-			Contract.Requires(encoding != null);
-			Contract.Requires(length >= 0);
-			Contract.Ensures(Contract.Result<string>() != null);
-
-			var data = ReadRemoteMemory(address, length * encoding.GuessByteCountPerChar());
-
-			try
-			{
-				var sb = new StringBuilder(encoding.GetString(data));
-				for (var i = 0; i < sb.Length; ++i)
-				{
-					if (sb[i] == '\0')
-					{
-						sb.Length = i;
-						break;
-					}
-					if (!sb[i].IsPrintable())
-					{
-						sb[i] = '.';
-					}
-				}
-				return sb.ToString();
-			}
-			catch
-			{
-				return string.Empty;
-			}
-		}
-
-		public string ReadRemoteStringUntilFirstNullCharacter(Encoding encoding, IntPtr address, int length)
-		{
-			Contract.Requires(encoding != null);
-			Contract.Requires(length >= 0);
-			Contract.Ensures(Contract.Result<string>() != null);
-
-			var data = ReadRemoteMemory(address, length * encoding.GuessByteCountPerChar());
-
-			// TODO We should cache the pattern per encoding.
-			var index = PatternScanner.FindPattern(BytePattern.From(new byte[encoding.GuessByteCountPerChar()]), data);
-			if (index == -1)
-			{
-				index = data.Length;
-			}
-
-			try
-			{
-				return encoding.GetString(data, 0, Math.Min(index, data.Length));
-			}
-			catch
-			{
-				return string.Empty;
-			}
-		}
-
 		public string ReadRemoteRuntimeTypeInformation(IntPtr address)
 		{
 			if (address.MayBeValid())
 			{
 				if (!rttiCache.TryGetValue(address, out var rtti))
 				{
-					var objectLocatorPtr = ReadRemoteIntPtr(address - IntPtr.Size);
+					var objectLocatorPtr = this.ReadRemoteIntPtr(address - IntPtr.Size);
 					if (objectLocatorPtr.MayBeValid())
 					{
 
@@ -354,25 +214,25 @@ namespace ReClassNET.Memory
 
 		private string ReadRemoteRuntimeTypeInformation32(IntPtr address)
 		{
-			var classHierarchyDescriptorPtr = ReadRemoteIntPtr(address + 0x10);
+			var classHierarchyDescriptorPtr = this.ReadRemoteIntPtr(address + 0x10);
 			if (classHierarchyDescriptorPtr.MayBeValid())
 			{
-				var baseClassCount = ReadRemoteInt32(classHierarchyDescriptorPtr + 8);
+				var baseClassCount = this.ReadRemoteInt32(classHierarchyDescriptorPtr + 8);
 				if (baseClassCount > 0 && baseClassCount < 25)
 				{
-					var baseClassArrayPtr = ReadRemoteIntPtr(classHierarchyDescriptorPtr + 0xC);
+					var baseClassArrayPtr = this.ReadRemoteIntPtr(classHierarchyDescriptorPtr + 0xC);
 					if (baseClassArrayPtr.MayBeValid())
 					{
 						var sb = new StringBuilder();
 						for (var i = 0; i < baseClassCount; ++i)
 						{
-							var baseClassDescriptorPtr = ReadRemoteIntPtr(baseClassArrayPtr + (4 * i));
+							var baseClassDescriptorPtr = this.ReadRemoteIntPtr(baseClassArrayPtr + (4 * i));
 							if (baseClassDescriptorPtr.MayBeValid())
 							{
-								var typeDescriptorPtr = ReadRemoteIntPtr(baseClassDescriptorPtr);
+								var typeDescriptorPtr = this.ReadRemoteIntPtr(baseClassDescriptorPtr);
 								if (typeDescriptorPtr.MayBeValid())
 								{
-									var name = ReadRemoteStringUntilFirstNullCharacter(Encoding.UTF8, typeDescriptorPtr + 0x0C, 60);
+									var name = this.ReadRemoteStringUntilFirstNullCharacter(typeDescriptorPtr + 0x0C, Encoding.UTF8, 60);
 									if (name.EndsWith("@@"))
 									{
 										name = NativeMethods.UndecorateSymbolName("?" + name);
@@ -403,20 +263,20 @@ namespace ReClassNET.Memory
 
 		private string ReadRemoteRuntimeTypeInformation64(IntPtr address)
 		{
-			int baseOffset = ReadRemoteInt32(address + 0x14);
+			int baseOffset = this.ReadRemoteInt32(address + 0x14);
 			if (baseOffset != 0)
 			{
 				var baseAddress = address - baseOffset;
 
-				var classHierarchyDescriptorOffset = ReadRemoteInt32(address + 0x10);
+				var classHierarchyDescriptorOffset = this.ReadRemoteInt32(address + 0x10);
 				if (classHierarchyDescriptorOffset != 0)
 				{
 					var classHierarchyDescriptorPtr = baseAddress + classHierarchyDescriptorOffset;
 
-					var baseClassCount = ReadRemoteInt32(classHierarchyDescriptorPtr + 0x08);
+					var baseClassCount = this.ReadRemoteInt32(classHierarchyDescriptorPtr + 0x08);
 					if (baseClassCount > 0 && baseClassCount < 25)
 					{
-						var baseClassArrayOffset = ReadRemoteInt32(classHierarchyDescriptorPtr + 0x0C);
+						var baseClassArrayOffset = this.ReadRemoteInt32(classHierarchyDescriptorPtr + 0x0C);
 						if (baseClassArrayOffset != 0)
 						{
 							var baseClassArrayPtr = baseAddress + baseClassArrayOffset;
@@ -424,17 +284,17 @@ namespace ReClassNET.Memory
 							var sb = new StringBuilder();
 							for (var i = 0; i < baseClassCount; ++i)
 							{
-								var baseClassDescriptorOffset = ReadRemoteInt32(baseClassArrayPtr + (4 * i));
+								var baseClassDescriptorOffset = this.ReadRemoteInt32(baseClassArrayPtr + (4 * i));
 								if (baseClassDescriptorOffset != 0)
 								{
 									var baseClassDescriptorPtr = baseAddress + baseClassDescriptorOffset;
 
-									var typeDescriptorOffset = ReadRemoteInt32(baseClassDescriptorPtr);
+									var typeDescriptorOffset = this.ReadRemoteInt32(baseClassDescriptorPtr);
 									if (typeDescriptorOffset != 0)
 									{
 										var typeDescriptorPtr = baseAddress + typeDescriptorOffset;
 
-										var name = ReadRemoteStringUntilFirstNullCharacter(Encoding.UTF8, typeDescriptorPtr + 0x14, 60);
+										var name = this.ReadRemoteStringUntilFirstNullCharacter(typeDescriptorPtr + 0x14, Encoding.UTF8, 60);
 										if (string.IsNullOrEmpty(name))
 										{
 											break;
