@@ -1,0 +1,26 @@
+image: Visual Studio 2019
+
+cache:
+- Bin\$(configuration)\
+
+before_build:
+  - findstr /V "{48C5258A-FA49-4173-AEE5-0FCA5190DFF2}.Debug {48C5258A-FA49-4173-AEE5-0FCA5190DFF2}.Release" .\ReClass.NET.sln > cleaned.sln
+  - rm ReClass.NET.sln
+  - nuget restore
+  
+platform: 
+  - x86
+  - x64
+ 
+configuration: Release
+
+build:
+  project: cleaned.sln
+  verbosity: minimal
+
+artifacts:
+  - 
+    path: Bin\$(configuration)\$(platform)\*\.exe
+    path: Bin\$(configuration)\$(platform)\*\.dll
+    name: Reclass.NET $(platform)
+    type: zip
