@@ -43,7 +43,7 @@ namespace ReClassNET.Forms
 			this.protectionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.typeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.moduleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.bannerBox1 = new BannerBox();
+			this.bannerBox1 = new ReClassNET.Controls.BannerBox();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.modulesTabPage = new System.Windows.Forms.TabPage();
 			this.modulesDataGridView = new System.Windows.Forms.DataGridView();
@@ -71,6 +71,7 @@ namespace ReClassNET.Forms
             this.dumpToolStripMenuItem});
 			this.contextMenuStrip.Name = "contextMenuStrip";
 			this.contextMenuStrip.Size = new System.Drawing.Size(203, 98);
+			this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
 			// 
 			// setCurrentClassAddressToolStripMenuItem
 			// 
@@ -115,13 +116,13 @@ namespace ReClassNET.Forms
             this.protectionColumn,
             this.typeColumn,
             this.moduleColumn});
+			this.sectionsDataGridView.ContextMenuStrip = this.contextMenuStrip;
 			this.sectionsDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.sectionsDataGridView.Location = new System.Drawing.Point(3, 3);
 			this.sectionsDataGridView.MultiSelect = false;
 			this.sectionsDataGridView.Name = "sectionsDataGridView";
 			this.sectionsDataGridView.ReadOnly = true;
 			this.sectionsDataGridView.RowHeadersVisible = false;
-			this.sectionsDataGridView.RowTemplate.ContextMenuStrip = this.contextMenuStrip;
 			this.sectionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.sectionsDataGridView.Size = new System.Drawing.Size(796, 386);
 			this.sectionsDataGridView.TabIndex = 0;
@@ -229,13 +230,13 @@ namespace ReClassNET.Forms
             this.moduleAddressDataGridViewTextBoxColumn,
             this.moduleSizeDataGridViewTextBoxColumn,
             this.modulePathDataGridViewTextBoxColumn});
+			this.modulesDataGridView.ContextMenuStrip = this.contextMenuStrip;
 			this.modulesDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.modulesDataGridView.Location = new System.Drawing.Point(3, 3);
 			this.modulesDataGridView.MultiSelect = false;
 			this.modulesDataGridView.Name = "modulesDataGridView";
 			this.modulesDataGridView.ReadOnly = true;
 			this.modulesDataGridView.RowHeadersVisible = false;
-			this.modulesDataGridView.RowTemplate.ContextMenuStrip = this.contextMenuStrip;
 			this.modulesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.modulesDataGridView.Size = new System.Drawing.Size(796, 386);
 			this.modulesDataGridView.TabIndex = 1;
