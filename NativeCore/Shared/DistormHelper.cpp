@@ -58,48 +58,12 @@ bool AreOperandsStatic(const _DInst &instruction, const int prefixLength)
 	return true;
 }
 
-int GetStaticInstructionBytes(const _DInst &instruction, const uint8_t *data)
+_CodeInfo CreateCodeInfo(const uint8_t* address, int length, const _OffsetType virtualAddress)
 {
 	_CodeInfo info = {};
-	info.codeOffset = reinterpret_cast<_OffsetType>(data);
-	info.code = data;
-	info.codeLen = instruction.size;
-	info.features = DF_NONE;
-#ifdef RECLASSNET32
-	info.dt = Decode32Bits;
-#else
-	info.dt = Decode64Bits;
-#endif
-
-	_PrefixState ps = {};
-	memset(ps.pfxIndexer, PFXIDX_NONE, sizeof(int) * PFXIDX_MAX);
-	ps.start = data;
-	ps.last = data;
-
-	prefixes_decode(data, info.codeLen, &ps, info.dt);
-
-	info.codeOffset = reinterpret_cast<_OffsetType>(ps.last);
-	info.code = ps.last;
-
-	const auto prefixLength = static_cast<int>(ps.start - ps.last);
-	info.codeLen -= prefixLength;
-
-	inst_lookup(&info, &ps);
-
-	if (AreOperandsStatic(instruction, prefixLength))
-	{
-		return instruction.size;
-	}
-
-	return instruction.size - info.codeLen;
-}
-
-_CodeInfo CreateCodeInfo(const RC_Pointer address, const RC_Size length, const RC_Pointer virtualAddress)
-{
-	_CodeInfo info = {};
-	info.codeOffset = reinterpret_cast<_OffsetType>(virtualAddress);
-	info.code = reinterpret_cast<const uint8_t*>(address);
-	info.codeLen = static_cast<int>(length);
+	info.codeOffset = virtualAddress;
+	info.code = address;
+	info.codeLen = length;
 	info.features = DF_NONE;
 
 #ifdef RECLASSNET32
@@ -111,46 +75,70 @@ _CodeInfo CreateCodeInfo(const RC_Pointer address, const RC_Size length, const R
 	return info;
 }
 
-void FillInstructionData(const RC_Pointer address, const _DInst& instruction, const _DecodedInst& instructionInfo, const bool determineStaticInstructionBytes, InstructionData* data)
+
+int GetStaticInstructionBytes(const _DInst &instruction, const uint8_t *data)
 {
-	data->Address = reinterpret_cast<RC_Pointer>(instruction.addr);
-	data->Length = instructionInfo.size;
-	std::memcpy(data->Data, address, instructionInfo.size);
+	auto info = CreateCodeInfo(data, instruction.size, reinterpret_cast<_OffsetType>(data));
 
-	MultiByteToUnicode(
-		reinterpret_cast<const char*>(instructionInfo.mnemonic.p),
-		data->Instruction,
-		instructionInfo.mnemonic.length
-	);
-	if (instructionInfo.operands.length != 0)
+	_PrefixState ps = {};
+	int isPrefixed;
+	inst_lookup(&info, &ps, &isPrefixed);
+
+	if (AreOperandsStatic(instruction, ps.count))
 	{
-		data->Instruction[instructionInfo.mnemonic.length] = ' ';
-
-		MultiByteToUnicode(
-			reinterpret_cast<const char*>(instructionInfo.operands.p),
-			0,
-			data->Instruction,
-			instructionInfo.mnemonic.length + 1,
-			std::min<int>(64 - 1 - instructionInfo.mnemonic.length, instructionInfo.operands.length)
-		);
+		return instruction.size;
 	}
 
-	if (determineStaticInstructionBytes)
+	return instruction.size - info.codeLen - ps.count;
+}
+
+void FillInstructionData(const _CodeInfo& info, const RC_Pointer address, const _DInst& instruction, const bool determineStaticInstructionBytes, InstructionData* data)
+{
+	data->Address = reinterpret_cast<RC_Pointer>(instruction.addr);
+	data->Length = instruction.size;
+	std::memcpy(data->Data, address, instruction.size);
+	data->StaticInstructionBytes = -1;
+
+	if (instruction.flags == FLAG_NOT_DECODABLE)
 	{
-		data->StaticInstructionBytes = GetStaticInstructionBytes(
-			instruction,
-			reinterpret_cast<const uint8_t*>(address)
-		);
+		std::memcpy(data->Instruction, L"???", sizeof(RC_UnicodeChar) * 3);
 	}
 	else
 	{
-		data->StaticInstructionBytes = -1;
+		_DecodedInst instructionInfo = {};
+		distorm_format(&info, &instruction, &instructionInfo);
+		
+		MultiByteToUnicode(
+			reinterpret_cast<const char*>(instructionInfo.mnemonic.p),
+			data->Instruction,
+			instructionInfo.mnemonic.length
+		);
+		if (instructionInfo.operands.length != 0)
+		{
+			data->Instruction[instructionInfo.mnemonic.length] = ' ';
+
+			MultiByteToUnicode(
+				reinterpret_cast<const char*>(instructionInfo.operands.p),
+				0,
+				data->Instruction,
+				instructionInfo.mnemonic.length + 1,
+				std::min<int>(64 - 1 - instructionInfo.mnemonic.length, instructionInfo.operands.length)
+			);
+		}
+
+		if (determineStaticInstructionBytes)
+		{
+			data->StaticInstructionBytes = GetStaticInstructionBytes(
+				instruction,
+				reinterpret_cast<const uint8_t*>(address)
+			);
+		}
 	}
 }
 
 bool DisassembleInstructionsImpl(const RC_Pointer address, const RC_Size length, const RC_Pointer virtualAddress, const bool determineStaticInstructionBytes, EnumerateInstructionCallback callback)
 {
-	auto info = CreateCodeInfo(address, length, virtualAddress);
+	auto info = CreateCodeInfo(static_cast<const uint8_t*>(address), static_cast<int>(length), reinterpret_cast<_OffsetType>(virtualAddress));
 
 	const unsigned MaxInstructions = 50;
 
@@ -169,18 +157,17 @@ bool DisassembleInstructionsImpl(const RC_Pointer address, const RC_Size length,
 
 		for (auto i = 0u; i < count; ++i)
 		{
-			_DecodedInst instructionInfo = {};
-			distorm_format(&info, &decodedInstructions[i], &instructionInfo);
+			const auto& instruction = decodedInstructions[i];
 
 			InstructionData data = {};
-			FillInstructionData(instructionAddress, decodedInstructions[i], instructionInfo, determineStaticInstructionBytes, &data);
+			FillInstructionData(info, instructionAddress, instruction, determineStaticInstructionBytes, &data);
 
 			if (callback(&data) == false)
 			{
 				return true;
 			}
 
-			instructionAddress += decodedInstructions[i].size;
+			instructionAddress += instruction.size;
 		}
 
 		if (res == DECRES_SUCCESS || count == 0)
@@ -188,7 +175,7 @@ bool DisassembleInstructionsImpl(const RC_Pointer address, const RC_Size length,
 			return true;
 		}
 
-		const auto offset = static_cast<unsigned>(decodedInstructions[count - 1].addr - info.codeOffset);
+		const auto offset = static_cast<unsigned>(decodedInstructions[count - 1].addr + decodedInstructions[count - 1].size - info.codeOffset);
 
 		info.codeOffset += offset;
 		info.code += offset;
