@@ -31,14 +31,14 @@ namespace ReClassNET.Forms
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.bannerBox = new BannerBox();
+			this.bannerBox = new ReClassNET.Controls.BannerBox();
 			this.filterGroupBox = new System.Windows.Forms.GroupBox();
 			this.valueTypeComboBox = new ReClassNET.Forms.ScannerForm.ScanValueTypeComboBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.compareTypeComboBox = new ReClassNET.Forms.ScannerForm.ScanCompareTypeComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.isHexCheckBox = new System.Windows.Forms.CheckBox();
-			this.dualValueBox = new DualValueBox();
+			this.dualValueBox = new ReClassNET.Controls.DualValueBox();
 			this.scanOptionsGroupBox = new System.Windows.Forms.GroupBox();
 			this.fastScanAlignmentTextBox = new System.Windows.Forms.TextBox();
 			this.fastScanCheckBox = new System.Windows.Forms.CheckBox();
@@ -67,7 +67,7 @@ namespace ReClassNET.Forms
 			this.scanProgressBar = new System.Windows.Forms.ProgressBar();
 			this.resultCountLabel = new System.Windows.Forms.Label();
 			this.updateValuesTimer = new System.Windows.Forms.Timer(this.components);
-			this.resultMemoryRecordList = new MemoryRecordList();
+			this.resultMemoryRecordList = new ReClassNET.Controls.MemoryRecordList();
 			this.resultListContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.addSelectedResultsToAddressListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeSelectedRecordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,7 +84,7 @@ namespace ReClassNET.Forms
 			this.findOutWhatWritesToThisAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.copyAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.addressListMemoryRecordList = new MemoryRecordList();
+			this.addressListMemoryRecordList = new ReClassNET.Controls.MemoryRecordList();
 			this.toolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.menuToolStrip = new System.Windows.Forms.ToolStrip();
 			this.openAddressFileToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -93,9 +93,9 @@ namespace ReClassNET.Forms
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.clearAddressListToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.infoToolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.undoIconButton = new IconButton();
-			this.showInputCorrelatorIconButton = new IconButton();
-			this.cancelScanIconButton = new IconButton();
+			this.undoIconButton = new ReClassNET.Controls.IconButton();
+			this.showInputCorrelatorIconButton = new ReClassNET.Controls.IconButton();
+			this.cancelScanIconButton = new ReClassNET.Controls.IconButton();
 			((System.ComponentModel.ISupportInitialize)(this.bannerBox)).BeginInit();
 			this.filterGroupBox.SuspendLayout();
 			this.scanOptionsGroupBox.SuspendLayout();
@@ -503,8 +503,8 @@ namespace ReClassNET.Forms
 			// 
 			// resultMemoryRecordList
 			// 
-			this.resultMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
+			this.resultMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.resultMemoryRecordList.ContextMenuStrip = this.resultListContextMenuStrip;
 			this.resultMemoryRecordList.Location = new System.Drawing.Point(11, 80);
 			this.resultMemoryRecordList.Name = "resultMemoryRecordList";
@@ -515,22 +515,22 @@ namespace ReClassNET.Forms
 			this.resultMemoryRecordList.ShowValueTypeColumn = false;
 			this.resultMemoryRecordList.Size = new System.Drawing.Size(268, 314);
 			this.resultMemoryRecordList.TabIndex = 16;
-			this.resultMemoryRecordList.RecordDoubleClick += new MemorySearchResultControlResultDoubleClickEventHandler(this.memorySearchResultControl_ResultDoubleClick);
+			this.resultMemoryRecordList.RecordDoubleClick += new ReClassNET.Controls.MemorySearchResultControlResultDoubleClickEventHandler(this.memorySearchResultControl_ResultDoubleClick);
 			// 
 			// resultListContextMenuStrip
 			// 
 			this.resultListContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.addSelectedResultsToAddressListToolStripMenuItem,
-			this.removeSelectedRecordsToolStripMenuItem,
-			this.changeToolStripMenuItem,
-			this.toolStripSeparator2,
-			this.setCurrentClassAddressToolStripMenuItem,
-			this.createClassAtAddressToolStripMenuItem,
-			this.toolStripSeparator3,
-			this.findOutWhatAccessesThisAddressToolStripMenuItem,
-			this.findOutWhatWritesToThisAddressToolStripMenuItem,
-			this.toolStripSeparator4,
-			this.copyAddressToolStripMenuItem});
+            this.addSelectedResultsToAddressListToolStripMenuItem,
+            this.removeSelectedRecordsToolStripMenuItem,
+            this.changeToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.setCurrentClassAddressToolStripMenuItem,
+            this.createClassAtAddressToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.findOutWhatAccessesThisAddressToolStripMenuItem,
+            this.findOutWhatWritesToThisAddressToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.copyAddressToolStripMenuItem});
 			this.resultListContextMenuStrip.Name = "resultListContextMenuStrip";
 			this.resultListContextMenuStrip.Size = new System.Drawing.Size(270, 198);
 			this.resultListContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.resultListContextMenuStrip_Opening);
@@ -554,10 +554,10 @@ namespace ReClassNET.Forms
 			// changeToolStripMenuItem
 			// 
 			this.changeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.descriptionToolStripMenuItem,
-			this.addressToolStripMenuItem,
-			this.valueTypeToolStripMenuItem,
-			this.valueToolStripMenuItem});
+            this.descriptionToolStripMenuItem,
+            this.addressToolStripMenuItem,
+            this.valueTypeToolStripMenuItem,
+            this.valueToolStripMenuItem});
 			this.changeToolStripMenuItem.Enabled = false;
 			this.changeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Textfield_Rename;
 			this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
@@ -645,9 +645,9 @@ namespace ReClassNET.Forms
 			// 
 			// addressListMemoryRecordList
 			// 
-			this.addressListMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
+			this.addressListMemoryRecordList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.addressListMemoryRecordList.ContextMenuStrip = this.resultListContextMenuStrip;
 			this.addressListMemoryRecordList.Location = new System.Drawing.Point(11, 425);
 			this.addressListMemoryRecordList.Name = "addressListMemoryRecordList";
@@ -674,11 +674,11 @@ namespace ReClassNET.Forms
 			this.menuToolStrip.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.menuToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.openAddressFileToolStripButton,
-			this.saveAddressFileToolStripButton,
-			this.saveAddressFileAsToolStripButton,
-			this.toolStripSeparator1,
-			this.clearAddressListToolStripButton});
+            this.openAddressFileToolStripButton,
+            this.saveAddressFileToolStripButton,
+            this.saveAddressFileAsToolStripButton,
+            this.toolStripSeparator1,
+            this.clearAddressListToolStripButton});
 			this.menuToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuToolStrip.Name = "menuToolStrip";
 			this.menuToolStrip.Size = new System.Drawing.Size(101, 25);
@@ -759,6 +759,7 @@ namespace ReClassNET.Forms
 			// 
 			// cancelScanIconButton
 			// 
+			this.cancelScanIconButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cancelScanIconButton.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Delete;
 			this.cancelScanIconButton.Location = new System.Drawing.Point(517, 54);
 			this.cancelScanIconButton.Name = "cancelScanIconButton";
