@@ -243,9 +243,8 @@ namespace ReClassNET.Nodes
 
 		public void InsertBytes(BaseNode position, int size)
 		{
-			int index = FindNodeIndex(position);
 			List<BaseNode> dummy = null;
-			InsertBytes(index >= 0 ? index : 0, size, ref dummy);
+			InsertBytes(FindNodeIndex(position), size, ref dummy);
 		}
 
 		/// <summary>Inserts <paramref name="size"/> bytes at the specified position.</summary>

@@ -495,7 +495,7 @@ namespace ReClassNET.Forms
 			};
 
 			addBytesToolStripMenuItem.Enabled = parentNode != null || nodeIsClass;
-			insertBytesToolStripMenuItem.Enabled = count == 1 && parentNode != null;
+			insertBytesToolStripMenuItem.Enabled = count == 1 && parentNode != null && !nodeIsClass;
 
 			changeTypeToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
 
@@ -829,11 +829,12 @@ namespace ReClassNET.Forms
 
 			var node = selectedNodes.FirstOrDefault()?.Node;
 			var parentContainer = node?.GetParentContainer();
+			var nodeIsClass = node is ClassNode;
 
-			addBytesToolStripDropDownButton.Enabled = parentContainer != null || node is ClassNode;
-			insertBytesToolStripDropDownButton.Enabled = selectedNodes.Count == 1 && parentContainer != null;
+			addBytesToolStripDropDownButton.Enabled = parentContainer != null || nodeIsClass;
+			insertBytesToolStripDropDownButton.Enabled = selectedNodes.Count == 1 && parentContainer != null && !nodeIsClass;
 
-			var enabled = selectedNodes.Count > 0 && !(node is ClassNode);
+			var enabled = selectedNodes.Count > 0 && !nodeIsClass;
 			toolStrip.Items.OfType<TypeToolStripButton>().ForEach(b => b.Enabled = enabled);
 		}
 
