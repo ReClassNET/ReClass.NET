@@ -4,7 +4,7 @@ instructions.h
 diStorm3 - Powerful disassembler for X86/AMD64
 http://ragestorm.net/distorm/
 distorm at gmail dot com
-Copyright (C) 2003-2018 Gil Dabah
+Copyright (C) 2003-2021 Gil Dabah
 This library is licensed under the BSD license. See the file COPYING.
 */
 
@@ -22,6 +22,7 @@ This library is licensed under the BSD license. See the file COPYING.
  * actually, it depends on the decoding mode, unless there's an operand/address size prefix.
  * For example, the code: 33 c0 could be decoded/executed as XOR AX, AX or XOR EAX, EAX.
  */
+
 typedef enum OpType {
 	/* No operand is set */
 	OT_NONE = 0,
@@ -38,18 +39,6 @@ typedef enum OpType {
 	/* Read a signed extended byte(8 bits) immediate */
 	OT_SEIMM8,
 
-	/*
-	 * Special immediates for instructions which have more than one immediate,
-	 * which is an exception from standard instruction format.
-	 * As to version v1.0: ENTER, INSERTQ, EXTRQ are the only problematic ones.
-	 */
-	/* 16 bits immediate using the first imm-slot */
-	OT_IMM16_1,
-	/* 8 bits immediate using the first imm-slot */
-	OT_IMM8_1,
-	/* 8 bits immediate using the second imm-slot */
-	OT_IMM8_2,
-
 	/* Use a 8bit register */
 	OT_REG8,
 	/* Use a 16bit register */
@@ -63,71 +52,7 @@ typedef enum OpType {
 	 * VMX instructions are promoted automatically without a REX prefix.
 	 */
 	OT_REG32_64,
-	/* Used only by MOV CR/DR(n). Promoted with REX onlly. */
-	OT_FREG32_64_RM,
 
-	/* Use or read (indirection) a 8bit register or immediate byte */
-	OT_RM8,
-	/* Some instructions force 16 bits (mov sreg, rm16) */
-	OT_RM16,
-	/* Use or read a 16/32/64bit register or immediate word/dword/qword */
-	OT_RM_FULL,
-	/*
-	 * 32 or 64 bits (with REX) operand size indirection memory operand.
-	 * Some instructions are promoted automatically without a REX prefix.
-	 */
-	OT_RM32_64,
-	/* 16 or 32 bits RM. This is used only with MOVZXD instruction in 64bits. */
-	OT_RM16_32,
-	/* Same as OT_RMXX but POINTS to 16 bits [cannot use GENERAL-PURPOSE REG!] */
-	OT_FPUM16,
-	/* Same as OT_RMXX but POINTS to 32 bits (single precision) [cannot use GENERAL-PURPOSE REG!] */
-	OT_FPUM32,
-	/* Same as OT_RMXX but POINTS to 64 bits (double precision) [cannot use GENERAL-PURPOSE REG!] */
-	OT_FPUM64,
-	/* Same as OT_RMXX but POINTS to 80 bits (extended precision) [cannot use GENERAL-PURPOSE REG!] */
-	OT_FPUM80,
-
-	/*
-	 * Special operand type for SSE4 where the ModR/M might
-	 * be a 32 bits register or 8 bits memory indirection operand.
-	 */
-	OT_R32_M8,
-	/*
-	 * Special ModR/M for PINSRW, which need a 16 bits memory operand or 32 bits register.
-	 * In 16 bits decoding mode R32 becomes R16, operand size cannot affect this.
-	 */
-	OT_R32_M16,
-	/*
-	 * Special type for SSE4, ModR/M might be a 32 bits or 64 bits (with REX) register or
-	 * a 8 bits memory indirection operand.
-	 */
-	OT_R32_64_M8,
-	/*
-	 * Special type for SSE4, ModR/M might be a 32 bits or 64 bits (with REX) register or
-	 * a 16 bits memory indirection operand.
-	 */
-	OT_R32_64_M16,
-	/*
-	 * Special operand type for MOV reg16/32/64/mem16, segReg 8C /r. and SMSW.
-	 * It supports all decoding modes, but if used as a memory indirection it's a 16 bit ModR/M indirection.
-	 */
-	OT_RFULL_M16,
-
-	/* Use a control register */
-	OT_CREG,
-	/* Use a debug register */
-	OT_DREG,
-	/* Use a segment register */
-	OT_SREG,
-	/*
-	 * SEG is encoded in the flags of the opcode itself!
-	 * This is used for specific "push SS" where SS is a segment where
-	 * each "push SS" has an absolutely different opcode byte.
-	 * We need this to detect whether an operand size prefix is used.
-	 */
-	OT_SEG,
-	
 	/* Use AL */
 	OT_ACC8,
 	/* Use AX (FSTSW) */
@@ -137,40 +62,10 @@ typedef enum OpType {
 	/* Use AX/EAX, no REX is possible for RAX, used only with IN/OUT which don't support 64 bit registers */
 	OT_ACC_FULL_NOT64,
 
-	/*
-	 * Read one word (seg), and a word/dword/qword (depends on operand size) from memory.
-	 * JMP FAR [EBX] means EBX point to 16:32 ptr.
-	 */
-	OT_MEM16_FULL,
-	/* Read one word (seg) and a word/dword/qword (depends on operand size), usually SEG:OFF, JMP 1234:1234 */
-	OT_PTR16_FULL,
-	/* Read one word (limit) and a dword/qword (limit) (depends on operand size), used by SGDT, SIDT, LGDT, LIDT. */
-	OT_MEM16_3264,
-
 	/* Read a byte(8 bits) immediate and calculate it relatively to the current offset of the instruction being decoded */
 	OT_RELCB,
 	/* Read a word/dword immediate and calculate it relatively to the current offset of the instruction being decoded */
 	OT_RELC_FULL,
-
-	/* Use general memory indirection, with varying sizes: */
-	OT_MEM,
-	/* Used when a memory indirection is required, but if the mod field is 11, this operand will be ignored. */
-	OT_MEM_OPT,
-	OT_MEM32,
-	/* Memory dereference for MOVNTI, either 32 or 64 bits (with REX). */
-	OT_MEM32_64,
-	OT_MEM64,
-	OT_MEM128,
-	/* Used for cmpxchg8b/16b. */
-	OT_MEM64_128,
-
-	/* Read an immediate as an absolute address, size is known by instruction, used by MOV (memory offset) only */
-	OT_MOFFS8,
-	OT_MOFFS_FULL,
-	/* Use an immediate of 1, as for SHR R/M, 1 */
-	OT_CONST1,
-	/* Use CL, as for SHR R/M, CL */
-	OT_REGCL,
 
 	/*
 	 * Instruction-Block for one byte long instructions, used by INC/DEC/PUSH/POP/XCHG,
@@ -181,6 +76,9 @@ typedef enum OpType {
 	/* Use a 16/32/64bit register */
 	OT_IB_R_FULL,
 
+	/* Read an immediate as an absolute address, size is known by instruction, used by MOV (memory offset) only */
+	OT_MOFFS8,
+	OT_MOFFS_FULL,
 	/* Use [(r)SI] as INDIRECTION, for repeatable instructions */
 	OT_REGI_ESI,
 	/* Use [(r)DI] as INDIRECTION, for repeatable instructions */
@@ -199,44 +97,15 @@ typedef enum OpType {
 	OT_FPU_SSI, /* ST(0), ST(i) */
 	OT_FPU_SIS, /* ST(i), ST(0) */
 
-	/* MMX registers: */
-	OT_MM,
-	/* Extract the MMX register from the RM bits this time (used when the REG bits are used for opcode extension) */
-	OT_MM_RM,
-	/* ModR/M points to 32 bits MMX variable */
-	OT_MM32,
-	/* ModR/M points to 32 bits MMX variable */
-	OT_MM64,
-
 	/* SSE registers: */
 	OT_XMM,
 	/* Extract the SSE register from the RM bits this time (used when the REG bits are used for opcode extension) */
 	OT_XMM_RM,
-	/* ModR/M points to 16 bits SSE variable */
-	OT_XMM16,
-	/* ModR/M points to 32 bits SSE variable */
-	OT_XMM32,
-	/* ModR/M points to 64 bits SSE variable */
-	OT_XMM64,
-	/* ModR/M points to 128 bits SSE variable */
-	OT_XMM128,
 	/* Implied XMM0 register as operand, used in SSE4. */
 	OT_REGXMM0,
-
-	/* AVX operands: */
-
-	/* ModR/M for 32 bits. */
-	OT_RM32,
-	/* Reg32/Reg64 (prefix width) or Mem8. */
-	OT_REG32_64_M8,
-	/* Reg32/Reg64 (prefix width) or Mem16. */
-	OT_REG32_64_M16,
 	/* Reg32/Reg 64 depends on prefix width only. */
 	OT_WREG32_64,
-	/* RM32/RM64 depends on prefix width only. */
-	OT_WRM32_64,
-	/* XMM or Mem32/Mem64 depends on perfix width only. */
-	OT_WXMM32_64,
+
 	/* XMM is encoded in VEX.VVVV. */
 	OT_VXMM,
 	/* XMM is encoded in the high nibble of an immediate byte. */
@@ -247,20 +116,165 @@ typedef enum OpType {
 	OT_YXMM_IMM,
 	/* YMM is encoded in reg. */
 	OT_YMM,
-	/* YMM or Mem256. */
-	OT_YMM256,
 	/* YMM is encoded in VEX.VVVV. */
 	OT_VYMM,
 	/* YMM/XMM is dependent on VEX.L, and encoded in VEX.VVVV. */
 	OT_VYXMM,
+
+	/* Use an immediate of 1, as for SHR R/M, 1 */
+	OT_CONST1,
+	/* Use CL, as for SHR R/M, CL */
+	OT_REGCL,
+
+	/* Use a control register */
+	OT_CREG,
+	/* Use a debug register */
+	OT_DREG,
+	/* Use a segment register */
+	OT_SREG,
+	/*
+	 * SEG is encoded in the flags of the opcode itself!
+	 * This is used for specific "push SS" where SS is a segment where
+	 * each "push SS" has an absolutely different opcode byte.
+	 * We need this to detect whether an operand size prefix is used.
+	 */
+	OT_SEG,
+
+	/*
+	 * Special immediates for instructions which have more than one immediate,
+	 * which is an exception from standard instruction format.
+	 * As to version v1.0: ENTER, INSERTQ, EXTRQ are the only problematic ones.
+	 */
+	 /* 16 bits immediate using the first imm-slot */
+	OT_IMM16_1,
+	/* 8 bits immediate using the first imm-slot */
+	OT_IMM8_1,
+	/* 8 bits immediate using the second imm-slot */
+	OT_IMM8_2,
+
+	/* Read one word (seg) and a word/dword/qword (depends on operand size), usually SEG:OFF, JMP 1234:1234 */
+	OT_PTR16_FULL,
+
+	/* Used only by MOV CR/DR(n). Promoted with REX onlly. */
+	OT_FREG32_64_RM,
+
+	/* MMX registers: */
+	OT_MM,
+	/* Extract the MMX register from the RM bits this time (used when the REG bits are used for opcode extension) */
+	OT_MM_RM,
+
+
+	/**** MEMORY only operands: ****/
+
+	/* Use general memory indirection, with varying sizes: */
+	OT_MEM,
+	OT_MEM32,
+	/* Memory dereference for MOVNTI, either 32 or 64 bits (with REX). */
+	OT_MEM32_64,
+	OT_MEM64,
+	/* Used for cmpxchg8b/16b. */
+	OT_MEM64_128,
+	OT_MEM128,
+	/*
+	 * Read one word (seg), and a word/dword/qword (depends on operand size) from memory.
+	 * JMP FAR [EBX] means EBX point to 16:32 ptr.
+	 */
+	OT_MEM16_FULL,
+	/* Read one word (limit) and a dword/qword (limit) (depends on operand size), used by SGDT, SIDT, LGDT, LIDT. */
+	OT_MEM16_3264,
+	/* Used when a memory indirection is required, but if the mod field is 11, this operand will be ignored. */
+	OT_MEM_OPT,
+
+	/* Same as OT_RMXX but POINTS to 16 bits [cannot use GENERAL-PURPOSE REG!] */
+	OT_FPUM16,
+	/* Same as OT_RMXX but POINTS to 32 bits (single precision) [cannot use GENERAL-PURPOSE REG!] */
+	OT_FPUM32,
+	/* Same as OT_RMXX but POINTS to 64 bits (double precision) [cannot use GENERAL-PURPOSE REG!] */
+	OT_FPUM64,
+	/* Same as OT_RMXX but POINTS to 80 bits (extended precision) [cannot use GENERAL-PURPOSE REG!] */
+	OT_FPUM80,
+
+	/* Mem128/Mem256 is dependent on VEX.L. */
+	OT_LMEM128_256,
+
+
+	/**** MEMORY & REGISTER only operands: ****/
+
+	/* Use or read (indirection) a 8bit register or immediate byte */
+	OT_RM8,
+	/* Some instructions force 16 bits (mov sreg, rm16) */
+	OT_RM16,
+	/* ModR/M for 32 bits. */
+	OT_RM32,
+	/*
+	 * Special operand type for MOV reg16/32/64/mem16, segReg 8C /r. and SMSW.
+	 * It supports all decoding modes, but if used as a memory indirection it's a 16 bit ModR/M indirection.
+	 */
+	OT_RFULL_M16,
+	/* Use or read a 16/32/64bit register or immediate word/dword/qword */
+	OT_RM_FULL,
+
+	/* RM32/RM64 depends on prefix width only. */
+	OT_WRM32_64,
+	/*
+	 * Special type for SSE4, ModR/M might be a 32 bits or 64 bits (with REX) register or
+	 * a 8 bits memory indirection operand.
+	 */
+	OT_R32_64_M8,
+	/*
+	 * Special type for SSE4, ModR/M might be a 32 bits or 64 bits (with REX) register or
+	 * a 16 bits memory indirection operand.
+	 */
+	OT_R32_64_M16,
+
+	/*
+	 * 32 or 64 bits (with REX) operand size indirection memory operand.
+	 * Some instructions are promoted automatically without a REX prefix.
+	 */
+	OT_RM32_64,
+	/* 16 or 32 bits RM. This is used only with MOVZXD instruction in 64bits. */
+	OT_RM16_32,
+
+	/*
+	 * Special operand type for SSE4 where the ModR/M might
+	 * be a 32 bits register or 8 bits memory indirection operand.
+	 */
+	OT_R32_M8,
+	/*
+	 * Special ModR/M for PINSRW, which need a 16 bits memory operand or 32 bits register.
+	 * In 16 bits decoding mode R32 becomes R16, operand size cannot affect this.
+	 */
+	OT_R32_M16,
+	/* Reg32/Reg64 (prefix width) or Mem8. */
+	OT_REG32_64_M8,
+	/* Reg32/Reg64 (prefix width) or Mem16. */
+	OT_REG32_64_M16,
+
+	/* ModR/M points to 32 bits MMX variable */
+	OT_MM32,
+	/* ModR/M points to 32 bits MMX variable */
+	OT_MM64,
+
+	/* ModR/M points to 16 bits SSE variable */
+	OT_XMM16,
+	/* ModR/M points to 32 bits SSE variable */
+	OT_XMM32,
+	/* ModR/M points to 64 bits SSE variable */
+	OT_XMM64,
+	/* ModR/M points to 128 bits SSE variable */
+	OT_XMM128,
+
+	/* AVX operands: */
+	/* XMM or Mem32/Mem64 depends on perfix width only. */
+	OT_WXMM32_64,
+	/* YMM or Mem256. */
+	OT_YMM256,
 	/* YMM/XMM or Mem64/Mem256 is dependent on VEX.L. */
 	OT_YXMM64_256,
 	/* YMM/XMM or Mem128/Mem256 is dependent on VEX.L. */
 	OT_YXMM128_256,
 	/* XMM or Mem64/Mem256 is dependent on VEX.L. */
-	OT_LXMM64_128,
-	/* Mem128/Mem256 is dependent on VEX.L. */
-	OT_LMEM128_256
+	OT_LXMM64_128
 } _OpType;
 
 /* Flags for instruction: */
@@ -365,7 +379,7 @@ typedef enum OpType {
 #define INST_VEX_V_UNUSED (1 << 6)
 
 /* Indication that the instruction is privileged (Ring 0), this should be checked on the opcodeId field. */
-#define OPCODE_ID_PRIVILEGED ((uint16_t)0x8000)
+#define META_INST_PRIVILEGED ((uint16_t)0x8000)
 
 /*
  * Indicates which operand is being decoded.
@@ -399,7 +413,6 @@ typedef enum {ONT_NONE = -1, ONT_1 = 0, ONT_2 = 1, ONT_3 = 2, ONT_4 = 3} _Operan
 typedef struct {
 	uint8_t flagsIndex; /* An index into FlagsTables */
 	uint8_t s, d; /* OpType. */
-	uint8_t meta; /* Hi 5 bits = Instruction set class | Lo 3 bits = flow control flags. */
 	/*
 	 * The following are CPU flag masks that the instruction changes.
 	 * The flags are compacted so 8 bits representation is enough.
@@ -408,6 +421,7 @@ typedef struct {
 	uint8_t modifiedFlagsMask;
 	uint8_t testedFlagsMask;
 	uint8_t undefinedFlagsMask;
+	uint16_t meta; /* High byte = Instruction set class | Low byte = flow control flags. */
 } _InstSharedInfo;
 
 /*
@@ -445,6 +459,7 @@ typedef enum {
 	INT_NOTEXISTS = 0, /* Not exists. */
 	INT_INFO = 1, /* It's an instruction info. */
 	INT_INFOEX,
+	INT_INFO_TREAT, /* Extra intervention is required by inst_lookup. */
 	INT_LIST_GROUP,
 	INT_LIST_FULL,
 	INT_LIST_DIVIDED,
@@ -457,7 +472,8 @@ typedef enum {
 /* Instruction node is treated as { int index:13;  int type:3; } */
 typedef uint16_t _InstNode;
 
-_InstInfo* inst_lookup(_CodeInfo* ci, _PrefixState* ps);
+_InstInfo* inst_lookup(_CodeInfo* ci, _PrefixState* ps, int* isPrefixed);
 _InstInfo* inst_lookup_3dnow(_CodeInfo* ci);
 
 #endif /* INSTRUCTIONS_H */
+

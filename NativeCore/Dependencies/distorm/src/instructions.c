@@ -4,7 +4,7 @@ instructions.c
 diStorm3 - Powerful disassembler for X86/AMD64
 http://ragestorm.net/distorm/
 distorm at gmail dot com
-Copyright (C) 2003-2018 Gil Dabah
+Copyright (C) 2003-2021 Gil Dabah
 This library is licensed under the BSD license. See the file COPYING.
 */
 
@@ -168,14 +168,15 @@ static _InstInfo* inst_lookup_prefixed(_InstNode in, _PrefixState* ps)
 			 * try to get the instruction and only then check for the operand size prefix.
 			 */
 
-			/* If both REPNZ and REP are together, it's illegal for sure. */
+			 /* If both REPNZ and REP are together, it's illegal for sure. */
 			if ((ps->decodedPrefixes & INST_PRE_REPS) == INST_PRE_REPS) return NULL;
 
 			/* Now we know it's either REPNZ+OPSIZE or REP+OPSIZE, so examine the instruction. */
 			if (ps->decodedPrefixes & INST_PRE_REPNZ) {
 				index = 3;
 				ps->decodedPrefixes &= ~INST_PRE_REPNZ;
-			} else if (ps->decodedPrefixes & INST_PRE_REP) {
+			}
+			else if (ps->decodedPrefixes & INST_PRE_REP) {
 				index = 2;
 				ps->decodedPrefixes &= ~INST_PRE_REP;
 			}
@@ -238,7 +239,8 @@ static _InstInfo* inst_vex_lookup(_CodeInfo* ci, _PrefixState* ps)
 		pp = vex & 3;
 		/* Implied leading 0x0f byte by default for 2 bytes VEX prefix. */
 		start = 1;
-	} else { /* PET_VEX3BYTES */
+	}
+	else { /* PET_VEX3BYTES */
 		start = vex & 0x1f;
 		vex2 = *(ps->vexPos + 1);
 		ps->vexV = v = (~vex2 >> 3) & 0xf;
@@ -297,7 +299,8 @@ static _InstInfo* inst_vex_lookup(_CodeInfo* ci, _PrefixState* ps)
 	if (instType == INT_LIST_GROUP) {
 		in = InstructionsTree[instIndex + ((*ci->code >> 3) & 7)];
 		/* Continue below to check prefixed table. */
-	} else if (instType == INT_LIST_FULL) {
+	}
+	else if (instType == INT_LIST_FULL) {
 		in = InstructionsTree[instIndex + *ci->code];
 		/* Continue below to check prefixed table. */
 	}
@@ -316,30 +319,40 @@ static _InstInfo* inst_vex_lookup(_CodeInfo* ci, _PrefixState* ps)
 	return NULL;
 }
 
-_InstInfo* inst_lookup(_CodeInfo* ci, _PrefixState* ps)
+_InstInfo* inst_lookup(_CodeInfo* ci, _PrefixState* ps, int* isPrefixed)
 {
-	unsigned int tmpIndex0 = 0, tmpIndex1 = 0, tmpIndex2 = 0, rex = ps->vrex;
-	int instType = 0;
-	_InstNode in = 0;
+	unsigned int tmpIndex0, tmpIndex1, tmpIndex2;
+	int instType;
+	_InstNode in;
 	_InstInfo* ii = NULL;
 	int isWaitIncluded = FALSE;
 
-	/* See whether we have to handle a VEX prefixed instruction. */
-	if (ps->decodedPrefixes & INST_PRE_VEX) {
-		ii = inst_vex_lookup(ci, ps);
-		if (ii != NULL) {
-			/* Make sure that VEX.L exists when forced. */
-			if ((((_InstInfoEx*)ii)->flagsEx & INST_FORCE_VEXL) && (~ps->vrex & PREFIX_EX_L)) return NULL;
-			/* If the instruction doesn't use VEX.vvvv it must be zero. */
-			if ((((_InstInfoEx*)ii)->flagsEx & INST_VEX_V_UNUSED) && ps->vexV) return NULL;
+	/* Always safe to read first byte codeLen > 0. */
+	tmpIndex0 = *ci->code;
+
+	if (prefixes_is_valid((unsigned char)tmpIndex0, ci->dt)) {
+		*isPrefixed = TRUE;
+		prefixes_decode(ci, ps);
+		if (ci->codeLen < 1) return NULL; /* No more bytes for opcode, halt. */
+		tmpIndex0 = *ci->code; /* Reload. */
+
+		/* If there are too many prefixes, it will be checked later in decode_inst. */
+
+		/* See whether we have to handle a VEX prefixed instruction. */
+		if (ps->decodedPrefixes & INST_PRE_VEX) {
+			ii = inst_vex_lookup(ci, ps);
+			if (ii != NULL) {
+				/* Make sure that VEX.L exists when forced. */
+				if ((((_InstInfoEx*)ii)->flagsEx & INST_FORCE_VEXL) && (~ps->vrex & PREFIX_EX_L)) return NULL;
+				/* If the instruction doesn't use VEX.vvvv it must be zero. */
+				if ((((_InstInfoEx*)ii)->flagsEx & INST_VEX_V_UNUSED) && ps->vexV) return NULL;
+			}
+			return ii;
 		}
-		return ii;
 	}
 
-	/* Read first byte. */
+	/* Account first byte, we know it's safe to read. */
 	ci->codeLen -= 1;
-	if (ci->codeLen < 0) return NULL;
-	tmpIndex0 = *ci->code;
 
 	/* Check for special 0x9b, WAIT instruction, which can be part of some instructions(x87). */
 	if (tmpIndex0 == INST_WAIT_INDEX) {
@@ -359,27 +372,14 @@ _InstInfo* inst_lookup(_CodeInfo* ci, _PrefixState* ps)
 
 	/* Walk first byte in InstructionsTree root. */
 	in = InstructionsTree[tmpIndex0];
-	if (in == INT_NOTEXISTS) return NULL;
+	if ((uint32_t)in == INT_NOTEXISTS) return NULL;
 	instType = INST_NODE_TYPE(in);
 
 	/* Single byte instruction (OCST_1BYTE). */
 	if ((instType < INT_INFOS) && (!isWaitIncluded)) {
 		/* Some single byte instructions need extra treatment. */
-		switch (tmpIndex0)
-		{
-			case INST_ARPL_INDEX:
-				/*
-				 * ARPL/MOVSXD share the same opcode, and both have different operands and mnemonics, of course.
-				 * Practically, I couldn't come up with a comfortable way to merge the operands' types of ARPL/MOVSXD.
-				 * And since the DB can't be patched dynamically, because the DB has to be multi-threaded compliant,
-				 * I have no choice but to check for ARPL/MOVSXD right here - "right about now, the funk soul brother, check it out now, the funk soul brother...", fatboy slim
-				 */
-				if (ci->dt == Decode64Bits) {
-					return &II_MOVSXD;
-				} /* else ARPL will be returned because its defined in the DB already. */
-			break;
-
-			case INST_NOP_INDEX: /* Nopnopnop */
+		if (instType == INT_INFO_TREAT) {
+			if (tmpIndex0 == INST_NOP_INDEX) { /* Nopnopnop */
 				/* Check for Pause, since it's prefixed with 0xf3, which is not a real mandatory prefix. */
 				if (ps->decodedPrefixes & INST_PRE_REP) {
 					/* Flag this prefix as used. */
@@ -395,20 +395,33 @@ _InstInfo* inst_lookup(_CodeInfo* ci, _PrefixState* ps)
 				 * 90 XCHG EAX, EAX is a true NOP (and not high dword of RAX = 0 although it should be a 32 bits operation).
 				 * Note that if the REX.B is used, then the register is not RAX anymore but R8, which means it's not a NOP.
 				 */
-				if (rex & PREFIX_EX_W) ps->usedPrefixes |= INST_PRE_REX;
-				if ((ci->dt != Decode64Bits) || (~rex & PREFIX_EX_B)) return &II_NOP;
-			break;
-			
-			case INST_LEA_INDEX:
+				if (ps->vrex & PREFIX_EX_W) ps->usedPrefixes |= INST_PRE_REX;
+				if ((ci->dt != Decode64Bits) || (~ps->vrex & PREFIX_EX_B)) return &II_NOP;
+			}
+			else if (tmpIndex0 == INST_LEA_INDEX) {
 				/* Ignore segment override prefixes for LEA instruction. */
 				ps->decodedPrefixes &= ~INST_PRE_SEGOVRD_MASK;
 				/* Update unused mask for ignoring segment prefix. */
 				prefixes_ignore(ps, PFXIDX_SEG);
-			break;
+			}
+			else if (tmpIndex0 == INST_ARPL_INDEX) {
+					/*
+					 * ARPL/MOVSXD share the same opcode, and both have different operands and mnemonics, of course.
+					 * Practically, I couldn't come up with a comfortable way to merge the operands' types of ARPL/MOVSXD.
+					 * And since the DB can't be patched dynamically, because the DB has to be multi-threaded compliant,
+					 * I have no choice but to check for ARPL/MOVSXD right here - "right about now, the funk soul brother, check it out now, the funk soul brother...", fatboy slim
+					 */
+					if (ci->dt == Decode64Bits) {
+						return &II_MOVSXD;
+					} /* else ARPL will be returned because its defined in the DB already. */
+			}
 		}
-
-		/* Return the 1 byte instruction we found. */
-		return instType == INT_INFO ? &InstInfos[INST_NODE_INDEX(in)] : (_InstInfo*)&InstInfosEx[INST_NODE_INDEX(in)];
+		/*
+		 * Return the 1 byte instruction we found.
+		 * We can have three node types here: infoex, info_treat and info.
+		 * The latter two are really the same basic structure.
+		 */
+		return instType == INT_INFOEX ? (_InstInfo*)&InstInfosEx[INST_NODE_INDEX(in)] : &InstInfos[INST_NODE_INDEX(in)];
 	}
 
 	/* Read second byte, still doesn't mean all of its bits are used (I.E: ModRM). */
@@ -416,7 +429,7 @@ _InstInfo* inst_lookup(_CodeInfo* ci, _PrefixState* ps)
 	ci->codeLen -= 1;
 	if (ci->codeLen < 0) return NULL;
 	tmpIndex1 = *ci->code;
-	
+
 	/* Try single byte instruction + reg bits (OCST_13BYTES). */
 	if ((instType == INT_LIST_GROUP) && (!isWaitIncluded)) return inst_get_info(in, (tmpIndex1 >> 3) & 7);
 
@@ -442,13 +455,14 @@ _InstInfo* inst_lookup(_CodeInfo* ci, _PrefixState* ps)
 		if (tmpIndex1 < INST_DIVIDED_MODRM) {
 			/* An instruction which requires a ModR/M byte. Thus it's 1.3 bytes long instruction. */
 			tmpIndex1 = (tmpIndex1 >> 3) & 7; /* Isolate the 3 REG/OPCODE bits. */
-		} else { /* Normal 2 bytes instruction. */
-			/*
-			 * Divided instructions can't be in the range of 0x8-0xc0.
-			 * That's because 0-8 are used for 3 bits group.
-			 * And 0xc0-0xff are used for not-divided instruction.
-			 * So the in between range is omitted, thus saving some more place in the tables.
-			 */
+		}
+		else { /* Normal 2 bytes instruction. */
+		 /*
+		  * Divided instructions can't be in the range of 0x8-0xc0.
+		  * That's because 0-8 are used for 3 bits group.
+		  * And 0xc0-0xff are used for not-divided instruction.
+		  * So the in between range is omitted, thus saving some more place in the tables.
+		  */
 			tmpIndex1 -= INST_DIVIDED_MODRM - 8;
 		}
 
@@ -525,7 +539,7 @@ _InstInfo* inst_lookup(_CodeInfo* ci, _PrefixState* ps)
 		 * hence we don't override 'in', cause we might still need it.
 		 */
 		instType = INST_NODE_TYPE(in2);
-		
+
 		if (instType == INT_INFO) ii = &InstInfos[INST_NODE_INDEX(in2)];
 		else if (instType == INT_INFOEX) ii = (_InstInfo*)&InstInfosEx[INST_NODE_INDEX(in2)];
 
@@ -535,7 +549,7 @@ _InstInfo* inst_lookup(_CodeInfo* ci, _PrefixState* ps)
 		 * or it was an official 2.3 (because its index was less than 0xc0) -
 		 * Then it means the instruction should be using the REG bits, otherwise give a chance to range 0xc0-0xff.
 		 */
-		/* If we found an instruction only by its REG bits, AND it is not divided, then return it. */
+		 /* If we found an instruction only by its REG bits, AND it is not divided, then return it. */
 		if ((ii != NULL) && (INST_INFO_FLAGS(ii) & INST_NOT_DIVIDED)) return ii;
 		/* Otherwise, if the range is above 0xc0, try the special divided range (range 0x8-0xc0 is omitted). */
 		if (tmpIndex2 >= INST_DIVIDED_MODRM) return inst_get_info(in, tmpIndex2 - INST_DIVIDED_MODRM + 8);

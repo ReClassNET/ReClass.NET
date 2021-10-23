@@ -35,9 +35,9 @@ OBJDIR_RELEASE = obj/release
 DEP_RELEASE =
 OUT_RELEASE = build/release/NativeCore.so
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/WriteRemoteMemory.o $(OBJDIR_DEBUG)/ReadRemoteMemory.o $(OBJDIR_DEBUG)/OpenRemoteProcess.o $(OBJDIR_DEBUG)/IsProcessValid.o $(OBJDIR_DEBUG)/Input.o $(OBJDIR_DEBUG)/EnumerateRemoteSectionsAndModules.o $(OBJDIR_DEBUG)/EnumerateProcesses.o $(OBJDIR_DEBUG)/DisassembleCode.o $(OBJDIR_DEBUG)/DistormHelper.o  $(OBJDIR_DEBUG)/Debugger.o $(OBJDIR_DEBUG)/ControlRemoteProcess.o $(OBJDIR_DEBUG)/CloseRemoteProcess.o $(OBJDIR_DEBUG)/decoder.o $(OBJDIR_DEBUG)/distorm.o $(OBJDIR_DEBUG)/instructions.o $(OBJDIR_DEBUG)/insts.o $(OBJDIR_DEBUG)/mnemonics.o $(OBJDIR_DEBUG)/operands.o $(OBJDIR_DEBUG)/prefix.o $(OBJDIR_DEBUG)/textdefs.o $(OBJDIR_DEBUG)/wstring.o
+OBJ_DEBUG = $(OBJDIR_DEBUG)/WriteRemoteMemory.o $(OBJDIR_DEBUG)/ReadRemoteMemory.o $(OBJDIR_DEBUG)/OpenRemoteProcess.o $(OBJDIR_DEBUG)/IsProcessValid.o $(OBJDIR_DEBUG)/Input.o $(OBJDIR_DEBUG)/EnumerateRemoteSectionsAndModules.o $(OBJDIR_DEBUG)/EnumerateProcesses.o $(OBJDIR_DEBUG)/DisassembleCode.o $(OBJDIR_DEBUG)/DistormHelper.o  $(OBJDIR_DEBUG)/Debugger.o $(OBJDIR_DEBUG)/ControlRemoteProcess.o $(OBJDIR_DEBUG)/CloseRemoteProcess.o $(OBJDIR_DEBUG)/decoder.o $(OBJDIR_DEBUG)/distorm.o $(OBJDIR_DEBUG)/instructions.o $(OBJDIR_DEBUG)/insts.o $(OBJDIR_DEBUG)/mnemonics.o $(OBJDIR_DEBUG)/operands.o $(OBJDIR_DEBUG)/prefix.o $(OBJDIR_DEBUG)/textdefs.o
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/WriteRemoteMemory.o $(OBJDIR_RELEASE)/ReadRemoteMemory.o $(OBJDIR_RELEASE)/OpenRemoteProcess.o $(OBJDIR_RELEASE)/IsProcessValid.o $(OBJDIR_RELEASE)/Input.o $(OBJDIR_RELEASE)/EnumerateRemoteSectionsAndModules.o $(OBJDIR_RELEASE)/EnumerateProcesses.o $(OBJDIR_RELEASE)/DisassembleCode.o $(OBJDIR_RELEASE)/DistormHelper.o $(OBJDIR_RELEASE)/Debugger.o $(OBJDIR_RELEASE)/ControlRemoteProcess.o $(OBJDIR_RELEASE)/CloseRemoteProcess.o $(OBJDIR_RELEASE)/decoder.o $(OBJDIR_RELEASE)/distorm.o $(OBJDIR_RELEASE)/instructions.o $(OBJDIR_RELEASE)/insts.o $(OBJDIR_RELEASE)/mnemonics.o $(OBJDIR_RELEASE)/operands.o $(OBJDIR_RELEASE)/prefix.o $(OBJDIR_RELEASE)/textdefs.o $(OBJDIR_RELEASE)/wstring.o
+OBJ_RELEASE = $(OBJDIR_RELEASE)/WriteRemoteMemory.o $(OBJDIR_RELEASE)/ReadRemoteMemory.o $(OBJDIR_RELEASE)/OpenRemoteProcess.o $(OBJDIR_RELEASE)/IsProcessValid.o $(OBJDIR_RELEASE)/Input.o $(OBJDIR_RELEASE)/EnumerateRemoteSectionsAndModules.o $(OBJDIR_RELEASE)/EnumerateProcesses.o $(OBJDIR_RELEASE)/DisassembleCode.o $(OBJDIR_RELEASE)/DistormHelper.o $(OBJDIR_RELEASE)/Debugger.o $(OBJDIR_RELEASE)/ControlRemoteProcess.o $(OBJDIR_RELEASE)/CloseRemoteProcess.o $(OBJDIR_RELEASE)/decoder.o $(OBJDIR_RELEASE)/distorm.o $(OBJDIR_RELEASE)/instructions.o $(OBJDIR_RELEASE)/insts.o $(OBJDIR_RELEASE)/mnemonics.o $(OBJDIR_RELEASE)/operands.o $(OBJDIR_RELEASE)/prefix.o $(OBJDIR_RELEASE)/textdefs.o
 
 all: debug release
 
@@ -114,9 +114,6 @@ $(OBJDIR_DEBUG)/prefix.o: ../Dependencies/distorm/src/prefix.c
 $(OBJDIR_DEBUG)/textdefs.o: ../Dependencies/distorm/src/textdefs.c
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/textdefs.c -o $(OBJDIR_DEBUG)/textdefs.o
 
-$(OBJDIR_DEBUG)/wstring.o: ../Dependencies/distorm/src/wstring.c
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ../Dependencies/distorm/src/wstring.c -o $(OBJDIR_DEBUG)/wstring.o
-
 clean_debug:
 	rm -f $(OBJ_DEBUG) $(OUT_DEBUG)
 	rm -rf build/debug
@@ -192,9 +189,6 @@ $(OBJDIR_RELEASE)/prefix.o: ../Dependencies/distorm/src/prefix.c
 
 $(OBJDIR_RELEASE)/textdefs.o: ../Dependencies/distorm/src/textdefs.c
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/textdefs.c -o $(OBJDIR_RELEASE)/textdefs.o
-
-$(OBJDIR_RELEASE)/wstring.o: ../Dependencies/distorm/src/wstring.c
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ../Dependencies/distorm/src/wstring.c -o $(OBJDIR_RELEASE)/wstring.o
 
 clean_release:
 	rm -f $(OBJ_RELEASE) $(OUT_RELEASE)

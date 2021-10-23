@@ -72,9 +72,6 @@
     <ClCompile Include="..\Dependencies\distorm\src\textdefs.c">
       <Filter>Dependencies\distorm</Filter>
     </ClCompile>
-    <ClCompile Include="..\Dependencies\distorm\src\wstring.c">
-      <Filter>Dependencies\distorm</Filter>
-    </ClCompile>
     <ClCompile Include="..\Shared\DistormHelper.cpp">
       <Filter>Shared</Filter>
     </ClCompile>
@@ -113,9 +110,6 @@
       <Filter>Dependencies\distorm</Filter>
     </ClInclude>
     <ClInclude Include="..\Dependencies\distorm\src\textdefs.h">
-      <Filter>Dependencies\distorm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Dependencies\distorm\src\wstring.h">
       <Filter>Dependencies\distorm</Filter>
     </ClInclude>
     <ClInclude Include="..\Dependencies\distorm\src\x86defs.h">

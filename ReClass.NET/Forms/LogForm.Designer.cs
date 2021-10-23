@@ -86,7 +86,7 @@
 			this.entriesDataGridView.Name = "entriesDataGridView";
 			this.entriesDataGridView.ReadOnly = true;
 			this.entriesDataGridView.RowHeadersVisible = false;
-			this.entriesDataGridView.RowTemplate.ContextMenuStrip = this.contextMenuStrip;
+			this.entriesDataGridView.ContextMenuStrip = this.contextMenuStrip;
 			this.entriesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.entriesDataGridView.Size = new System.Drawing.Size(563, 188);
 			this.entriesDataGridView.TabIndex = 1;

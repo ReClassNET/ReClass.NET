@@ -178,7 +178,6 @@
     <ClCompile Include="..\Dependencies\distorm\src\operands.c" />
     <ClCompile Include="..\Dependencies\distorm\src\prefix.c" />
     <ClCompile Include="..\Dependencies\distorm\src\textdefs.c" />
-    <ClCompile Include="..\Dependencies\distorm\src\wstring.c" />
     <ClCompile Include="..\Shared\DistormHelper.cpp" />
     <ClCompile Include="CloseRemoteProcess.cpp" />
     <ClCompile Include="ControlRemoteProcess.cpp" />

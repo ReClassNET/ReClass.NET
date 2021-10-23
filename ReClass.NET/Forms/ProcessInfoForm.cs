@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -127,6 +128,13 @@ namespace ReClassNET.Forms
 					dgv.Rows[row].Selected = true;
 				}
 			}
+		}
+
+		private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
+		{
+			var sourceControl = (sender as ContextMenuStrip)?.SourceControl;
+
+			e.Cancel = sourceControl == null || (sourceControl == modulesDataGridView && GetSelectedModule() == null) || (sourceControl == sectionsDataGridView && GetSelectedSection() == null);
 		}
 
 		private void setCurrentClassAddressToolStripMenuItem_Click(object sender, EventArgs e)

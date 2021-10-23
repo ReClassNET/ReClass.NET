@@ -4,7 +4,7 @@ config.h
 diStorm3 - Powerful disassembler for X86/AMD64
 http://ragestorm.net/distorm/
 distorm at gmail dot com
-Copyright (C) 2003-2018 Gil Dabah
+Copyright (C) 2003-2021 Gil Dabah
 This library is licensed under the BSD license. See the file COPYING.
 */
 
@@ -13,7 +13,7 @@ This library is licensed under the BSD license. See the file COPYING.
 #define CONFIG_H
 
 /* diStorm version number. */
-#define __DISTORMV__ 0x030400
+#define __DISTORMV__ 0x030502
 
 #include <string.h> /* memset, memcpy - can be easily self implemented for libc independency. */
 
@@ -57,6 +57,7 @@ This library is licensed under the BSD license. See the file COPYING.
 
 #define _DLLEXPORT_
 #define _FASTCALL_
+/* Keep inline as static (arrrrg) as it would break linux on some flavors otherwise. */
 #define _INLINE_ static
 /* GCC ignores this directive... */
 /*#define _FASTCALL_ __attribute__((__fastcall__))*/
@@ -94,7 +95,7 @@ This library is licensed under the BSD license. See the file COPYING.
 
 #define _DLLEXPORT_
 #define _FASTCALL_
-#define _INLINE_
+#define _INLINE_ static
 
 /* End of __TINYC__ */
 
