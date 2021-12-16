@@ -563,15 +563,12 @@ namespace ReClassNET.CodeGenerator
 				return type;
 			}
 
-			switch (node)
+			return node switch
 			{
-				case ClassInstanceNode classInstanceNode:
-					return $"class {classInstanceNode.InnerNode.Name}";
-				case EnumNode enumNode:
-					return enumNode.Enum.Name;
-			}
-
-			return null;
+				ClassInstanceNode classInstanceNode => $"class {classInstanceNode.InnerNode.Name}",
+				EnumNode enumNode => enumNode.Enum.Name,
+				_ => null,
+			};
 		}
 
 		/// <summary>
