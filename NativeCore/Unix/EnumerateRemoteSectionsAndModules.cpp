@@ -50,7 +50,7 @@ extern "C" void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer handle,
 		RC_UnicodeChar Path[PATH_MAXIMUM_LENGTH] = {};
 	};
 
-	std::ifstream input(static_cast<std::stringstream&>(std::stringstream() << "/proc/" << reinterpret_cast<intptr_t>(handle) << "/maps").str());
+	std::ifstream input((std::stringstream() << "/proc/" << reinterpret_cast<intptr_t>(handle) << "/maps").str());
 
 	std::unordered_map<int, ModuleInfo> modules;
 
