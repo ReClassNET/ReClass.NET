@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -131,7 +131,7 @@ namespace ReClassNET.Forms
 			var filter = filterTextBox.Text;
 			if (!string.IsNullOrEmpty(filter))
 			{
-				filter = $"name like '%{filter}%' or path like '%{filter}%'";
+				filter = $"name like '%{filter}%' or path like '%{filter}%' or CONVERT(id, System.String) like '%{filter}%'";
 			}
 			((DataTable)processDataGridView.DataSource).DefaultView.RowFilter = filter;
 		}
