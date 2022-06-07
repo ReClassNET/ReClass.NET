@@ -23,7 +23,7 @@ jobs:
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
     - name: MSBuild
       run: |
-        Remove-Item -R -Fo bin
+        Remove-Item -R -Fo -EA SilentlyContinue bin
         msbuild /t:Reclass_NET:Rebuild /p:Configuration=Release /p:Platform=x64 ReClass.NET.sln
         msbuild /t:Reclass_NET:Rebuild /p:Configuration=Release /p:Platform=x86 ReClass.NET.sln
     - name: Zip release
