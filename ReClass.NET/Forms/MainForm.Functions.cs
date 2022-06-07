@@ -193,8 +193,9 @@ namespace ReClassNET.Forms
 			using var ofd = new OpenFileDialog
 			{
 				CheckFileExists = true,
-				Filter = $"All ReClass Types |*{ReClassNetFile.FileExtension};*{ReClassFile.FileExtension};*{ReClassQtFile.FileExtension}"
-				         + $"|{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}"
+				Filter = $"All ReClass Types |*{ReClassNetFile.DefaultFileExtension};*{ReClassNetFile.AlternateFileExtension};*{ReClassFile.FileExtension};*{ReClassQtFile.FileExtension}"
+				         + $"|{ReClassNetFile.FormatName} (*{ReClassNetFile.DefaultFileExtension})|*{ReClassNetFile.DefaultFileExtension}"
+				         + $"|{ReClassNetFile.AlternateFormatName} (*{ReClassNetFile.AlternateFileExtension})|*{ReClassNetFile.AlternateFileExtension}"
 				         + $"|{ReClassFile.FormatName} (*{ReClassFile.FileExtension})|*{ReClassFile.FileExtension}"
 				         + $"|{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}"
 			};
@@ -218,7 +219,9 @@ namespace ReClassNET.Forms
 			LoadProjectFromPath(path, ref project);
 
 			// If the file is a ReClass.NET file remember the path.
-			if (Path.GetExtension(path) == ReClassNetFile.FileExtension)
+			var ext = Path.GetExtension(path);
+			if (ext == ReClassNetFile.DefaultFileExtension
+				|| ext == ReClassNetFile.AlternateFileExtension)
 			{
 				project.Path = path;
 			}
@@ -238,7 +241,8 @@ namespace ReClassNET.Forms
 			IReClassImport import;
 			switch (Path.GetExtension(path)?.ToLower())
 			{
-				case ReClassNetFile.FileExtension:
+				case ReClassNetFile.DefaultFileExtension:
+				case ReClassNetFile.AlternateFileExtension:
 					import = new ReClassNetFile(project);
 					break;
 				case ReClassQtFile.FileExtension:

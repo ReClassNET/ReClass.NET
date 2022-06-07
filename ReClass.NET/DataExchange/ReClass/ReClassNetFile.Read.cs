@@ -19,7 +19,24 @@ namespace ReClassNET.DataExchange.ReClass
 		{
 			using var fs = new FileStream(filePath, FileMode.Open);
 
-			Load(fs, logger);
+			var ext = Path.GetExtension(filePath);
+			if (ext == DefaultFileExtension)
+			{
+				using var archive = new ZipArchive(fs, ZipArchiveMode.Read);
+				var dataEntry = archive.GetEntry(DataFileName);
+				if (dataEntry == null)
+				{
+					throw new FormatException();
+				}
+
+				using var entryStream = dataEntry.Open();
+
+				Load(entryStream, logger);
+			}
+			else if (ext == AlternateFileExtension)
+			{
+				Load(fs, logger);
+			}
 		}
 
 		public void Load(Stream input, ILogger logger)
@@ -27,15 +44,7 @@ namespace ReClassNET.DataExchange.ReClass
 			Contract.Requires(input != null);
 			Contract.Requires(logger != null);
 
-			using var archive = new ZipArchive(input, ZipArchiveMode.Read);
-			var dataEntry = archive.GetEntry(DataFileName);
-			if (dataEntry == null)
-			{
-				throw new FormatException();
-			}
-
-			using var entryStream = dataEntry.Open();
-			var document = XDocument.Load(entryStream);
+			var document = XDocument.Load(input);
 			if (document.Root?.Element(XmlClassesElement) == null)
 			{
 				throw new FormatException("The data has not the correct format.");

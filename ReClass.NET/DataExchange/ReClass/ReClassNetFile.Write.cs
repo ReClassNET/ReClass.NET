@@ -16,17 +16,24 @@ namespace ReClassNET.DataExchange.ReClass
 		public void Save(string filePath, ILogger logger)
 		{
 			using var fs = new FileStream(filePath, FileMode.Create);
+			var ext = Path.GetExtension(filePath);
+			if(ext == DefaultFileExtension)
+			{
+				using var archive = new ZipArchive(fs, ZipArchiveMode.Create);
 
-			Save(fs, logger);
+				var dataEntry = archive.CreateEntry(DataFileName);
+				using var entryStream = dataEntry.Open();
+
+				Save(entryStream, logger);
+			} 
+			else if(ext == AlternateFileExtension)
+			{
+				Save(fs, logger);
+			}
 		}
 
 		public void Save(Stream output, ILogger logger)
 		{
-			using var archive = new ZipArchive(output, ZipArchiveMode.Create);
-
-			var dataEntry = archive.CreateEntry(DataFileName);
-			using var entryStream = dataEntry.Open();
-
 			var document = new XDocument(
 				new XComment($"{Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}"),
 				new XComment($"Website: {Constants.HomepageUrl}"),
@@ -40,8 +47,7 @@ namespace ReClassNET.DataExchange.ReClass
 					new XElement(XmlClassesElement, CreateClassElements(project.Classes, logger))
 				)
 			);
-
-			document.Save(entryStream);
+			document.Save(output);
 		}
 
 		private static IEnumerable<XElement> CreateEnumElements(IEnumerable<EnumDescription> enums)

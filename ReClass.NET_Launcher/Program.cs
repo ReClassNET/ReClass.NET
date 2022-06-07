@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -19,13 +19,13 @@ namespace ReClassNET_Launcher
 			// Register the files with the launcher.
 			if (commandLineArgs[Constants.CommandLineOptions.FileExtRegister] != null)
 			{
-				NativeMethods.RegisterExtension(ReClassNetFile.FileExtension, ReClassNetFile.FileExtensionId, PathUtil.ExecutablePath, Constants.ApplicationName);
+				NativeMethods.RegisterExtension(ReClassNetFile.DefaultFileExtension, ReClassNetFile.FileExtensionId, PathUtil.ExecutablePath, Constants.ApplicationName);
 
 				return;
 			}
 			if (commandLineArgs[Constants.CommandLineOptions.FileExtUnregister] != null)
 			{
-				NativeMethods.UnregisterExtension(ReClassNetFile.FileExtension, ReClassNetFile.FileExtensionId);
+				NativeMethods.UnregisterExtension(ReClassNetFile.DefaultFileExtension, ReClassNetFile.FileExtensionId);
 
 				return;
 			}
