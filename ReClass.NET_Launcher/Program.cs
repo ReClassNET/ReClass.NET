@@ -20,12 +20,14 @@ namespace ReClassNET_Launcher
 			if (commandLineArgs[Constants.CommandLineOptions.FileExtRegister] != null)
 			{
 				NativeMethods.RegisterExtension(ReClassNetFile.DefaultFileExtension, ReClassNetFile.FileExtensionId, PathUtil.ExecutablePath, Constants.ApplicationName);
+				NativeMethods.RegisterExtension(ReClassNetFile.AlternateFileExtension, ReClassNetFile.AlternateFileExtensionId, PathUtil.ExecutablePath, Constants.ApplicationName);
 
 				return;
 			}
 			if (commandLineArgs[Constants.CommandLineOptions.FileExtUnregister] != null)
 			{
 				NativeMethods.UnregisterExtension(ReClassNetFile.DefaultFileExtension, ReClassNetFile.FileExtensionId);
+				NativeMethods.UnregisterExtension(ReClassNetFile.AlternateFileExtension, ReClassNetFile.AlternateFileExtensionId);
 
 				return;
 			}
