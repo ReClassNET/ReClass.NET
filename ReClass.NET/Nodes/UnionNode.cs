@@ -63,6 +63,10 @@ namespace ReClassNET.Nodes
 			x = AddAddressOffset(context, x, y);
 
 			x = AddText(context, x, y, context.Settings.TypeColor, HotSpot.NoneId, "Union") + context.Font.Width;
+			if (!IsWrapped)
+			{
+				x = AddText(context, x, y, context.Settings.NameColor, HotSpot.NameId, Name) + context.Font.Width;
+			}
 
 			x = AddText(context, x, y, context.Settings.ValueColor, HotSpot.NoneId, $"[Nodes: {Nodes.Count}, Size: {MemorySize}]") + context.Font.Width;
 

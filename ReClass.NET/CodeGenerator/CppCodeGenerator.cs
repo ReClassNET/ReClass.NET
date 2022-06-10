@@ -474,7 +474,8 @@ namespace ReClassNET.CodeGenerator
 				WriteNodes(writer, unionNode.Nodes, logger);
 
 				writer.Indent--;
-				writer.WriteLine("};");
+
+				writer.WriteLine($"}} {node.Name};");
 			}
 			else
 			{
