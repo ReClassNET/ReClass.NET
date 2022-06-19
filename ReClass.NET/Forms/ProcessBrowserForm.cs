@@ -135,5 +135,11 @@ namespace ReClassNET.Forms
 			}
 			((DataTable)processDataGridView.DataSource).DefaultView.RowFilter = filter;
 		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			NetworkingForm networkingForm = new NetworkingForm();
+			networkingForm.ShowDialog();
+		}
 	}
 }
