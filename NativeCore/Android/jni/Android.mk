@@ -9,6 +9,7 @@ $(LOCAL_PATH)/../../Unix
 LOCAL_SRC_FILES := \
 main.cpp \
 Remote.cpp \
+Utils.cpp \
 ../../Unix/LinuxSocketWrapper.cpp \
 ../../Shared/SocketWrapper.cpp
 

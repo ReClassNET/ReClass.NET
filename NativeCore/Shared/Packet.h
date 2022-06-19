@@ -7,7 +7,7 @@
 template <typename PacketType, uint16_t packetId>
 PACK(struct Packet {
 	uint16_t mPacketId = packetId;
-	PacketType mPacketContent;
+	PacketType mPacketContent {};
 
 	void* getEntry()
 	{

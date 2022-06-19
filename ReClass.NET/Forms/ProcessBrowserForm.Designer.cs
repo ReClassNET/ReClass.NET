@@ -30,7 +30,8 @@ namespace ReClassNET.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.processDataGridView = new System.Windows.Forms.DataGridView();
+			
+			this.processDataGridView = new System.Windows.Forms.DataGridView();
             this.iconColumn = new System.Windows.Forms.DataGridViewImageColumn();
             this.processNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pidColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -266,7 +267,6 @@ namespace ReClassNET.Forms
             ((System.ComponentModel.ISupportInitialize)(this.bannerBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
 		}
 
 		#endregion

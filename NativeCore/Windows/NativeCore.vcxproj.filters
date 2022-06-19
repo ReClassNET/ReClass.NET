@@ -139,5 +139,17 @@
     <ClInclude Include="..\Shared\SocketWrapper.h">
       <Filter>Shared</Filter>
     </ClInclude>
+    <ClInclude Include="..\Shared\API.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\PackDefs.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Packet.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerRemoteTool.h">
+      <Filter>Functions\Networking</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

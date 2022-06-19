@@ -140,6 +140,9 @@ namespace ReClassNET.Forms
 		{
 			NetworkingForm networkingForm = new NetworkingForm();
 			networkingForm.ShowDialog();
+			{
+				RefreshProcessList();
+			}
 		}
 	}
 }

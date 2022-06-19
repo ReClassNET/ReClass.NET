@@ -2,8 +2,11 @@
 #include <tlhelp32.h>
 #include <psapi.h>
 #include <filesystem>
-
+#include <codecvt>
+#include <locale>
 #include "NativeCore.hpp"
+#include "ServerRemoteTool.h"
+
 
 enum class Platform
 {
@@ -86,6 +89,48 @@ void EnumerateProcessesWindows(EnumerateProcessCallback callbackProcess)
 	}
 }
 
+void StrtoWStr(const std::string& in, std::wstring& outWStr)
+{
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
+	outWStr = converter.from_bytes(in);
+}
+
+std::wstring StrtoWStr(const std::string& in)
+{
+	std::wstring result = L"";
+
+	StrtoWStr(in, result);
+
+	return result;
+}
+
+void EnumerateProcessesServer(EnumerateProcessCallback callbackProcess)
+{
+	HANDLE_API hSnap = CreateRemoteTool(ToolType::PROCS, 0);
+
+	if (hSnap != HandleValue::INVALID)
+	{
+		ProcessInfo pi {};
+		if (ProcessFirst(hSnap, &pi))
+		{
+			do {
+				if (strlen(pi.mProcessName) > 0)
+				{
+					EnumerateProcessData enumProcData{};
+
+					enumProcData.Id = pi.mProcessId;
+					lstrcpyW((wchar_t*)enumProcData.Name, StrtoWStr(pi.mProcessName).c_str());
+
+					callbackProcess(&enumProcData);
+				}
+			} while (ProcessNext(hSnap, &pi));
+		}
+
+		RemoveRemoteProcsTool(hSnap);
+	}
+}
+
 void RC_CallConv EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 {
 	if (callbackProcess == nullptr)
@@ -93,5 +138,6 @@ void RC_CallConv EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 		return;
 	}
 
-	EnumerateProcessesWindows(callbackProcess);
+	if (ServerManager::getInstance()->IsConnected()) EnumerateProcessesServer(callbackProcess);
+	else EnumerateProcessesWindows(callbackProcess);
 }

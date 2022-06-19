@@ -210,10 +210,14 @@
     <ClInclude Include="..\Dependencies\distorm\src\wstring.h" />
     <ClInclude Include="..\Dependencies\distorm\src\x86defs.h" />
     <ClInclude Include="..\ReClassNET_Plugin.hpp" />
+    <ClInclude Include="..\Shared\API.h" />
     <ClInclude Include="..\Shared\DistormHelper.hpp" />
     <ClInclude Include="..\Shared\Keys.hpp" />
+    <ClInclude Include="..\Shared\PackDefs.h" />
+    <ClInclude Include="..\Shared\Packet.h" />
     <ClInclude Include="..\Shared\SocketWrapper.h" />
     <ClInclude Include="NativeCore.hpp" />
+    <ClInclude Include="ServerRemoteTool.h" />
     <ClInclude Include="WindowsSocketWrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

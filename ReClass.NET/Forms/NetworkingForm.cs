@@ -12,6 +12,8 @@ namespace ReClassNET.Forms
 {
 	public partial class NetworkingForm : IconForm
 	{
+		public bool mConnected = false;
+
 		public NetworkingForm()
 		{
 			InitializeComponent();
@@ -40,9 +42,9 @@ namespace ReClassNET.Forms
 				{
 					switch(Program.CoreFunctions.ConnectServer(ipStr, port))//[MarshalAs(UnmanagedType.LPStr)]
 					{
-						case 0: Close(); return; // Sucessfully Connected
+						case 0: mConnected = true; Close(); return; // Sucessfully Connected
 						case 1: MessageBox.Show("Alredy Connected"); Close(); return;
-						case 2: MessageBox.Show("Connection Failed"); return;
+						case 2: mConnected = false;  MessageBox.Show("Connection Failed"); return;
 					}
 
 				} else
@@ -55,5 +57,6 @@ namespace ReClassNET.Forms
 				MessageBox.Show("Fields Empty");
 			}
 		}
+
 	}
 }
