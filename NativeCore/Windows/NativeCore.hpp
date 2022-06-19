@@ -24,3 +24,5 @@ bool RC_CallConv SetHardwareBreakpoint(RC_Pointer id, RC_Pointer address, Hardwa
 RC_Pointer RC_CallConv InitializeInput();
 bool RC_CallConv GetPressedKeys(RC_Pointer handle, Keys* state[], int* count);
 void RC_CallConv ReleaseInput(RC_Pointer handle);
+int32_t RC_CallConv ConnectServer(const char* pIpStr, short port);
+void RC_CallConv DisconnectServer();

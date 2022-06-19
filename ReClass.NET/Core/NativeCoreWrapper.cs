@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using ReClassNET.Debugger;
 using ReClassNET.Extensions;
@@ -9,6 +9,8 @@ namespace ReClassNET.Core
 	public class NativeCoreWrapper : ICoreProcessFunctions
 	{
 		#region Native Delegates
+
+		private delegate int ConnectServerDelegate(string ip, short port);
 
 		private delegate void EnumerateProcessesDelegate([MarshalAs(UnmanagedType.FunctionPtr)] EnumerateProcessCallback callbackProcess);
 
@@ -42,6 +44,7 @@ namespace ReClassNET.Core
 		[return: MarshalAs(UnmanagedType.I1)]
 		private delegate bool SetHardwareBreakpointDelegate(IntPtr id, IntPtr address, HardwareBreakpointRegister register, HardwareBreakpointTrigger trigger, HardwareBreakpointSize size, [param: MarshalAs(UnmanagedType.I1)] bool set);
 
+		private readonly ConnectServerDelegate connectServerDelegate;
 		private readonly EnumerateProcessesDelegate enumerateProcessesDelegate;
 		private readonly EnumerateRemoteSectionsAndModulesDelegate enumerateRemoteSectionsAndModulesDelegate;
 		private readonly OpenRemoteProcessDelegate openRemoteProcessDelegate;
@@ -78,6 +81,7 @@ namespace ReClassNET.Core
 			awaitDebugEventDelegate = GetFunctionDelegate<AwaitDebugEventDelegate>(handle, "AwaitDebugEvent");
 			handleDebugEventDelegate = GetFunctionDelegate<HandleDebugEventDelegate>(handle, "HandleDebugEvent");
 			setHardwareBreakpointDelegate = GetFunctionDelegate<SetHardwareBreakpointDelegate>(handle, "SetHardwareBreakpoint");
+			connectServerDelegate = GetFunctionDelegate<ConnectServerDelegate>(handle, "ConnectServer");
 		}
 
 		protected static TDelegate GetFunctionDelegate<TDelegate>(IntPtr handle, string function)
@@ -88,6 +92,11 @@ namespace ReClassNET.Core
 				throw new Exception($"Function '{function}' not found.");
 			}
 			return Marshal.GetDelegateForFunctionPointer<TDelegate>(address);
+		}
+
+		public int ConnectServer(string ip, short port)
+		{
+			return connectServerDelegate(ip, port);
 		}
 
 		public void EnumerateProcesses(EnumerateProcessCallback callbackProcess)

@@ -26,5 +26,34 @@ namespace ReClassNET.Forms
 		{
 
 		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			string ipStr = tbIp.Text;
+			string portStr = tbPort.Text;
+
+			if (!string.IsNullOrEmpty(ipStr) && !string.IsNullOrEmpty(portStr))
+			{
+				short port = 0;
+
+				if (short.TryParse(portStr, out port))
+				{
+					switch(Program.CoreFunctions.ConnectServer(ipStr, port))//[MarshalAs(UnmanagedType.LPStr)]
+					{
+						case 0: Close(); return; // Sucessfully Connected
+						case 1: MessageBox.Show("Alredy Connected"); Close(); return;
+						case 2: MessageBox.Show("Connection Failed"); return;
+					}
+
+				} else
+				{
+					MessageBox.Show("Invalid Port");
+				}
+
+			} else
+			{
+				MessageBox.Show("Fields Empty");
+			}
+		}
 	}
 }

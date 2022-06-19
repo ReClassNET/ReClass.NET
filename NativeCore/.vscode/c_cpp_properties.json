@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Users/josua/AppData/Local/Android/android-ndk-r21/sysroot/usr/include",
+                "C:/Users/josua/Documents/Proj/FreeFireHackV2/src",
+                "C:/Users/josua/source/repos/ProfilerTIme/ReClass.NET/NativeCore/Shared",
+                "C:/Users/josua/source/repos/ProfilerTIme/ReClass.NET/NativeCore/Unix"
+            ],
+            "defines": [],
+            "compilerPath": "C:\\Users\\josua\\AppData\\Local\\Android\\android-ndk-r21\\ndk-build.cmd",
+            "cppStandard": "c++14",
+            "IntelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}

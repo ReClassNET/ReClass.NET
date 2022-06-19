@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ReClassNET.Debugger;
 
 namespace ReClassNET.Core
@@ -9,6 +9,8 @@ namespace ReClassNET.Core
 
 	public interface ICoreProcessFunctions
 	{
+		int ConnectServer(string ip, short port);
+
 		void EnumerateProcesses(EnumerateProcessCallback callbackProcess);
 
 		void EnumerateRemoteSectionsAndModules(IntPtr process, EnumerateRemoteSectionCallback callbackSection, EnumerateRemoteModuleCallback callbackModule);

@@ -2,6 +2,11 @@
 
 #include "NativeCore.hpp"
 
+void CloseWindowsHandle(RC_Pointer handle)
+{
+	CloseHandle(handle);
+}
+
 void RC_CallConv CloseRemoteProcess(RC_Pointer handle)
 {
 	if (handle == nullptr)
@@ -9,5 +14,5 @@ void RC_CallConv CloseRemoteProcess(RC_Pointer handle)
 		return;
 	}
 
-	CloseHandle(handle);
+	CloseWindowsHandle(handle);
 }

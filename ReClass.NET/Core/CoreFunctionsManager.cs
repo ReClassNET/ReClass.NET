@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -64,6 +64,11 @@ namespace ReClassNET.Core
 		}
 
 		#region Plugin Functions
+
+		public int ConnectServer(string ip, short port)
+		{
+			return currentFunctions.ConnectServer(ip, port);
+		}
 
 		public void EnumerateProcesses(Action<ProcessInfo> callbackProcess)
 		{

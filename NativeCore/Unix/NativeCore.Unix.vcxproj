@@ -85,6 +85,7 @@
     <ClCompile Include="..\Dependencies\distorm\src\prefix.c" />
     <ClCompile Include="..\Dependencies\distorm\src\textdefs.c" />
     <ClCompile Include="..\Shared\DistormHelper.cpp" />
+    <ClCompile Include="..\Shared\SocketWrapper.cpp" />
     <ClCompile Include="CloseRemoteProcess.cpp" />
     <ClCompile Include="ControlRemoteProcess.cpp" />
     <ClCompile Include="Debugger.cpp" />
@@ -93,6 +94,7 @@
     <ClCompile Include="EnumerateRemoteSectionsAndModules.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="IsProcessValid.cpp" />
+    <ClCompile Include="LinuxSocketWrapper.cpp" />
     <ClCompile Include="OpenRemoteProcess.cpp" />
     <ClCompile Include="ReadRemoteMemory.cpp" />
     <ClCompile Include="WriteRemoteMemory.cpp" />
@@ -112,6 +114,8 @@
     <ClInclude Include="..\ReClassNET_Plugin.hpp" />
     <ClInclude Include="..\Shared\DistormHelper.hpp" />
     <ClInclude Include="..\Shared\Keys.hpp" />
+    <ClInclude Include="..\Shared\SocketWrapper.h" />
+    <ClInclude Include="LinuxSocketWrapper.h" />
     <ClInclude Include="NativeCore.hpp" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
