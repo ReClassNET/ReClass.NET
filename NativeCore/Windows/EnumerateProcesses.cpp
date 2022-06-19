@@ -9,7 +9,9 @@ enum class Platform
 {
 	Unknown,
 	X86,
-	X64
+	X64,
+	ARM32,
+	ARM64
 };
 
 Platform GetProcessPlatform(HANDLE process)
@@ -43,13 +45,8 @@ Platform GetProcessPlatform(HANDLE process)
 	return Platform::Unknown;
 }
 
-void RC_CallConv EnumerateProcesses(EnumerateProcessCallback callbackProcess)
+void EnumerateProcessesWindows(EnumerateProcessCallback callbackProcess)
 {
-	if (callbackProcess == nullptr)
-	{
-		return;
-	}
-
 	const auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 	if (handle != INVALID_HANDLE_VALUE)
 	{
@@ -79,12 +76,22 @@ void RC_CallConv EnumerateProcesses(EnumerateProcessCallback callbackProcess)
 					}
 
 				}
-				
+
 				CloseRemoteProcess(process);
-				
+
 			} while (Process32NextW(handle, &pe32));
 		}
 
 		CloseHandle(handle);
 	}
+}
+
+void RC_CallConv EnumerateProcesses(EnumerateProcessCallback callbackProcess)
+{
+	if (callbackProcess == nullptr)
+	{
+		return;
+	}
+
+	EnumerateProcessesWindows(callbackProcess);
 }

@@ -2,7 +2,7 @@
 
 #include "NativeCore.hpp"
 
-bool RC_CallConv IsProcessValid(RC_Pointer handle)
+bool IsProcessValidWindows(RC_Pointer handle)
 {
 	if (handle == nullptr)
 	{
@@ -16,4 +16,9 @@ bool RC_CallConv IsProcessValid(RC_Pointer handle)
 	}
 
 	return retn == WAIT_TIMEOUT;
+}
+
+bool RC_CallConv IsProcessValid(RC_Pointer handle)
+{
+	return IsProcessValidWindows(handle);
 }
