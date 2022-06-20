@@ -6,70 +6,14 @@
 #include "Utils.h"
 #include "dirent.h"
 #include "LinuxProcess.h"
-#include "ReClassNET_Plugin.hpp"
 #include <fstream>
+#include "ReClassNET_Plugin.hpp"
+#include <SnapshotBase.h>
 
 enum {
     SNAPSHOT_PROCESSES,
     SNAPSHOT_MODULES,
     SNAPSHOT_SECTIONS
-};
-
-template<typename T>
-struct SnapshotBase {
-    protected:
-    std::vector<T> mArray;
-    uint32_t mArrayPos = 0;
-    short type;
-    
-
-    public:
-    short getSnapshotType()
-    {
-        return type;
-    }
-
-    bool PopFirst(T** outObj){
-        if(mArray.size() > 0 && mArrayPos == 0)
-        {
-            *outObj = &mArray[mArrayPos++];
-            return true;
-        }
-
-        return false;
-    }
-
-    bool PopNext(T** outObj){
-        if(mArrayPos < mArray.size())
-        {
-            *outObj = &mArray[mArrayPos++];
-            return true;
-        }
-
-        return false;
-    }
-
-    bool PopFirst(T& outObj)
-    {
-        if(mArray.size() > 0 && mArrayPos == 0)
-        {
-            outObj = mArray[mArrayPos++];
-            return true;
-        }
-
-        return false;
-    }
-
-    bool PopNext(T& outObj)
-    {
-        if(mArrayPos < mArray.size())
-        {
-            outObj = mArray[mArrayPos++];
-            return true;
-        }
-
-        return false;
-    }
 };
 
 struct SnapshotProcesses : SnapshotBase<ProcessInfo>{
@@ -121,13 +65,6 @@ struct SnapshotProcesses : SnapshotBase<ProcessInfo>{
             closedir(pProcDir);
         }
     }
-};
-
-struct SectionInfo {
-	uint64_t mStart;
-	uint64_t mEnd;
-	SectionProtection mProt;
-	char mPath[260];
 };
 
 bool getMapsSegments(uint32_t pid, std::vector<SectionInfo>& outSeg)
@@ -253,9 +190,17 @@ struct OpenedProcessInfo{
     LinuxProcess* mProcess;
 };
 
-std::unordered_map<ClientSocketLinux*, OpenedProcessInfo*> gProcs;     
+std::unordered_map<ClientSocketLinux*, OpenedProcessInfo*> gProcs;    
+std::unordered_map<ClientSocketLinux*, std::vector<SnapshotSections*>> gSnapSecs; 
 std::unordered_map<ClientSocketLinux*, std::vector<SnapshotProcesses*>> gSnapProcs;
 std::unordered_map<ClientSocketLinux*, std::vector<SnapshotModules*>> gSnapMods;
+
+bool CreateToolSecs(uint32_t pid, SnapshotSections** outSnap)
+{
+    *outSnap = new SnapshotSections(pid);
+
+    return true;
+}
 
 bool CreateToolMods(uint32_t pid, SnapshotModules** outSnap)
 {
@@ -270,6 +215,7 @@ bool CreateToolProcs(SnapshotProcesses** outSnap)
 
     return *outSnap != 0;
 }
+
 
 void HandleCreateToolProcs(ClientSocketLinux* pClientUnique, HANDLE_API& outHandle)
 {
@@ -291,6 +237,18 @@ void HandleCreateToolMods(ClientSocketLinux* pClientUnique, uint32_t pid, HANDLE
         gSnapMods[pClientUnique].push_back(pModsSnap);
         outHandle = gSnapMods[pClientUnique].size() - 1;
     }
+
+}
+
+void HandleCreateToolSecs(ClientSocketLinux* pClientUnique, uint32_t pid, HANDLE_API& outHandle)
+{
+    SnapshotSections* pSecsSnap = nullptr;
+
+    if(CreateToolSecs(pid, &pSecsSnap))
+    {
+        gSnapSecs[pClientUnique].push_back(pSecsSnap);
+        outHandle = gSnapSecs[pClientUnique].size() - 1;
+    }
 }
 
 void HandleCmdCreateToolHelp(ClientSocketLinux* pClientUnique, void* pInPacket)
@@ -298,8 +256,9 @@ void HandleCmdCreateToolHelp(ClientSocketLinux* pClientUnique, void* pInPacket)
     Packet<CreateRemoteToolHelpIn, 0>* packet = (Packet<CreateRemoteToolHelpIn, 0>*)pInPacket;
     CreateRemoteToolHelpOut resultPacket;
     HANDLE_API& rHandleResult = resultPacket.mHandleTool;
+    uint32_t pid = packet->getPayload()->mProcessId;
 
-    packet->Print();
+    //packet->Print();
 
     printf("Creating Tool %d pid %d\n", packet->getPayload()->mToolType, packet->getPayload()->mProcessId);
 
@@ -308,7 +267,8 @@ void HandleCmdCreateToolHelp(ClientSocketLinux* pClientUnique, void* pInPacket)
     switch(packet->getPayload()->mToolType)
     {
         case ToolType::PROCS:   HandleCreateToolProcs(pClientUnique, rHandleResult); break;
-        case ToolType::MODULES: HandleCreateToolMods(pClientUnique, packet->getPayload()->mProcessId, rHandleResult); break;
+        case ToolType::MODULES: HandleCreateToolMods(pClientUnique, pid, rHandleResult); break;
+        case ToolType::SECTIONS: HandleCreateToolSecs(pClientUnique, pid, rHandleResult); break;
     }
 
     if(rHandleResult != HandleValue::INVALID)
@@ -358,16 +318,20 @@ void HandleDisconnect(ClientSocketLinux* pClientSocket)
     printf("Client Disconnected\n");
 }
 
-bool ValidSnapProcsHandle(ClientSocketLinux* pClientUnique, HANDLE_API handle, bool bCheckRange = true)
+template<typename T>
+bool ValidToolHandle(std::unordered_map<ClientSocketLinux*, std::vector<T*>>& rSnap, ClientSocketLinux* pClientUnique, HANDLE_API handle, bool bCheckRange = true)
 {
     if(bCheckRange)
     {
-        if(!(handle >= 0 && handle < gSnapProcs[pClientUnique].size()))
+        if(!(handle >= 0 && handle < rSnap[pClientUnique].size()))
             return false;
     }
 
-    return gSnapProcs[pClientUnique][handle] != nullptr;
+    return rSnap[pClientUnique][handle] != nullptr; // Vector Alredy Created on entry
+                                                    // Dont worry!
 }
+
+
 
 void HandleCmdRemoveProcsToolHelp(ClientSocketLinux* pClientUnique, void* pInPacket)
 {
@@ -376,7 +340,7 @@ void HandleCmdRemoveProcsToolHelp(ClientSocketLinux* pClientUnique, void* pInPac
 
     printf("Removing Tool Procs %d\n",hTool);
 
-    if(ValidSnapProcsHandle(pClientUnique, hTool)) {
+    if(ValidToolHandle<SnapshotProcesses>(gSnapProcs, pClientUnique, hTool)) {
         delete (gSnapProcs[pClientUnique][hTool]);
         gSnapProcs[pClientUnique][hTool] = nullptr;
 
@@ -396,21 +360,7 @@ void HandleCmdDisconnect(ClientSocketLinux* pClientUnique)
     pClientUnique->SendMsg(CMD_OK);
 }
 
-bool ValidSnapModsHandle(ClientSocketLinux* pClientUnique, HANDLE_API handle, bool bCheckRange = true)
-{
-    if(bCheckRange)
-    {
-        if(!(handle >= 0 && handle < gSnapMods[pClientUnique].size()))
-            return false;
-    }
-
-    return gSnapMods[pClientUnique][handle] != nullptr;
-}
-
-bool HandleValid(ClientSocketLinux* pClientUnique, HANDLE_API handle)
-{
-    return ValidSnapProcsHandle(pClientUnique, handle, true) || ValidSnapModsHandle(pClientUnique, handle, true);
-}
+// Process Packet Handle
 
 void HandleCmdProcessFirst(ClientSocketLinux* pClientUnique, void* pInPacket)
 {
@@ -419,7 +369,7 @@ void HandleCmdProcessFirst(ClientSocketLinux* pClientUnique, void* pInPacket)
     HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
     pFirstOut.mRemaining = false;
 
-    if(ValidSnapProcsHandle(pClientUnique, hSnap))
+    if(ValidToolHandle<SnapshotProcesses>(gSnapProcs, pClientUnique, hSnap))
     {
         SnapshotProcesses* pSnap = gSnapProcs[pClientUnique][hSnap];
 
@@ -438,7 +388,7 @@ void HandleCmdProcessNext(ClientSocketLinux* pClientUnique, void* pInPacket)
     HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
     pNextOut.mRemaining = false;
 
-    if(ValidSnapProcsHandle(pClientUnique, hSnap))
+    if(ValidToolHandle<SnapshotProcesses>(gSnapProcs, pClientUnique, hSnap))
     {
         SnapshotProcesses* pSnap = gSnapProcs[pClientUnique][hSnap];
 
@@ -450,6 +400,8 @@ void HandleCmdProcessNext(ClientSocketLinux* pClientUnique, void* pInPacket)
     pClientUnique->Send(&pNextOut, sizeof(pNextOut));
 }
 
+// Modules Packet Handle
+
 void HandleCmdModuleFirst(ClientSocketLinux* pClientUnique, void* pInPacket)
 {
     Packet<ModuleFirstIn, 0>* pcktIn = (Packet<ModuleFirstIn, 0>*)pInPacket;
@@ -459,7 +411,7 @@ void HandleCmdModuleFirst(ClientSocketLinux* pClientUnique, void* pInPacket)
 
     printf("Module First\n");
 
-    if(ValidSnapModsHandle(pClientUnique, hSnap))
+    if(ValidToolHandle<SnapshotModules>(gSnapMods, pClientUnique, hSnap))
     {
         SnapshotModules* pSnap = gSnapMods[pClientUnique][hSnap];
 
@@ -478,13 +430,57 @@ void HandleCmdModuleNext(ClientSocketLinux* pClientUnique, void* pInPacket)
     HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
     pNextOut.mRemaining = false;
 
-    if(ValidSnapModsHandle(pClientUnique, hSnap))
+    if(ValidToolHandle<SnapshotModules>(gSnapMods, pClientUnique, hSnap))
     {
         SnapshotModules* pSnap = gSnapMods[pClientUnique][hSnap];
 
         pNextOut.mRemaining = pSnap->PopNext(pNextOut.mModuleInfo);
 
         printf("Module Next: %s %lx\n", pNextOut.mModuleInfo.mPath, pNextOut.mModuleInfo.mBase);
+    }
+
+    pClientUnique->Send(&pNextOut, sizeof(pNextOut));
+}
+
+// Section Packet Handle
+
+void HandleCmdSectionFirst(ClientSocketLinux* pClientUnique, void* pInPacket)
+{
+    Packet<SectionFirstIn, 0>* pcktIn = (Packet<SectionFirstIn, 0>*)pInPacket;
+    SectionFirstOut pFirstOut{};
+    HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
+    pFirstOut.mRemaining = false;
+
+    printf("Section First\n");
+
+    if(ValidToolHandle<SnapshotSections>(gSnapSecs, pClientUnique, hSnap))
+    {
+        SnapshotSections* pSnap = gSnapSecs[pClientUnique][hSnap];
+
+        pFirstOut.mRemaining = pSnap->PopFirst(pFirstOut.mInfo);
+
+        printf("Section First: %lx-%lx %s\n", pFirstOut.mInfo.mStart, pFirstOut.mInfo.mEnd, pFirstOut.mInfo.mPath);
+    }
+
+    pClientUnique->Send(&pFirstOut, sizeof(pFirstOut));
+}
+
+void HandleCmdSectionNext(ClientSocketLinux* pClientUnique, void* pInPacket)
+{
+    Packet<SectionNextIn, 0>* pcktIn = (Packet<SectionNextIn, 0>*)pInPacket;
+    SectionNextOut pNextOut{};
+    HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
+    pNextOut.mRemaining = false;
+
+    printf("Section Next\n");
+
+    if(ValidToolHandle<SnapshotSections>(gSnapSecs, pClientUnique, hSnap))
+    {
+        SnapshotSections* pSnap = gSnapSecs[pClientUnique][hSnap];
+
+        pNextOut.mRemaining = pSnap->PopNext(pNextOut.mInfo);
+
+        printf("Section Next: %lx-%lx %s\n", pNextOut.mInfo.mStart, pNextOut.mInfo.mEnd, pNextOut.mInfo.mPath);
     }
 
     pClientUnique->Send(&pNextOut, sizeof(pNextOut));
@@ -573,9 +569,15 @@ std::function<void(ClientSocketLinux*)> gfnHandleConn = [](ClientSocketLinux* pC
             case CMD_PROCESS_NEXT: HandleCmdProcessNext(pClientSocket, packet); break;
             case CMD_MODULE_FIRST: HandleCmdModuleFirst(pClientSocket, packet); break;
             case CMD_MODULE_NEXT: HandleCmdModuleNext(pClientSocket, packet); break;
+            case CMD_SEGMENT_FIRST: HandleCmdSectionFirst(pClientSocket, packet); break;
+            case CMD_SEGMENT_NEXT: HandleCmdSectionNext(pClientSocket, packet); break;
             case CMD_REMOVE_REMOTE_PROCS_TOOL_HELP: HandleCmdRemoveProcsToolHelp(pClientSocket, packet); break;
+            //case CMD_REMOVE_REMOTE_MODS_TOOL_HELP: HandleCmdRemoveProcsToolHelp(pClientSocket, packet); break; // TODO
+            //case CMD_REMOVE_REMOTE_SECS_TOOL_HELP: HandleCmdRemoveProcsToolHelp(pClientSocket, packet); break; // TODO
             case CMD_OPEN_REMOTE_PROCESS: HandleCmdOpenProcess(pClientSocket, packet); break;
+            //case CMD_CLOSE_REMOTE_PROCESS: HandleCmdCloseProcess(pClientSocket, packet); break; // TODO
             case CMD_READ_MEMORY: HandleCmdReadMemory(pClientSocket, packet); break;
+            //case CMD_WRITE_MEMORY: HandleCmdReadMemory(pClientSocket, packet); break; // TODO
             case CMD_STATUS: HandleCmdStatus(pClientSocket); break;
             case CMD_DISCONNECT: HandleCmdDisconnect(pClientSocket); bDisconnecting = true; break;
         }

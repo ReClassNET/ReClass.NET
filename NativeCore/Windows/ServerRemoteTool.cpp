@@ -273,31 +273,79 @@ void RemoveRemoteSectionsTool(HANDLE_API hSnap)
 	pSocket->Send(pckt.getEntry(), pckt.getSize());
 }
 
+bool SectionFirst(HANDLE_API hSnap, SectionInfo* pInf)
+{
+	std::lock_guard lck(gMtxReq);
+	auto* pSocket = ServerManager::getInstance()->getServerSocket();
+	Packet<SectionFirstIn, CMD_SECTION_FIRST> pckt{};
+
+	pckt.getPayload()->mHandleSnap = hSnap;
+
+	if (pSocket->Send(pckt.getEntry(), pckt.getSize()))
+	{
+		if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
+		{
+			SectionFirstOut* pOut = ((SectionFirstOut*)gPacketHolder);
+			*pInf = pOut->mInfo;
+
+			return pOut->mRemaining;
+		}
+	}
+
+	return false;
+}
+
+bool SectionNext(HANDLE_API hSnap, SectionInfo* pInf)
+{
+	std::lock_guard lck(gMtxReq);
+	auto* pSocket = ServerManager::getInstance()->getServerSocket();
+	Packet<SectionNextIn, CMD_SECTION_NEXT> pckt{};
+
+	pckt.getPayload()->mHandleSnap = hSnap;
+
+	if (pSocket->Send(pckt.getEntry(), pckt.getSize()))
+	{
+		if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
+		{
+			SectionNextOut* pOut = ((SectionNextOut*)gPacketHolder);
+			*pInf = pOut->mInfo;
+
+			return pOut->mRemaining;
+		}
+	}
+
+	return false;
+}
 
 
 void EnumerateRemoteSectionsServer(HANDLE_API hProc, EnumerateRemoteSectionsCallback callbackSection)
 {
-	/*HANDLE_API hSnap = CreateRemoteTool(ToolType::SECTIONS, PidFromHandle(hProc));
+	HANDLE_API hSnap = CreateRemoteTool(ToolType::SECTIONS, PidFromHandle(hProc));
 
 	if (hSnap != HandleValue::INVALID)
 	{
-		ModuleInfo mi{};
+		SectionInfo si{};
 
-		if (ModuleFirst(hSnap, &mi))
+		if (SectionFirst(hSnap, &si))
 		{
 			do {
-				EnumerateRemoteModuleData ermd{};
+				EnumerateRemoteSectionData ermd{};
 
-				ermd.BaseAddress = (RC_Pointer)mi.mBase;
-				ermd.Size = (RC_Size)mi.mSize;
-				lstrcpyW((wchar_t*)ermd.Path, StrtoWStr(std::string(mi.mPath)).c_str());
+				ermd.BaseAddress = (RC_Pointer)si.mStart;
+				ermd.Category = SectionCategory::Unknown; // TODO
+				ermd.Type = si.mType; // TODO
+				ermd.Size = si.mEnd - si.mStart;
+				ermd.Protection = si.mProt;
 
-				callbackModule(&ermd);
-			} while (ModuleNext(hSnap, &mi));
+				lstrcpyW((wchar_t*)ermd.Name, L""); // TODO
+				lstrcpyW((wchar_t*)ermd.ModulePath, StrtoWStr(std::string(si.mPath)).c_str());
+
+				callbackSection(&ermd);
+			} while (SectionNext(hSnap, &si));
 		}
 
-		RemoveRemoteSectionsTool(hSnap);
-	}*/
+		//RemoveRemoteSectionsTool(hSnap);
+	}
 }
 
 void EnumerateRemoteModulesServer(HANDLE_API hProc, EnumerateRemoteModulesCallback callbackModule)
@@ -321,7 +369,7 @@ void EnumerateRemoteModulesServer(HANDLE_API hProc, EnumerateRemoteModulesCallba
 			} while (ModuleNext(hSnap, &mi));
 		}
 
-		RemoveRemoteModulesTool(hSnap);
+		//RemoveRemoteModulesTool(hSnap);
 	}
 }
 

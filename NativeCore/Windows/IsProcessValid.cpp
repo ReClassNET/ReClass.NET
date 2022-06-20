@@ -1,6 +1,7 @@
 #include <windows.h>
 
 #include "NativeCore.hpp"
+#include "ServerRemoteTool.h"
 
 bool IsProcessValidWindows(RC_Pointer handle)
 {
@@ -20,5 +21,6 @@ bool IsProcessValidWindows(RC_Pointer handle)
 
 bool RC_CallConv IsProcessValid(RC_Pointer handle)
 {
-	return IsProcessValidWindows(handle);
+	if(!ServerManager::getInstance()->IsConnected()) return IsProcessValidWindows(handle);
+	return true; // TODO
 }

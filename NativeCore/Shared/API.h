@@ -17,9 +17,12 @@ typedef int32_t HANDLE_API;
 #define CMD_PROCESS_NEXT 11
 #define CMD_MODULE_FIRST 12
 #define CMD_MODULE_NEXT 13
-#define CMD_OPEN_REMOTE_PROCESS 14
-#define CMD_READ_MEMORY 15
-#define CMD_WRITE_MEMORY 16
+#define CMD_SECTION_FIRST 14
+#define CMD_SECTION_NEXT 15
+#define CMD_OPEN_REMOTE_PROCESS 16
+#define CMD_CLOSE_REMOTE_PROCESS 17
+#define CMD_READ_MEMORY 18
+#define CMD_WRITE_MEMORY 19
 
 #define API_PORT 3443
 #define MAX_PACKET_SIZE 4096
@@ -35,6 +38,12 @@ enum ToolType {
 	MODULES,
 	SECTIONS
 };
+
+/* Perspective of the packet structures*/
+/*struct [Name]In <-- In in perspective o Server*/
+/*struct [Name]Out --> Are Going Out of the server*/
+/*This server is asuming, Host and Dest are same endianesses*/
+/*We can even consider a TODO of the endianesses conversions*/
 
 PACK(struct CreateRemoteToolHelpIn {
 	uint16_t mToolType;
@@ -108,6 +117,37 @@ PACK(struct ModuleNextOut {
 	ModuleInfo mModuleInfo;
 	bool mRemaining;
 });
+
+// Sections
+enum class SectionProtection;
+enum class SectionType;
+
+PACK(struct SectionInfo {
+	uint64_t mStart;
+	uint64_t mEnd;
+	SectionType mType; // TODO
+	SectionProtection mProt;
+	char mPath[260];
+});
+
+PACK(struct SectionFirstIn {
+	HANDLE_API mHandleSnap;
+});
+
+PACK(struct SectionFirstOut {
+	SectionInfo mInfo;
+	bool mRemaining;
+});
+
+PACK(struct SectionNextIn {
+	HANDLE_API mHandleSnap;
+});
+
+PACK(struct SectionNextOut {
+	SectionInfo mInfo;
+	bool mRemaining;
+});
+
 
 
 
