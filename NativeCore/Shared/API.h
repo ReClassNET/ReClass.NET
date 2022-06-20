@@ -21,8 +21,8 @@ typedef int32_t HANDLE_API;
 #define CMD_SECTION_NEXT 15
 #define CMD_OPEN_REMOTE_PROCESS 16
 #define CMD_CLOSE_REMOTE_PROCESS 17
-#define CMD_READ_MEMORY 18
-#define CMD_WRITE_MEMORY 19
+#define CMD_READ_MEMORY_CHUCK 18
+#define CMD_WRITE_MEMORY_CHUCK 19
 
 #define API_PORT 3443
 #define MAX_PACKET_SIZE 4096
@@ -45,6 +45,22 @@ enum ToolType {
 /*This server is asuming, Host and Dest are same endianesses*/
 /*We can even consider a TODO of the endianesses conversions*/
 
+#define CREATE_TOOL_PACKETS(toolName, payloadType) \
+PACK(struct toolName##FirstIn{ \
+	HANDLE_API mHandleSnap; \
+}); \
+PACK(struct toolName##FirstOut { \
+	payloadType mInfo; \
+	bool mRemaining; \
+}); \
+PACK(struct toolName##NextIn { \
+	HANDLE_API mHandleSnap; \
+}); \
+PACK(struct toolName##NextOut { \
+	payloadType mInfo; \
+	bool mRemaining; \
+});
+
 PACK(struct CreateRemoteToolHelpIn {
 	uint16_t mToolType;
 	uint32_t mProcessId;
@@ -66,57 +82,23 @@ PACK(struct RemoveRemoteSecsToolHelpIn {
 	HANDLE_API mHandleSnap;
 });
 
-
 // Proceses
 PACK(struct ProcessInfo {
 	int32_t mProcessId;
 	char mProcessName[MAX_PROC_NAME]{};
 });
 
-PACK(struct ProcessFirstIn {
-	HANDLE_API mHandleSnap;
-});
-
-PACK(struct ProcessFirstOut {
-	ProcessInfo mProcessInfo;
-	bool mRemaining;
-});
-
-PACK(struct ProcessNextIn {
-	HANDLE_API mHandleSnap;
-});
-
-PACK(struct ProcessNextOut {
-	ProcessInfo mProcessInfo;
-	bool mRemaining;
-});
+CREATE_TOOL_PACKETS(Process, ProcessInfo)
 
 
 // Modules
-
 PACK(struct ModuleInfo {
 	uint64_t mBase;
 	uint64_t mSize;
 	char mPath[260];
 });
 
-PACK(struct ModuleFirstIn {
-	HANDLE_API mHandleSnap;
-});
-
-PACK(struct ModuleFirstOut {
-	ModuleInfo mModuleInfo;
-	bool mRemaining;
-});
-
-PACK(struct ModuleNextIn {
-	HANDLE_API mHandleSnap;
-});
-
-PACK(struct ModuleNextOut {
-	ModuleInfo mModuleInfo;
-	bool mRemaining;
-});
+CREATE_TOOL_PACKETS(Module, ModuleInfo)
 
 // Sections
 enum class SectionProtection;
@@ -130,26 +112,7 @@ PACK(struct SectionInfo {
 	char mPath[260];
 });
 
-PACK(struct SectionFirstIn {
-	HANDLE_API mHandleSnap;
-});
-
-PACK(struct SectionFirstOut {
-	SectionInfo mInfo;
-	bool mRemaining;
-});
-
-PACK(struct SectionNextIn {
-	HANDLE_API mHandleSnap;
-});
-
-PACK(struct SectionNextOut {
-	SectionInfo mInfo;
-	bool mRemaining;
-});
-
-
-
+CREATE_TOOL_PACKETS(Section, SectionInfo)
 
 PACK(struct OpenRemoteProcessIn {
 	uint32_t mProcessId;
@@ -170,7 +133,6 @@ PACK(struct ReadMemoryOut {
 PACK(struct OpenRemoteProcessOut {
 	HANDLE_API hProc;
 });
-
 
 enum class ClientStatus {
 	CONN_OK,

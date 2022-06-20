@@ -242,6 +242,6 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 		return;
 	}
 
-	if(ServerManager::getInstance()->PartiallyConnected()) EnumerateRemoteSectionsAndModulesServer(process, callbackSection, callbackModule);
+	if(ServerManager::getInstance()->IsConnected()) EnumerateRemoteSectionsAndModulesServer(process, callbackSection, callbackModule);
 	else EnumerateRemoteSectionsAndModulesWindows(process, callbackSection, callbackModule);
 }

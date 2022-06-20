@@ -10,7 +10,6 @@
 unsigned char gPacketHolder[MAX_PACKET_SIZE + 1]{ 0 };
 std::mutex gMtxReq;
 
-
 int32_t RC_CallConv ConnectServer(const char* pIpStr, short port)
 {
 	auto* pServerMgr = ServerManager::getInstance();
@@ -60,11 +59,12 @@ void RemoveRemoteProcsTool(HANDLE_API hTool)
 	pSocket->Send(pckt.getEntry(), pckt.getSize()); 
 }
 
-bool ProcessFirst(HANDLE_API hSnap, ProcessInfo* pPi)
+template<typename ToolType, typename PacketIn, typename PacketOut, short packetId>
+bool ToolOp(HANDLE_API hSnap, ToolType* pPi)
 {
 	std::lock_guard lck(gMtxReq);
 	auto* pSocket = ServerManager::getInstance()->getServerSocket();
-	Packet<ProcessFirstIn, CMD_PROCESS_FIRST> pckt {};
+	Packet<PacketIn, packetId> pckt{};
 
 	pckt.getPayload()->mHandleSnap = hSnap;
 
@@ -72,76 +72,10 @@ bool ProcessFirst(HANDLE_API hSnap, ProcessInfo* pPi)
 	{
 		if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
 		{
-			ProcessFirstOut* pFirstOut = ((ProcessFirstOut*)gPacketHolder);
-			*pPi = pFirstOut->mProcessInfo;
+			PacketOut* pOut = ((PacketOut*)gPacketHolder);
+			*pPi = pOut->mInfo;
 
-			return pFirstOut->mRemaining;
-		}
-	}
-
-	return false;
-}
-
-bool ProcessNext(HANDLE_API hSnap, ProcessInfo* pPi)
-{
-	std::lock_guard lck(gMtxReq);
-	auto* pSocket = ServerManager::getInstance()->getServerSocket();
-	Packet<ProcessNextIn, CMD_PROCESS_NEXT> pckt;
-
-	pckt.getPayload()->mHandleSnap = hSnap;
-
-	if (pSocket->Send(pckt.getEntry(), pckt.getSize()))
-	{
-		if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
-		{
-			ProcessNextOut* pNextOut = ((ProcessNextOut*)gPacketHolder);
-			*pPi = pNextOut->mProcessInfo;
-
-			return pNextOut->mRemaining;
-		}
-	}
-
-	return false;
-}
-
-bool ModuleFirst(HANDLE_API hSnap, ModuleInfo* pMi)
-{
-	std::lock_guard lck(gMtxReq);
-	auto* pSocket = ServerManager::getInstance()->getServerSocket();
-	Packet<ModuleFirstIn, CMD_MODULE_FIRST> pckt{};
-
-	pckt.getPayload()->mHandleSnap = hSnap;
-
-	if (pSocket->Send(pckt.getEntry(), pckt.getSize()))
-	{
-		if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
-		{
-			ModuleFirstOut* pFirstOut = ((ModuleFirstOut*)gPacketHolder);
-			*pMi = pFirstOut->mModuleInfo;
-
-			return pFirstOut->mRemaining;
-		}
-	}
-
-	return false;
-}
-
-bool ModuleNext(HANDLE_API hSnap, ModuleInfo* pMi)
-{
-	std::lock_guard lck(gMtxReq);
-	auto* pSocket = ServerManager::getInstance()->getServerSocket();
-	Packet<ModuleNextIn, CMD_MODULE_NEXT> pckt{};
-
-	pckt.getPayload()->mHandleSnap = hSnap;
-
-	if (pSocket->Send(pckt.getEntry(), pckt.getSize()))
-	{
-		if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
-		{
-			ModuleNextOut* pNextOut = ((ModuleNextOut*)gPacketHolder);
-			*pMi = pNextOut->mModuleInfo;
-
-			return pNextOut->mRemaining;
+			return pOut->mRemaining;
 		}
 	}
 
@@ -150,6 +84,7 @@ bool ModuleNext(HANDLE_API hSnap, ModuleInfo* pMi)
 
 void CloseServerProcess(HANDLE_API hProc)
 {
+
 }
 
 std::unordered_map<HANDLE_API, uint32_t> gPids;
@@ -196,7 +131,7 @@ int ReadMemoryChuckServer(HANDLE_API handle, uint64_t address, RC_Pointer buffer
 	if (size <= (MAX_PACKET_SIZE - sizeof(int64_t)))
 	{
 		auto* pSocket = ServerManager::getInstance()->getServerSocket();
-		Packet<ReadMemoryIn, CMD_READ_MEMORY> pckt;
+		Packet<ReadMemoryIn, CMD_READ_MEMORY_CHUCK> pckt;
 
 		pckt.getPayload()->mAddr = address;
 		pckt.getPayload()->mSize = size;
@@ -220,7 +155,7 @@ int ReadMemoryChuckServer(HANDLE_API handle, uint64_t address, RC_Pointer buffer
 int ReadMemoryServer(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int size)
 {
 	uint64_t bytesReaded = -1;
-	constexpr size_t rdMemMaxPacketSize = MAX_PACKET_SIZE - sizeof(int64_t) - 4;
+	constexpr size_t rdMemMaxPacketSize = MAX_PACKET_SIZE - sizeof(int64_t);
 
 	if (size > rdMemMaxPacketSize) // need split?
 	{
@@ -273,51 +208,6 @@ void RemoveRemoteSectionsTool(HANDLE_API hSnap)
 	pSocket->Send(pckt.getEntry(), pckt.getSize());
 }
 
-bool SectionFirst(HANDLE_API hSnap, SectionInfo* pInf)
-{
-	std::lock_guard lck(gMtxReq);
-	auto* pSocket = ServerManager::getInstance()->getServerSocket();
-	Packet<SectionFirstIn, CMD_SECTION_FIRST> pckt{};
-
-	pckt.getPayload()->mHandleSnap = hSnap;
-
-	if (pSocket->Send(pckt.getEntry(), pckt.getSize()))
-	{
-		if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
-		{
-			SectionFirstOut* pOut = ((SectionFirstOut*)gPacketHolder);
-			*pInf = pOut->mInfo;
-
-			return pOut->mRemaining;
-		}
-	}
-
-	return false;
-}
-
-bool SectionNext(HANDLE_API hSnap, SectionInfo* pInf)
-{
-	std::lock_guard lck(gMtxReq);
-	auto* pSocket = ServerManager::getInstance()->getServerSocket();
-	Packet<SectionNextIn, CMD_SECTION_NEXT> pckt{};
-
-	pckt.getPayload()->mHandleSnap = hSnap;
-
-	if (pSocket->Send(pckt.getEntry(), pckt.getSize()))
-	{
-		if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
-		{
-			SectionNextOut* pOut = ((SectionNextOut*)gPacketHolder);
-			*pInf = pOut->mInfo;
-
-			return pOut->mRemaining;
-		}
-	}
-
-	return false;
-}
-
-
 void EnumerateRemoteSectionsServer(HANDLE_API hProc, EnumerateRemoteSectionsCallback callbackSection)
 {
 	HANDLE_API hSnap = CreateRemoteTool(ToolType::SECTIONS, PidFromHandle(hProc));
@@ -326,7 +216,7 @@ void EnumerateRemoteSectionsServer(HANDLE_API hProc, EnumerateRemoteSectionsCall
 	{
 		SectionInfo si{};
 
-		if (SectionFirst(hSnap, &si))
+		if (ToolOp<SectionInfo, SectionFirstIn, SectionFirstOut, CMD_SECTION_FIRST>(hSnap, &si))
 		{
 			do {
 				EnumerateRemoteSectionData ermd{};
@@ -341,7 +231,7 @@ void EnumerateRemoteSectionsServer(HANDLE_API hProc, EnumerateRemoteSectionsCall
 				lstrcpyW((wchar_t*)ermd.ModulePath, StrtoWStr(std::string(si.mPath)).c_str());
 
 				callbackSection(&ermd);
-			} while (SectionNext(hSnap, &si));
+			} while (ToolOp<SectionInfo, SectionNextIn, SectionNextOut, CMD_SECTION_NEXT>(hSnap, &si));
 		}
 
 		//RemoveRemoteSectionsTool(hSnap);
@@ -356,7 +246,7 @@ void EnumerateRemoteModulesServer(HANDLE_API hProc, EnumerateRemoteModulesCallba
 	{
 		ModuleInfo mi{};
 
-		if (ModuleFirst(hSnap, &mi))
+		if (ToolOp<ModuleInfo, ModuleFirstIn, ModuleFirstOut, CMD_MODULE_FIRST>(hSnap, &mi))
 		{
 			do {
 				EnumerateRemoteModuleData ermd{};
@@ -366,7 +256,7 @@ void EnumerateRemoteModulesServer(HANDLE_API hProc, EnumerateRemoteModulesCallba
 				lstrcpyW((wchar_t*)ermd.Path, StrtoWStr(std::string(mi.mPath)).c_str());
 
 				callbackModule(&ermd);
-			} while (ModuleNext(hSnap, &mi));
+			} while (ToolOp<ModuleInfo, ModuleNextIn, ModuleNextOut, CMD_MODULE_NEXT>(hSnap, &mi));
 		}
 
 		//RemoveRemoteModulesTool(hSnap);
@@ -380,7 +270,7 @@ void EnumerateProcessesServer(EnumerateProcessCallback callbackProcess)
 	if (hSnap != HandleValue::INVALID)
 	{
 		ProcessInfo pi{};
-		if (ProcessFirst(hSnap, &pi))
+		if (ToolOp<ProcessInfo, ProcessFirstIn, ProcessFirstOut, CMD_PROCESS_FIRST>(hSnap, &pi))
 		{
 			do {
 				if (strlen(pi.mProcessName) > 0)
@@ -392,7 +282,7 @@ void EnumerateProcessesServer(EnumerateProcessCallback callbackProcess)
 
 					callbackProcess(&enumProcData);
 				}
-			} while (ProcessNext(hSnap, &pi));
+			} while (ToolOp<ProcessInfo, ProcessNextIn, ProcessNextOut, CMD_PROCESS_NEXT>(hSnap, &pi));
 		}
 
 		RemoveRemoteProcsTool(hSnap);

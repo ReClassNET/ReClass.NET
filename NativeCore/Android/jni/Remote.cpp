@@ -16,6 +16,16 @@ enum {
     SNAPSHOT_SECTIONS
 };
 
+struct OpenedProcessInfo;
+struct SnapshotProcesses;
+struct SnapshotSections;
+struct SnapshotModules;
+
+std::unordered_map<ClientSocketLinux*, OpenedProcessInfo*> gProcs;    
+std::unordered_map<ClientSocketLinux*, std::vector<SnapshotSections*>> gSnapSecs; 
+std::unordered_map<ClientSocketLinux*, std::vector<SnapshotProcesses*>> gSnapProcs;
+std::unordered_map<ClientSocketLinux*, std::vector<SnapshotModules*>> gSnapMods;
+
 struct SnapshotProcesses : SnapshotBase<ProcessInfo>{
 
     SnapshotProcesses()
@@ -65,6 +75,8 @@ struct SnapshotProcesses : SnapshotBase<ProcessInfo>{
             closedir(pProcDir);
         }
     }
+
+    static std::unordered_map<ClientSocketLinux*, std::vector<SnapshotProcesses*>>& getSnaps() {return gSnapProcs;}
 };
 
 bool getMapsSegments(uint32_t pid, std::vector<SectionInfo>& outSeg)
@@ -79,7 +91,7 @@ bool getMapsSegments(uint32_t pid, std::vector<SectionInfo>& outSeg)
     if (fp)
     {
         char* line =(char*) malloc(4096);
-        printf("%s Opened\n", mapsPath);
+        //printf("%s Opened\n", mapsPath);
 
         if(line)
         {
@@ -96,7 +108,7 @@ bool getMapsSegments(uint32_t pid, std::vector<SectionInfo>& outSeg)
 
                 sscanf(line,"%lx-%lx %c%c%c%c %lx %lx:%lx %lx %260[^\n\t]", &seg.mStart, &seg.mEnd, &r, &w, &x, &p, &unk, &unk, &unk, &unk, seg.mPath);
 
-                printf("%lx-%lx %s\n", seg.mStart, seg.mEnd, seg.mPath);
+                //printf("%lx-%lx %s\n", seg.mStart, seg.mEnd, seg.mPath);
 
                 if(r == 'r')
                     seg.mProt |= SectionProtection::Read;
@@ -115,7 +127,6 @@ bool getMapsSegments(uint32_t pid, std::vector<SectionInfo>& outSeg)
             printf("%d Segments Parsed\n", outSeg.size());
             return true;
         }
-
     } 
 
     return false;
@@ -133,6 +144,8 @@ struct SnapshotSections : SnapshotBase<SectionInfo>{
         printf("SnapshotSections Created PID %d, %d Sections\n", mArray.size());
         
     }
+
+    static std::unordered_map<ClientSocketLinux*, std::vector<SnapshotSections*>>& getSnaps() {return gSnapSecs;}
 };
 
 struct SnapshotModules : SnapshotBase<ModuleInfo>{
@@ -140,14 +153,14 @@ struct SnapshotModules : SnapshotBase<ModuleInfo>{
     {
         type = SNAPSHOT_MODULES;
 
-        printf("Creating SnapModules PID %d\n", pid);
+        printf("Creating Snap Modules -> PID %d\n", pid);
 
         SnapshotSections snapshotSect = SnapshotSections(pid);
         std::unordered_map <std::string, std::vector<SectionInfo*>> modMatchs;
         
         SectionInfo* si;
 
-        printf("Parsing SnapSections\n", pid);
+        printf("Parsing Snap Sections\n", pid);
 
         if(snapshotSect.PopFirst(&si))
         {
@@ -181,19 +194,16 @@ struct SnapshotModules : SnapshotBase<ModuleInfo>{
             }
         }
 
-        printf("%d Modules Parsed\n", mArray.size());
+        printf("%d Modules Found\n", mArray.size());
     }
+
+    static std::unordered_map<ClientSocketLinux*, std::vector<SnapshotModules*>>& getSnaps() {return gSnapMods;}
 };
 
 struct OpenedProcessInfo{
     ClientSocketLinux* pOwner;
     LinuxProcess* mProcess;
 };
-
-std::unordered_map<ClientSocketLinux*, OpenedProcessInfo*> gProcs;    
-std::unordered_map<ClientSocketLinux*, std::vector<SnapshotSections*>> gSnapSecs; 
-std::unordered_map<ClientSocketLinux*, std::vector<SnapshotProcesses*>> gSnapProcs;
-std::unordered_map<ClientSocketLinux*, std::vector<SnapshotModules*>> gSnapMods;
 
 bool CreateToolSecs(uint32_t pid, SnapshotSections** outSnap)
 {
@@ -331,8 +341,6 @@ bool ValidToolHandle(std::unordered_map<ClientSocketLinux*, std::vector<T*>>& rS
                                                     // Dont worry!
 }
 
-
-
 void HandleCmdRemoveProcsToolHelp(ClientSocketLinux* pClientUnique, void* pInPacket)
 {
     Packet<RemoveRemoteProcsToolHelpIn, 0>* pckt = ((Packet<RemoveRemoteProcsToolHelpIn, 0>*)pInPacket); 
@@ -360,132 +368,27 @@ void HandleCmdDisconnect(ClientSocketLinux* pClientUnique)
     pClientUnique->SendMsg(CMD_OK);
 }
 
-// Process Packet Handle
-
-void HandleCmdProcessFirst(ClientSocketLinux* pClientUnique, void* pInPacket)
+template<typename ToolType, typename ToolIn, typename ToolOut>
+void HandleToolOp(ClientSocketLinux* pClientSock, void* pInPacket, bool bFirst, std::function<void(const ToolOut&)> fnPostValidOp = nullptr)
 {
-    Packet<ProcessFirstIn, 0>* pcktIn = (Packet<ProcessFirstIn, 0>*)pInPacket;
-    ProcessFirstOut pFirstOut{};
+    Packet<ToolIn, 0>* pcktIn = (Packet<ToolIn, 0>*)pInPacket;
+    ToolOut pOut{};
     HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
-    pFirstOut.mRemaining = false;
+    pOut.mRemaining = false;
+    auto& rSnaps = ToolType::getSnaps();
 
-    if(ValidToolHandle<SnapshotProcesses>(gSnapProcs, pClientUnique, hSnap))
+    if(ValidToolHandle<ToolType>(rSnaps, pClientSock, hSnap))
     {
-        SnapshotProcesses* pSnap = gSnapProcs[pClientUnique][hSnap];
+        ToolType* pSnap = rSnaps[pClientSock][hSnap];
 
-        pFirstOut.mRemaining = pSnap->PopFirst(pFirstOut.mProcessInfo);
+        pOut.mRemaining = bFirst ? pSnap->PopFirst(pOut.mInfo) : pSnap->PopNext(pOut.mInfo);
 
-        printf("Process First: %s %d\n", pFirstOut.mProcessInfo.mProcessName, pFirstOut.mProcessInfo.mProcessId);
+        if(fnPostValidOp)
+            fnPostValidOp(pOut);
     }
 
-    pClientUnique->Send(&pFirstOut, sizeof(pFirstOut));
+    pClientSock->Send(&pOut, sizeof(pOut));
 }
-
-void HandleCmdProcessNext(ClientSocketLinux* pClientUnique, void* pInPacket)
-{
-    Packet<ProcessNextIn, 0>* pcktIn = (Packet<ProcessNextIn, 0>*)pInPacket;
-    ProcessNextOut pNextOut{};
-    HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
-    pNextOut.mRemaining = false;
-
-    if(ValidToolHandle<SnapshotProcesses>(gSnapProcs, pClientUnique, hSnap))
-    {
-        SnapshotProcesses* pSnap = gSnapProcs[pClientUnique][hSnap];
-
-        pNextOut.mRemaining = pSnap->PopNext(pNextOut.mProcessInfo);
-
-        printf("Process Next: %s %d\n", pNextOut.mProcessInfo.mProcessName, pNextOut.mProcessInfo.mProcessId);
-    }
-
-    pClientUnique->Send(&pNextOut, sizeof(pNextOut));
-}
-
-// Modules Packet Handle
-
-void HandleCmdModuleFirst(ClientSocketLinux* pClientUnique, void* pInPacket)
-{
-    Packet<ModuleFirstIn, 0>* pcktIn = (Packet<ModuleFirstIn, 0>*)pInPacket;
-    ModuleFirstOut pFirstOut{};
-    HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
-    pFirstOut.mRemaining = false;
-
-    printf("Module First\n");
-
-    if(ValidToolHandle<SnapshotModules>(gSnapMods, pClientUnique, hSnap))
-    {
-        SnapshotModules* pSnap = gSnapMods[pClientUnique][hSnap];
-
-        pFirstOut.mRemaining = pSnap->PopFirst(pFirstOut.mModuleInfo);
-
-        printf("Module First: %s %lx\n", pFirstOut.mModuleInfo.mPath, pFirstOut.mModuleInfo.mBase);
-    }
-
-    pClientUnique->Send(&pFirstOut, sizeof(pFirstOut));
-}
-
-void HandleCmdModuleNext(ClientSocketLinux* pClientUnique, void* pInPacket)
-{
-    Packet<ModuleNextIn, 0>* pcktIn = (Packet<ModuleNextIn, 0>*)pInPacket;
-    ModuleFirstOut pNextOut{};
-    HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
-    pNextOut.mRemaining = false;
-
-    if(ValidToolHandle<SnapshotModules>(gSnapMods, pClientUnique, hSnap))
-    {
-        SnapshotModules* pSnap = gSnapMods[pClientUnique][hSnap];
-
-        pNextOut.mRemaining = pSnap->PopNext(pNextOut.mModuleInfo);
-
-        printf("Module Next: %s %lx\n", pNextOut.mModuleInfo.mPath, pNextOut.mModuleInfo.mBase);
-    }
-
-    pClientUnique->Send(&pNextOut, sizeof(pNextOut));
-}
-
-// Section Packet Handle
-
-void HandleCmdSectionFirst(ClientSocketLinux* pClientUnique, void* pInPacket)
-{
-    Packet<SectionFirstIn, 0>* pcktIn = (Packet<SectionFirstIn, 0>*)pInPacket;
-    SectionFirstOut pFirstOut{};
-    HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
-    pFirstOut.mRemaining = false;
-
-    printf("Section First\n");
-
-    if(ValidToolHandle<SnapshotSections>(gSnapSecs, pClientUnique, hSnap))
-    {
-        SnapshotSections* pSnap = gSnapSecs[pClientUnique][hSnap];
-
-        pFirstOut.mRemaining = pSnap->PopFirst(pFirstOut.mInfo);
-
-        printf("Section First: %lx-%lx %s\n", pFirstOut.mInfo.mStart, pFirstOut.mInfo.mEnd, pFirstOut.mInfo.mPath);
-    }
-
-    pClientUnique->Send(&pFirstOut, sizeof(pFirstOut));
-}
-
-void HandleCmdSectionNext(ClientSocketLinux* pClientUnique, void* pInPacket)
-{
-    Packet<SectionNextIn, 0>* pcktIn = (Packet<SectionNextIn, 0>*)pInPacket;
-    SectionNextOut pNextOut{};
-    HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
-    pNextOut.mRemaining = false;
-
-    printf("Section Next\n");
-
-    if(ValidToolHandle<SnapshotSections>(gSnapSecs, pClientUnique, hSnap))
-    {
-        SnapshotSections* pSnap = gSnapSecs[pClientUnique][hSnap];
-
-        pNextOut.mRemaining = pSnap->PopNext(pNextOut.mInfo);
-
-        printf("Section Next: %lx-%lx %s\n", pNextOut.mInfo.mStart, pNextOut.mInfo.mEnd, pNextOut.mInfo.mPath);
-    }
-
-    pClientUnique->Send(&pNextOut, sizeof(pNextOut));
-}
-
 
 void HandleCmdOpenProcess(ClientSocketLinux* pClientUnique, void* pInPacket){
     Packet<OpenRemoteProcessIn, 0>* pcktIn = (Packet<OpenRemoteProcessIn, 0>*)pInPacket;
@@ -565,19 +468,19 @@ std::function<void(ClientSocketLinux*)> gfnHandleConn = [](ClientSocketLinux* pC
         {
             case CMD_HI: HandleCmdHi(pClientSocket); break;
             case CMD_CREATE_REMOTE_TOOL_HELP: HandleCmdCreateToolHelp(pClientSocket, packet); break;
-            case CMD_PROCESS_FIRST: HandleCmdProcessFirst(pClientSocket, packet); break;
-            case CMD_PROCESS_NEXT: HandleCmdProcessNext(pClientSocket, packet); break;
-            case CMD_MODULE_FIRST: HandleCmdModuleFirst(pClientSocket, packet); break;
-            case CMD_MODULE_NEXT: HandleCmdModuleNext(pClientSocket, packet); break;
-            case CMD_SEGMENT_FIRST: HandleCmdSectionFirst(pClientSocket, packet); break;
-            case CMD_SEGMENT_NEXT: HandleCmdSectionNext(pClientSocket, packet); break;
+            case CMD_PROCESS_FIRST: HandleToolOp<SnapshotProcesses, ProcessFirstIn, ProcessFirstOut>(pClientSocket, packet, true); break;
+            case CMD_PROCESS_NEXT: HandleToolOp<SnapshotProcesses, ProcessNextIn, ProcessNextOut>(pClientSocket, packet, false); break;
+            case CMD_MODULE_FIRST: HandleToolOp<SnapshotModules, ModuleFirstIn, ModuleFirstOut>(pClientSocket, packet, true); break;
+            case CMD_MODULE_NEXT: HandleToolOp<SnapshotModules, ModuleNextIn, ModuleNextOut>(pClientSocket, packet, false); break;
+            case CMD_SECTION_FIRST: HandleToolOp<SnapshotSections, SectionFirstIn, SectionFirstOut>(pClientSocket, packet, true); break;
+            case CMD_SECTION_NEXT: HandleToolOp<SnapshotSections, SectionNextIn, SectionNextOut>(pClientSocket, packet, false); break;
             case CMD_REMOVE_REMOTE_PROCS_TOOL_HELP: HandleCmdRemoveProcsToolHelp(pClientSocket, packet); break;
             //case CMD_REMOVE_REMOTE_MODS_TOOL_HELP: HandleCmdRemoveProcsToolHelp(pClientSocket, packet); break; // TODO
             //case CMD_REMOVE_REMOTE_SECS_TOOL_HELP: HandleCmdRemoveProcsToolHelp(pClientSocket, packet); break; // TODO
             case CMD_OPEN_REMOTE_PROCESS: HandleCmdOpenProcess(pClientSocket, packet); break;
             //case CMD_CLOSE_REMOTE_PROCESS: HandleCmdCloseProcess(pClientSocket, packet); break; // TODO
-            case CMD_READ_MEMORY: HandleCmdReadMemory(pClientSocket, packet); break;
-            //case CMD_WRITE_MEMORY: HandleCmdReadMemory(pClientSocket, packet); break; // TODO
+            case CMD_READ_MEMORY_CHUCK: HandleCmdReadMemory(pClientSocket, packet); break;
+            //case CMD_WRITE_MEMORY_CHUCK: HandleCmdReadMemory(pClientSocket, packet); break; // TODO
             case CMD_STATUS: HandleCmdStatus(pClientSocket); break;
             case CMD_DISCONNECT: HandleCmdDisconnect(pClientSocket); bDisconnecting = true; break;
         }

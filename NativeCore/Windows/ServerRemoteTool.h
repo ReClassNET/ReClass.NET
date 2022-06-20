@@ -40,12 +40,12 @@ extern std::mutex gMtxReq;
 
 HANDLE_API CreateRemoteTool(uint32_t type, uint32_t pid);
 void RemoveRemoteProcsTool(HANDLE_API hTool);
-bool ProcessFirst(HANDLE_API hSnap, ProcessInfo* pPi);
-bool ProcessNext(HANDLE_API hSnap, ProcessInfo* pPi);
 
 RC_Pointer OpenRemoteProcessServer(RC_Pointer id);
-int ReadMemoryServer(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int size);
 void CloseServerProcess(RC_Pointer hProc);
+
+int ReadMemoryServer(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int size);
+
 
 void EnumerateRemoteSectionsAndModulesServer(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule);
 void EnumerateProcessesServer(EnumerateProcessCallback callbackProcess);
