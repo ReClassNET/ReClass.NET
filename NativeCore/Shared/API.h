@@ -11,11 +11,15 @@ typedef int32_t HANDLE_API;
 #define CMD_CREATE_REMOTE_TOOL_HELP 5
 #define CMD_REMOVE_REMOTE_PROCS_TOOL_HELP 6
 #define CMD_REMOVE_REMOTE_MODS_TOOL_HELP 7
-#define CMD_STATUS 8
-#define CMD_PROCESS_FIRST 9
-#define CMD_PROCESS_NEXT 10
-#define CMD_OPEN_REMOTE_PROCESS 11
-#define CMD_READ_MEMORY 12
+#define CMD_REMOVE_REMOTE_SECS_TOOL_HELP 8
+#define CMD_STATUS 9
+#define CMD_PROCESS_FIRST 10
+#define CMD_PROCESS_NEXT 11
+#define CMD_MODULE_FIRST 12
+#define CMD_MODULE_NEXT 13
+#define CMD_OPEN_REMOTE_PROCESS 14
+#define CMD_READ_MEMORY 15
+#define CMD_WRITE_MEMORY 16
 
 #define API_PORT 3443
 #define MAX_PACKET_SIZE 4096
@@ -28,7 +32,8 @@ enum HandleValue {
 
 enum ToolType {
 	PROCS,
-	MODULES
+	MODULES,
+	SECTIONS
 };
 
 PACK(struct CreateRemoteToolHelpIn {
@@ -48,9 +53,15 @@ PACK(struct RemoveRemoteModsToolHelpIn {
 	HANDLE_API mHandleSnap;
 });
 
-PACK(struct ProcessInfo{
-    int32_t mProcessId;
-    char mProcessName[MAX_PROC_NAME]{};
+PACK(struct RemoveRemoteSecsToolHelpIn {
+	HANDLE_API mHandleSnap;
+});
+
+
+// Proceses
+PACK(struct ProcessInfo {
+	int32_t mProcessId;
+	char mProcessName[MAX_PROC_NAME]{};
 });
 
 PACK(struct ProcessFirstIn {
@@ -70,6 +81,35 @@ PACK(struct ProcessNextOut {
 	ProcessInfo mProcessInfo;
 	bool mRemaining;
 });
+
+
+// Modules
+
+PACK(struct ModuleInfo {
+	uint64_t mBase;
+	uint64_t mSize;
+	char mPath[260];
+});
+
+PACK(struct ModuleFirstIn {
+	HANDLE_API mHandleSnap;
+});
+
+PACK(struct ModuleFirstOut {
+	ModuleInfo mModuleInfo;
+	bool mRemaining;
+});
+
+PACK(struct ModuleNextIn {
+	HANDLE_API mHandleSnap;
+});
+
+PACK(struct ModuleNextOut {
+	ModuleInfo mModuleInfo;
+	bool mRemaining;
+});
+
+
 
 PACK(struct OpenRemoteProcessIn {
 	uint32_t mProcessId;

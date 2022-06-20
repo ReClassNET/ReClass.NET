@@ -70,6 +70,12 @@
     <ClCompile Include="ServerRemoteTool.cpp">
       <Filter>Functions\Networking</Filter>
     </ClCompile>
+    <ClCompile Include="ServerManager.cpp">
+      <Filter>Functions\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="exports.def" />
@@ -152,6 +158,9 @@
       <Filter>Functions\Networking</Filter>
     </ClInclude>
     <ClInclude Include="..\Shared\IProcess.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
       <Filter>Shared</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,10 +6,13 @@
 #include "Utils.h"
 #include "dirent.h"
 #include "LinuxProcess.h"
+#include "ReClassNET_Plugin.hpp"
+#include <fstream>
 
 enum {
     SNAPSHOT_PROCESSES,
-    SNAPSHOT_MODULES
+    SNAPSHOT_MODULES,
+    SNAPSHOT_SECTIONS
 };
 
 struct SnapshotBase {
@@ -76,6 +79,16 @@ struct SnapshotProcesses : SnapshotBase{
         }
     }
 
+    bool PopFirst(ProcessInfo& outProc)
+    {
+        if(mArrayProcs.size() > 0)
+        {
+            return Pop(outProc);
+        }
+
+        return false;
+    }
+
     bool Pop(ProcessInfo& outProc)
     {
         outProc = mArrayProcs[mArrayPos];
@@ -84,10 +97,162 @@ struct SnapshotProcesses : SnapshotBase{
     }
 };
 
+struct SectionInfo {
+	uint64_t mStart;
+	uint64_t mEnd;
+	SectionProtection mProt;
+	char mPath[260];
+};
+
+bool getMapsSegments(uint32_t pid, std::vector<SectionInfo>& outSeg)
+{
+    char mapsPath[260] {};
+    sprintf(mapsPath, "/proc/%d/maps", int(pid));
+
+    printf("Opening %s\n", mapsPath);
+
+    FILE *fp = fopen(mapsPath,"r");
+
+    if (fp)
+    {
+        char* line =(char*) malloc(4096);
+        printf("%s Opened\n", mapsPath);
+
+        if(line)
+        {
+            while (fgets(line,4096, fp)) {
+                SectionInfo seg{};
+
+                //printf("%s\n", line);
+
+                uint64_t unk;
+                char r;
+                char w;
+                char x;
+                char p;
+
+                sscanf(line,"%lx-%lx %c%c%c%c %lx %lx:%lx %lx %260[^\n\t]", &seg.mStart, &seg.mEnd, &r, &w, &x, &p, &unk, &unk, &unk, &unk, seg.mPath);
+
+                printf("%lx-%lx %s\n", seg.mStart, seg.mEnd, seg.mPath);
+
+                if(r == 'r')
+                    seg.mProt |= SectionProtection::Read;
+
+                if(w == 'w')
+                    seg.mProt |= SectionProtection::Write;
+
+                if(x == 'x')
+                    seg.mProt |= SectionProtection::Execute;
+
+                outSeg.push_back(seg);
+            }
+
+        
+            free(line);
+            printf("%d Segments Parsed\n", outSeg.size());
+            return true;
+        }
+
+    } 
+
+    return false;
+}
+
+struct SnapshotSections : SnapshotBase{
+    SnapshotSections(uint32_t pid)
+    {
+        type = SNAPSHOT_SECTIONS;
+        printf("Creating SnapshotSections PID %d\n", pid);
+        getMapsSegments(pid, mArraySecs);
+
+        printf("SnapshotSections Created PID %d, %d Sections\n", mArraySecs.size());
+        
+    }
+
+    std::vector<SectionInfo> mArraySecs;
+
+    bool Pop(SectionInfo& outSec)
+    {
+        outSec = mArraySecs[mArrayPos];
+
+        return ((mArraySecs.size() - 1) - mArrayPos++) > 0;
+    }
+
+    bool Pop(SectionInfo** outSec)
+    {
+        *outSec = &mArraySecs[mArrayPos];
+
+        return ((mArraySecs.size() - 1) - mArrayPos++) > 0;
+    }
+};
+
 struct SnapshotModules : SnapshotBase{
-    SnapshotModules()
+    SnapshotModules(uint32_t pid)
     {
         type = SNAPSHOT_MODULES;
+
+        printf("Creating SnapModules PID %d\n", pid);
+
+        SnapshotSections snapshotSect = SnapshotSections(pid);
+        std::unordered_map <std::string, std::vector<SectionInfo*>> modMatchs;
+        
+        SectionInfo* si;
+
+        printf("Parsing SnapSections\n", pid);
+
+        if(snapshotSect.Pop(&si))
+        {
+            do {
+                if(strstr(si->mPath, ".so"))
+                {
+                    std::string mPathStr = std::string(si->mPath);
+
+                    if(modMatchs.find(mPathStr) == modMatchs.end())
+                        modMatchs[mPathStr] = std::vector<SectionInfo*>();
+
+                    modMatchs[mPathStr].push_back(si);
+                }
+            } while(snapshotSect.Pop(&si));
+        }
+
+        for(const auto& kv : modMatchs)
+        {
+            if(kv.second.size() > 1)
+            {
+                ModuleInfo currMi;
+                
+                const auto* pFirst = kv.second[0];
+                const auto* pLast = kv.second[kv.second.size() - 1];
+
+                currMi.mBase = pFirst->mStart;
+                currMi.mSize = pLast->mEnd -currMi.mBase;
+                strcpy(currMi.mPath, pFirst->mPath);
+
+                mArrayMods.push_back(currMi);
+            }
+        }
+
+        printf("%d Modules Parsed\n", mArrayMods.size());
+    }
+
+    std::vector<ModuleInfo> mArrayMods;
+
+    bool PopFirst(ModuleInfo& outSnap)
+    {
+        if(mArrayMods.size() > 0)
+        {
+            return Pop(outSnap);
+        }
+
+        return false;
+    }
+
+
+    bool Pop(ModuleInfo& outMod)
+    {
+        outMod = mArrayMods[mArrayPos];
+
+        return mArrayPos++ < (mArrayMods.size() - 1);
     }
 };
 
@@ -100,9 +265,9 @@ std::unordered_map<HANDLE_API, OpenedProcessInfo> gProcs;
 std::unordered_map<ClientSocketLinux*, std::vector<SnapshotProcesses*>> gSnapProcs;
 std::unordered_map<ClientSocketLinux*, std::vector<SnapshotModules*>> gSnapMods;
 
-bool CreateToolMods(SnapshotModules** outSnap)
+bool CreateToolMods(uint32_t pid, SnapshotModules** outSnap)
 {
-    *outSnap = new SnapshotModules();
+    *outSnap = new SnapshotModules(pid);
 
     return true;
 }
@@ -125,9 +290,15 @@ void HandleCreateToolProcs(ClientSocketLinux* pClientUnique, HANDLE_API& outHand
     }
 }
 
-void HandleCreateToolMods(ClientSocketLinux* pClientUnique, HANDLE_API& outHandle)
+void HandleCreateToolMods(ClientSocketLinux* pClientUnique, uint32_t pid, HANDLE_API& outHandle)
 {
+    SnapshotModules* pModsSnap = nullptr;
 
+    if(CreateToolMods(pid, &pModsSnap))
+    {
+        gSnapMods[pClientUnique].push_back(pModsSnap);
+        outHandle = gSnapMods[pClientUnique].size() - 1;
+    }
 }
 
 void HandleCmdCreateToolHelp(ClientSocketLinux* pClientUnique, void* pInPacket)
@@ -145,7 +316,7 @@ void HandleCmdCreateToolHelp(ClientSocketLinux* pClientUnique, void* pInPacket)
     switch(packet->getPayload()->mToolType)
     {
         case ToolType::PROCS:   HandleCreateToolProcs(pClientUnique, rHandleResult); break;
-        case ToolType::MODULES: HandleCreateToolMods(pClientUnique, rHandleResult); break;
+        case ToolType::MODULES: HandleCreateToolMods(pClientUnique, packet->getPayload()->mProcessId, rHandleResult); break;
     }
 
     if(rHandleResult != HandleValue::INVALID)
@@ -159,8 +330,22 @@ void HandleCmdHi(ClientSocketLinux* pClientSocket)
     pClientSocket->SendMsg(CMD_WELLCOME);
 }
 
+
+void RemoveClientProcHandles(ClientSocketLinux* pClientUnique)
+{
+    for(const auto& kv : gProcs)
+    {
+        if(kv.second.pOwner == pClientUnique)
+        {
+            delete kv.second.mProcess;
+            gProcs.erase(kv.first);
+        }
+    }
+}
+
 void HandleDisconnect(ClientSocketLinux* pClientSocket)
 {
+    RemoveClientProcHandles(pClientSocket);
     printf("Client Disconnected\n");
 }
 
@@ -198,6 +383,7 @@ void HandleCmdStatus(ClientSocketLinux* pClientUnique)
 
 void HandleCmdDisconnect(ClientSocketLinux* pClientUnique)
 {
+    HandleDisconnect(pClientUnique);
     pClientUnique->SendMsg(CMD_OK);
 }
 
@@ -254,6 +440,47 @@ void HandleCmdProcessNext(ClientSocketLinux* pClientUnique, void* pInPacket)
 
     pClientUnique->Send(&pNextOut, sizeof(pNextOut));
 }
+
+void HandleCmdModuleFirst(ClientSocketLinux* pClientUnique, void* pInPacket)
+{
+    Packet<ModuleFirstIn, 0>* pcktIn = (Packet<ModuleFirstIn, 0>*)pInPacket;
+    ModuleFirstOut pFirstOut{};
+    HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
+    pFirstOut.mRemaining = false;
+
+    printf("Module First\n");
+
+    if(ValidSnapModsHandle(pClientUnique, hSnap))
+    {
+        SnapshotModules* pSnap = gSnapMods[pClientUnique][hSnap];
+
+        pFirstOut.mRemaining = pSnap->PopFirst(pFirstOut.mModuleInfo);
+
+        printf("Module First: %s %lx\n", pFirstOut.mModuleInfo.mPath, pFirstOut.mModuleInfo.mBase);
+    }
+
+    pClientUnique->Send(&pFirstOut, sizeof(pFirstOut));
+}
+
+void HandleCmdModuleNext(ClientSocketLinux* pClientUnique, void* pInPacket)
+{
+    Packet<ModuleNextIn, 0>* pcktIn = (Packet<ModuleNextIn, 0>*)pInPacket;
+    ModuleFirstOut pNextOut{};
+    HANDLE_API hSnap = pcktIn->getPayload()->mHandleSnap;
+    pNextOut.mRemaining = false;
+
+    if(ValidSnapModsHandle(pClientUnique, hSnap))
+    {
+        SnapshotModules* pSnap = gSnapMods[pClientUnique][hSnap];
+
+        pNextOut.mRemaining = pSnap->Pop(pNextOut.mModuleInfo);
+
+        printf("Module Next: %s %lx\n", pNextOut.mModuleInfo.mPath, pNextOut.mModuleInfo.mBase);
+    }
+
+    pClientUnique->Send(&pNextOut, sizeof(pNextOut));
+}
+
 
 void HandleCmdOpenProcess(ClientSocketLinux* pClientUnique, void* pInPacket){
     Packet<OpenRemoteProcessIn, 0>* pcktIn = (Packet<OpenRemoteProcessIn, 0>*)pInPacket;
@@ -333,6 +560,8 @@ std::function<void(ClientSocketLinux*)> gfnHandleConn = [](ClientSocketLinux* pC
             case CMD_CREATE_REMOTE_TOOL_HELP: HandleCmdCreateToolHelp(pClientSocket, packet); break;
             case CMD_PROCESS_FIRST: HandleCmdProcessFirst(pClientSocket, packet); break;
             case CMD_PROCESS_NEXT: HandleCmdProcessNext(pClientSocket, packet); break;
+            case CMD_MODULE_FIRST: HandleCmdModuleFirst(pClientSocket, packet); break;
+            case CMD_MODULE_NEXT: HandleCmdModuleNext(pClientSocket, packet); break;
             case CMD_REMOVE_REMOTE_PROCS_TOOL_HELP: HandleCmdRemoveProcsToolHelp(pClientSocket, packet); break;
             case CMD_OPEN_REMOTE_PROCESS: HandleCmdOpenProcess(pClientSocket, packet); break;
             case CMD_READ_MEMORY: HandleCmdReadMemory(pClientSocket, packet); break;

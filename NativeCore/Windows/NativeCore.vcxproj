@@ -190,7 +190,9 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="OpenRemoteProcess.cpp" />
     <ClCompile Include="ReadRemoteMemory.cpp" />
+    <ClCompile Include="ServerManager.cpp" />
     <ClCompile Include="ServerRemoteTool.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="WindowsSocketWrapper.cpp" />
     <ClCompile Include="WriteRemoteMemory.cpp" />
   </ItemGroup>
@@ -219,6 +221,7 @@
     <ClInclude Include="..\Shared\SocketWrapper.h" />
     <ClInclude Include="NativeCore.hpp" />
     <ClInclude Include="ServerRemoteTool.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="WindowsSocketWrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

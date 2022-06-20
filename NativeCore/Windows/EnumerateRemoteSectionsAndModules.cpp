@@ -6,6 +6,7 @@
 #include <functional>
 
 #include "NativeCore.hpp"
+#include "ServerRemoteTool.h"
 
 PPEB GetRemotePeb(const HANDLE process)
 {
@@ -110,15 +111,9 @@ bool EnumerateRemoteModulesWinapi(const RC_Pointer process, const InternalEnumer
 	return true;
 }
 
-void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
+void EnumerateRemoteSectionsAndModulesWindows(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
 {
-	if (callbackSection == nullptr && callbackModule == nullptr)
-	{
-		return;
-	}
-
 	std::vector<EnumerateRemoteSectionData> sections;
-
 	MEMORY_BASIC_INFORMATION memory = { };
 	memory.RegionSize = 0x1000;
 	size_t address = 0;
@@ -129,7 +124,7 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 			EnumerateRemoteSectionData section = {};
 			section.BaseAddress = memory.BaseAddress;
 			section.Size = memory.RegionSize;
-			
+
 			section.Protection = SectionProtection::NoAccess;
 			if ((memory.Protect & PAGE_EXECUTE) == PAGE_EXECUTE) section.Protection |= SectionProtection::Execute;
 			if ((memory.Protect & PAGE_EXECUTE_READ) == PAGE_EXECUTE_READ) section.Protection |= SectionProtection::Execute | SectionProtection::Read;
@@ -139,7 +134,7 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 			if ((memory.Protect & PAGE_READWRITE) == PAGE_READWRITE) section.Protection |= SectionProtection::Read | SectionProtection::Write;
 			if ((memory.Protect & PAGE_WRITECOPY) == PAGE_WRITECOPY) section.Protection |= SectionProtection::Read | SectionProtection::CopyOnWrite;
 			if ((memory.Protect & PAGE_GUARD) == PAGE_GUARD) section.Protection |= SectionProtection::Guard;
-			
+
 			switch (memory.Type)
 			{
 			case MEM_IMAGE:
@@ -170,9 +165,9 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 		if (callbackSection != nullptr)
 		{
 			auto it = std::lower_bound(std::begin(sections), std::end(sections), static_cast<LPVOID>(data.BaseAddress), [&sections](const auto& lhs, const LPVOID& rhs)
-			{
-				return lhs.BaseAddress < rhs;
-			});
+				{
+					return lhs.BaseAddress < rhs;
+				});
 
 			IMAGE_DOS_HEADER imageDosHeader = {};
 			IMAGE_NT_HEADERS imageNtHeaders = {};
@@ -192,8 +187,8 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 				for (; it != std::end(sections); ++it)
 				{
 					auto&& section = *it;
-					
-					if (sectionAddress >= reinterpret_cast<size_t>(section.BaseAddress) 
+
+					if (sectionAddress >= reinterpret_cast<size_t>(section.BaseAddress)
 						&& sectionAddress < reinterpret_cast<size_t>(section.BaseAddress) + static_cast<size_t>(section.Size)
 						&& sectionHeader.VirtualAddress + sectionHeader.Misc.VirtualSize <= data.Size)
 					{
@@ -213,7 +208,7 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 							std::memcpy(buffer, sectionHeader.Name, IMAGE_SIZEOF_SHORT_NAME);
 							MultiByteToUnicode(buffer, section.Name, IMAGE_SIZEOF_SHORT_NAME);
 						}
-						catch (std::range_error &)
+						catch (std::range_error&)
 						{
 							std::memset(section.Name, 0, sizeof(section.Name));
 						}
@@ -225,7 +220,7 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 			}
 		}
 	};
-	
+
 	if (!EnumerateRemoteModulesNative(process, moduleEnumerator))
 	{
 		EnumerateRemoteModulesWinapi(process, moduleEnumerator);
@@ -238,4 +233,15 @@ void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, Enumerate
 			callbackSection(&section);
 		}
 	}
+}
+
+void RC_CallConv EnumerateRemoteSectionsAndModules(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
+{
+	if (callbackSection == nullptr && callbackModule == nullptr)
+	{
+		return;
+	}
+
+	if(ServerManager::getInstance()->PartiallyConnected()) EnumerateRemoteSectionsAndModulesServer(process, callbackSection, callbackModule);
+	else EnumerateRemoteSectionsAndModulesWindows(process, callbackSection, callbackModule);
 }

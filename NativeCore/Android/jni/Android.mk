@@ -4,7 +4,8 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := rcserver
 LOCAL_C_INCLUDES += \
 $(LOCAL_PATH)/../../Shared \
-$(LOCAL_PATH)/../../Unix
+$(LOCAL_PATH)/../../Unix \
+$(LOCAL_PATH)/../..
 
 LOCAL_SRC_FILES := \
 main.cpp \

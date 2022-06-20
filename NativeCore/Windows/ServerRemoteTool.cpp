@@ -1,14 +1,15 @@
+#include "ServerRemoteTool.h"
 #include "NativeCore.hpp"
 
 #include "WindowsSocketWrapper.h"
 #include "../Shared/API.h"
-#include "ServerRemoteTool.h"
 #include "../Shared/Packet.h"
+#include <unordered_map>
+#include "Utils.h"
 
-ClientSocketWindows* gServerSocket = nullptr;
 unsigned char gPacketHolder[MAX_PACKET_SIZE + 1]{ 0 };
+std::mutex gMtxReq;
 
-ServerManager* ServerManager::mInstance = nullptr;
 
 int32_t RC_CallConv ConnectServer(const char* pIpStr, short port)
 {
@@ -30,85 +31,9 @@ void RC_CallConv DisconnectServer()
 	ServerManager::getInstance()->Disconnect();
 }
 
-ServerManager::ServerManager() : mSocket(nullptr) {}
-
-ServerManager::~ServerManager() {
-	Disconnect();
-}
-
-bool ServerManager::Disconnect()
-{
-	if (mSocket) mSocket->SendMsg(CMD_DISCONNECT);
-
-	CleanUp();
-
-	return true;
-}
-
-bool ServerManager::IsConnected()
-{
-	return PartiallyConnected() && CheckConnection();
-}
-
-bool ServerManager::CheckConnection()
-{
-	mSocket->SendMsg(CMD_STATUS);
-
-	if (mSocket->GetMsg() == CMD_OK)
-		return true;
-
-	return false;
-}
-
-bool ServerManager::CleanUp()
-{
-	if (mSocket)
-		delete mSocket;
-
-	mSocket = nullptr;
-
-	return true;
-}
-
-bool ServerManager::TryConnect(const std::string& ip, short port)
-{
-	mSocket = new ClientSocketWindows(ip, port);
-
-	if (mSocket)
-	{
-		if (mSocket->Init())
-		{
-			if (mSocket->SendMsg(CMD_HI))
-			{
-				if (mSocket->GetMsg() == CMD_WELLCOME)
-					return true;
-			}
-		}
-	}
-
-	CleanUp();
-	return false;
-}
-
-ClientSocketWindows* ServerManager::getServerSocket() { return mSocket; }
-
-ServerManager* ServerManager::getInstance()
-{
-	if (!mInstance)
-		mInstance = new ServerManager();
-
-	return mInstance;
-}
-
-bool ServerManager::PartiallyConnected()
-{
-	return mSocket != nullptr;
-}
-
-extern ServerManager* gServerMgr;
-
 HANDLE_API CreateRemoteTool(uint32_t type, uint32_t pid)
 {
+	std::lock_guard lck(gMtxReq);
 	auto* pSocket = ServerManager::getInstance()->getServerSocket();
 	Packet<CreateRemoteToolHelpIn, CMD_CREATE_REMOTE_TOOL_HELP> pckt;
 
@@ -126,6 +51,7 @@ HANDLE_API CreateRemoteTool(uint32_t type, uint32_t pid)
 
 void RemoveRemoteProcsTool(HANDLE_API hTool)
 {
+	std::lock_guard lck(gMtxReq);
 	auto* pSocket = ServerManager::getInstance()->getServerSocket();
 	Packet<RemoveRemoteProcsToolHelpIn, CMD_REMOVE_REMOTE_PROCS_TOOL_HELP> pckt;
 
@@ -136,6 +62,7 @@ void RemoveRemoteProcsTool(HANDLE_API hTool)
 
 bool ProcessFirst(HANDLE_API hSnap, ProcessInfo* pPi)
 {
+	std::lock_guard lck(gMtxReq);
 	auto* pSocket = ServerManager::getInstance()->getServerSocket();
 	Packet<ProcessFirstIn, CMD_PROCESS_FIRST> pckt {};
 
@@ -157,6 +84,7 @@ bool ProcessFirst(HANDLE_API hSnap, ProcessInfo* pPi)
 
 bool ProcessNext(HANDLE_API hSnap, ProcessInfo* pPi)
 {
+	std::lock_guard lck(gMtxReq);
 	auto* pSocket = ServerManager::getInstance()->getServerSocket();
 	Packet<ProcessNextIn, CMD_PROCESS_NEXT> pckt;
 
@@ -176,12 +104,67 @@ bool ProcessNext(HANDLE_API hSnap, ProcessInfo* pPi)
 	return false;
 }
 
+bool ModuleFirst(HANDLE_API hSnap, ModuleInfo* pMi)
+{
+	std::lock_guard lck(gMtxReq);
+	auto* pSocket = ServerManager::getInstance()->getServerSocket();
+	Packet<ModuleFirstIn, CMD_MODULE_FIRST> pckt{};
+
+	pckt.getPayload()->mHandleSnap = hSnap;
+
+	if (pSocket->Send(pckt.getEntry(), pckt.getSize()))
+	{
+		if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
+		{
+			ModuleFirstOut* pFirstOut = ((ModuleFirstOut*)gPacketHolder);
+			*pMi = pFirstOut->mModuleInfo;
+
+			return pFirstOut->mRemaining;
+		}
+	}
+
+	return false;
+}
+
+bool ModuleNext(HANDLE_API hSnap, ModuleInfo* pMi)
+{
+	std::lock_guard lck(gMtxReq);
+	auto* pSocket = ServerManager::getInstance()->getServerSocket();
+	Packet<ModuleNextIn, CMD_MODULE_NEXT> pckt{};
+
+	pckt.getPayload()->mHandleSnap = hSnap;
+
+	if (pSocket->Send(pckt.getEntry(), pckt.getSize()))
+	{
+		if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
+		{
+			ModuleNextOut* pNextOut = ((ModuleNextOut*)gPacketHolder);
+			*pMi = pNextOut->mModuleInfo;
+
+			return pNextOut->mRemaining;
+		}
+	}
+
+	return false;
+}
+
 void CloseServerProcess(HANDLE_API hProc)
 {
 }
 
+std::unordered_map<HANDLE_API, uint32_t> gPids;
+
+uint32_t PidFromHandle(HANDLE_API hProc)
+{
+	if (gPids.find(hProc) != gPids.end())
+		return gPids[hProc];
+
+	return 0;
+}
+
 RC_Pointer OpenRemoteProcessServer(RC_Pointer id)
 {
+	std::lock_guard lck(gMtxReq);
 	auto* pSocket = ServerManager::getInstance()->getServerSocket();
 	Packet<OpenRemoteProcessIn, CMD_OPEN_REMOTE_PROCESS> pckt;
 
@@ -191,7 +174,14 @@ RC_Pointer OpenRemoteProcessServer(RC_Pointer id)
 	if (pSocket->Send(pckt.getEntry(), pckt.getSize()))
 	{
 		if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
-			return (RC_Pointer)((OpenRemoteProcessOut*)gPacketHolder)->hProc;
+		{
+			HANDLE_API hProc = ((OpenRemoteProcessOut*)gPacketHolder)->hProc;
+
+			if (hProc != HandleValue::INVALID)
+				gPids[hProc] = (uint32_t)id;
+
+			return (RC_Pointer)hProc;
+		}
 
 	}
 
@@ -200,6 +190,7 @@ RC_Pointer OpenRemoteProcessServer(RC_Pointer id)
 
 int ReadMemoryChuckServer(HANDLE_API handle, uint64_t address, RC_Pointer buffer, int size)
 {
+	std::lock_guard lck(gMtxReq);
 	int bytesReaded = -1;
 
 	if (size <= (MAX_PACKET_SIZE - sizeof(int64_t)))
@@ -229,12 +220,12 @@ int ReadMemoryChuckServer(HANDLE_API handle, uint64_t address, RC_Pointer buffer
 int ReadMemoryServer(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int size)
 {
 	uint64_t bytesReaded = -1;
-	constexpr size_t rdMemMaxPacketSize = MAX_PACKET_SIZE - sizeof(int64_t);
+	constexpr size_t rdMemMaxPacketSize = MAX_PACKET_SIZE - sizeof(int64_t) - 4;
 
 	if (size > rdMemMaxPacketSize) // need split?
 	{
 		bytesReaded = 0;
-		int nSends = size / rdMemMaxPacketSize;
+		int nSends = (int)(size / rdMemMaxPacketSize);
 		int64_t currBytesReaded = 0;
 
 		uint64_t offset = 0;
@@ -258,6 +249,112 @@ int ReadMemoryServer(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, i
 		bytesReaded = ReadMemoryChuckServer((HANDLE_API)handle, (uintptr_t)address, buffer, size);
 
 	return bytesReaded;
+}
+
+void RemoveRemoteModulesTool(HANDLE_API hSnap)
+{
+	std::lock_guard lck(gMtxReq);
+	auto* pSocket = ServerManager::getInstance()->getServerSocket();
+	Packet<RemoveRemoteModsToolHelpIn, CMD_REMOVE_REMOTE_MODS_TOOL_HELP> pckt;
+
+	pckt.getPayload()->mHandleSnap = hSnap;
+
+	pSocket->Send(pckt.getEntry(), pckt.getSize());
+}
+
+void RemoveRemoteSectionsTool(HANDLE_API hSnap)
+{
+	std::lock_guard lck(gMtxReq);
+	auto* pSocket = ServerManager::getInstance()->getServerSocket();
+	Packet<RemoveRemoteSecsToolHelpIn, CMD_REMOVE_REMOTE_SECS_TOOL_HELP> pckt;
+
+	pckt.getPayload()->mHandleSnap = hSnap;
+
+	pSocket->Send(pckt.getEntry(), pckt.getSize());
+}
+
+
+
+void EnumerateRemoteSectionsServer(HANDLE_API hProc, EnumerateRemoteSectionsCallback callbackSection)
+{
+	/*HANDLE_API hSnap = CreateRemoteTool(ToolType::SECTIONS, PidFromHandle(hProc));
+
+	if (hSnap != HandleValue::INVALID)
+	{
+		ModuleInfo mi{};
+
+		if (ModuleFirst(hSnap, &mi))
+		{
+			do {
+				EnumerateRemoteModuleData ermd{};
+
+				ermd.BaseAddress = (RC_Pointer)mi.mBase;
+				ermd.Size = (RC_Size)mi.mSize;
+				lstrcpyW((wchar_t*)ermd.Path, StrtoWStr(std::string(mi.mPath)).c_str());
+
+				callbackModule(&ermd);
+			} while (ModuleNext(hSnap, &mi));
+		}
+
+		RemoveRemoteSectionsTool(hSnap);
+	}*/
+}
+
+void EnumerateRemoteModulesServer(HANDLE_API hProc, EnumerateRemoteModulesCallback callbackModule)
+{
+	HANDLE_API hSnap = CreateRemoteTool(ToolType::MODULES, PidFromHandle(hProc));
+
+	if (hSnap != HandleValue::INVALID)
+	{
+		ModuleInfo mi{};
+
+		if (ModuleFirst(hSnap, &mi))
+		{
+			do {
+				EnumerateRemoteModuleData ermd{};
+
+				ermd.BaseAddress = (RC_Pointer)mi.mBase;
+				ermd.Size = (RC_Size)mi.mSize;
+				lstrcpyW((wchar_t*)ermd.Path, StrtoWStr(std::string(mi.mPath)).c_str());
+
+				callbackModule(&ermd);
+			} while (ModuleNext(hSnap, &mi));
+		}
+
+		RemoveRemoteModulesTool(hSnap);
+	}
+}
+
+void EnumerateProcessesServer(EnumerateProcessCallback callbackProcess)
+{
+	HANDLE_API hSnap = CreateRemoteTool(ToolType::PROCS, 0);
+
+	if (hSnap != HandleValue::INVALID)
+	{
+		ProcessInfo pi{};
+		if (ProcessFirst(hSnap, &pi))
+		{
+			do {
+				if (strlen(pi.mProcessName) > 0)
+				{
+					EnumerateProcessData enumProcData{};
+
+					enumProcData.Id = pi.mProcessId;
+					lstrcpyW((wchar_t*)enumProcData.Name, StrtoWStr(pi.mProcessName).c_str());
+
+					callbackProcess(&enumProcData);
+				}
+			} while (ProcessNext(hSnap, &pi));
+		}
+
+		RemoveRemoteProcsTool(hSnap);
+	}
+}
+
+void EnumerateRemoteSectionsAndModulesServer(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule)
+{
+	EnumerateRemoteSectionsServer((HANDLE_API)process, callbackSection);
+	EnumerateRemoteModulesServer((HANDLE_API)process, callbackModule);
 }
 
 void CloseServerProcess(RC_Pointer hProc)
