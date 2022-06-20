@@ -151,5 +151,8 @@
     <ClInclude Include="ServerRemoteTool.h">
       <Filter>Functions\Networking</Filter>
     </ClInclude>
+    <ClInclude Include="..\Shared\IProcess.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

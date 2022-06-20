@@ -5,6 +5,7 @@
 #include <Packet.h>
 #include "Utils.h"
 #include "dirent.h"
+#include "LinuxProcess.h"
 
 enum {
     SNAPSHOT_PROCESSES,
@@ -90,6 +91,12 @@ struct SnapshotModules : SnapshotBase{
     }
 };
 
+struct OpenedProcessInfo{
+    ClientSocketLinux* pOwner;
+    LinuxProcess* mProcess;
+};
+
+std::unordered_map<HANDLE_API, OpenedProcessInfo> gProcs;      
 std::unordered_map<ClientSocketLinux*, std::vector<SnapshotProcesses*>> gSnapProcs;
 std::unordered_map<ClientSocketLinux*, std::vector<SnapshotModules*>> gSnapMods;
 
@@ -248,6 +255,54 @@ void HandleCmdProcessNext(ClientSocketLinux* pClientUnique, void* pInPacket)
     pClientUnique->Send(&pNextOut, sizeof(pNextOut));
 }
 
+void HandleCmdOpenProcess(ClientSocketLinux* pClientUnique, void* pInPacket){
+    Packet<OpenRemoteProcessIn, 0>* pcktIn = (Packet<OpenRemoteProcessIn, 0>*)pInPacket;
+    OpenRemoteProcessOut pOpenProcOut {};
+
+    pOpenProcOut.hProc = HandleValue::INVALID;
+    OpenedProcessInfo openedProcInf {};
+
+    printf("Opening Process PID %d\n", pcktIn->getPayload()->mProcessId);
+
+    openedProcInf.mProcess = new LinuxProcess(pcktIn->getPayload()->mProcessId);
+
+    if(openedProcInf.mProcess)
+    {
+        pOpenProcOut.hProc = (HANDLE_API)openedProcInf.mProcess->getMemFd();
+
+        if(pOpenProcOut.hProc != -1)
+        {
+            openedProcInf.pOwner = pClientUnique;
+            gProcs[pOpenProcOut.hProc] = openedProcInf;
+            printf("Process Opened %d\n", pOpenProcOut.hProc);
+        } else delete openedProcInf.mProcess;
+    }
+
+    pClientUnique->Send(&pOpenProcOut, sizeof(pOpenProcOut));
+}
+
+void HandleCmdReadMemory(ClientSocketLinux* pClientUnique, void* pInPacket)
+{
+    Packet<ReadMemoryIn, 0>* pckt = (Packet<ReadMemoryIn, 0>*)pInPacket;
+    HANDLE_API hProc = pckt->getPayload()->mhProc;
+    unsigned char packetHolder[MAX_PACKET_SIZE]{};
+    ReadMemoryOut* pRdMemOut = (ReadMemoryOut*)packetHolder;
+    pRdMemOut->mBytesReaded = -1;
+
+    if(gProcs.find(hProc) != gProcs.end())
+    {
+        const OpenedProcessInfo& hProcInf = gProcs[hProc];
+
+        printf("Reading %d bytes\n", int(pckt->getPayload()->mSize));
+
+        if(hProcInf.pOwner == pClientUnique)
+            pRdMemOut->mBytesReaded = hProcInf.mProcess->ReadMemory(pckt->getPayload()->mAddr, pRdMemOut->mBuff, pckt->getPayload()->mSize);
+
+        printf("%d Bytes Readed\n", int(pRdMemOut->mBytesReaded));
+    }
+
+    pClientUnique->Send(pRdMemOut, pRdMemOut->mBytesReaded != -1 ? pRdMemOut->mBytesReaded + sizeof(int64_t) : sizeof(int64_t));
+}
 
 std::function<void(ClientSocketLinux*)> gfnHandleConn = [](ClientSocketLinux* pClientSocket)
 {
@@ -279,6 +334,8 @@ std::function<void(ClientSocketLinux*)> gfnHandleConn = [](ClientSocketLinux* pC
             case CMD_PROCESS_FIRST: HandleCmdProcessFirst(pClientSocket, packet); break;
             case CMD_PROCESS_NEXT: HandleCmdProcessNext(pClientSocket, packet); break;
             case CMD_REMOVE_REMOTE_PROCS_TOOL_HELP: HandleCmdRemoveProcsToolHelp(pClientSocket, packet); break;
+            case CMD_OPEN_REMOTE_PROCESS: HandleCmdOpenProcess(pClientSocket, packet); break;
+            case CMD_READ_MEMORY: HandleCmdReadMemory(pClientSocket, packet); break;
             case CMD_STATUS: HandleCmdStatus(pClientSocket); break;
             case CMD_DISCONNECT: HandleCmdDisconnect(pClientSocket); bDisconnecting = true; break;
         }

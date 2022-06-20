@@ -212,6 +212,7 @@
     <ClInclude Include="..\ReClassNET_Plugin.hpp" />
     <ClInclude Include="..\Shared\API.h" />
     <ClInclude Include="..\Shared\DistormHelper.hpp" />
+    <ClInclude Include="..\Shared\IProcess.h" />
     <ClInclude Include="..\Shared\Keys.hpp" />
     <ClInclude Include="..\Shared\PackDefs.h" />
     <ClInclude Include="..\Shared\Packet.h" />

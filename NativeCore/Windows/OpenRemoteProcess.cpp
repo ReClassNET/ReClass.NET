@@ -1,6 +1,7 @@
 #include <windows.h>
 
 #include "NativeCore.hpp"
+#include "ServerRemoteTool.h"
 
 RC_Pointer OpenRemoteProcessWindows(RC_Pointer id, ProcessAccess desiredAccess)
 {
@@ -30,5 +31,6 @@ RC_Pointer OpenRemoteProcessWindows(RC_Pointer id, ProcessAccess desiredAccess)
 
 RC_Pointer RC_CallConv OpenRemoteProcess(RC_Pointer id, ProcessAccess desiredAccess)
 {
-	return OpenRemoteProcessWindows(id, desiredAccess);
+	if (ServerManager::getInstance()->IsConnected()) return OpenRemoteProcessServer(id);
+	else return OpenRemoteProcessWindows(id, desiredAccess);
 }

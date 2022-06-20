@@ -1,6 +1,7 @@
 #include <windows.h>
 
 #include "NativeCore.hpp"
+#include "ServerRemoteTool.h"
 
 void CloseWindowsHandle(RC_Pointer handle)
 {
@@ -14,5 +15,6 @@ void RC_CallConv CloseRemoteProcess(RC_Pointer handle)
 		return;
 	}
 
-	CloseWindowsHandle(handle);
+	if (ServerManager::getInstance()->IsConnected()) CloseServerProcess(handle);
+	else CloseWindowsHandle(handle);
 }

@@ -13,6 +13,8 @@ namespace ReClassNET.Forms
 	{
 		private const string NoPreviousProcess = "No previous process";
 
+		public NetworkingForm networkingForm;
+
 		private static readonly string[] commonProcesses = 
 		{
 			"[system process]", "system", "svchost.exe", "services.exe", "wininit.exe",
@@ -138,8 +140,10 @@ namespace ReClassNET.Forms
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			NetworkingForm networkingForm = new NetworkingForm();
+			networkingForm = new NetworkingForm();
 			networkingForm.ShowDialog();
+
+			if (networkingForm.mConnected == true)
 			{
 				RefreshProcessList();
 			}

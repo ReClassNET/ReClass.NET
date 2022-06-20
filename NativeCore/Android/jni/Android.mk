@@ -10,6 +10,7 @@ LOCAL_SRC_FILES := \
 main.cpp \
 Remote.cpp \
 Utils.cpp \
+../../Unix/LinuxProcess.cpp \
 ../../Unix/LinuxSocketWrapper.cpp \
 ../../Shared/SocketWrapper.cpp
 
