@@ -31,4 +31,9 @@ PACK(struct Packet {
 
 		printf("\n");
 	}
+
+	void SetPacketid(short pcktId)
+	{
+		mPacketId = pcktId;
+	}
 });

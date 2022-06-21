@@ -105,7 +105,6 @@ bool getMapsSegments(uint32_t pid, std::vector<SectionInfo>& outSeg)
                 char w;
                 char x;
                 char m;
-                
 
                 sscanf(line,"%lx-%lx %c%c%c%c %lx %lx:%lx %lx %260[^\n\t]", &seg.mStart, &seg.mEnd, &r, &w, &x, &m, &offset, &unk, &unk, &unk, seg.mPath);
 
@@ -372,7 +371,7 @@ void HandleCmdRemoveProcsToolHelp(ClientSocketLinux* pClientUnique, void* pInPac
 
 void HandleCmdStatus(ClientSocketLinux* pClientUnique)
 {
-    printf("Process Ping\n");
+    //printf("Process Ping\n");
     pClientUnique->SendMsg(CMD_OK);
 }
 
@@ -439,19 +438,38 @@ void HandleCmdReadMemory(ClientSocketLinux* pClientUnique, void* pInPacket)
     HANDLE_API hProc = pckt->getPayload()->mhProc;
     unsigned char packetHolder[MAX_PACKET_SIZE]{};
     ReadMemoryOut* pRdMemOut = (ReadMemoryOut*)packetHolder;
-    pRdMemOut->mBytesReaded = -1;
-
     const OpenedProcessInfo* hProcInf = gProcs[pClientUnique];
+
+    pRdMemOut->mBytesReaded = -1;
 
     if(hProcInf && hProc == hProcInf->mProcess->getMemFd())
     {
-        printf("Reading %d bytes\n", int(pckt->getPayload()->mSize));
+       // printf("Reading %d bytes\n", int(pckt->getPayload()->mSize));
         pRdMemOut->mBytesReaded = hProcInf->mProcess->ReadMemory(pckt->getPayload()->mAddr, pRdMemOut->mBuff, pckt->getPayload()->mSize);
     }
 
-    printf("%d Bytes Readed\n", int(pRdMemOut->mBytesReaded));
+    //printf("%d Bytes Readed\n", int(pRdMemOut->mBytesReaded));
 
     pClientUnique->Send(pRdMemOut, pRdMemOut->mBytesReaded != -1 ? pRdMemOut->mBytesReaded + sizeof(int64_t) : sizeof(int64_t));
+}
+
+void HandleCmdWriteMemory(ClientSocketLinux* pClientUnique, void* pInPacket)
+{
+    Packet<WriteMemoryIn, 0>* pckt = (Packet<WriteMemoryIn, 0>*)pInPacket;
+    HANDLE_API hProc = pckt->getPayload()->mhProc;
+    WriteMemoryOut pWrMemOut{};
+    const OpenedProcessInfo* hProcInf = gProcs[pClientUnique];
+    
+    pWrMemOut.mBytesWrited = -1;
+
+     if(hProcInf && hProc == hProcInf->mProcess->getMemFd())
+    {
+        printf("Writing %d bytes\n", int(pckt->getPayload()->mSize));
+        pWrMemOut.mBytesWrited = hProcInf->mProcess->WriteMemory(pckt->getPayload()->mAddr, pckt->getPayload()->mBuff, pckt->getPayload()->mSize);
+    }
+
+    printf("%d Bytes Writed\n", int(pWrMemOut.mBytesWrited));
+    pClientUnique->Send(&pWrMemOut, sizeof(pWrMemOut));
 }
 
 std::function<void(ClientSocketLinux*)> gfnHandleConn = [](ClientSocketLinux* pClientSocket)
@@ -494,7 +512,7 @@ std::function<void(ClientSocketLinux*)> gfnHandleConn = [](ClientSocketLinux* pC
             case CMD_OPEN_REMOTE_PROCESS: HandleCmdOpenProcess(pClientSocket, packet); break;
             //case CMD_CLOSE_REMOTE_PROCESS: HandleCmdCloseProcess(pClientSocket, packet); break; // TODO
             case CMD_READ_MEMORY_CHUCK: HandleCmdReadMemory(pClientSocket, packet); break;
-            //case CMD_WRITE_MEMORY_CHUCK: HandleCmdReadMemory(pClientSocket, packet); break; // TODO
+            case CMD_WRITE_MEMORY_CHUCK: HandleCmdWriteMemory(pClientSocket, packet); break; // TODO
             case CMD_STATUS: HandleCmdStatus(pClientSocket); break;
             case CMD_DISCONNECT: HandleCmdDisconnect(pClientSocket); bDisconnecting = true; break;
         }

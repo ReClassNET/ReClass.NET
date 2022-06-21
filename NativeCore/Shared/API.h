@@ -130,6 +130,17 @@ PACK(struct ReadMemoryOut {
 	uint8_t mBuff[1];
 });
 
+PACK(struct WriteMemoryIn {
+	HANDLE_API mhProc;
+	uint64_t mAddr;
+	uint64_t mSize;
+	uint8_t mBuff[1];
+});
+
+PACK(struct WriteMemoryOut {
+	int64_t mBytesWrited;
+});
+
 PACK(struct OpenRemoteProcessOut {
 	HANDLE_API hProc;
 });

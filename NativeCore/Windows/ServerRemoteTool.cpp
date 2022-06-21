@@ -152,6 +152,37 @@ int ReadMemoryChuckServer(HANDLE_API handle, uint64_t address, RC_Pointer buffer
 	return bytesReaded;
 }
 
+int WriteMemoryChuckServer(HANDLE_API handle, uint64_t address, RC_Pointer buffer, int size)
+{
+	std::lock_guard lck(gMtxReq);
+	int bytesWrited = -1;
+	constexpr size_t pcktHeaderSize = sizeof(uint64_t) * 2 + sizeof(uint32_t);
+
+	if (size <= (MAX_PACKET_SIZE - pcktHeaderSize))
+	{
+		auto* pSocket = ServerManager::getInstance()->getServerSocket();
+		Packet<WriteMemoryIn, 0>* pckt = (Packet<WriteMemoryIn, 0>*)gPacketHolder;
+
+		pckt->SetPacketid(CMD_WRITE_MEMORY_CHUCK);
+		pckt->getPayload()->mAddr = address;
+		pckt->getPayload()->mSize = size;
+		pckt->getPayload()->mhProc = handle;
+
+		memcpy(pckt->getPayload()->mBuff, buffer, size);
+
+		if (pSocket->Send(pckt->getEntry(), pcktHeaderSize + size))
+		{
+			if (pSocket->Recive(gPacketHolder, MAX_PACKET_SIZE))
+			{
+				WriteMemoryOut* pWrMemOut = (WriteMemoryOut*)(gPacketHolder);
+				bytesWrited = pWrMemOut->mBytesWrited;
+			}
+		}
+	}
+
+	return bytesWrited;
+}
+
 int ReadMemoryServer(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int size)
 {
 	uint64_t bytesReaded = -1;
@@ -184,6 +215,16 @@ int ReadMemoryServer(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, i
 		bytesReaded = ReadMemoryChuckServer((HANDLE_API)handle, (uintptr_t)address, buffer, size);
 
 	return bytesReaded;
+}
+
+int WriteMemoryServer(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int size)
+{
+	uint64_t bytesWrited = -1;
+	constexpr size_t rdMemMaxPacketSize = MAX_PACKET_SIZE - (sizeof(int64_t) * 2 + sizeof(HANDLE_API));
+
+	if (size <= rdMemMaxPacketSize) bytesWrited = WriteMemoryChuckServer((HANDLE_API)handle, (uint64_t)address, buffer, size);
+
+	return bytesWrited;
 }
 
 void RemoveRemoteModulesTool(HANDLE_API hSnap)

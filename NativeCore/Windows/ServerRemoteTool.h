@@ -45,6 +45,7 @@ RC_Pointer OpenRemoteProcessServer(RC_Pointer id);
 void CloseServerProcess(RC_Pointer hProc);
 
 int ReadMemoryServer(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int size);
+int WriteMemoryServer(RC_Pointer handle, RC_Pointer address, RC_Pointer buffer, int size);
 
 void EnumerateRemoteSectionsAndModulesServer(RC_Pointer process, EnumerateRemoteSectionsCallback callbackSection, EnumerateRemoteModulesCallback callbackModule);
 void EnumerateProcessesServer(EnumerateProcessCallback callbackProcess);
