@@ -100,13 +100,14 @@ bool getMapsSegments(uint32_t pid, std::vector<SectionInfo>& outSeg)
 
                 //printf("%s\n", line);
 
-                uint64_t unk;
+                uint64_t offset, unk;
                 char r;
                 char w;
                 char x;
-                char p;
+                char m;
+                
 
-                sscanf(line,"%lx-%lx %c%c%c%c %lx %lx:%lx %lx %260[^\n\t]", &seg.mStart, &seg.mEnd, &r, &w, &x, &p, &unk, &unk, &unk, &unk, seg.mPath);
+                sscanf(line,"%lx-%lx %c%c%c%c %lx %lx:%lx %lx %260[^\n\t]", &seg.mStart, &seg.mEnd, &r, &w, &x, &m, &offset, &unk, &unk, &unk, seg.mPath);
 
                 //printf("%lx-%lx %s\n", seg.mStart, seg.mEnd, seg.mPath);
 
@@ -118,6 +119,19 @@ bool getMapsSegments(uint32_t pid, std::vector<SectionInfo>& outSeg)
 
                 if(x == 'x')
                     seg.mProt |= SectionProtection::Execute;
+
+                if(m == 'p')
+                {
+                    seg.mType = SectionType::Private;
+                    seg.mProt |= SectionProtection::CopyOnWrite;
+                }
+
+                if(offset != 0)
+                {
+                    seg.mType = SectionType::Image;
+                    if(outSeg.size() > 0)
+                        outSeg[outSeg.size() - 1].mType = SectionType::Image;
+                }
 
                 outSeg.push_back(seg);
             }

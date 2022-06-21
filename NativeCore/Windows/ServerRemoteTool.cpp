@@ -222,10 +222,20 @@ void EnumerateRemoteSectionsServer(HANDLE_API hProc, EnumerateRemoteSectionsCall
 				EnumerateRemoteSectionData ermd{};
 
 				ermd.BaseAddress = (RC_Pointer)si.mStart;
-				ermd.Category = SectionCategory::Unknown; // TODO
 				ermd.Type = si.mType; // TODO
 				ermd.Size = si.mEnd - si.mStart;
 				ermd.Protection = si.mProt;
+				ermd.Category = SectionCategory::Unknown; // TODO
+
+				constexpr int32_t RdProt = (int)SectionProtection::Read;
+				constexpr int32_t RdWrProt = (int)SectionProtection::Read | (int)SectionProtection::Write;
+				constexpr int32_t ExProt = (int)SectionProtection::Execute;
+
+				if (((int32_t)ermd.Protection & ExProt) == ExProt)
+					ermd.Category = SectionCategory::CODE;
+				else if(((int32_t)ermd.Protection & RdProt) == RdProt ||
+					((int32_t)ermd.Protection & RdWrProt) == RdWrProt)
+					ermd.Category = SectionCategory::DATA;
 
 				lstrcpyW((wchar_t*)ermd.Name, L""); // TODO
 				lstrcpyW((wchar_t*)ermd.ModulePath, StrtoWStr(std::string(si.mPath)).c_str());
