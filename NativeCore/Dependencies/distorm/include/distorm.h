@@ -1,4 +1,4 @@
-/* diStorm 3.5.2 */
+/* diStorm 3.5.3 */
 
 /*
 distorm.h
