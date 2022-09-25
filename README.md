@@ -77,6 +77,8 @@ Just download the [latest version](https://github.com/ReClassNET/ReClass.NET/rel
 If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file with Visual Studio 2019.
 Compile the project and copy the dependencies to the output folder.
 
+To compile the linux native core library, you need WSL [installed and configured](https://learn.microsoft.com/en-us/cpp/build/walkthrough-build-debug-wsl2). If you do not need linux support, simply unload the project in the Solution Explorer.
+
 ## Videos
 
 [Youtube Playlist](https://www.youtube.com/playlist?list=PLO246BmtoITanq3ygMCL8_w0eov4D8hjk)
