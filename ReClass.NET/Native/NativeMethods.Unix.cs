@@ -10,13 +10,13 @@ namespace ReClassNET.Native
 
 		private const int RTLD_NOW = 2;
 
-		[DllImport("libdl.so")]
+		[DllImport("__Internal")]
 		private static extern IntPtr dlopen(string fileName, int flags);
 
-		[DllImport("libdl.so")]
+		[DllImport("__Internal")]
 		private static extern IntPtr dlsym(IntPtr handle, string symbol);
 
-		[DllImport("libdl.so")]
+		[DllImport("__Internal")]
 		private static extern int dlclose(IntPtr handle);
 
 		#endregion

@@ -13,7 +13,7 @@ This library is licensed under the BSD license. See the file COPYING.
 #define CONFIG_H
 
 /* diStorm version number. */
-#define __DISTORMV__ 0x030502
+#define __DISTORMV__ 0x030503
 
 #include <string.h> /* memset, memcpy - can be easily self implemented for libc independency. */
 
