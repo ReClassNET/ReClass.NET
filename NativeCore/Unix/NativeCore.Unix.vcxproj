@@ -155,7 +155,6 @@
       <CppLanguageStandard>c++1y</CppLanguageStandard>
       <AdditionalIncludeDirectories>../Dependencies/distorm/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>RECLASSNET32</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
@@ -168,7 +167,6 @@
       <CppLanguageStandard>c++1y</CppLanguageStandard>
       <AdditionalIncludeDirectories>../Dependencies/distorm/include;$(Sysroot)\usr\include;$(StlIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-m32 %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>RECLASSNET32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>None</DebugInformationFormat>
       <LinkTimeOptimization>true</LinkTimeOptimization>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
