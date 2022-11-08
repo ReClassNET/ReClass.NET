@@ -151,9 +151,13 @@
     <Compile Include="Core\IInternalCoreFunctions.cs" />
     <Compile Include="Core\InternalCoreFunctions.cs" />
     <Compile Include="Core\NativeCoreWrapper.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassDataFile.cs" />
     <Compile Include="DataExchange\ReClass\ReClassClipboard.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassDataFile.Constants.cs" />
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Constants.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassDataFile.Read.cs" />
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Read.cs" />
+    <Compile Include="DataExchange\ReClass\ReClassDataFile.Write.cs" />
     <Compile Include="DataExchange\ReClass\ReClassNetFile.Write.cs" />
     <Compile Include="DataExchange\ReClass\Legacy\BaseClassArrayNode.cs" />
     <Compile Include="DataExchange\ReClass\Legacy\ClassInstanceArrayNode.cs" />

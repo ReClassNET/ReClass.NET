@@ -11,15 +11,15 @@ using ReClassNET.Project;
 
 namespace ReClassNET.DataExchange.ReClass
 {
-	public partial class ReClassNetFile
+	public partial class ReClassDataFile
 	{
 		public void Save(string filePath, ILogger logger)
 		{
 			//Adjust path according to the format we are saving in
-			if (filePath.EndsWith(ReClassDataFile.FileExtension))
+			if(filePath.EndsWith(ReClassNetFile.FileExtension))
 			{
-				filePath.Substring(0, filePath.Length - ReClassDataFile.FileExtension.Length);
-				filePath += ReClassNetFile.FileExtension;
+				filePath.Substring(0, filePath.Length - ReClassNetFile.FileExtension.Length);
+				filePath += ReClassDataFile.FileExtension;
 			}
 			using var fs = new FileStream(filePath, FileMode.Create);
 
@@ -28,11 +28,6 @@ namespace ReClassNET.DataExchange.ReClass
 
 		public void Save(Stream output, ILogger logger)
 		{
-			using var archive = new ZipArchive(output, ZipArchiveMode.Create);
-
-			var dataEntry = archive.CreateEntry(DataFileName);
-			using var entryStream = dataEntry.Open();
-
 			var document = new XDocument(
 				new XComment($"{Constants.ApplicationName} {Constants.ApplicationVersion} by {Constants.Author}"),
 				new XComment($"Website: {Constants.HomepageUrl}"),
@@ -47,7 +42,7 @@ namespace ReClassNET.DataExchange.ReClass
 				)
 			);
 
-			document.Save(entryStream);
+			document.Save(output);
 		}
 
 		private static IEnumerable<XElement> CreateEnumElements(IEnumerable<EnumDescription> enums)
@@ -241,7 +236,7 @@ namespace ReClassNET.DataExchange.ReClass
 				}
 			}
 
-			var file = new ReClassNetFile(project);
+			var file = new ReClassDataFile(project);
 			file.Save(output, logger);
 		}
 	}
