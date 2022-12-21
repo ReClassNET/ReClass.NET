@@ -125,6 +125,7 @@ namespace ReClassNET.Forms
 			SetBinding(nodeCommentColorBox, nameof(ColorBox.Color), settings, nameof(Settings.CommentColor));
 			SetBinding(nodeTextColorBox, nameof(ColorBox.Color), settings, nameof(Settings.TextColor));
 			SetBinding(nodePluginColorBox, nameof(ColorBox.Color), settings, nameof(Settings.PluginColor));
+			SetBinding(editTextColorBox, nameof(ColorBox.Color), settings, nameof(Settings.EditTextColor));
 		}
 
 		private void SetTypeDefinitionBindings()

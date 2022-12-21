@@ -91,6 +91,7 @@ namespace ReClassNET.Controls
 
 		public void ShowOnHotSpot(HotSpot hotSpot)
 		{
+			ForeColor = Program.Settings.EditTextColor;
 			currentHotSpot = hotSpot;
 
 			if (hotSpot == null)

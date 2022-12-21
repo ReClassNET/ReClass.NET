@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Text;
 using ReClassNET.Util;
 
@@ -74,6 +74,7 @@ namespace ReClassNET
 
 		public Color PluginColor { get; set; } = Color.FromArgb(255, 0, 255);
 
+		public Color EditTextColor { get; set; } = Color.FromArgb(255, 100, 100);
 		public CustomDataMap CustomData { get; } = new CustomDataMap();
 
 		public Settings Clone() => MemberwiseClone() as Settings;
