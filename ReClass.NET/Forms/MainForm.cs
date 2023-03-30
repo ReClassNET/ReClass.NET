@@ -1049,5 +1049,15 @@ namespace ReClassNET.Forms
 				args.BaseAddress = address;
 			}
 		}
+
+		private void IncreaseSizetoolStripButton_Click(object sender, EventArgs e)
+		{
+			toolStrip.ImageScalingSize = new System.Drawing.Size(toolStrip.ImageScalingSize.Width + 2, toolStrip.ImageScalingSize.Height + 2);
+		}
+
+		private void DecreaseSizetoolStripButton_Click(object sender, EventArgs e)
+		{
+			toolStrip.ImageScalingSize = new System.Drawing.Size(toolStrip.ImageScalingSize.Width - 2, toolStrip.ImageScalingSize.Height - 2);
+		}
 	}
 }
