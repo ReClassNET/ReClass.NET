@@ -59,6 +59,6 @@ namespace ReClassNET.Controls
 
 		#endregion
 
-		private System.Windows.Forms.TreeView projectTreeView;
+		public System.Windows.Forms.TreeView projectTreeView;
 	}
 }

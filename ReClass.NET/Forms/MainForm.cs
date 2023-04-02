@@ -321,7 +321,8 @@ namespace ReClassNET.Forms
 
 		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using var sd = new SettingsForm(Program.Settings, CurrentProject.TypeMapping);
+			using var sd = new SettingsForm(Program.Settings, CurrentProject.TypeMapping,
+				memoryViewControl, projectView, toolStrip);
 
 			sd.ShowDialog();
 		}
