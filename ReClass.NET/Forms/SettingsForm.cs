@@ -15,9 +15,9 @@ namespace ReClassNET.Forms
 	{
 		private readonly Settings settings;
 		private readonly CppTypeMapping typeMapping;
-		private MemoryViewControl memoryViewControl;
-		private ProjectView projectView;
-		private ToolStrip toolStrip;
+		public MemoryViewControl memoryViewControl;
+		public ProjectView projectView;
+		public ToolStrip toolStrip;
 
 		public TabControl SettingsTabControl => settingsTabControl;
 
@@ -178,8 +178,12 @@ namespace ReClassNET.Forms
 				Height = memoryViewControl.font.Height
 			};
 
+			// Difference between default icon scale and default font size.
+			val += 3;
+
 			memoryViewControl.hotSpotEditBox.Font = memoryViewControl.font;
 			memoryViewControl.IconScale = val;
+			settings.MemoryViewIconSize = memoryViewControl.IconScale;
 		}
 
 		private void paddingXUpDown_ValueChanged(object sender, EventArgs e)
@@ -212,23 +216,21 @@ namespace ReClassNET.Forms
 
 		private void projectViewFontUpDown_ValueChanged(object sender, EventArgs e)
 		{
-			int imageSizeChange = 1;
 			var val = (int)(sender as NumericUpDown).Value;
-
-			if(settings.ProjectViewFont > val)
-			{
-				imageSizeChange = -1;
-			}
 
 			projectView.Font = new System.Drawing.Font("Microsoft Sans Serif", val, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
-			int imageSize = projectView.projectTreeView.ImageList.ImageSize.Height;
+			// Difference between default icon Size and default font size.
+			val = val + 8;
+
 			projectView.projectTreeView.ImageList = new ImageList();
-			projectView.projectTreeView.ImageList.ImageSize = new System.Drawing.Size(imageSize += imageSizeChange, imageSize += imageSizeChange);
+			projectView.projectTreeView.ImageList.ImageSize = new System.Drawing.Size(val, val);
 			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);
 			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Class_Type);
 			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Category);
 			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Enum_Type);
+
+			settings.ProjectViewIconSize = val;
 		}
 
 		private void toolStripSizeUpDown_ValueChanged(object sender, EventArgs e)

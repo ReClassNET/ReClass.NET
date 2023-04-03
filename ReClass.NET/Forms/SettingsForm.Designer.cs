@@ -132,12 +132,18 @@ namespace ReClassNET.Forms
             this.int8TypeTextBox = new System.Windows.Forms.TextBox();
             this.fontSizingSettingsTabPage = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.toolStripSizeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.projectViewFontUpDown = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.memoryViewPadYUpDown = new System.Windows.Forms.NumericUpDown();
             this.memoryViewPadXUpDown = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
@@ -1243,18 +1249,39 @@ namespace ReClassNET.Forms
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label11);
+            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.toolStripSizeUpDown);
             this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Location = new System.Drawing.Point(479, 3);
+            this.groupBox3.Location = new System.Drawing.Point(3, 319);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(232, 152);
+            this.groupBox3.Size = new System.Drawing.Size(418, 152);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tool Bar";
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 31);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(387, 40);
+            this.label11.TabIndex = 18;
+            this.label11.Text = "The Tool Bar may not update after entering a number.\r\nClicking an arrow will caus" +
+    "e it to update.";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(178, 103);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(87, 20);
+            this.label10.TabIndex = 17;
+            this.label10.Text = "Default: 24";
+            // 
             // toolStripSizeUpDown
             // 
-            this.toolStripSizeUpDown.Location = new System.Drawing.Point(56, 49);
+            this.toolStripSizeUpDown.Location = new System.Drawing.Point(110, 97);
             this.toolStripSizeUpDown.Minimum = new decimal(new int[] {
             1,
             0,
@@ -1273,7 +1300,7 @@ namespace ReClassNET.Forms
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 51);
+            this.label5.Location = new System.Drawing.Point(6, 103);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(44, 20);
             this.label5.TabIndex = 13;
@@ -1281,19 +1308,29 @@ namespace ReClassNET.Forms
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.projectViewFontUpDown);
-            this.groupBox2.Location = new System.Drawing.Point(241, 3);
+            this.groupBox2.Location = new System.Drawing.Point(3, 161);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(232, 152);
+            this.groupBox2.Size = new System.Drawing.Size(418, 152);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Project View";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(187, 71);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(78, 20);
+            this.label9.TabIndex = 16;
+            this.label9.Text = "Default: 8";
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 63);
+            this.label4.Location = new System.Drawing.Point(6, 71);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 20);
             this.label4.TabIndex = 10;
@@ -1301,7 +1338,7 @@ namespace ReClassNET.Forms
             // 
             // projectViewFontUpDown
             // 
-            this.projectViewFontUpDown.Location = new System.Drawing.Point(110, 61);
+            this.projectViewFontUpDown.Location = new System.Drawing.Point(110, 65);
             this.projectViewFontUpDown.Minimum = new decimal(new int[] {
             1,
             0,
@@ -1319,6 +1356,9 @@ namespace ReClassNET.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.memoryViewPadYUpDown);
             this.groupBox1.Controls.Add(this.memoryViewPadXUpDown);
             this.groupBox1.Controls.Add(this.label3);
@@ -1327,10 +1367,37 @@ namespace ReClassNET.Forms
             this.groupBox1.Controls.Add(this.memoryViewfontUpDown);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(232, 152);
+            this.groupBox1.Size = new System.Drawing.Size(418, 152);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Memory View";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(187, 98);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(87, 20);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Default: 16";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(187, 66);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(78, 20);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Default: 8";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(187, 33);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(87, 20);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Default: 13";
             // 
             // memoryViewPadYUpDown
             // 
@@ -1352,7 +1419,7 @@ namespace ReClassNET.Forms
             // 
             // memoryViewPadXUpDown
             // 
-            this.memoryViewPadXUpDown.Location = new System.Drawing.Point(110, 63);
+            this.memoryViewPadXUpDown.Location = new System.Drawing.Point(110, 60);
             this.memoryViewPadXUpDown.Minimum = new decimal(new int[] {
             1,
             0,
@@ -1371,7 +1438,7 @@ namespace ReClassNET.Forms
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 92);
+            this.label3.Location = new System.Drawing.Point(6, 98);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(86, 20);
             this.label3.TabIndex = 10;
@@ -1380,7 +1447,7 @@ namespace ReClassNET.Forms
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 63);
+            this.label2.Location = new System.Drawing.Point(6, 66);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(86, 20);
             this.label2.TabIndex = 9;
@@ -1389,7 +1456,7 @@ namespace ReClassNET.Forms
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 36);
+            this.label1.Location = new System.Drawing.Point(6, 34);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(81, 20);
             this.label1.TabIndex = 8;
@@ -1397,7 +1464,7 @@ namespace ReClassNET.Forms
             // 
             // memoryViewfontUpDown
             // 
-            this.memoryViewfontUpDown.Location = new System.Drawing.Point(110, 34);
+            this.memoryViewfontUpDown.Location = new System.Drawing.Point(110, 28);
             this.memoryViewfontUpDown.Minimum = new decimal(new int[] {
             1,
             0,
@@ -1587,5 +1654,11 @@ namespace ReClassNET.Forms
 		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.NumericUpDown toolStripSizeUpDown;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Label label11;
 	}
 }

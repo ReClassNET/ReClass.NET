@@ -215,7 +215,7 @@ namespace ReClassNET.Forms
             this.projectView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.projectView.EnumContextMenuStrip = this.projectEnumContextMenuStrip;
             this.projectView.EnumsContextMenuStrip = this.projectEnumsContextMenuStrip;
-            this.projectView.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.projectView.Font = new System.Drawing.Font("Microsoft Sans Serif", Program.Settings.ProjectViewFont, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.projectView.Location = new System.Drawing.Point(0, 0);
             this.projectView.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.projectView.Name = "projectView";

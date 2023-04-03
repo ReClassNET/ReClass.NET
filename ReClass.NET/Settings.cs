@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 using ReClassNET.Util;
 
 namespace ReClassNET
@@ -82,7 +83,11 @@ namespace ReClassNET
 
 		public int MemoryViewFontPadY { get; set; } = 16;
 
+		public int MemoryViewIconSize { get; set; } = 16;
+
 		public int ProjectViewFont { get; set; } = 8;
+
+		public int ProjectViewIconSize { get; set; } = 16;
 
 		public int ToolStipSize { get; set; } = 24;
 

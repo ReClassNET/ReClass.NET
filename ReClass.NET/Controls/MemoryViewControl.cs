@@ -60,7 +60,7 @@ namespace ReClassNET.Controls
 
 		public FontEx font;
 
-		public int IconScale { get; set; } = 13;
+		public int IconScale { get; set; }
 
 		public ContextMenuStrip NodeContextMenuStrip { get; set; }
 
@@ -88,6 +88,8 @@ namespace ReClassNET.Controls
 			hotSpotEditBox.Font = font;
 
 			memoryPreviewPopUp = new MemoryPreviewPopUp(font);
+
+			IconScale = Program.Settings.MemoryViewIconSize;
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
