@@ -89,7 +89,7 @@ namespace ReClassNET
 
 		public int ProjectViewIconSize { get; set; } = 16;
 
-		public int ToolStipSize { get; set; } = 24;
+		public int ToolStripSize { get; set; } = 24;
 
 		public Settings Clone() => MemberwiseClone() as Settings;
 	}

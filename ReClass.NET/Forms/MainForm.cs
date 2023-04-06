@@ -88,7 +88,7 @@ namespace ReClassNET.Forms
 			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Enum_Type);
 
 			// Same here.
-			sz = Program.Settings.ToolStipSize;
+			sz = Program.Settings.ToolStripSize;
 			toolStrip.ImageScalingSize = new System.Drawing.Size(sz, sz);
 
 			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true, true);

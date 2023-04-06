@@ -84,7 +84,7 @@ namespace ReClassNET.Util
 					XElementSerializer.TryRead(font, nameof(settings.MemoryViewIconSize), e => settings.MemoryViewIconSize = XElementSerializer.ToInt(e));
 					XElementSerializer.TryRead(font, nameof(settings.ProjectViewFont), e => settings.ProjectViewFont = XElementSerializer.ToInt(e));
 					XElementSerializer.TryRead(font, nameof(settings.ProjectViewIconSize), e => settings.ProjectViewIconSize = XElementSerializer.ToInt(e));
-					XElementSerializer.TryRead(font, nameof(settings.ToolStipSize), e => settings.ToolStipSize = XElementSerializer.ToInt(e));
+					XElementSerializer.TryRead(font, nameof(settings.ToolStripSize), e => settings.ToolStripSize = XElementSerializer.ToInt(e));
 				}
 			}
 			catch
@@ -159,7 +159,7 @@ namespace ReClassNET.Util
 						XElementSerializer.ToXml(nameof(settings.MemoryViewIconSize), settings.MemoryViewIconSize),
 						XElementSerializer.ToXml(nameof(settings.ProjectViewFont), settings.ProjectViewFont),
 						XElementSerializer.ToXml(nameof(settings.ProjectViewIconSize), settings.ProjectViewIconSize),
-						XElementSerializer.ToXml(nameof(settings.ToolStipSize), settings.ToolStipSize)
+						XElementSerializer.ToXml(nameof(settings.ToolStripSize), settings.ToolStripSize)
 					),
 					settings.CustomData.Serialize(XmlCustomDataElement)
 				)

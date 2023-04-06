@@ -118,7 +118,7 @@ namespace ReClassNET.Forms
 			SetBinding(memoryViewPadXUpDown, nameof(NumericUpDown.Value), settings, nameof(Settings.MemoryViewFontPadX));
 			SetBinding(memoryViewPadYUpDown, nameof(NumericUpDown.Value), settings, nameof(Settings.MemoryViewFontPadY));
 			SetBinding(projectViewFontUpDown, nameof(NumericUpDown.Value), settings, nameof(Settings.ProjectViewFont));
-			SetBinding(toolStripSizeUpDown, nameof(NumericUpDown.Value), settings, nameof(Settings.ToolStipSize));
+			SetBinding(toolStripSizeUpDown, nameof(NumericUpDown.Value), settings, nameof(Settings.ToolStripSize));
 		}
 
 		private void SetColorBindings()
