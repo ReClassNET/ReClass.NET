@@ -352,6 +352,9 @@ void ReclassClient::HandleProcessFirstCMD()
 		procFirstOut.mInfo = snapshot->mArray.front(); snapshot->mArray.pop_front();
 		procFirstOut.mRemaining = snapshot->mArray.empty() != true;
 
+		if(procFirstOut.mRemaining == false)
+			OnConsumedProcessList();
+
 	}
 
 	mClientSocket->Send(&procFirstOut, sizeof(procFirstOut));
@@ -372,9 +375,18 @@ void ReclassClient::HandleProcessNextCMD()
 
 		procNextOut.mInfo = snapshot->mArray.front(); snapshot->mArray.pop_front();
 		procNextOut.mRemaining = snapshot->mArray.empty() != true;
+
+		if(procNextOut.mRemaining == false)
+			OnConsumedProcessList();
 	}
 
 	mClientSocket->Send(&procNextOut, sizeof(procNextOut));
+}
+
+void ReclassClient::OnConsumedProcessList()
+{
+	mHandlesToolHelpProcs.clear();
+	mToolHelpProcs.clear();
 }
 
 void ReclassClient::HandleCreateToolHelpSegments()
@@ -415,6 +427,9 @@ void ReclassClient::HandleSectionFirstCMD()
 
 		out.mInfo = snapshot->mArray.front(); snapshot->mArray.pop_front();
 		out.mRemaining = snapshot->mArray.empty() != true;
+
+		if(out.mRemaining == false)
+			OnConsumedSectionList();
 	}
 
 	mClientSocket->Send(&out, sizeof(out));
@@ -435,9 +450,18 @@ void ReclassClient::HandleSectionNextCMD()
 
 		out.mInfo = snapshot->mArray.front(); snapshot->mArray.pop_front();
 		out.mRemaining = snapshot->mArray.empty() != true;
+
+		if(out.mRemaining == false)
+			OnConsumedSectionList();
 	}
 
 	mClientSocket->Send(&out, sizeof(out));
+}
+
+void ReclassClient::OnConsumedSectionList()
+{
+	mHandlesToolHelpSegments.clear();
+	mToolHelpSegments.clear();
 }
 
 void ReclassClient::HandleCreateToolHelpModules()
@@ -478,6 +502,9 @@ void ReclassClient::HandleModuleFirstCMD()
 
 		out.mInfo = snapshot->mArray.front(); snapshot->mArray.pop_front();
 		out.mRemaining = snapshot->mArray.empty() != true;
+
+		if(out.mRemaining == false)
+			OnConsumedModuleList();
 	}
 
 	mClientSocket->Send(&out, sizeof(out));
@@ -498,9 +525,18 @@ void ReclassClient::HandleModuleNextCMD()
 
 		out.mInfo = snapshot->mArray.front(); snapshot->mArray.pop_front();
 		out.mRemaining = snapshot->mArray.empty() != true;
+
+		if(out.mRemaining == false)
+			OnConsumedModuleList();
 	}
 
 	mClientSocket->Send(&out, sizeof(out));
+}
+
+void ReclassClient::OnConsumedModuleList()
+{
+		mHandlesToolHelpModules.clear();
+		mToolHelpModules.clear();
 }
 
 void ReclassClient::HandleStatusCmd()

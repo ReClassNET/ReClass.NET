@@ -81,18 +81,22 @@ private:
 	void HandleCreateToolHelpProcs();
 	void HandleProcessFirstCMD();
 	void HandleProcessNextCMD();
+	void OnConsumedProcessList();
 	
 	void HandleCreateToolHelpSegments();
 	void HandleSectionFirstCMD();
 	void HandleSectionNextCMD();
+	void OnConsumedSectionList();
 
 	void HandleCreateToolHelpModules();
 	void HandleModuleFirstCMD();
 	void HandleModuleNextCMD();
+	void OnConsumedModuleList();
 
 	void HandleStatusCmd();
 	void HandleOpenProcessCmd();
 	void HandleCloseProcessCMD();
+	
 
 	void HandleReadMemoryCMD();
 
