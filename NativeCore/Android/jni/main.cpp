@@ -3,13 +3,12 @@
 #include <API.h>
 #include <thread>
 #include <vector>
-#include "Remote.h"
-
-ServerSocketLinux* pServerSocket = nullptr;
+#include <Client.h>
+#include <unordered_map>
 
 int main()
 {
-    pServerSocket = new ServerSocketLinux("127.0.0.1", API_PORT);
+	std::unique_ptr<ServerSocketLinux> pServerSocket = std::make_unique<ServerSocketLinux>("127.0.0.1", API_PORT);
 
     if(!pServerSocket->Init())
     {
@@ -17,18 +16,25 @@ int main()
     }
 
     // Server Main Loop
-    std::vector<std::thread> vecClients;
+    std::unordered_map<ReclassClient*, std::unique_ptr<ReclassClient>> allConn;
 
     while(true)
     {
-        ClientSocketLinux* pIncomingClient = nullptr;
+        SocketWrapper* pIncomingClient = nullptr;
 
-        if((pIncomingClient = pServerSocket->WaitConnection()))
-        {
-            vecClients.push_back(std::thread(gfnHandleConn, pIncomingClient));
-        }
+		if((pIncomingClient = pServerSocket->WaitConnection()) == nullptr)
+			continue;
+
+		std::unique_ptr<SocketWrapper> clientSocket = std::unique_ptr<SocketWrapper>(pIncomingClient);
+
+		std::unique_ptr<ReclassClient> currConn = std::make_unique<ReclassClient>();
+
+		currConn->setClientSocket(clientSocket);
+
+		currConn->RunThread();
+
+		allConn[currConn.get()] = std::move(currConn);
     }
-    
 
     return 0;
 }

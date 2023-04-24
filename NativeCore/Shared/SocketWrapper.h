@@ -16,6 +16,8 @@ public:
 		, port(_port)
 	{}
 
+	virtual ~SocketWrapper(){}
+
 	virtual bool Init() = 0;
 	virtual bool Send(void* buff, uintptr_t size) = 0;
 	virtual bool Recive(void* buff, uintptr_t size, uintptr_t* outRecvSize = nullptr) = 0;

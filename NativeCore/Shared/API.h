@@ -26,7 +26,7 @@ typedef int32_t HANDLE_API;
 
 #define API_PORT 3443
 #define MAX_PACKET_SIZE 4096
-#define MAX_PROC_NAME 160
+#define MAX_PROC_NAME 360
 
 enum HandleValue {
 	INVALID = -1,

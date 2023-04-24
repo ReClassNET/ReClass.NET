@@ -1049,5 +1049,10 @@ namespace ReClassNET.Forms
 				args.BaseAddress = address;
 			}
 		}
+
+		private void MainForm_Load(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

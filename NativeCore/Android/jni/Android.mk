@@ -9,12 +9,13 @@ $(LOCAL_PATH)/../..
 
 LOCAL_SRC_FILES := \
 main.cpp \
-Remote.cpp \
+Client.cpp \
 Utils.cpp \
 ../../Unix/LinuxProcess.cpp \
 ../../Unix/LinuxSocketWrapper.cpp \
 ../../Shared/SocketWrapper.cpp
 
 LOCAL_CFLAGS := -fexceptions
+LOCAL_CPPFLAGS := -Wno-format -Wno-address-of-packed-member
 
 include $(BUILD_EXECUTABLE)

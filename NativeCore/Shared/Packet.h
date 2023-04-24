@@ -4,8 +4,11 @@
 #include <stdio.h>
 #include "PackDefs.h"
 
-template <typename PacketType, uint16_t packetId>
-PACK(struct Packet {
+
+
+template <typename PacketType, uint16_t packetId = 0>
+#pragma pack( push, 1 )
+struct Packet {
 	uint16_t mPacketId = packetId;
 	PacketType mPacketContent {};
 
@@ -36,4 +39,6 @@ PACK(struct Packet {
 	{
 		mPacketId = pcktId;
 	}
-});
+};
+
+#pragma pack( pop )

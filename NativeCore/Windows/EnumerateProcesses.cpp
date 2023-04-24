@@ -61,12 +61,12 @@ void EnumerateProcessesWindows(EnumerateProcessCallback callbackProcess)
 				const auto process = OpenRemoteProcess(reinterpret_cast<RC_Pointer>(static_cast<size_t>(pe32.th32ProcessID)), ProcessAccess::Read);
 				if (IsProcessValid(process))
 				{
-					const auto platform = GetProcessPlatform(process);
-#ifdef RECLASSNET64
+					//const auto platform = GetProcessPlatform(process);
+/*#ifdef RECLASSNET64
 					if (platform == Platform::X64)
 #else
 					if (platform == Platform::X86)
-#endif
+#endif*/
 					{
 						EnumerateProcessData data = { };
 						data.Id = pe32.th32ProcessID;

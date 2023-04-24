@@ -18,6 +18,12 @@ LinuxProcess::LinuxProcess(uintptr_t _pid)
     memFd = open(memPath, O_RDWR);
 }
 
+LinuxProcess::LinuxProcess(void* fd)
+    : Process(0)
+    , mapF(nullptr)
+    , memFd(size_t(fd))
+{}
+
 LinuxProcess::~LinuxProcess()
 {
     if(mapF)
@@ -32,6 +38,8 @@ LinuxProcess::~LinuxProcess()
 }
 
 int LinuxProcess::ReadMemory(uintptr_t addr, void* buffer, size_t size){
+	std::lock_guard<std::mutex> lck(ioLock);
+
     if(lseek64(memFd, addr, SEEK_SET))
     {
         return read(memFd, buffer, size);
@@ -41,6 +49,8 @@ int LinuxProcess::ReadMemory(uintptr_t addr, void* buffer, size_t size){
 }
 
 int LinuxProcess::WriteMemory(uintptr_t addr, void* buffer, size_t size){
+	std::lock_guard<std::mutex> lck(ioLock);
+
     if(lseek64(memFd, addr, SEEK_SET))
     {
         return write(memFd, buffer, size);

@@ -2,6 +2,7 @@
 
 #include "IProcess.h"
 #include "FDUtils.h"
+#include <mutex>
 
 class LinuxProcess : public Process
 {
@@ -9,8 +10,10 @@ class LinuxProcess : public Process
     char mapPath[1024];
     FILE* mapF;
     int memFd;
+	std::mutex ioLock;
     public:
     LinuxProcess(uintptr_t _pid);
+    LinuxProcess(void* fd);
 
     ~LinuxProcess();
 

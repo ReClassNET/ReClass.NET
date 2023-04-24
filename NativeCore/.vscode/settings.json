@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.embeddedhtml": "html",
         "*.php": "php",
         "xiosbase": "cpp",
         "vector": "cpp",
@@ -61,6 +62,17 @@
         "xstddef": "cpp",
         "xstring": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "charconv": "cpp",
+        "csignal": "cpp",
+        "format": "cpp",
+        "forward_list": "cpp",
+        "fstream": "cpp",
+        "iostream": "cpp",
+        "map": "cpp",
+        "mutex": "cpp",
+        "optional": "cpp",
+        "xtree": "cpp",
+        "deque": "cpp"
     }
 }
