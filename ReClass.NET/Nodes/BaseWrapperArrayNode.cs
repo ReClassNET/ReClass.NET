@@ -116,6 +116,11 @@ namespace ReClassNET.Nodes
 						{
 							Count = value;
 
+							if (CurrentIndex >= value)
+							{
+								CurrentIndex = value - 1;
+							}
+
 							GetParentContainer()?.ChildHasChanged(this);
 						}
 					}
