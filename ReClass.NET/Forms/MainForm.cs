@@ -473,6 +473,7 @@ namespace ReClassNET.Forms
 			var parentNode = node?.GetParentContainer();
 
 			var nodeIsClass = node is ClassNode;
+			var nodeIsContainer = node is BaseContainerNode;
 			var nodeIsSearchableValueNode = node switch
 			{
 				BaseHexNode _ => true,
@@ -494,8 +495,8 @@ namespace ReClassNET.Forms
 				_ => false
 			};
 
-			addBytesToolStripMenuItem.Enabled = parentNode != null || nodeIsClass;
-			insertBytesToolStripMenuItem.Enabled = count == 1 && parentNode != null && !nodeIsClass;
+			addBytesToolStripMenuItem.Enabled = parentNode != null || nodeIsContainer;
+			insertBytesToolStripMenuItem.Enabled = count == 1 && parentNode != null && !nodeIsContainer;
 
 			changeTypeToolStripMenuItem.Enabled = count > 0 && !nodeIsClass;
 
@@ -830,9 +831,10 @@ namespace ReClassNET.Forms
 			var node = selectedNodes.FirstOrDefault()?.Node;
 			var parentContainer = node?.GetParentContainer();
 			var nodeIsClass = node is ClassNode;
+			var isContainerNode = node is BaseContainerNode;
 
-			addBytesToolStripDropDownButton.Enabled = parentContainer != null || nodeIsClass;
-			insertBytesToolStripDropDownButton.Enabled = selectedNodes.Count == 1 && parentContainer != null && !nodeIsClass;
+			addBytesToolStripDropDownButton.Enabled = parentContainer != null || isContainerNode;
+			insertBytesToolStripDropDownButton.Enabled = selectedNodes.Count == 1 && parentContainer != null && !isContainerNode;
 
 			var enabled = selectedNodes.Count > 0 && !nodeIsClass;
 			toolStrip.Items.OfType<TypeToolStripButton>().ForEach(b => b.Enabled = enabled);
