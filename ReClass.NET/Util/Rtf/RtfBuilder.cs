@@ -258,7 +258,7 @@ namespace ReClassNET.Util.Rtf
 					{
 						if (c == '\t')
 						{
-							sb.Append(@"\tab");
+							sb.Append(@"\tab ");
 						}
 						else if (c <= 255)
 						{
