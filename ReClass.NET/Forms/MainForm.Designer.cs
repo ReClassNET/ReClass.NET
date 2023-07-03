@@ -412,7 +412,7 @@ namespace ReClassNET.Forms
 			this.changeTypeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Exchange_Button;
 			this.changeTypeToolStripMenuItem.Name = "changeTypeToolStripMenuItem";
 			this.changeTypeToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.changeTypeToolStripMenuItem.Text = "&Change Type";
+			this.changeTypeToolStripMenuItem.Text = "Change Type";
 			// 
 			// addBytesToolStripMenuItem
 			// 
@@ -428,7 +428,7 @@ namespace ReClassNET.Forms
 			this.addBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Add_Bytes_X;
 			this.addBytesToolStripMenuItem.Name = "addBytesToolStripMenuItem";
 			this.addBytesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.addBytesToolStripMenuItem.Text = "&Add Bytes";
+			this.addBytesToolStripMenuItem.Text = "Add Bytes";
 			// 
 			// integerToolStripMenuItem1
 			// 
@@ -515,7 +515,7 @@ namespace ReClassNET.Forms
 			this.insertBytesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Insert_Bytes_X;
 			this.insertBytesToolStripMenuItem.Name = "insertBytesToolStripMenuItem";
 			this.insertBytesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.insertBytesToolStripMenuItem.Text = "&Insert Bytes";
+			this.insertBytesToolStripMenuItem.Text = "Insert Bytes";
 			// 
 			// integerToolStripMenuItem8
 			// 
@@ -598,7 +598,7 @@ namespace ReClassNET.Forms
 			this.createClassFromNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Class_Add;
 			this.createClassFromNodesToolStripMenuItem.Name = "createClassFromNodesToolStripMenuItem";
 			this.createClassFromNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.createClassFromNodesToolStripMenuItem.Text = "C&reate Class from Nodes";
+			this.createClassFromNodesToolStripMenuItem.Text = "Create Class from Nodes";
 			this.createClassFromNodesToolStripMenuItem.Click += new System.EventHandler(this.createClassFromNodesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator13
@@ -621,7 +621,7 @@ namespace ReClassNET.Forms
 			this.dissectNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Camera;
 			this.dissectNodesToolStripMenuItem.Name = "dissectNodesToolStripMenuItem";
 			this.dissectNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.dissectNodesToolStripMenuItem.Text = "&Dissect Node(s)";
+			this.dissectNodesToolStripMenuItem.Text = "Dissect Node(s)";
 			this.dissectNodesToolStripMenuItem.Click += new System.EventHandler(this.dissectNodesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator9
@@ -634,7 +634,7 @@ namespace ReClassNET.Forms
 			this.searchForEqualValuesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
 			this.searchForEqualValuesToolStripMenuItem.Name = "searchForEqualValuesToolStripMenuItem";
 			this.searchForEqualValuesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.searchForEqualValuesToolStripMenuItem.Text = "&Search for equal values...";
+			this.searchForEqualValuesToolStripMenuItem.Text = "Search for equal values...";
 			this.searchForEqualValuesToolStripMenuItem.Click += new System.EventHandler(this.searchForEqualValuesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator15
@@ -647,7 +647,7 @@ namespace ReClassNET.Forms
 			this.findOutWhatAccessesThisAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Find_Access;
 			this.findOutWhatAccessesThisAddressToolStripMenuItem.Name = "findOutWhatAccessesThisAddressToolStripMenuItem";
 			this.findOutWhatAccessesThisAddressToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.findOutWhatAccessesThisAddressToolStripMenuItem.Text = "&Find out what accesses this address...";
+			this.findOutWhatAccessesThisAddressToolStripMenuItem.Text = "Find out what accesses this address...";
 			this.findOutWhatAccessesThisAddressToolStripMenuItem.Click += new System.EventHandler(this.findOutWhatAccessesThisAddressToolStripMenuItem_Click);
 			// 
 			// findOutWhatWritesToThisAddressToolStripMenuItem
@@ -655,7 +655,7 @@ namespace ReClassNET.Forms
 			this.findOutWhatWritesToThisAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Find_Write;
 			this.findOutWhatWritesToThisAddressToolStripMenuItem.Name = "findOutWhatWritesToThisAddressToolStripMenuItem";
 			this.findOutWhatWritesToThisAddressToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.findOutWhatWritesToThisAddressToolStripMenuItem.Text = "Find out what &writes to this address...";
+			this.findOutWhatWritesToThisAddressToolStripMenuItem.Text = "Find out what writes to this address...";
 			this.findOutWhatWritesToThisAddressToolStripMenuItem.Click += new System.EventHandler(this.findOutWhatWritesToThisAddressToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator14
@@ -668,7 +668,7 @@ namespace ReClassNET.Forms
 			this.copyNodeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Copy;
 			this.copyNodeToolStripMenuItem.Name = "copyNodeToolStripMenuItem";
 			this.copyNodeToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.copyNodeToolStripMenuItem.Text = "C&opy Node(s)";
+			this.copyNodeToolStripMenuItem.Text = "Copy Node(s)";
 			this.copyNodeToolStripMenuItem.Click += new System.EventHandler(this.copyNodeToolStripMenuItem_Click);
 			// 
 			// pasteNodesToolStripMenuItem
@@ -676,7 +676,7 @@ namespace ReClassNET.Forms
 			this.pasteNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Paste;
 			this.pasteNodesToolStripMenuItem.Name = "pasteNodesToolStripMenuItem";
 			this.pasteNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.pasteNodesToolStripMenuItem.Text = "&Paste Node(s)";
+			this.pasteNodesToolStripMenuItem.Text = "Paste Node(s)";
 			this.pasteNodesToolStripMenuItem.Click += new System.EventHandler(this.pasteNodesToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator10
@@ -689,7 +689,7 @@ namespace ReClassNET.Forms
 			this.removeToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_Delete;
 			this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
 			this.removeToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.removeToolStripMenuItem.Text = "&Remove Node(s)";
+			this.removeToolStripMenuItem.Text = "Remove Node(s)";
 			this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator12
@@ -702,7 +702,7 @@ namespace ReClassNET.Forms
 			this.hideNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
 			this.hideNodesToolStripMenuItem.Name = "hideNodesToolStripMenuItem";
 			this.hideNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.hideNodesToolStripMenuItem.Text = "&Hide selected Node(s)";
+			this.hideNodesToolStripMenuItem.Text = "Hide selected Node(s)";
 			this.hideNodesToolStripMenuItem.Click += new System.EventHandler(this.hideNodesToolStripMenuItem_Click);
 			// 
 			// unhideNodesToolStripMenuItem
@@ -714,7 +714,7 @@ namespace ReClassNET.Forms
 			this.unhideNodesToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Eye;
 			this.unhideNodesToolStripMenuItem.Name = "unhideNodesToolStripMenuItem";
 			this.unhideNodesToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.unhideNodesToolStripMenuItem.Text = "&Unhide...";
+			this.unhideNodesToolStripMenuItem.Text = "Unhide...";
 			// 
 			// unhideChildNodesToolStripMenuItem
 			// 
@@ -750,7 +750,7 @@ namespace ReClassNET.Forms
 			this.copyAddressToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Copy;
 			this.copyAddressToolStripMenuItem.Name = "copyAddressToolStripMenuItem";
 			this.copyAddressToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.copyAddressToolStripMenuItem.Text = "Cop&y Address";
+			this.copyAddressToolStripMenuItem.Text = "Copy Address";
 			this.copyAddressToolStripMenuItem.Click += new System.EventHandler(this.copyAddressToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator11
@@ -763,7 +763,7 @@ namespace ReClassNET.Forms
 			this.showCodeOfClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Page_Code_Cpp;
 			this.showCodeOfClassToolStripMenuItem.Name = "showCodeOfClassToolStripMenuItem";
 			this.showCodeOfClassToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.showCodeOfClassToolStripMenuItem.Text = "Show C&++ Code of Class";
+			this.showCodeOfClassToolStripMenuItem.Text = "Show C++ Code of Class";
 			this.showCodeOfClassToolStripMenuItem.Click += new System.EventHandler(this.showCodeOfClassToolStripMenuItem_Click);
 			// 
 			// shrinkClassToolStripMenuItem
@@ -771,7 +771,7 @@ namespace ReClassNET.Forms
 			this.shrinkClassToolStripMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Chart_Delete;
 			this.shrinkClassToolStripMenuItem.Name = "shrinkClassToolStripMenuItem";
 			this.shrinkClassToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
-			this.shrinkClassToolStripMenuItem.Text = "Shri&nk Class";
+			this.shrinkClassToolStripMenuItem.Text = "Shrink Class";
 			this.shrinkClassToolStripMenuItem.Click += new System.EventHandler(this.shrinkClassToolStripMenuItem_Click);
 			// 
 			// toolStrip
