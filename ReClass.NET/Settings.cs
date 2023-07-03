@@ -17,17 +17,17 @@ namespace ReClassNET
 			_shortcutKeyPerNode = new Dictionary<Type, Keys>
 								  {
 									  { typeof(Hex64Node), Keys.Control | Keys.Shift | Keys.D6 },
-									  { typeof(ClassInstanceNode), Keys.Control | Keys.Shift | Keys.I },
+									  { typeof(ClassInstanceNode), Keys.Control | Keys.Shift | Keys.C },
 									  { typeof(FloatNode), Keys.Control | Keys.Shift | Keys.F },
 									  { typeof(Hex8Node), Keys.Control | Keys.Shift | Keys.B },
 									  { typeof(PointerNode), Keys.Control | Keys.Shift | Keys.P },
 									  { typeof(Vector2Node), Keys.Control | Keys.Shift | Keys.D2 },
 									  { typeof(Vector3Node), Keys.Control | Keys.Shift | Keys.D3 },
 									  { typeof(Vector4Node), Keys.Control | Keys.Shift | Keys.D4 },
-									  { typeof(VirtualMethodTableNode), Keys.Control | Keys.Shift | Keys.T },
+									  { typeof(VirtualMethodTableNode), Keys.Control | Keys.Shift | Keys.V },
 									  { typeof(BoolNode), Keys.Control | Keys.Shift | Keys.O },
 									  { typeof(EnumNode), Keys.Control | Keys.Shift | Keys.E },
-									  { typeof(Int32Node), Keys.Control | Keys.Shift | Keys.N }
+									  { typeof(Int32Node), Keys.Control | Keys.Shift | Keys.I }
 								  };
 
 			// Define more here.
