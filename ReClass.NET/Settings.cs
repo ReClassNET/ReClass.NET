@@ -1,5 +1,6 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 using ReClassNET.Util;
 
 namespace ReClassNET
@@ -75,6 +76,20 @@ namespace ReClassNET
 		public Color PluginColor { get; set; } = Color.FromArgb(255, 0, 255);
 
 		public CustomDataMap CustomData { get; } = new CustomDataMap();
+
+		public int MemoryViewFont { get; set; } = 13;
+
+		public int MemoryViewFontPadX { get; set; } = 8;
+
+		public int MemoryViewFontPadY { get; set; } = 16;
+
+		public int MemoryViewIconSize { get; set; } = 16;
+
+		public int ProjectViewFont { get; set; } = 8;
+
+		public int ProjectViewIconSize { get; set; } = 16;
+
+		public int ToolStripSize { get; set; } = 24;
 
 		public Settings Clone() => MemberwiseClone() as Settings;
 	}

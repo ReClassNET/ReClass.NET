@@ -18,7 +18,7 @@ namespace ReClassNET
 	{
 		public static CommandLineArgs CommandLineArgs { get; private set; }
 
-		public static Settings Settings { get; private set; }
+		public static Settings Settings { get; set; }
 
 		public static ILogger Logger { get; private set; }
 
@@ -51,11 +51,13 @@ namespace ReClassNET
 				// ignored
 			}
 
+			Settings = SettingsSerializer.Load();
+
 			MonoSpaceFont = new FontEx
 			{
-				Font = new Font("Courier New", DpiUtil.ScaleIntX(13), GraphicsUnit.Pixel),
-				Width = DpiUtil.ScaleIntX(8),
-				Height = DpiUtil.ScaleIntY(16)
+				Font = new Font("Courier New", DpiUtil.ScaleIntX(Settings.MemoryViewFont), GraphicsUnit.Pixel),
+				Width = DpiUtil.ScaleIntX(Settings.MemoryViewFontPadX),
+				Height = DpiUtil.ScaleIntY(Settings.MemoryViewFontPadY)
 			};
 
 			NativeMethods.EnableDebugPrivileges();
@@ -65,7 +67,6 @@ namespace ReClassNET
 
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-			Settings = SettingsSerializer.Load();
 			Logger = new GuiLogger();
 
 			if (!NativeMethods.IsUnix() && Settings.RunAsAdmin && !WinUtil.IsAdministrator)

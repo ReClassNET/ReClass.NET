@@ -11,6 +11,7 @@ namespace ReClassNET.Util
 		private const string XmlDisplayElement = "Display";
 		private const string XmlColorsElement = "Colors";
 		private const string XmlCustomDataElement = "CustomData";
+		private const string XmlFontElement = "Font";
 
 		#region Read Settings
 
@@ -73,6 +74,17 @@ namespace ReClassNET.Util
 				if (customData != null)
 				{
 					settings.CustomData.Deserialize(customData);
+				}
+				var font = root?.Element(XmlFontElement);
+				if (font != null)
+				{
+					XElementSerializer.TryRead(font, nameof(settings.MemoryViewFont), e => settings.MemoryViewFont = XElementSerializer.ToInt(e));
+					XElementSerializer.TryRead(font, nameof(settings.MemoryViewFontPadX), e => settings.MemoryViewFontPadX = XElementSerializer.ToInt(e));
+					XElementSerializer.TryRead(font, nameof(settings.MemoryViewFontPadY), e => settings.MemoryViewFontPadY = XElementSerializer.ToInt(e));
+					XElementSerializer.TryRead(font, nameof(settings.MemoryViewIconSize), e => settings.MemoryViewIconSize = XElementSerializer.ToInt(e));
+					XElementSerializer.TryRead(font, nameof(settings.ProjectViewFont), e => settings.ProjectViewFont = XElementSerializer.ToInt(e));
+					XElementSerializer.TryRead(font, nameof(settings.ProjectViewIconSize), e => settings.ProjectViewIconSize = XElementSerializer.ToInt(e));
+					XElementSerializer.TryRead(font, nameof(settings.ToolStripSize), e => settings.ToolStripSize = XElementSerializer.ToInt(e));
 				}
 			}
 			catch
@@ -138,6 +150,16 @@ namespace ReClassNET.Util
 						XElementSerializer.ToXml(nameof(settings.CommentColor), settings.CommentColor),
 						XElementSerializer.ToXml(nameof(settings.TextColor), settings.TextColor),
 						XElementSerializer.ToXml(nameof(settings.VTableColor), settings.VTableColor)
+					),
+					new XElement(
+						XmlFontElement,
+						XElementSerializer.ToXml(nameof(settings.MemoryViewFont), settings.MemoryViewFont),
+						XElementSerializer.ToXml(nameof(settings.MemoryViewFontPadX), settings.MemoryViewFontPadX),
+						XElementSerializer.ToXml(nameof(settings.MemoryViewFontPadY), settings.MemoryViewFontPadY),
+						XElementSerializer.ToXml(nameof(settings.MemoryViewIconSize), settings.MemoryViewIconSize),
+						XElementSerializer.ToXml(nameof(settings.ProjectViewFont), settings.ProjectViewFont),
+						XElementSerializer.ToXml(nameof(settings.ProjectViewIconSize), settings.ProjectViewIconSize),
+						XElementSerializer.ToXml(nameof(settings.ToolStripSize), settings.ToolStripSize)
 					),
 					settings.CustomData.Serialize(XmlCustomDataElement)
 				)

@@ -226,8 +226,8 @@ namespace ReClassNET.Controls
 
 			InitializeComponent();
 
-			DoubleBuffered = true;
 
+			DoubleBuffered = true;
 			projectTreeView.TreeViewNodeSorter = new NodeSorter();
 			projectTreeView.ImageList = new ImageList();
 			projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);

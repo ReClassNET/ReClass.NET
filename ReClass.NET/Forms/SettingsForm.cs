@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Windows.Forms;
 using ReClassNET.Controls;
 using ReClassNET.Extensions;
@@ -14,16 +15,23 @@ namespace ReClassNET.Forms
 	{
 		private readonly Settings settings;
 		private readonly CppTypeMapping typeMapping;
+		public MemoryViewControl memoryViewControl;
+		public ProjectView projectView;
+		public ToolStrip toolStrip;
 
 		public TabControl SettingsTabControl => settingsTabControl;
 
-		public SettingsForm(Settings settings, CppTypeMapping typeMapping)
+		public SettingsForm(Settings settings, CppTypeMapping typeMapping,
+			MemoryViewControl memoryViewControl, ProjectView projectView, ToolStrip toolStrip)
 		{
 			Contract.Requires(settings != null);
 			Contract.Requires(typeMapping != null);
 
 			this.settings = settings;
 			this.typeMapping = typeMapping;
+			this.memoryViewControl = memoryViewControl;
+			this.projectView = projectView;
+			this.toolStrip = toolStrip;
 
 			InitializeComponent();
 
@@ -106,6 +114,11 @@ namespace ReClassNET.Forms
 			SetBinding(showPluginInfoCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.ShowCommentPluginInfo));
 			SetBinding(runAsAdminCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.RunAsAdmin));
 			SetBinding(randomizeWindowTitleCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.RandomizeWindowTitle));
+			SetBinding(memoryViewfontUpDown, nameof(NumericUpDown.Value), settings, nameof(Settings.MemoryViewFont));
+			SetBinding(memoryViewPadXUpDown, nameof(NumericUpDown.Value), settings, nameof(Settings.MemoryViewFontPadX));
+			SetBinding(memoryViewPadYUpDown, nameof(NumericUpDown.Value), settings, nameof(Settings.MemoryViewFontPadY));
+			SetBinding(projectViewFontUpDown, nameof(NumericUpDown.Value), settings, nameof(Settings.ProjectViewFont));
+			SetBinding(toolStripSizeUpDown, nameof(NumericUpDown.Value), settings, nameof(Settings.ToolStripSize));
 		}
 
 		private void SetColorBindings()
@@ -152,6 +165,78 @@ namespace ReClassNET.Forms
 			SetBinding(utf16TextTypeTextBox, nameof(TextBox.Text), typeMapping, nameof(CppTypeMapping.TypeUtf16Text));
 			SetBinding(utf32TextTypeTextBox, nameof(TextBox.Text), typeMapping, nameof(CppTypeMapping.TypeUtf32Text));
 			SetBinding(functionPtrTypeTextBox, nameof(TextBox.Text), typeMapping, nameof(CppTypeMapping.TypeFunctionPtr));
+		}
+
+		private void fontSizeUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			var val = (int)(sender as NumericUpDown).Value;
+			
+			memoryViewControl.font = new FontEx
+			{
+				Font = new Font("Courier New", DpiUtil.ScaleIntX(val), GraphicsUnit.Pixel),
+				Width = memoryViewControl.font.Width,
+				Height = memoryViewControl.font.Height
+			};
+
+			// Difference between default icon scale and default font size.
+			val += 3;
+
+			memoryViewControl.hotSpotEditBox.Font = memoryViewControl.font;
+			memoryViewControl.IconScale = val;
+			settings.MemoryViewIconSize = memoryViewControl.IconScale;
+		}
+
+		private void paddingXUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			var val = (int)(sender as NumericUpDown).Value;
+
+			memoryViewControl.font = new FontEx
+			{
+				Font = memoryViewControl.font.Font,
+				Width = DpiUtil.ScaleIntX(val),
+				Height = memoryViewControl.font.Height
+			};
+
+			memoryViewControl.hotSpotEditBox.Font = memoryViewControl.font;
+		}
+
+		private void paddingYUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			var val = (int)(sender as NumericUpDown).Value;
+
+			memoryViewControl.font = new FontEx
+			{
+				Font = memoryViewControl.font.Font,
+				Width = memoryViewControl.font.Width,
+				Height = DpiUtil.ScaleIntY(val)
+			};
+
+			memoryViewControl.hotSpotEditBox.Font = memoryViewControl.font;
+		}
+
+		private void projectViewFontUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			var val = (int)(sender as NumericUpDown).Value;
+
+			projectView.Font = new System.Drawing.Font("Microsoft Sans Serif", val, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+
+			// Difference between default icon Size and default font size.
+			val = val + 8;
+
+			projectView.projectTreeView.ImageList = new ImageList();
+			projectView.projectTreeView.ImageList.ImageSize = new System.Drawing.Size(val, val);
+			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);
+			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Class_Type);
+			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Category);
+			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Enum_Type);
+
+			settings.ProjectViewIconSize = val;
+		}
+
+		private void toolStripSizeUpDown_ValueChanged(object sender, EventArgs e)
+		{
+			var val = (int)(sender as NumericUpDown).Value;
+			toolStrip.ImageScalingSize = new System.Drawing.Size(val, val);
 		}
 	}
 }

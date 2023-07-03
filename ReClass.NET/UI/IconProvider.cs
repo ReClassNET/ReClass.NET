@@ -4,7 +4,7 @@ namespace ReClassNET.UI
 {
 	public class IconProvider
 	{
-		public int Dimensions { get; } = DpiUtil.ScaleIntX(16);
+		public int Dimensions { get; set; } = DpiUtil.ScaleIntX(Program.Settings.MemoryViewFont);
 
 		public Image OpenCloseOpen { get; } = DpiUtil.ScaleImage(Properties.Resources.B16x16_Open_Icon);
 		public Image OpenCloseClosed { get; } = DpiUtil.ScaleImage(Properties.Resources.B16x16_Closed_Icon);

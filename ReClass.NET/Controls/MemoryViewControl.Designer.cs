@@ -68,7 +68,7 @@ namespace ReClassNET.Controls
 
 		#endregion
 		private System.Windows.Forms.Timer repaintTimer;
-		private HotSpotTextBox hotSpotEditBox;
+		public HotSpotTextBox hotSpotEditBox;
 		private System.Windows.Forms.ToolTip nodeInfoToolTip;
 	}
 }

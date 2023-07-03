@@ -58,7 +58,9 @@ namespace ReClassNET.Controls
 		private HotSpot selectionCaret;
 		private HotSpot selectionAnchor;
 
-		private readonly FontEx font;
+		public FontEx font;
+
+		public int IconScale { get; set; }
 
 		public ContextMenuStrip NodeContextMenuStrip { get; set; }
 
@@ -86,6 +88,8 @@ namespace ReClassNET.Controls
 			hotSpotEditBox.Font = font;
 
 			memoryPreviewPopUp = new MemoryPreviewPopUp(font);
+
+			IconScale = Program.Settings.MemoryViewIconSize;
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -136,6 +140,8 @@ namespace ReClassNET.Controls
 				Level = 0,
 				MultipleNodesSelected = selectedNodes.Count > 1
 			};
+
+			view.IconProvider.Dimensions = DpiUtil.ScaleIntX(IconScale);
 
 			var scrollPosition = AutoScrollPosition;
 

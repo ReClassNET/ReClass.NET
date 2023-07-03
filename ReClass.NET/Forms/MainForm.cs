@@ -77,6 +77,20 @@ namespace ReClassNET.Forms
 			InitializeComponent();
 			UpdateWindowTitle();
 
+			// This is done here to set the ImageSize value from the stored user settings
+			// I know it's ugly.
+			var sz = Program.Settings.ProjectViewIconSize;
+			projectView.projectTreeView.ImageList = new ImageList();
+			projectView.projectTreeView.ImageList.ImageSize = new System.Drawing.Size(sz, sz);
+			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Text_List_Bullets);
+			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Class_Type);
+			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Category);
+			projectView.projectTreeView.ImageList.Images.Add(Properties.Resources.B16x16_Enum_Type);
+
+			// Same here.
+			sz = Program.Settings.ToolStripSize;
+			toolStrip.ImageScalingSize = new System.Drawing.Size(sz, sz);
+
 			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true, true);
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(true, false);
 			isLittleEndianToolStripMenuItem.Checked = BitConverter.IsLittleEndian;
@@ -321,7 +335,8 @@ namespace ReClassNET.Forms
 
 		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using var sd = new SettingsForm(Program.Settings, CurrentProject.TypeMapping);
+			using var sd = new SettingsForm(Program.Settings, CurrentProject.TypeMapping,
+				memoryViewControl, projectView, toolStrip);
 
 			sd.ShowDialog();
 		}
