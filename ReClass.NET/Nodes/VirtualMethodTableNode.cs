@@ -34,6 +34,25 @@ namespace ReClassNET.Nodes
 			}
 		}
 
+
+		protected override int AddComment(DrawContext context, int x, int y)
+		{
+			x = base.AddComment(context, x, y);
+			
+			if (context.Settings.ShowCommentRtti)
+			{
+				var addressFirstVTableFunction = context.Memory.ReadFromBuffer(Offset).IntPtr;
+				var rtti = context.Process.ReadRemoteRuntimeTypeInformation(addressFirstVTableFunction);
+				if (!string.IsNullOrEmpty(rtti))
+				{
+					x = AddText(context, x, y, context.Settings.OffsetColor, HotSpot.ReadOnlyId, rtti) + context.Font.Width;
+				}
+			}
+
+			return x;
+		}
+
+
 		public override Size Draw(DrawContext context, int x, int y)
 		{
 			if (IsHidden && !IsWrapped)
