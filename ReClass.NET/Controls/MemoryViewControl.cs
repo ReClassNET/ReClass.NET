@@ -704,5 +704,24 @@ namespace ReClassNET.Controls
 
 			VerticalScroll.Value = VerticalScroll.Minimum;
 		}
+
+
+		public void AutoNameCurrentClassFromRTTI(ClassNode classNode)
+		{
+			var args = new DrawContextRequestEventArgs { Node = classNode };
+
+			var requestHandler = DrawContextRequested;
+			requestHandler?.Invoke(this, args);
+			var view = new DrawContext
+					   {
+						   Settings = args.Settings,
+						   Process = args.Process,
+						   Memory = args.Memory,
+						   CurrentTime = args.CurrentTime,
+						   Address = args.BaseAddress,
+						   Level = 0,
+					   };
+			classNode.AutoNameFromRTTI(view);
+		}
 	}
 }

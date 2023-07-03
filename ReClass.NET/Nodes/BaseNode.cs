@@ -39,8 +39,8 @@ namespace ReClassNET.Nodes
 		/// <summary>Gets or sets the parent node.</summary>
 		public BaseNode ParentNode { get; internal set; }
 
-		/// <summary>Gets a value indicating whether this node is wrapped into an other node.</summary>
-		public bool IsWrapped => ParentNode is BaseWrapperNode;
+		/// <summary>Gets a value indicating whether this node is wrapped into an other node. We see classnodes never as wrapped.</summary>
+		public bool IsWrapped => (ParentNode is BaseWrapperNode && !(this is ClassNode));
 
 		/// <summary>Gets or sets a value indicating whether this node is hidden.</summary>
 		public bool IsHidden { get; set; }
@@ -235,6 +235,15 @@ namespace ReClassNET.Nodes
 		/// <param name="context">The drawing context.</param>
 		/// <returns>The calculated height.</returns>
 		public abstract int CalculateDrawnHeight(DrawContext context);
+
+		/// <summary>
+		/// Called when this node has been created, initialized and the parent node has been assigned. For some nodes
+		/// Additional work has to be performed, this work can be done in a derived method of this method.
+		/// </summary>
+		public virtual void PerformPostInitWork()
+		{
+			// nop
+		}
 
 		/// <summary>Updates the node from the given <paramref name="spot"/>. Sets the <see cref="Name"/> and <see cref="Comment"/> of the node.</summary>
 		/// <param name="spot">The spot.</param>

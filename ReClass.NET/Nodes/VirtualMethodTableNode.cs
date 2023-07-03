@@ -41,15 +41,25 @@ namespace ReClassNET.Nodes
 			
 			if (context.Settings.ShowCommentRtti)
 			{
-				var addressFirstVTableFunction = context.Memory.ReadFromBuffer(Offset).IntPtr;
-				var rtti = context.Process.ReadRemoteRuntimeTypeInformation(addressFirstVTableFunction);
+				var rtti = GetAssociatedRemoteRuntimeTypeInformation(context);
 				if (!string.IsNullOrEmpty(rtti))
 				{
 					x = AddText(context, x, y, context.Settings.OffsetColor, HotSpot.ReadOnlyId, rtti) + context.Font.Width;
 				}
 			}
-
 			return x;
+		}
+
+
+		public string GetAssociatedRemoteRuntimeTypeInformation(DrawContext context)
+		{
+			var addressFirstVTableFunction = context.Memory.ReadFromBuffer(Offset).IntPtr;
+			if (addressFirstVTableFunction != IntPtr.Zero)
+			{
+				return context.Process.ReadRemoteRuntimeTypeInformation(addressFirstVTableFunction);
+			}
+
+			return string.Empty;
 		}
 
 

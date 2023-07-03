@@ -52,6 +52,46 @@ namespace ReClassNET.Nodes
 			return new ClassNode(true);
 		}
 
+		
+		public void AutoNameFromRTTI(DrawContext context)
+		{
+			// first node should be a VTable node or a hex64/32 node
+			if (Nodes.Count <= 0)
+			{
+				return;
+			}
+
+			var rttiInfoFromFirstNode = string.Empty;
+			var firstNode = Nodes[0];
+			if (firstNode is VirtualMethodTableNode vtableNode)
+			{
+				rttiInfoFromFirstNode = vtableNode.GetAssociatedRemoteRuntimeTypeInformation(context);
+			}
+			else
+			{
+				if (firstNode is BaseHexCommentNode baseHexCommentNode)
+				{
+					// ask it as if it might point to a vtable
+					var value = context.Memory.ReadFromBuffer(Offset);
+					rttiInfoFromFirstNode = baseHexCommentNode.GetAssociatedRemoteRuntimeTypeInformation(context, value.IntPtr);
+					if (!string.IsNullOrEmpty(rttiInfoFromFirstNode))
+					{
+						// convert first node to vtable node
+#warning IMPLEMENT: CONVERT NODE TO VTABLE NODE
+					}
+				}
+			}
+
+			if (string.IsNullOrEmpty(rttiInfoFromFirstNode))
+			{
+				return;
+			}
+
+			var fragments = rttiInfoFromFirstNode.Split(':');
+			this.Name = fragments[0];
+		}
+		
+
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
 			throw new InvalidOperationException($"The '{nameof(ClassNode)}' node should not be accessible from the ui.");
