@@ -1377,6 +1377,7 @@ namespace ReClassNET.Forms
 			this.Controls.Add(this.toolStrip);
 			this.Controls.Add(this.statusStrip);
 			this.Controls.Add(this.mainMenuStrip);
+			this.KeyPreview = true;
 			this.MainMenuStrip = this.mainMenuStrip;
 			this.MinimumSize = new System.Drawing.Size(200, 100);
 			this.Name = "MainForm";

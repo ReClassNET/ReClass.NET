@@ -57,14 +57,15 @@ namespace ReClassNET.UI
 
 			return CreateToolStripItems(t =>
 			{
-				GetNodeInfoFromType(t, out var label, out var icon);
+				GetNodeInfoFromType(t, out var label, out var icon, out var shortcutKeys);
 
-				var item = new TypeToolStripButton
+				var item = new TypeToolStripMenuItem
 				{
 					Value = t,
 					ToolTipText = label,
 					DisplayStyle = ToolStripItemDisplayStyle.Image,
-					Image = icon
+					Image = icon,
+					ShortcutKeys = shortcutKeys,
 				};
 				item.Click += clickHandler;
 				return item;
@@ -74,7 +75,7 @@ namespace ReClassNET.UI
 				Image = p.Icon
 			}, t =>
 			{
-				GetNodeInfoFromType(t, out var label, out var icon);
+				GetNodeInfoFromType(t, out var label, out var icon, out var shortcutKeys);
 
 				var item = new TypeToolStripMenuItem
 				{
@@ -95,13 +96,14 @@ namespace ReClassNET.UI
 
 			var items = CreateToolStripItems(t =>
 			{
-				GetNodeInfoFromType(t, out var label, out var icon);
+				GetNodeInfoFromType(t, out var label, out var icon, out var shortcutKeys);
 
 				var item = new TypeToolStripMenuItem
 				{
 					Value = t,
 					Text = label,
-					Image = icon
+					Image = icon,
+					ShortcutKeys = shortcutKeys,
 				};
 				item.Click += clickHandler;
 				return item;
@@ -166,9 +168,11 @@ namespace ReClassNET.UI
 			return items;
 		}
 
-		private static void GetNodeInfoFromType(Type nodeType, out string label, out Image icon)
+		private static void GetNodeInfoFromType(Type nodeType, out string label, out Image icon, out Keys shortcutKeys)
 		{
 			Contract.Requires(nodeType != null);
+
+			shortcutKeys = Program.Settings.GetShortcutKeyForNodeType(nodeType);
 
 			var node = BaseNode.CreateInstanceFromType(nodeType, false);
 			if (node == null)
