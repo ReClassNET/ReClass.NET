@@ -835,7 +835,7 @@ namespace ReClassNET.Forms
 
 			addBytesToolStripDropDownButton.Enabled = parentContainer != null || isContainerNode;
 			insertBytesToolStripDropDownButton.Enabled = selectedNodes.Count == 1 && parentContainer != null && !isContainerNode;
-			autoNameClassToolStripMenuItem.Enabled = nodeIsClass;
+			initClassToolStripMenuItem.Enabled = nodeIsClass;
 
 			var enabled = selectedNodes.Count > 0 && !nodeIsClass;
 			toolStrip.Items.OfType<TypeToolStripButton>().ForEach(b => b.Enabled = enabled);
@@ -1054,7 +1054,7 @@ namespace ReClassNET.Forms
 		}
 
 
-		private void autoNameClassToolStripMenuItem_Click(object sender, EventArgs e)
+		private void initClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			var selectedNodes = memoryViewControl.GetSelectedNodes();
 			var node = selectedNodes.FirstOrDefault()?.Node;
@@ -1062,7 +1062,7 @@ namespace ReClassNET.Forms
 			{
 				return;
 			}
-			memoryViewControl.AutoNameCurrentClassFromRTTI(node as ClassNode);
+			memoryViewControl.InitCurrentClassFromRTTI(node as ClassNode);
 		}
 	}
 }

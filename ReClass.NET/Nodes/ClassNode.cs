@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
@@ -52,8 +53,12 @@ namespace ReClassNET.Nodes
 			return new ClassNode(true);
 		}
 
-		
-		public void AutoNameFromRTTI(DrawContext context)
+
+		/// <summary>
+		/// Initializes the class' name and vtable node from RTTI information, if it's not set already 
+		/// </summary>
+		/// <param name="context"></param>
+		public void InitFromRTTI(DrawContext context)
 		{
 			// first node should be a VTable node or a hex64/32 node
 			if (Nodes.Count <= 0)
@@ -77,7 +82,9 @@ namespace ReClassNET.Nodes
 					if (!string.IsNullOrEmpty(rttiInfoFromFirstNode))
 					{
 						// convert first node to vtable node
-#warning IMPLEMENT: CONVERT NODE TO VTABLE NODE
+						var newVTableNode = BaseNode.CreateInstanceFromType(typeof(VirtualMethodTableNode));
+						var createdNodes = new List<BaseNode>();
+						this.ReplaceChildNode(firstNode, newVTableNode, ref createdNodes);
 					}
 				}
 			}

@@ -39,8 +39,11 @@ namespace ReClassNET.Nodes
 		/// <summary>Gets or sets the parent node.</summary>
 		public BaseNode ParentNode { get; internal set; }
 
-		/// <summary>Gets a value indicating whether this node is wrapped into an other node. We see classnodes never as wrapped.</summary>
-		public bool IsWrapped => (ParentNode is BaseWrapperNode && !(this is ClassNode));
+		/// <summary>Gets a value indicating whether this node is wrapped into an other node. </summary>
+		public bool IsWrapped => (ParentNode is BaseWrapperNode);
+
+		/// <summary>All nodes that are wrapped can't be selected except classnodes because they have a context menu</summary>
+		public bool CanBeSelected => (!IsWrapped || (this is ClassNode));
 
 		/// <summary>Gets or sets a value indicating whether this node is hidden.</summary>
 		public bool IsHidden { get; set; }
@@ -376,7 +379,7 @@ namespace ReClassNET.Nodes
 			Contract.Requires(context != null);
 			Contract.Requires(context.Graphics != null);
 
-			if (y > context.ClientArea.Bottom || y + height < 0 || IsWrapped)
+			if (y > context.ClientArea.Bottom || y + height < 0 || !CanBeSelected)
 			{
 				return;
 			}

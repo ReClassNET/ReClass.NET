@@ -706,7 +706,7 @@ namespace ReClassNET.Controls
 		}
 
 
-		public void AutoNameCurrentClassFromRTTI(ClassNode classNode)
+		public void InitCurrentClassFromRTTI(ClassNode classNode)
 		{
 			var args = new DrawContextRequestEventArgs { Node = classNode };
 
@@ -721,7 +721,7 @@ namespace ReClassNET.Controls
 						   Address = args.BaseAddress,
 						   Level = 0,
 					   };
-			classNode.AutoNameFromRTTI(view);
+			classNode.InitFromRTTI(view);
 		}
 	}
 }
