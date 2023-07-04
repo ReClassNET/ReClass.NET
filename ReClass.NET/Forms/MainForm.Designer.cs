@@ -848,8 +848,10 @@ namespace ReClassNET.Forms
 			// 
 			// initClassFromRTTIToolStripBarMenuItem
 			// 
+			this.initClassFromRTTIToolStripBarMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.initClassFromRTTIToolStripBarMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_AutoName;
 			this.initClassFromRTTIToolStripBarMenuItem.Name = "initClassFromRTTIToolStripBarMenuItem";
+			this.initClassFromRTTIToolStripBarMenuItem.Overflow = System.Windows.Forms.ToolStripItemOverflow.AsNeeded;
 			this.initClassFromRTTIToolStripBarMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.N)));
 			this.initClassFromRTTIToolStripBarMenuItem.Size = new System.Drawing.Size(28, 25);
