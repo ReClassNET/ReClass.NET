@@ -836,6 +836,7 @@ namespace ReClassNET.Forms
 			addBytesToolStripDropDownButton.Enabled = parentContainer != null || isContainerNode;
 			insertBytesToolStripDropDownButton.Enabled = selectedNodes.Count == 1 && parentContainer != null && !isContainerNode;
 			initClassToolStripMenuItem.Enabled = nodeIsClass;
+			initClassFromRTTIToolStripBarMenuItem.Enabled = nodeIsClass;
 
 			var enabled = selectedNodes.Count > 0 && !nodeIsClass;
 			toolStrip.Items.OfType<TypeToolStripButton>().ForEach(b => b.Enabled = enabled);

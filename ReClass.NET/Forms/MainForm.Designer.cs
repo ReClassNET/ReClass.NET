@@ -107,6 +107,7 @@ namespace ReClassNET.Forms
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.newClassToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.initClassFromRTTIToolStripBarMenuItem = new ReClassNET.Controls.TypeToolStripMenuItem();
 			this.addBytesToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.add4BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
 			this.add8BytesToolStripMenuItem = new ReClassNET.Controls.IntegerToolStripMenuItem();
@@ -203,7 +204,7 @@ namespace ReClassNET.Forms
 			// 
 			this.splitContainer.Panel2.BackColor = System.Drawing.SystemColors.Control;
 			this.splitContainer.Panel2.Controls.Add(this.memoryViewControl);
-			this.splitContainer.Size = new System.Drawing.Size(1141, 524);
+			this.splitContainer.Size = new System.Drawing.Size(1313, 524);
 			this.splitContainer.SplitterDistance = 201;
 			this.splitContainer.TabIndex = 4;
 			// 
@@ -365,7 +366,7 @@ namespace ReClassNET.Forms
 			this.memoryViewControl.Location = new System.Drawing.Point(0, 0);
 			this.memoryViewControl.Name = "memoryViewControl";
 			this.memoryViewControl.NodeContextMenuStrip = this.selectedNodeContextMenuStrip;
-			this.memoryViewControl.Size = new System.Drawing.Size(936, 524);
+			this.memoryViewControl.Size = new System.Drawing.Size(1108, 524);
 			this.memoryViewControl.TabIndex = 0;
 			this.memoryViewControl.DrawContextRequested += new ReClassNET.Controls.DrawContextRequestEventHandler(this.memoryViewControl_DrawContextRequested);
 			this.memoryViewControl.SelectionChanged += new System.EventHandler(this.memoryViewControl_SelectionChanged);
@@ -404,7 +405,7 @@ namespace ReClassNET.Forms
             this.showCodeOfClassToolStripMenuItem,
             this.shrinkClassToolStripMenuItem});
 			this.selectedNodeContextMenuStrip.Name = "selectedNodeContextMenuStrip";
-			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(270, 454);
+			this.selectedNodeContextMenuStrip.Size = new System.Drawing.Size(270, 432);
 			this.selectedNodeContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.selectedNodeContextMenuStrip_Opening);
 			// 
 			// changeTypeToolStripMenuItem
@@ -783,12 +784,13 @@ namespace ReClassNET.Forms
             this.saveToolStripButton,
             this.toolStripSeparator7,
             this.newClassToolStripButton,
+            this.initClassFromRTTIToolStripBarMenuItem,
             this.addBytesToolStripDropDownButton,
             this.insertBytesToolStripDropDownButton,
             this.nodeTypesToolStripSeparator});
 			this.toolStrip.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip.Name = "toolStrip";
-			this.toolStrip.Size = new System.Drawing.Size(1141, 25);
+			this.toolStrip.Size = new System.Drawing.Size(1313, 25);
 			this.toolStrip.TabIndex = 3;
 			// 
 			// attachToProcessToolStripSplitButton
@@ -843,6 +845,17 @@ namespace ReClassNET.Forms
 			this.newClassToolStripButton.Text = "addClassToolStripButton";
 			this.newClassToolStripButton.ToolTipText = "Add a new class to this project";
 			this.newClassToolStripButton.Click += new System.EventHandler(this.newClassToolStripButton_Click);
+			// 
+			// initClassFromRTTIToolStripBarMenuItem
+			// 
+			this.initClassFromRTTIToolStripBarMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Button_AutoName;
+			this.initClassFromRTTIToolStripBarMenuItem.Name = "initClassFromRTTIToolStripBarMenuItem";
+			this.initClassFromRTTIToolStripBarMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.N)));
+			this.initClassFromRTTIToolStripBarMenuItem.Size = new System.Drawing.Size(28, 25);
+			this.initClassFromRTTIToolStripBarMenuItem.ToolTipText = "Init selected class from RTTI info";
+			this.initClassFromRTTIToolStripBarMenuItem.Value = null;
+			this.initClassFromRTTIToolStripBarMenuItem.Click += new System.EventHandler(this.initClassToolStripMenuItem_Click);
 			// 
 			// addBytesToolStripDropDownButton
 			// 
@@ -1035,7 +1048,7 @@ namespace ReClassNET.Forms
             this.infoToolStripStatusLabel});
 			this.statusStrip.Location = new System.Drawing.Point(0, 573);
 			this.statusStrip.Name = "statusStrip";
-			this.statusStrip.Size = new System.Drawing.Size(1141, 22);
+			this.statusStrip.Size = new System.Drawing.Size(1313, 22);
 			this.statusStrip.TabIndex = 1;
 			// 
 			// processInfoToolStripStatusLabel
@@ -1060,7 +1073,7 @@ namespace ReClassNET.Forms
             this.helpToolStripMenuItem});
 			this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
 			this.mainMenuStrip.Name = "mainMenuStrip";
-			this.mainMenuStrip.Size = new System.Drawing.Size(1141, 24);
+			this.mainMenuStrip.Size = new System.Drawing.Size(1313, 24);
 			this.mainMenuStrip.TabIndex = 2;
 			// 
 			// fileToolStripMenuItem
@@ -1384,7 +1397,7 @@ namespace ReClassNET.Forms
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1141, 595);
+			this.ClientSize = new System.Drawing.Size(1313, 595);
 			this.Controls.Add(this.splitContainer);
 			this.Controls.Add(this.toolStrip);
 			this.Controls.Add(this.statusStrip);
@@ -1556,6 +1569,7 @@ namespace ReClassNET.Forms
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator23;
 		private System.Windows.Forms.ToolStripMenuItem isLittleEndianToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem initClassToolStripMenuItem;
+		private TypeToolStripMenuItem initClassFromRTTIToolStripBarMenuItem;
 	}
 }
 
