@@ -319,6 +319,9 @@ namespace ReClassNET.Forms
 					{
 						var selected = hotSpotsToReplace.Dequeue();
 
+						// Use a single command here to wrap all state changes into one single undoable object, so everything gets undone/redone in 1 go
+						var cmd = new UndoablePeriodCommand("Replace node");
+						CommandQueueManagerSingleton.GetInstance().BeginUndoablePeriod(cmd);
 						var node = BaseNode.CreateInstanceFromType(type);
 
 						var createdNodes = new List<BaseNode>();
@@ -338,6 +341,8 @@ namespace ReClassNET.Forms
 								hotSpotsToReplace.Enqueue(new MemoryViewControl.SelectedNodeInfo(createdNode, selected.Process, selected.Memory, selected.Address + createdNode.Offset - node.Offset, selected.Level));
 							}
 						}
+						// Mark the end of the activities that have to be tracked with this single command
+						CommandQueueManagerSingleton.GetInstance().EndUndoablePeriod(cmd);
 					}
 				}
 
