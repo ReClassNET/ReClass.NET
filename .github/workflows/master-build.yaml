@@ -1,0 +1,42 @@
+###
+# Automatically build a "Development Build" on a push to master.
+##
+
+name: Master Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Checkout
+      uses: actions/checkout@v2.4.0
+    - name: Set outputs
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+    - name: MSBuild
+      run: |
+        Remove-Item -R -Fo -EA SilentlyContinue bin
+        msbuild /t:Reclass_NET:Rebuild /p:Configuration=Release /p:Platform=x64 ReClass.NET.sln
+        msbuild /t:Reclass_NET:Rebuild /p:Configuration=Release /p:Platform=x86 ReClass.NET.sln
+    - name: Zip release
+      uses: papeloto/action-zip@v1
+      with:
+        files: bin\Release
+        recursive: true
+        dest: ReClass.NET-${{ steps.vars.outputs.sha_short }}.zip
+    - name: Release
+      uses: marvinpinto/action-automatic-releases@v1.2.1
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Development Build"
+        files: ReClass.NET-${{ steps.vars.outputs.sha_short }}.zip
