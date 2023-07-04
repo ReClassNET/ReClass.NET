@@ -1053,8 +1053,7 @@ namespace ReClassNET.Forms
 				args.BaseAddress = address;
 			}
 		}
-
-
+		
 		private void initClassToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			var selectedNodes = memoryViewControl.GetSelectedNodes();

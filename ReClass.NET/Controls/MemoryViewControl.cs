@@ -704,8 +704,7 @@ namespace ReClassNET.Controls
 
 			VerticalScroll.Value = VerticalScroll.Minimum;
 		}
-
-
+		
 		public void InitCurrentClassFromRTTI(ClassNode classNode)
 		{
 			var args = new DrawContextRequestEventArgs { Node = classNode };

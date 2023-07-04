@@ -29,10 +29,7 @@ namespace ReClassNET
 									  { typeof(EnumNode), Keys.Control | Keys.Shift | Keys.E },
 									  { typeof(Int32Node), Keys.Control | Keys.Shift | Keys.I }
 								  };
-
-			// Define more here.
 		}
-
 		
 		// Application Settings
 
@@ -103,8 +100,7 @@ namespace ReClassNET
 		public Color PluginColor { get; set; } = Color.FromArgb(255, 0, 255);
 
 		public CustomDataMap CustomData { get; } = new CustomDataMap();
-
-
+		
 		public Keys GetShortcutKeyForNodeType(Type nodeType)
 		{
 			return !_shortcutKeyPerNode.TryGetValue(nodeType, out var shortcutKeys) ? Keys.None : shortcutKeys;

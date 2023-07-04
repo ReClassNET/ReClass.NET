@@ -40,10 +40,10 @@ namespace ReClassNET.Nodes
 		public BaseNode ParentNode { get; internal set; }
 
 		/// <summary>Gets a value indicating whether this node is wrapped into an other node. </summary>
-		public bool IsWrapped => (ParentNode is BaseWrapperNode);
+		public bool IsWrapped => ParentNode is BaseWrapperNode;
 
 		/// <summary>All nodes that are wrapped can't be selected except classnodes because they have a context menu</summary>
-		public bool CanBeSelected => (!IsWrapped || (this is ClassNode));
+		public bool CanBeSelected => !IsWrapped || (this is ClassNode);
 
 		/// <summary>Gets or sets a value indicating whether this node is hidden.</summary>
 		public bool IsHidden { get; set; }
