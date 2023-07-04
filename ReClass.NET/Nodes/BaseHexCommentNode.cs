@@ -44,7 +44,7 @@ namespace ReClassNET.Nodes
 
 					if (view.Settings.ShowCommentRtti)
 					{
-						var rtti = view.Process.ReadRemoteRuntimeTypeInformation(ivalue);
+						var rtti = GetAssociatedRemoteRuntimeTypeInformation(view, ivalue);
 						if (!string.IsNullOrEmpty(rtti))
 						{
 							x = AddText(view, x, y, view.Settings.OffsetColor, HotSpot.ReadOnlyId, rtti) + view.Font.Width;
@@ -109,6 +109,11 @@ namespace ReClassNET.Nodes
 			}
 
 			return x;
+		}
+
+		public string GetAssociatedRemoteRuntimeTypeInformation(DrawContext context, IntPtr ivalue)
+		{
+			return context.Process.ReadRemoteRuntimeTypeInformation(ivalue);
 		}
 	}
 }
