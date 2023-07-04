@@ -33,7 +33,33 @@ namespace ReClassNET.Nodes
 				AddNode(CreateDefaultNodeForSize(IntPtr.Size));
 			}
 		}
+		
+		protected override int AddComment(DrawContext context, int x, int y)
+		{
+			x = base.AddComment(context, x, y);
+			
+			if (context.Settings.ShowCommentRtti)
+			{
+				var rtti = GetAssociatedRemoteRuntimeTypeInformation(context);
+				if (!string.IsNullOrEmpty(rtti))
+				{
+					x = AddText(context, x, y, context.Settings.OffsetColor, HotSpot.ReadOnlyId, rtti) + context.Font.Width;
+				}
+			}
+			return x;
+		}
+		
+		public string GetAssociatedRemoteRuntimeTypeInformation(DrawContext context)
+		{
+			var addressFirstVTableFunction = context.Memory.InterpretData64(Offset).IntPtr;
+			if (addressFirstVTableFunction != IntPtr.Zero)
+			{
+				return context.Process.ReadRemoteRuntimeTypeInformation(addressFirstVTableFunction);
+			}
 
+			return string.Empty;
+		}
+		
 		public override Size Draw(DrawContext context, int x, int y)
 		{
 			if (IsHidden && !IsWrapped)

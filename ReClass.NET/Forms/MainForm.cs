@@ -22,6 +22,7 @@ using ReClassNET.Project;
 using ReClassNET.UI;
 using ReClassNET.Util;
 using ReClassNET.Util.Conversion;
+using SD.Tools.Algorithmia.Commands;
 
 namespace ReClassNET.Forms
 {
@@ -95,7 +96,10 @@ namespace ReClassNET.Forms
 			};
 
 			pluginManager = new PluginManager(new DefaultPluginHost(this, Program.RemoteProcess, Program.Logger));
+
+			CommandQueueManagerSingleton.GetInstance().CommandQueueActionPerformed += OnCommandQueueActionPerformed;
 		}
+
 
 		protected override void OnLoad(EventArgs e)
 		{
@@ -135,6 +139,8 @@ namespace ReClassNET.Forms
 			{
 				AttachToProcess(Program.CommandLineArgs[Constants.CommandLineOptions.AttachTo]);
 			}
+
+			SetStateOfUndoRedoButtons();
 		}
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
@@ -835,6 +841,8 @@ namespace ReClassNET.Forms
 
 			addBytesToolStripDropDownButton.Enabled = parentContainer != null || isContainerNode;
 			insertBytesToolStripDropDownButton.Enabled = selectedNodes.Count == 1 && parentContainer != null && !isContainerNode;
+			initClassToolStripMenuItem.Enabled = nodeIsClass;
+			initClassFromRTTIToolStripBarMenuItem.Enabled = nodeIsClass;
 
 			var enabled = selectedNodes.Count > 0 && !nodeIsClass;
 			toolStrip.Items.OfType<TypeToolStripButton>().ForEach(b => b.Enabled = enabled);
@@ -1027,7 +1035,7 @@ namespace ReClassNET.Forms
 		{
 			var process = Program.RemoteProcess;
 
-			var classNode = CurrentClassNode;
+			var classNode = (args.Node as ClassNode) ?? CurrentClassNode;
 			if (classNode != null)
 			{
 				memoryViewBuffer.Size = classNode.MemorySize;
@@ -1050,6 +1058,46 @@ namespace ReClassNET.Forms
 				args.Node = classNode;
 				args.BaseAddress = address;
 			}
+		}
+		
+		private void initClassToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var selectedNodes = memoryViewControl.GetSelectedNodes();
+			var node = selectedNodes.FirstOrDefault()?.Node;
+			if (node == null || !(node is ClassNode))
+			{
+				return;
+			}
+
+			var cmd = new UndoablePeriodCommand("InitClassFromRTTI");
+			CommandQueueManagerSingleton.GetInstance().BeginUndoablePeriod(cmd);
+			memoryViewControl.InitCurrentClassFromRTTI(node as ClassNode);
+			CommandQueueManagerSingleton.GetInstance().EndUndoablePeriod(cmd);
+		}
+
+
+		private void SetStateOfUndoRedoButtons()
+		{
+			undoToolbarMenuItem.Enabled = CommandQueueManagerSingleton.GetInstance().CanUndo(Program.CommandQueueID);
+			redoToolbarMenuItem.Enabled = CommandQueueManagerSingleton.GetInstance().CanDo(Program.CommandQueueID);
+		}
+
+
+		private void OnCommandQueueActionPerformed(object sender, CommandQueueActionPerformedEventArgs e)
+		{
+			SetStateOfUndoRedoButtons();
+		}
+
+
+		private void undoToolbarMenuItem_Click(object sender, EventArgs e)
+		{
+			CommandQueueManagerSingleton.GetInstance().UndoLastCommand();
+		}
+
+
+		private void redoToolbarMenuItem_Click(object sender, EventArgs e)
+		{
+			CommandQueueManagerSingleton.GetInstance().RedoLastCommand();
 		}
 	}
 }

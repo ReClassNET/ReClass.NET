@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using ReClassNET.AddressParser;
 using ReClassNET.Controls;
 using ReClassNET.Memory;
 using ReClassNET.UI;
@@ -133,6 +134,40 @@ namespace ReClassNET.Nodes
 				height += InnerNode.CalculateDrawnHeight(context);
 			}
 			return height;
+		}
+		
+		public override void PerformPostInitWork()
+		{
+			base.PerformPostInitWork();
+
+			var parentClass = ParentNode as ClassNode;
+			if (parentClass == null)
+			{
+				return;
+			}
+
+			var process = Program.RemoteProcess;
+			IntPtr address;
+			try
+			{
+				address = process.ParseAddress(parentClass.AddressFormula);
+			}
+			catch (ParseException)
+			{
+				address = IntPtr.Zero;
+			}
+
+			var memoryBuffer = new MemoryBuffer() { Size = parentClass.MemorySize};
+			memoryBuffer.UpdateFrom(process, address);
+			var ptr = memoryBuffer.ReadIntPtr(Offset);
+
+			var classNode = ((ClassInstanceNode)InnerNode)?.InnerNode as ClassNode;
+			if (classNode == null)
+			{
+				return;
+			}
+
+			classNode.AddressFormula = ptr.ToString(Constants.AddressHexFormat);
 		}
 	}
 }

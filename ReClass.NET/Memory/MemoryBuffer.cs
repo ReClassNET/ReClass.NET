@@ -366,5 +366,17 @@ namespace ReClassNET.Memory
 
 			return false;
 		}
+		
+		public UInt64FloatDoubleData InterpretData64(int offset) => new UInt64FloatDoubleData
+																   {
+																	   Raw1 = ReadInt32(offset),
+																	   Raw2 = ReadInt32(offset + sizeof(int))
+																   };
+
+
+		public UInt32FloatData InterpretData32(int offset) => new UInt32FloatData
+															 {
+																 Raw = ReadInt32(offset)
+															 };
 	}
 }

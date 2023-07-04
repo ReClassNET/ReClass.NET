@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using ReClassNET.Controls;
 using ReClassNET.UI;
+using SD.Tools.Algorithmia.GeneralDataStructures;
+using SD.Tools.Algorithmia.GeneralDataStructures.EventArguments;
 
 namespace ReClassNET.Nodes
 {
@@ -27,7 +30,12 @@ namespace ReClassNET.Nodes
 
 		public Guid Uuid { get; set; }
 
-		public string AddressFormula { get; set; } = DefaultAddressFormula;
+		private CommandifiedMember<string, Constants.GeneralPurposeChangeType> addressFormula;
+		public string AddressFormula
+		{
+			get => addressFormula.MemberValue;
+			set => addressFormula.MemberValue = value;
+		}
 
 		public event NodeEventHandler NodesChanged;
 
@@ -35,6 +43,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Ensures(AddressFormula != null);
 
+			addressFormula = new CommandifiedMember<string, Constants.GeneralPurposeChangeType>("AddressFormula", Constants.GeneralPurposeChangeType.None, DefaultAddressFormula);
 			LevelsOpen.DefaultValue = true;
 
 			Uuid = Guid.NewGuid();
@@ -51,7 +60,48 @@ namespace ReClassNET.Nodes
 
 			return new ClassNode(true);
 		}
+		
+		/// <summary>
+		/// Initializes the class' name and vtable node from RTTI information, if it's not set already 
+		/// </summary>
+		/// <param name="context"></param>
+		public void InitFromRTTI(DrawContext context)
+		{
+			// first node should be a VTable node or a hex64/32 node
+			if (Nodes.Count <= 0)
+			{
+				return;
+			}
 
+			var rttiInfoFromFirstNode = string.Empty;
+			var firstNode = Nodes[0];
+			if (firstNode is VirtualMethodTableNode vtableNode)
+			{
+				rttiInfoFromFirstNode = vtableNode.GetAssociatedRemoteRuntimeTypeInformation(context);
+			}
+			else if (firstNode is BaseHexCommentNode baseHexCommentNode)
+			{
+				// ask it as if it might point to a vtable
+				var value = context.Memory.InterpretData64(Offset);
+				rttiInfoFromFirstNode = baseHexCommentNode.GetAssociatedRemoteRuntimeTypeInformation(context, value.IntPtr);
+				if (!string.IsNullOrEmpty(rttiInfoFromFirstNode))
+				{
+					// convert first node to vtable node
+					var newVTableNode = BaseNode.CreateInstanceFromType(typeof(VirtualMethodTableNode));
+					var createdNodes = new List<BaseNode>();
+					this.ReplaceChildNode(firstNode, newVTableNode, ref createdNodes);
+				}
+			}
+
+			if (string.IsNullOrEmpty(rttiInfoFromFirstNode))
+			{
+				return;
+			}
+
+			var fragments = rttiInfoFromFirstNode.Split(':');
+			this.Name = fragments[0];
+		}
+		
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
 			throw new InvalidOperationException($"The '{nameof(ClassNode)}' node should not be accessible from the ui.");

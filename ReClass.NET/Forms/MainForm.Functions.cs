@@ -16,6 +16,7 @@ using ReClassNET.Memory;
 using ReClassNET.Nodes;
 using ReClassNET.Project;
 using ReClassNET.UI;
+using SD.Tools.Algorithmia.Commands;
 
 namespace ReClassNET.Forms
 {
@@ -213,6 +214,10 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(path != null);
 
+			CommandQueueManagerSingleton.GetInstance().ResetActiveCommandQueue();
+			CommandQueueManagerSingleton.GetInstance().BeginNonUndoablePeriod();		// we don't want to trigger undo/redo activity while loading
+			CommandQueueManagerSingleton.GetInstance().RaiseEvents = false;
+
 			var project = new ReClassNetProject();
 
 			LoadProjectFromPath(path, ref project);
@@ -224,6 +229,10 @@ namespace ReClassNET.Forms
 			}
 
 			SetProject(project);
+
+			// Done loading, resume undo/redo activity
+			CommandQueueManagerSingleton.GetInstance().RaiseEvents = true;
+			CommandQueueManagerSingleton.GetInstance().EndNonUndoablePeriod();
 		}
 
 		/// <summary>Loads the file into the given project.</summary>
@@ -310,6 +319,9 @@ namespace ReClassNET.Forms
 					{
 						var selected = hotSpotsToReplace.Dequeue();
 
+						// Use a single command here to wrap all state changes into one single undoable object, so everything gets undone/redone in 1 go
+						var cmd = new UndoablePeriodCommand("Replace node");
+						CommandQueueManagerSingleton.GetInstance().BeginUndoablePeriod(cmd);
 						var node = BaseNode.CreateInstanceFromType(type);
 
 						var createdNodes = new List<BaseNode>();
@@ -329,6 +341,8 @@ namespace ReClassNET.Forms
 								hotSpotsToReplace.Enqueue(new MemoryViewControl.SelectedNodeInfo(createdNode, selected.Process, selected.Memory, selected.Address + createdNode.Offset - node.Offset, selected.Level));
 							}
 						}
+						// Mark the end of the activities that have to be tracked with this single command
+						CommandQueueManagerSingleton.GetInstance().EndUndoablePeriod(cmd);
 					}
 				}
 

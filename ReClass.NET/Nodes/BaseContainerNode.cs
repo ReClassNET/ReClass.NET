@@ -1,12 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using ReClassNET.Extensions;
+using SD.Tools.Algorithmia.Commands;
+using SD.Tools.Algorithmia.GeneralDataStructures;
 
 namespace ReClassNET.Nodes
 {
 	public abstract class BaseContainerNode : BaseNode
 	{
-		private readonly List<BaseNode> nodes = new List<BaseNode>();
+		//private readonly List<BaseNode> nodes = new List<BaseNode>();
+		private readonly CommandifiedList<BaseNode> nodes = new CommandifiedList<BaseNode>();
 
 		private int updateCount;
 
@@ -183,8 +187,8 @@ namespace ReClassNET.Nodes
 			}
 
 			newNode.CopyFromNode(oldNode);
-
 			newNode.ParentNode = this;
+			newNode.PerformPostInitWork();
 
 			nodes[index] = newNode;
 
@@ -262,7 +266,8 @@ namespace ReClassNET.Nodes
 			{
 				return;
 			}
-
+			// Mark the actions that follow as actions that have to be ignored so they're not ending up in a command's command queue
+			CommandQueueManagerSingleton.GetInstance().BeginNonUndoablePeriod();
 			while (size > 0)
 			{
 				var node = CreateDefaultNodeForSize(size);
@@ -281,6 +286,8 @@ namespace ReClassNET.Nodes
 
 				index++;
 			}
+			// Mark the end of the actions that have to be ignored for undo/redo
+			CommandQueueManagerSingleton.GetInstance().EndNonUndoablePeriod();
 
 			OnNodesUpdated();
 		}

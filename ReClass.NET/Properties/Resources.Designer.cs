@@ -19,7 +19,7 @@ namespace ReClassNET.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -186,6 +186,16 @@ namespace ReClassNET.Properties {
         internal static System.Drawing.Bitmap B16x16_Button_Array {
             get {
                 object obj = ResourceManager.GetObject("B16x16_Button_Array", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap B16x16_Button_AutoName {
+            get {
+                object obj = ResourceManager.GetObject("B16x16_Button_AutoName", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1371,7 +1381,7 @@ namespace ReClassNET.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2020/10/17 09:45:04
+        ///   Looks up a localized string similar to 2023/07/03 12:55:32
         ///.
         /// </summary>
         internal static string BuildDate {

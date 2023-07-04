@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using ReClassNET.Extensions;
 using ReClassNET.Nodes;
 using ReClassNET.Util;
+using SD.Tools.Algorithmia.GeneralDataStructures;
+using SD.Tools.Algorithmia.GeneralDataStructures.EventArguments;
 
 namespace ReClassNET.Project
 {
@@ -18,7 +22,7 @@ namespace ReClassNET.Project
 		public event EnumsChangedEvent EnumRemoved;
 
 		private readonly List<EnumDescription> enums = new List<EnumDescription>();
-		private readonly List<ClassNode> classes = new List<ClassNode>();
+		private readonly CommandifiedList<ClassNode> classes = new CommandifiedList<ClassNode>();		// use a commandified list for the set of classes so we get auto undo/redo tracking
 
 		public IReadOnlyList<EnumDescription> Enums => enums;
 
@@ -36,6 +40,25 @@ namespace ReClassNET.Project
 		/// List of data types to use while generating C++ code for nodes.
 		/// </summary>
 		public CppTypeMapping TypeMapping { get; } = new CppTypeMapping();
+		
+		public ReClassNetProject()
+		{
+			// We're using ListChanged instead of ElementAdding here because ListChanged is also raised when 'Redo' is executed on the list re-adding the already created element.
+			classes.ListChanged += Classes_ListChanged;
+			classes.ElementRemoved += Classes_ElementRemoved;
+		}
+
+		private void Classes_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
+		{
+			// nothing. The removed event is handled separately because ListChangedType.ItemRemoved doesn't give access to the removed element and ElementRemoved does.
+			if (e.ListChangedType == ListChangedType.ItemAdded)
+			{
+				ClassAdded?.Invoke(classes[e.NewIndex]);
+			}
+		}
+
+		private void Classes_ElementRemoved(object sender, CollectionElementRemovedEventArgs<ClassNode> e) => ClassRemoved?.Invoke(e.InvolvedElement);
+		private void Enums_ElementRemoved(object sender, CollectionElementRemovedEventArgs<EnumDescription> e) => EnumRemoved?.Invoke(e.InvolvedElement);
 
 		public void Dispose()
 		{
@@ -56,7 +79,7 @@ namespace ReClassNET.Project
 
 			node.NodesChanged += NodesChanged_Handler;
 
-			ClassAdded?.Invoke(node);
+			// No need to invoke the ClassAdded event here, as it's automatically raised when the class is added to the commandified list. 
 		}
 
 		public bool ContainsClass(Guid uuid)

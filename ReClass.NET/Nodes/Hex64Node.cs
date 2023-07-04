@@ -18,7 +18,7 @@ namespace ReClassNET.Nodes
 
 		public override bool UseMemoryPreviewToolTip(HotSpot spot, out IntPtr address)
 		{
-			var value = ReadFromBuffer(spot.Memory, Offset);
+			var value = spot.Memory.InterpretData64(Offset);
 
 			address = value.IntPtr;
 
@@ -27,7 +27,7 @@ namespace ReClassNET.Nodes
 
 		public override string GetToolTipText(HotSpot spot)
 		{
-			var value = ReadFromBuffer(spot.Memory, Offset);
+			var value = spot.Memory.InterpretData64(Offset);
 
 			return $"Int64: {value.LongValue}\nUInt64: 0x{value.ULongValue:X016}\nFloat: {value.FloatValue:0.000}\nDouble: {value.DoubleValue:0.000}";
 		}
@@ -46,17 +46,11 @@ namespace ReClassNET.Nodes
 		{
 			x = base.AddComment(context, x, y);
 
-			var value = ReadFromBuffer(context.Memory, Offset);
+			var value = context.Memory.InterpretData64(Offset);
 
 			x = AddComment(context, x, y, value.FloatValue, value.IntPtr, value.UIntPtr);
 
 			return x;
 		}
-
-		private static UInt64FloatDoubleData ReadFromBuffer(MemoryBuffer memory, int offset) => new UInt64FloatDoubleData
-		{
-			Raw1 = memory.ReadInt32(offset),
-			Raw2 = memory.ReadInt32(offset + sizeof(int))
-		};
 	}
 }
