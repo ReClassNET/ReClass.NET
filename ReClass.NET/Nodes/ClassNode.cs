@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Linq;
 using ReClassNET.Controls;
 using ReClassNET.UI;
+using SD.Tools.Algorithmia.GeneralDataStructures;
+using SD.Tools.Algorithmia.GeneralDataStructures.EventArguments;
 
 namespace ReClassNET.Nodes
 {
@@ -28,7 +30,12 @@ namespace ReClassNET.Nodes
 
 		public Guid Uuid { get; set; }
 
-		public string AddressFormula { get; set; } = DefaultAddressFormula;
+		private CommandifiedMember<string, Constants.GeneralPurposeChangeType> addressFormula;
+		public string AddressFormula
+		{
+			get => addressFormula.MemberValue;
+			set => addressFormula.MemberValue = value;
+		}
 
 		public event NodeEventHandler NodesChanged;
 
@@ -36,6 +43,7 @@ namespace ReClassNET.Nodes
 		{
 			Contract.Ensures(AddressFormula != null);
 
+			addressFormula = new CommandifiedMember<string, Constants.GeneralPurposeChangeType>("AddressFormula", Constants.GeneralPurposeChangeType.None, DefaultAddressFormula);
 			LevelsOpen.DefaultValue = true;
 
 			Uuid = Guid.NewGuid();

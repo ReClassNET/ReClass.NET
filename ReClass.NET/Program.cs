@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Core;
@@ -42,6 +43,11 @@ namespace ReClassNET
 		{
 			DesignMode = false; // The designer doesn't call Main()
 			CommandQueueID = Guid.NewGuid();
+
+			// wire event handlers for unhandled exceptions, so these will be shown using our own method.
+			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.Automatic, true);
+			Application.ThreadException += new ThreadExceptionEventHandler(Program.Application_ThreadException);
+			AppDomain.CurrentDomain.UnhandledException+=new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
 			CommandLineArgs = new CommandLineArgs(args);
 
@@ -107,7 +113,17 @@ namespace ReClassNET
 
 			SettingsSerializer.Save(Settings);
 		}
-
+		
+		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+		{
+			ShowException(e.Exception);
+		}
+		
+		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+		{
+			ShowException(e.ExceptionObject as Exception);
+		}
+		
 		/// <summary>Shows the exception in a special form.</summary>
 		/// <param name="ex">The exception.</param>
 		public static void ShowException(Exception ex)

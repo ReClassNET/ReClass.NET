@@ -26,7 +26,6 @@ namespace ReClassNET.Nodes
 
 		private static int nodeIndex = 0;
 
-		//private string name = string.Empty;
 		private CommandifiedMember<string, Constants.GeneralPurposeChangeType> name;
 		private string comment = string.Empty;
 
