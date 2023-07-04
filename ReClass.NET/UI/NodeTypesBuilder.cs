@@ -14,6 +14,7 @@ namespace ReClassNET.UI
 	{
 		private static readonly List<Type[]> defaultNodeTypeGroupList = new List<Type[]>();
 		private static readonly Dictionary<Plugin, IReadOnlyList<Type>> pluginNodeTypes = new Dictionary<Plugin, IReadOnlyList<Type>>();
+		private static readonly HashSet<Type> nodeTypesWhichCanOverflowInToolbar;
 
 		static NodeTypesBuilder()
 		{
@@ -27,6 +28,9 @@ namespace ReClassNET.UI
 			defaultNodeTypeGroupList.Add(new[] { typeof(PointerNode), typeof(ArrayNode), typeof(UnionNode) });
 			defaultNodeTypeGroupList.Add(new[] { typeof(ClassInstanceNode) });
 			defaultNodeTypeGroupList.Add(new[] { typeof(VirtualMethodTableNode), typeof(FunctionNode), typeof(FunctionPtrNode) });
+
+			// define the node types which can overflow in the toolbar if the window is too narrow. Add types here which aren't used that much 
+			nodeTypesWhichCanOverflowInToolbar = new HashSet<Type> { typeof(NIntNode), typeof(NUIntNode), typeof(BitFieldNode), typeof(Utf16TextNode), typeof(Utf16TextPtrNode) } ;
 		}
 
 		public static void AddPluginNodeGroup(Plugin plugin, IReadOnlyList<Type> nodeTypes)
@@ -66,6 +70,7 @@ namespace ReClassNET.UI
 					DisplayStyle = ToolStripItemDisplayStyle.Image,
 					Image = icon,
 					ShortcutKeys = shortcutKeys,
+					Overflow = nodeTypesWhichCanOverflowInToolbar.Contains(t) ? ToolStripItemOverflow.AsNeeded : ToolStripItemOverflow.Never,
 				};
 				item.Click += clickHandler;
 				return item;
