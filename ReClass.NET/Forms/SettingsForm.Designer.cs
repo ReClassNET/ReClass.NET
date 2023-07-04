@@ -54,6 +54,8 @@ namespace ReClassNET.Forms
             this.stayOnTopCheckBox = new System.Windows.Forms.CheckBox();
             this.colorsSettingTabPage = new System.Windows.Forms.TabPage();
             this.nodeColorGroupBox = new System.Windows.Forms.GroupBox();
+            this.editTextLabel = new System.Windows.Forms.Label();
+            this.editTextColorBox = new ReClassNET.Controls.ColorBox();
             this.nodeValueLabel = new System.Windows.Forms.Label();
             this.nodePluginLabel = new System.Windows.Forms.Label();
             this.nodeHexValueColorBox = new ReClassNET.Controls.ColorBox();
@@ -83,6 +85,8 @@ namespace ReClassNET.Forms
             this.backgroundLabel = new System.Windows.Forms.Label();
             this.backgroundColorBox = new ReClassNET.Controls.ColorBox();
             this.typeDefinitionsSettingsTabPage = new System.Windows.Forms.TabPage();
+            this.utf32TextSettingsLabel = new System.Windows.Forms.Label();
+            this.utf32TextTypeTextBox = new System.Windows.Forms.TextBox();
             this.nuintSettingsLabel = new System.Windows.Forms.Label();
             this.nuintTypeTextBox = new System.Windows.Forms.TextBox();
             this.nintSettingsLabel = new System.Windows.Forms.Label();
@@ -129,8 +133,6 @@ namespace ReClassNET.Forms
             this.int8SettingsLabel = new System.Windows.Forms.Label();
             this.int8TypeTextBox = new System.Windows.Forms.TextBox();
             this.bannerBox = new ReClassNET.Controls.BannerBox();
-            this.utf32TextSettingsLabel = new System.Windows.Forms.Label();
-            this.utf32TextTypeTextBox = new System.Windows.Forms.TextBox();
             this.settingsTabControl.SuspendLayout();
             this.generalSettingsTabPage.SuspendLayout();
             this.fileAssociationGroupBox.SuspendLayout();
@@ -396,6 +398,8 @@ namespace ReClassNET.Forms
             // 
             // nodeColorGroupBox
             // 
+            this.nodeColorGroupBox.Controls.Add(this.editTextLabel);
+            this.nodeColorGroupBox.Controls.Add(this.editTextColorBox);
             this.nodeColorGroupBox.Controls.Add(this.nodeValueLabel);
             this.nodeColorGroupBox.Controls.Add(this.nodePluginLabel);
             this.nodeColorGroupBox.Controls.Add(this.nodeHexValueColorBox);
@@ -428,6 +432,23 @@ namespace ReClassNET.Forms
             this.nodeColorGroupBox.TabIndex = 28;
             this.nodeColorGroupBox.TabStop = false;
             this.nodeColorGroupBox.Text = "Node Colors";
+            // 
+            // editTextLabel
+            // 
+            this.editTextLabel.AutoSize = true;
+            this.editTextLabel.Location = new System.Drawing.Point(286, 198);
+            this.editTextLabel.Name = "editTextLabel";
+            this.editTextLabel.Size = new System.Drawing.Size(79, 13);
+            this.editTextLabel.TabIndex = 29;
+            this.editTextLabel.Text = "Edit Text Color:";
+            // 
+            // editTextColorBox
+            // 
+            this.editTextColorBox.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.editTextColorBox.Location = new System.Drawing.Point(410, 195);
+            this.editTextColorBox.Name = "editTextColorBox";
+            this.editTextColorBox.Size = new System.Drawing.Size(123, 20);
+            this.editTextColorBox.TabIndex = 28;
             // 
             // nodeValueLabel
             // 
@@ -723,6 +744,22 @@ namespace ReClassNET.Forms
             this.typeDefinitionsSettingsTabPage.TabIndex = 2;
             this.typeDefinitionsSettingsTabPage.Text = "Type Definitions";
             this.typeDefinitionsSettingsTabPage.UseVisualStyleBackColor = true;
+            // 
+            // utf32TextSettingsLabel
+            // 
+            this.utf32TextSettingsLabel.AutoSize = true;
+            this.utf32TextSettingsLabel.Location = new System.Drawing.Point(254, 233);
+            this.utf32TextSettingsLabel.Name = "utf32TextSettingsLabel";
+            this.utf32TextSettingsLabel.Size = new System.Drawing.Size(43, 13);
+            this.utf32TextSettingsLabel.TabIndex = 52;
+            this.utf32TextSettingsLabel.Text = "UTF32:";
+            // 
+            // utf32TextTypeTextBox
+            // 
+            this.utf32TextTypeTextBox.Location = new System.Drawing.Point(346, 230);
+            this.utf32TextTypeTextBox.Name = "utf32TextTypeTextBox";
+            this.utf32TextTypeTextBox.Size = new System.Drawing.Size(120, 20);
+            this.utf32TextTypeTextBox.TabIndex = 51;
             // 
             // nuintSettingsLabel
             // 
@@ -1096,22 +1133,6 @@ namespace ReClassNET.Forms
             this.bannerBox.Text = "Configure the global settings.";
             this.bannerBox.Title = "Settings";
             // 
-            // utf32TextSettingsLabel
-            // 
-            this.utf32TextSettingsLabel.AutoSize = true;
-            this.utf32TextSettingsLabel.Location = new System.Drawing.Point(254, 233);
-            this.utf32TextSettingsLabel.Name = "utf32TextSettingsLabel";
-            this.utf32TextSettingsLabel.Size = new System.Drawing.Size(43, 13);
-            this.utf32TextSettingsLabel.TabIndex = 52;
-            this.utf32TextSettingsLabel.Text = "UTF32:";
-            // 
-            // utf32TextTypeTextBox
-            // 
-            this.utf32TextTypeTextBox.Location = new System.Drawing.Point(346, 230);
-            this.utf32TextTypeTextBox.Name = "utf32TextTypeTextBox";
-            this.utf32TextTypeTextBox.Size = new System.Drawing.Size(120, 20);
-            this.utf32TextTypeTextBox.TabIndex = 51;
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1247,5 +1268,7 @@ namespace ReClassNET.Forms
 		private System.Windows.Forms.TextBox nintTypeTextBox;
 		private System.Windows.Forms.Label utf32TextSettingsLabel;
 		private System.Windows.Forms.TextBox utf32TextTypeTextBox;
-	}
+        private System.Windows.Forms.Label editTextLabel;
+        private ColorBox editTextColorBox;
+    }
 }
