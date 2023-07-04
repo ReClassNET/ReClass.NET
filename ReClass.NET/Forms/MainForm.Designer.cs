@@ -169,6 +169,8 @@ namespace ReClassNET.Forms
 			this.generateCSharpCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.undoToolbarMenuItem = new ReClassNET.Controls.TypeToolStripMenuItem();
+			this.redoToolbarMenuItem = new ReClassNET.Controls.TypeToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
@@ -787,7 +789,9 @@ namespace ReClassNET.Forms
             this.initClassFromRTTIToolStripBarMenuItem,
             this.addBytesToolStripDropDownButton,
             this.insertBytesToolStripDropDownButton,
-            this.nodeTypesToolStripSeparator});
+            this.nodeTypesToolStripSeparator,
+            this.undoToolbarMenuItem,
+            this.redoToolbarMenuItem});
 			this.toolStrip.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip.Name = "toolStrip";
 			this.toolStrip.Size = new System.Drawing.Size(1103, 25);
@@ -1394,6 +1398,26 @@ namespace ReClassNET.Forms
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
+			// undoToolbarMenuItem
+			// 
+			this.undoToolbarMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Undo;
+			this.undoToolbarMenuItem.Name = "undoToolbarMenuItem";
+			this.undoToolbarMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+			this.undoToolbarMenuItem.Size = new System.Drawing.Size(28, 25);
+			this.undoToolbarMenuItem.ToolTipText = "Undo the latest change";
+			this.undoToolbarMenuItem.Value = null;
+			this.undoToolbarMenuItem.Click += new System.EventHandler(this.undoToolbarMenuItem_Click);
+			// 
+			// redoToolbarMenuItem
+			// 
+			this.redoToolbarMenuItem.Image = global::ReClassNET.Properties.Resources.B16x16_Redo;
+			this.redoToolbarMenuItem.Name = "redoToolbarMenuItem";
+			this.redoToolbarMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+			this.redoToolbarMenuItem.Size = new System.Drawing.Size(28, 25);
+			this.redoToolbarMenuItem.ToolTipText = "Redo the latest undone change";
+			this.redoToolbarMenuItem.Value = null;
+			this.redoToolbarMenuItem.Click += new System.EventHandler(this.redoToolbarMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this.AllowDrop = true;
@@ -1572,6 +1596,8 @@ namespace ReClassNET.Forms
 		private System.Windows.Forms.ToolStripMenuItem isLittleEndianToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem initClassToolStripMenuItem;
 		private TypeToolStripMenuItem initClassFromRTTIToolStripBarMenuItem;
+		private TypeToolStripMenuItem undoToolbarMenuItem;
+		private TypeToolStripMenuItem redoToolbarMenuItem;
 	}
 }
 

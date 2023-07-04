@@ -1,4 +1,4 @@
-﻿namespace ReClassNET
+namespace ReClassNET
 {
 	public class Constants
 	{
@@ -38,6 +38,15 @@
 
 			public const string FileExtRegister = "registerfileext";
 			public const string FileExtUnregister = "unregisterfileext";
+		}
+
+		/// <summary>
+		/// Change type for commandified members in classes which is used to signal what change occurred exactly. As we don't use this feature of the commandified
+		/// class, this enum is defined to simply signal 'no specific change other than it changed' happened. 
+		/// </summary>
+		public enum GeneralPurposeChangeType
+		{
+			None
 		}
 	}
 }

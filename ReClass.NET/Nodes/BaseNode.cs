@@ -7,6 +7,8 @@ using ReClassNET.Controls;
 using ReClassNET.Extensions;
 using ReClassNET.UI;
 using ReClassNET.Util;
+using SD.Tools.Algorithmia.GeneralDataStructures;
+using SD.Tools.Algorithmia.GeneralDataStructures.EventArguments;
 
 namespace ReClassNET.Nodes
 {
@@ -24,14 +26,26 @@ namespace ReClassNET.Nodes
 
 		private static int nodeIndex = 0;
 
-		private string name = string.Empty;
+		//private string name = string.Empty;
+		private CommandifiedMember<string, Constants.GeneralPurposeChangeType> name;
 		private string comment = string.Empty;
 
 		/// <summary>Gets or sets the offset of the node.</summary>
 		public int Offset { get; set; }
 
 		/// <summary>Gets or sets the name of the node. If a new name was set the property changed event gets fired.</summary>
-		public virtual string Name { get => name; set { if (value != null && name != value) { name = value; NameChanged?.Invoke(this); } } }
+		public virtual string Name
+		{
+			get => name.MemberValue;
+			set
+			{
+				if (value == null)
+				{
+					return;
+				}
+				name.MemberValue = value;
+			}
+		}
 
 		/// <summary>Gets or sets the comment of the node.</summary>
 		public string Comment { get => comment; set { if (value != null && comment != value) { comment = value; CommentChanged?.Invoke(this); } } }
@@ -100,11 +114,14 @@ namespace ReClassNET.Nodes
 			Contract.Ensures(name != null);
 			Contract.Ensures(comment != null);
 
-			Name = $"N{nodeIndex++:X08}";
+			name = new CommandifiedMember<string, Constants.GeneralPurposeChangeType>("Name", Constants.GeneralPurposeChangeType.None, $"N{nodeIndex++:X08}");
+			name.ValueChanged += Name_ValueChanged;
 			Comment = string.Empty;
 
 			LevelsOpen[0] = true;
 		}
+
+		private void Name_ValueChanged(object sender, MemberChangedEventArgs<Constants.GeneralPurposeChangeType, string> e) => NameChanged?.Invoke(this);
 
 		public abstract void GetUserInterfaceInfo(out string name, out Image icon);
 

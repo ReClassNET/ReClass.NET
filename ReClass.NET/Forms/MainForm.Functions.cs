@@ -16,6 +16,7 @@ using ReClassNET.Memory;
 using ReClassNET.Nodes;
 using ReClassNET.Project;
 using ReClassNET.UI;
+using SD.Tools.Algorithmia.Commands;
 
 namespace ReClassNET.Forms
 {
@@ -213,6 +214,10 @@ namespace ReClassNET.Forms
 		{
 			Contract.Requires(path != null);
 
+			CommandQueueManagerSingleton.GetInstance().ResetActiveCommandQueue();
+			CommandQueueManagerSingleton.GetInstance().BeginNonUndoablePeriod();		// we don't want to trigger undo/redo activity while loading
+			CommandQueueManagerSingleton.GetInstance().RaiseEvents = false;
+
 			var project = new ReClassNetProject();
 
 			LoadProjectFromPath(path, ref project);
@@ -224,6 +229,10 @@ namespace ReClassNET.Forms
 			}
 
 			SetProject(project);
+
+			// Done loading, resume undo/redo activity
+			CommandQueueManagerSingleton.GetInstance().RaiseEvents = true;
+			CommandQueueManagerSingleton.GetInstance().EndNonUndoablePeriod();
 		}
 
 		/// <summary>Loads the file into the given project.</summary>

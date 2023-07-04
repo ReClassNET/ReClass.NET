@@ -11,6 +11,7 @@ using ReClassNET.Memory;
 using ReClassNET.Native;
 using ReClassNET.UI;
 using ReClassNET.Util;
+using SD.Tools.Algorithmia.Commands;
 
 namespace ReClassNET
 {
@@ -34,10 +35,13 @@ namespace ReClassNET
 
 		public static FontEx MonoSpaceFont { get; private set; }
 
+		public static Guid CommandQueueID { get; private set; }
+
 		[STAThread]
 		static void Main(string[] args)
 		{
 			DesignMode = false; // The designer doesn't call Main()
+			CommandQueueID = Guid.NewGuid();
 
 			CommandLineArgs = new CommandLineArgs(args);
 
@@ -62,6 +66,11 @@ namespace ReClassNET
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+
+			// switch is set to false, so Do actions during Undo actions are ignored.
+			CommandQueueManager.ThrowExceptionOnDoDuringUndo = false;
+			// activate our command queue stack. We're only changing things from the main thread so we don't need multiple stacks.
+			CommandQueueManagerSingleton.GetInstance().ActivateCommandQueueStack(CommandQueueID);
 
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
