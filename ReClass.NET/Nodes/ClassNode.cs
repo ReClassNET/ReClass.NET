@@ -52,8 +52,7 @@ namespace ReClassNET.Nodes
 
 			return new ClassNode(true);
 		}
-
-
+		
 		/// <summary>
 		/// Initializes the class' name and vtable node from RTTI information, if it's not set already 
 		/// </summary>
@@ -72,20 +71,17 @@ namespace ReClassNET.Nodes
 			{
 				rttiInfoFromFirstNode = vtableNode.GetAssociatedRemoteRuntimeTypeInformation(context);
 			}
-			else
+			else if (firstNode is BaseHexCommentNode baseHexCommentNode)
 			{
-				if (firstNode is BaseHexCommentNode baseHexCommentNode)
+				// ask it as if it might point to a vtable
+				var value = context.Memory.InterpretData64(Offset);
+				rttiInfoFromFirstNode = baseHexCommentNode.GetAssociatedRemoteRuntimeTypeInformation(context, value.IntPtr);
+				if (!string.IsNullOrEmpty(rttiInfoFromFirstNode))
 				{
-					// ask it as if it might point to a vtable
-					var value = context.Memory.ReadFromBuffer(Offset);
-					rttiInfoFromFirstNode = baseHexCommentNode.GetAssociatedRemoteRuntimeTypeInformation(context, value.IntPtr);
-					if (!string.IsNullOrEmpty(rttiInfoFromFirstNode))
-					{
-						// convert first node to vtable node
-						var newVTableNode = BaseNode.CreateInstanceFromType(typeof(VirtualMethodTableNode));
-						var createdNodes = new List<BaseNode>();
-						this.ReplaceChildNode(firstNode, newVTableNode, ref createdNodes);
-					}
+					// convert first node to vtable node
+					var newVTableNode = BaseNode.CreateInstanceFromType(typeof(VirtualMethodTableNode));
+					var createdNodes = new List<BaseNode>();
+					this.ReplaceChildNode(firstNode, newVTableNode, ref createdNodes);
 				}
 			}
 
@@ -98,7 +94,6 @@ namespace ReClassNET.Nodes
 			this.Name = fragments[0];
 		}
 		
-
 		public override void GetUserInterfaceInfo(out string name, out Image icon)
 		{
 			throw new InvalidOperationException($"The '{nameof(ClassNode)}' node should not be accessible from the ui.");

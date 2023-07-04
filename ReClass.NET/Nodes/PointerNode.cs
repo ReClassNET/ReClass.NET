@@ -135,8 +135,7 @@ namespace ReClassNET.Nodes
 			}
 			return height;
 		}
-
-
+		
 		public override void PerformPostInitWork()
 		{
 			base.PerformPostInitWork();

@@ -111,7 +111,6 @@ namespace ReClassNET.Nodes
 			return x;
 		}
 
-
 		public string GetAssociatedRemoteRuntimeTypeInformation(DrawContext context, IntPtr ivalue)
 		{
 			return context.Process.ReadRemoteRuntimeTypeInformation(ivalue);

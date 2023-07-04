@@ -33,8 +33,7 @@ namespace ReClassNET.Nodes
 				AddNode(CreateDefaultNodeForSize(IntPtr.Size));
 			}
 		}
-
-
+		
 		protected override int AddComment(DrawContext context, int x, int y)
 		{
 			x = base.AddComment(context, x, y);
@@ -49,11 +48,10 @@ namespace ReClassNET.Nodes
 			}
 			return x;
 		}
-
-
+		
 		public string GetAssociatedRemoteRuntimeTypeInformation(DrawContext context)
 		{
-			var addressFirstVTableFunction = context.Memory.ReadFromBuffer(Offset).IntPtr;
+			var addressFirstVTableFunction = context.Memory.InterpretData64(Offset).IntPtr;
 			if (addressFirstVTableFunction != IntPtr.Zero)
 			{
 				return context.Process.ReadRemoteRuntimeTypeInformation(addressFirstVTableFunction);
@@ -61,8 +59,7 @@ namespace ReClassNET.Nodes
 
 			return string.Empty;
 		}
-
-
+		
 		public override Size Draw(DrawContext context, int x, int y)
 		{
 			if (IsHidden && !IsWrapped)
