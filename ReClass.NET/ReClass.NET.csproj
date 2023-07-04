@@ -122,6 +122,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Microsoft.ExceptionMessageBox.dll</HintPath>
     </Reference>
+    <Reference Include="SD.Tools.Algorithmia, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8ede9265bbb8e107, processorArchitecture=MSIL">
+      <HintPath>..\packages\SD.Tools.Algorithmia.1.4.0\lib\net452\SD.Tools.Algorithmia.dll</HintPath>
+    </Reference>
+    <Reference Include="SD.Tools.BCLExtensions, Version=1.2.2.0, Culture=neutral, PublicKeyToken=a3f87088dcb994e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SD.Tools.BCLExtensions.1.2.2\lib\net452\SD.Tools.BCLExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -608,6 +614,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Compile Include="Debugger\RemoteDebugger.Handler.cs" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
