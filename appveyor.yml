@@ -1,0 +1,68 @@
+image: Visual Studio 2022
+
+environment:
+  matrix:
+      - job_name: Windows Builds x86
+        job_group: build
+        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+
+      - job_name: Windows Builds x64
+        job_group: build
+        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+
+      - job_name: Build Combined
+        job_depends_on: build
+        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+
+
+before_build:
+  - findstr /V "{48C5258A-FA49-4173-AEE5-0FCA5190DFF2}.Debug {48C5258A-FA49-4173-AEE5-0FCA5190DFF2}.Release" .\ReClass.NET.sln > cleaned.sln # This removes the .Unix project from the solution another option would be to create a custom target inside the project
+  - rm ReClass.NET.sln
+  - nuget restore # restore nuget dependencies
+
+for:
+# ======================================
+#      Build
+# ======================================
+-
+  matrix:
+    only:
+    - job_name: Windows Builds x86
+  # Build the solution with the name cleaned.sln
+  # Build the solution with the name cleaned.sln
+  build_script:
+    - cd %APPVEYOR_BUILD_FOLDER% # CD into the cloned project folder
+    - msbuild "cleaned.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release /property:Platform=x86
+
+-
+  matrix:
+    only:
+    - job_name: Windows Builds x64
+    
+  # Build the solution with the name cleaned.sln
+  build_script:
+    - cd %APPVEYOR_BUILD_FOLDER% # CD into the cloned project folder
+    - msbuild "cleaned.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release /property:Platform=x64
+
+
+# ======================================
+#      Release
+# ======================================
+-
+  matrix:
+    only:
+    - job_name: Build Combined
+
+  build_script:
+  - cd %APPVEYOR_BUILD_FOLDER% # CD into the cloned project folder
+  - msbuild "cleaned.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release /property:Platform=x86
+  - msbuild "cleaned.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release /property:Platform=x64
+    
+  # Package the builded files into a zip and push as artifacts
+  after_build:
+  - cd %APPVEYOR_BUILD_FOLDER% # CD into the cloned project folder
+  - cd Bin # CD into  Bin
+  - cd Release # CD into Release
+  - set BUILD_ARCHIVE=%APPVEYOR_PROJECT_NAME%.zip # Set our output archive as projectname-(Debug|Release)-(x86|x64)
+  - cmd: 7z a -r %BUILD_ARCHIVE% *.dll *.exe # Add all exe and dll files to our archive
+  - appveyor PushArtifact %BUILD_ARCHIVE% # Upload the archive as an artifact
