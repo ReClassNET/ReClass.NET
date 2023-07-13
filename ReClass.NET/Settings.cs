@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Text;
 using ReClassNET.Util;
 
@@ -77,5 +77,9 @@ namespace ReClassNET
 		public CustomDataMap CustomData { get; } = new CustomDataMap();
 
 		public Settings Clone() => MemberwiseClone() as Settings;
+
+		// Project Settings
+
+		public bool CompressAsZip { get; set; } = true;
 	}
 }

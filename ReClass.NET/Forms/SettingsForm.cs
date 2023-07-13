@@ -40,6 +40,7 @@ namespace ReClassNET.Forms
 			SetGeneralBindings();
 			SetColorBindings();
 			SetTypeDefinitionBindings();
+			SetProjectSettingsBindings();
 
 			if (NativeMethods.IsUnix())
 			{
@@ -152,6 +153,11 @@ namespace ReClassNET.Forms
 			SetBinding(utf16TextTypeTextBox, nameof(TextBox.Text), typeMapping, nameof(CppTypeMapping.TypeUtf16Text));
 			SetBinding(utf32TextTypeTextBox, nameof(TextBox.Text), typeMapping, nameof(CppTypeMapping.TypeUtf32Text));
 			SetBinding(functionPtrTypeTextBox, nameof(TextBox.Text), typeMapping, nameof(CppTypeMapping.TypeFunctionPtr));
+		}
+
+		private void SetProjectSettingsBindings()
+		{
+			SetBinding(compressZipCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.CompressAsZip));
 		}
 	}
 }

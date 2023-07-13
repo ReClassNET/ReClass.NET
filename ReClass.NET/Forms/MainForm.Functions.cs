@@ -197,6 +197,7 @@ namespace ReClassNET.Forms
 				         + $"|{ReClassNetFile.FormatName} (*{ReClassNetFile.FileExtension})|*{ReClassNetFile.FileExtension}"
 				         + $"|{ReClassFile.FormatName} (*{ReClassFile.FileExtension})|*{ReClassFile.FileExtension}"
 				         + $"|{ReClassQtFile.FormatName} (*{ReClassQtFile.FileExtension})|*{ReClassQtFile.FileExtension}"
+				         + $"|{ReClassDataFile.FormatName} (*{ReClassDataFile.FileExtension})|*{ReClassDataFile.FileExtension}"
 			};
 
 			if (ofd.ShowDialog() == DialogResult.OK)
@@ -217,8 +218,9 @@ namespace ReClassNET.Forms
 
 			LoadProjectFromPath(path, ref project);
 
-			// If the file is a ReClass.NET file remember the path.
-			if (Path.GetExtension(path) == ReClassNetFile.FileExtension)
+			// If the file is a ReClass.NET file or ReClass.NET Data file remember the path.
+			if (Path.GetExtension(path) == ReClassNetFile.FileExtension ||
+				Path.GetExtension(path) == ReClassDataFile.FileExtension)
 			{
 				project.Path = path;
 			}
@@ -240,6 +242,9 @@ namespace ReClassNET.Forms
 			{
 				case ReClassNetFile.FileExtension:
 					import = new ReClassNetFile(project);
+					break;
+				case ReClassDataFile.FileExtension:
+					import = new ReClassDataFile(project);
 					break;
 				case ReClassQtFile.FileExtension:
 					import = new ReClassQtFile(project);

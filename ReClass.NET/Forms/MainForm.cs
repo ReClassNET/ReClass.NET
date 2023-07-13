@@ -294,7 +294,15 @@ namespace ReClassNET.Forms
 				return;
 			}
 
-			var file = new ReClassNetFile(currentProject);
+			IReClassExport file;
+			if (Program.Settings.CompressAsZip)
+			{
+				file = new ReClassNetFile(currentProject);
+			}
+			else
+			{
+				file = new ReClassDataFile(currentProject);
+			}
 			file.Save(currentProject.Path, Program.Logger);
 		}
 
