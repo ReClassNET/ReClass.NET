@@ -118,7 +118,7 @@ namespace ReClassNET.Controls
 					else
 					{
 						selectionInText += 1;
-						while (selectionInText > 0 && !selectionPredicate(currChar()))
+						while (selectionInText < maxSelectionStart && !selectionPredicate(currChar()))
 						{
 							selectionInText += 1;
 						}
