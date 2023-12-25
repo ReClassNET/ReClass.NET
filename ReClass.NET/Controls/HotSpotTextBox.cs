@@ -58,8 +58,6 @@ namespace ReClassNET.Controls
 
 		protected override bool ProcessCmdKey(ref Message m, Keys keyData)
 		{
-			bool state = base.ProcessCmdKey(ref m, keyData);
-
 			// Checks if we're on some address.
 			var selectionPredicate = (char c) =>
 			{
@@ -132,7 +130,7 @@ namespace ReClassNET.Controls
 				}
 			}
 
-			return state;
+			return base.ProcessCmdKey(ref m, keyData);
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e)
