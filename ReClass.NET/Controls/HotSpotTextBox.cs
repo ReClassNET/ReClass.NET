@@ -62,7 +62,7 @@ namespace ReClassNET.Controls
 			var selectionPredicate = (char c) =>
 			{
 				c = Char.ToLower(c);
-				return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || c == 'x';
+				return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z');
 			};
 
 			if (keyData == (Keys.Control | Keys.Left))
