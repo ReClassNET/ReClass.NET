@@ -3,8 +3,11 @@
 	public partial class ReClassNetFile
 	{
 		public const string FormatName = "ReClass.NET File";
-		public const string FileExtension = ".rcnet";
+		public const string DefaultFileExtension = ".rcnet";
+		public const string AlternateFormatName = "ReClass.NET XML File";
+		public const string AlternateFileExtension = ".rcnetxml";
 		public const string FileExtensionId = "rcnetfile";
+		public const string AlternateFileExtensionId = "rcnetxmlfile";
 
 		private const uint FileVersion = 0x00010001;
 		private const uint FileVersionCriticalMask = 0xFFFF0000;
