@@ -192,6 +192,9 @@ namespace ReClassNET.CodeGenerator
 				}
 
 				var classNodes = node.Nodes
+					.OfType<BaseContainerNode>()
+					.SelectMany(c => c.Nodes)
+					.Concat(node.Nodes)
 					.OfType<BaseWrapperNode>()
 					.Where(w => !w.IsNodePresentInChain<PointerNode>()) // Pointers are forward declared
 					.Select(w => w.ResolveMostInnerNode() as ClassNode)

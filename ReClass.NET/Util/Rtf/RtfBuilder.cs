@@ -247,22 +247,22 @@ namespace ReClassNET.Util.Rtf
 			{
 				if (value.IndexOfAny(slashable) >= 0)
 				{
-					value = value.Replace("\\", "\\\\").Replace("{", @"\{").Replace("}", @"\}");
+					value = value.Replace(@"\", @"\\").Replace("{", @"\{").Replace("}", @"\}");
 				}
 
-				if (value.Any(c => c > 255))
+				if (value.Any(c => c > 255 || c == '\t'))
 				{
 					var sb = new StringBuilder();
 
 					foreach (var c in value)
 					{
-						if (c <= 255)
+						if (c == '\t')
+						{
+							sb.Append(@"\tab ");
+						}
+						else if (c <= 255)
 						{
 							sb.Append(c);
-						}
-						else if (c == '\t')
-						{
-							sb.Append(@"\tab");
 						}
 						else
 						{

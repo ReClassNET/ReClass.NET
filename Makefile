@@ -37,12 +37,12 @@ docker_all:
 docker_debug:
 	cd ReClass.NET_Launcher && make docker_debug
 	cd ReClass.NET && make docker_debug
-	docker container run --rm -v ${PWD}:/build:z -w /build -u $(shell id -u ${USER}):$(shell id -g ${USER}) gcc:latest bash -c "cd NativeCore/Unix && make debug"
+	docker container run --rm -v ${PWD}:/build:z -w /build -u $(shell id -u ${USER}):$(shell id -g ${USER}) gcc_multilib:latest bash -c "cd NativeCore/Unix && make debug"
 
 docker_release:
 	cd ReClass.NET_Launcher && make docker_release
 	cd ReClass.NET && make docker_release
-	docker container run --rm -v ${PWD}:/build:z -w /build -u $(shell id -u ${USER}):$(shell id -g ${USER}) gcc:latest bash -c "cd NativeCore/Unix && make release"
+	docker container run --rm -v ${PWD}:/build:z -w /build -u $(shell id -u ${USER}):$(shell id -g ${USER}) gcc_multilib:latest bash -c "cd NativeCore/Unix && make release"
 
 podman_all:
 	make podman_debug
@@ -52,19 +52,21 @@ podman_all:
 podman_debug:
 	cd ReClass.NET_Launcher && make podman_debug
 	cd ReClass.NET && make podman_debug
-	podman container run --rm -v ${PWD}:/build:z -w /build gcc:latest bash -c "cd NativeCore/Unix && make debug"
+	podman container run --rm -v ${PWD}:/build:z -w /build gcc_multilib:latest bash -c "cd NativeCore/Unix && make debug"
 
 podman_release:
 	cd ReClass.NET_Launcher && make podman_release
 	cd ReClass.NET && make podman_release
-	podman container run --rm -v ${PWD}:/build:z -w /build gcc:latest bash -c "cd NativeCore/Unix && make release"
+	podman container run --rm -v ${PWD}:/build:z -w /build gcc_multilib:latest bash -c "cd NativeCore/Unix && make release"
 
 dist:
 	test -d build || mkdir -p build
 	cp -r ReClass.NET/bin/* build/
 	cp -r ReClass.NET_Launcher/bin/* build/
-	cp NativeCore/Unix/build/debug/NativeCore.so build/Debug/x64
-	cp NativeCore/Unix/build/release/NativeCore.so build/Release/x64
+	cp NativeCore/Unix/build/debug/x86/NativeCore.so build/Debug/x86
+	cp NativeCore/Unix/build/debug/x64/NativeCore.so build/Debug/x64
+	cp NativeCore/Unix/build/release/x86/NativeCore.so build/Release/x86
+	cp NativeCore/Unix/build/release/x64/NativeCore.so build/Release/x64
 	test -d build/Debug/x86/Plugins || mkdir build/Debug/x86/Plugins
 	test -d build/Debug/x64/Plugins || mkdir build/Debug/x64/Plugins
 	test -d build/Release/x86/Plugins || mkdir build/Release/x86/Plugins

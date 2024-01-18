@@ -27,32 +27,32 @@ const unsigned char _MNEMONICS[] =
 "\x03" "cqo\0" "\x08" "call far\0" "\x05" "pushf\0" "\x04" "popf\0" \
 "\x04" "sahf\0" "\x04" "lahf\0" "\x04" "movs\0" "\x04" "cmps\0" "\x04" "stos\0" \
 "\x04" "lods\0" "\x04" "scas\0" "\x03" "ret\0" "\x03" "les\0" "\x03" "lds\0" \
-"\x05" "enter\0" "\x05" "leave\0" "\x04" "retf\0" "\x05" "int 3\0" \
-"\x03" "int\0" "\x04" "into\0" "\x04" "iret\0" "\x03" "aam\0" "\x03" "aad\0" \
-"\x04" "salc\0" "\x04" "xlat\0" "\x06" "loopnz\0" "\x05" "loopz\0" \
-"\x04" "loop\0" "\x04" "jcxz\0" "\x05" "jecxz\0" "\x05" "jrcxz\0" "\x02" "in\0" \
-"\x03" "out\0" "\x04" "call\0" "\x03" "jmp\0" "\x07" "jmp far\0" "\x04" "int1\0" \
-"\x03" "hlt\0" "\x03" "cmc\0" "\x03" "clc\0" "\x03" "stc\0" "\x03" "cli\0" \
-"\x03" "sti\0" "\x03" "cld\0" "\x03" "std\0" "\x03" "lar\0" "\x03" "lsl\0" \
-"\x07" "syscall\0" "\x04" "clts\0" "\x06" "sysret\0" "\x04" "invd\0" \
-"\x06" "wbinvd\0" "\x03" "ud2\0" "\x05" "femms\0" "\x03" "nop\0" "\x05" "wrmsr\0" \
-"\x05" "rdtsc\0" "\x05" "rdmsr\0" "\x05" "rdpmc\0" "\x08" "sysenter\0" \
-"\x07" "sysexit\0" "\x06" "getsec\0" "\x05" "cmovo\0" "\x06" "cmovno\0" \
-"\x05" "cmovb\0" "\x06" "cmovae\0" "\x05" "cmovz\0" "\x06" "cmovnz\0" \
-"\x06" "cmovbe\0" "\x05" "cmova\0" "\x05" "cmovs\0" "\x06" "cmovns\0" \
-"\x05" "cmovp\0" "\x06" "cmovnp\0" "\x05" "cmovl\0" "\x06" "cmovge\0" \
-"\x06" "cmovle\0" "\x05" "cmovg\0" "\x04" "seto\0" "\x05" "setno\0" \
-"\x04" "setb\0" "\x05" "setae\0" "\x04" "setz\0" "\x05" "setnz\0" "\x05" "setbe\0" \
-"\x04" "seta\0" "\x04" "sets\0" "\x05" "setns\0" "\x04" "setp\0" "\x05" "setnp\0" \
-"\x04" "setl\0" "\x05" "setge\0" "\x05" "setle\0" "\x04" "setg\0" "\x05" "cpuid\0" \
-"\x02" "bt\0" "\x04" "shld\0" "\x03" "rsm\0" "\x03" "bts\0" "\x04" "shrd\0" \
-"\x07" "cmpxchg\0" "\x03" "lss\0" "\x03" "btr\0" "\x03" "lfs\0" "\x03" "lgs\0" \
-"\x05" "movzx\0" "\x03" "btc\0" "\x05" "movsx\0" "\x04" "xadd\0" "\x06" "movnti\0" \
-"\x05" "bswap\0" "\x03" "rol\0" "\x03" "ror\0" "\x03" "rcl\0" "\x03" "rcr\0" \
-"\x03" "shl\0" "\x03" "shr\0" "\x03" "sal\0" "\x03" "sar\0" "\x06" "xabort\0" \
-"\x06" "xbegin\0" "\x04" "fadd\0" "\x04" "fmul\0" "\x04" "fcom\0" "\x05" "fcomp\0" \
-"\x04" "fsub\0" "\x05" "fsubr\0" "\x04" "fdiv\0" "\x05" "fdivr\0" "\x03" "fld\0" \
-"\x03" "fst\0" "\x04" "fstp\0" "\x06" "fldenv\0" "\x05" "fldcw\0" "\x04" "fxch\0" \
+"\x05" "enter\0" "\x05" "leave\0" "\x04" "retf\0" "\x04" "int3\0" "\x03" "int\0" \
+"\x04" "into\0" "\x04" "iret\0" "\x03" "aam\0" "\x03" "aad\0" "\x04" "salc\0" \
+"\x04" "xlat\0" "\x06" "loopnz\0" "\x05" "loopz\0" "\x04" "loop\0" \
+"\x04" "jcxz\0" "\x05" "jecxz\0" "\x05" "jrcxz\0" "\x02" "in\0" "\x03" "out\0" \
+"\x04" "call\0" "\x03" "jmp\0" "\x07" "jmp far\0" "\x04" "int1\0" "\x03" "hlt\0" \
+"\x03" "cmc\0" "\x03" "clc\0" "\x03" "stc\0" "\x03" "cli\0" "\x03" "sti\0" \
+"\x03" "cld\0" "\x03" "std\0" "\x03" "lar\0" "\x03" "lsl\0" "\x07" "syscall\0" \
+"\x04" "clts\0" "\x06" "sysret\0" "\x04" "invd\0" "\x06" "wbinvd\0" \
+"\x03" "ud2\0" "\x05" "femms\0" "\x03" "nop\0" "\x05" "wrmsr\0" "\x05" "rdtsc\0" \
+"\x05" "rdmsr\0" "\x05" "rdpmc\0" "\x08" "sysenter\0" "\x07" "sysexit\0" \
+"\x06" "getsec\0" "\x05" "cmovo\0" "\x06" "cmovno\0" "\x05" "cmovb\0" \
+"\x06" "cmovae\0" "\x05" "cmovz\0" "\x06" "cmovnz\0" "\x06" "cmovbe\0" \
+"\x05" "cmova\0" "\x05" "cmovs\0" "\x06" "cmovns\0" "\x05" "cmovp\0" \
+"\x06" "cmovnp\0" "\x05" "cmovl\0" "\x06" "cmovge\0" "\x06" "cmovle\0" \
+"\x05" "cmovg\0" "\x04" "seto\0" "\x05" "setno\0" "\x04" "setb\0" "\x05" "setae\0" \
+"\x04" "setz\0" "\x05" "setnz\0" "\x05" "setbe\0" "\x04" "seta\0" "\x04" "sets\0" \
+"\x05" "setns\0" "\x04" "setp\0" "\x05" "setnp\0" "\x04" "setl\0" "\x05" "setge\0" \
+"\x05" "setle\0" "\x04" "setg\0" "\x05" "cpuid\0" "\x02" "bt\0" "\x04" "shld\0" \
+"\x03" "rsm\0" "\x03" "bts\0" "\x04" "shrd\0" "\x07" "cmpxchg\0" "\x03" "lss\0" \
+"\x03" "btr\0" "\x03" "lfs\0" "\x03" "lgs\0" "\x05" "movzx\0" "\x03" "btc\0" \
+"\x05" "movsx\0" "\x04" "xadd\0" "\x06" "movnti\0" "\x05" "bswap\0" \
+"\x03" "rol\0" "\x03" "ror\0" "\x03" "rcl\0" "\x03" "rcr\0" "\x03" "shl\0" \
+"\x03" "shr\0" "\x03" "sal\0" "\x03" "sar\0" "\x06" "xabort\0" "\x06" "xbegin\0" \
+"\x04" "fadd\0" "\x04" "fmul\0" "\x04" "fcom\0" "\x05" "fcomp\0" "\x04" "fsub\0" \
+"\x05" "fsubr\0" "\x04" "fdiv\0" "\x05" "fdivr\0" "\x03" "fld\0" "\x03" "fst\0" \
+"\x04" "fstp\0" "\x06" "fldenv\0" "\x05" "fldcw\0" "\x04" "fxch\0" \
 "\x04" "fnop\0" "\x04" "fchs\0" "\x04" "fabs\0" "\x04" "ftst\0" "\x04" "fxam\0" \
 "\x04" "fld1\0" "\x06" "fldl2t\0" "\x06" "fldl2e\0" "\x05" "fldpi\0" \
 "\x06" "fldlg2\0" "\x06" "fldln2\0" "\x04" "fldz\0" "\x05" "f2xm1\0" \
